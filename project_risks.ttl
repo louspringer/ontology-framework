@@ -1,0 +1,77 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix risk: <http://louspringer.com/ontology/risk#> .
+@prefix conv: <http://louspringer.com/ontology/conversation#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+risk:RiskOntology rdf:type owl:Ontology ;
+    dc:title "Project Risk Ontology" ;
+    dc:version "1.1" ;
+    rdfs:comment "Updated to include inferred risks and constraints from interdisciplinary collaboration." ;
+    owl:imports <http://louspringer.com/ontology/conversation> .
+
+# Core Classes
+risk:Risk rdf:type owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "Identified project risk" ;
+    rdfs:subClassOf conv:BacklogItem .
+
+risk:Mitigation rdf:type owl:Class ;
+    rdfs:label "Mitigation" ;
+    rdfs:comment "Risk mitigation strategy" .
+
+risk:Impact rdf:type owl:Class ;
+    rdfs:label "Impact" ;
+    rdfs:comment "Risk impact assessment" .
+
+# Core Properties
+risk:severity rdf:type owl:DatatypeProperty ;
+    rdfs:domain risk:Risk ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "1-5 scale of severity" .
+
+risk:likelihood rdf:type owl:DatatypeProperty ;
+    rdfs:domain risk:Risk ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "1-5 scale of likelihood" .
+
+risk:hasMitigation rdf:type owl:ObjectProperty ;
+    rdfs:domain risk:Risk ;
+    rdfs:range risk:Mitigation .
+
+risk:hasImpact rdf:type owl:ObjectProperty ;
+    rdfs:domain risk:Risk ;
+    rdfs:range risk:Impact .
+
+# New Instances for Inferred Risks
+risk:MiscommunicationRisk rdf:type risk:Risk ;
+    rdfs:label "Miscommunication Risk" ;
+    risk:severity "4" ;
+    risk:likelihood "3" ;
+    rdfs:comment "Risk of miscommunication between biologists and software developers." .
+
+risk:TechnicalLimitationRisk rdf:type risk:Risk ;
+    rdfs:label "Technical Limitation Risk" ;
+    risk:severity "3" ;
+    risk:likelihood "4" ;
+    rdfs:comment "Risk of technical limitations in simulating biological processes." .
+
+# New Mitigations
+risk:RegularWorkshops rdf:type risk:Mitigation ;
+    rdfs:label "Regular Workshops" ;
+    rdfs:comment "Conduct regular workshops to align understanding between teams." .
+
+risk:SharedGlossary rdf:type risk:Mitigation ;
+    rdfs:label "Shared Glossary" ;
+    rdfs:comment "Create a shared glossary of terms to reduce miscommunication." .
+
+# New Impacts
+risk:ProjectDelayImpact rdf:type risk:Impact ;
+    rdfs:label "Project Delay Impact" ;
+    rdfs:comment "Potential delays in project timelines due to miscommunication." .
+
+risk:QualityOfSimulationImpact rdf:type risk:Impact ;
+    rdfs:label "Quality of Simulation Impact" ;
+    rdfs:comment "Impact on the quality of the software simulation due to technical limitations." .

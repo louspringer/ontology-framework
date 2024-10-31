@@ -1,0 +1,53 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sol: <http://louspringer.com/ontology/solution#> .
+@prefix prob: <http://louspringer.com/ontology/problem#> .
+@prefix metameta: <http://louspringer.com/ontology/metameta#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+sol:SolutionSpaceOntology rdf:type owl:Ontology ;
+    dc:title "Solution Space Ontology" ;
+    dc:version "1.1" ;
+    rdfs:comment "Updated to include solutions for interdisciplinary collaboration." .
+
+# Core Classes
+sol:TechnicalSolution rdf:type owl:Class ;
+    rdfs:label "Technical Solution" ;
+    rdfs:comment "Proposed or implemented technical approach" ;
+    rdfs:subClassOf metameta:AbstractionDimension .
+
+sol:Implementation rdf:type owl:Class ;
+    rdfs:label "Implementation" ;
+    rdfs:comment "Concrete implementation details" .
+
+sol:Validation rdf:type owl:Class ;
+    rdfs:label "Validation" ;
+    rdfs:comment "Validation criteria and results" .
+
+# Core Properties
+sol:satisfies rdf:type owl:ObjectProperty ;
+    rdfs:domain sol:TechnicalSolution ;
+    rdfs:range prob:BusinessNeed .
+
+sol:hasImplementation rdf:type owl:ObjectProperty ;
+    rdfs:domain sol:TechnicalSolution ;
+    rdfs:range sol:Implementation .
+
+sol:hasValidation rdf:type owl:ObjectProperty ;
+    rdfs:domain sol:Implementation ;
+    rdfs:range sol:Validation .
+
+sol:validationStatus rdf:type owl:DatatypeProperty ;
+    rdfs:domain sol:Validation ;
+    rdfs:range xsd:string .
+
+# New Solutions
+sol:InterdisciplinaryWorkshop rdf:type sol:TechnicalSolution ;
+    rdfs:label "Interdisciplinary Workshop" ;
+    rdfs:comment "Workshop designed to facilitate communication between biologists and programmers." .
+
+sol:SharedGlossarySolution rdf:type sol:TechnicalSolution ;
+    rdfs:label "Shared Glossary Solution" ;
+    rdfs:comment "Creating a shared glossary to bridge terminology gaps." .

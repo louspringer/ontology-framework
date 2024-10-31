@@ -1,0 +1,43 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prob: <http://louspringer.com/ontology/problem#> .
+@prefix metameta: <http://louspringer.com/ontology/metameta#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+prob:ProblemSpaceOntology rdf:type owl:Ontology ;
+    dc:title "Problem Space Ontology" ;
+    dc:version "1.0" ;
+    owl:imports <http://louspringer.com/ontology/metameta> .
+
+# Core Classes
+prob:BusinessNeed rdf:type owl:Class ;
+    rdfs:label "Business Need" ;
+    rdfs:comment "Fundamental business requirement or opportunity" ;
+    rdfs:subClassOf metameta:AbstractionDimension .
+
+prob:Context rdf:type owl:Class ;
+    rdfs:label "Context" ;
+    rdfs:comment "Environmental or situational factors" .
+
+prob:Constraint rdf:type owl:Class ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "Limiting factors or boundaries" .
+
+# Core Properties
+prob:hasValue rdf:type owl:DatatypeProperty ;
+    rdfs:domain prob:BusinessNeed ;
+    rdfs:range xsd:string .
+
+prob:hasPriority rdf:type owl:DatatypeProperty ;
+    rdfs:domain prob:BusinessNeed ;
+    rdfs:range xsd:integer .
+
+prob:hasContext rdf:type owl:ObjectProperty ;
+    rdfs:domain prob:BusinessNeed ;
+    rdfs:range prob:Context .
+
+prob:hasConstraint rdf:type owl:ObjectProperty ;
+    rdfs:domain prob:BusinessNeed ;
+    rdfs:range prob:Constraint .

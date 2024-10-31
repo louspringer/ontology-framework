@@ -1,0 +1,172 @@
+@prefix : <http://louspringer.com/ontologies/oracle-learning#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+<http://louspringer.com/ontologies/oracle-learning> a owl:Ontology ;
+    dc:title "Oracle Technology Learning Ontology"@en ;
+    dc:description "An ontology for organizing knowledge about Oracle technologies and learning paths."@en ;
+    dct:created "2023-04-20"^^xsd:date ;
+    cc:license <http://opensource.org/licenses/MIT> ;
+    owl:versionInfo "1.0" ;
+    vann:preferredNamespacePrefix "orl" ;
+    vann:preferredNamespaceUri "http://louspringer.com/ontologies/oracle-learning#" ;
+    dct:source <https://github.com/louspringer/ontologies/oracle-learning> .
+
+# Main Classes
+:OracleTechnologyStack a owl:Class ;
+    rdfs:label "Oracle Technology Stack"@en ;
+    rdfs:comment "The complete set of Oracle technologies and services."@en .
+
+:CloudService a owl:Class ;
+    rdfs:label "Cloud Service"@en ;
+    rdfs:comment "A service offered in the Oracle Cloud."@en .
+
+:LearningResource a owl:Class ;
+    rdfs:label "Learning Resource"@en ;
+    rdfs:comment "Educational materials for learning Oracle technologies."@en .
+
+:Skill a owl:Class ;
+    rdfs:label "Skill"@en ;
+    rdfs:comment "A specific ability or expertise related to Oracle technologies."@en .
+
+:Certification a owl:Class ;
+    rdfs:label "Certification"@en ;
+    rdfs:comment "An official credential offered by Oracle."@en .
+
+:LearningPath a owl:Class ;
+    rdfs:label "Learning Path"@en ;
+    rdfs:comment "A structured sequence of learning resources and activities."@en .
+
+# Subclasses
+:IaaS a owl:Class ;
+    rdfs:subClassOf :CloudService ;
+    rdfs:label "Infrastructure as a Service"@en .
+
+:PaaS a owl:Class ;
+    rdfs:subClassOf :CloudService ;
+    rdfs:label "Platform as a Service"@en .
+
+:SaaS a owl:Class ;
+    rdfs:subClassOf :CloudService ;
+    rdfs:label "Software as a Service"@en .
+
+:ComputeService a owl:Class ;
+    rdfs:subClassOf :IaaS ;
+    rdfs:label "Compute Service"@en .
+
+:StorageService a owl:Class ;
+    rdfs:subClassOf :IaaS ;
+    rdfs:label "Storage Service"@en .
+
+:NetworkingService a owl:Class ;
+    rdfs:subClassOf :IaaS ;
+    rdfs:label "Networking Service"@en .
+
+:DatabaseService a owl:Class ;
+    rdfs:subClassOf :PaaS ;
+    rdfs:label "Database Service"@en .
+
+:DeveloperService a owl:Class ;
+    rdfs:subClassOf :PaaS ;
+    rdfs:label "Developer Service"@en .
+
+# Object Properties
+:hasComponent a owl:ObjectProperty ;
+    rdfs:label "has component"@en ;
+    rdfs:domain :OracleTechnologyStack ;
+    rdfs:range :CloudService .
+
+:requires a owl:ObjectProperty ;
+    rdfs:label "requires"@en ;
+    rdfs:domain :LearningResource ;
+    rdfs:range :Skill .
+
+:provides a owl:ObjectProperty ;
+    rdfs:label "provides"@en ;
+    rdfs:domain :LearningResource ;
+    rdfs:range :Skill .
+
+:isPartOf a owl:ObjectProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:domain :LearningResource ;
+    rdfs:range :LearningPath .
+
+:leadsTo a owl:ObjectProperty ;
+    rdfs:label "leads to"@en ;
+    rdfs:domain :LearningPath ;
+    rdfs:range :Certification .
+
+# Data Properties
+:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+:hasDifficulty a owl:DatatypeProperty ;
+    rdfs:label "has difficulty"@en ;
+    rdfs:domain :LearningResource ;
+    rdfs:range xsd:string .
+
+:hasDuration a owl:DatatypeProperty ;
+    rdfs:label "has duration"@en ;
+    rdfs:domain :LearningResource ;
+    rdfs:range xsd:duration .
+
+# Individuals
+:OCIComputeInstance a :ComputeService ;
+    :hasName "OCI Compute Instance"@en ;
+    :hasDescription "Virtual machines running in Oracle Cloud Infrastructure."@en .
+
+:OCIObjectStorage a :StorageService ;
+    :hasName "OCI Object Storage"@en ;
+    :hasDescription "Scalable, secure, and durable storage for unstructured data in Oracle Cloud."@en .
+
+:OCIVirtualCloudNetwork a :NetworkingService ;
+    :hasName "OCI Virtual Cloud Network"@en ;
+    :hasDescription "Customizable and private network in Oracle Cloud Infrastructure."@en .
+
+:OCIDatabaseService a :DatabaseService ;
+    :hasName "OCI Database Service"@en ;
+    :hasDescription "Managed Oracle Database service in the cloud."@en .
+
+:OCIFundamentalsLearningPath a :LearningPath ;
+    :hasName "OCI Fundamentals Learning Path"@en ;
+    :hasDescription "Foundational learning path for Oracle Cloud Infrastructure."@en ;
+    :leadsTo :OCIFoundationAssociate .
+
+:OCIFoundationAssociate a :Certification ;
+    :hasName "Oracle Cloud Infrastructure Foundations Associate"@en ;
+    :hasDescription "Entry-level certification for OCI concepts and use cases."@en .
+
+# Example of a more complex relationship
+:OCIFundamentalsLearningPath a :LearningPath ;
+    :provides :OCIFundamentalsSkill ;
+    :leadsTo :OCIFoundationAssociate ;
+    :isPartOf [
+        a owl:Class ;
+        owl:intersectionOf (
+            [ a owl:Restriction ;
+              owl:onProperty :provides ;
+              owl:someValuesFrom :OCIFundamentalsSkill
+            ]
+            [ a owl:Restriction ;
+              owl:onProperty :leadsTo ;
+              owl:hasValue :OCIFoundationAssociate
+            ]
+        )
+    ] .
+
+:OCIFundamentalsSkill a :Skill ;
+    :hasName "OCI Fundamentals Skill"@en ;
+    :hasDescription "Basic understanding and ability to work with Oracle Cloud Infrastructure."@en .

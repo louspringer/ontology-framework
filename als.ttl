@@ -1,0 +1,45 @@
+@prefix ex: <http://example.com/ns#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# Define Classes
+ex:Stakeholder a owl:Class .
+ex:InternalStakeholder a owl:Class ; rdfs:subClassOf ex:Stakeholder .
+ex:ExternalStakeholder a owl:Class ; rdfs:subClassOf ex:Stakeholder .
+ex:Persona a owl:Class .
+ex:ProblemSpace a owl:Class .
+ex:SolutionSpace a owl:Class .
+ex:BusinessRequirement a owl:Class .
+ex:TechnicalRequirement a owl:Class .
+ex:Constraint a owl:Class ; rdfs:subClassOf ex:BusinessRequirement, ex:TechnicalRequirement .
+ex:Risk a owl:Class .
+ex:Assumption a owl:Class ; rdfs:subClassOf ex:Risk .
+ex:ProblemStatement a owl:Class .
+
+# Define Properties
+ex:hasPerspectiveOn a rdf:Property ; rdfs:domain ex:Stakeholder ; rdfs:range ex:ProblemSpace .
+ex:hasBusinessRequirement a rdf:Property ; rdfs:domain ex:ProblemSpace ; rdfs:range ex:BusinessRequirement .
+ex:derivesTechnicalRequirementFrom a rdf:Property ; rdfs:domain ex:SolutionSpace ; rdfs:range ex:BusinessRequirement .
+ex:isSolvedBy a rdf:Property ; rdfs:domain ex:ProblemSpace ; rdfs:range ex:SolutionSpace .
+ex:hasConstraint a rdf:Property ; rdfs:domain ex:Requirement ; rdfs:range ex:Constraint .
+ex:hasAssumption a rdf:Property ; rdfs:domain ex:Risk ; rdfs:range ex:Assumption .
+ex:hasLifecycleStage a rdf:Property ; rdfs:domain ex:ProblemStatement .
+
+# Example individuals
+ex:CFO a ex:ExternalStakeholder ;
+    ex:hasPerspectiveOn ex:CostReduction .
+
+ex:SE a ex:InternalStakeholder ;
+    ex:hasPerspectiveOn ex:SolutionSpace .
+
+ex:CostReduction a ex:ProblemSpace ;
+    ex:hasBusinessRequirement ex:ReduceOperationalCost ;
+    ex:isSolvedBy ex:CloudLogisticsPlatform .
+
+ex:CloudLogisticsPlatform a ex:SolutionSpace ;
+    ex:derivesTechnicalRequirementFrom ex:ReduceOperationalCost ;
+    ex:hasConstraint ex:BudgetLimit .
+
+ex:ERPSystemCapability a ex:Assumption ;
+    ex:hasAssociatedRisk ex:SystemUpgradeRisk .

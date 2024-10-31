@@ -1,0 +1,36 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix metameta: <http://louspringer.com/ontology/metameta#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+metameta:CoreMetaMetaOntology rdf:type owl:Ontology ;
+    dc:title "Knowledge Framework Meta-Meta-Ontology Core" ;
+    dc:version "1.0" .
+
+# Core Classes
+metameta:AbstractionDimension rdf:type owl:Class ;
+    rdfs:label "Abstraction Dimension" ;
+    rdfs:comment "A dimension along which knowledge can be abstracted" .
+
+metameta:AbstractionLevel rdf:type owl:Class ;
+    rdfs:label "Abstraction Level" ;
+    rdfs:comment "A specific level within an abstraction dimension" .
+
+metameta:KnowledgeDomain rdf:type owl:Class ;
+    rdfs:label "Knowledge Domain" ;
+    rdfs:comment "A distinct area of knowledge" .
+
+# Core Properties
+metameta:hasLevel rdf:type owl:ObjectProperty ;
+    rdfs:domain metameta:AbstractionDimension ;
+    rdfs:range metameta:AbstractionLevel .
+
+metameta:levelNumber rdf:type owl:DatatypeProperty ;
+    rdfs:domain metameta:AbstractionLevel ;
+    rdfs:range xsd:integer .
+
+metameta:domainScope rdf:type owl:DatatypeProperty ;
+    rdfs:domain metameta:KnowledgeDomain ;
+    rdfs:range xsd:string .

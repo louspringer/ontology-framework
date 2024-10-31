@@ -1,0 +1,76 @@
+@prefix : <http://louspringer.com/ontologies/ssh-debug#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:SSHDebugOntology rdf:type owl:Ontology ;
+    rdfs:comment "Ontology for SSH debugging and configuration issues" .
+
+# Classes
+:Issue rdf:type owl:Class .
+:Risk rdf:type owl:Class .
+:Constraint rdf:type owl:Class .
+:Assumption rdf:type owl:Class .
+:Stakeholder rdf:type owl:Class .
+:Solution rdf:type owl:Class .
+
+# Properties
+:hasRisk rdf:type owl:ObjectProperty ;
+    rdfs:domain :Issue ;
+    rdfs:range :Risk .
+
+:hasConstraint rdf:type owl:ObjectProperty ;
+    rdfs:domain :Issue ;
+    rdfs:range :Constraint .
+
+:hasAssumption rdf:type owl:ObjectProperty ;
+    rdfs:domain :Issue ;
+    rdfs:range :Assumption .
+
+:involvedStakeholder rdf:type owl:ObjectProperty ;
+    rdfs:domain :Issue ;
+    rdfs:range :Stakeholder .
+
+:hasSolution rdf:type owl:ObjectProperty ;
+    rdfs:domain :Issue ;
+    rdfs:range :Solution .
+
+# Instances
+:SSHConfigurationIssue rdf:type :Issue ;
+    rdfs:label "SSH Configuration Inconsistencies" ;
+    :hasRisk :SecurityVulnerability ;
+    :hasConstraint :MultipleConfigFiles ;
+    :hasAssumption :OnePasswordIntegration ;
+    :involvedStakeholder :Developer, :SystemAdministrator ;
+    :hasSolution :StandardizeSSHConfig, :UseOnePasswordAgent .
+
+:SecurityVulnerability rdf:type :Risk ;
+    rdfs:label "Potential Security Vulnerabilities" .
+
+:MultipleConfigFiles rdf:type :Constraint ;
+    rdfs:label "Multiple SSH Configuration Files" .
+
+:OnePasswordIntegration rdf:type :Assumption ;
+    rdfs:label "1Password Integration for SSH Keys" .
+
+:Developer rdf:type :Stakeholder ;
+    rdfs:label "Software Developer" .
+
+:SystemAdministrator rdf:type :Stakeholder ;
+    rdfs:label "System Administrator" .
+
+:StandardizeSSHConfig rdf:type :Solution ;
+    rdfs:label "Standardize SSH Configuration Across Systems" .
+
+:UseOnePasswordAgent rdf:type :Solution ;
+    rdfs:label "Use 1Password SSH Agent for Key Management" .
+
+:Architect rdf:type :Stakeholder ;
+    rdfs:label "Solution Architect" .
+
+:GitHubContributor rdf:type :Stakeholder ;
+    rdfs:label "GitHub Contributor" .
+
+:ConsumingDeveloper rdf:type :Stakeholder ;
+    rdfs:label "Consuming Developer" .

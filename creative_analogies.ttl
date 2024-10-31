@@ -1,0 +1,60 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix analog: <http://louspringer.com/ontology/analogy#> .
+@prefix meta: <http://louspringer.com/ontology/llm-guidance#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+analog:CreativeAnalogiesOntology rdf:type owl:Ontology ;
+    dc:title "Creative Analogies Ontology" ;
+    dc:version "1.1" ;
+    rdfs:comment "Updated to include playful analogies for interdisciplinary communication." ;
+    owl:imports <http://louspringer.com/ontology/llm-guidance> .
+
+# Core Classes
+analog:PlayfulAnalogy rdf:type owl:Class ;
+    rdfs:label "Playful Analogy" ;
+    rdfs:comment "Fun, creative analogies for explanation" ;
+    rdfs:subClassOf meta:DomainAnalogy .
+
+analog:AnalogicalBridge rdf:type owl:Class ;
+    rdfs:label "Analogical Bridge" ;
+    rdfs:comment "Connection between source and target domains" .
+
+analog:ExplanationPattern rdf:type owl:Class ;
+    rdfs:label "Explanation Pattern" ;
+    rdfs:comment "Reusable explanation template" .
+
+# Core Properties
+analog:funFactor rdf:type owl:DatatypeProperty ;
+    rdfs:domain analog:PlayfulAnalogy ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "1-5 scale of entertainment value" .
+
+analog:hasBridge rdf:type owl:ObjectProperty ;
+    rdfs:domain analog:PlayfulAnalogy ;
+    rdfs:range analog:AnalogicalBridge .
+
+analog:usesPattern rdf:type owl:ObjectProperty ;
+    rdfs:domain analog:PlayfulAnalogy ;
+    rdfs:range analog:ExplanationPattern .
+
+analog:culturalReference rdf:type owl:DatatypeProperty ;
+    rdfs:domain analog:PlayfulAnalogy ;
+    rdfs:range xsd:string .
+
+# New Instances
+analog:ProteinFoldingAnalogy rdf:type analog:PlayfulAnalogy ;
+    rdfs:label "Protein Folding as Tetris" ;
+    rdfs:comment "Analogy comparing protein folding to a game of Tetris." ;
+    meta:analogySource "Protein Folding" ;
+    meta:analogyTarget "Tetris" ;
+    meta:analogyExplanation "Each piece represents an amino acid that must fit perfectly." .
+
+analog:SoftwareDevelopmentAnalogy rdf:type analog:PlayfulAnalogy ;
+    rdfs:label "Software Development as Building a House" ;
+    rdfs:comment "Analogy comparing software development to constructing a house." ;
+    meta:analogySource "Software Development" ;
+    meta:analogyTarget "Building a House" ;
+    meta:analogyExplanation "Both require a solid foundation and careful planning." .
