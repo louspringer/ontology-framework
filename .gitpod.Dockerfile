@@ -27,9 +27,10 @@ RUN wget -q https://github.com/conda-forge/miniforge/releases/latest/download/Mi
 # Add conda to path and initialize
 ENV PATH="/opt/conda/bin:${PATH}"
 
-# Initialize conda and create persistence script
+# Initialize conda in bash and make it persist
 RUN conda init bash && \
     conda clean -afy && \
     sudo chown -R gitpod:gitpod /opt/conda && \
-    # Create persistence script
-    echo 'create-overlay /opt/conda' > "$HOME/.runonce/1-conda"
+    # Create initialization script
+    echo 'source /opt/conda/etc/profile.d/conda.sh' >> /home/gitpod/.bashrc && \
+    echo 'conda activate base' >> /home/gitpod/.bashrc
