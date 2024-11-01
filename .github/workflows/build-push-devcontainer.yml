@@ -1,0 +1,31 @@
+name: Build and Push Dev Container
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.devcontainer/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: louspringer
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push dev container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          push: true
+          tags: |
+            louspringer/ontology-framework-dev:latest
+            louspringer/ontology-framework-dev:${{ github.sha }} 
