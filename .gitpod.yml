@@ -1,0 +1,12 @@
+# Image to use (this is the default full image)
+image: gitpod/workspace-full
+
+# Commands to run on workspace startup
+tasks:
+  - init: echo 'Initial setup commands here'
+    command: echo 'Startup commands here'
+
+# Ports to expose
+ports:
+  - port: 3000
+    onOpen: open-preview
