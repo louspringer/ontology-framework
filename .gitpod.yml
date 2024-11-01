@@ -1,5 +1,6 @@
-# Image to use (this is the default full image)
-image: gitpod/workspace-full
+# Docker image configuration
+image:
+  file: .gitpod.Dockerfile
 
 # Commands to run on workspace startup
 tasks:
