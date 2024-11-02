@@ -2,7 +2,6 @@ name: Build and Push Dev Container
 
 on:
   push:
-    branches: [ ancient-slowly-organ ]
     paths:
       - '.devcontainer/**'
   workflow_dispatch:
