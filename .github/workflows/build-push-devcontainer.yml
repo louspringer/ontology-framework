@@ -1,10 +1,14 @@
 name: Build and Push Dev Container
 
 on:
+  # Temporary trigger to force registration
   push:
+    branches:
+      - '**'  # Match all branches including those with slashes
+  workflow_dispatch:  # Allow manual triggers
+  pull_request:
     paths:
       - '.devcontainer/**'
-  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -27,4 +31,4 @@ jobs:
           push: true
           tags: |
             louspringer/ontology-framework-dev:latest
-            louspringer/ontology-framework-dev:${{ github.sha }} 
+            louspringer/ontology-framework-dev:${{ github.sha }}
