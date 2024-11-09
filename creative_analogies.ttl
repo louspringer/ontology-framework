@@ -5,12 +5,16 @@
 @prefix analog: <http://louspringer.com/ontology/analogy#> .
 @prefix meta: <http://louspringer.com/ontology/llm-guidance#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 analog:CreativeAnalogiesOntology rdf:type owl:Ontology ;
     dc:title "Creative Analogies Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include playful analogies for interdisciplinary communication." ;
-    owl:imports <http://louspringer.com/ontology/llm-guidance> .
+    owl:imports <http://louspringer.com/ontology/llm-guidance> ;
+    dc:created "..."^^xsd:dateTime ;
+    dc:modified "..."^^xsd:dateTime ;
+    owl:imports <http://louspringer.com/ontology/meta> .
 
 # Core Classes
 analog:PlayfulAnalogy rdf:type owl:Class ;
@@ -24,7 +28,14 @@ analog:AnalogicalBridge rdf:type owl:Class ;
 
 analog:ExplanationPattern rdf:type owl:Class ;
     rdfs:label "Explanation Pattern" ;
-    rdfs:comment "Reusable explanation template" .
+    rdfs:comment "Reusable explanation template" ;
+    rdfs:subClassOf skos:Concept ;
+    owl:oneOf (
+        analog:Metaphor
+        analog:Simile
+        analog:Allegory
+        analog:Comparison
+    ) .
 
 # Core Properties
 analog:funFactor rdf:type owl:DatatypeProperty ;
@@ -58,3 +69,19 @@ analog:SoftwareDevelopmentAnalogy rdf:type analog:PlayfulAnalogy ;
     meta:analogySource "Software Development" ;
     meta:analogyTarget "Building a House" ;
     meta:analogyExplanation "Both require a solid foundation and careful planning." .
+
+analog:PlayfulAnalogy rdfs:subClassOf [
+    rdf:type owl:Restriction ;
+    owl:onProperty analog:usesPattern ;
+    owl:someValuesFrom analog:ExplanationPattern
+] .
+
+# Add cardinality constraints where appropriate
+:Person rdfs:subClassOf meta:Person .
+
+# Add domain and range constraints
+:position rdf:type owl:ObjectProperty ;
+    rdfs:domain :Person ;
+    rdfs:range :Position ;
+    rdfs:label "position" ;
+    rdfs:comment "Current job position of a person" .

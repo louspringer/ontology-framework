@@ -19,5 +19,8 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#545052",
-    "peacock.remoteColor": "#ac22b5"
+    "peacock.remoteColor": "#ac22b5",
+    "python.condaPath": "${env:CONDA_EXE}",
+    "terminal.integrated.inheritEnv": true,
+    "python.terminal.activateEnvironment": true
 }

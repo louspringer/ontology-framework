@@ -1,7 +1,9 @@
-@prefix : <http://example.org/cloud#> .
+@prefix : <http://example.org/ontology#> .
 @prefix dialog: <http://example.org/dialog#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 ### Dialogue Chain Entities ###
 :SourceDialog_3 a dialog:SourceDialog ;
@@ -166,3 +168,25 @@
 
 :Data_Scientist :hasPreferenceFor :GCP ;
     :concernedAbout "AI/ML tools and big data processing."
+
+:Ontology rdf:type owl:Ontology ;
+    dc:title "..." ;
+    dc:version "..." ;
+    dc:created "..."^^xsd:dateTime ;
+    dc:modified "..."^^xsd:dateTime ;
+    owl:imports [...] .
+
+# Add explicit class definitions
+:CloudService rdf:type owl:Class ;
+    rdfs:label "Cloud Service" ;
+    rdfs:comment "A cloud computing service provider" .
+
+# Add property restrictions
+:hasPreferenceFor rdfs:domain :Stakeholder ;
+    rdfs:range :CloudService .
+
+# Add meta-core import
+owl:imports <http://louspringer.com/ontology/meta> .
+
+# Update position property
+:position rdfs:subPropertyOf meta:hasPosition .

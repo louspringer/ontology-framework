@@ -5,17 +5,20 @@
 @prefix tool: <http://louspringer.com/ontology/aitools#> .
 @prefix meta: <http://louspringer.com/ontology/llm-guidance#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 
 tool:AIToolsOntology rdf:type owl:Ontology ;
     dc:title "AI Tools Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include tools for facilitating interdisciplinary collaboration." .
 
-# Core Classes
+# Core Classes with improved hierarchy
 tool:AITool rdf:type owl:Class ;
     rdfs:label "AI Tool" ;
     rdfs:comment "AI-related tool or framework" ;
-    rdfs:subClassOf meta:Action .
+    rdfs:subClassOf meta:Action ;
+    owl:disjointWith tool:Category, tool:Capability .
 
 tool:Category rdf:type owl:Class ;
     rdfs:label "Category" ;
@@ -25,26 +28,51 @@ tool:Capability rdf:type owl:Class ;
     rdfs:label "Capability" ;
     rdfs:comment "Tool capability or feature" .
 
+# Add subclasses for better organization
+tool:CollaborationTool rdfs:subClassOf tool:AITool ;
+    rdfs:label "Collaboration Tool" ;
+    rdfs:comment "Tools focused on team collaboration and communication" .
+
+tool:SimulationTool rdfs:subClassOf tool:AITool ;
+    rdfs:label "Simulation Tool" ;
+    rdfs:comment "Tools for scientific and technical simulations" .
+
 # Core Properties
 tool:hasCategory rdf:type owl:ObjectProperty ;
     rdfs:domain tool:AITool ;
-    rdfs:range tool:Category .
+    rdfs:range tool:Category ;
+    rdfs:label "has category" ;
+    owl:inverseOf tool:categoryOf .
 
-tool:hasCapability rdf:type owl:ObjectProperty ;
+tool:hasCapability rdf:type owl:ObjectProperty, owl:FunctionalProperty ;
     rdfs:domain tool:AITool ;
-    rdfs:range tool:Capability .
+    rdfs:range tool:Capability ;
+    rdfs:label "has capability" .
 
 tool:maturityLevel rdf:type owl:DatatypeProperty ;
     rdfs:domain tool:AITool ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:integer ;
+    rdfs:label "maturity level" ;
+    rdfs:comment "Technology readiness level from 1-9" ;
+    owl:minInclusive "1"^^xsd:integer ;
+    owl:maxInclusive "9"^^xsd:integer .
 
 # New Tools
-tool:CollaborationPlatform rdf:type tool:AITool ;
+tool:CollaborationPlatform rdf:type tool:CollaborationTool ;
     rdfs:label "Collaboration Platform" ;
     rdfs:comment "A tool for facilitating communication between teams." ;
-    tool:hasCapability "Real-time messaging, file sharing, video conferencing." .
+    tool:hasCapability [ 
+        rdf:type tool:Capability ;
+        rdfs:label "Real-time messaging" 
+    ], [
+        rdf:type tool:Capability ;
+        rdfs:label "File sharing"
+    ], [
+        rdf:type tool:Capability ;
+        rdfs:label "Video conferencing"
+    ] .
 
-tool:SimulationSoftware rdf:type tool:AITool ;
+tool:SimulationSoftware rdf:type tool:SimulationTool ;
     rdfs:label "Simulation Software" ;
     rdfs:comment "Software for simulating biological processes." ;
     tool:hasCapability "Protein folding simulation, molecular dynamics." .

@@ -16,7 +16,7 @@ sol:SolutionSpaceOntology rdf:type owl:Ontology ;
 sol:TechnicalSolution rdf:type owl:Class ;
     rdfs:label "Technical Solution" ;
     rdfs:comment "Proposed or implemented technical approach" ;
-    rdfs:subClassOf metameta:AbstractionDimension .
+    rdfs:subClassOf meta:AbstractionDimension .
 
 sol:Implementation rdf:type owl:Class ;
     rdfs:label "Implementation" ;
@@ -51,3 +51,22 @@ sol:InterdisciplinaryWorkshop rdf:type sol:TechnicalSolution ;
 sol:SharedGlossarySolution rdf:type sol:TechnicalSolution ;
     rdfs:label "Shared Glossary Solution" ;
     rdfs:comment "Creating a shared glossary to bridge terminology gaps." .
+
+# Add cross-references to problem space
+sol:TechnicalSolution rdfs:subClassOf [
+    rdf:type owl:Restriction ;
+    owl:onProperty sol:satisfies ;
+    owl:someValuesFrom prob:BusinessNeed
+] .
+
+# Add validation status enumeration
+sol:ValidationStatus rdf:type owl:Class ;
+    owl:oneOf (
+        sol:Pending
+        sol:InProgress 
+        sol:Completed
+        sol:Failed
+    ) .
+
+# Add meta-core import
+owl:imports <http://louspringer.com/ontology/meta> .
