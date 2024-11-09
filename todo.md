@@ -1,5 +1,3 @@
-# TODO
-
 - [ ] [Vocabulary suggestion system](https://github.com/louspringer/ontology-framework/issues/11)
 - [ ] [Collaborative development features](https://github.com/louspringer/ontology-framework/issues/10)
 - [ ] [Integration testing framework](https://github.com/louspringer/ontology-framework/issues/9)
