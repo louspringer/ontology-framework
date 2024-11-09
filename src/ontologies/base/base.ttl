@@ -1,0 +1,21 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix base: <http://example.org/ontology-framework/base#> .
+
+base:BaseModel a owl:Class ;
+    rdfs:label "Base Model" ;
+    rdfs:comment "Foundation for all models in the framework" .
+
+base:hasIdentifier a owl:DatatypeProperty ;
+    rdfs:domain base:BaseModel ;
+    rdfs:range xsd:string .
+
+base:hasName a owl:DatatypeProperty ;
+    rdfs:domain base:BaseModel ;
+    rdfs:range xsd:string .
+
+base:hasDescription a owl:DatatypeProperty ;
+    rdfs:domain base:BaseModel ;
+    rdfs:range xsd:string . 

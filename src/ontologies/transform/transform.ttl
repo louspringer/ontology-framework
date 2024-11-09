@@ -1,0 +1,25 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix base: <http://example.org/ontology-framework/base#> .
+@prefix transform: <http://example.org/ontology-framework/transform#> .
+
+transform:Transformation a owl:Class ;
+    rdfs:subClassOf base:BaseModel ;
+    rdfs:label "Transformation" .
+
+transform:hasSource a owl:ObjectProperty ;
+    rdfs:domain transform:Transformation ;
+    rdfs:range base:BaseModel .
+
+transform:hasTarget a owl:ObjectProperty ;
+    rdfs:domain transform:Transformation ;
+    rdfs:range base:BaseModel .
+
+transform:hasRule a owl:ObjectProperty ;
+    rdfs:domain transform:Transformation ;
+    rdfs:range transform:TransformationRule .
+
+transform:TransformationRule a owl:Class ;
+    rdfs:subClassOf base:BaseModel . 

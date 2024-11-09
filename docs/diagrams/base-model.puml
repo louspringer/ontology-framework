@@ -1,0 +1,23 @@
+@startuml
+class BaseModel {
+  +identifier: string
+  +name: string  
+  +description: string
+}
+
+class Transformation {
+  +source: BaseModel
+  +target: BaseModel
+  +rules: TransformationRule[]
+}
+
+class TransformationRule {
+}
+
+Transformation --|> BaseModel
+TransformationRule --|> BaseModel
+Transformation --> "1" BaseModel : source
+Transformation --> "1" BaseModel : target
+Transformation --> "*" TransformationRule : rules
+
+@enduml 
