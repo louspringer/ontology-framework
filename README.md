@@ -5,6 +5,7 @@ A flexible ontology framework designed to leverage LLMs for semantic constraint 
 ## Overview
 
 This framework provides:
+
 - Semantic constraint enforcement for LLM responses
 - Rich domain modeling with lossless transformations
 - Tiered architecture promoting reuse
@@ -23,4 +24,4 @@ conda activate ontology-framework
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE.md "MIT license.") file for details.
