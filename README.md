@@ -12,6 +12,11 @@ This framework provides:
 - Extensible model structures
 - Multi-format projections (Turtle, UML, ERD, etc.)
 
+## Architecture Diagram
+
+![Ontology Framework Architecture](Ontology%20Framework.svg)
+
+
 ## Installation
 
 > **Note:** This project is currently in early development. The Python implementation is not yet available - see the [TODO section](#todo) for planned features and progress tracking.

@@ -1,0 +1,149 @@
+@startuml Ontology Framework
+
+' Styling
+skinparam class {
+    BackgroundColor<<Core>> LightBlue
+    BackgroundColor<<Domain>> LightGreen
+    BackgroundColor<<Meta>> LightPink
+    BackgroundColor<<Base>> LightGray
+}
+
+' Core Meta Ontologies
+class MetaMetaCore <<Meta>> {
+    + AbstractionDimension
+    + AbstractionLevel
+    + KnowledgeDomain
+    --
+    + hasLevel
+    + levelNumber
+    + domainScope
+}
+
+class MetaGuidance <<Meta>> {
+    + Interpretation
+    + Action
+    + DomainAnalogy
+    --
+    + hasAction
+    + analogySource
+    + analogyTarget
+}
+
+' Base Framework
+class BaseModel <<Base>> {
+    + hasIdentifier: string
+    + hasName: string
+    + hasDescription: string
+}
+
+class Transformation <<Base>> {
+    + hasSource: BaseModel
+    + hasTarget: BaseModel
+    + hasRule: TransformationRule
+}
+
+' Domain Ontologies
+class ProblemSpace <<Domain>> {
+    + BusinessNeed
+    + Context
+    + Constraint
+    --
+    + hasValue: string
+    + hasPriority: integer
+    + hasContext
+    + hasConstraint
+}
+
+class SolutionSpace <<Domain>> {
+    + TechnicalSolution
+    + Implementation
+    + Validation
+    --
+    + satisfies
+    + hasImplementation
+    + hasValidation
+    + validationStatus
+}
+
+class ProjectRisks <<Domain>> {
+    + Risk
+    + Mitigation
+    + Impact
+    --
+    + severity: integer
+    + likelihood: integer
+    + hasMitigation
+    + hasImpact
+}
+
+class CreativeAnalogies <<Domain>> {
+    + PlayfulAnalogy
+    + AnalogicalBridge
+    + ExplanationPattern
+    --
+    + funFactor: integer
+    + hasBridge
+    + usesPattern
+}
+
+class AITools <<Domain>> {
+    + AITool
+    + Category
+    + Capability
+    --
+    + hasCategory
+    + hasCapability
+    + maturityLevel: integer
+}
+
+' Specific Domain Applications
+class OracleStory <<Domain>> {
+    + Person
+    + Position
+    + Company
+    + Interview
+    --
+    + isCandidateFor
+    + reportsTo
+    + oversees
+}
+
+class SSHDebug <<Domain>> {
+    + Issue
+    + Risk
+    + Constraint
+    + Solution
+    --
+    + hasRisk
+    + hasConstraint
+    + hasSolution
+}
+
+class OracleOCIDiscovery <<Domain>> {
+    + OracleTechnologyStack
+    + CloudService
+    + LearningResource
+    --
+    + hasComponent
+    + requires
+    + provides
+}
+
+' Relationships
+MetaMetaCore <|-- MetaGuidance
+BaseModel <|-- Transformation
+MetaGuidance <|-- ProblemSpace
+MetaGuidance <|-- SolutionSpace
+MetaGuidance <|-- ProjectRisks
+MetaGuidance <|-- CreativeAnalogies
+MetaGuidance <|-- AITools
+
+ProblemSpace --> SolutionSpace : influences
+ProjectRisks --> SolutionSpace : constrains
+CreativeAnalogies --> SolutionSpace : enhances
+
+OracleStory --> ProblemSpace : defines
+OracleOCIDiscovery --> SolutionSpace : implements
+SSHDebug --> ProjectRisks : identifies
+
+@enduml 
