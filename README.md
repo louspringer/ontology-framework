@@ -14,6 +14,9 @@ This framework provides:
 
 ## Installation
 
+> **Note:** This project is currently in early development. The Python implementation is not yet available - see the [TODO section](#todo) for planned features and progress tracking.
+
+
 ```bash
 # Create conda environment
 conda env create -f environment.yml
@@ -29,6 +32,12 @@ conda activate ontology-framework
 - [ ] [Create Elvis Porkenheimer ontology](https://github.com/louspringer/ontology-framework/issues/3)
 - [ ] [Refactor artifacts into src/models layout](https://github.com/louspringer/ontology-framework/issues/2)
 - [ ] [Align examples with root ontologies](https://github.com/louspringer/ontology-framework/issues/1)
+- [ ] [Add CI/CD pipeline](https://github.com/louspringer/ontology-framework/issues/6)
+- [ ] [Create documentation site](https://github.com/louspringer/ontology-framework/issues/7) 
+- [ ] [Implement format conversion utilities](https://github.com/louspringer/ontology-framework/issues/8)
+- [ ] [Add validation test suite](https://github.com/louspringer/ontology-framework/issues/9)
+- [ ] [Create getting started guide](https://github.com/louspringer/ontology-framework/issues/10)
+
 
 ## License
 
