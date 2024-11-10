@@ -25,6 +25,25 @@ conda env create -f environment.yml
 conda activate ontology-framework
 ```
 
+## Related Work
+
+This project builds upon several recent advances in combining ontologies with LLMs:
+
+1. **Ontology-based Query Checking** [^1]: Demonstrates using ontologies to:
+
+   - Validate LLM-generated queries
+   - Provide semantic error detection
+   - Enable query repair through LLM feedback loops
+   - Improve accuracy from 54% to 72% through ontological validation
+2. **LLMs4OL Framework** [^2]: Provides capabilities for:
+
+   - Term typing
+   - Taxonomy discovery
+   - Non-taxonomic relation extraction
+   - Evaluation across multiple knowledge domains
+
+Our framework extends these approaches by focusing specifically on semantic constraint enforcement and lossless transformations between modeling formats.
+
 ## TODO
 
 - [ ] [Vector database integration](https://github.com/louspringer/ontology-framework/issues/5)
@@ -42,3 +61,9 @@ conda activate ontology-framework
 ## License
 
 MIT License - see [LICENSE](LICENSE.md "MIT license.") file for details.
+
+## References
+
+[^1]: Allemang, D., & Sequeda, J. (2024). Increasing the LLM Accuracy for Question Answering: Ontologies to the Rescue! [arXiv:2405.11706](https://arxiv.org/abs/2405.11706)
+    
+[^2]: Babaei Giglou, H., D'Souza, J., & Auer, S. (2023). LLMs4OL: Large Language Models for Ontology Learning. [ISWC 2023](https://link.springer.com/chapter/10.1007/978-3-031-47240-4_22)
