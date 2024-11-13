@@ -38,7 +38,8 @@ def get_snowflake_session():
 @st.cache_data(ttl="1h", max_entries=20)
 def extract_document_content(filename):
     snowflake_session = get_snowflake_session()
-    doc_extract = snowflake_session.sql(f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT('@INPUT_STAGE','{filename}')")
+    escaped_filename = filename.replace("'", "''")
+    doc_extract = snowflake_session.sql(f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT('@INPUT_STAGE','{escaped_filename}')")
     content_list = doc_extract.select(doc_extract["EXTRACTED_DATA"]).collect()
     return " ".join(str(row["EXTRACTED_DATA"]) for row in content_list)
 ```
