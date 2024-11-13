@@ -5,6 +5,10 @@ def convert_json_to_md(json_data):
         raise ValueError("Invalid JSON structure: missing 'conversation' key")
     if 'title' not in json_data['conversation']:
         raise ValueError("Invalid JSON structure: missing 'title' key")
+    if not isinstance(json_data, dict) or 'conversation' not in json_data:
+        raise ValueError("Invalid JSON structure: missing 'conversation' key")
+    if 'title' not in json_data['conversation']:
+        raise ValueError("Invalid JSON structure: missing 'title' key")
     md_output = f"# {json_data['conversation']['title']}\n\n"
     
     # Initial Question
