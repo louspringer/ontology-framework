@@ -47,8 +47,8 @@ def extract_document_content(filename):
 ## Key Learnings
 
 ### Cache Types
-- Use @st.cache_data for data transformations and queries
-- Use @st.cache_resource for database connections and shared resources
+- Use @st.cache_data for data transformations and queries that return serializable objects (e.g., DataFrames, lists, dictionaries)
+- Use @st.cache_resource for non-serializable objects and stateful connections (e.g., database connections, ML models, API clients)
 
 ### Memory Management
 - Added max_entries=20 for document cache to prevent unbounded growth
