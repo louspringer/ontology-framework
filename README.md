@@ -65,7 +65,7 @@ Our framework extends these approaches by focusing specifically on semantic cons
 
 ## License
 
-MIT License - see [LICENSE](LICENSE.md "MIT license.") file for details.
+AGPL License - see [LICENSE](LICENSE "AGPL license.") file for details.
 
 ## References
 
