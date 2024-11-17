@@ -1,0 +1,41 @@
+{
+  "conversation": {
+    "title": "Streamlit Caching Discussion",
+    "initial_question": {
+      "question": "Oh I see what you are doing. If someone selects the same row twice, it returns the cached result?",
+      "answer": "Yes, exactly! Based on the Streamlit documentation and search results, here's what's happening:\n1. load_document_list() is correctly cached with @st.cache_data\n2. When a user selects a file and extract_document_content() runs, that result is also cached"
+    },
+    "memory_management": {
+      "question": "This *could* use gobs of memory. Is the cache smart enough to dump cache entries when under memory pressure?",
+      "answer": "Based on the documentation, Streamlit's caching system does not automatically dump cache entries under memory pressure. We need to explicitly configure:\n- TTL (Time To Live) for cache expiration\n- max_entries to limit cache size\n- Manual cache clearing if needed"
+    },
+    "solution_evolution": {
+      "initial_implementation": {
+        "description": "Added basic caching to document list query",
+        "code": "@st.cache_data(max_entries=100)\ndef load_document_list():\n    docs_list = session.sql(\"SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE\").to_pandas()\n    return docs_list['FILENAME'].tolist()"
+      },
+      "final_implementation": {
+        "description": "Optimized implementation with proper session handling and cache limits",
+        "code": "@st.cache_resource\ndef get_snowflake_session():\n    return session\n\n@st.cache_data(ttl=\"1h\", max_entries=20)\ndef extract_document_content(filename):\n    snowflake_session = get_snowflake_session()\n    doc_extract = snowflake_session.sql(f\"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT('@INPUT_STAGE','{filename}')\")\n    content_list = doc_extract.select(doc_extract[\"EXTRACTED_DATA\"]).collect()\n    return \" \".join(str(row[\"EXTRACTED_DATA\"]) for row in content_list)"
+      }
+    },
+    "key_learnings": {
+      "cache_types": [
+        "Use @st.cache_data for data transformations and queries",
+        "Use @st.cache_resource for database connections and shared resources"
+      ],
+      "memory_management": [
+        "Added max_entries=20 for document cache to prevent unbounded growth",
+        "Added ttl=\"1h\" for time-based cache invalidation",
+        "Focus caching limits on heavy operations (document extraction)"
+      ],
+      "best_practices": [
+        "Cache expensive operations",
+        "Use appropriate cache decorators",
+        "Set reasonable limits on cache size",
+        "Consider TTL for data freshness",
+        "Handle database connections properly with cache_resource"
+      ]
+    }
+  }
+}
