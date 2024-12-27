@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+' Components
+package "Sources" {
+    component "Digital Sources" as digital
+    component "Analog Sources" as analog
+}
+
+package "RX-V4A Receiver" {
+    component "HDMI Inputs" as hdmi
+    component "Analog Inputs" as line_in
+    component "DSP/YPAO" as dsp
+    component "Amplification" as amp {
+        component "Main L/R" as main_amp
+        component "Surround L/R" as surr_amp
+    }
+}
+
+package "Speakers" {
+    component "RF-62 L" as rf_l
+    component "RF-62 R" as rf_r
+    component "R50-M L" as r50_l
+    component "R50-M R" as r50_r
+}
+
+' Connections
+digital --> hdmi
+analog --> line_in
+hdmi --> dsp
+line_in --> dsp
+dsp --> amp
+
+main_amp -down-> rf_l : "80W @ 8Ω"
+main_amp -down-> rf_r : "80W @ 8Ω"
+surr_amp -down-> r50_l : "80W @ 8Ω"
+surr_amp -down-> r50_r : "80W @ 8Ω"
+
+note right of rf_l : "97dB @ 2.83V/1m"
+note right of r50_l : "95dB @ 2.83V/1m"
+
+@enduml 

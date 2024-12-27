@@ -1,0 +1,1252 @@
+@prefix ex: <http://example.org/audio#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+ex:ProblemSpace a owl:Class ;
+    rdfs:subClassOf owl:Thing ;
+    rdfs:label "Problem Space" ;
+    rdfs:comment "Defines the overarching challenges or issues in the audio setup." .
+
+ex:SolutionSpace a owl:Class ;
+    rdfs:label "Solution Space" ;
+    rdfs:comment "Defines potential solutions or strategies to address the problem space." .
+
+ex:Principle a owl:Class ;
+    rdfs:label "Principle" ;
+    rdfs:comment "Defines guiding principles for decision-making and design." .
+
+ex:Constraint a owl:Class ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "Defines the limitations or fixed conditions affecting the solution space." .
+
+ex:Risk a owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "Defines potential risks or challenges in implementing solutions." .
+
+ex:EvolutionaryConcern a owl:Class ;
+    rdfs:label "Evolutionary Concern" ;
+    rdfs:comment "Defines considerations for future-proofing or scalability." .
+
+# Individuals (Problem Space)
+ex:SoundIsolation a ex:ProblemSpace ;
+    rdfs:label "Sound Isolation" ;
+    rdfs:comment "Challenge of minimizing sound leakage between the loft and family room." .
+
+ex:WholeAreaSoundReinforcement a ex:ProblemSpace ;
+    rdfs:label "Whole-Area Sound Reinforcement" ;
+    rdfs:comment "Challenge of achieving cohesive sound across the loft and family room." .
+
+# Individuals (Solution Space)
+ex:YamahaRXV4ASetup a ex:SolutionSpace ;
+    ex:implementationComplexity "Medium"^^xsd:string ;
+    ex:estimatedCost "Moderate"^^xsd:string ;
+    rdfs:label "Yamaha RX-V4A Setup" ;
+    rdfs:comment "Proposed solution to replace Fosi BT30D with Yamaha RX-V4A and integrate Hafler DH-220." .
+
+ex:SpeakerPlacementOptimization a ex:SolutionSpace ;
+    rdfs:label "Speaker Placement Optimization" ;
+    rdfs:comment "Proposed optimization of speaker and subwoofer placement for better sound reinforcement." .
+
+# Individuals (Principles)
+ex:IfItWorksDontFixIt a ex:Principle ;
+    rdfs:label "If it works, don't fix it" ;
+    rdfs:comment "Avoid unnecessary changes to functional components." .
+
+ex:ElectronicCompensationsBeforeAcousticPanels a ex:Principle ;
+    rdfs:label "Electronic Compensations Before Acoustic Panels" ;
+    rdfs:comment "Prioritize electronic solutions over physical treatments to preserve home aesthetics." .
+
+ex:CostEffectiveImprovements a ex:Principle ;
+    rdfs:label "Cost-Effective Improvements" ;
+    rdfs:comment "Strive for efficient and affordable upgrades." .
+
+# Individuals (Constraints)
+ex:YamahaRXV6AConstraint a ex:Constraint ;
+    rdfs:label "Yamaha RX-V6A Constraint" ;
+    rdfs:comment "Defines the RX-V6A as a fixed component of the family room setup." .
+
+ex:Bose901Integration a ex:Constraint ;
+    rdfs:label "Bose 901 Integration" ;
+    rdfs:comment "The Bose 901 speakers must remain integral to the family room setup." .
+
+# Individuals (Risks)
+ex:OverComplicationRisk a ex:Risk ;
+    rdfs:label "Over-Complication Risk" ;
+    rdfs:comment "Risk of over-engineering the solution and adding unnecessary complexity." .
+
+ex:SoundLeakageRisk a ex:Risk ;
+    rdfs:label "Sound Leakage Risk" ;
+    rdfs:comment "Risk of inadequate sound isolation between family room and loft." .
+
+# Individuals (Evolutionary Concerns)
+ex:HaflerDH220UpgradePotential a ex:EvolutionaryConcern ;
+    ex:potentialRisks "Collector value could be affected by modifications."^^xsd:string ;
+    rdfs:label "Hafler DH-220 Upgrade Potential" ;
+    rdfs:comment "Consideration for upgrading Hafler DH-220 amplifiers for improved performance and value." .
+
+ex:FutureCompatibility a ex:EvolutionaryConcern ;
+    ex:examples "Ensure HDMI 2.1, eARC, and MusicCast support."^^xsd:string ;
+    rdfs:label "Future Compatibility" ;
+    rdfs:comment "Ensuring that new equipment integrates seamlessly with the existing system." .
+
+# New Problem Space Individual
+ex:OfficeAudioIntegration a ex:ProblemSpace ;
+    rdfs:label "Office Audio Integration" ;
+    rdfs:comment "Challenge of integrating free-standing horns and RS-100 speakers in the office space." .
+
+# New Solution Space Individuals
+ex:ActiveCrossoverSetup a ex:SolutionSpace ;
+    ex:implementationComplexity "High"^^xsd:string ;
+    ex:estimatedCost "High"^^xsd:string ;
+    rdfs:label "Active Crossover Configuration" ;
+    rdfs:comment "Implementation using active crossover before amplification stages." .
+
+ex:PassiveCrossoverSetup a ex:SolutionSpace ;
+    ex:implementationComplexity "Low"^^xsd:string ;
+    ex:estimatedCost "Low"^^xsd:string ;
+    rdfs:label "Passive Crossover Configuration" ;
+    rdfs:comment "Implementation using passive crossover after amplification." .
+
+# New Solution Space Details
+ex:PassiveCrossoverNetwork a ex:SolutionSpace ;
+    rdfs:label "Passive Crossover Network Design" ;
+    ex:crossoverFrequency "2500"^^xsd:integer ;
+    ex:slopeOrder "12"^^xsd:integer ;
+    ex:componentType "L-pad with Zobel network"^^xsd:string ;
+    rdfs:comment "Specific passive crossover design for horn/RS-100 integration." ;
+    ex:addressesProblem ex:OfficeAudioIntegration ;
+    ex:guidedByPrinciple ex:CostEffectiveImprovements .
+
+# New Constraint
+ex:CrossoverSpecifications a ex:Constraint ;
+    rdfs:label "Crossover Design Specifications" ;
+    ex:minimumSpec "2nd order slopes"^^xsd:string ;
+    ex:impedanceMatching "Required L-pad for horn attenuation"^^xsd:string ;
+    rdfs:comment "Technical specifications for the passive crossover implementation." .
+
+# New Risk
+ex:SensitivityMismatchRisk a ex:Risk ;
+    rdfs:label "Sensitivity Mismatch Risk" ;
+    rdfs:comment "Risk of uneven frequency response due to different speaker sensitivities." .
+
+# New Constraints
+ex:ExistingHardware a ex:Constraint ;
+    rdfs:label "Existing Hardware Integration" ;
+    rdfs:comment "Must integrate RX-V4A and Klipsch RS-100 speakers into the solution." .
+
+# New Risk
+ex:CrossoverComplexityRisk a ex:Risk ;
+    rdfs:label "Crossover Complexity Risk" ;
+    rdfs:comment "Risk of system complexity affecting reliability and ease of use." .
+
+# Crossover Implementation Options
+ex:BasicPassiveCrossover a ex:SolutionSpace ;
+    rdfs:label "Basic Passive Crossover" ;
+    ex:implementationComplexity "Low"^^xsd:string ;
+    ex:estimatedCost "50-75"^^xsd:integer ;
+    ex:qualityRating "3"^^xsd:integer ;
+    ex:componentList """
+        - Basic 2nd order crossover
+        - Standard electrolytic capacitors
+        - Iron core inductors
+        - Basic L-pad"""^^xsd:string ;
+    rdfs:comment "Basic functional implementation with budget components." .
+
+ex:MidTierPassiveCrossover a ex:SolutionSpace ;
+    rdfs:label "Mid-Tier Passive Crossover" ;
+    ex:implementationComplexity "Medium"^^xsd:string ;
+    ex:estimatedCost "150-200"^^xsd:integer ;
+    ex:qualityRating "4"^^xsd:integer ;
+    ex:componentList """
+        - 2nd order crossover
+        - Mixed film/electrolytic capacitors
+        - Air core inductors
+        - Precision L-pad
+        - Basic Zobel network"""^^xsd:string ;
+    rdfs:comment "Balance of quality and cost with better components." .
+
+ex:PremiumPassiveCrossover a ex:SolutionSpace ;
+    rdfs:label "Premium Passive Crossover" ;
+    ex:implementationComplexity "High"^^xsd:string ;
+    ex:estimatedCost "300-400"^^xsd:integer ;
+    ex:qualityRating "5"^^xsd:integer ;
+    ex:componentList """
+        - 3rd order crossover
+        - Mundorf/Jantzen capacitors
+        - Premium air core inductors
+        - Precision L-pad
+        - Full Zobel network
+        - Notch filters"""^^xsd:string ;
+    rdfs:comment "Audiophile-grade implementation with premium components." .
+
+# Mid-Tier Implementation Details
+ex:MidTierImplementation a ex:SolutionSpace ;
+    rdfs:label "Mid-Tier Crossover Implementation Details" ;
+    ex:parentSolution ex:MidTierPassiveCrossover ;
+    ex:specifications """
+        Crossover Frequency: 2.5kHz
+        Slope: 12dB/octave (2nd order)
+        Input Impedance: 8 ohms
+        Power Handling: 100W RMS"""^^xsd:string ;
+    ex:components """
+        High-Pass Section (Horn):
+        - C1: 10µF Dayton Audio polypropylene (250V)
+        - L1: 0.5mH air-core inductor (18AWG)
+        - R1: 8Ω L-pad series (25W)
+        - R2: 16Ω L-pad parallel (25W)
+        
+        Low-Pass Section (RS-100):
+        - L2: 1.0mH air-core inductor (18AWG)
+        - C2: 20µF Dayton Audio polypropylene (250V)
+        
+        Zobel Network:
+        - Rz: 10Ω (10W)
+        - Cz: 10µF film capacitor"""^^xsd:string ;
+    ex:buildInstructions """
+        1. Mount components on high-quality terminal board
+        2. Use 16AWG OFC wire for connections
+        3. Keep inductors perpendicular orientation
+        4. Minimum 2" spacing between inductors
+        5. Short signal paths
+        6. Heavy gauge binding posts"""^^xsd:string ;
+    ex:testingProtocol """
+        1. DC resistance check
+        2. Frequency response measurement
+        3. Phase alignment verification
+        4. Thermal stress test (1 hour at 50% power)
+        5. Listening evaluation"""^^xsd:string .
+
+# Layout Specifications
+ex:CrossoverLayout a ex:SolutionSpace ;
+    rdfs:label "Crossover Physical Layout" ;
+    ex:parentSolution ex:MidTierImplementation ;
+    ex:layoutDimensions "8 inches x 6 inches"^^xsd:string ;
+    ex:mountingType "Terminal board with barrier strips"^^xsd:string ;
+    ex:componentSpacing "Minimum 2 inches between inductors"^^xsd:string ;
+    ex:wireGauge "16AWG OFC for signal path"^^xsd:string .
+
+# Relationships
+ex:addressesProblem a owl:ObjectProperty ;
+    rdfs:domain ex:SolutionSpace ;
+    rdfs:range ex:ProblemSpace ;
+    rdfs:label "addresses problem" ;
+    rdfs:comment "Links a solution to a problem space." .
+
+ex:guidedByPrinciple a owl:ObjectProperty ;
+    rdfs:label "guided by principle" ;
+    rdfs:comment "Links a solution or decision to a guiding principle." .
+
+ex:constrainedBy a owl:ObjectProperty ;
+    rdfs:label "constrained by" ;
+    rdfs:comment "Links a problem or solution to a constraint." .
+
+ex:mitigatesRisk a owl:ObjectProperty ;
+    rdfs:label "mitigates risk" ;
+    rdfs:comment "Links a solution to a risk it mitigates." .
+
+ex:addressesEvolutionaryConcern a owl:ObjectProperty ;
+    rdfs:label "addresses evolutionary concern" ;
+    rdfs:comment "Links a solution to an evolutionary concern." .
+
+# Examples of Usage
+ex:YamahaRXV4ASetup ex:addressesProblem ex:SoundIsolation, ex:WholeAreaSoundReinforcement ;
+    ex:guidedByPrinciple ex:ElectronicCompensationsBeforeAcousticPanels, ex:CostEffectiveImprovements ;
+    ex:constrainedBy ex:YamahaRXV6AConstraint ;
+    ex:addressesEvolutionaryConcern ex:FutureCompatibility .
+
+ex:SpeakerPlacementOptimization ex:addressesProblem ex:WholeAreaSoundReinforcement ;
+    ex:guidedByPrinciple ex:CostEffectiveImprovements ;
+    ex:mitigatesRisk ex:SoundLeakageRisk .
+
+# Relationship Instances
+ex:ActiveCrossoverSetup 
+    ex:addressesProblem ex:OfficeAudioIntegration ;
+    ex:guidedByPrinciple ex:CostEffectiveImprovements ;
+    ex:constrainedBy ex:ExistingHardware ;
+    ex:mitigatesRisk ex:CrossoverComplexityRisk .
+
+ex:PassiveCrossoverSetup 
+    ex:addressesProblem ex:OfficeAudioIntegration ;
+    ex:guidedByPrinciple ex:IfItWorksDontFixIt ;
+    ex:constrainedBy ex:ExistingHardware .
+
+# Physical Layout Model
+ex:ComponentLayout a owl:Class ;
+    rdfs:label "Component Layout" ;
+    rdfs:comment "Defines physical arrangement of components on mounting board." .
+
+ex:Position a owl:Class ;
+    rdfs:label "Position" ;
+    rdfs:comment "Defines a specific location on the mounting board." .
+
+ex:hasPosition a owl:ObjectProperty ;
+    rdfs:domain ex:ComponentLayout ;
+    rdfs:range ex:Position .
+
+ex:adjacentTo a owl:ObjectProperty ;
+    rdfs:domain ex:Position ;
+    rdfs:range ex:Position ;
+    rdfs:comment "Indicates physical adjacency between components." .
+
+# Layout Components
+ex:CrossoverBoardLayout a ex:ComponentLayout ;
+    rdfs:label "Crossover Board Physical Layout" ;
+    ex:parentSolution ex:MidTierImplementation ;
+    ex:dimensions """
+        Width: 8 inches
+        Height: 6 inches
+        Depth: 1.5 inches"""^^xsd:string ;
+    ex:mountingDetails """
+        Material: FR-4 terminal board
+        Mounting: 4x corner holes
+        Clearance: 0.25 inch minimum"""^^xsd:string .
+
+# Component Positions
+ex:InputPosition a ex:Position ;
+    rdfs:label "Input Terminal Position" ;
+    ex:coordinates "Top center, 1 inch from edge"^^xsd:string ;
+    ex:mountingType "Barrier strip"^^xsd:string .
+
+ex:LPadPosition a ex:Position ;
+    rdfs:label "L-Pad Network Position" ;
+    ex:coordinates "2 inches from top, left side"^^xsd:string ;
+    ex:thermalConsiderations "Vertical mount for cooling"^^xsd:string .
+
+ex:HighPassSection a ex:Position ;
+    rdfs:label "High-Pass Section Position" ;
+    ex:components """
+        L1 (0.5mH inductor)
+        C1 (10µF capacitor)"""^^xsd:string ;
+    ex:coordinates "Left side, center area"^^xsd:string ;
+    ex:orientation "L1 perpendicular to L2"^^xsd:string .
+
+ex:LowPassSection a ex:Position ;
+    rdfs:label "Low-Pass Section Position" ;
+    ex:components """
+        L2 (1.0mH inductor)
+        C2 (20µF capacitor)"""^^xsd:string ;
+    ex:coordinates "Right side, center area"^^xsd:string ;
+    ex:orientation "L2 perpendicular to L1"^^xsd:string .
+
+ex:ZobelPosition a ex:Position ;
+    rdfs:label "Zobel Network Position" ;
+    ex:coordinates "Lower left, near horn output"^^xsd:string ;
+    ex:mountingDetails "Short leads, isolated section"^^xsd:string .
+
+ex:OutputPosition a ex:Position ;
+    rdfs:label "Output Terminals Position" ;
+    ex:coordinates "Bottom edge, split left/right"^^xsd:string ;
+    ex:mountingType "Gold-plated binding posts"^^xsd:string .
+
+# Signal Path Model
+ex:SignalPath a owl:Class ;
+    rdfs:label "Signal Path" ;
+    rdfs:comment "Defines the routing of audio signals through components." .
+
+ex:MainSignalPath a ex:SignalPath ;
+    rdfs:label "Main Signal Path" ;
+    ex:wireSpec "16AWG OFC"^^xsd:string ;
+    ex:routing """
+        INPUT → L-pad → High-Pass Branch → HORN OUT
+              └→ Low-Pass Branch → RS-100 OUT"""^^xsd:string .
+
+# Physical Relationships
+ex:InputPosition 
+    ex:adjacentTo ex:LPadPosition ;
+    ex:wiringGauge "16AWG"^^xsd:string .
+
+ex:LPadPosition
+    ex:adjacentTo ex:HighPassSection ;
+    ex:adjacentTo ex:LowPassSection .
+
+ex:HighPassSection
+    ex:adjacentTo ex:ZobelPosition ;
+    ex:minimumSpacing "2 inches from Low-Pass Section"^^xsd:string .
+
+# Safety Specifications
+ex:SafetyRequirements a owl:Class ;
+    rdfs:label "Safety Requirements" ;
+    rdfs:comment "Defines safety-related specifications for the layout." .
+
+ex:CrossoverSafetySpec a ex:SafetyRequirements ;
+    ex:terminalSpacing "0.25 inch minimum"^^xsd:string ;
+    ex:strainRelief "Required on all external connections"^^xsd:string ;
+    ex:ventilation "Holes near power resistors"^^xsd:string ;
+    ex:grounding "Central ground point with star topology"^^xsd:string .
+
+# Layout Verification
+ex:LayoutVerification a owl:Class ;
+    rdfs:label "Layout Verification" ;
+    rdfs:comment "Defines verification steps for physical layout." .
+
+ex:CrossoverLayoutChecks a ex:LayoutVerification ;
+    ex:checkpoints """
+        1. Component spacing verification
+        2. Inductor orientation check
+        3. Signal path length measurement
+        4. Thermal clearance verification
+        5. Ground connection integrity
+        6. Mechanical stability test"""^^xsd:string .
+
+# Diagram Specifications
+ex:DiagramSpecification a owl:Class ;
+    rdfs:label "Diagram Specification" ;
+    rdfs:comment "Defines diagram specifications for system visualization." .
+
+ex:CrossoverDiagram a ex:DiagramSpecification ;
+    rdfs:label "Crossover Component Layout Diagram" ;
+    ex:diagramType "PlantUML" ;
+    ex:version "1.0" ;
+    ex:parentSolution ex:MidTierImplementation ;
+    ex:sourceCode """@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+component "Input Terminal" as input
+component "L-Pad Network" as lpad {
+  component "R1 (8Ω)" as r1
+  component "R2 (16Ω)" as r2
+}
+
+package "High-Pass" {
+  component "L1\n0.5mH" as l1
+  component "C1\n10µF" as c1
+}
+
+package "Low-Pass" {
+  component "L2\n1.0mH" as l2
+  component "C2\n20µF" as c2
+}
+
+package "Zobel" {
+  component "Rz\n10Ω" as rz
+  component "Cz\n10µF" as cz
+}
+
+component "Horn Out" as hornout
+component "RS-100 Out" as rs100out
+
+input --> lpad
+lpad --> l1
+l1 --> c1
+c1 --> hornout
+lpad --> l2
+l2 --> c2
+c2 --> rs100out
+hornout -- zobel
+
+note right of input : "Top center"
+note right of hornout : "Bottom left"
+note right of rs100out : "Bottom right"
+@enduml"""^^xsd:string ;
+    ex:visualizes ex:CrossoverBoardLayout ;
+    ex:showsComponents """
+        - Input Terminal
+        - L-Pad Network (R1, R2)
+        - High-Pass Section (L1, C1)
+        - Low-Pass Section (L2, C2)
+        - Zobel Network (Rz, Cz)
+        - Output Terminals"""^^xsd:string .
+
+# Speaker Specifications
+ex:RS100Specifications a ex:Constraint ;
+    rdfs:label "RS-100 Crossover Specifications" ;
+    rdfs:comment "The Klipsch RS-100 has a fixed crossover network." ;
+    ex:crossoverType "Fixed passive, internal" ;
+    ex:crossoverFrequency "2.4kHz"^^xsd:integer ;
+    ex:crossoverSlope "12dB/octave"^^xsd:string ;
+    ex:speakerImpedance "8 ohms nominal"^^xsd:string .
+
+# New Risk
+ex:InternalCrossoverInteraction a ex:Risk ;
+    rdfs:label "Internal Crossover Interaction Risk" ;
+    rdfs:comment "Risk of phase and frequency response issues from cascading crossovers." ;
+    ex:mitigationStrategy """
+        Options:
+        1. Bypass internal RS-100 crossover (requires speaker modification)
+        2. Design external crossover to work with internal crossover characteristics
+        3. Use RS-100 internal crossover and only build horn crossover"""^^xsd:string .
+
+# Analysis of Horn-Only Crossover Approach
+ex:HornOnlyCrossoverAnalysis a ex:SolutionSpace ;
+    rdfs:label "Horn-Only Crossover Analysis" ;
+    ex:parentSolution ex:PassiveCrossoverNetwork ;
+    ex:advantages """
+        1. Simpler implementation
+        2. No modification to RS-100
+        3. Lower component count
+        4. Reduced cost
+        5. Maintains RS-100 warranty"""^^xsd:string ;
+    ex:challenges """
+        1. Phase alignment complexity at crossover point
+        2. Limited control over RS-100 response
+        3. Potential frequency response gaps or overlaps
+        4. More complex level matching
+        5. No control over RS-100 crossover characteristics"""^^xsd:string ;
+    ex:technicalIssues """
+        1. Fixed 2.4kHz crossover in RS-100 may not be optimal for horn
+        2. Double-filtering effect in crossover region
+        3. Potential comb filtering from phase interactions
+        4. Limited ability to adjust crossover slopes
+        5. Complex impedance interactions"""^^xsd:string .
+
+# Required Testing Protocol
+ex:HornOnlyTestingProtocol a ex:LayoutVerification ;
+    rdfs:label "Horn-Only Testing Protocol" ;
+    ex:measurements """
+        1. Combined frequency response at crossover point
+        2. Phase response through crossover region
+        3. Impulse response measurements
+        4. Group delay measurements
+        5. Distortion measurements at crossover frequency"""^^xsd:string ;
+    ex:criticalPoints """
+        1. 2.2kHz - 2.6kHz region coverage
+        2. Phase coherence at listening position
+        3. Level matching accuracy
+        4. Time alignment verification"""^^xsd:string .
+
+# New Risk
+ex:FrequencyResponseGaps a ex:Risk ;
+    rdfs:label "Frequency Response Gaps Risk" ;
+    rdfs:comment "Risk of uneven frequency response due to mismatched crossover points." ;
+    ex:impactAreas """
+        1. Vocal clarity (critical 2-3kHz region)
+        2. Instrument timbre accuracy
+        3. Soundstage coherence
+        4. Overall system integration"""^^xsd:string .
+
+# New Solution Space
+ex:SubwooferAlternative a ex:SolutionSpace ;
+    rdfs:label "Passive Subwoofer Alternative" ;
+    ex:parentSolution ex:OfficeAudioIntegration ;
+    ex:advantages """
+        1. Simpler integration - no crossover issues with RS-100
+        2. RS-100 operates in its intended range
+        3. Better bass extension
+        4. No modification to existing speakers
+        5. Cleaner transition between frequency ranges"""^^xsd:string ;
+    ex:implementation """
+        1. Use RS-100 as full-range/mid-high
+        2. Add passive subwoofer for low frequencies
+        3. Utilize RX-V4A's built-in crossover
+        4. Take advantage of room correction (YPAO)"""^^xsd:string ;
+    ex:benefits """
+        1. Avoids critical 2-3kHz crossover region
+        2. Maintains RS-100's intended performance
+        3. Better system integration
+        4. Uses receiver's DSP capabilities
+        5. More flexible placement options"""^^xsd:string .
+
+# Comparison Analysis
+ex:SystemComparison a ex:Analysis ;
+    rdfs:label "System Configuration Comparison" ;
+    ex:hornConfiguration """
+        Pros:
+        - Extended high frequency response
+        - Higher sensitivity
+        Cons:
+        - Complex crossover integration
+        - Critical phase alignment issues
+        - Potential frequency response anomalies"""^^xsd:string ;
+    ex:subwooferConfiguration """
+        Pros:
+        - Simpler integration
+        - Better bass extension
+        - Uses existing DSP
+        - Maintains RS-100 performance
+        Cons:
+        - Less extended high frequency
+        - Additional space requirements"""^^xsd:string .
+
+# Subwoofer Integration Analysis
+ex:SubwooferRecommendations a ex:SolutionSpace ;
+    rdfs:label "Subwoofer Integration Recommendations" ;
+    ex:parentSolution ex:SubwooferAlternative ;
+    ex:specifications """
+        Ideal characteristics for passive subwoofer:
+        1. True 8-ohm passive design
+        2. 35-120Hz frequency response
+        3. 88-91dB sensitivity (matching RS-100)
+        4. Compact form factor for office
+        5. Efficient design for RX-V4A power"""^^xsd:string ;
+    ex:recommendedOptions """
+        Custom Build Options:
+        1. Dayton Audio RSS265HF-8 10" in 1.4cu ft sealed
+        2. Dayton Audio RSS210HF-8 8" in 0.75cu ft sealed
+        3. GRS 10SW-8 10" in 1.25cu ft sealed
+        
+        Note: Pre-built passive subwoofers are rare in current market"""^^xsd:string ;
+    ex:integrationMethod """
+        1. Connect to RX-V4A's main channel output
+        2. Use receiver's bass management
+        3. Set high-pass for RS-100 (~80Hz)
+        4. Use YPAO for integration
+        5. Fine-tune crossover and phase"""^^xsd:string .
+
+# New Risk Assessment
+ex:PassiveSubwooferConsiderations a ex:Risk ;
+    rdfs:label "Passive Subwoofer Considerations" ;
+    ex:challenges """
+        1. Limited power from RX-V4A for deep bass
+        2. More complex integration than powered sub
+        3. May need higher sensitivity driver
+        4. Box size vs. efficiency tradeoff
+        5. Limited commercial options"""^^xsd:string ;
+    ex:mitigationStrategy """
+        1. Consider efficient driver design
+        2. Optimize box size for office space
+        3. Use sealed design for controlled rolloff
+        4. Careful placement for room gain
+        5. Possible future amp upgrade path"""^^xsd:string .
+
+# Integration Benefits
+ex:SubwooferIntegrationBenefits a ex:Analysis ;
+    rdfs:label "Subwoofer Integration Benefits" ;
+    ex:systemAdvantages """
+        1. Uses RX-V4A's DSP capabilities fully
+        2. Maintains RS-100's optimal performance range
+        3. Easier placement optimization
+        4. No complex crossover construction
+        5. Future upgrade flexibility"""^^xsd:string ;
+    ex:costBenefits """
+        1. No crossover components needed
+        2. Uses existing amplification
+        3. Lower implementation complexity
+        4. No modification costs
+        5. Preserves warranty coverage"""^^xsd:string .
+
+# Powered Subwoofer Alternative Analysis
+ex:PoweredSubwooferSolution a ex:SolutionSpace ;
+    rdfs:label "Powered Subwoofer Alternative" ;
+    ex:parentSolution ex:OfficeAudioIntegration ;
+    ex:advantages """
+        1. Built-in amplification matched to driver
+        2. Integrated DSP/crossover capabilities
+        3. Independent level control
+        4. More placement flexibility
+        5. Often includes room correction features"""^^xsd:string ;
+    ex:recommendedModels """
+        Compact High-Performance Options:
+        1. SVS SB-1000 Pro (12", 325W RMS)
+            - Built-in DSP
+            - App control
+            - Variable phase control
+            - Price: ~$600
+        
+        2. RSL Speedwoofer 10S MKII (10", 350W RMS)
+            - Compact form factor
+            - Wireless option available
+            - Price: ~$450
+            
+        3. Rythmik L12 (12", 300W RMS)
+            - Servo-controlled driver
+            - Excellent transient response
+            - Variable damping
+            - Price: ~$600"""^^xsd:string ;
+    ex:integrationMethod """
+        1. Connect to RX-V4A's subwoofer output
+        2. Use sub's built-in crossover (~80Hz)
+        3. Phase alignment controls on sub
+        4. Room correction via YPAO
+        5. Fine-tune with sub's DSP"""^^xsd:string .
+
+# System Benefits Analysis
+ex:PoweredSubBenefits a ex:Analysis ;
+    rdfs:label "Powered Subwoofer System Benefits" ;
+    ex:systemAdvantages """
+        1. Eliminates need for horn integration
+        2. Extends system response below RS-100 capability
+        3. Independent power handling
+        4. Modern DSP features
+        5. Professional integration tools"""^^xsd:string ;
+    ex:performanceGains """
+        1. Better power handling than passive solution
+        2. Deeper bass extension (20-25Hz typical)
+        3. More headroom for dynamics
+        4. Better control of room modes
+        5. Adjustable to room acoustics"""^^xsd:string .
+
+# Cost-Benefit Comparison
+ex:PoweredSubComparison a ex:Analysis ;
+    rdfs:label "Powered vs Original Plan Comparison" ;
+    ex:costAnalysis """
+        Original Horn Plan:
+        - Crossover components: $150-400
+        - Potential RS-100 modifications
+        - Time investment in testing/setup
+        - Risk of suboptimal integration
+        
+        Powered Sub Approach:
+        - Single unit purchase: $450-600
+        - No additional components needed
+        - Minimal setup time
+        - Proven integration methods"""^^xsd:string ;
+    ex:performanceComparison """
+        Horn Integration:
+        + Extended high frequency
+        - Complex integration
+        - Potential phase issues
+        - Limited adjustment options
+        
+        Powered Sub:
+        + Extended low frequency
+        + Easy integration
+        + Modern features
+        + Future expandability"""^^xsd:string .
+
+# Horn Integration with Subwoofer Solution
+ex:HornSubwooferIntegration a ex:Analysis ;
+    rdfs:label "Horn Integration with Subwoofer Solution" ;
+    rdfs:comment "Analysis of horn driver usage when implementing subwoofer solution" ;
+    ex:options """
+        1. Retire Horn Plan:
+           - Use RS-100 for full mid/high range
+           - Add subwoofer for low frequencies
+           - Simplest integration path
+           
+        2. Parallel Implementation:
+           - Use RS-100 as main speakers
+           - Add subwoofer for bass
+           - Keep horns as separate system
+           - Use RX-V4A's Zone 2 for horns
+           
+        3. Future Expansion:
+           - Start with RS-100 + subwoofer
+           - Reserve horns for future dedicated system
+           - Avoid current integration complexity"""^^xsd:string ;
+    ex:recommendation "Option 1: Retire horn plan temporarily" ;
+    ex:rationale """
+        1. Simplifies current implementation
+        2. Addresses immediate bass extension needs
+        3. Avoids crossover complexity
+        4. Preserves horns for future dedicated setup
+        5. Follows 'If it works, don't fix it' principle"""^^xsd:string .
+
+# New Risk
+ex:UnusedEquipmentRisk a ex:Risk ;
+    rdfs:label "Unused Equipment Risk" ;
+    rdfs:comment "Risk of valuable horn drivers remaining unused" ;
+    ex:mitigationStrategy """
+        1. Store properly for future use
+        2. Consider separate system implementation
+        3. Plan dedicated horn system project
+        4. Explore alternative uses in other spaces"""^^xsd:string .
+
+# New Solution Space - Custom Speaker Build
+ex:CustomSpeakerBuild a ex:SolutionSpace ;
+    rdfs:label "Complete Custom Speaker Build" ;
+    ex:parentSolution ex:OfficeAudioIntegration ;
+    ex:rationale """
+        If investing in woodworking and custom builds:
+        1. Full control over design
+        2. Optimal use of horn drivers
+        3. Purpose-built for space
+        4. Better value proposition
+        5. Single coherent project"""^^xsd:string ;
+    ex:potentialDesigns """
+        1. Full Horn-Loaded System:
+           - Use existing horn drivers
+           - Custom bass horn design
+           - Integrated cabinet design
+           - Single coherent system
+        
+        2. Hybrid Design:
+           - Horn-loaded highs/mids
+           - Bass reflex or transmission line low end
+           - Custom crossover integration
+           - Matched sensitivity throughout range"""^^xsd:string ;
+    ex:requiredSkills """
+        1. Cabinet design and construction
+        2. Crossover design and testing
+        3. Driver integration
+        4. Acoustic measurements
+        5. Woodworking tools and space"""^^xsd:string .
+
+# Cost-Benefit Analysis Update
+ex:CustomBuildAnalysis a ex:Analysis ;
+    rdfs:label "Custom Build Value Analysis" ;
+    ex:advantages """
+        1. Maximum use of existing horn drivers
+        2. No compromise on integration
+        3. Optimized for space and use
+        4. Better long-term investment
+        5. Develops valuable skills"""^^xsd:string ;
+    ex:requirements """
+        Tools and Equipment:
+        - Woodworking tools
+        - Measurement equipment
+        - Assembly space
+        - Design software
+        - Testing capabilities"""^^xsd:string ;
+    ex:costComparison """
+        Subwoofer Route:
+        - $450-600 for powered sub
+        - Unused horn drivers
+        - Limited upgrade path
+        
+        Custom Build:
+        - Similar initial investment
+        - Uses all components
+        - Higher ultimate performance
+        - Valuable skill development"""^^xsd:string .
+
+# Aspirational Reference Design
+ex:OjasKOR1Reference a ex:SolutionSpace ;
+    rdfs:label "Ojas kO-R1 Reference Design" ;
+    ex:designPhilosophy """
+        1. Pure horn-loaded design
+        2. Full-range coherence
+        3. High sensitivity approach
+        4. Minimal crossover complexity
+        5. Time-aligned drivers"""^^xsd:string ;
+    ex:keyFeatures """
+        - Full horn loading
+        - 104dB sensitivity
+        - Single 15" driver
+        - Folded horn design
+        - Reference-level coherence
+        - Minimal signal path
+        - Pure point-source behavior"""^^xsd:string ;
+    ex:designLessons """
+        Key principles to apply:
+        1. Minimize crossover points
+        2. Focus on horn loading efficiency
+        3. Prioritize time alignment
+        4. Consider folded horn for bass
+        5. Aim for coherent single-point source"""^^xsd:string .
+
+# Design Inspiration
+ex:CustomBuildInspiration a ex:Analysis ;
+    rdfs:label "Custom Build Inspiration from kO-R1" ;
+    ex:scaledApproach """
+        Budget-Conscious Adaptations:
+        1. Similar horn-loading principles
+        2. Scaled-down driver size
+        3. Simplified folded horn design
+        4. Focus on efficiency
+        5. Minimize active components"""^^xsd:string ;
+    ex:keyPrinciples """
+        1. Pure horn loading where possible
+        2. Minimize crossover complexity
+        3. Time-aligned driver mounting
+        4. Attention to phase coherence
+        5. Quality over compromise"""^^xsd:string ;
+    ex:costConsiderations """
+        Value Engineering:
+        - Use existing horn drivers
+        - DIY construction
+        - Simplified horn paths
+        - Careful driver selection
+        - Strategic compromises"""^^xsd:string .
+
+# Integrated Horn Speaker Analysis
+ex:IntegratedHornSpeakers a ex:SolutionSpace ;
+    rdfs:label "Integrated Horn Speaker Alternatives" ;
+    ex:marketAnalysis """
+        Current Market Options:
+        1. Klipsch Heritage Series
+           - Heresy IV (~$3400/pair)
+           - Cornwall IV (~$6000/pair)
+           - Compression driver with horn + cone woofer
+        
+        2. JBL Studio Series
+           - L100 Classic (~$4500/pair)
+           - Horn-loaded tweeter design
+           
+        3. Zu Audio
+           - Omen Mk.II (~$2500/pair)
+           - Full-range driver + horn tweeter
+           
+        Limited options due to:
+        - Modern preference for dome tweeters
+        - Manufacturing complexity
+        - Cost considerations
+        - Market size"""^^xsd:string ;
+    ex:advantages """
+        1. Factory-optimized horn integration
+        2. Proven crossover designs
+        3. Professional cabinet construction
+        4. Warranty coverage
+        5. Known performance characteristics"""^^xsd:string ;
+    ex:bestMatch """
+        Klipsch Heresy IV:
+        - Similar philosophy to current horns
+        - Known integration with RS-100
+        - Established upgrade path
+        - Available service/support
+        - Resale value stability"""^^xsd:string .
+
+# Cost-Value Analysis
+ex:IntegratedHornValue a ex:Analysis ;
+    rdfs:label "Integrated Horn Speaker Value Analysis" ;
+    ex:comparison """
+        Custom Build (~$1000-1500):
+        + Lower initial cost
+        + Learning experience
+        - Time investment
+        - Unknown outcome
+        - Tool costs
+        
+        Integrated Solution ($3000+):
+        + Professional design
+        + Immediate solution
+        + Known performance
+        - Higher cost
+        - Less customization"""^^xsd:string ;
+    ex:marketTrends """
+        1. Heritage speakers holding value
+        2. Limited new horn speaker designs
+        3. Growing interest in vintage designs
+        4. Premium market positioning
+        5. Collector appeal"""^^xsd:string .
+
+# Parallel and Future Implementation Analysis
+ex:ParallelFutureAnalysis a ex:Analysis ;
+    rdfs:label "Parallel and Future Implementation Analysis" ;
+    ex:parallelOption """
+        Zone 2 Implementation:
+        1. RS-100 + Subwoofer as main system
+           - Clean integration
+           - YPAO optimization
+           - Modern features
+        
+        2. Horns as secondary system via Zone 2
+           - Pure signal path
+           - No crossover complexity
+           - Independent volume control
+           - Flexibility for different content"""^^xsd:string ;
+    ex:futureSystem """
+        Dedicated Horn System Plan:
+        1. Short term:
+           - Store horns properly
+           - Research designs (Ojas kO-R1 inspiration)
+           - Collect resources/tools
+        
+        2. Long term:
+           - Custom cabinet build
+           - Proper horn loading
+           - Dedicated amplification
+           - Possibly different room/space"""^^xsd:string .
+
+# Implementation Path
+ex:TwoPhaseImplementation a ex:SolutionSpace ;
+    rdfs:label "Two-Phase Implementation Plan" ;
+    ex:phase1 """
+        Immediate Setup:
+        1. Add quality powered sub (RSL/SVS/Rythmik)
+        2. Optimize RS-100 placement
+        3. Configure YPAO
+        4. Test Zone 2 capabilities"""^^xsd:string ;
+    ex:phase2 """
+        Future Horn Project:
+        1. Research horn-loaded designs
+        2. Acquire necessary tools/skills
+        3. Build test enclosures
+        4. Develop proper horn system
+        5. Consider dedicated space"""^^xsd:string ;
+    ex:advantages """
+        1. Immediate system improvement
+        2. No rushed horn implementation
+        3. Time to develop skills
+        4. Better final outcome
+        5. Flexible upgrade path"""^^xsd:string .
+
+# Used and Vintage Market Analysis
+ex:UsedVintageOptions a ex:Analysis ;
+    rdfs:label "Used and Vintage Horn Speaker Analysis" ;
+    ex:vintageOptions """
+        Classic Horn Speakers:
+        1. Altec Lansing Model 19 (~$2000-3000/pair)
+           - Iconic design
+           - 15" woofer + horn
+           - High sensitivity
+           - Often needs restoration
+        
+        2. JBL L100/4311 (~$1500-2500/pair)
+           - Studio monitor heritage
+           - Horn-loaded tweeter
+           - Robust construction
+           - Popular for restoration
+        
+        3. Klipsch Heresy I/II (~$800-1500/pair)
+           - Compact horn design
+           - Proven architecture
+           - Parts still available
+           - Active community support"""^^xsd:string ;
+    ex:restorationConsiderations """
+        Common Issues:
+        1. Surrounds deterioration
+        2. Crossover component aging
+        3. Cabinet veneer damage
+        4. Horn material degradation
+        5. Driver magnet weakening
+        
+        Required Skills:
+        - Basic electronics
+        - Wood refinishing
+        - Driver repair/replacement
+        - Crossover rebuilding"""^^xsd:string ;
+    ex:modernUsedMarket """
+        Recent Models (5-10 years old):
+        1. Klipsch RF-7 II (~$1500-2000/pair)
+           - Modern horn technology
+           - Less maintenance needed
+           - Current parts availability
+        
+        2. JBL Studio 590 (~$1000-1500/pair)
+           - Contemporary design
+           - Good documentation
+           - Reliable performance"""^^xsd:string .
+
+# Value Proposition
+ex:UsedMarketValue a ex:Analysis ;
+    rdfs:label "Used Market Value Analysis" ;
+    ex:advantages """
+        1. Lower initial investment
+        2. Proven designs
+        3. Better build quality than budget new
+        4. Potential appreciation
+        5. Modifiable/upgradeable"""^^xsd:string ;
+    ex:risks """
+        1. Hidden damage
+        2. Shipping challenges
+        3. Parts availability
+        4. Unknown history
+        5. Restoration costs"""^^xsd:string ;
+    ex:recommendations """
+        Best Value Options:
+        1. Klipsch Heresy II
+           - Common in market
+           - Good documentation
+           - Active community
+           - Parts available
+        
+        2. JBL L100
+           - Iconic status
+           - Known performance
+           - Restoration friendly
+           
+        3. Local vintage finds
+           - Lower shipping risk
+           - Inspection possible
+           - Better pricing
+           - Immediate pickup"""^^xsd:string .
+
+# Market Opportunity Analysis - Corrected
+ex:KlipschRF62Opportunity a ex:MarketFind ;
+    rdfs:label "Klipsch RF-62 Reference IV Listing" ;
+    ex:price "425 USD"^^xsd:string ;
+    ex:specifications """
+        - Floor-standing tower speakers
+        - Dual 6.5" woofers
+        - Horn-loaded tweeter (Tractrix)
+        - 97dB sensitivity
+        - 8 ohm impedance
+        - Frequency response: 35Hz-24kHz
+        - Power handling: 125W RMS"""^^xsd:string ;
+    ex:comparisonWithR50M """
+        1. Both use Tractrix horn technology
+        2. RF-62 has better bass extension vs R50-M
+        3. Similar sensitivity ratings
+        4. RF-62 higher power handling
+        5. RF-62 larger cabinet/drivers"""^^xsd:string ;
+    ex:advantages """
+        1. Complete speaker system (no crossover needed)
+        2. Matches existing Klipsch sound signature
+        3. Good low-end extension
+        4. Includes magnetic covers
+        5. Significant discount from retail (~$1000+ new)"""^^xsd:string ;
+    ex:considerations """
+        1. Check driver condition
+        2. Test for cabinet resonance
+        3. Verify tweeter function
+        4. Space requirements (floor-standing)
+        5. Transport logistics"""^^xsd:string .
+
+# Power Analysis for RF-62
+ex:RF62PowerAnalysis a ex:Analysis ;
+    rdfs:label "RF-62 Power Requirements Analysis" ;
+    ex:specifications """
+        RF-62 Specs:
+        - Sensitivity: 97dB @ 2.83V/1m
+        - Power Handling: 125W RMS
+        - Impedance: 8 ohms nominal
+        - Recommended amp power: 15-125W RMS"""^^xsd:string ;
+    ex:powerCalculations """
+        For 85dB listening level at 3m:
+        - Only needs ~0.5W
+        
+        For 95dB peaks at 3m:
+        - Needs ~5W
+        
+        RX-V4A Capability:
+        - 80W per channel (8 ohms)
+        - More than adequate for normal listening
+        - Plenty of headroom for peaks"""^^xsd:string ;
+    ex:matchAnalysis """
+        RX-V4A to RF-62:
+        + Good power match for efficiency
+        + Clean power for normal listening
+        + Adequate headroom for peaks
+        - Won't reach speaker's full power handling
+        - But unlikely to need that power"""^^xsd:string .
+
+# Detailed R50M vs RF-62 Comparison
+ex:DetailedSpeakerComparison a ex:Analysis ;
+    rdfs:label "R-50M vs RF-62 Detailed Comparison" ;
+    ex:specifications """
+        R-50M:
+        - Sensitivity: 95dB @ 2.83V/1m
+        - Power Handling: 50W RMS
+        - Impedance: 8 ohms nominal
+        - Frequency Response: 60Hz-20kHz
+        - Single 5.25" woofer
+        - 1" Tractrix horn tweeter
+        - Bookshelf design
+        
+        RF-62:
+        - Sensitivity: 97dB @ 2.83V/1m
+        - Power Handling: 125W RMS
+        - Impedance: 8 ohms nominal
+        - Frequency Response: 35Hz-24kHz
+        - Dual 6.5" woofers
+        - 1" Tractrix horn tweeter
+        - Floor-standing design"""^^xsd:string ;
+    ex:surpriseFindings """
+        Unexpected Differences:
+        1. Only 2dB sensitivity difference despite larger drivers
+        2. RF-62 has 2.5x power handling capacity
+        3. Extended high frequency response (24kHz vs 20kHz)
+        4. Significantly lower bass extension (35Hz vs 60Hz)
+        5. Similar horn technology despite age difference"""^^xsd:string ;
+    ex:potentialConcerns """
+        1. RF-62's higher power handling might indicate different voicing
+        2. Larger cabinet could mean different room interaction
+        3. Dual woofer configuration might affect midrange
+        4. Age difference could mean different horn implementation
+        5. Possible crossover frequency differences"""^^xsd:string ;
+    ex:positiveFindings """
+        1. Similar impedance characteristics
+        2. Compatible sensitivity range
+        3. Same horn loading philosophy
+        4. Better bass extension without sub
+        5. Similar Klipsch house sound likely"""^^xsd:string .
+
+# Risk Assessment
+ex:SpeakerTransitionRisks a ex:Risk ;
+    rdfs:label "Speaker Transition Risks" ;
+    ex:concerns """
+        1. Different room positioning requirements
+        2. Possible timbre matching issues with existing system
+        3. Different power response pattern
+        4. Changed sweet spot characteristics
+        5. Different break-in status"""^^xsd:string ;
+    ex:mitigationStrategy """
+        1. Careful listening test before purchase
+        2. Test in intended position if possible
+        3. Check all drivers thoroughly
+        4. Verify crossover functionality
+        5. Plan for room treatment adjustments"""^^xsd:string .
+
+# Final Recommendation Analysis
+ex:FinalRecommendation a ex:Analysis ;
+    rdfs:label "RF-62 Integration Recommendation" ;
+    ex:recommendation "Purchase RF-62s and repurpose R50-Ms as surrounds" ;
+    ex:rationale """
+        1. System Coherence:
+           - RF-62s and R50-Ms share Tractrix horn technology
+           - Similar sensitivity (95dB vs 97dB)
+           - Matching impedance characteristics
+           - Common Klipsch voicing
+        
+        2. Performance Upgrade:
+           - RF-62s extend to 35Hz (vs 60Hz)
+           - Dual 6.5" woofers for better dynamics
+           - Higher power handling headroom
+           - Floor-standing design for better room coupling
+        
+        3. Surround Integration:
+           - R50-Ms ideal for surrounds due to:
+           - Compact bookshelf form factor
+           - Matching horn technology
+           - Similar sensitivity for easy calibration
+           - Known reliability"""^^xsd:string ;
+    ex:implementationPath """
+        1. Immediate Steps:
+           - Purchase RF-62s at $425 (excellent value)
+           - Position as main L/R speakers
+           - Move R50-Ms to surround positions
+           - Run full YPAO calibration
+        
+        2. Expected Benefits:
+           - Better bass response without subwoofer
+           - Coherent sound field with matched technology
+           - Improved stereo imaging from floor-standers
+           - Complete 4.0 system with matched speakers
+           - Future upgrade path preserved"""^^xsd:string ;
+    ex:riskMitigation """
+        1. Test RF-62s thoroughly before purchase
+        2. Verify all drivers and cabinets
+        3. Plan room layout for optimal placement
+        4. Consider room treatment adjustments
+        5. Keep original R50-M boxes for moving"""^^xsd:string .
+
+# Hafler Integration Analysis
+ex:HaflerIntegrationOptions a ex:Analysis ;
+    rdfs:label "Hafler DH-220 Integration Analysis" ;
+    ex:currentSystem """
+        Main Components:
+        - RX-V4A (80W/ch @ 8ohms)
+        - RF-62s as mains (97dB sensitivity)
+        - R50-Ms as surrounds (95dB sensitivity)"""^^xsd:string ;
+    ex:haflerConsiderations """
+        Hafler DH-220 Specs:
+        - 115W/ch @ 8ohms
+        - Known for clean power delivery
+        - Collector value consideration
+        - Additional heat/power consumption
+        - Extra complexity in signal path"""^^xsd:string ;
+    ex:analysis """
+        Power Requirements:
+        1. RF-62s only need ~0.5W for 85dB @ 3m
+        2. RX-V4A's 80W/ch is already sufficient
+        3. Hafler's extra power provides minimal benefit
+        4. High speaker sensitivity reduces power needs
+        5. Current setup has adequate headroom"""^^xsd:string ;
+    ex:recommendation "Keep Hafler in storage/preservation" ;
+    ex:rationale """
+        1. RX-V4A is sufficient for the system
+        2. Adding amp complexity not justified by benefits
+        3. Preserve Hafler's collector value
+        4. Maintain simpler signal path
+        5. Save power consumption/heat generation"""^^xsd:string .
+
+# Component Connection Model
+ex:RF62SystemModel a ex:SystemModel ;
+    rdfs:label "RF-62 System Connection Model" ;
+    ex:components """
+        Source Components:
+        - RX-V4A Receiver
+        - Digital Sources via HDMI
+        - Analog Sources
+        
+        Speakers:
+        - RF-62 (Main L/R)
+        - R50-M (Surround L/R)"""^^xsd:string ;
+    ex:connections """
+        1. Digital Sources → RX-V4A HDMI
+        2. Analog Sources → RX-V4A Line In
+        3. RX-V4A Main L/R → RF-62 L/R
+        4. RX-V4A Surround L/R → R50-M L/R"""^^xsd:string ;
+    ex:signalPath """
+        Digital:
+        HDMI → RX-V4A DSP → Amplification → Speakers
+        
+        Analog:
+        Line In → ADC → DSP → Amplification → Speakers"""^^xsd:string ;
+    ex:powerDelivery """
+        RX-V4A Capabilities:
+        - 80W/ch @ 8ohms (Main L/R)
+        - 80W/ch @ 8ohms (Surround L/R)"""^^xsd:string .
