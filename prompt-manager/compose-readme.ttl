@@ -1,0 +1,205 @@
+@prefix : <http://example.org/llm-failure/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# Ontology Definition
+:LLMFailureOntology rdf:type owl:Ontology ;
+    rdfs:label "LLM Failure Analysis Ontology" ;
+    rdfs:comment "Documents patterns of LLM failures in basic tasks" .
+
+# Classes
+:Task rdf:type owl:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "A requested operation or action" .
+
+:Failure rdf:type owl:Class ;
+    rdfs:label "Failure" ;
+    rdfs:comment "A specific way an LLM failed" .
+
+:LLM rdf:type owl:Class ;
+    rdfs:label "Language Model" ;
+    rdfs:comment "A large language model system" .
+
+:Interaction rdf:type owl:Class ;
+    rdfs:label "Interaction" ;
+    rdfs:comment "A conversation between user and LLM" .
+
+:Prompt rdf:type owl:Class ;
+    rdfs:label "Prompt" ;
+    rdfs:comment "A structured instruction set for LLMs" .
+
+:LearningPoint rdf:type owl:Class ;
+    rdfs:label "Learning Point" ;
+    rdfs:comment "A lesson learned from a failure instance" .
+
+:FailureType rdf:type owl:Class ;
+    rdfs:label "Failure Type" ;
+    rdfs:comment "A category of LLM failure" .
+
+# Properties
+:hasFailure rdf:type owl:ObjectProperty ;
+    rdfs:domain :Interaction ;
+    rdfs:range :Failure ;
+    rdfs:label "has failure" .
+
+:involvesTask rdf:type owl:ObjectProperty ;
+    rdfs:domain :Interaction ;
+    rdfs:range :Task ;
+    rdfs:label "involves task" .
+
+:hasAttemptCount rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Interaction ;
+    rdfs:range xsd:integer ;
+    rdfs:label "number of attempts" .
+
+:hasLearning rdf:type owl:ObjectProperty ;
+    rdfs:domain :Failure ;
+    rdfs:range :LearningPoint ;
+    rdfs:label "has learning point" .
+
+:hasPrompt rdf:type owl:ObjectProperty ;
+    rdfs:domain :Task ;
+    rdfs:range :Prompt ;
+    rdfs:label "has prompt" .
+
+:hasFailureType rdf:type owl:ObjectProperty ;
+    rdfs:domain :Failure ;
+    rdfs:range :FailureType ;
+    rdfs:label "has failure type" .
+
+:relatedToFailure rdf:type owl:ObjectProperty ;
+    rdfs:domain :LearningPoint ;
+    rdfs:range :Failure ;
+    rdfs:label "related to failure" .
+
+# Failure Types as Individuals
+:fileGenerationFailure rdf:type :FailureType, :Failure ;
+    rdfs:label "File Generation Failure" ;
+    rdfs:comment "Failed to generate a single clean file" .
+
+:tokenWaste rdf:type :FailureType, :Failure ;
+    rdfs:label "Token Waste" ;
+    rdfs:comment "Repeatedly failed while consuming tokens" .
+
+:comprehensionFailure rdf:type :FailureType, :Failure ;
+    rdfs:label "Comprehension Failure" ;
+    rdfs:comment "Failed to understand basic requirements" .
+
+# Example Interaction
+:readmeInteraction rdf:type :Interaction ;
+    rdfs:label "README Generation Interaction" ;
+    rdfs:comment "Attempted to generate a single README file" ;
+    :hasFailure :fileGenerationFailure, :tokenWaste, :comprehensionFailure ;
+    :hasAttemptCount 6 ;
+    :involvesTask :readmeTask .
+
+:readmeTask rdf:type :Task ;
+    rdfs:label "README Generation" ;
+    rdfs:comment "Generate a single downloadable README file" .
+
+:readmePrompt rdf:type :Prompt ;
+    rdfs:label "README Generation Prompt" ;
+    rdfs:comment """Given an ontology describing LLM failures, generate a single README.md file that:
+1. MUST output only raw file content without code block wrappers or paths
+2. MUST NOT include empty lines within code blocks
+3. MUST NOT trigger multiple file download prompts
+4. SHOULD include failure patterns, lessons, and guidelines
+
+Output ONLY the raw README content, nothing else.""" ;
+    :isForTask :readmeTask .
+
+:isForTask rdf:type owl:ObjectProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range :Task ;
+    rdfs:label "is for task" .
+
+# SHACL Shapes for Validation
+:InteractionShape rdf:type sh:NodeShape ;
+    sh:targetClass :Interaction ;
+    sh:property [
+        sh:path :hasAttemptCount ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path :hasFailure ;
+        sh:minCount 1 ;
+    ] .
+
+# Add example learning points
+:clearPromptGuideline rdf:type :LearningPoint ;
+    rdfs:label "Clear Prompt Guideline" ;
+    rdfs:comment "Ensure prompts are specific and unambiguous" ;
+    :relatedToFailure :comprehensionFailure .
+
+:tokenEfficiencyGuideline rdf:type :LearningPoint ;
+    rdfs:label "Token Efficiency Guideline" ;
+    rdfs:comment "Optimize prompts to minimize token usage" ;
+    :relatedToFailure :tokenWaste .
+
+# Add severity levels for failures
+:FailureSeverity rdf:type owl:Class ;
+    rdfs:label "Failure Severity" ;
+    rdfs:comment "Indicates how severe a failure instance is" .
+
+:hasSeverity rdf:type owl:ObjectProperty ;
+    rdfs:domain :Failure ;
+    rdfs:range :FailureSeverity ;
+    rdfs:label "has severity" .
+
+:criticalSeverity rdf:type :FailureSeverity ;
+    rdfs:label "Critical" ;
+    skos:definition "Completely blocks task completion" .
+
+:highSeverity rdf:type :FailureSeverity ;
+    rdfs:label "High" ;
+    skos:definition "Significantly impacts task completion" .
+
+:mediumSeverity rdf:type :FailureSeverity ;
+    rdfs:label "Medium" ;
+    skos:definition "Partially impacts task completion" .
+
+# Add severity to existing failures
+:fileGenerationFailure :hasSeverity :highSeverity .
+:tokenWaste :hasSeverity :mediumSeverity .
+:comprehensionFailure :hasSeverity :criticalSeverity .
+
+# Add recovery strategies
+:RecoveryStrategy rdf:type owl:Class ;
+    rdfs:label "Recovery Strategy" ;
+    rdfs:comment "A strategy to recover from a failure" .
+
+:hasRecoveryStrategy rdf:type owl:ObjectProperty ;
+    rdfs:domain :Failure ;
+    rdfs:range :RecoveryStrategy ;
+    rdfs:label "has recovery strategy" .
+
+:promptReformulation rdf:type :RecoveryStrategy ;
+    rdfs:label "Prompt Reformulation" ;
+    rdfs:comment "Reformulate the prompt to be more specific and clear" ;
+    :appliesTo :comprehensionFailure .
+
+:tokenOptimization rdf:type :RecoveryStrategy ;
+    rdfs:label "Token Optimization" ;
+    rdfs:comment "Optimize prompt structure to reduce token usage" ;
+    :appliesTo :tokenWaste .
+
+:appliesTo rdf:type owl:ObjectProperty ;
+    rdfs:domain :RecoveryStrategy ;
+    rdfs:range :Failure ;
+    rdfs:label "applies to" .
+
+# TODO Section
+# 1. Add more detailed failure patterns
+# 2. Include success metrics and recovery strategies
+# 3. Add temporal relationships between attempts
+# 4. Include user feedback patterns
+# 5. Add specific validation rules for each failure type
+# 6. Expand to cover multi-agent scenarios
+# 7. Add metrics for token efficiency
+# 8. Include prompt engineering patterns
