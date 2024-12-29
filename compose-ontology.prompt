@@ -1,0 +1,8 @@
+Create an ontology in Turtle syntax that includes:
+1. **Classes**: Define key entities with labels (`rdfs:label`) and descriptions (`rdfs:comment`).
+2. **Properties**: Establish relationships with object properties, specifying `rdfs:domain`, `rdfs:range`, and comments.
+3. **Individuals**: Add example instances (`rdf:type`) for each class with clear labels and descriptions.
+4. **Extendability**: Include a `TODO` section for areas of expansion or refinement (e.g., adding tools, workflows, or constraints).
+5. **Validation-Ready**: Ensure the structure supports SHACL or OWL consistency checks.
+
+Design the ontology to be understandable and useful for automation or further development without additional instructions.

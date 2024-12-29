@@ -1,0 +1,11 @@
+Analyze the provided prompt-manager.ttl ontology to:
+
+1. Identify core system components:
+   - Docker services
+   - Python components
+   - Storage elements
+   - Their interconnections and dependencies
+
+2. Extract implementation details:
+   - Port configurations
+logy structure itself.

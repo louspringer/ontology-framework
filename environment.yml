@@ -4,18 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - pip
-  - bzip2
-  - ca-certificates
-  - libexpat
-  - libffi
-  - libsqlite
-  - libzlib
-  - ncurses
-  - openssl
-  - readline
-  - setuptools
-  - tk
-  - tzdata
-  - wheel
-  - xz
+  - rdflib>=6.0.0
+  - psycopg2
+  - pyyaml
+  - click
