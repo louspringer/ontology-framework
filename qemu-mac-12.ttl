@@ -1,0 +1,178 @@
+@prefix : <http://qemu.build/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Classes
+:BuildSystem a owl:Class ;
+    rdfs:label "Build System" ;
+    rdfs:comment "Primary system used to compile QEMU" .
+
+:BuildStep a owl:Class ;
+    rdfs:label "Build Step" ;
+    rdfs:comment "Individual step in the build process" .
+
+:BuildArtifact a owl:Class ;
+    rdfs:label "Build Artifact" ;
+    rdfs:comment "Files generated during build process" .
+
+:BuildError a owl:Class ;
+    rdfs:label "Build Error" ;
+    rdfs:comment "Error encountered during build" .
+
+:Documentation a owl:Class ;
+    rdfs:label "Documentation" ;
+    rdfs:comment "Build-related documentation" .
+
+# Properties
+:requires a owl:ObjectProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range :BuildArtifact ;
+    rdfs:comment "Build step dependency" .
+
+:generates a owl:ObjectProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range :BuildArtifact .
+
+:hasError a owl:ObjectProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range :BuildError .
+
+:documentedIn a owl:ObjectProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range :Documentation .
+
+:hasOrder a owl:DatatypeProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range xsd:integer .
+
+# Add new class for Dependencies
+:Dependency a owl:Class ;
+    rdfs:label "Build Dependency" ;
+    rdfs:comment "Required software for building QEMU" .
+
+# Add MacOS specific dependency instances
+:BrewDependencies a :Dependency ;
+    rdfs:label "Homebrew Dependencies" ;
+    :requires :PkgConfig, :Make, :Ninja, :Gettext, :Glib, :Pixman, :Python3, :Ccache .
+
+:PkgConfig a :Dependency ;
+    rdfs:label "pkg-config" .
+
+:Ninja a :Dependency ;
+    rdfs:label "ninja" .
+
+:Gettext a :Dependency ;
+    rdfs:label "gettext" .
+
+:Glib a :Dependency ;
+    rdfs:label "glib" .
+
+:Pixman a :Dependency ;
+    rdfs:label "pixman" .
+
+:Python3 a :Dependency ;
+    rdfs:label "python@3.11" ;
+    rdfs:comment "Python 3.11 or later required" .
+
+:Ccache a :Dependency ;
+    rdfs:label "ccache" ;
+    rdfs:comment "Optional - improves rebuild speed" .
+
+# Update BuildStep with dependency information
+:InstallDependencies a :BuildStep ;
+    rdfs:label "Install Dependencies" ;
+    :hasOrder 1 ;
+    :generates :BrewDependencies ;
+    :documentedIn :MacBuildNotes .
+
+:CreateBuildDir a :BuildStep ;
+    rdfs:label "Create Build Directory" ;
+    :hasOrder 2 ;
+    :documentedIn :ReadmeRst .
+
+:RunConfigure a :BuildStep ;
+    rdfs:label "Run Configure" ;
+    :hasOrder 3 ;
+    :requires :BuildDirectory, :BrewDependencies ;
+    :documentedIn :ReadmeRst ;
+    :hasConfigureFlag "--enable-debug" .
+
+:RunMake a :BuildStep ;
+    rdfs:label "Run Make" ;
+    :hasOrder 4 ;
+    :requires :ConfigureOutput ;
+    :documentedIn :ReadmeRst .
+
+# Add new property for configure flags
+:hasConfigureFlag a owl:DatatypeProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range xsd:string .
+
+# Add new documentation instance
+:MacBuildNotes a :Documentation ;
+    rdfs:label "MacOS Build Notes" ;
+    rdfs:comment "Build instructions specific to MacOS 12" .
+
+# Artifacts
+:BuildDirectory a :BuildArtifact ;
+    rdfs:label "build/" .
+
+:ConfigHostMak a :BuildArtifact ;
+    rdfs:label "config-host.mak" ;
+    rdfs:comment "Required by meson build system" .
+
+:ConfigureOutput a :BuildArtifact ;
+    rdfs:label "configure output" .
+
+# Documentation
+:ReadmeRst a :Documentation ;
+    rdfs:label "README.rst" ;
+    rdfs:comment "Official build instructions" .
+
+# Errors Encountered
+:MesonError a :BuildError ;
+    rdfs:label "Meson Config Error" ;
+    rdfs:comment "Failed to load config-host.mak" .
+
+:ConfigureError a :BuildError ;
+    rdfs:label "Configure Missing" ;
+    rdfs:comment "No configure script found" .
+
+# Build Systems Involved
+:Make a :BuildSystem ;
+    rdfs:label "Make" .
+
+:Meson a :BuildSystem ;
+    rdfs:label "Meson" ;
+    :requires :ConfigHostMak .
+
+:Configure a :BuildSystem ;
+    rdfs:label "Configure" .
+
+# TODOs
+:BuildSystemComplexity a :TODO ;
+    rdfs:label "Document Build System Interactions" ;
+    rdfs:comment "Map how Make, Meson, and Configure interact" ;
+    :hasPriority 1 .
+
+:DocumentConfigureGeneration a :TODO ;
+    rdfs:label "Document Configure Generation" ;
+    rdfs:comment "Determine how configure script is generated" ;
+    :hasPriority 1 .
+
+:ValidateReadmeSteps a :TODO ;
+    rdfs:label "Validate README Steps" ;
+    rdfs:comment "Test if README.rst build steps work as documented" ;
+    :hasPriority 1 .
+
+# Add hasPriority property definition
+:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain :TODO ;
+    rdfs:range xsd:integer .
+
+# Add TODO class definition
+:TODO a owl:Class ;
+    rdfs:label "TODO Item" ;
+    rdfs:comment "Tasks that need to be completed" .
