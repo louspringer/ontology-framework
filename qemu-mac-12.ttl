@@ -176,3 +176,40 @@
 :TODO a owl:Class ;
     rdfs:label "TODO Item" ;
     rdfs:comment "Tasks that need to be completed" .
+
+# Add SourceComponent class
+:SourceComponent a owl:Class ;
+    rdfs:label "Source Component" ;
+    rdfs:comment "Major QEMU source code components" .
+
+# Add key components
+:Accel a :SourceComponent ;
+    rdfs:label "Acceleration" ;
+    rdfs:comment "Hardware acceleration components" .
+
+:Block a :SourceComponent ;
+    rdfs:label "Block Layer" ;
+    rdfs:comment "Block device subsystem" .
+
+:TCG a :SourceComponent ;
+    rdfs:label "TCG" ;
+    rdfs:comment "Tiny Code Generator" .
+
+# Add relationship between components and build
+:requiresComponent a owl:ObjectProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range :SourceComponent .
+
+# Add ConfigurationFile class
+:ConfigurationFile a owl:Class ;
+    rdfs:label "Configuration File" ;
+    rdfs:comment "Build configuration files" .
+
+:MesonBuild a :ConfigurationFile ;
+    rdfs:label "meson.build" .
+
+:MesonOptions a :ConfigurationFile ;
+    rdfs:label "meson_options.txt" .
+
+:Makefile a :ConfigurationFile ;
+    rdfs:label "Makefile" .
