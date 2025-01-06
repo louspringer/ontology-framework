@@ -3,7 +3,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix tool: <./aitools#> .
-@prefix meta: <./llm-guidance#> .
+@prefix guidance: <./guidance#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dct: <http://purl.org/dc/terms/> .
@@ -17,7 +17,7 @@ tool:AIToolsOntology rdf:type owl:Ontology ;
 tool:AITool rdf:type owl:Class ;
     rdfs:label "AI Tool" ;
     rdfs:comment "AI-related tool or framework" ;
-    rdfs:subClassOf meta:Action ;
+    rdfs:subClassOf guidance:Action ;
     owl:disjointWith tool:Category, tool:Capability .
 
 tool:Category rdf:type owl:Class ;

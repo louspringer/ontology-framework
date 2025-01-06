@@ -2,63 +2,63 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix meta: <./llm-guidance#> .
+@prefix guidance: <./guidance#> .
 @prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 
-meta:LLMGuidanceOntology rdf:type owl:Ontology ;
+guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include guidance for interdisciplinary collaboration." ;
     owl:imports <./metameta> .
 
 # Core Classes
-meta:Interpretation rdf:type owl:Class ;
+guidance:Interpretation rdf:type owl:Class ;
     rdfs:label "Interpretation" ;
     rdfs:comment "Guidance on how to interpret an ontology element" ;
     rdfs:subClassOf metameta:AbstractionDimension .
 
-meta:Action rdf:type owl:Class ;
+guidance:Action rdf:type owl:Class ;
     rdfs:label "Action" ;
     rdfs:comment "An action that can be taken based on interpretation" .
 
-meta:DomainAnalogy rdf:type owl:Class ;
+guidance:DomainAnalogy rdf:type owl:Class ;
     rdfs:label "Domain Analogy" ;
-    rdfs:subClassOf meta:Interpretation .
+    rdfs:subClassOf guidance:Interpretation .
 
 # Core Properties
-meta:hasAction rdf:type owl:ObjectProperty ;
-    rdfs:domain meta:Interpretation ;
-    rdfs:range meta:Action .
+guidance:hasAction rdf:type owl:ObjectProperty ;
+    rdfs:domain guidance:Interpretation ;
+    rdfs:range guidance:Action .
 
-meta:analogySource rdf:type owl:DatatypeProperty ;
-    rdfs:domain meta:DomainAnalogy ;
+guidance:analogySource rdf:type owl:DatatypeProperty ;
+    rdfs:domain guidance:DomainAnalogy ;
     rdfs:range xsd:string .
 
-meta:analogyTarget rdf:type owl:DatatypeProperty ;
-    rdfs:domain meta:DomainAnalogy ;
+guidance:analogyTarget rdf:type owl:DatatypeProperty ;
+    rdfs:domain guidance:DomainAnalogy ;
     rdfs:range xsd:string .
 
-meta:complexity rdf:type owl:DatatypeProperty ;
-    rdfs:domain meta:Interpretation ;
+guidance:complexity rdf:type owl:DatatypeProperty ;
+    rdfs:domain guidance:Interpretation ;
     rdfs:range xsd:integer .
 
 # New Properties
-meta:sourceContext rdf:type owl:DatatypeProperty ;
-    rdfs:domain meta:Interpretation ;
+guidance:sourceContext rdf:type owl:DatatypeProperty ;
+    rdfs:domain guidance:Interpretation ;
     rdfs:range xsd:string ;
     rdfs:comment "Context from which the interpretation is derived." .
 
-meta:targetContext rdf:type owl:DatatypeProperty ;
-    rdfs:domain meta:Interpretation ;
+guidance:targetContext rdf:type owl:DatatypeProperty ;
+    rdfs:domain guidance:Interpretation ;
     rdfs:range xsd:string ;
     rdfs:comment "Context to which the interpretation is applied." .
 
 # New Instances
-meta:InterdisciplinaryCollaboration rdf:type meta:Interpretation ;
+guidance:InterdisciplinaryCollaboration rdf:type guidance:Interpretation ;
     rdfs:label "Interdisciplinary Collaboration" ;
-    meta:sourceContext "Molecular Biology" ;
-    meta:targetContext "Computer Programming" ;
+    guidance:sourceContext "Molecular Biology" ;
+    guidance:targetContext "Computer Programming" ;
     rdfs:comment "Guidance for facilitating collaboration between biologists and programmers." .
 
 :metaGuidance a :OntologyModel ;
