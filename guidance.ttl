@@ -5,6 +5,7 @@
 @prefix guidance: <./guidance#> .
 @prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
 
 guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
@@ -60,7 +61,3 @@ guidance:InterdisciplinaryCollaboration rdf:type guidance:Interpretation ;
     guidance:sourceContext "Molecular Biology" ;
     guidance:targetContext "Computer Programming" ;
     rdfs:comment "Guidance for facilitating collaboration between biologists and programmers." .
-
-:metaGuidance a :OntologyModel ;
-    dct:title "Meta Guidance" ;
-    dct:source <./meta-guidance.ttl> .
