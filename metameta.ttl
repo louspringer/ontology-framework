@@ -9,6 +9,14 @@
 metameta:MetaMetaOntology rdf:type owl:Ontology ;
     dc:title "MetaMeta Core Ontology" ;
     dc:version "1.0" ;
+    dct:created "2024-01-20"^^xsd:date ;
+    dct:modified "2024-01-20"^^xsd:date ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:license <http://opensource.org/licenses/MIT> ;
+    dct:description "Core meta-meta concepts for ontology organization and abstraction hierarchies" ;
+    dct:isPartOf <http://louspringer.com/ontology-framework> ;
+    dct:type dct:Dataset ;
+    dct:conformsTo <http://www.w3.org/2002/07/owl> ;
     rdfs:comment "Core meta-meta concepts for ontology organization" .
 
 # Core Classes
