@@ -6,13 +6,9 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 
-metameta:MetaMetaOntology rdf:type owl:Ontology ;
-    dc:title "Knowledge Framework Meta-Meta-Ontology" ;
-    owl:versionInfo "1.1" ;
-    dct:created "2024-01-01"^^xsd:date ;
-    dct:modified "2024-03-15"^^xsd:date ;
-    owl:priorVersion <./metameta/1.0> ;
-    owl:imports <./conversation> .
+:metametaCore a :OntologyModel ;
+    dct:title "MetaMeta Core" ;
+    dct:source <./metameta-core.ttl> .
 
 # Core Classes
 metameta:AbstractionDimension rdf:type owl:Class ;

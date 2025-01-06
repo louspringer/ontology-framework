@@ -2,7 +2,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix meta: <./meta#> .
+@prefix meta: <./llm-guidance#> .
 @prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 
@@ -60,3 +60,7 @@ meta:InterdisciplinaryCollaboration rdf:type meta:Interpretation ;
     meta:sourceContext "Molecular Biology" ;
     meta:targetContext "Computer Programming" ;
     rdfs:comment "Guidance for facilitating collaboration between biologists and programmers." .
+
+:metaGuidance a :OntologyModel ;
+    dct:title "Meta Guidance" ;
+    dct:source <./meta-guidance.ttl> .

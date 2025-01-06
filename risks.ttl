@@ -2,17 +2,17 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix risk: <http://louspringer.com/ontology/risk#> .
-@prefix conv: <http://louspringer.com/ontology/conversation#> .
+@prefix risk: <./risk#> .
+@prefix conv: <./conversation#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 risk:RiskOntology rdf:type owl:Ontology ;
-    dc:title "Project Risk Ontology" ;
+    dc:title "Risk Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include inferred risks and constraints from interdisciplinary collaboration." ;
-    owl:imports <http://louspringer.com/ontology/conversation> .
+    owl:imports <./conversation> .
 
 # Core Classes
 risk:Risk rdf:type owl:Class ;
