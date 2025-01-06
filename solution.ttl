@@ -2,13 +2,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix sol: <http://louspringer.com/ontology/solution#> .
-@prefix prob: <http://louspringer.com/ontology/problem#> .
-@prefix metameta: <http://louspringer.com/ontology/metameta#> .
+@prefix sol: <./solution#> .
+@prefix prob: <./problem#> .
+@prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 
-sol:SolutionSpaceOntology rdf:type owl:Ontology ;
-    dc:title "Solution Space Ontology" ;
+sol:SolutionOntology rdf:type owl:Ontology ;
+    dc:title "Solution Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include solutions for interdisciplinary collaboration." .
 
@@ -69,4 +69,4 @@ sol:ValidationStatus rdf:type owl:Class ;
     ) .
 
 # Add meta-core import
-owl:imports <http://louspringer.com/ontology/meta> .
+owl:imports <./meta> .
