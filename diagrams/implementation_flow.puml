@@ -6,6 +6,8 @@ skinparam {
     NodeFontName "Helvetica"
     NodeFontSize 12
     NodeFontColor #333333
+    PackageStyle rectangle
+    Padding 10
 }
 
 ' Infrastructure Layer
@@ -14,8 +16,8 @@ package "Infrastructure" {
     [Repository Structure 📁] as repo #lightblue
     [Integration Testing 🧪] as testing #lightblue
     
-    workflow -> repo
-    repo -> testing
+    workflow -down-> repo
+    repo -down-> testing
 }
 
 ' Core Features Layer
@@ -24,8 +26,8 @@ package "Core Features" {
     [Performance Optimization 🚀] as performance #lightgreen
     [Format Transformations 🔄] as formats #lightgreen
     
-    validation -> performance
-    performance -> formats
+    validation -down-> performance
+    performance -down-> formats
 }
 
 ' Advanced Features Layer
@@ -34,8 +36,8 @@ package "Advanced Features" {
     [Collaborative Dev 👥] as collab #lightyellow
     [Vocabulary Suggestions 💡] as vocab #lightyellow
     
-    vectordb -> collab
-    collab -> vocab
+    vectordb -down-> collab
+    collab -down-> vocab
 }
 
 ' Example Ontologies Layer
@@ -44,14 +46,19 @@ package "Examples" {
     [Elvis Porkenheimer 🎸] as elvis #lightpink
     [LLM Generation 🤖] as llm #lightpink
     
-    alignment -> elvis
-    elvis -> llm
+    alignment -down-> elvis
+    elvis -down-> llm
 }
 
 ' Cross-Layer Dependencies
-testing -> validation
-performance -> vectordb
-repo -> alignment
+testing -down-> validation
+performance -down-> vectordb
+repo -down-> alignment
+
+' Layout Adjustments
+workflow -[hidden]down- validation
+validation -[hidden]down- vectordb
+vectordb -[hidden]down- alignment
 
 legend right
     |= Layer |= Status |
