@@ -4,6 +4,7 @@
 **Q:** Oh I see what you are doing. If someone selects the same row twice, it returns the cached result?
 
 **A:** Yes, exactly! Based on the Streamlit documentation and search results, here's what's happening:
+
 1. load_document_list() is correctly cached with @st.cache_data
 2. When a user selects a file and extract_document_content() runs, that result is also cached
 
@@ -11,6 +12,7 @@
 **Q:** This *could* use gobs of memory. Is the cache smart enough to dump cache entries when under memory pressure?
 
 **A:** Based on the documentation, Streamlit's caching system does not automatically dump cache entries under memory pressure. We need to explicitly configure:
+
 - TTL (Time To Live) for cache expiration
 - max_entries to limit cache size
 - Manual cache clearing if needed
@@ -47,15 +49,18 @@ def extract_document_content(filename):
 ## Key Learnings
 
 ### Cache Types
+
 - Use @st.cache_data for data transformations and queries that return serializable objects (e.g., DataFrames, lists, dictionaries)
 - Use @st.cache_resource for non-serializable objects and stateful connections (e.g., database connections, ML models, API clients)
 
 ### Memory Management
+
 - Added max_entries=20 for document cache to prevent unbounded growth
 - Added ttl="1h" for time-based cache invalidation
 - Focus caching limits on heavy operations (document extraction)
 
 ### Best Practices
+
 - Cache expensive operations
 - Use appropriate cache decorators
 - Set reasonable limits on cache size

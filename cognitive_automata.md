@@ -11,11 +11,13 @@ The Cognitive Automata Ontology merges concepts from finite state automata theor
 The ontology defines several key disjointness and overlap relationships:
 
 - **Disjoint Classes**:
+
   - `AdaptiveSystem` and `ComplexEnvironment` (a system cannot be an environment)
   - `Pattern` is disjoint with both `AdaptiveSystem` and `ComplexEnvironment`
   - `RecurrentPattern` and `EmergentPattern` are disjoint (a pattern cannot be both)
 
 - **Overlapping Classes**:
+
   - `FiniteStateAutomaton` and `PatternRecognizer` can overlap (a system can be both)
   - This enables hybrid systems that combine deterministic state machines with pattern recognition
 
@@ -40,9 +42,12 @@ The ontology models the interaction between finite systems and infinite complexi
 Patterns are fundamental units of learning and adaptation:
 
 - **Pattern Types**:
+
   - Recurrent Patterns (repeating across contexts)
   - Emergent Patterns (arising from system interactions)
+
 - **Pattern Properties**:
+
   - Confidence scoring
   - Recognition mechanisms
   - Adaptation triggers
@@ -52,10 +57,12 @@ Patterns are fundamental units of learning and adaptation:
 The ontology defines several critical relationships:
 
 1. **Pattern Recognition**:
+
    - Systems recognize patterns (`recognizesPattern`)
    - Patterns have confidence scores (`hasConfidence`)
 
 2. **Environmental Adaptation**:
+
    - Systems adapt to environments (`adaptsTo`)
    - States track system evolution (`hasState`)
 
@@ -86,21 +93,25 @@ The ontology integrates with:
 ### Planned Extensions
 
 1. **Validation Framework**:
+
    - SHACL shapes for constraint checking
    - Pattern consistency validation
    - State transition rules
 
 2. **Temporal Modeling**:
+
    - Pattern evolution over time
    - Learning rate metrics
    - Adaptation velocity measures
 
 3. **Error Handling**:
+
    - Pattern mismatch recovery
    - State correction mechanisms
    - Confidence adjustment strategies
 
 4. **Learning Strategies**:
+
    - Pattern discovery algorithms
    - Adaptation optimization
    - State space exploration

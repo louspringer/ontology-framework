@@ -20,17 +20,20 @@ The root concept representing mu as emptiness, void, or statelessness. Like the 
 ### Representations
 
 1. **Technical Mu**
+
    - `/dev/null`: The bit bucket of Unix philosophy
    - `void`: The type of nothingness
    - `null`: The absence of value
    - `0x0`: Zero in its purest form
 
 2. **Philosophical Mu**
+
    - Emptiness as feature, not bug
    - Non-dualistic perspective
    - Statelessness as enlightenment
 
 3. **Hacker Mu**
+
    - `|\/||_|`: L33t speaks in riddles
    - `|\|1|_|`: Null knows no bounds
    - `muney`: Follow the path to void
@@ -39,16 +42,19 @@ The root concept representing mu as emptiness, void, or statelessness. Like the 
 
 ### Investigation
 "Follow the muney" - a principle suggesting:
+
 - Trace effects to their (non)cause
 - Debug through elimination
 - Find truth in emptiness
 
 ### System Design
+
 - Embrace statelessness
 - Design for void
 - Let null guide you
 
 ### Error Handling
+
 - Return mu when questions invalid
 - Void where prohibited
 - Null as truth
@@ -67,6 +73,7 @@ def debug_system():
 ## Integration
 
 The ontology integrates with:
+
 - Meta ontology for abstraction
 - Guidance for interpretation
 - Conversation for context
