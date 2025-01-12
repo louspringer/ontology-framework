@@ -1,0 +1,134 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix infra: <./infrastructure_batch#> .
+@prefix task: <./infrastructure_batch#task/> .
+@prefix status: <./infrastructure_batch#status/> .
+@prefix issue: <./infrastructure_batch#issue/> .
+
+# Classes
+infra:Issue a owl:Class ;
+    rdfs:label "GitHub Issue"@en ;
+    rdfs:comment "A GitHub issue requiring implementation"@en .
+
+infra:Task a owl:Class ;
+    rdfs:label "Implementation Task"@en ;
+    rdfs:comment "A specific task within an issue implementation"@en .
+
+infra:Status a owl:Class ;
+    rdfs:label "Status"@en ;
+    rdfs:comment "Status of a task or issue"@en .
+
+# Status Instances
+status:Pending a infra:Status ;
+    rdfs:label "Pending"@en .
+
+status:InProgress a infra:Status ;
+    rdfs:label "In Progress"@en .
+
+status:Completed a infra:Status ;
+    rdfs:label "Completed"@en .
+
+# Properties
+infra:hasTask a owl:ObjectProperty ;
+    rdfs:domain infra:Issue ;
+    rdfs:range infra:Task ;
+    rdfs:label "has task"@en .
+
+infra:hasStatus a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (infra:Issue infra:Task) ] ;
+    rdfs:range infra:Status ;
+    rdfs:label "has status"@en .
+
+infra:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf (infra:Issue infra:Task) ] ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has priority"@en .
+
+infra:dependsOn a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (infra:Issue infra:Task) ] ;
+    rdfs:range [ owl:unionOf (infra:Issue infra:Task) ] ;
+    rdfs:label "depends on"@en .
+
+# Issue 20: Workflow & Branch Protection
+issue:Workflow a infra:Issue ;
+    rdfs:label "GitHub Workflow & Branch Protection"@en ;
+    rdfs:comment "Implement proper GitHub workflow with branch protection and automated reviews"@en ;
+    infra:hasStatus status:InProgress ;
+    infra:hasPriority 1 ;
+    infra:hasTask task:BranchProtection, task:ReviewRequirements, task:SourcerySetup .
+
+task:BranchProtection a infra:Task ;
+    rdfs:label "Configure Branch Protection"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 1 .
+
+task:ReviewRequirements a infra:Task ;
+    rdfs:label "Setup Review Requirements"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 2 ;
+    infra:dependsOn task:BranchProtection .
+
+task:SourcerySetup a infra:Task ;
+    rdfs:label "Configure Sourcery Integration"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 3 ;
+    infra:dependsOn task:ReviewRequirements .
+
+# Issue 2: Refactor Artifacts
+issue:Refactor a infra:Issue ;
+    rdfs:label "Refactor Repository Structure"@en ;
+    rdfs:comment "Refactor artifacts into src/models layout for better organization"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 2 ;
+    infra:dependsOn issue:Workflow ;
+    infra:hasTask task:CreateStructure, task:MoveFiles, task:UpdateImports .
+
+task:CreateStructure a infra:Task ;
+    rdfs:label "Create Directory Structure"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 1 .
+
+task:MoveFiles a infra:Task ;
+    rdfs:label "Move Files to New Structure"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 2 ;
+    infra:dependsOn task:CreateStructure .
+
+task:UpdateImports a infra:Task ;
+    rdfs:label "Update Import References"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 3 ;
+    infra:dependsOn task:MoveFiles .
+
+# Issue 9: Integration Testing
+issue:Testing a infra:Issue ;
+    rdfs:label "Integration Testing Framework"@en ;
+    rdfs:comment "Implement comprehensive integration testing framework"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 3 ;
+    infra:dependsOn issue:Refactor ;
+    infra:hasTask task:TestFramework, task:TestCases, task:CISetup .
+
+task:TestFramework a infra:Task ;
+    rdfs:label "Setup Test Framework"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 1 .
+
+task:TestCases a infra:Task ;
+    rdfs:label "Create Test Cases"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 2 ;
+    infra:dependsOn task:TestFramework .
+
+task:CISetup a infra:Task ;
+    rdfs:label "Configure CI Integration"@en ;
+    infra:hasStatus status:Pending ;
+    infra:hasPriority 3 ;
+    infra:dependsOn task:TestCases . 
