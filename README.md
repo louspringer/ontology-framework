@@ -16,15 +16,41 @@ This framework provides:
 
 ![Implementation Flow](diagrams/implementation_flow.svg)
 
-The implementation is organized into four main layers:
-1. Infrastructure: Core repository setup and testing framework
-2. Core Features: Validation, performance, and transformations
-3. Advanced Features: Vector DB, collaboration, and suggestions
-4. Examples: Reference ontologies and demonstrations
+The implementation follows a layered architecture with clear dependencies:
+
+### 1. Infrastructure Layer 🔧
+Foundation layer providing essential development and testing capabilities:
+- GitHub Workflow: Branch protection, PR reviews, and automated checks
+- Repository Structure: Clean organization of code, models, and examples
+- Integration Testing: Comprehensive test framework for all components
+
+### 2. Core Features Layer ✅
+Core functionality enabling ontology management and validation:
+- Constraint Validation: SHACL-based validation with custom extensions
+- Performance Optimization: Caching and efficient processing
+- Format Transformations: Lossless conversion between formats
+
+### 3. Advanced Features Layer 🔍
+Enhanced capabilities building on core features:
+- Vector Database: Semantic search and similarity matching
+- Collaborative Development: Version control and merge resolution
+- Vocabulary Suggestions: AI-powered term recommendations
+
+### 4. Examples Layer 🎸
+Reference implementations demonstrating framework usage:
+- Root Alignment: Examples aligned with core ontologies
+- Elvis Porkenheimer: Comprehensive domain example
+- LLM Generation: AI-generated ontology demonstrations
+
+Dependencies flow downward, ensuring:
+- Clear separation of concerns
+- Modular development
+- Testable components
+- Progressive enhancement
 
 ## Installation
 
-> **Note:** This project is currently in early development. The Python implementation is not yet available - see the [TODO section](#todo) for planned features and progress tracking.
+> **Note:** This project is currently in early development. The Python implementation is not yet available - see the Implementation Status section for progress tracking.
 
 ```bash
 # Create conda environment
