@@ -4,40 +4,40 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ex:FiniteStateAutomaton a owl:Class ;
-    rdfs:label "Finite State Automaton" ;
-    rdfs:comment "A theoretical computational model defined by a finite set of states, deterministic transitions, and predictable outputs." .
+    rdfs:label "Finite State Automaton"@en ;
+    rdfs:comment "A theoretical computational model defined by a finite set of states, deterministic transitions, and predictable outputs."@en .
 
 ex:RealWorld a owl:Class ;
-    rdfs:label "Real World" ;
-    rdfs:comment "The infinite and non-deterministic system of interactions, inputs, and processes we inhabit." .
+    rdfs:label "Real World"@en ;
+    rdfs:comment "The infinite and non-deterministic system of interactions, inputs, and processes we inhabit."@en .
 
 ex:InjectionEvent a owl:Class ;
-    rdfs:label "Injection Event" ;
-    rdfs:comment "The act of placing a finite state automaton into the real world, causing dissonance due to the clash of finite determinism and infinite complexity." .
+    rdfs:label "Injection Event"@en ;
+    rdfs:comment "The act of placing a finite state automaton into the real world, causing dissonance due to the clash of finite determinism and infinite complexity."@en .
 
 ex:StruggleWithInputs a owl:Class ;
-    rdfs:label "Struggle with Infinite Inputs" ;
-    rdfs:comment "The difficulty faced by finite systems in handling the infinite variety and ambiguity of real-world inputs." .
+    rdfs:label "Struggle with Infinite Inputs"@en ;
+    rdfs:comment "The difficulty faced by finite systems in handling the infinite variety and ambiguity of real-world inputs."@en .
 
 ex:AmbiguityAndNonDeterminism a owl:Class ;
-    rdfs:label "Ambiguity and Non-Determinism" ;
-    rdfs:comment "The characteristic of the real world where outcomes are probabilistic and nuanced, challenging deterministic systems." .
+    rdfs:label "Ambiguity and Non-Determinism"@en ;
+    rdfs:comment "The characteristic of the real world where outcomes are probabilistic and nuanced, challenging deterministic systems."@en .
 
 ex:CopingMechanisms a owl:Class ;
-    rdfs:label "Coping Mechanisms" ;
-    rdfs:comment "Strategies employed by a finite state automaton to adapt to real-world complexity, such as expanding state space or adopting heuristics." .
+    rdfs:label "Coping Mechanisms"@en ;
+    rdfs:comment "Strategies employed by a finite state automaton to adapt to real-world complexity, such as expanding state space or adopting heuristics."@en .
 
 ex:EmergentComplexity a owl:Class ;
-    rdfs:label "Emergent Complexity" ;
-    rdfs:comment "The realization of intricate patterns and beauty that arise from interacting with unpredictable systems." .
+    rdfs:label "Emergent Complexity"@en ;
+    rdfs:comment "The realization of intricate patterns and beauty that arise from interacting with unpredictable systems."@en .
 
 ex:Outcome a owl:Class ;
-    rdfs:label "Outcome" ;
-    rdfs:comment "The result of the interaction between a finite state automaton and the real world, ranging from adaptation to failure." .
+    rdfs:label "Outcome"@en ;
+    rdfs:comment "The result of the interaction between a finite state automaton and the real world, ranging from adaptation to failure."@en .
 
 ex:interactionBetweenAutomatonAndWorld a owl:ObjectProperty ;
-    rdfs:label "interaction between automaton and world" ;
+    rdfs:label "interaction between automaton and world"@en ;
     rdfs:domain ex:FiniteStateAutomaton ;
     rdfs:range ex:RealWorld ;
-    rdfs:comment "Describes the interaction and consequences of placing a finite state automaton in the real world." .
+    rdfs:comment "Describes the interaction and consequences of placing a finite state automaton in the real world."@en .
 
