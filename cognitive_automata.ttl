@@ -1,0 +1,92 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cog: <http://example.org/cognitive-automata#> .
+
+# Core Classes with Disjointness
+cog:AdaptiveSystem a owl:Class ;
+    rdfs:label "Adaptive System" ;
+    rdfs:comment "A system that can modify its behavior through pattern recognition and learning" ;
+    rdfs:subClassOf meta:System .
+
+cog:FiniteStateAutomaton a owl:Class ;
+    rdfs:label "Finite State Automaton" ;
+    rdfs:comment "A deterministic system with finite states and transitions" ;
+    rdfs:subClassOf cog:AdaptiveSystem .
+
+cog:PatternRecognizer a owl:Class ;
+    rdfs:label "Pattern Recognizer" ;
+    rdfs:comment "A component that identifies and learns from recurring patterns" ;
+    rdfs:subClassOf cog:AdaptiveSystem .
+
+# Note: FiniteStateAutomaton and PatternRecognizer are NOT disjoint
+# A system can be both a FSA and a PatternRecognizer
+
+cog:ComplexEnvironment a owl:Class ;
+    rdfs:label "Complex Environment" ;
+    rdfs:comment "A non-deterministic environment with infinite possible states and patterns" ;
+    owl:disjointWith cog:AdaptiveSystem .  # Environment and System are disjoint
+
+# Pattern Types with Disjointness
+cog:Pattern a owl:Class ;
+    rdfs:label "Pattern" ;
+    rdfs:comment "A recognizable structure or behavior in the environment" ;
+    owl:disjointWith cog:AdaptiveSystem, cog:ComplexEnvironment .
+
+cog:RecurrentPattern a owl:Class ;
+    rdfs:label "Recurrent Pattern" ;
+    rdfs:comment "A pattern that appears repeatedly across different contexts" ;
+    rdfs:subClassOf cog:Pattern .
+
+cog:EmergentPattern a owl:Class ;
+    rdfs:label "Emergent Pattern" ;
+    rdfs:comment "A pattern that arises from system-environment interactions" ;
+    rdfs:subClassOf cog:Pattern .
+
+# RecurrentPattern and EmergentPattern are disjoint
+cog:RecurrentPattern owl:disjointWith cog:EmergentPattern .
+
+# Properties
+cog:recognizesPattern a owl:ObjectProperty ;
+    rdfs:label "recognizes pattern" ;
+    rdfs:domain cog:AdaptiveSystem ;
+    rdfs:range cog:Pattern ;
+    rdfs:comment "Relates a system to patterns it can recognize" .
+
+cog:adaptsTo a owl:ObjectProperty ;
+    rdfs:label "adapts to" ;
+    rdfs:domain cog:AdaptiveSystem ;
+    rdfs:range cog:ComplexEnvironment ;
+    rdfs:comment "Describes how a system modifies itself to handle environmental complexity" .
+
+cog:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "has confidence" ;
+    rdfs:domain cog:Pattern ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "The confidence level in a recognized pattern (0-1)" .
+
+cog:hasState a owl:ObjectProperty ;
+    rdfs:label "has state" ;
+    rdfs:domain cog:FiniteStateAutomaton ;
+    rdfs:range cog:State ;
+    rdfs:comment "The current state of an automaton" .
+
+# Example Individual showing hybrid nature
+cog:LearningAutomaton a cog:FiniteStateAutomaton, cog:PatternRecognizer ;
+    rdfs:label "Learning Automaton" ;
+    cog:recognizesPattern cog:SimpleRecurrentPattern ;
+    cog:adaptsTo cog:RealWorldEnvironment ;
+    cog:hasConfidence "0.85"^^xsd:decimal .
+
+# TODO: Future Extensions
+# 1. Add SHACL shapes for validation
+# 2. Expand temporal aspects of pattern recognition
+# 3. Add metrics for adaptation success
+# 4. Include error handling patterns
+# 5. Add learning strategy patterns 
