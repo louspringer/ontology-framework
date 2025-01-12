@@ -1,0 +1,105 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shapes: <./ontology_shapes#> .
+@prefix align: <./ontology_alignment#> .
+
+# Ontology Metadata Shape
+shapes:OntologyShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] .
+
+# Class Documentation Shape
+shapes:ClassShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Class ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] .
+
+# Property Documentation Shape
+shapes:PropertyShape
+    a sh:NodeShape ;
+    sh:targetClass owl:ObjectProperty, owl:DatatypeProperty ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:domain ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path rdfs:range ;
+        sh:minCount 1 ;
+    ] .
+
+# Alignment Mapping Shape
+shapes:MappingShape
+    a sh:NodeShape ;
+    sh:targetClass align:MappingMetadata ;
+    sh:property [
+        sh:path align:hasConfidence ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path align:hasCorrespondence ;
+        sh:minCount 2 ;
+    ] .
+
+# Instance Documentation Shape
+shapes:InstanceShape
+    a sh:NodeShape ;
+    sh:targetClass owl:NamedIndividual ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:minCount 1 ;
+    ] .
+
+# Equivalence Relationship Shape
+shapes:EquivalenceShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf owl:equivalentClass ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+    ] . 
