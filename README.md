@@ -16,11 +16,9 @@ This framework provides:
 
 ![Ontology Framework Architecture](Ontology%20Framework.svg)
 
-
 ## Installation
 
 > **Note:** This project is currently in early development. The Python implementation is not yet available - see the [TODO section](#todo) for planned features and progress tracking.
-
 
 ```bash
 # Create conda environment
@@ -40,6 +38,7 @@ This project builds upon several recent advances in combining ontologies with LL
    - Provide semantic error detection
    - Enable query repair through LLM feedback loops
    - Improve accuracy from 54% to 72% through ontological validation
+
 2. **LLMs4OL Framework** [^2]: Provides capabilities for:
 
    - Term typing
@@ -61,7 +60,6 @@ Our framework extends these approaches by focusing specifically on semantic cons
 - [ ] [Implement format conversion utilities](https://github.com/louspringer/ontology-framework/issues/8)
 - [ ] [Add validation test suite](https://github.com/louspringer/ontology-framework/issues/9)
 - [ ] [Create getting started guide](https://github.com/louspringer/ontology-framework/issues/10)
-
 
 ## License
 

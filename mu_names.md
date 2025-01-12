@@ -5,6 +5,7 @@ A systematic approach for generating memorable, thematic names using the Mighty 
 ## Structure
 
 Each name consists of three parts:
+
 1. **Adjective**: A descriptive word (e.g., Valiant, Mighty, Fearless)
 2. **Adverb**: A modifier (e.g., Swiftly, Boldly, Quickly)
 3. **Noun**: A character or element from Mighty Mouse (e.g., Mouse, Oilcan, Pearl)
@@ -12,6 +13,7 @@ Each name consists of three parts:
 ## Identifiers
 
 Each composite name includes:
+
 - **Three-letter abbreviation**: Unique identifier (e.g., VSM, MBO, FQP)
 - **Mnemonic**: Memorable uppercase reference (e.g., VALORMOUSE, MIGHTYOIL)
 
@@ -40,6 +42,7 @@ Each composite name includes:
 ## Ontology
 
 The naming system is formally defined in `mu_names.ttl` with:
+
 - Component hierarchies
 - Relationship definitions
 - Validation rules
