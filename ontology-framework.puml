@@ -9,6 +9,17 @@ skinparam class {
     BackgroundColor<<Integration>> LightYellow
 }
 
+note as N1
+  The most important aspects of this framework are the relationships
+  between ontologies and how they enable semantic interoperability.
+  
+  Key principles:
+  - Meta layer provides foundational concepts
+  - Core layer implements domain-agnostic patterns
+  - Domain layer adds specific knowledge areas
+  - Integration layer ensures consistency
+end note
+
 ' Meta Layer
 class MetaMetaOntology <<Meta>> {
     + AbstractionDimension
@@ -20,6 +31,12 @@ class MetaMetaOntology <<Meta>> {
     + domainScope
 }
 
+note right of MetaMetaOntology
+  Foundation of the framework
+  Defines how knowledge is structured
+  and abstracted across domains
+end note
+
 class LLMGuidanceOntology <<Meta>> {
     + Interpretation
     + Action
@@ -29,6 +46,12 @@ class LLMGuidanceOntology <<Meta>> {
     + analogySource
     + analogyTarget
 }
+
+note right of LLMGuidanceOntology
+  Bridges between LLM capabilities
+  and domain-specific needs through
+  analogical reasoning
+end note
 
 ' Core Layer
 class ProblemOntology <<Core>> {
@@ -51,6 +74,12 @@ class SolutionOntology <<Core>> {
     + validationStatus
 }
 
+note right of SolutionOntology
+  Solutions are validated against
+  problem constraints and must
+  satisfy business needs
+end note
+
 class ConversationOntology <<Core>> {
     + BacklogItem
     + Conversation
@@ -70,6 +99,12 @@ class CognitionPatternsOntology <<Core>> {
     + implementsMetaConcept
     + solvesProblem
 }
+
+note left of CognitionPatternsOntology
+  Captures recurring patterns in
+  how LLMs process and understand
+  domain concepts
+end note
 
 ' Domain Layer
 class CreativeAnalogiesOntology <<Domain>> {
@@ -119,6 +154,12 @@ class OntologyShapes <<Integration>> {
     + hasValidation
     + hasConstraint
 }
+
+note bottom of OntologyShapes
+  Ensures ontological consistency
+  through SHACL shapes and
+  validation rules
+end note
 
 ' Relationships
 MetaMetaOntology <|-- LLMGuidanceOntology
