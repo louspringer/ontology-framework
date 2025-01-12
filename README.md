@@ -12,6 +12,12 @@ This framework provides:
 - Extensible model structures
 - Multi-format projections (Turtle, UML, ERD, etc.)
 
+## Framework Architecture
+
+![Framework Architecture](ontology-framework.svg)
+
+The framework is built on a layered architecture with meta, base, and domain-specific components.
+
 ## Implementation Flow
 
 ![Implementation Flow](diagrams/Implementation%20Flow.svg)
