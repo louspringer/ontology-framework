@@ -1,0 +1,211 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mu: <./mu_names#> .
+
+# Problem Description
+mu:NamingProblem a problem:Problem ;
+    rdfs:label "Mighty Mouse Themed Name Generation" ;
+    rdfs:comment """This ontology solves the problem of generating consistent, thematic names for feature branches or components using the Mighty Mouse universe.
+    Key requirements addressed:
+    1. Three-part names (Adjective-Adverb-Noun structure)
+    2. Thematic consistency with Mighty Mouse universe
+    3. Unique three-letter abbreviations
+    4. Memorable 10-character mnemonics
+    5. Extensible naming system for future additions""" ;
+    problem:hasSolution mu:NamingSystem .
+
+mu:NamingSystem a solution:Solution ;
+    rdfs:label "Mighty Mouse Naming System" ;
+    rdfs:comment "A systematic approach to generating three-part names with abbreviations and mnemonics" ;
+    solution:implements mu:CompositeName .
+
+mu:NamingComponent a owl:Class ;
+    rdfs:label "Naming Component" ;
+    rdfs:comment "A component used in constructing three-part descriptive names" .
+
+mu:Adjective a owl:Class ;
+    rdfs:subClassOf mu:NamingComponent ;
+    rdfs:label "Adjective" ;
+    rdfs:comment "Descriptive word modifying the noun" .
+
+mu:Adverb a owl:Class ;
+    rdfs:subClassOf mu:NamingComponent ;
+    rdfs:label "Adverb" ;
+    rdfs:comment "Word modifying the adjective or verb" .
+
+mu:Noun a owl:Class ;
+    rdfs:subClassOf mu:NamingComponent ;
+    rdfs:label "Noun" ;
+    rdfs:comment "Character or element from Mighty Mouse universe" .
+
+mu:CompositeName a owl:Class ;
+    rdfs:subClassOf mu:NamingComponent ;
+    rdfs:label "Composite Name" ;
+    rdfs:comment "A complete three-part name combining adjective, adverb, and noun" .
+
+mu:hasAbbreviation a owl:DatatypeProperty ;
+    rdfs:domain mu:NamingComponent ;
+    rdfs:range xsd:string ;
+    rdfs:label "has abbreviation" ;
+    rdfs:comment "Three-letter abbreviation for the name" .
+
+mu:hasMnemonic a owl:DatatypeProperty ;
+    rdfs:domain mu:NamingComponent ;
+    rdfs:range xsd:string ;
+    rdfs:label "has mnemonic" ;
+    rdfs:comment "Memorable uppercase reference capturing the essence of the name" .
+
+# Individual Components
+mu:Valiant a mu:Adjective ;
+    rdfs:label "Valiant" .
+
+mu:Mighty a mu:Adjective ;
+    rdfs:label "Mighty" .
+
+mu:Fearless a mu:Adjective ;
+    rdfs:label "Fearless" .
+
+mu:Cosmic a mu:Adjective ;
+    rdfs:label "Cosmic" .
+
+mu:Brave a mu:Adjective ;
+    rdfs:label "Brave" .
+
+mu:Dashing a mu:Adjective ;
+    rdfs:label "Dashing" .
+
+mu:Clever a mu:Adjective ;
+    rdfs:label "Clever" .
+
+mu:Atomic a mu:Adjective ;
+    rdfs:label "Atomic" .
+
+mu:Super a mu:Adjective ;
+    rdfs:label "Super" .
+
+mu:Heroic a mu:Adjective ;
+    rdfs:label "Heroic" .
+
+# Adverbs
+mu:Swiftly a mu:Adverb ;
+    rdfs:label "Swiftly" .
+
+mu:Boldly a mu:Adverb ;
+    rdfs:label "Boldly" .
+
+mu:Quickly a mu:Adverb ;
+    rdfs:label "Quickly" .
+
+mu:Justly a mu:Adverb ;
+    rdfs:label "Justly" .
+
+mu:Wisely a mu:Adverb ;
+    rdfs:label "Wisely" .
+
+mu:Nimbly a mu:Adverb ;
+    rdfs:label "Nimbly" .
+
+mu:Rapidly a mu:Adverb ;
+    rdfs:label "Rapidly" .
+
+mu:Proudly a mu:Adverb ;
+    rdfs:label "Proudly" .
+
+mu:Greatly a mu:Adverb ;
+    rdfs:label "Greatly" .
+
+# Nouns
+mu:Mouse a mu:Noun ;
+    rdfs:label "Mouse" .
+
+mu:Oilcan a mu:Noun ;
+    rdfs:label "Oilcan" .
+
+mu:Pearl a mu:Noun ;
+    rdfs:label "Pearl" .
+
+mu:Kitty a mu:Noun ;
+    rdfs:label "Kitty" .
+
+mu:Scrappy a mu:Noun ;
+    rdfs:label "Scrappy" .
+
+mu:Hero a mu:Noun ;
+    rdfs:label "Hero" .
+
+mu:Terror a mu:Noun ;
+    rdfs:label "Terror" .
+
+mu:Cat a mu:Noun ;
+    rdfs:label "Cat" .
+
+mu:Trouble a mu:Noun ;
+    rdfs:label "Trouble" .
+
+mu:Oil a mu:Noun ;
+    rdfs:label "Oil" .
+
+# Composite Names
+mu:ValiantSwiftlyMouse a mu:CompositeName ;
+    rdfs:label "Valiant Swiftly Mouse" ;
+    mu:hasAbbreviation "VSM" ;
+    mu:hasMnemonic "VALORMOUSE" .
+
+mu:MightyBoldlyOilcan a mu:CompositeName ;
+    rdfs:label "Mighty Boldly Oilcan" ;
+    mu:hasAbbreviation "MBO" ;
+    mu:hasMnemonic "MIGHTYOIL" .
+
+mu:FearlessQuicklyPearl a mu:CompositeName ;
+    rdfs:label "Fearless Quickly Pearl" ;
+    mu:hasAbbreviation "FQP" ;
+    mu:hasMnemonic "FEARLESSPEARL" .
+
+mu:CosmicJustlyKitty a mu:CompositeName ;
+    rdfs:label "Cosmic Justly Kitty" ;
+    mu:hasAbbreviation "CJK" ;
+    mu:hasMnemonic "COSMICKITTY" .
+
+mu:BraveWiselyScrappy a mu:CompositeName ;
+    rdfs:label "Brave Wisely Scrappy" ;
+    mu:hasAbbreviation "BWS" ;
+    mu:hasMnemonic "BRAVESCRAPPY" .
+
+mu:DashingNimblyHero a mu:CompositeName ;
+    rdfs:label "Dashing Nimbly Hero" ;
+    mu:hasAbbreviation "DNH" ;
+    mu:hasMnemonic "DASHINGHERO" .
+
+mu:CleverSwiftlyTerror a mu:CompositeName ;
+    rdfs:label "Clever Swiftly Terror" ;
+    mu:hasAbbreviation "CST" ;
+    mu:hasMnemonic "CLEVERTERROR" .
+
+mu:AtomicRapidlyCat a mu:CompositeName ;
+    rdfs:label "Atomic Rapidly Cat" ;
+    mu:hasAbbreviation "ARC" ;
+    mu:hasMnemonic "ATOMICCAT" .
+
+mu:SuperProudlyTrouble a mu:CompositeName ;
+    rdfs:label "Super Proudly Trouble" ;
+    mu:hasAbbreviation "SPT" ;
+    mu:hasMnemonic "SUPERTROUBLE" .
+
+mu:HeroicGreatlyOil a mu:CompositeName ;
+    rdfs:label "Heroic Greatly Oil" ;
+    mu:hasAbbreviation "HGO" ;
+    mu:hasMnemonic "HEROICOIL" .
+
+# TODO: Future Enhancements
+# - Add relationships between components (e.g., which combinations work well together)
+# - Add more character-specific adjectives from episodes
+# - Include episode references for each component
+# - Add validation rules for name combinations
+# - Add categories for different types of names (hero names, villain names, location names) 
