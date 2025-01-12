@@ -14,7 +14,7 @@ This framework provides:
 
 ## Implementation Flow
 
-![Implementation Flow](diagrams/implementation_flow.svg)
+![Implementation Flow](diagrams/Implementation%20Flow.svg)
 
 The implementation follows a layered architecture with clear dependencies:
 
