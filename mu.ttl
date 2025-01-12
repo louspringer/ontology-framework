@@ -37,6 +37,11 @@ mu:HackerMu rdf:type owl:Class ;
     rdfs:comment "Hacker culture representations of mu (|\/||_|, |\|1|_|)" ;
     rdfs:subClassOf mu:MuConcept .
 
+mu:ManagementMu rdf:type owl:Class ;
+    rdfs:label "Management Mu" ;
+    rdfs:comment "Management practices that embody mu principles through incentivizing reduction and simplification" ;
+    rdfs:subClassOf mu:MuConcept .
+
 mu:InvestigationContext rdf:type owl:Class ;
     rdfs:label "Investigation Context" ;
     rdfs:comment "Using mu concepts in investigation and problem-solving" ;
