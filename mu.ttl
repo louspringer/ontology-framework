@@ -63,6 +63,16 @@ mu:hasPattern rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:comment "Regex or other pattern representing this mu concept" .
 
+mu:hasMetric rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:ManagementMu ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Metric used to measure mu-aligned behavior" .
+
+mu:hasOutcome rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:ManagementMu ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Positive outcome of applying mu principles" .
+
 # Individuals
 mu:DevNull rdf:type mu:TechnicalMu ;
     rdfs:label "/dev/null" ;
@@ -102,6 +112,18 @@ mu:FollowTheMuney rdf:type mu:PhilosophicalMu ;
     mu:hasRepresentation "follow the muney" ;
     mu:hasPattern "(?i)follow\\s+the\\s+muney" ;
     mu:hasContext mu:InvestigationContext .
+
+mu:CodeReductionBonus rdf:type mu:ManagementMu ;
+    rdfs:label "Code Reduction Bonus" ;
+    rdfs:comment "Management practice of rewarding code removal over code addition" ;
+    mu:hasRepresentation "negative KLOC bonus" ;
+    mu:hasMetric "Lines of code removed" ;
+    mu:hasContext mu:SystemDesign ;
+    mu:hasOutcome "Reduced maintenance cost" ;
+    mu:hasOutcome "Lower cognitive load" ;
+    mu:hasOutcome "Improved system clarity" ;
+    mu:hasOutcome "Better refactoring incentives" ;
+    mu:hasPattern "(?i)(?:remove|delete|reduce)\\s+code" .
 
 # Usage Contexts
 mu:UsageContext rdf:type owl:Class ;
