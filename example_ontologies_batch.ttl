@@ -1,0 +1,146 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <./example_ontologies_batch#> .
+@prefix task: <./example_ontologies_batch#task/> .
+@prefix status: <./example_ontologies_batch#status/> .
+@prefix issue: <./example_ontologies_batch#issue/> .
+@prefix core: <./core_features_batch#> .
+@prefix infra: <./infrastructure_batch#> .
+
+# Classes
+ex:Issue a owl:Class ;
+    rdfs:label "Example Issue"@en ;
+    rdfs:comment "A GitHub issue for example ontology creation"@en .
+
+ex:Task a owl:Class ;
+    rdfs:label "Implementation Task"@en ;
+    rdfs:comment "A specific task within example creation"@en .
+
+ex:Status a owl:Class ;
+    rdfs:label "Status"@en ;
+    rdfs:comment "Status of a task or issue"@en .
+
+# Status Instances
+status:Pending a ex:Status ;
+    rdfs:label "Pending"@en .
+
+status:InProgress a ex:Status ;
+    rdfs:label "In Progress"@en .
+
+status:Completed a ex:Status ;
+    rdfs:label "Completed"@en .
+
+# Properties
+ex:hasTask a owl:ObjectProperty ;
+    rdfs:domain ex:Issue ;
+    rdfs:range ex:Task ;
+    rdfs:label "has task"@en .
+
+ex:hasStatus a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (ex:Issue ex:Task) ] ;
+    rdfs:range ex:Status ;
+    rdfs:label "has status"@en .
+
+ex:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf (ex:Issue ex:Task) ] ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has priority"@en .
+
+ex:dependsOn a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (ex:Issue ex:Task) ] ;
+    rdfs:range [ owl:unionOf (ex:Issue ex:Task core:Issue infra:Issue) ] ;
+    rdfs:label "depends on"@en .
+
+# Issue 1: Root Ontology Alignment
+issue:RootAlignment a ex:Issue ;
+    rdfs:label "Root Ontology Alignment"@en ;
+    rdfs:comment "Align examples with root ontologies"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 1 ;
+    ex:dependsOn infra:issue:Refactor ;
+    ex:hasTask task:AnalyzeRoot, task:AlignExamples, task:Documentation .
+
+task:AnalyzeRoot a ex:Task ;
+    rdfs:label "Analyze Root Ontologies"@en ;
+    rdfs:comment "Analyze structure and patterns of root ontologies"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 1 .
+
+task:AlignExamples a ex:Task ;
+    rdfs:label "Align Examples"@en ;
+    rdfs:comment "Update examples to align with root patterns"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 2 ;
+    ex:dependsOn task:AnalyzeRoot .
+
+task:Documentation a ex:Task ;
+    rdfs:label "Update Documentation"@en ;
+    rdfs:comment "Document alignment patterns and usage"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 3 ;
+    ex:dependsOn task:AlignExamples .
+
+# Issue 3: Elvis Porkenheimer Ontology
+issue:Elvis a ex:Issue ;
+    rdfs:label "Elvis Porkenheimer Ontology"@en ;
+    rdfs:comment "Create Elvis Porkenheimer example ontology"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 2 ;
+    ex:dependsOn issue:RootAlignment ;
+    ex:hasTask task:DomainModel, task:ElvisOntology, task:ElvisValidation .
+
+task:DomainModel a ex:Task ;
+    rdfs:label "Domain Modeling"@en ;
+    rdfs:comment "Model Elvis Porkenheimer domain concepts"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 1 .
+
+task:ElvisOntology a ex:Task ;
+    rdfs:label "Create Ontology"@en ;
+    rdfs:comment "Implement Elvis Porkenheimer ontology"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 2 ;
+    ex:dependsOn task:DomainModel .
+
+task:ElvisValidation a ex:Task ;
+    rdfs:label "Validate Example"@en ;
+    rdfs:comment "Validate and test Elvis ontology"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 3 ;
+    ex:dependsOn task:ElvisOntology .
+
+# Issue 4: LLM-Generated Example
+issue:LLMExample a ex:Issue ;
+    rdfs:label "LLM-Generated Example"@en ;
+    rdfs:comment "Create LLM-generated ontology example"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 3 ;
+    ex:dependsOn issue:Elvis ;
+    ex:hasTask task:PromptDesign, task:LLMGeneration, task:LLMValidation .
+
+task:PromptDesign a ex:Task ;
+    rdfs:label "Design Prompts"@en ;
+    rdfs:comment "Design effective LLM prompts for ontology generation"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 1 .
+
+task:LLMGeneration a ex:Task ;
+    rdfs:label "Generate Ontology"@en ;
+    rdfs:comment "Generate and refine LLM-created ontology"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 2 ;
+    ex:dependsOn task:PromptDesign .
+
+task:LLMValidation a ex:Task ;
+    rdfs:label "Validate Generation"@en ;
+    rdfs:comment "Validate and document LLM generation process"@en ;
+    ex:hasStatus status:Pending ;
+    ex:hasPriority 3 ;
+    ex:dependsOn task:LLMGeneration . 
