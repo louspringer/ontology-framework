@@ -62,6 +62,20 @@ mu:hasMnemonic a owl:DatatypeProperty ;
     rdfs:label "has mnemonic" ;
     rdfs:comment "Memorable uppercase reference capturing the essence of the name" .
 
+# Add usage property definition after other properties
+mu:hasUsage a owl:DatatypeProperty ;
+    rdfs:domain mu:CompositeName ;
+    rdfs:range xsd:string ;
+    rdfs:label "has usage" ;
+    rdfs:comment "Records where this name has been used in the codebase" .
+
+# Add usage type property after hasUsage property
+mu:hasUsageType a owl:DatatypeProperty ;
+    rdfs:domain mu:CompositeName ;
+    rdfs:range xsd:string ;
+    rdfs:label "has usage type" ;
+    rdfs:comment "Type of entity this name is used for (e.g., feature-branch, component, service)" .
+
 # Individual Components
 mu:Valiant a mu:Adjective ;
     rdfs:label "Valiant" .
@@ -156,7 +170,9 @@ mu:Oil a mu:Noun ;
 mu:ValiantSwiftlyMouse a mu:CompositeName ;
     rdfs:label "Valiant Swiftly Mouse" ;
     mu:hasAbbreviation "VSM" ;
-    mu:hasMnemonic "VALORMOUSE" .
+    mu:hasMnemonic "VALORMOUSE" ;
+    mu:hasUsageType "feature-branch" ;
+    mu:hasUsage "feat-valiant-swiftly-mouse" .
 
 mu:MightyBoldlyOilcan a mu:CompositeName ;
     rdfs:label "Mighty Boldly Oilcan" ;

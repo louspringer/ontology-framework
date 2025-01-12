@@ -17,18 +17,18 @@ Each composite name includes:
 
 ## Examples
 
-| Full Name | Abbreviation | Mnemonic |
-|-----------|--------------|-----------|
-| Valiant-Swiftly-Mouse | VSM | VALORMOUSE |
-| Mighty-Boldly-Oilcan | MBO | MIGHTYOIL |
-| Fearless-Quickly-Pearl | FQP | FEARLESSPEARL |
-| Cosmic-Justly-Kitty | CJK | COSMICKITTY |
-| Brave-Wisely-Scrappy | BWS | BRAVESCRAPPY |
-| Dashing-Nimbly-Hero | DNH | DASHINGHERO |
-| Clever-Swiftly-Terror | CST | CLEVERTERROR |
-| Atomic-Rapidly-Cat | ARC | ATOMICCAT |
-| Super-Proudly-Trouble | SPT | SUPERTROUBLE |
-| Heroic-Greatly-Oil | HGO | HEROICOIL |
+| Full Name | Abbreviation | Mnemonic | Type | Used |
+|-----------|--------------|-----------|------|------|
+| Valiant-Swiftly-Mouse | VSM | VALORMOUSE | feature-branch | feat-valiant-swiftly-mouse |
+| Mighty-Boldly-Oilcan | MBO | MIGHTYOIL | | |
+| Fearless-Quickly-Pearl | FQP | FEARLESSPEARL | | |
+| Cosmic-Justly-Kitty | CJK | COSMICKITTY | | |
+| Brave-Wisely-Scrappy | BWS | BRAVESCRAPPY | | |
+| Dashing-Nimbly-Hero | DNH | DASHINGHERO | | |
+| Clever-Swiftly-Terror | CST | CLEVERTERROR | | |
+| Atomic-Rapidly-Cat | ARC | ATOMICCAT | | |
+| Super-Proudly-Trouble | SPT | SUPERTROUBLE | | |
+| Heroic-Greatly-Oil | HGO | HEROICOIL | | |
 
 ## Usage
 
