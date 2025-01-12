@@ -14,7 +14,7 @@ rule_settings:
   enable:
     - default
     - python-best-practices
-  python_version: '3.9'
+  python_version: '3.11'
 
 metrics:
   quality_threshold: 80.0
