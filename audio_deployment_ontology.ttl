@@ -1,0 +1,106 @@
+@prefix : <http://example.org/audioOntology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+### Ontology Metadata
+:AudioStreamingOntology rdf:type owl:Ontology ;
+    rdfs:label "Audio Streaming Deployment Ontology" ;
+    rdfs:comment "Ontology to capture context from this session about audio streaming, processing tools, and system configurations." .
+
+### Classes
+:Source rdf:type owl:Class ;
+    rdfs:label "Source" ;
+    rdfs:comment "Represents a device or application that initiates music playback." .
+
+:ProcessingHub rdf:type owl:Class ;
+    rdfs:label "Processing Hub" ;
+    rdfs:comment "Represents the Mac running Rogue Amoeba tools and eqMaq for audio processing." .
+
+:Output rdf:type owl:Class ;
+    rdfs:label "Output" ;
+    rdfs:comment "Represents audio output devices or endpoints." .
+
+:Tool rdf:type owl:Class ;
+    rdfs:label "Tool" ;
+    rdfs:comment "Represents software tools used for audio processing and routing." .
+
+### Properties
+:initiatesPlayback rdf:type owl:ObjectProperty ;
+    rdfs:domain :Source ;
+    rdfs:range :ProcessingHub ;
+    rdfs:label "initiates playback" ;
+    rdfs:comment "Links a source to the processing hub that captures and processes audio." .
+
+:processesAudio rdf:type owl:ObjectProperty ;
+    rdfs:domain :ProcessingHub ;
+    rdfs:range :Tool ;
+    rdfs:label "processes audio" ;
+    rdfs:comment "Links the processing hub to tools that process audio, like eqMaq." .
+
+:routesTo rdf:type owl:ObjectProperty ;
+    rdfs:domain :ProcessingHub ;
+    rdfs:range :Output ;
+    rdfs:label "routes to" ;
+    rdfs:comment "Links the processing hub to output devices." .
+
+### Individuals
+:iOS rdf:type :Source ;
+    rdfs:label "iOS" ;
+    rdfs:comment "Apple iOS devices that initiate playback via AirPlay or Apple Music." .
+
+:macOS rdf:type :Source ;
+    rdfs:label "macOS" ;
+    rdfs:comment "Apple macOS devices running Monterey or Sequoia, initiating playback via Apple Music or Safari." .
+
+:Safari rdf:type :Source ;
+    rdfs:label "Safari" ;
+    rdfs:comment "Web-based Apple Music playback through Safari." .
+
+:RogueAmoeba rdf:type :Tool ;
+    rdfs:label "Rogue Amoeba Tools" ;
+    rdfs:comment "Includes Audio Hijack, Loopback, and SoundSource for audio processing and routing." .
+
+:eqMaq rdf:type :Tool ;
+    rdfs:label "eqMaq" ;
+    rdfs:comment "EQ and DSP tool used for audio customization." .
+
+:AirPlaySpeakers rdf:type :Output ;
+    rdfs:label "AirPlay Speakers" ;
+    rdfs:comment "Speakers or devices connected via AirPlay." .
+
+:DAC rdf:type :Output ;
+    rdfs:label "DAC" ;
+    rdfs:comment "Digital-to-Analog Converter for high-quality Hi-Res audio playback." .
+
+:MultiRoomSystem rdf:type :Output ;
+    rdfs:label "Multi-Room System" ;
+    rdfs:comment "Systems supporting audio playback in multiple rooms." .
+
+### Relationships
+:iOS :initiatesPlayback :ProcessingHub .
+:macOS :initiatesPlayback :ProcessingHub .
+:Safari :initiatesPlayback :ProcessingHub .
+
+:ProcessingHub :processesAudio :RogueAmoeba .
+:ProcessingHub :processesAudio :eqMaq .
+
+:ProcessingHub :routesTo :AirPlaySpeakers .
+:ProcessingHub :routesTo :DAC .
+:ProcessingHub :routesTo :MultiRoomSystem .
+
+### Updates
+:PlantUMLRenderer rdf:type :Tool ;
+    rdfs:label "PlantUML Renderer" ;
+    rdfs:comment "Docker-based local rendering tool for generating PlantUML diagrams as SVG." .
+
+:ProcessingHub :processesAudio :PlantUMLRenderer .
+
+### TODOs and Future Work
+# 1. Add examples of additional tools like FFmpeg or SoX under the :Tool class.
+# 2. Extend :Output to include virtual output types, such as "Network Stream" or "Virtual Speaker".
+# 3. Incorporate error-handling properties to describe common failures (e.g., routing issues).
+# 4. Document workflows explicitly, such as "PlantUML Renderer workflow" or "Audio Hijack setup".
+# 5. Refine relationships to include multi-device synchronization scenarios (e.g., :synchronizesWith).
+# 6. Validate the ontology using SHACL or OWL consistency checks to ensure correctness.

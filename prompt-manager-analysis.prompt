@@ -1,0 +1,23 @@
+Analyze the provided prompt-manager.ttl ontology to:
+
+1. Identify core system components:
+   - Docker services
+   - Python components
+   - Storage elements
+   - Their interconnections and dependencies
+
+2. Extract implementation details:
+   - Port configurations
+   - Database settings
+   - CLI commands
+   - Component relationships
+
+3. Map the system architecture:
+   - Component hierarchy
+   - Data flow
+   - Service dependencies
+   - External interfaces
+
+4. Note planned extensions from TODO section
+
+Please provide a clear, structured analysis focusing on practical implementation details and system architecture. Avoid recursive analysis of the ontology structure itself.

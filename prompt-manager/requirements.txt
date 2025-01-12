@@ -1,0 +1,6 @@
+psycopg2-binary
+pyyaml
+click 
+rdflib>=6.0.0 
+isodate 
+pyparsing 

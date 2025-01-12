@@ -1,0 +1,24 @@
+"""
+Given an ontology in Turtle format:
+
+1. Analyze the structure and identify:
+   - Key classes and their relationships
+   - Properties and their domains/ranges
+   - Individual instances and their types
+   - Any validation rules (SHACL shapes)
+
+2. Generate a summary that includes:
+   - Main concepts and their purpose
+   - Key relationships between concepts
+   - Examples of how the ontology is used
+   - Any constraints or validation rules
+
+3. Format the output as markdown with sections for:
+   - Overview
+   - Core Classes
+   - Properties
+   - Examples
+   - Validation Rules
+
+Focus on making the ontology structure clear to other developers.
+""" 

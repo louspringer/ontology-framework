@@ -1,0 +1,263 @@
+@prefix : <http://example.org/prompt-manager/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Ontology Definition
+:PromptManagerOntology rdf:type owl:Ontology ;
+    rdfs:label "Prompt Manager System Ontology" ;
+    rdfs:comment "Documents the components and relationships in the prompt management system" .
+
+# Classes
+:Component rdf:type owl:Class ;
+    rdfs:label "System Component" ;
+    rdfs:comment "A component of the prompt management system" .
+
+:DockerComponent rdf:type owl:Class ;
+    rdfs:subClassOf :Component ;
+    rdfs:label "Docker Component" ;
+    rdfs:comment "Docker-related components of the system" .
+
+:PythonComponent rdf:type owl:Class ;
+    rdfs:subClassOf :Component ;
+    rdfs:label "Python Component" ;
+    rdfs:comment "Python-based components of the system" .
+
+:StorageComponent rdf:type owl:Class ;
+    rdfs:subClassOf :Component ;
+    rdfs:label "Storage Component" ;
+    rdfs:comment "Data storage components" .
+
+:Prompt rdf:type owl:Class ;
+    rdfs:label "Prompt" ;
+    rdfs:comment "A stored prompt with metadata" .
+
+:PromptVersion rdf:type owl:Class ;
+    rdfs:label "Prompt Version" ;
+    rdfs:comment "Represents a specific version of a prompt" .
+
+:ValidationRule rdf:type owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Defines rules for validating prompts" .
+
+# Properties
+:dependsOn rdf:type owl:ObjectProperty ;
+    rdfs:domain :Component ;
+    rdfs:range :Component ;
+    rdfs:label "depends on" .
+
+:stores rdf:type owl:ObjectProperty ;
+    rdfs:domain :StorageComponent ;
+    rdfs:range :Component ;
+    rdfs:label "stores data for" .
+
+:exposes rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Component ;
+    rdfs:range xsd:integer ;
+    rdfs:label "exposes port" .
+
+:hasId rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has ID" ;
+    rdfs:comment "Unique identifier for the prompt" .
+
+:hasCategory rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:label "has category" .
+
+:hasTag rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:label "has tag" .
+
+:hasVersion rdf:type owl:ObjectProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range :PromptVersion ;
+    rdfs:label "has version" ;
+    rdfs:comment "Links a prompt to its versions" .
+
+:previousVersion rdf:type owl:ObjectProperty ;
+    rdfs:domain :PromptVersion ;
+    rdfs:range :PromptVersion ;
+    rdfs:label "previous version" ;
+    rdfs:comment "Links to the previous version of the prompt" .
+
+:versionNumber rdf:type owl:DatatypeProperty ;
+    rdfs:domain :PromptVersion ;
+    rdfs:range xsd:integer ;
+    rdfs:label "version number" .
+
+:createdDate rdf:type owl:DatatypeProperty ;
+    rdfs:domain :PromptVersion ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "created date" .
+
+:validatedBy rdf:type owl:ObjectProperty ;
+    rdfs:domain :Prompt ;
+    rdfs:range :ValidationRule ;
+    rdfs:label "validated by" ;
+    rdfs:comment "Links a prompt to its validation rules" .
+
+:validationDescription rdf:type owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range xsd:string ;
+    rdfs:label "validation description" .
+
+:validationResult rdf:type owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "validation result" .
+
+# Component Instances
+:postgres rdf:type :DockerComponent, :StorageComponent ;
+    rdfs:label "PostgreSQL Database" ;
+    rdfs:comment "Stores prompts and metadata" ;
+    :exposes 5432 ;
+    :stores :Prompt .
+
+:adminer rdf:type :DockerComponent ;
+    rdfs:label "Adminer Interface" ;
+    rdfs:comment "Web interface for database management" ;
+    :exposes 8080 ;
+    :dependsOn :postgres .
+
+:promptManager rdf:type :PythonComponent ;
+    rdfs:label "Prompt Manager Class" ;
+    rdfs:comment "Core functionality for managing prompts" ;
+    :dependsOn :postgres ;
+    :implements :PromptOperations .
+
+:promptCLI rdf:type :PythonComponent ;
+    rdfs:label "Command Line Interface" ;
+    rdfs:comment "CLI for interacting with the prompt manager" ;
+    :dependsOn :promptManager .
+
+# Implementation Details
+:Implementation rdf:type owl:Class ;
+    rdfs:label "Implementation Detail" ;
+    rdfs:comment "Specific implementation details of components" .
+
+:PromptOperations rdf:type :Implementation ;
+    rdfs:label "Prompt Operations" ;
+    :hasValue """
+        list_with_ids: List prompts with IDs
+        get_by_id: Get raw prompt content
+        add: Add/update prompt with tags
+    """ .
+
+:PostgresConfig rdf:type :Implementation ;
+    rdfs:label "PostgreSQL Configuration" ;
+    :hasValue """
+        POSTGRES_DB: prompts
+        POSTGRES_USER: promptuser
+        POSTGRES_PASSWORD: promptpass
+        Schema:
+            - id SERIAL PRIMARY KEY
+            - name VARCHAR(255) UNIQUE
+            - content TEXT
+            - category VARCHAR(100)
+            - tags TEXT[]
+            - created_at TIMESTAMP
+    """ .
+
+:CLICommands rdf:type :Implementation ;
+    rdfs:label "CLI Commands" ;
+    :hasValue """
+        add: Add/update prompt with metadata
+        search: Search prompts
+        list: List all prompts
+        list-ids: List prompts with IDs
+        get-raw: Get prompt content by ID
+    """ .
+
+# TODO Section as formal ontology elements
+:TodoSection rdf:type owl:Class ;
+    rdfs:label "TODO Items" ;
+    rdfs:comment "Planned features and improvements" .
+
+:TodoItem rdf:type owl:Class ;
+    rdfs:label "TODO Item" ;
+    rdfs:comment "A specific planned feature or improvement" .
+
+:hasPriority rdf:type owl:DatatypeProperty ;
+    rdfs:domain :TodoItem ;
+    rdfs:range xsd:integer .
+
+:hasStatus rdf:type owl:DatatypeProperty ;
+    rdfs:domain :TodoItem ;
+    rdfs:range xsd:string .
+
+# TODO Items as Individuals
+:addSHACLValidation rdf:type :TodoItem ;
+    rdfs:label "Add SHACL shapes for validation" ;
+    rdfs:comment "Implement SHACL shapes for ontology and data validation" ;
+    :hasPriority 1 .
+
+:addDetailedCommands rdf:type :TodoItem ;
+    rdfs:label "Add detailed command specifications" ;
+    rdfs:comment "Enhance CLI command documentation and parameters" ;
+    :hasPriority 2 .
+
+:addErrorHandling rdf:type :TodoItem ;
+    rdfs:label "Include error handling patterns" ;
+    rdfs:comment "Implement comprehensive error handling and recovery" ;
+    :hasPriority 3 .
+
+:addBackupRestore rdf:type :TodoItem ;
+    rdfs:label "Add backup/restore procedures" ;
+    rdfs:comment "Implement system backup and restore functionality" ;
+    :hasPriority 4 .
+
+:addSecurity rdf:type :TodoItem ;
+    rdfs:label "Include security configurations" ;
+    rdfs:comment "Add security features and access controls" ;
+    :hasPriority 5 .
+
+:addVersioning rdf:type :TodoItem ;
+    rdfs:label "Add versioning support" ;
+    rdfs:comment "Implement prompt versioning and history tracking" ;
+    :hasPriority 6 .
+
+:addPromptTemplates rdf:type :TodoItem ;
+    rdfs:label "Include prompt templates" ;
+    rdfs:comment "Add support for prompt templates and variations" ;
+    :hasPriority 7 .
+
+:addUserManagement rdf:type :TodoItem ;
+    rdfs:label "Add user management" ;
+    rdfs:comment "Implement user accounts and permissions" ;
+    :hasPriority 8 .
+
+:addPromptValidation rdf:type :TodoItem ;
+    rdfs:label "Add prompt validation" ;
+    rdfs:comment "Implement prompt content validation rules" ;
+    :hasPriority 9 .
+
+:addBulkOperations rdf:type :TodoItem ;
+    rdfs:label "Add bulk import/export" ;
+    rdfs:comment "Support bulk operations for prompts" ;
+    :hasPriority 10 .
+
+# Add example instances:
+
+:examplePromptVersion rdf:type :PromptVersion ;
+    rdfs:label "Example Prompt Version 1" ;
+    :versionNumber 1 ;
+    :createdDate "2024-03-20T10:00:00Z"^^xsd:dateTime .
+
+:lengthValidationRule rdf:type :ValidationRule ;
+    rdfs:label "Length Validation" ;
+    :validationDescription "Prompt must be between 10 and 1000 characters" .
+
+# Update relevant TODO items with implementation status:
+
+:addVersioning rdfs:comment """Implement prompt versioning and history tracking.
+Initial structure added with PromptVersion class and related properties.
+TODO: Implement version control logic in prompt-manager.""" .
+
+:addPromptValidation rdfs:comment """Implement prompt content validation rules.
+Initial structure added with ValidationRule class and related properties.
+TODO: Implement validation framework in prompt-manager.""" .

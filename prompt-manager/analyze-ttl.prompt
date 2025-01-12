@@ -1,0 +1,23 @@
+"""
+Given a Turtle (.ttl) file:
+
+1. Extract and summarize:
+   - Prefixes and namespaces used
+   - Classes defined
+   - Properties (object and data)
+   - Individuals/instances
+   - SHACL shapes if present
+
+2. Identify:
+   - Key relationships between classes
+   - Validation rules and constraints
+   - Usage patterns and examples
+
+3. Generate a structured analysis with:
+   - Overview of ontology purpose
+   - Core concepts and relationships
+   - Data validation approach
+   - Example usage patterns
+
+Format output as clear, structured markdown.
+""" 

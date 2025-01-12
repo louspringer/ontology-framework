@@ -1,0 +1,43 @@
+@prefix ex: <http://example.org/speculation#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:FiniteStateAutomaton a owl:Class ;
+    rdfs:label "Finite State Automaton" ;
+    rdfs:comment "A theoretical computational model defined by a finite set of states, deterministic transitions, and predictable outputs." .
+
+ex:RealWorld a owl:Class ;
+    rdfs:label "Real World" ;
+    rdfs:comment "The infinite and non-deterministic system of interactions, inputs, and processes we inhabit." .
+
+ex:InjectionEvent a owl:Class ;
+    rdfs:label "Injection Event" ;
+    rdfs:comment "The act of placing a finite state automaton into the real world, causing dissonance due to the clash of finite determinism and infinite complexity." .
+
+ex:StruggleWithInputs a owl:Class ;
+    rdfs:label "Struggle with Infinite Inputs" ;
+    rdfs:comment "The difficulty faced by finite systems in handling the infinite variety and ambiguity of real-world inputs." .
+
+ex:AmbiguityAndNonDeterminism a owl:Class ;
+    rdfs:label "Ambiguity and Non-Determinism" ;
+    rdfs:comment "The characteristic of the real world where outcomes are probabilistic and nuanced, challenging deterministic systems." .
+
+ex:CopingMechanisms a owl:Class ;
+    rdfs:label "Coping Mechanisms" ;
+    rdfs:comment "Strategies employed by a finite state automaton to adapt to real-world complexity, such as expanding state space or adopting heuristics." .
+
+ex:EmergentComplexity a owl:Class ;
+    rdfs:label "Emergent Complexity" ;
+    rdfs:comment "The realization of intricate patterns and beauty that arise from interacting with unpredictable systems." .
+
+ex:Outcome a owl:Class ;
+    rdfs:label "Outcome" ;
+    rdfs:comment "The result of the interaction between a finite state automaton and the real world, ranging from adaptation to failure." .
+
+ex:interactionBetweenAutomatonAndWorld a owl:ObjectProperty ;
+    rdfs:label "interaction between automaton and world" ;
+    rdfs:domain ex:FiniteStateAutomaton ;
+    rdfs:range ex:RealWorld ;
+    rdfs:comment "Describes the interaction and consequences of placing a finite state automaton in the real world." .
+

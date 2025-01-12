@@ -1,21 +1,9 @@
 name: ontology-framework
 channels:
-  - conda-forge
   - defaults
+  - conda-forge
 dependencies:
   - python=3.11
   - pip
-  - bzip2
-  - ca-certificates
-  - libexpat
-  - libffi
-  - libsqlite
-  - libzlib
-  - ncurses
-  - openssl
-  - readline
-  - setuptools
-  - tk
-  - tzdata
-  - wheel
-  - xz
+  - pip:
+    - -e .

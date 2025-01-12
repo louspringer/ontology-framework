@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   contentStyleType="text/css"
+   data-diagram-type="DESCRIPTION"
+   height="633px"
+   preserveAspectRatio="none"
+   style="width:814px;height:633px;background:#FFFFFF;"
+   version="1.1"
+   viewBox="0 0 814 633"
+   width="814px"
+   zoomAndPan="magnify"
+   id="svg26"
+   sodipodi:docname="rf-62-solution.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview26"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.2972973"
+     inkscape:cx="406.61458"
+     inkscape:cy="316.42708"
+     inkscape:window-width="1776"
+     inkscape:window-height="1186"
+     inkscape:window-x="160"
+     inkscape:window-y="1498"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg26" />
+  <defs
+     id="defs1" />
+  <g
+     id="g26">
+    <!--cluster Sources-->
+    <g
+       id="cluster_Sources">
+      <path
+         d="M114.5,11 L178.1992,11 A3.75,3.75 0 0 1 180.6992,13.5 L187.6992,33.2969 L430.5,33.2969 A2.5,2.5 0 0 1 433,35.7969 L433,95.79 A2.5,2.5 0 0 1 430.5,98.29 L114.5,98.29 A2.5,2.5 0 0 1 112,95.79 L112,13.5 A2.5,2.5 0 0 1 114.5,11 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path1" />
+      <line
+         style="stroke:#000000;stroke-width:1;"
+         x1="112"
+         x2="187.6992"
+         y1="33.2969"
+         y2="33.2969"
+         id="line1" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="62.6992"
+         x="116"
+         y="25.9951"
+         id="text1">Sources</text>
+    </g>
+    <!--cluster RX-V4A Receiver-->
+    <g
+       id="cluster_RX-V4A Receiver">
+      <path
+         d="M69.5,131.29 L202.5635,131.29 A3.75,3.75 0 0 1 205.0635,133.79 L212.0635,153.5869 L422.5,153.5869 A2.5,2.5 0 0 1 425,156.0869 L425,487.68 A2.5,2.5 0 0 1 422.5,490.18 L69.5,490.18 A2.5,2.5 0 0 1 67,487.68 L67,133.79 A2.5,2.5 0 0 1 69.5,131.29 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path2" />
+      <line
+         style="stroke:#000000;stroke-width:1;"
+         x1="67"
+         x2="212.0635"
+         y1="153.5869"
+         y2="153.5869"
+         id="line2" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="132.0635"
+         x="71"
+         y="146.2851"
+         id="text2">RX-V4A Receiver</text>
+    </g>
+    <!--cluster amp-->
+    <g
+       id="cluster_amp">
+      <rect
+         fill="#FFFFFF"
+         height="103.29"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="294"
+         x="99"
+         y="354.89"
+         id="rect2" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="104.7539"
+         x="193.623"
+         y="369.8851"
+         id="text3">Amplification</text>
+    </g>
+    <!--cluster Speakers-->
+    <g
+       id="cluster_Speakers">
+      <path
+         d="M13.5,539.18 L87.5898,539.18 A3.75,3.75 0 0 1 90.0898,541.68 L97.0898,561.4769 L448.5,561.4769 A2.5,2.5 0 0 1 451,563.9769 L451,623.98 A2.5,2.5 0 0 1 448.5,626.48 L13.5,626.48 A2.5,2.5 0 0 1 11,623.98 L11,541.68 A2.5,2.5 0 0 1 13.5,539.18 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path3" />
+      <line
+         style="stroke:#000000;stroke-width:1;"
+         x1="11"
+         x2="97.0898"
+         y1="561.4769"
+         y2="561.4769"
+         id="line3" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="73.0898"
+         x="15"
+         y="554.1751"
+         id="text4">Speakers</text>
+    </g>
+    <!--entity digital-->
+    <g
+       id="elem_digital">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="125.54"
+         x="128.23"
+         y="46"
+         id="rect4" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="105.54"
+         x="138.23"
+         y="68.9951"
+         id="text5">Digital Sources</text>
+    </g>
+    <!--entity analog-->
+    <g
+       id="elem_analog">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="128.5068"
+         x="288.75"
+         y="46"
+         id="rect5" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="108.5068"
+         x="298.75"
+         y="68.9951"
+         id="text6">Analog Sources</text>
+    </g>
+    <!--entity hdmi-->
+    <g
+       id="elem_hdmi">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="105.5107"
+         x="144.24"
+         y="166.29"
+         id="rect6" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="85.5107"
+         x="154.24"
+         y="189.2851"
+         id="text7">HDMI Inputs</text>
+    </g>
+    <!--entity line_in-->
+    <g
+       id="elem_line_in">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="116.3662"
+         x="292.82"
+         y="166.29"
+         id="rect7" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="96.3662"
+         x="302.82"
+         y="189.2851"
+         id="text8">Analog Inputs</text>
+    </g>
+    <!--entity dsp-->
+    <g
+       id="elem_dsp">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="90.417"
+         x="305.79"
+         y="263.59"
+         id="rect8" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="70.417"
+         x="315.79"
+         y="286.5851"
+         id="text9">DSP/YPAO</text>
+    </g>
+    <!--entity main_amp-->
+    <g
+       id="elem_main_amp">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="80.1152"
+         x="122.94"
+         y="397.89"
+         id="rect9" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="60.1152"
+         x="132.94"
+         y="420.8851"
+         id="text10">Main L/R</text>
+    </g>
+    <!--entity surr_amp-->
+    <g
+       id="elem_surr_amp">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="111.1641"
+         x="238.42"
+         y="397.89"
+         id="rect10" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="91.1641"
+         x="248.42"
+         y="420.8851"
+         id="text11">Surround L/R</text>
+    </g>
+    <!--entity rf_l-->
+    <g
+       id="elem_rf_l">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="72.8965"
+         x="26.55"
+         y="574.18"
+         id="rect11" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="52.8965"
+         x="36.55"
+         y="597.1751"
+         id="text12">RF-62 L</text>
+    </g>
+    <!--entity rf_r-->
+    <g
+       id="elem_rf_r">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="74.8242"
+         x="134.59"
+         y="574.18"
+         id="rect12" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="54.8242"
+         x="144.59"
+         y="597.1751"
+         id="text13">RF-62 R</text>
+    </g>
+    <!--entity r50_l-->
+    <g
+       id="elem_r50_l">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="76.9229"
+         x="244.54"
+         y="574.18"
+         id="rect13" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="56.9229"
+         x="254.54"
+         y="597.1751"
+         id="text14">R50-M L</text>
+    </g>
+    <!--entity r50_r-->
+    <g
+       id="elem_r50_r">
+      <rect
+         fill="#FFFFFF"
+         height="36.2969"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#000000;stroke-width:1;"
+         width="78.8506"
+         x="356.57"
+         y="574.18"
+         id="rect14" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="58.8506"
+         x="366.57"
+         y="597.1751"
+         id="text15">R50-M R</text>
+    </g>
+    <g
+       id="elem_GMN26">
+      <path
+         d="M470.46,579.77 L470.46,604.9028 L621.5489,604.9028 L621.5489,589.77 L611.5489,579.77 L470.46,579.77 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path15" />
+      <path
+         d="M611.5489,579.77 L611.5489,589.77 L621.5489,589.77 L611.5489,579.77 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path16" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="130.0889"
+         x="476.46"
+         y="596.8369"
+         id="text16">&quot;97dB @ 2.83V/1m&quot;</text>
+    </g>
+    <g
+       id="elem_GMN29">
+      <path
+         d="M656.46,579.77 L656.46,604.9028 L807.5489,604.9028 L807.5489,589.77 L797.5489,579.77 L656.46,579.77 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path17" />
+      <path
+         d="M797.5489,579.77 L797.5489,589.77 L807.5489,589.77 L797.5489,579.77 "
+         fill="#FFFFFF"
+         style="stroke:#000000;stroke-width:1;"
+         id="path18" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="130.0889"
+         x="662.46"
+         y="596.8369"
+         id="text18">&quot;95dB @ 2.83V/1m&quot;</text>
+    </g>
+    <!--link digital to hdmi-->
+    <g
+       id="link_digital_hdmi">
+      <path
+         d="M191.89,82.6 C193.02,104.97 194.665,137.5178 195.805,159.9178 "
+         fill="none"
+         id="digital-to-hdmi"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="196.11,165.91,199.6474,156.7183,195.8559,160.9165,191.6577,157.1249,196.11,165.91"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon18" />
+    </g>
+    <!--link analog to line_in-->
+    <g
+       id="link_analog_line_in">
+      <path
+         d="M352.7,82.6 C352.33,104.97 351.7818,137.5109 351.4018,159.9109 "
+         fill="none"
+         id="analog-to-line_in"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="351.3,165.91,355.4521,156.9791,351.3848,160.9107,347.4532,156.8434,351.3,165.91"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon19" />
+    </g>
+    <!--link hdmi to dsp-->
+    <g
+       id="link_hdmi_dsp">
+      <path
+         d="M225.25,202.92 C252.95,220.06 289.8484,242.8919 317.5684,260.0519 "
+         fill="none"
+         id="hdmi-to-dsp"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="322.67,263.21,317.123,255.0717,318.4187,260.5782,312.9122,261.8739,322.67,263.21"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon20" />
+    </g>
+    <!--link line_in to dsp-->
+    <g
+       id="link_line_in_dsp">
+      <path
+         d="M351,202.92 C351,220.11 351,240.21 351,257.37 "
+         fill="none"
+         id="line_in-to-dsp"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="351,263.37,355,254.37,351,258.37,347,254.37,351,263.37"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon21" />
+    </g>
+    <!--link dsp to amp-->
+    <g
+       id="link_dsp_amp">
+      <path
+         d="M355.67,299.92 C358.67,311.03 362.62,325.8 366,338.89 C367.0563,342.9788 368.1353,347.1938 369.2162,351.4445 C369.4864,352.5072 368.2826,347.756 368.5527,348.8217 "
+         fill="none"
+         id="dsp-to-amp"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="370.0268,354.6378,371.6931,344.9309,368.7984,349.791,363.9383,346.8964,370.0268,354.6378"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon22" />
+    </g>
+    <!--link main_amp to rf_l-->
+    <g
+       id="link_main_amp_rf_l">
+      <path
+         d="M144.77,434.57 C128.12,451.5 103.89,478.56 89,506.18 C77.19,528.09 71.1876,550.249 67.4376,568.039 "
+         fill="none"
+         id="main_amp-to-rf_l"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="66.2,573.91,71.9703,565.9286,67.2313,569.0175,64.1424,564.2785,66.2,573.91"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon23" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="68.8657"
+         x="90"
+         y="519.2469"
+         id="text23">80W @ 8Ω</text>
+    </g>
+    <!--link main_amp to rf_r-->
+    <g
+       id="link_main_amp_rf_r">
+      <path
+         d="M163.9,434.38 C165.62,467.71 169.0621,534.3279 170.7821,567.7979 "
+         fill="none"
+         id="main_amp-to-rf_r"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="171.09,573.79,174.6228,564.5966,170.8334,568.7966,166.6334,565.0071,171.09,573.79"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon24" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="68.8657"
+         x="169"
+         y="519.2469"
+         id="text24">80W @ 8Ω</text>
+    </g>
+    <!--link surr_amp to r50_l-->
+    <g
+       id="link_surr_amp_r50_l">
+      <path
+         d="M290.96,434.39 C287.99,452.3 283.68,481.1 282,506.18 C281.49,513.72 281.94,515.63 282,523.18 C282.13,540.46 282.3255,554.1909 282.5655,567.9709 "
+         fill="none"
+         id="surr_amp-to-r50_l"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="282.67,573.97,286.5127,564.9017,282.5829,568.9708,278.5139,565.041,282.67,573.97"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon25" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="68.8657"
+         x="283"
+         y="519.2469"
+         id="text25">80W @ 8Ω</text>
+    </g>
+    <!--link surr_amp to r50_r-->
+    <g
+       id="link_surr_amp_r50_r">
+      <path
+         d="M307.51,434.55 C320.73,452.12 341.02,480.22 356,506.18 C369.06,528.82 379.0774,550.8962 386.5074,568.4162 "
+         fill="none"
+         id="surr_amp-to-r50_r"
+         style="stroke:#000000;stroke-width:1;" />
+      <polygon
+         fill="#000000"
+         points="388.85,573.94,389.0187,564.0926,386.8979,569.3368,381.6536,567.216,388.85,573.94"
+         style="stroke:#000000;stroke-width:1;"
+         id="polygon26" />
+      <text
+         fill="#000000"
+         font-family="Verdana"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="68.8657"
+         x="365"
+         y="519.2469"
+         id="text26">80W @ 8Ω</text>
+    </g>
+    <!--link rf_l to GMN26-->
+    <g
+       id="link_rf_l_GMN26">
+      <path
+         d="M73.24,573.75 C85.08,554.52 106.57,525.77 134.5,514.68 C165.38,502.42 401.78,504.8 433.5,514.68 C474.51,527.46 513.77,560.99 533.25,579.53 "
+         fill="none"
+         id="rf_l-GMN26"
+         style="stroke:#000000;stroke-width:1;stroke-dasharray:7.0,7.0;" />
+    </g>
+    <!--link r50_l to GMN29-->
+    <g
+       id="link_r50_l_GMN29">
+      <path
+         d="M293.69,573.81 C306,554.63 328.21,525.92 356.5,514.68 C411.23,492.95 565.35,496.93 621.5,514.68 C661.96,527.48 700.45,561 719.52,579.54 "
+         fill="none"
+         id="r50_l-GMN29"
+         style="stroke:#000000;stroke-width:1;stroke-dasharray:7.0,7.0;" />
+    </g>
+    <!--SRC=[ZPFVIiCm5CRlynJ7tdXLDwVJwOKu7U9Wmz72rAiHsgmBop-IL17P0_aoFfD9ktQkgs2Xq7pdbtDElfCUsHNX11J3L22pfa9XZJaaaYifYB2n_M04D4ai5XaZ21t3VHKpIE5aZJC2GInpdH0Jm2S2zzJR8HZHZ5hCe2QmWRJKckXGO2QpFH8N4jgWNQde9PoV3o4Y2Q5lHBUKV1nDnp0MAhTbabNAwH-rVb6C2h9m9ZJxZsUTrzdmgMpSg8D4N36wf0csL8goPwwsFJNGgVCO9fseeBXRB1pQ1iQvrZ8NQGqR9zJmPi-EM16y9hhD-kWXlEZ1fCYWbmlM7e-gk3w8zxlXjDhVxxOaA82e1hJlp5yG8To5SNuOj1qrXE5DEOToeiMwSjphXU3jtOhrsht5jpyzgao3C9Nlmgd-M70DmQ3x3BSm-FuAMXdTO2e_Tum_td-WPYOaf7N_1yrM5kIoxkVgChrpIEzaS3RldFAWYLNbhlhxt0y0]-->
+  </g>
+</svg>

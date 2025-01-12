@@ -5,7 +5,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix meta: <http://louspringer.com/ontology/meta#> .
+@prefix meta: <./meta#> .
 @base <http://example.org/langgraph#> .
 
 <http://example.org/langgraph> rdf:type owl:Ontology ;
@@ -128,10 +128,10 @@ owl:maxCardinality rdf:type owl:AnnotationProperty .
     ) .
 
 # Problem: References between ontologies without proper imports
-owl:imports <http://louspringer.com/ontology/conversation>  # project_risks.ttl
+owl:imports <./conversation>  # risks.ttl
 
 # Problem: Inconsistent subclass relationships
-:Risk rdfs:subClassOf conv:BacklogItem  # project_risks.ttl
+:Risk rdfs:subClassOf conv:BacklogItem  # risks.ttl
 
 # Add cardinality constraints where appropriate
 :Person rdfs:subClassOf meta:Person .
@@ -154,4 +154,4 @@ owl:imports <http://louspringer.com/ontology/conversation>  # project_risks.ttl
 :oversees owl:inverseOf :isOverseen .
 
 # Add meta-core imports
-owl:imports <http://louspringer.com/ontology/meta> .
+owl:imports <./meta> .
