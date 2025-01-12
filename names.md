@@ -1,3 +1,9 @@
+# ⚠️ DEPRECATED - Please Use New Naming System ⚠️
+
+This naming system has been superseded by the [Mighty Mouse Naming System](mu_names.md) which provides a more structured, thematic approach with proper ontological foundations.
+
+---
+
 # Docker Style Names
 
 | Docker Style Name            | Abbreviation | 10-Char Mnemonic |
