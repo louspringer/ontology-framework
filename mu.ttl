@@ -1,0 +1,150 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mu: <./mu#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix guidance: <./guidance#> .
+@prefix analog: <./analogy#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+mu:MuOntology rdf:type owl:Ontology ;
+    dc:title "Mu Concept Ontology" ;
+    dc:version "1.0" ;
+    rdfs:comment "Ontology capturing the concept of mu and its variants across technical and philosophical domains" ;
+    owl:imports <./meta>, <./metameta>, <./guidance> .
+
+# Core Classes
+mu:MuConcept rdf:type owl:Class ;
+    rdfs:label "Mu Concept" ;
+    rdfs:comment "The concept of mu as emptiness, void, or statelessness" ;
+    rdfs:subClassOf metameta:AbstractionDimension .
+
+mu:TechnicalMu rdf:type owl:Class ;
+    rdfs:label "Technical Mu" ;
+    rdfs:comment "Technical representations of mu (/dev/null, void, null, 0x0)" ;
+    rdfs:subClassOf mu:MuConcept .
+
+mu:PhilosophicalMu rdf:type owl:Class ;
+    rdfs:label "Philosophical Mu" ;
+    rdfs:comment "Philosophical aspects of mu (emptiness, non-dualism, statelessness)" ;
+    rdfs:subClassOf mu:MuConcept .
+
+mu:HackerMu rdf:type owl:Class ;
+    rdfs:label "Hacker Mu" ;
+    rdfs:comment "Hacker culture representations of mu (|\/||_|, |\|1|_|)" ;
+    rdfs:subClassOf mu:MuConcept .
+
+mu:ManagementMu rdf:type owl:Class ;
+    rdfs:label "Management Mu" ;
+    rdfs:comment "Management practices that embody mu principles through incentivizing reduction and simplification" ;
+    rdfs:subClassOf mu:MuConcept .
+
+mu:InvestigationContext rdf:type owl:Class ;
+    rdfs:label "Investigation Context" ;
+    rdfs:comment "Using mu concepts in investigation and problem-solving" ;
+    rdfs:subClassOf mu:UsageContext .
+
+# Properties
+mu:hasRepresentation rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:MuConcept ;
+    rdfs:range xsd:string ;
+    rdfs:comment "String representation of the mu concept" .
+
+mu:hasContext rdf:type owl:ObjectProperty ;
+    rdfs:domain mu:MuConcept ;
+    rdfs:range mu:UsageContext ;
+    rdfs:comment "Context in which this mu representation is used" .
+
+mu:hasPattern rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:MuConcept ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Regex or other pattern representing this mu concept" .
+
+mu:hasMetric rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:ManagementMu ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Metric used to measure mu-aligned behavior" .
+
+mu:hasOutcome rdf:type owl:DatatypeProperty ;
+    rdfs:domain mu:ManagementMu ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Positive outcome of applying mu principles" .
+
+# Individuals
+mu:DevNull rdf:type mu:TechnicalMu ;
+    rdfs:label "/dev/null" ;
+    mu:hasRepresentation "/dev/null" ;
+    mu:hasPattern "(?i)/dev/null" .
+
+mu:NullVoid rdf:type mu:TechnicalMu ;
+    rdfs:label "null/void" ;
+    mu:hasRepresentation "null" ;
+    mu:hasPattern "(?i)(?:null|void)" .
+
+mu:HexZero rdf:type mu:TechnicalMu ;
+    rdfs:label "0x0" ;
+    mu:hasRepresentation "0x0" ;
+    mu:hasPattern "0x0" .
+
+mu:L33tMu rdf:type mu:HackerMu ;
+    rdfs:label "L33t Mu" ;
+    mu:hasRepresentation "|\/||_|" ;
+    mu:hasPattern "\\|\\\\/\\|\\|_\\|" .
+
+mu:L33tNull rdf:type mu:HackerMu ;
+    rdfs:label "L33t Null" ;
+    mu:hasRepresentation "|\|1|_|" ;
+    mu:hasPattern "\\|\\\\|1\\|_\\|" .
+
+mu:Muney rdf:type mu:HackerMu ;
+    rdfs:label "Muney" ;
+    rdfs:comment "Playful combination of 'mu' (void) and 'money' suggesting to follow the path of emptiness" ;
+    mu:hasRepresentation "muney" ;
+    mu:hasPattern "(?i)muney" ;
+    mu:hasContext mu:InvestigationContext .
+
+mu:FollowTheMuney rdf:type mu:PhilosophicalMu ;
+    rdfs:label "Follow the Muney" ;
+    rdfs:comment "Investigation principle suggesting to trace paths to their void/empty source" ;
+    mu:hasRepresentation "follow the muney" ;
+    mu:hasPattern "(?i)follow\\s+the\\s+muney" ;
+    mu:hasContext mu:InvestigationContext .
+
+mu:CodeReductionBonus rdf:type mu:ManagementMu ;
+    rdfs:label "Code Reduction Bonus" ;
+    rdfs:comment "Management practice of rewarding code removal over code addition" ;
+    mu:hasRepresentation "negative KLOC bonus" ;
+    mu:hasMetric "Lines of code removed" ;
+    mu:hasContext mu:SystemDesign ;
+    mu:hasOutcome "Reduced maintenance cost" ;
+    mu:hasOutcome "Lower cognitive load" ;
+    mu:hasOutcome "Improved system clarity" ;
+    mu:hasOutcome "Better refactoring incentives" ;
+    mu:hasPattern "(?i)(?:remove|delete|reduce)\\s+code" .
+
+# Usage Contexts
+mu:UsageContext rdf:type owl:Class ;
+    rdfs:label "Usage Context" ;
+    rdfs:comment "Context in which mu concepts are applied" .
+
+mu:SystemDesign rdf:type mu:UsageContext ;
+    rdfs:label "System Design" ;
+    rdfs:comment "Using mu concepts in system architecture and design" .
+
+mu:ErrorHandling rdf:type mu:UsageContext ;
+    rdfs:label "Error Handling" ;
+    rdfs:comment "Using mu concepts in error handling and responses" .
+
+mu:ModelingAbstraction rdf:type mu:UsageContext ;
+    rdfs:label "Modeling Abstraction" ;
+    rdfs:comment "Using mu concepts in abstract modeling and thinking" .
+
+# TODO: Future Enhancements
+# 1. Add more technical representations (e.g., undefined, None)
+# 2. Expand philosophical aspects (e.g., Buddhist concepts)
+# 3. Add validation rules for pattern syntax
+# 4. Include more usage examples and contexts
+# 5. Add relationships to other ontology concepts 

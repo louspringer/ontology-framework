@@ -2,8 +2,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix analog: <http://louspringer.com/ontology/analogy#> .
-@prefix meta: <http://louspringer.com/ontology/llm-guidance#> .
+@prefix analog: <./analogy#> .
+@prefix guidance: <./guidance#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
@@ -11,16 +11,16 @@ analog:CreativeAnalogiesOntology rdf:type owl:Ontology ;
     dc:title "Creative Analogies Ontology" ;
     dc:version "1.1" ;
     rdfs:comment "Updated to include playful analogies for interdisciplinary communication." ;
-    owl:imports <http://louspringer.com/ontology/llm-guidance> ;
+    owl:imports <./guidance> ;
     dc:created "..."^^xsd:dateTime ;
     dc:modified "..."^^xsd:dateTime ;
-    owl:imports <http://louspringer.com/ontology/meta> .
+    owl:imports <./meta> .
 
 # Core Classes
 analog:PlayfulAnalogy rdf:type owl:Class ;
     rdfs:label "Playful Analogy" ;
     rdfs:comment "Fun, creative analogies for explanation" ;
-    rdfs:subClassOf meta:DomainAnalogy .
+    rdfs:subClassOf guidance:DomainAnalogy .
 
 analog:AnalogicalBridge rdf:type owl:Class ;
     rdfs:label "Analogical Bridge" ;

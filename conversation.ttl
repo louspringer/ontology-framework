@@ -1,0 +1,79 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix conv: <./conversation#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+conv:ConversationOntology rdf:type owl:Ontology ;
+    dc:title "Conversation and Backlog Management Ontology" ;
+    dc:version "1.0" ;
+    rdfs:comment "Ontology for managing conversations, backlog items, and project artifacts." .
+
+# Core Classes
+conv:BacklogItem rdf:type owl:Class ;
+    rdfs:label "Backlog Item" ;
+    rdfs:comment "A work item in the project backlog that needs to be addressed." .
+
+conv:Conversation rdf:type owl:Class ;
+    rdfs:label "Conversation" ;
+    rdfs:comment "A discussion or dialogue about project items." .
+
+conv:Status rdf:type owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    owl:oneOf (
+        conv:New
+        conv:InProgress
+        conv:Blocked
+        conv:Completed
+    ) .
+
+# Properties
+conv:priority rdf:type owl:DatatypeProperty ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Priority level of the backlog item (1-5)" .
+
+conv:status rdf:type owl:ObjectProperty ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range conv:Status ;
+    rdfs:comment "Current status of the backlog item" .
+
+conv:hasConversation rdf:type owl:ObjectProperty ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range conv:Conversation ;
+    rdfs:comment "Links a backlog item to related conversations" .
+
+conv:assignedTo rdf:type owl:ObjectProperty ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range conv:Person ;
+    rdfs:comment "Person assigned to the backlog item" .
+
+# Additional Classes
+conv:Person rdf:type owl:Class ;
+    rdfs:label "Person" ;
+    rdfs:comment "A person involved in the project" .
+
+conv:Comment rdf:type owl:Class ;
+    rdfs:label "Comment" ;
+    rdfs:comment "A comment or note on a backlog item" ;
+    rdfs:subClassOf conv:Conversation .
+
+# Status Instances
+conv:New rdf:type conv:Status ;
+    rdfs:label "New" ;
+    skos:definition "Newly created backlog item" .
+
+conv:InProgress rdf:type conv:Status ;
+    rdfs:label "In Progress" ;
+    skos:definition "Backlog item currently being worked on" .
+
+conv:Blocked rdf:type conv:Status ;
+    rdfs:label "Blocked" ;
+    skos:definition "Backlog item blocked by dependencies or issues" .
+
+conv:Completed rdf:type conv:Status ;
+    rdfs:label "Completed" ;
+    skos:definition "Backlog item has been completed" . 

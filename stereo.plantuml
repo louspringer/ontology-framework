@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+
+component "Input Terminal" as input
+component "L-Pad Network" as lpad {
+  component "R1 (8Ω)" as r1
+  component "R2 (16Ω)" as r2
+}
+
+package "High-Pass" {
+  component "L1\n0.5mH" as l1
+  component "C1\n10µF" as c1
+}
+
+package "Low-Pass" {
+  component "L2\n1.0mH" as l2
+  component "C2\n20µF" as c2
+}
+
+package "Zobel" {
+  component "Rz\n10Ω" as rz
+  component "Cz\n10µF" as cz
+}
+
+component "Horn Out" as hornout
+component "RS-100 Out" as rs100out
+
+input --> lpad
+lpad --> l1
+l1 --> c1
+c1 --> hornout
+lpad --> l2
+l2 --> c2
+c2 --> rs100out
+hornout -- zobel
+
+note right of input : "Top center"
+note right of hornout : "Bottom left"
+note right of rs100out : "Bottom right"
+@enduml 

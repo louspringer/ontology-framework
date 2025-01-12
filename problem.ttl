@@ -2,14 +2,14 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prob: <http://louspringer.com/ontology/problem#> .
-@prefix metameta: <http://louspringer.com/ontology/metameta#> .
+@prefix prob: <./problem#> .
+@prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 
-prob:ProblemSpaceOntology rdf:type owl:Ontology ;
-    dc:title "Problem Space Ontology" ;
+prob:ProblemOntology rdf:type owl:Ontology ;
+    dc:title "Problem Ontology" ;
     dc:version "1.0" ;
-    owl:imports <http://louspringer.com/ontology/metameta> .
+    owl:imports <./metameta> .
 
 # Core Classes
 prob:BusinessNeed rdf:type owl:Class ;

@@ -1,0 +1,126 @@
+@prefix : <http://example.org/audioOntology#> .
+@prefix default1: <http://example.org/audio#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+default1:AudioRoutingSoftware a default1:Software ;
+    default1:examples default1:Airfoil,
+        default1:BlackHole,
+        default1:Loopback,
+        default1:Soundflower ;
+    default1:supportsOutput default1:AirPlay,
+        default1:BluetoothOutput,
+        default1:BuiltInOutput .
+
+default1:UserPreferences a default1:Preferences ;
+    default1:considersConstraint default1:IndependentVolumeControl,
+        default1:SyncIssues ;
+    default1:ownsDevice default1:YamahaRX-V6A ;
+    default1:prefersSolution default1:EfficientAudioRouting ;
+    default1:usesTechnology default1:AirPlay,
+        default1:MusicCast .
+
+:AudioStreamingOntology a owl:Ontology ;
+    rdfs:label "Audio Streaming Deployment Ontology" ;
+    rdfs:comment "Ontology to capture context from this session about audio streaming, processing tools, and system configurations." .
+
+:Safari a :Source ;
+    rdfs:label "Safari" ;
+    :initiatesPlayback :ProcessingHub ;
+    rdfs:comment "Web-based Apple Music playback through Safari." .
+
+:iOS a :Source ;
+    rdfs:label "iOS" ;
+    :initiatesPlayback :ProcessingHub ;
+    rdfs:comment "Apple iOS devices that initiate playback via AirPlay or Apple Music." .
+
+:initiatesPlayback a owl:ObjectProperty ;
+    rdfs:label "initiates playback" ;
+    rdfs:comment "Links a source to the processing hub that captures and processes audio." ;
+    rdfs:domain :Source ;
+    rdfs:range :ProcessingHub .
+
+:macOS a :Source ;
+    rdfs:label "macOS" ;
+    :initiatesPlayback :ProcessingHub ;
+    rdfs:comment "Apple macOS devices running Monterey or Sequoia, initiating playback via Apple Music or Safari." .
+
+:processesAudio a owl:ObjectProperty ;
+    rdfs:label "processes audio" ;
+    rdfs:comment "Links the processing hub to tools that process audio, like eqMaq." ;
+    rdfs:domain :ProcessingHub ;
+    rdfs:range :Tool .
+
+:routesTo a owl:ObjectProperty ;
+    rdfs:label "routes to" ;
+    rdfs:comment "Links the processing hub to output devices." ;
+    rdfs:domain :ProcessingHub ;
+    rdfs:range :Output .
+
+default1:MacSystemOutput a default1:Device ;
+    default1:canCombineWith default1:AirPlayDevice ;
+    default1:hasCapability default1:OutputRouting ;
+    default1:supportsProtocol default1:AirPlay,
+        default1:AudioMIDISetup,
+        default1:MultiOutputDevice .
+
+default1:MultiOutputDevice a default1:Device ;
+    default1:includes default1:AirPlayDevice,
+        default1:BluetoothOutput,
+        default1:BuiltInOutput ;
+    default1:isCreatedBy default1:AudioMIDISetup ;
+    default1:requires default1:DriftCorrection,
+        default1:MasterDeviceSelection .
+
+:AirPlaySpeakers a :Output ;
+    rdfs:label "AirPlay Speakers" ;
+    rdfs:comment "Speakers or devices connected via AirPlay." .
+
+:DAC a :Output ;
+    rdfs:label "DAC" ;
+    rdfs:comment "Digital-to-Analog Converter for high-quality Hi-Res audio playback." .
+
+:MultiRoomSystem a :Output ;
+    rdfs:label "Multi-Room System" ;
+    rdfs:comment "Systems supporting audio playback in multiple rooms." .
+
+:PlantUMLRenderer a :Tool ;
+    rdfs:label "PlantUML Renderer" ;
+    rdfs:comment "Docker-based local rendering tool for generating PlantUML diagrams as SVG." .
+
+:RogueAmoeba a :Tool ;
+    rdfs:label "Rogue Amoeba Tools" ;
+    rdfs:comment "Includes Audio Hijack, Loopback, and SoundSource for audio processing and routing." .
+
+:eqMaq a :Tool ;
+    rdfs:label "eqMaq" ;
+    rdfs:comment "EQ and DSP tool used for audio customization." .
+
+default1:AirPlayDevice a default1:Device ;
+    default1:canBeUsedWith default1:MacSystemOutput ;
+    default1:hasProperty default1:BufferedOutput ;
+    default1:mayHaveIssue default1:Latency,
+        default1:VolumeControlRestriction .
+
+:Output a owl:Class ;
+    rdfs:label "Output" ;
+    rdfs:comment "Represents audio output devices or endpoints." .
+
+:Source a owl:Class ;
+    rdfs:label "Source" ;
+    rdfs:comment "Represents a device or application that initiates music playback." .
+
+:Tool a owl:Class ;
+    rdfs:label "Tool" ;
+    rdfs:comment "Represents software tools used for audio processing and routing." .
+
+:ProcessingHub a owl:Class ;
+    rdfs:label "Processing Hub" ;
+    :processesAudio :PlantUMLRenderer,
+        :RogueAmoeba,
+        :eqMaq ;
+    :routesTo :AirPlaySpeakers,
+        :DAC,
+        :MultiRoomSystem ;
+    rdfs:comment "Represents the Mac running Rogue Amoeba tools and eqMaq for audio processing." .
+
