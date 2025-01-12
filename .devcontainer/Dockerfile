@@ -9,6 +9,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         unzip \
         make \
         build-essential \
+        raptor2-utils \
+        rasqal-utils \
+        librdf0-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
