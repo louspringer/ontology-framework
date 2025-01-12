@@ -1,0 +1,146 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix adv: <./advanced_features_batch#> .
+@prefix task: <./advanced_features_batch#task/> .
+@prefix status: <./advanced_features_batch#status/> .
+@prefix issue: <./advanced_features_batch#issue/> .
+@prefix core: <./core_features_batch#> .
+@prefix infra: <./infrastructure_batch#> .
+
+# Classes
+adv:Issue a owl:Class ;
+    rdfs:label "Advanced Feature Issue"@en ;
+    rdfs:comment "A GitHub issue for advanced feature implementation"@en .
+
+adv:Task a owl:Class ;
+    rdfs:label "Implementation Task"@en ;
+    rdfs:comment "A specific task within feature implementation"@en .
+
+adv:Status a owl:Class ;
+    rdfs:label "Status"@en ;
+    rdfs:comment "Status of a task or issue"@en .
+
+# Status Instances
+status:Pending a adv:Status ;
+    rdfs:label "Pending"@en .
+
+status:InProgress a adv:Status ;
+    rdfs:label "In Progress"@en .
+
+status:Completed a adv:Status ;
+    rdfs:label "Completed"@en .
+
+# Properties
+adv:hasTask a owl:ObjectProperty ;
+    rdfs:domain adv:Issue ;
+    rdfs:range adv:Task ;
+    rdfs:label "has task"@en .
+
+adv:hasStatus a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (adv:Issue adv:Task) ] ;
+    rdfs:range adv:Status ;
+    rdfs:label "has status"@en .
+
+adv:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf (adv:Issue adv:Task) ] ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has priority"@en .
+
+adv:dependsOn a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (adv:Issue adv:Task) ] ;
+    rdfs:range [ owl:unionOf (adv:Issue adv:Task core:Issue infra:Issue) ] ;
+    rdfs:label "depends on"@en .
+
+# Issue 5: Vector Database Integration
+issue:VectorDB a adv:Issue ;
+    rdfs:label "Vector Database Integration"@en ;
+    rdfs:comment "Implement vector database for semantic search and similarity"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 1 ;
+    adv:dependsOn core:issue:Performance ;
+    adv:hasTask task:VectorEngine, task:Embeddings, task:SearchAPI .
+
+task:VectorEngine a adv:Task ;
+    rdfs:label "Vector Engine Integration"@en ;
+    rdfs:comment "Core vector database integration"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 1 .
+
+task:Embeddings a adv:Task ;
+    rdfs:label "Ontology Embeddings"@en ;
+    rdfs:comment "Generate and manage ontology embeddings"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 2 ;
+    adv:dependsOn task:VectorEngine .
+
+task:SearchAPI a adv:Task ;
+    rdfs:label "Search API"@en ;
+    rdfs:comment "Semantic search and similarity API"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 3 ;
+    adv:dependsOn task:Embeddings .
+
+# Issue 10: Collaborative Development
+issue:Collaboration a adv:Issue ;
+    rdfs:label "Collaborative Development"@en ;
+    rdfs:comment "Implement collaborative ontology development features"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 2 ;
+    adv:dependsOn issue:VectorDB ;
+    adv:hasTask task:VersionControl, task:MergeResolution, task:ChangeTracking .
+
+task:VersionControl a adv:Task ;
+    rdfs:label "Version Control"@en ;
+    rdfs:comment "Ontology version control system"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 1 .
+
+task:MergeResolution a adv:Task ;
+    rdfs:label "Merge Resolution"@en ;
+    rdfs:comment "Smart merge conflict resolution"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 2 ;
+    adv:dependsOn task:VersionControl .
+
+task:ChangeTracking a adv:Task ;
+    rdfs:label "Change Tracking"@en ;
+    rdfs:comment "Track and visualize ontology changes"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 3 ;
+    adv:dependsOn task:MergeResolution .
+
+# Issue 11: Vocabulary Suggestions
+issue:Vocabulary a adv:Issue ;
+    rdfs:label "Vocabulary Suggestions"@en ;
+    rdfs:comment "Implement intelligent vocabulary suggestion system"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 3 ;
+    adv:dependsOn issue:Collaboration ;
+    adv:hasTask task:SuggestionEngine, task:ContextAnalysis, task:UserFeedback .
+
+task:SuggestionEngine a adv:Task ;
+    rdfs:label "Suggestion Engine"@en ;
+    rdfs:comment "Core vocabulary suggestion system"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 1 .
+
+task:ContextAnalysis a adv:Task ;
+    rdfs:label "Context Analysis"@en ;
+    rdfs:comment "Analyze ontology context for suggestions"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 2 ;
+    adv:dependsOn task:SuggestionEngine .
+
+task:UserFeedback a adv:Task ;
+    rdfs:label "User Feedback"@en ;
+    rdfs:comment "Process and learn from user feedback"@en ;
+    adv:hasStatus status:Pending ;
+    adv:hasPriority 3 ;
+    adv:dependsOn task:ContextAnalysis . 
