@@ -1,0 +1,139 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix pm: <#> .
+
+# Core ontology metadata
+pm:PrefixManagementOntology a owl:Ontology ;
+    dc:title "Prefix Management Ontology"@en ;
+    dc:description """Simple, practical prefix management for ontology development.
+    Uses relative paths by default and provides clear documentation."""@en ;
+    owl:versionInfo "0.1.0" .
+
+# Core classes for prefix management
+pm:Prefix a owl:Class ;
+    rdfs:label "Prefix"@en ;
+    rdfs:comment "A namespace prefix used in ontologies"@en .
+
+pm:PrefixCategory a owl:Class ;
+    rdfs:label "Prefix Category"@en ;
+    rdfs:comment "Category of prefix usage (e.g., Core, Domain-Specific, External)"@en .
+
+# Properties for prefix documentation
+pm:hasPrefix a owl:DatatypeProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range xsd:string ;
+    rdfs:label "has prefix"@en ;
+    rdfs:comment "The actual prefix string used in ontologies"@en .
+
+pm:hasURI a owl:DatatypeProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range xsd:anyURI ;
+    rdfs:label "has URI"@en ;
+    rdfs:comment "The URI that the prefix expands to"@en .
+
+pm:inCategory a owl:ObjectProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range pm:PrefixCategory ;
+    rdfs:label "in category"@en .
+
+pm:isRelativePath a owl:DatatypeProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is relative path"@en ;
+    rdfs:comment "Whether the prefix uses relative path notation"@en .
+
+# Standard categories
+pm:CoreCategory a pm:PrefixCategory ;
+    rdfs:label "Core Category"@en ;
+    rdfs:comment "Core ontology prefixes used across the framework"@en .
+
+pm:DomainCategory a pm:PrefixCategory ;
+    rdfs:label "Domain Category"@en ;
+    rdfs:comment "Domain-specific ontology prefixes"@en .
+
+pm:ExternalCategory a pm:PrefixCategory ;
+    rdfs:label "External Category"@en ;
+    rdfs:comment "External ontology prefixes (e.g., W3C standards)"@en .
+
+# Core prefix definitions
+pm:MetaPrefix a pm:Prefix ;
+    pm:hasPrefix "meta" ;
+    pm:hasURI "./meta#" ;
+    pm:inCategory pm:CoreCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Core meta-level concepts"@en .
+
+pm:MetaMetaPrefix a pm:Prefix ;
+    pm:hasPrefix "metameta" ;
+    pm:hasURI "./metameta#" ;
+    pm:inCategory pm:CoreCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Meta-meta level concepts"@en .
+
+pm:ProblemPrefix a pm:Prefix ;
+    pm:hasPrefix "problem" ;
+    pm:hasURI "./problem#" ;
+    pm:inCategory pm:CoreCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Problem domain concepts"@en .
+
+pm:SolutionPrefix a pm:Prefix ;
+    pm:hasPrefix "solution" ;
+    pm:hasURI "./solution#" ;
+    pm:inCategory pm:CoreCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Solution domain concepts"@en .
+
+pm:ConversationPrefix a pm:Prefix ;
+    pm:hasPrefix "conversation" ;
+    pm:hasURI "./conversation#" ;
+    pm:inCategory pm:CoreCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Conversation modeling concepts"@en .
+
+# External standard prefixes
+pm:RDFPrefix a pm:Prefix ;
+    pm:hasPrefix "rdf" ;
+    pm:hasURI "http://www.w3.org/1999/02/22-rdf-syntax-ns#" ;
+    pm:inCategory pm:ExternalCategory ;
+    pm:isRelativePath false ;
+    rdfs:comment "RDF core vocabulary"@en .
+
+pm:RDFSPrefix a pm:Prefix ;
+    pm:hasPrefix "rdfs" ;
+    pm:hasURI "http://www.w3.org/2000/01/rdf-schema#" ;
+    pm:inCategory pm:ExternalCategory ;
+    pm:isRelativePath false ;
+    rdfs:comment "RDF Schema vocabulary"@en .
+
+pm:OWLPrefix a pm:Prefix ;
+    pm:hasPrefix "owl" ;
+    pm:hasURI "http://www.w3.org/2002/07/owl#" ;
+    pm:inCategory pm:ExternalCategory ;
+    pm:isRelativePath false ;
+    rdfs:comment "OWL vocabulary"@en .
+
+pm:XSDPrefix a pm:Prefix ;
+    pm:hasPrefix "xsd" ;
+    pm:hasURI "http://www.w3.org/2001/XMLSchema#" ;
+    pm:inCategory pm:ExternalCategory ;
+    pm:isRelativePath false ;
+    rdfs:comment "XML Schema datatypes"@en .
+
+# Domain-specific prefixes
+pm:CognitiveAutomataPrefix a pm:Prefix ;
+    pm:hasPrefix "cog_auto" ;
+    pm:hasURI "./cognitive_automata#" ;
+    pm:inCategory pm:DomainCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Cognitive automata concepts"@en .
+
+pm:CognitionPatternsPrefix a pm:Prefix ;
+    pm:hasPrefix "cog_pat" ;
+    pm:hasURI "./cognition_patterns#" ;
+    pm:inCategory pm:DomainCategory ;
+    pm:isRelativePath true ;
+    rdfs:comment "Cognition patterns concepts"@en . 

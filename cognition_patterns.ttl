@@ -20,7 +20,7 @@
 @prefix time: <./time#> .
 
 cognition_patterns:CognitionPatternsOntology rdf:type owl:Ontology ;
-    dc:title "Cognition and Pattern Transmission Ontology" ;
+    dc:title "Cognition and Pattern Transmission Ontology"@en ;
     dc:version "1.2" ;
     dct:created "2024-03-20"^^xsd:date ;
     dct:modified "2024-03-21"^^xsd:date ;
@@ -39,30 +39,30 @@ cognition_patterns:CognitionPatternsOntology rdf:type owl:Ontology ;
     - Metrics and measurements
     - Enhanced temporal modeling
     - Integration with meta/metameta concepts
-    - Example instances""" .
+    - Example instances"""@en .
 
 # Core Classes
 cognition_patterns:ProcessingSystem rdf:type owl:Class ;
-    rdfs:label "Processing System" ;
-    rdfs:comment "Base class for different types of information processing systems" .
+    rdfs:label "Processing System"@en ;
+    rdfs:comment "Base class for different types of information processing systems"@en .
 
 cognition_patterns:DeterministicSystem rdfs:subClassOf cognition_patterns:ProcessingSystem ;
-    rdfs:label "Deterministic System" ;
-    rdfs:comment "A system with predictable state transitions (e.g., finite state automaton)" .
+    rdfs:label "Deterministic System"@en ;
+    rdfs:comment "A system with predictable state transitions (e.g., finite state automaton)"@en .
 
 # Pattern Transmission Concepts
 cognition_patterns:Pattern rdf:type owl:Class ;
-    rdfs:label "Cognitive Pattern" ;
-    rdfs:comment "A recognizable pattern in cognitive processing" .
+    rdfs:label "Cognitive Pattern"@en ;
+    rdfs:comment "A recognizable pattern in cognitive processing"@en .
 
 cognition_patterns:PatternTransmission rdf:type owl:Class ;
-    rdfs:label "Pattern Transmission" ;
-    rdfs:comment "The process of transmitting cognitive patterns" .
+    rdfs:label "Pattern Transmission"@en ;
+    rdfs:comment "The process of transmitting cognitive patterns"@en .
 
 # Temporal Modeling
 cognition_patterns:TemporalContext rdf:type owl:Class ;
-    rdfs:label "Temporal Context" ;
-    rdfs:comment "Temporal aspects of cognitive processing" .
+    rdfs:label "Temporal Context"@en ;
+    rdfs:comment "Temporal aspects of cognitive processing"@en .
 
 # Processing Status (extends conversation:Status)
 cognition_patterns:ProcessingStatus rdf:type owl:Class ;
@@ -77,24 +77,24 @@ cognition_patterns:ProcessingStatus rdf:type owl:Class ;
 
 # Status Instances
 cognition_patterns:Initializing rdf:type cognition_patterns:ProcessingStatus ;
-    rdfs:label "Initializing" ;
-    skos:definition "System is initializing processing" .
+    rdfs:label "Initializing"@en ;
+    skos:definition "System is initializing processing"@en .
 
 cognition_patterns:Processing rdf:type cognition_patterns:ProcessingStatus ;
-    rdfs:label "Processing" ;
-    skos:definition "Actively processing information" .
+    rdfs:label "Processing"@en ;
+    skos:definition "Actively processing information"@en .
 
 cognition_patterns:Analyzing rdf:type cognition_patterns:ProcessingStatus ;
-    rdfs:label "Analyzing" ;
-    skos:definition "Analyzing processed information" .
+    rdfs:label "Analyzing"@en ;
+    skos:definition "Analyzing processed information"@en .
 
 cognition_patterns:Complete rdf:type cognition_patterns:ProcessingStatus ;
-    rdfs:label "Complete" ;
-    skos:definition "Processing completed successfully" .
+    rdfs:label "Complete"@en ;
+    skos:definition "Processing completed successfully"@en .
 
 cognition_patterns:Error rdf:type cognition_patterns:ProcessingStatus ;
-    rdfs:label "Error" ;
-    skos:definition "Processing encountered an error" .
+    rdfs:label "Error"@en ;
+    skos:definition "Processing encountered an error"@en .
 
 # Properties
 cognition_patterns:processesConversation rdf:type owl:ObjectProperty ;
