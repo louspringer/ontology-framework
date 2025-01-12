@@ -4,42 +4,119 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 # Define Classes
-ex:Stakeholder a owl:Class .
-ex:InternalStakeholder a owl:Class ; rdfs:subClassOf ex:Stakeholder .
-ex:ExternalStakeholder a owl:Class ; rdfs:subClassOf ex:Stakeholder .
-ex:Persona a owl:Class .
-ex:Problem a owl:Class .
-ex:Solution a owl:Class .
-ex:BusinessRequirement a owl:Class .
-ex:TechnicalRequirement a owl:Class .
-ex:Constraint a owl:Class ; rdfs:subClassOf ex:BusinessRequirement, ex:TechnicalRequirement .
-ex:Risk a owl:Class .
-ex:Assumption a owl:Class ; rdfs:subClassOf ex:Risk .
-ex:ProblemStatement a owl:Class .
+ex:Stakeholder a owl:Class ;
+    rdfs:label "Stakeholder"@en ;
+    rdfs:comment "A person or organization with interest in or influence over the project"@en .
+
+ex:InternalStakeholder a owl:Class ; 
+    rdfs:subClassOf ex:Stakeholder ;
+    rdfs:label "Internal Stakeholder"@en ;
+    rdfs:comment "A stakeholder within the organization"@en .
+
+ex:ExternalStakeholder a owl:Class ; 
+    rdfs:subClassOf ex:Stakeholder ;
+    rdfs:label "External Stakeholder"@en ;
+    rdfs:comment "A stakeholder outside the organization"@en .
+
+ex:Persona a owl:Class ;
+    rdfs:label "Persona"@en ;
+    rdfs:comment "A fictional character representing a user type"@en .
+
+ex:Problem a owl:Class ;
+    rdfs:label "Problem"@en ;
+    rdfs:comment "An issue or challenge that needs to be addressed"@en .
+
+ex:Solution a owl:Class ;
+    rdfs:label "Solution"@en ;
+    rdfs:comment "A proposed resolution to a problem"@en .
+
+ex:BusinessRequirement a owl:Class ;
+    rdfs:label "Business Requirement"@en ;
+    rdfs:comment "A requirement from a business perspective"@en .
+
+ex:TechnicalRequirement a owl:Class ;
+    rdfs:label "Technical Requirement"@en ;
+    rdfs:comment "A requirement from a technical perspective"@en .
+
+ex:Constraint a owl:Class ; 
+    rdfs:subClassOf ex:BusinessRequirement, ex:TechnicalRequirement ;
+    rdfs:label "Constraint"@en ;
+    rdfs:comment "A limitation or restriction on the solution"@en .
+
+ex:Risk a owl:Class ;
+    rdfs:label "Risk"@en ;
+    rdfs:comment "A potential threat or uncertainty"@en .
+
+ex:Assumption a owl:Class ; 
+    rdfs:subClassOf ex:Risk ;
+    rdfs:label "Assumption"@en ;
+    rdfs:comment "A factor taken for granted without proof"@en .
+
+ex:ProblemStatement a owl:Class ;
+    rdfs:label "Problem Statement"@en ;
+    rdfs:comment "A formal description of an issue to be solved"@en .
 
 # Define Properties
-ex:hasPerspectiveOn a rdf:Property ; rdfs:domain ex:Stakeholder ; rdfs:range ex:Problem .
-ex:hasBusinessRequirement a rdf:Property ; rdfs:domain ex:Problem ; rdfs:range ex:BusinessRequirement .
-ex:derivesTechnicalRequirementFrom a rdf:Property ; rdfs:domain ex:Solution ; rdfs:range ex:BusinessRequirement .
-ex:isSolvedBy a rdf:Property ; rdfs:domain ex:Problem ; rdfs:range ex:Solution .
-ex:hasConstraint a rdf:Property ; rdfs:domain ex:Requirement ; rdfs:range ex:Constraint .
-ex:hasAssumption a rdf:Property ; rdfs:domain ex:Risk ; rdfs:range ex:Assumption .
-ex:hasLifecycleStage a rdf:Property ; rdfs:domain ex:ProblemStatement .
+ex:hasPerspectiveOn a rdf:Property ;
+    rdfs:label "has perspective on"@en ;
+    rdfs:comment "Indicates a stakeholder's view on a problem"@en ;
+    rdfs:domain ex:Stakeholder ;
+    rdfs:range ex:Problem .
+
+ex:hasBusinessRequirement a rdf:Property ;
+    rdfs:label "has business requirement"@en ;
+    rdfs:comment "Links a problem to its business requirements"@en ;
+    rdfs:domain ex:Problem ;
+    rdfs:range ex:BusinessRequirement .
+
+ex:derivesTechnicalRequirementFrom a rdf:Property ;
+    rdfs:label "derives technical requirement from"@en ;
+    rdfs:comment "Shows how technical requirements are derived from business needs"@en ;
+    rdfs:domain ex:Solution ;
+    rdfs:range ex:BusinessRequirement .
+
+ex:isSolvedBy a rdf:Property ;
+    rdfs:label "is solved by"@en ;
+    rdfs:comment "Links a problem to its solution"@en ;
+    rdfs:domain ex:Problem ;
+    rdfs:range ex:Solution .
+
+ex:hasConstraint a rdf:Property ;
+    rdfs:label "has constraint"@en ;
+    rdfs:comment "Indicates constraints on a requirement"@en ;
+    rdfs:domain ex:Requirement ;
+    rdfs:range ex:Constraint .
+
+ex:hasAssumption a rdf:Property ;
+    rdfs:label "has assumption"@en ;
+    rdfs:comment "Links a risk to its underlying assumptions"@en ;
+    rdfs:domain ex:Risk ;
+    rdfs:range ex:Assumption .
+
+ex:hasLifecycleStage a rdf:Property ;
+    rdfs:label "has lifecycle stage"@en ;
+    rdfs:comment "Indicates the current stage in the problem lifecycle"@en ;
+    rdfs:domain ex:ProblemStatement .
 
 # Example individuals
 ex:CFO a ex:ExternalStakeholder ;
+    rdfs:label "Chief Financial Officer"@en ;
     ex:hasPerspectiveOn ex:CostReduction .
 
 ex:SE a ex:InternalStakeholder ;
+    rdfs:label "Software Engineer"@en ;
     ex:hasPerspectiveOn ex:Solution .
 
 ex:CostReduction a ex:Problem ;
+    rdfs:label "Cost Reduction"@en ;
     ex:hasBusinessRequirement ex:ReduceOperationalCost ;
     ex:isSolvedBy ex:CloudLogisticsPlatform .
 
 ex:CloudLogisticsPlatform a ex:Solution ;
+    rdfs:label "Cloud Logistics Platform"@en ;
     ex:derivesTechnicalRequirementFrom ex:ReduceOperationalCost ;
     ex:hasConstraint ex:BudgetLimit .
 
 ex:ERPSystemCapability a ex:Assumption ;
+    rdfs:label "ERP System Capability"@en ;
     ex:hasAssociatedRisk ex:SystemUpgradeRisk .

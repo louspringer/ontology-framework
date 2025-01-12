@@ -1,0 +1,115 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix pm: <./prefix_management#> .
+@prefix pv: <#> .
+
+# Core validation shapes
+pv:PrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:hasPrefix ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[a-z][a-z0-9_]*$" ;  # Enforce lowercase with underscores
+        sh:message "Prefix must be lowercase, start with letter, contain only letters, numbers, and underscores"@en ;
+    ] ;
+    sh:property [
+        sh:path pm:hasURI ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each prefix must have exactly one URI"@en ;
+    ] ;
+    sh:property [
+        sh:path pm:inCategory ;
+        sh:class pm:PrefixCategory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each prefix must belong to exactly one category"@en ;
+    ] ;
+    sh:property [
+        sh:path pm:isRelativePath ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each prefix must specify whether it uses relative paths"@en ;
+    ] .
+
+# Category-specific validation
+pv:CorePrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:inCategory ;
+        sh:hasValue pm:CoreCategory ;
+        sh:qualifiedValueShape [
+            sh:path pm:isRelativePath ;
+            sh:hasValue true ;
+        ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Core prefixes must use relative paths"@en ;
+    ] .
+
+pv:DomainPrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:inCategory ;
+        sh:hasValue pm:DomainCategory ;
+        sh:qualifiedValueShape [
+            sh:path pm:isRelativePath ;
+            sh:hasValue true ;
+        ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Domain prefixes must use relative paths"@en ;
+    ] .
+
+pv:ExternalPrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:inCategory ;
+        sh:hasValue pm:ExternalCategory ;
+        sh:qualifiedValueShape [
+            sh:path pm:hasURI ;
+            sh:pattern "^http(s)?://" ;
+        ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "External prefixes must use absolute HTTP(S) URIs"@en ;
+    ] .
+
+# URI pattern validation
+pv:RelativeURIShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:isRelativePath ;
+        sh:hasValue true ;
+        sh:qualifiedValueShape [
+            sh:path pm:hasURI ;
+            sh:pattern "^\\./[^/]+#$" ;  # Must start with ./ and end with #
+        ] ;
+        sh:qualifiedMinCount 1 ;
+        sh:message "Relative URIs must start with ./ and end with #"@en ;
+    ] .
+
+# Uniqueness constraints
+pv:UniquePrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:hasPrefix ;
+        sh:uniqueLang false ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Prefix strings must be unique"@en ;
+    ] .
+
+pv:UniqueURIShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:hasURI ;
+        sh:uniqueLang false ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "URIs must be unique"@en ;
+    ] . 

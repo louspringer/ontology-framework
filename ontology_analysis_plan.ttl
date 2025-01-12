@@ -1,0 +1,155 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix analysis: <#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+# Ontology Analysis Plan
+
+analysis:OntologyAnalysisPlan a owl:Class ;
+    rdfs:label "Ontology Analysis Plan"@en ;
+    rdfs:comment "A structured plan for analyzing and optimizing ontologies"@en .
+
+analysis:AnalysisStep a owl:Class ;
+    rdfs:label "Analysis Step"@en ;
+    rdfs:comment "A discrete step in the ontology analysis process"@en .
+
+analysis:hasStep a owl:ObjectProperty ;
+    rdfs:domain analysis:OntologyAnalysisPlan ;
+    rdfs:range analysis:AnalysisStep ;
+    rdfs:label "has step"@en .
+
+analysis:stepNumber a owl:DatatypeProperty ;
+    rdfs:domain analysis:AnalysisStep ;
+    rdfs:range xsd:integer ;
+    rdfs:label "step number"@en .
+
+analysis:stepDescription a owl:DatatypeProperty ;
+    rdfs:domain analysis:AnalysisStep ;
+    rdfs:range xsd:string ;
+    rdfs:label "step description"@en .
+
+analysis:OntologyIssue a owl:Class ;
+    rdfs:label "Ontology Issue"@en ;
+    rdfs:comment "An identified issue in an ontology that needs attention"@en .
+
+analysis:hasIssue a owl:ObjectProperty ;
+    rdfs:domain analysis:AnalysisStep ;
+    rdfs:range analysis:OntologyIssue ;
+    rdfs:label "has issue"@en .
+
+analysis:issueSeverity a owl:DatatypeProperty ;
+    rdfs:domain analysis:OntologyIssue ;
+    rdfs:range xsd:string ;
+    rdfs:label "issue severity"@en .
+
+analysis:Finding a owl:Class ;
+    rdfs:label "Analysis Finding"@en ;
+    rdfs:comment "A specific finding from the ontology analysis"@en .
+
+analysis:Recommendation a owl:Class ;
+    rdfs:label "Analysis Recommendation"@en ;
+    rdfs:comment "A specific recommendation for ontology improvement"@en .
+
+analysis:hasFinding a owl:ObjectProperty ;
+    rdfs:domain analysis:AnalysisStep ;
+    rdfs:range analysis:Finding ;
+    rdfs:label "has finding"@en .
+
+analysis:hasRecommendation a owl:ObjectProperty ;
+    rdfs:domain analysis:Finding ;
+    rdfs:range analysis:Recommendation ;
+    rdfs:label "has recommendation"@en .
+
+# Findings for Step 1
+analysis:finding1 a analysis:Finding ;
+    rdfs:label "Prefix Inconsistency"@en ;
+    rdfs:comment "Inconsistent prefix usage found between cognitive_automata.ttl and cognition_patterns.ttl" ;
+    analysis:hasRecommendation analysis:rec1_1, analysis:rec1_2 .
+
+analysis:rec1_1 a analysis:Recommendation ;
+    rdfs:label "Standardize Core Prefixes"@en ;
+    rdfs:comment "Move all cognitive domain prefixes to use relative paths (./prefix#) instead of http://example.org/" .
+
+analysis:rec1_2 a analysis:Recommendation ;
+    rdfs:label "Create Prefix Management Ontology"@en ;
+    rdfs:comment "Create a central prefix management ontology that all other ontologies import" .
+
+# Findings for Step 2
+analysis:finding2 a analysis:Finding ;
+    rdfs:label "Concept Overlap"@en ;
+    rdfs:comment "Overlapping concepts between cognitive_automata.ttl and cognition_patterns.ttl for system types" ;
+    analysis:hasRecommendation analysis:rec2_1, analysis:rec2_2 .
+
+analysis:rec2_1 a analysis:Recommendation ;
+    rdfs:label "Merge System Hierarchies"@en ;
+    rdfs:comment "Merge AdaptiveSystem and ProcessingSystem hierarchies into a unified model" .
+
+analysis:rec2_2 a analysis:Recommendation ;
+    rdfs:label "Create Bridge Ontology"@en ;
+    rdfs:comment "Create a bridge ontology defining equivalence and subsumption relationships between overlapping concepts" .
+
+# Execution Plan Properties
+analysis:executionOrder a owl:DatatypeProperty ;
+    rdfs:domain analysis:Recommendation ;
+    rdfs:range xsd:integer ;
+    rdfs:label "execution order"@en .
+
+analysis:dependsOn a owl:ObjectProperty ;
+    rdfs:domain analysis:Recommendation ;
+    rdfs:range analysis:Recommendation ;
+    rdfs:label "depends on"@en .
+
+# Execution Ordering
+analysis:rec1_1 analysis:executionOrder 1 .
+analysis:rec1_2 analysis:executionOrder 2 ;
+    analysis:dependsOn analysis:rec1_1 .
+analysis:rec2_1 analysis:executionOrder 3 ;
+    analysis:dependsOn analysis:rec1_2 .
+analysis:rec2_2 analysis:executionOrder 4 ;
+    analysis:dependsOn analysis:rec2_1 .
+
+# Validation Rules (TODO: Convert to SHACL)
+analysis:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule"@en ;
+    rdfs:comment "A rule for validating ontology changes"@en .
+
+analysis:rule1 a analysis:ValidationRule ;
+    rdfs:label "Prefix Consistency"@en ;
+    rdfs:comment "All ontologies must use relative paths for internal prefixes" .
+
+analysis:rule2 a analysis:ValidationRule ;
+    rdfs:label "Concept Uniqueness"@en ;
+    rdfs:comment "Each concept should be defined in exactly one ontology" .
+
+# Instance Data
+
+analysis:currentPlan a analysis:OntologyAnalysisPlan ;
+    rdfs:label "Current Ontology Analysis Plan"@en ;
+    analysis:hasStep analysis:step1, analysis:step2, analysis:step3, analysis:step4 .
+
+analysis:step1 a analysis:AnalysisStep ;
+    analysis:stepNumber 1 ;
+    analysis:stepDescription "Analyze prefix consistency across all ontologies and standardize common prefixes" .
+
+analysis:step2 a analysis:AnalysisStep ;
+    analysis:stepNumber 2 ;
+    analysis:stepDescription "Identify and document concept overlap between cognitive_automata.ttl, cognition_patterns.ttl, and finite_automaton_infinite_world.ttl" .
+
+analysis:step3 a analysis:AnalysisStep ;
+    analysis:stepNumber 3 ;
+    analysis:stepDescription "Review and consolidate common patterns across domain-specific ontologies (als.ttl, oracle-oci-discovery-ontology.ttl, ssh-debug-ontology.ttl)" .
+
+analysis:step4 a analysis:AnalysisStep ;
+    analysis:stepNumber 4 ;
+    analysis:stepDescription "Create alignment ontology to formally define relationships between overlapping concepts" .
+
+# TODO: Add validation rules using SHACL
+# TODO: Add specific issue instances as they are discovered
+# TODO: Add metrics for measuring ontology quality 
