@@ -1,0 +1,82 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix plan: <./workflow_setup_plan#> .
+@prefix task: <./workflow_setup_plan#task/> .
+@prefix status: <./workflow_setup_plan#status/> .
+
+# Classes
+plan:Task a owl:Class ;
+    rdfs:label "Task"@en ;
+    rdfs:comment "A specific task in the workflow setup plan"@en .
+
+plan:Status a owl:Class ;
+    rdfs:label "Status"@en ;
+    rdfs:comment "Status of a task"@en .
+
+# Status Instances
+status:Pending a plan:Status ;
+    rdfs:label "Pending"@en .
+
+status:InProgress a plan:Status ;
+    rdfs:label "In Progress"@en .
+
+status:Completed a plan:Status ;
+    rdfs:label "Completed"@en .
+
+# Properties
+plan:hasStatus a owl:ObjectProperty ;
+    rdfs:domain plan:Task ;
+    rdfs:range plan:Status ;
+    rdfs:label "has status"@en .
+
+plan:hasDependency a owl:ObjectProperty ;
+    rdfs:domain plan:Task ;
+    rdfs:range plan:Task ;
+    rdfs:label "depends on"@en .
+
+plan:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain plan:Task ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has priority"@en .
+
+# Tasks
+task:EnableBranchProtection a plan:Task ;
+    rdfs:label "Enable Branch Protection"@en ;
+    rdfs:comment "Enable protection rules for develop branch on GitHub"@en ;
+    plan:hasStatus status:Pending ;
+    plan:hasPriority 1 .
+
+task:ConfigureReviewRequirements a plan:Task ;
+    rdfs:label "Configure Review Requirements"@en ;
+    rdfs:comment "Set up PR review requirements and block direct pushes"@en ;
+    plan:hasStatus status:Pending ;
+    plan:hasPriority 2 ;
+    plan:hasDependency task:EnableBranchProtection .
+
+task:EnableSourceryChecks a plan:Task ;
+    rdfs:label "Enable Sourcery Checks"@en ;
+    rdfs:comment "Configure and enable Sourcery.AI automated checks"@en ;
+    plan:hasStatus status:Pending ;
+    plan:hasPriority 3 ;
+    plan:hasDependency task:ConfigureReviewRequirements .
+
+task:CreateFeatureBranch a plan:Task ;
+    rdfs:label "Create Feature Branch"@en ;
+    rdfs:comment "Move workflow setup to feature/workflow-setup branch"@en ;
+    plan:hasStatus status:Pending ;
+    plan:hasPriority 4 ;
+    plan:hasDependency task:EnableBranchProtection .
+
+task:SubmitWorkflowPR a plan:Task ;
+    rdfs:label "Submit Workflow PR"@en ;
+    rdfs:comment "Create PR using new template for workflow setup changes"@en ;
+    plan:hasStatus status:Pending ;
+    plan:hasPriority 5 ;
+    plan:hasDependency task:CreateFeatureBranch . 
