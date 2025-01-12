@@ -1,15 +1,16 @@
-@startuml Ontology Framework
+@startuml ontology-framework
 
 ' Styling
 skinparam class {
+    BackgroundColor<<Meta>> LightPink
     BackgroundColor<<Core>> LightBlue
     BackgroundColor<<Domain>> LightGreen
-    BackgroundColor<<Meta>> LightPink
     BackgroundColor<<Base>> LightGray
+    BackgroundColor<<Integration>> LightYellow
 }
 
-' Core Meta Ontologies
-class MetaMetaCore <<Meta>> {
+' Meta Layer
+class MetaMetaOntology <<Meta>> {
     + AbstractionDimension
     + AbstractionLevel
     + KnowledgeDomain
@@ -19,7 +20,7 @@ class MetaMetaCore <<Meta>> {
     + domainScope
 }
 
-class MetaGuidance <<Meta>> {
+class LLMGuidanceOntology <<Meta>> {
     + Interpretation
     + Action
     + DomainAnalogy
@@ -29,97 +30,69 @@ class MetaGuidance <<Meta>> {
     + analogyTarget
 }
 
-' Base Framework
-class BaseModel <<Base>> {
-    + hasIdentifier: string
-    + hasName: string
-    + hasDescription: string
-}
-
-class Transformation <<Base>> {
-    + hasSource: BaseModel
-    + hasTarget: BaseModel
-    + hasRule: TransformationRule
-}
-
-' Domain Ontologies
-class ProblemSpace <<Domain>> {
+' Core Layer
+class ProblemOntology <<Core>> {
     + BusinessNeed
     + Context
     + Constraint
     --
-    + hasValue: string
-    + hasPriority: integer
+    + hasValue
+    + hasPriority
     + hasContext
-    + hasConstraint
 }
 
-class SolutionSpace <<Domain>> {
+class SolutionOntology <<Core>> {
     + TechnicalSolution
     + Implementation
     + Validation
     --
     + satisfies
     + hasImplementation
-    + hasValidation
     + validationStatus
 }
 
-class ProjectRisks <<Domain>> {
-    + Risk
-    + Mitigation
-    + Impact
+class ConversationOntology <<Core>> {
+    + BacklogItem
+    + Conversation
+    + Status
     --
-    + severity: integer
-    + likelihood: integer
-    + hasMitigation
-    + hasImpact
+    + hasStatus
+    + hasParticipant
+    + timestamp
 }
 
-class CreativeAnalogies <<Domain>> {
+class CognitionPatternsOntology <<Core>> {
+    + ProcessingSystem
+    + Pattern
+    + TemporalContext
+    --
+    + hasConfidenceScore
+    + implementsMetaConcept
+    + solvesProblem
+}
+
+' Domain Layer
+class CreativeAnalogiesOntology <<Domain>> {
     + PlayfulAnalogy
     + AnalogicalBridge
     + ExplanationPattern
     --
-    + funFactor: integer
+    + funFactor
     + hasBridge
     + usesPattern
 }
 
-class AITools <<Domain>> {
+class AIToolsOntology <<Domain>> {
     + AITool
     + Category
     + Capability
     --
     + hasCategory
     + hasCapability
-    + maturityLevel: integer
+    + maturityLevel
 }
 
-' Specific Domain Applications
-class OracleStory <<Domain>> {
-    + Person
-    + Position
-    + Company
-    + Interview
-    --
-    + isCandidateFor
-    + reportsTo
-    + oversees
-}
-
-class SSHDebug <<Domain>> {
-    + Issue
-    + Risk
-    + Constraint
-    + Solution
-    --
-    + hasRisk
-    + hasConstraint
-    + hasSolution
-}
-
-class OracleOCIDiscovery <<Domain>> {
+class OracleOCIDiscoveryOntology <<Domain>> {
     + OracleTechnologyStack
     + CloudService
     + LearningResource
@@ -129,21 +102,40 @@ class OracleOCIDiscovery <<Domain>> {
     + provides
 }
 
+' Integration Layer
+class PrefixManagementOntology <<Integration>> {
+    + Prefix
+    + PrefixCategory
+    --
+    + hasPrefix
+    + hasURI
+    + isRelativePath
+}
+
+class OntologyShapes <<Integration>> {
+    + OntologyShape
+    + ClassShape
+    --
+    + hasValidation
+    + hasConstraint
+}
+
 ' Relationships
-MetaMetaCore <|-- MetaGuidance
-BaseModel <|-- Transformation
-MetaGuidance <|-- ProblemSpace
-MetaGuidance <|-- SolutionSpace
-MetaGuidance <|-- ProjectRisks
-MetaGuidance <|-- CreativeAnalogies
-MetaGuidance <|-- AITools
+MetaMetaOntology <|-- LLMGuidanceOntology
+LLMGuidanceOntology <|-- ProblemOntology
+LLMGuidanceOntology <|-- SolutionOntology
+LLMGuidanceOntology <|-- ConversationOntology
+LLMGuidanceOntology <|-- CognitionPatternsOntology
 
-ProblemSpace --> SolutionSpace : influences
-ProjectRisks --> SolutionSpace : constrains
-CreativeAnalogies --> SolutionSpace : enhances
+ProblemOntology --> SolutionOntology : influences
+CognitionPatternsOntology --> SolutionOntology : enhances
+ConversationOntology --> CognitionPatternsOntology : informs
 
-OracleStory --> ProblemSpace : defines
-OracleOCIDiscovery --> SolutionSpace : implements
-SSHDebug --> ProjectRisks : identifies
+CreativeAnalogiesOntology --> LLMGuidanceOntology : extends
+AIToolsOntology --> LLMGuidanceOntology : implements
+OracleOCIDiscoveryOntology --> SolutionOntology : specializes
+
+PrefixManagementOntology ..> MetaMetaOntology : manages
+OntologyShapes ..> MetaMetaOntology : validates
 
 @enduml 
