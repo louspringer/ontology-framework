@@ -3,7 +3,7 @@
 //
 // See https://aka.ms/devcontainer.json for more information.
 {
-	"name": "Gitpod",
+	"name": "Ontology Framework",
 	// Use "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
 	// instead of the build to use a pre-built image.
 	"build": {
@@ -13,7 +13,7 @@
 	// Features add additional features to your environment. See https://containers.dev/features
 	// Beware: features are not supported on all platforms and may have unintended side-effects.
 	"features": {
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
 			"moby": true,
 			"azureDnsAutoDetection": true,
 			"installDockerBuildx": true,
@@ -25,9 +25,30 @@
 			"version": "latest",
 			"variant": "Miniforge3"
 		}
-    },
-    "mounts": [
-        "source=${localWorkspaceFolder},target=/workspace,type=bind"
-    ],
-    "runArgs": ["--storage-opt", "size=60G"]  // Adjust size as needed
+	},
+	// Configure tool-specific properties
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"stardog-union.stardog-rdf-grammars",
+				"zazuko.rdf-sketch"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/opt/conda/bin/python",
+				"python.formatting.provider": "black"
+			}
+		}
+	},
+	// Use 'postCreateCommand' to run commands after the container is created
+	"postCreateCommand": "conda install -y -c conda-forge black rdflib pytest",
+	
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+	"remoteUser": "vscode",
+	
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/workspace,type=bind"
+	],
+	"runArgs": ["--storage-opt", "size=60G"]  // Adjust size as needed
 }
