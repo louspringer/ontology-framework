@@ -1,0 +1,145 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix core: <./core_features_batch#> .
+@prefix task: <./core_features_batch#task/> .
+@prefix status: <./core_features_batch#status/> .
+@prefix issue: <./core_features_batch#issue/> .
+@prefix infra: <./infrastructure_batch#> .
+
+# Classes
+core:Issue a owl:Class ;
+    rdfs:label "Core Feature Issue"@en ;
+    rdfs:comment "A GitHub issue for core feature implementation"@en .
+
+core:Task a owl:Class ;
+    rdfs:label "Implementation Task"@en ;
+    rdfs:comment "A specific task within feature implementation"@en .
+
+core:Status a owl:Class ;
+    rdfs:label "Status"@en ;
+    rdfs:comment "Status of a task or issue"@en .
+
+# Status Instances
+status:Pending a core:Status ;
+    rdfs:label "Pending"@en .
+
+status:InProgress a core:Status ;
+    rdfs:label "In Progress"@en .
+
+status:Completed a core:Status ;
+    rdfs:label "Completed"@en .
+
+# Properties
+core:hasTask a owl:ObjectProperty ;
+    rdfs:domain core:Issue ;
+    rdfs:range core:Task ;
+    rdfs:label "has task"@en .
+
+core:hasStatus a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (core:Issue core:Task) ] ;
+    rdfs:range core:Status ;
+    rdfs:label "has status"@en .
+
+core:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf (core:Issue core:Task) ] ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has priority"@en .
+
+core:dependsOn a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (core:Issue core:Task) ] ;
+    rdfs:range [ owl:unionOf (core:Issue core:Task infra:Issue) ] ;
+    rdfs:label "depends on"@en .
+
+# Issue 7: Enhanced Constraint Validation
+issue:Validation a core:Issue ;
+    rdfs:label "Enhanced Constraint Validation"@en ;
+    rdfs:comment "Implement comprehensive constraint validation system"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 1 ;
+    core:dependsOn infra:issue:Testing ;
+    core:hasTask task:ValidationFramework, task:ConstraintTypes, task:ValidationAPI .
+
+task:ValidationFramework a core:Task ;
+    rdfs:label "Validation Framework"@en ;
+    rdfs:comment "Core validation system implementation"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 1 .
+
+task:ConstraintTypes a core:Task ;
+    rdfs:label "Constraint Types"@en ;
+    rdfs:comment "Implementation of various constraint types"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 2 ;
+    core:dependsOn task:ValidationFramework .
+
+task:ValidationAPI a core:Task ;
+    rdfs:label "Validation API"@en ;
+    rdfs:comment "Public API for constraint validation"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 3 ;
+    core:dependsOn task:ConstraintTypes .
+
+# Issue 8: Performance Optimization
+issue:Performance a core:Issue ;
+    rdfs:label "Performance Optimization"@en ;
+    rdfs:comment "Optimize system performance and resource usage"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 2 ;
+    core:dependsOn issue:Validation ;
+    core:hasTask task:Profiling, task:Optimization, task:Benchmarking .
+
+task:Profiling a core:Task ;
+    rdfs:label "Performance Profiling"@en ;
+    rdfs:comment "Profile system performance and identify bottlenecks"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 1 .
+
+task:Optimization a core:Task ;
+    rdfs:label "Code Optimization"@en ;
+    rdfs:comment "Implement performance improvements"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 2 ;
+    core:dependsOn task:Profiling .
+
+task:Benchmarking a core:Task ;
+    rdfs:label "Performance Benchmarking"@en ;
+    rdfs:comment "Create and run performance benchmarks"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 3 ;
+    core:dependsOn task:Optimization .
+
+# Issue 6: Format Transformations
+issue:Formats a core:Issue ;
+    rdfs:label "Format Transformations"@en ;
+    rdfs:comment "Implement additional format transformation capabilities"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 3 ;
+    core:dependsOn issue:Performance ;
+    core:hasTask task:TransformEngine, task:FormatHandlers, task:ValidationIntegration .
+
+task:TransformEngine a core:Task ;
+    rdfs:label "Transformation Engine"@en ;
+    rdfs:comment "Core transformation system implementation"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 1 .
+
+task:FormatHandlers a core:Task ;
+    rdfs:label "Format Handlers"@en ;
+    rdfs:comment "Handlers for different file formats"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 2 ;
+    core:dependsOn task:TransformEngine .
+
+task:ValidationIntegration a core:Task ;
+    rdfs:label "Validation Integration"@en ;
+    rdfs:comment "Integrate validation with transformations"@en ;
+    core:hasStatus status:Pending ;
+    core:hasPriority 3 ;
+    core:dependsOn task:FormatHandlers . 
