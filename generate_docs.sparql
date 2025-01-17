@@ -1,0 +1,33 @@
+PREFIX sop: <file:///Users/lou/Documents/ontology-framework/secure-ontologist-prompt#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?markdown 
+WHERE {
+  {
+    ?ontology a owl:Ontology ;
+             rdfs:label ?title ;
+             dc:description ?desc .
+    BIND(CONCAT("# ", ?title, "\n\n", ?desc) AS ?markdown)
+  }
+  UNION 
+  {
+    ?class a owl:Class ;
+          sop:markdownRepresentation ?markdown .
+    FILTER(?class NOT IN (sop:Documentation, sop:Section, sop:TodoEnhancement))
+  }
+  UNION 
+  {
+    ?prop a owl:ObjectProperty ;
+         sop:markdownRepresentation ?markdown .
+    FILTER(?prop NOT IN (sop:hasSection, sop:hasExample))
+  }
+  UNION 
+  {
+    ?section a sop:Section ;
+            sop:markdownRepresentation ?markdown .
+  }
+}
+ORDER BY ?markdown 
