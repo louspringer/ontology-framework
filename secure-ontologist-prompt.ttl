@@ -1,0 +1,209 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sop: <./secure-ontologist-prompt#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+sop:SecureOntologistPrompt rdf:type owl:Ontology ;
+    rdfs:label "Secure Ontologist Prompt Ontology" ;
+    rdfs:comment "Ontology defining the structure and requirements for secure ontology development" ;
+    owl:versionInfo "1.0.0" ;
+    dc:description """The Secure Ontologist Prompt Ontology (`sop`) defines the structure and requirements for secure ontology development. It emphasizes security practices, package management, and ontology component requirements.""" .
+
+# Documentation Structure
+sop:Documentation rdf:type owl:Class ;
+    rdfs:label "Documentation" ;
+    rdfs:comment "Documentation structure for ontology components" .
+
+sop:Section rdf:type owl:Class ;
+    rdfs:label "Documentation Section" ;
+    rdfs:comment "A section in the documentation" .
+
+sop:hasSection rdf:type owl:ObjectProperty ;
+    rdfs:label "has section" ;
+    rdfs:domain sop:Documentation ;
+    rdfs:range sop:Section .
+
+sop:hasExample rdf:type owl:ObjectProperty ;
+    rdfs:label "has example" ;
+    rdfs:comment "Links a concept to its example" .
+
+sop:markdownRepresentation rdf:type owl:DatatypeProperty ;
+    rdfs:label "markdown representation" ;
+    rdfs:comment "The markdown representation of an element" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+# Classes
+sop:SecurityRequirement rdf:type owl:Class ;
+    rdfs:label "Security Requirement" ;
+    rdfs:comment "Security-related requirements for ontology development" ;
+    sop:markdownRepresentation """### SecurityRequirement
+Security-related requirements for ontology development.""" .
+
+sop:PackageManagement rdf:type owl:Class ;
+    rdfs:label "Package Management" ;
+    rdfs:comment "Package management requirements and configurations" ;
+    sop:markdownRepresentation """### PackageManagement
+Package management requirements and configurations.""" .
+
+sop:OntologyComponent rdf:type owl:Class ;
+    rdfs:label "Ontology Component" ;
+    rdfs:comment "Core components required in ontology development" ;
+    sop:markdownRepresentation """### OntologyComponent
+Core components required in ontology development.""" .
+
+sop:ValidationRule rdf:type owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Rules for validating ontology structure and content" ;
+    sop:markdownRepresentation """### ValidationRule
+Rules for validating ontology structure and content.""" .
+
+sop:DocumentationRequirement rdf:type owl:Class ;
+    rdfs:label "Documentation Requirement" ;
+    rdfs:comment "Requirements for ontology documentation" ;
+    sop:markdownRepresentation """### DocumentationRequirement
+Requirements for ontology documentation.""" .
+
+# Properties
+sop:hasRequirement rdf:type owl:ObjectProperty ;
+    rdfs:label "has requirement" ;
+    rdfs:domain sop:SecureOntologistPrompt ;
+    rdfs:range sop:SecurityRequirement ;
+    sop:markdownRepresentation "- `sop:hasRequirement` (Domain: SecureOntologistPrompt, Range: SecurityRequirement)" .
+
+sop:hasPackageConfig rdf:type owl:ObjectProperty ;
+    rdfs:label "has package configuration" ;
+    rdfs:domain sop:SecureOntologistPrompt ;
+    rdfs:range sop:PackageManagement ;
+    sop:markdownRepresentation "- `sop:hasPackageConfig` (Domain: SecureOntologistPrompt, Range: PackageManagement)" .
+
+sop:requiresComponent rdf:type owl:ObjectProperty ;
+    rdfs:label "requires component" ;
+    rdfs:domain sop:SecureOntologistPrompt ;
+    rdfs:range sop:OntologyComponent ;
+    sop:markdownRepresentation "- `sop:requiresComponent` (Domain: SecureOntologistPrompt, Range: OntologyComponent)" .
+
+sop:priority rdf:type owl:DatatypeProperty ;
+    rdfs:label "priority" ;
+    rdfs:domain sop:SecurityRequirement ;
+    rdfs:range xsd:string ;
+    sop:markdownRepresentation "- `sop:priority` (Domain: SecurityRequirement, Range: xsd:string)" .
+
+# Individuals
+sop:CredentialSecurity rdf:type sop:SecurityRequirement ;
+    rdfs:label "Credential Security" ;
+    rdfs:comment "Avoid including sensitive information in code/configurations" ;
+    sop:priority "HIGH" ;
+    sop:markdownRepresentation "- Example: `sop:CredentialSecurity` - Enforces secure handling of credentials" .
+
+sop:CondaFirst rdf:type sop:PackageManagement ;
+    rdfs:label "Conda First Approach" ;
+    rdfs:comment "Prefer conda over pip for package management" ;
+    sop:markdownRepresentation "- Example: `sop:CondaFirst` - Prioritizes conda over pip for package management" .
+
+sop:ClassComponent rdf:type sop:OntologyComponent ;
+    rdfs:label "Class Component" ;
+    rdfs:comment "Classes with labels and descriptions" ;
+    sop:markdownRepresentation "- Example: `sop:ClassComponent` - Defines class structure requirements" .
+
+sop:PropertyComponent rdf:type sop:OntologyComponent ;
+    rdfs:label "Property Component" ;
+    rdfs:comment "Properties with domains and ranges" ;
+    sop:markdownRepresentation "- Example: `sop:PropertyComponent` - Specifies property relationship requirements" .
+
+sop:ValidationComponent rdf:type sop:ValidationRule ;
+    rdfs:label "SHACL Validation" ;
+    rdfs:comment "Ensure structure supports SHACL/OWL consistency checks" ;
+    sop:markdownRepresentation "- Example: `sop:ValidationComponent` - SHACL/OWL consistency validation" .
+
+# Documentation Sections
+sop:ValidationRulesSection rdf:type sop:Section ;
+    rdfs:label "Validation Rules Section" ;
+    sop:markdownRepresentation """## Validation Rules
+The ontology supports SHACL validation for ensuring:
+- Required labels and comments
+- Property domain and range constraints
+- Priority assignments for security requirements""" .
+
+sop:IntegrationSection rdf:type sop:Section ;
+    rdfs:label "Integration Section" ;
+    sop:markdownRepresentation """## Integration
+Uses standard prefixes:
+- meta, metameta, problem, solution, conversation
+- rdf, rdfs, owl, sh, xsd""" .
+
+# TODO Section
+sop:TodoEnhancement rdf:type owl:Class ;
+    rdfs:label "TODO Enhancement" ;
+    rdfs:comment "Future enhancements and refinements needed" ;
+    sop:markdownRepresentation """## TODO Enhancements""" .
+
+sop:AddToolValidation rdf:type sop:TodoEnhancement ;
+    rdfs:label "Add Tool Validation" ;
+    rdfs:comment "Add validation rules for tool-specific requirements" ;
+    sop:priority "MEDIUM" ;
+    sop:markdownRepresentation """- `sop:AddToolValidation` (Priority: MEDIUM)
+  - Add validation rules for tool-specific requirements""" .
+
+# Example Section
+sop:UsageExampleSection rdf:type sop:Section ;
+    rdfs:label "Usage Example Section" ;
+    sop:markdownRepresentation """## Usage Example
+```turtle
+sop:CredentialSecurity rdf:type sop:SecurityRequirement ;
+    rdfs:label "Credential Security" ;
+    rdfs:comment "Avoid including sensitive information in code/configurations" ;
+    sop:priority "HIGH" .
+```""" .
+
+# SPARQL Example Section
+sop:SparqlExampleSection rdf:type sop:Section ;
+    rdfs:label "SPARQL Example Section" ;
+    sop:markdownRepresentation """## SPARQL Generation Example
+The following SPARQL query generates this documentation from the ontology:
+
+```sparql
+PREFIX sop: <./secure-ontologist-prompt#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?markdown
+WHERE {
+  {
+    # Title and Overview
+    sop:SecureOntologistPrompt rdfs:label ?title ;
+                              dc:description ?desc .
+    BIND(CONCAT("# ", ?title, "\n\n", ?desc, "\n\n") AS ?markdown)
+  } UNION {
+    # Core Classes
+    ?class a owl:Class ;
+          sop:markdownRepresentation ?markdown .
+    FILTER(?class != sop:Documentation && ?class != sop:Section && ?class != sop:TodoEnhancement)
+  } UNION {
+    # Properties
+    ?prop a owl:ObjectProperty ;
+         sop:markdownRepresentation ?markdown .
+    FILTER(?prop != sop:hasSection && ?prop != sop:hasExample)
+  } UNION {
+    # Examples and Sections
+    ?section a sop:Section ;
+            sop:markdownRepresentation ?markdown .
+  }
+}
+ORDER BY ?markdown
+```
+
+This query:
+1. Extracts title and overview from ontology metadata
+2. Collects class definitions and their examples
+3. Gathers property definitions
+4. Assembles documentation sections in order""" . 

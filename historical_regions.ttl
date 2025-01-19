@@ -1,0 +1,71 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix hist: <./historical_regions#> .
+
+# Classes
+hist:GeographicalRegion a owl:Class ;
+    rdfs:label "Geographical Region" ;
+    rdfs:comment "A distinct geographical area with historical significance" .
+
+hist:HistoricalPeriod a owl:Class ;
+    rdfs:label "Historical Period" ;
+    rdfs:comment "A defined period in history" .
+
+hist:Territory a owl:Class ;
+    rdfs:subClassOf hist:GeographicalRegion ;
+    rdfs:label "Territory" ;
+    rdfs:comment "An organized territory of the United States" .
+
+# Properties
+hist:hasRegionalDesignation a owl:ObjectProperty ;
+    rdfs:domain hist:GeographicalRegion ;
+    rdfs:range hist:GeographicalRegion ;
+    rdfs:label "has regional designation" ;
+    rdfs:comment "Connects a region to its historical designation" .
+
+hist:duringPeriod a owl:ObjectProperty ;
+    rdfs:domain hist:GeographicalRegion ;
+    rdfs:range hist:HistoricalPeriod ;
+    rdfs:label "during period" ;
+    rdfs:comment "Connects a regional designation to its historical period" .
+
+# Individuals
+hist:Ohio a hist:GeographicalRegion ;
+    rdfs:label "Ohio" ;
+    rdfs:comment "The region that became the state of Ohio" .
+
+hist:TheWest a hist:GeographicalRegion ;
+    rdfs:label "The West" ;
+    rdfs:comment "The western frontier of the United States" .
+
+hist:NorthwestTerritory a hist:Territory ;
+    rdfs:label "Northwest Territory" ;
+    rdfs:comment "Territory established by the Northwest Ordinance of 1787" .
+
+hist:TerritorialPeriod a hist:HistoricalPeriod ;
+    rdfs:label "Territorial Period" ;
+    hist:startDate "1787"^^xsd:gYear ;
+    hist:endDate "1803"^^xsd:gYear .
+
+hist:FrontierPeriod a hist:HistoricalPeriod ;
+    rdfs:label "Frontier Period" ;
+    hist:startDate "1803"^^xsd:gYear ;
+    hist:endDate "1850"^^xsd:gYear .
+
+# Relationships
+hist:Ohio hist:hasRegionalDesignation hist:TheWest ;
+    hist:duringPeriod hist:TerritorialPeriod, hist:FrontierPeriod .
+
+# TODO
+# - Add more specific date ranges for regional designations
+# - Include population statistics that influenced frontier status
+# - Add relationships with neighboring territories/states
+# - Include Native American territories and perspectives
+# - Add economic and transportation factors that influenced regional identity
