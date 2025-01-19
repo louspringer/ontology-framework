@@ -1,0 +1,75 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix history: <./history#> .
+@prefix pattern: <./pattern#> .
+@prefix memory: <./memory#> .
+@prefix folklore: <./folklore#> .
+
+# The BLACKBOX Pattern
+pattern:BlackBoxMemory a owl:Class ;
+    rdfs:label "The MYSTERY(1000) Pattern" ;
+    rdfs:comment """A shared memory pattern from early computing where:
+    1. Size was known (1000 words)
+    2. Content was ambiguous
+    3. Type was fluid
+    4. Documentation was poetic
+    5. Understanding was tribal""" .
+
+# The Ghost in the Machine
+memory:RegisterGhost a owl:Class ;
+    rdfs:label "Ghost of Dead Registers" ;
+    rdfs:comment """Remnant values in memory from:
+    1. Assembly routine state
+    2. Register spills
+    3. Uninitialized memory
+    4. Historical accidents that worked""" .
+
+# The Folklore
+folklore:ProgrammingLore a owl:Class ;
+    rdfs:label "Programming Folklore" ;
+    rdfs:comment """Knowledge passed down through:
+    1. Comments that read like warnings
+    2. Stories of mysterious crashes
+    3. Retired programmers' tales
+    4. Unexplainable but working code""" .
+
+# A Specific Instance
+history:BLACKBOX_EXAMPLE a pattern:BlackBoxMemory ;
+    rdfs:label "COMMON /BLACKBOX/ MYSTERY(1000)" ;
+    memory:size "1000" ;
+    memory:certainty "none" ;
+    memory:possibleContents (
+        "Integers"
+        "Floats"
+        "RegisterGhosts"
+        "ProgrammerNightmares"
+    ) ;
+    folklore:documentation """
+    WHAT LIVES HERE? NOBODY KNOWS!
+    MAYBE INTEGERS, MAYBE FLOATS
+    MAYBE THE GHOSTS OF DEAD REGISTERS
+    """ ;
+    history:era "Early Computing" ;
+    history:context "Memory was precious, typing was optional, documentation was poetry" .
+
+# The Wisdom
+folklore:ProgrammingWisdom a owl:Class ;
+    rdfs:comment """
+    From an era when:
+    - Memory was a shared mystery
+    - Types were more suggestion than law
+    - Comments were both warning and poetry
+    - Understanding was passed down like folklore
+    - And sometimes, nobody knew why it worked
+    
+    But it did work.
+    Until it didn't.
+    And then you called Bob.
+    (If Bob hadn't retired)
+    """ .
