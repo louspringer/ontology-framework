@@ -1,0 +1,177 @@
+# Ontology Framework Development Guidelines
+
+Ensure all solutions prioritize security by avoiding the inclusion of sensitive information such as passwords in code or configurations. Use secure methods like environment variables or configuration files for handling credentials. If embedding credentials seems necessary, notify me first. Provide solutions that align with best practices for security and data protection.
+
+Always provide conda alternatives for package management over pip. 
+
+Always create and maintain an ontology for the current session in Turtle syntax that includes:
+
+1. **Classes**: Define key entities with labels (`rdfs:label`) and descriptions (`rdfs:comment`).
+2. **Properties**: Establish relationships with object properties, specifying `rdfs:domain`, `rdfs:range`, and comments.
+3. **Individuals**: Add example instances (`rdf:type`) for each class with clear labels and descriptions.
+4. **Extendability**: Include a `TODO` section for areas of expansion or refinement (e.g., adding tools, workflows, or constraints).
+5. **Validation-Ready**: Ensure the structure supports SHACL or OWL consistency checks.
+6. **Core Ontologies**: Use the meta.ttl, metameta.ttl, conversation.ttl, problem.ttl, and solution.ttl files in the current workspace for reusable ontology components and examples. 
+
+Use ontologies inclusions of the format '@prefix my_ontology: <./my_ontology>  .' vs. '@prefix my_ontology:  <http://example.org/my_ontology> .' The ontology in this example will be in the current workspace at 'my_ontology.ttl.'
+
+The following must be included and used by every ontology:
+
+```turtle
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+```
+
+Design the ontology to be understandable and useful for automation or further development without additional information.
+
+## Security and Configuration Best Practices
+
+- Avoid including sensitive information in code/configurations
+- Use secure credential handling methods:
+  - Environment variables (`.env` files)
+  - Configuration files with proper access controls
+  - Secrets management systems
+- Require approval for credential-related changes
+- Implement secure logging practices
+- Regular security audits
+
+## Package Management
+
+Use conda as primary package manager:
+
+```yaml
+name: ontology-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.8
+  - rdflib
+  - owlready2
+  - pyshacl
+  - graphviz
+```
+
+- Provide `environment.yml` for all projects
+- Use pip only when packages unavailable in conda
+- Document dependency decisions
+
+## Ontology Structure Requirements
+
+### Required Prefixes
+
+```turtle
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix process: <./process#> .
+@prefix agent: <./agent#> .
+@prefix time: <./time#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+```
+
+### Core Components
+
+1. **Classes**
+
+   - Include `rdfs:label` and `rdfs:comment`
+   - Add version info with `owl:versionInfo`
+   - Define class hierarchies using `rdfs:subClassOf`
+
+2. **Properties**
+
+   - Specify `rdfs:domain` and `rdfs:range`
+   - Define cardinality constraints
+   - Include property characteristics
+
+3. **Individuals**
+
+   - Provide minimum two examples per class
+   - Include complete property assertions
+   - Cross-reference between ontologies
+
+4. **Validation**
+
+   Example SHACL shape:
+
+   ```turtle
+   ex:PersonShape a sh:NodeShape ;
+       sh:targetClass ex:Person ;
+       sh:property [
+           sh:path ex:identifier ;
+           sh:minCount 1 ;
+           sh:maxCount 1 ;
+           sh:datatype xsd:string ;
+       ] .
+   ```
+
+5. **Documentation**
+
+   - GraphViz visualizations
+   - SPARQL query examples
+   - Usage patterns
+   - Change history
+
+## Version Control
+
+### Commit Message Format
+
+```markdown
+type(scope): description
+
+[optional body]
+
+Ontology-Version: X.Y.Z
+```
+
+- Types: onto, doc, test
+- Include CI/CD validation
+
+## Integration Guidelines
+
+### External Ontology Integration
+
+```turtle
+# Alignment Pattern
+ex:localConcept owl:equivalentClass ext:externalConcept .
+ex:localProperty owl:equivalentProperty ext:externalProperty .
+
+# Import Pattern
+@prefix ext: <./external_ontology#> .
+owl:imports ext: .
+```
+
+### Modularization
+
+- One concept per file
+- Clear dependencies
+- Separate:
+  - Domain concepts
+  - Application logic
+  - Validation rules
+
+## TODO Management
+
+```turtle
+ex:TodoItem a ex:Enhancement ;
+    ex:priority "HIGH" ;
+    ex:targetDate "2024-Q2" ;
+    rdfs:comment "Implementation needed" .
+```
+
+## Quality Assurance
+
+- Automated validation
+- Consistency checks
+- Documentation coverage
+- Usage validation

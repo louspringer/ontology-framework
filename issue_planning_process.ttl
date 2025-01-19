@@ -24,6 +24,15 @@ process:Issue a owl:Class ;
     rdfs:label "GitHub Issue"@en ;
     rdfs:comment "A GitHub issue in the repository"@en .
 
+# Additional Classes
+process:SuccessCriterion a owl:Class ;
+    rdfs:label "Success Criterion"@en ;
+    rdfs:comment "A specific measure of success for the planning process"@en .
+
+process:StepDetail a owl:Class ;
+    rdfs:label "Step Detail"@en ;
+    rdfs:comment "A detailed task within a process step"@en .
+
 # Properties
 process:produces a owl:ObjectProperty ;
     rdfs:domain process:Step ;
@@ -45,40 +54,153 @@ process:hasStatus a owl:ObjectProperty ;
     rdfs:range process:Status ;
     rdfs:label "has status"@en .
 
+# Additional Properties
+process:hasDetail a owl:ObjectProperty ;
+    rdfs:domain process:Step ;
+    rdfs:range process:StepDetail ;
+    rdfs:label "has detail"@en .
+
+process:hasSuccessCriterion a owl:ObjectProperty ;
+    rdfs:domain process:Step ;
+    rdfs:range process:SuccessCriterion ;
+    rdfs:label "has success criterion"@en .
+
+process:hasEmoji a owl:DatatypeProperty ;
+    rdfs:domain process:Step ;
+    rdfs:range xsd:string ;
+    rdfs:label "has emoji"@en .
+
 # Steps
 step:IssueAnalysis a process:Step ;
     rdfs:label "Issue Analysis"@en ;
     rdfs:comment "Analyze existing GitHub issues for patterns and dependencies"@en ;
     process:hasOrder 1 ;
-    process:produces artifact:IssueInventory .
+    process:produces artifact:IssueInventory ;
+    process:hasEmoji "🔍" ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "List all existing GitHub issues"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Categorize by type and scope"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Extract key requirements and constraints"@en
+    ] .
 
 step:OntologyMapping a process:Step ;
     rdfs:label "Ontology Mapping"@en ;
     rdfs:comment "Map issues to ontology concepts and relationships"@en ;
     process:hasOrder 2 ;
     process:requires artifact:IssueInventory ;
-    process:produces artifact:OntologyMap .
+    process:produces artifact:OntologyMap ;
+    process:hasEmoji "🗺️" ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Map issues to existing ontology concepts"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Identify gaps in ontology coverage"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Create new ontology terms as needed"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Document semantic relationships"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Validate mappings for consistency"@en
+    ] .
 
 step:PlanCreation a process:Step ;
     rdfs:label "Plan Creation"@en ;
     rdfs:comment "Create structured plans (TTL and MD) for each issue"@en ;
     process:hasOrder 3 ;
     process:requires artifact:OntologyMap ;
-    process:produces artifact:IssuePlans .
+    process:produces artifact:IssuePlans ;
+    process:hasEmoji "📝" ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Create TTL representation for each issue"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Generate markdown documentation"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Define success criteria"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Outline implementation steps"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Add validation requirements"@en
+    ] .
 
 step:DependencyAnalysis a process:Step ;
     rdfs:label "Dependency Analysis"@en ;
     rdfs:comment "Analyze and document dependencies between issues and plans"@en ;
     process:hasOrder 4 ;
     process:requires artifact:IssuePlans ;
-    process:produces artifact:DependencyGraph .
+    process:produces artifact:DependencyGraph ;
+    process:hasEmoji "🔗" ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Identify dependencies between issues"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Create dependency visualization"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Document blocking relationships"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Identify parallel work opportunities"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Flag critical path items"@en
+    ] .
 
 step:PriorityAssignment a process:Step ;
     rdfs:label "Priority Assignment"@en ;
     rdfs:comment "Assign priorities based on dependencies and impact"@en ;
     process:hasOrder 5 ;
     process:requires artifact:DependencyGraph ;
-    process:produces artifact:PrioritizedPlans .
+    process:produces artifact:PrioritizedPlans ;
+    process:hasEmoji "⭐" ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Assign priority levels"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Create implementation timeline"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Balance resource constraints"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Document rationale for priorities"@en
+    ] ;
+    process:hasDetail [
+        a process:StepDetail ;
+        rdfs:label "Set milestone targets"@en
+    ] .
 
 # Artifacts
 artifact:IssueInventory a process:Artifact ;
@@ -99,4 +221,20 @@ artifact:DependencyGraph a process:Artifact ;
 
 artifact:PrioritizedPlans a process:Artifact ;
     rdfs:label "Prioritized Plans"@en ;
-    rdfs:comment "Final plans with assigned priorities and timelines"@en . 
+    rdfs:comment "Final plans with assigned priorities and timelines"@en .
+
+# Success Criteria
+process:OntologyMappingComplete a process:SuccessCriterion ;
+    rdfs:label "All issues mapped to ontology concepts"@en .
+
+process:PlansComplete a process:SuccessCriterion ;
+    rdfs:label "Each issue has TTL and MD plans"@en .
+
+process:DependenciesDocumented a process:SuccessCriterion ;
+    rdfs:label "Dependencies clearly documented"@en .
+
+process:PrioritiesAssigned a process:SuccessCriterion ;
+    rdfs:label "Priorities assigned with rationale"@en .
+
+process:TimelineEstablished a process:SuccessCriterion ;
+    rdfs:label "Implementation timeline established"@en . 
