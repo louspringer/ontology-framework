@@ -71,3 +71,27 @@ guidance:InterdisciplinaryCollaboration rdf:type guidance:Interpretation ;
     guidance:sourceContext "Molecular Biology" ;
     guidance:targetContext "Computer Programming" ;
     rdfs:comment "Guidance for facilitating collaboration between biologists and programmers." .
+
+# Versioning Classes
+guidance:BestPractice rdf:type owl:Class ;
+    rdfs:label "Best Practice" ;
+    rdfs:comment "A recommended practice for ontology development and management" .
+
+guidance:VersioningBestPractice rdf:type owl:Class ;
+    rdfs:label "Versioning Best Practice" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "All ontologies should include owl:versionInfo to indicate their version for tracking and management purposes." ;
+    rdfs:seeAlso <https://www.w3.org/TR/owl2-syntax/#Versioning_of_Ontologies> .
+
+# Versioning Properties
+guidance:recommendVersioning rdf:type owl:ObjectProperty ;
+    rdfs:label "Recommends Versioning" ;
+    rdfs:domain guidance:VersioningBestPractice ;
+    rdfs:range owl:Ontology ;
+    rdfs:comment "A property indicating that versioning is recommended for ontologies." .
+
+# Versioning Instances
+guidance:guidanceForVersioning rdf:type owl:NamedIndividual ;
+    rdf:type guidance:VersioningBestPractice ;
+    guidance:recommendVersioning owl:versionInfo ;
+    rdfs:comment "This best practice ensures that all ontologies include an owl:versionInfo property for clarity and management." .

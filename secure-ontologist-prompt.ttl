@@ -14,8 +14,9 @@
 sop:SecureOntologistPrompt rdf:type owl:Ontology ;
     rdfs:label "Secure Ontologist Prompt Ontology" ;
     rdfs:comment "Ontology defining the structure and requirements for secure ontology development" ;
-    owl:versionInfo "1.0.0" ;
-    dc:description """The Secure Ontologist Prompt Ontology (`sop`) defines the structure and requirements for secure ontology development. It emphasizes security practices, package management, and ontology component requirements.""" .
+    owl:versionInfo "1.1.0" ;
+    dc:description """The Secure Ontologist Prompt Ontology (`sop`) defines the structure and requirements for secure ontology development. It emphasizes security practices, package management, ontology component requirements, and interdisciplinary collaboration patterns.""" ;
+    owl:imports <./guidance> .
 
 # Documentation Structure
 sop:Documentation rdf:type owl:Class ;
@@ -42,6 +43,20 @@ sop:markdownRepresentation rdf:type owl:DatatypeProperty ;
     rdfs:range xsd:string .
 
 # Classes
+sop:CollaborationPattern rdf:type owl:Class ;
+    rdfs:label "Collaboration Pattern" ;
+    rdfs:comment "Patterns for interdisciplinary collaboration in ontology development" ;
+    rdfs:subClassOf guidance:Interpretation ;
+    sop:markdownRepresentation """### CollaborationPattern
+Patterns for facilitating interdisciplinary collaboration in ontology development.""" .
+
+sop:VersioningRequirement rdf:type owl:Class ;
+    rdfs:label "Versioning Requirement" ;
+    rdfs:comment "Requirements for ontology versioning and change management" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    sop:markdownRepresentation """### VersioningRequirement
+Requirements for ontology versioning and change management.""" .
+
 sop:SecurityRequirement rdf:type owl:Class ;
     rdfs:label "Security Requirement" ;
     rdfs:comment "Security-related requirements for ontology development" ;
@@ -73,6 +88,18 @@ sop:DocumentationRequirement rdf:type owl:Class ;
 Requirements for ontology documentation.""" .
 
 # Properties
+sop:hasCollaborationPattern rdf:type owl:ObjectProperty ;
+    rdfs:label "has collaboration pattern" ;
+    rdfs:domain sop:SecureOntologistPrompt ;
+    rdfs:range sop:CollaborationPattern ;
+    sop:markdownRepresentation "- `sop:hasCollaborationPattern` (Domain: SecureOntologistPrompt, Range: CollaborationPattern)" .
+
+sop:hasVersioningRequirement rdf:type owl:ObjectProperty ;
+    rdfs:label "has versioning requirement" ;
+    rdfs:domain sop:SecureOntologistPrompt ;
+    rdfs:range sop:VersioningRequirement ;
+    sop:markdownRepresentation "- `sop:hasVersioningRequirement` (Domain: SecureOntologistPrompt, Range: VersioningRequirement)" .
+
 sop:hasRequirement rdf:type owl:ObjectProperty ;
     rdfs:label "has requirement" ;
     rdfs:domain sop:SecureOntologistPrompt ;
@@ -98,6 +125,19 @@ sop:priority rdf:type owl:DatatypeProperty ;
     sop:markdownRepresentation "- `sop:priority` (Domain: SecurityRequirement, Range: xsd:string)" .
 
 # Individuals
+sop:InterdisciplinaryGuidance rdf:type sop:CollaborationPattern ;
+    rdfs:label "Interdisciplinary Guidance" ;
+    rdfs:comment "Guidelines for collaboration between different domains" ;
+    guidance:sourceContext "Domain Expert Knowledge" ;
+    guidance:targetContext "Ontology Engineering" ;
+    sop:markdownRepresentation "- Example: `sop:InterdisciplinaryGuidance` - Facilitates domain expert and ontology engineer collaboration" .
+
+sop:SemanticVersioning rdf:type sop:VersioningRequirement ;
+    rdfs:label "Semantic Versioning" ;
+    rdfs:comment "Use semantic versioning (MAJOR.MINOR.PATCH) for ontology versions" ;
+    guidance:recommendVersioning owl:versionInfo ;
+    sop:markdownRepresentation "- Example: `sop:SemanticVersioning` - Enforces semantic versioning for ontologies" .
+
 sop:CredentialSecurity rdf:type sop:SecurityRequirement ;
     rdfs:label "Credential Security" ;
     rdfs:comment "Avoid including sensitive information in code/configurations" ;
@@ -164,6 +204,48 @@ sop:CredentialSecurity rdf:type sop:SecurityRequirement ;
     sop:priority "HIGH" .
 ```""" .
 
+# Validation Shapes
+sop:CollaborationPatternShape rdf:type sh:NodeShape ;
+    sh:targetClass sop:CollaborationPattern ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path guidance:targetContext ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sop:markdownRepresentation """## Validation Shape - CollaborationPattern
+```turtle
+# Ensures collaboration patterns have source and target contexts
+sop:CollaborationPatternShape a sh:NodeShape ;
+    sh:targetClass sop:CollaborationPattern ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+```""" .
+
+sop:VersioningRequirementShape rdf:type sh:NodeShape ;
+    sh:targetClass sop:VersioningRequirement ;
+    sh:property [
+        sh:path guidance:recommendVersioning ;
+        sh:minCount 1 ;
+    ] ;
+    sop:markdownRepresentation """## Validation Shape - VersioningRequirement
+```turtle
+# Ensures versioning requirements specify what to version
+sop:VersioningRequirementShape a sh:NodeShape ;
+    sh:targetClass sop:VersioningRequirement ;
+    sh:property [
+        sh:path guidance:recommendVersioning ;
+        sh:minCount 1 ;
+    ] .
+```""" .
+
 # SPARQL Example Section
 sop:SparqlExampleSection rdf:type sop:Section ;
     rdfs:label "SPARQL Example Section" ;
@@ -206,4 +288,4 @@ This query:
 1. Extracts title and overview from ontology metadata
 2. Collects class definitions and their examples
 3. Gathers property definitions
-4. Assembles documentation sections in order""" . 
+4. Assembles documentation sections in order""" .
