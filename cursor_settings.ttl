@@ -1,0 +1,257 @@
+@prefix : <./cursor_settings#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# Ontology Definition
+:ClineExtensionOntology rdf:type owl:Ontology ;
+    rdfs:label "Cline VS Code Extension Settings Ontology" ;
+    rdfs:comment "Documents the structure and relationships of Cline VS Code extension settings" ;
+    dc:title "Cline VS Code Extension Settings Ontology" ;
+    dc:version "1.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-20"^^xsd:date ;
+    dct:modified "2024-03-20"^^xsd:date ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:license <http://opensource.org/licenses/MIT> ;
+    dct:description "Ontology for managing Cline VS Code extension settings and language model configurations" ;
+    dct:isPartOf <http://louspringer.com/ontology-framework> ;
+    dct:type dct:Dataset ;
+    dct:conformsTo <http://www.w3.org/2002/07/owl> ;
+    dct:requires <./metameta> ;
+    dct:audience "VS Code users, AI developers, and ontology engineers" ;
+    owl:imports <./metameta>, <./guidance> .
+
+# Classes
+:Setting rdf:type owl:Class ;
+    rdfs:label "Setting" ;
+    rdfs:comment "A configuration setting in the Cline VS Code extension" ;
+    guidance:sourceContext "VS Code Extension Configuration" ;
+    guidance:targetContext "Language Model Integration" .
+
+:ModelSelector rdf:type owl:Class ;
+    rdfs:subClassOf :Setting ;
+    rdfs:label "Model Selector" ;
+    rdfs:comment "Configuration for language model selection in Cline extension" ;
+    guidance:sourceContext "Language Model Configuration" ;
+    guidance:targetContext "VS Code Extension Integration" .
+
+:APIProvider rdf:type owl:Class ;
+    rdfs:label "API Provider" ;
+    rdfs:comment "Supported API providers for language model access" .
+
+:ModelConfiguration rdf:type owl:Class ;
+    rdfs:label "Model Configuration" ;
+    rdfs:comment "Configuration options for a specific language model" ;
+    guidance:sourceContext "Language Model Parameters" ;
+    guidance:targetContext "VS Code Extension Performance" .
+
+:ModelList rdf:type owl:Class ;
+    rdfs:label "Model List" ;
+    rdfs:comment "List of available language models per provider" .
+
+:APIKey rdf:type owl:Class ;
+    rdfs:label "API Key" ;
+    rdfs:comment "API key configuration for model access" .
+
+:RecommendedConfiguration rdf:type owl:Class ;
+    rdfs:label "Recommended Configuration" ;
+    rdfs:comment "Recommended settings configuration for the extension" .
+
+:openRouterConfig rdf:type :RecommendedConfiguration ;
+    rdfs:label "OpenRouter Configuration" ;
+    rdfs:comment "Recommended OpenRouter configuration settings" ;
+    :hasProvider :openRouter ;
+    :hasDefaultModel "claude-3-sonnet-20240229" ;
+    :hasFallbackModel "claude-2.1" ;
+    :hasAPIKeySource "${env:OPENROUTER_API_KEY}" ;
+    :hasCostTracking "true"^^xsd:boolean ;
+    :hasTokenAlert [
+        rdf:type :TokenAlert ;
+        :enabled "true"^^xsd:boolean ;
+        :threshold "1000"^^xsd:integer
+    ] .
+
+:TokenAlert rdf:type owl:Class ;
+    rdfs:label "Token Usage Alert" ;
+    rdfs:comment "Configuration for token usage alerts" .
+
+# Properties
+:hasDefaultValue rdf:type owl:DatatypeProperty ;
+    rdfs:domain :Setting ;
+    rdfs:range xsd:string ;
+    rdfs:label "has default value" ;
+    rdfs:comment "The default value of a setting" .
+
+:configuresModel rdf:type owl:ObjectProperty ;
+    rdfs:domain :ModelSelector ;
+    rdfs:range :ModelConfiguration ;
+    rdfs:label "configures model" ;
+    rdfs:comment "Links a model selector to its configuration" .
+
+:hasVersionRequirement rdf:type owl:DatatypeProperty ;
+    rdfs:domain :ModelConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:label "has version requirement" ;
+    rdfs:comment "Specifies the required version for a model configuration" .
+
+:supportsProvider rdf:type owl:ObjectProperty ;
+    rdfs:domain :ModelSelector ;
+    rdfs:range :APIProvider ;
+    rdfs:label "supports provider" ;
+    rdfs:comment "Indicates which API providers are supported" .
+
+:hasAPIKey rdf:type owl:ObjectProperty ;
+    rdfs:domain :APIProvider ;
+    rdfs:range :APIKey ;
+    rdfs:label "has API key" ;
+    rdfs:comment "Links an API provider to its API key configuration" .
+
+:hasModel rdf:type owl:ObjectProperty ;
+    rdfs:domain :APIProvider ;
+    rdfs:range :ModelList ;
+    rdfs:label "has model" ;
+    rdfs:comment "Links an API provider to its available models" .
+
+:hasDefaultModel rdf:type owl:DatatypeProperty ;
+    rdfs:domain :RecommendedConfiguration ;
+    rdfs:range xsd:string .
+
+:hasFallbackModel rdf:type owl:DatatypeProperty ;
+    rdfs:domain :RecommendedConfiguration ;
+    rdfs:range xsd:string .
+
+:hasAPIKeySource rdf:type owl:DatatypeProperty ;
+    rdfs:domain :RecommendedConfiguration ;
+    rdfs:range xsd:string .
+
+:hasCostTracking rdf:type owl:DatatypeProperty ;
+    rdfs:domain :RecommendedConfiguration ;
+    rdfs:range xsd:boolean .
+
+:hasTokenAlert rdf:type owl:ObjectProperty ;
+    rdfs:domain :RecommendedConfiguration ;
+    rdfs:range :TokenAlert .
+
+:enabled rdf:type owl:DatatypeProperty ;
+    rdfs:domain :TokenAlert ;
+    rdfs:range xsd:boolean .
+
+:threshold rdf:type owl:DatatypeProperty ;
+    rdfs:domain :TokenAlert ;
+    rdfs:range xsd:integer .
+
+# Individuals
+:cline rdf:type :ModelSelector ;
+    rdfs:label "Cline VS Code Extension" ;
+    rdfs:comment "Configuration for selecting language models in the Cline VS Code extension" ;
+    :hasDefaultValue "{}" ;
+    guidance:complexity 2 ;
+    guidance:sourceContext "VS Code Extension API" ;
+    guidance:targetContext "Language Model Integration" ;
+    :supportsProvider :openRouter, :anthropic, :openAI, :googleGemini, :awsBedrock, :azure, :gcpVertex, :localModel .
+
+:openRouter rdf:type :APIProvider ;
+    rdfs:label "OpenRouter" ;
+    rdfs:comment "OpenRouter API provider with latest model list support" ;
+    :hasModel [
+        rdf:type :ModelList ;
+        rdfs:label "OpenRouter Models" ;
+        rdfs:comment "Automatically updated list of latest models" ;
+        :includesModel "claude-3-sonnet-20240229",
+                      "claude-3-opus-20240229",
+                      "gpt-4-turbo-preview",
+                      "gemini-pro",
+                      "claude-2.1"
+    ] .
+
+:anthropic rdf:type :APIProvider ;
+    rdfs:label "Anthropic" ;
+    rdfs:comment "Direct Anthropic API access" ;
+    :hasModel [
+        rdf:type :ModelList ;
+        rdfs:label "Anthropic Models" ;
+        rdfs:comment "Direct Anthropic API models" ;
+        :includesModel "claude-3-sonnet-20240229",
+                      "claude-3-opus-20240229",
+                      "claude-2.1"
+    ] .
+
+:localModel rdf:type :APIProvider ;
+    rdfs:label "Local Model" ;
+    rdfs:comment "Local model support through LM Studio/Ollama" ;
+    :hasModel [
+        rdf:type :ModelList ;
+        rdfs:label "Local Models" ;
+        rdfs:comment "Models available through LM Studio/Ollama" ;
+        :includesModel "Any compatible local model"
+    ] .
+
+# Best Practices
+:ClineSettingsBestPractices rdf:type guidance:BestPractice ;
+    rdfs:label "Cline Settings Best Practices" ;
+    rdfs:comment "Best practices for configuring Cline VS Code extension settings" ;
+    guidance:recommendVersioning owl:versionInfo .
+
+# SHACL Shapes
+:ModelSelectorShape rdf:type sh:NodeShape ;
+    sh:targetClass :ModelSelector ;
+    sh:property [
+        sh:path :hasDefaultValue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path guidance:complexity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 5 ;
+    ] ;
+    sh:property [
+        sh:path :supportsProvider ;
+        sh:minCount 1 ;
+    ] .
+
+:ModelConfigurationShape rdf:type sh:NodeShape ;
+    sh:targetClass :ModelConfiguration ;
+    sh:property [
+        sh:path :hasAPIKey ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path :hasModel ;
+        sh:minCount 1 ;
+    ] .
+
+# Interdisciplinary Collaboration
+:VSCodeModelIntegration rdf:type guidance:InterdisciplinaryCollaboration ;
+    rdfs:label "VS Code-Model Integration Collaboration" ;
+    guidance:sourceContext "VS Code Extension Development" ;
+    guidance:targetContext "Language Model Development" ;
+    rdfs:comment "Guidance for collaboration between VS Code extension developers and language model researchers." .
+
+# TODO Section
+# - Add specific model configuration options for each provider
+# - Document available models per provider
+# - Add validation rules for model selection
+# - Include performance impact considerations
+# - Add model versioning requirements
+# - Document provider-specific setup requirements
+# - Include usage examples and case studies
+# - Add token usage and cost tracking documentation
+# - Add model-specific performance benchmarks
+# - Document API key management best practices 
