@@ -6,6 +6,7 @@
 @prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
@@ -95,3 +96,404 @@ guidance:guidanceForVersioning rdf:type owl:NamedIndividual ;
     rdf:type guidance:VersioningBestPractice ;
     guidance:recommendVersioning owl:versionInfo ;
     rdfs:comment "This best practice ensures that all ontologies include an owl:versionInfo property for clarity and management." .
+
+# Environment Variable Integration Pattern
+guidance:EnvironmentVariablePattern rdf:type owl:Class ;
+    rdfs:label "Environment Variable Integration Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for integrating environment variables across ontologies" .
+
+guidance:hasVariableDefinition rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Variable Definition" ;
+    rdfs:domain guidance:EnvironmentVariablePattern ;
+    rdfs:range owl:Ontology ;
+    rdfs:comment "Links to the ontology containing environment variable definitions" .
+
+guidance:hasVariableUsage rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Variable Usage" ;
+    rdfs:domain guidance:EnvironmentVariablePattern ;
+    rdfs:range owl:Ontology ;
+    rdfs:comment "Links to ontologies that use environment variables" .
+
+guidance:environmentVariableGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:EnvironmentVariablePattern ;
+    rdfs:label "Environment Variable Integration Guidance" ;
+    guidance:hasVariableDefinition <./environment_variables> ;
+    guidance:hasVariableUsage <./cortexteams> ;
+    guidance:sourceContext "Environment Variable Management" ;
+    guidance:targetContext "Cross-Ontology Integration" ;
+    guidance:complexity "3"^^xsd:integer ;
+    rdfs:comment """Best practices for environment variable integration:
+1. Define all environment variables in environment_variables.ttl
+2. Import environment_variables.ttl in consuming ontologies using env: prefix
+3. Use :usesEnvironmentVariable for general variable usage
+4. Use :hasEnvironmentRequirement for prerequisites
+5. Reference variables using ${VAR_NAME} format
+6. Add SHACL validation for variable requirements.""" .
+
+# SHACL Validation for Environment Variable Pattern
+guidance:EnvironmentVariablePatternShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:EnvironmentVariablePattern ;
+    sh:property [
+        sh:path guidance:hasVariableDefinition ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify exactly one environment variable definition ontology"
+    ] ;
+    sh:property [
+        sh:path guidance:hasVariableUsage ;
+        sh:minCount 1 ;
+        sh:message "Must specify at least one ontology that uses environment variables"
+    ] .
+
+# Ontology Relationship Pattern
+guidance:OntologyRelationshipPattern rdf:type owl:Class ;
+    rdfs:label "Ontology Relationship Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for managing relationships between ontologies" .
+
+guidance:ontologyRelationshipGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:OntologyRelationshipPattern ;
+    rdfs:label "Ontology Relationship Guidance" ;
+    guidance:sourceContext "Ontology Organization" ;
+    guidance:targetContext "Cross-Ontology Integration" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Best practices for ontology relationships:
+1. Use relative paths for local ontologies: @prefix meta: <./meta#>
+2. Use full URIs only for external standards: @prefix owl: <http://www.w3.org/2002/07/owl#>
+3. Always include core ontologies:
+   - meta.ttl
+   - metameta.ttl
+   - conversation.ttl
+   - problem.ttl
+   - solution.ttl
+   - guidance.ttl
+4. Avoid circular dependencies
+5. Document ontology purpose and dependencies in metadata
+6. Use SHACL shapes to validate relationships""" .
+
+# SHACL Validation for Ontology Relationships
+guidance:OntologyRelationshipShape rdf:type sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    sh:property [
+        sh:path owl:imports ;
+        sh:minCount 1 ;
+        sh:message "Ontology must import at least one core ontology"
+    ] ;
+    sh:property [
+        sh:path dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Ontology must have a description"
+    ] ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:message "Ontology must have version information"
+    ] .
+
+# Prefix Management Integration
+guidance:PrefixManagementPattern rdf:type owl:Class ;
+    rdfs:label "Prefix Management Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for managing ontology prefixes consistently" .
+
+guidance:prefixManagementGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:PrefixManagementPattern ;
+    rdfs:label "Prefix Management Guidance" ;
+    guidance:sourceContext "Ontology Organization" ;
+    guidance:targetContext "Prefix Standardization" ;
+    guidance:complexity "1"^^xsd:integer ;
+    rdfs:comment """Best practices for prefix management:
+1. Use standard prefixes for external ontologies (rdf, rdfs, owl, xsd)
+2. Use relative paths for local ontologies
+3. Document prefix meanings and sources
+4. Maintain consistent prefix naming across ontologies
+5. Use prefix_management.ttl for centralized prefix definitions""" .
+
+# Documentation Organization Pattern
+guidance:DocumentationPattern rdf:type owl:Class ;
+    rdfs:label "Documentation Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for organizing and validating documentation based on ontological concepts" .
+
+guidance:hasDocumentationType rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Documentation Type" ;
+    rdfs:domain guidance:DocumentationPattern ;
+    rdfs:range guidance:DocumentationType ;
+    rdfs:comment "Links a documentation pattern to its type" .
+
+guidance:DocumentationType rdf:type owl:Class ;
+    rdfs:label "Documentation Type" ;
+    rdfs:comment "Types of documentation in the system" .
+
+guidance:ConceptualDocumentation rdf:type guidance:DocumentationType ;
+    rdfs:label "Conceptual Documentation" ;
+    rdfs:comment "Documentation of ontological concepts and relationships" .
+
+guidance:ImplementationDocumentation rdf:type guidance:DocumentationType ;
+    rdfs:label "Implementation Documentation" ;
+    rdfs:comment "Documentation of concrete implementations and patterns" .
+
+guidance:ValidationDocumentation rdf:type guidance:DocumentationType ;
+    rdfs:label "Validation Documentation" ;
+    rdfs:comment "Documentation of validation rules and constraints" .
+
+guidance:documentationOrganizationGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:DocumentationPattern ;
+    rdfs:label "Documentation Organization Guidance" ;
+    guidance:sourceContext "Ontology Documentation" ;
+    guidance:targetContext "Documentation Structure" ;
+    guidance:complexity "3"^^xsd:integer ;
+    rdfs:comment """Best practices for documentation organization:
+1. All documentation must map to ontological concepts
+2. Documentation structure follows ontology relationships
+3. Cross-references must be bidirectional
+4. Version tracking aligns with ontology versions
+5. Validation rules derive from guidance patterns
+6. Directory structure reflects ontological hierarchy
+7. Each document must specify its source ontology
+8. Changes must maintain ontological consistency""" .
+
+# Documentation Validation Shape
+guidance:DocumentationShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:DocumentationPattern ;
+    sh:property [
+        sh:path guidance:hasDocumentationType ;
+        sh:minCount 1 ;
+        sh:message "Documentation must have a specified type"
+    ] ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:message "Documentation must specify its source context"
+    ] ;
+    sh:property [
+        sh:path guidance:targetContext ;
+        sh:minCount 1 ;
+        sh:message "Documentation must specify its target context"
+    ] ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:message "Documentation must have version information"
+    ] .
+
+# Documentation Structure Pattern
+guidance:DocumentationStructurePattern rdf:type guidance:DocumentationPattern ;
+    rdfs:label "Documentation Structure Pattern" ;
+    guidance:hasDocumentationType guidance:ConceptualDocumentation ;
+    guidance:sourceContext "Ontology Structure" ;
+    guidance:targetContext "Documentation Organization" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Documentation structure requirements:
+1. Root directory maps to core ontology
+2. Subdirectories map to sub-ontologies
+3. Cross-references use relative paths
+4. Version information in frontmatter
+5. Bidirectional navigation links
+6. Clear ontology mappings""" .
+
+# Cross-reference Pattern
+guidance:CrossReferencePattern rdf:type guidance:DocumentationPattern ;
+    rdfs:label "Cross Reference Pattern" ;
+    guidance:hasDocumentationType guidance:ValidationDocumentation ;
+    guidance:sourceContext "Documentation Links" ;
+    guidance:targetContext "Navigation Structure" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Cross-reference requirements:
+1. All references must be bidirectional
+2. References must use relative paths
+3. References must include version context
+4. Broken references must be detected
+5. References must map to ontology relationships""" .
+
+# Authentication Pattern Guidance
+guidance:AuthenticationPatternGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:BestPractice ;
+    rdfs:label "Authentication Pattern Guidance" ;
+    guidance:sourceContext "Security Architecture" ;
+    guidance:targetContext "Authentication Implementation" ;
+    guidance:complexity "3"^^xsd:integer ;
+    rdfs:comment """Best practices for authentication patterns:
+1. Always relate authentication to identity federation
+2. Define clear capability requirements
+3. Specify platform-specific implementations
+4. Document token management
+5. Include security characteristics
+6. Define validation rules
+7. Consider service account patterns""" .
+
+# Data Access Pattern Guidance
+guidance:DataAccessPatternGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:BestPractice ;
+    rdfs:label "Data Access Pattern Guidance" ;
+    guidance:sourceContext "Data Architecture" ;
+    guidance:targetContext "Data Access Implementation" ;
+    guidance:complexity "3"^^xsd:integer ;
+    rdfs:comment """Best practices for data access patterns:
+1. Separate public and private data patterns
+2. Link to authentication requirements
+3. Define clear access control boundaries
+4. Implement zero-copy patterns where appropriate
+5. Consider service account implications
+6. Document data characteristics
+7. Include validation rules""" .
+
+# Pattern Integration Guidance
+guidance:PatternIntegrationGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:BestPractice ;
+    rdfs:label "Pattern Integration Guidance" ;
+    guidance:sourceContext "Pattern Architecture" ;
+    guidance:targetContext "Implementation Integration" ;
+    guidance:complexity "4"^^xsd:integer ;
+    rdfs:comment """Best practices for pattern integration:
+1. Document pattern relationships explicitly
+2. Define valid and invalid combinations
+3. Include impact analysis
+4. Specify capability requirements
+5. Add validation rules
+6. Consider cross-pattern implications
+7. Document security implications""" .
+
+# SHACL Validation for Pattern Guidance
+guidance:PatternGuidanceShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:BestPractice ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:message "Pattern guidance must specify source context"
+    ] ;
+    sh:property [
+        sh:path guidance:targetContext ;
+        sh:minCount 1 ;
+        sh:message "Pattern guidance must specify target context"
+    ] ;
+    sh:property [
+        sh:path guidance:complexity ;
+        sh:minCount 1 ;
+        sh:message "Pattern guidance must specify complexity"
+    ] .
+
+# Organic Network Patterns
+guidance:OrganicNetworkPattern rdf:type owl:Class ;
+    rdfs:label "Organic Network Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Patterns based on biological network analogies for managing ontological relationships" .
+
+guidance:MycelialNetworkGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:OrganicNetworkPattern ;
+    rdfs:label "Mycelial Network Pattern" ;
+    guidance:sourceContext "Mycorrhizal Networks" ;
+    guidance:targetContext "Ontology Relationships" ;
+    guidance:complexity "4"^^xsd:integer ;
+    rdfs:comment """Network management principles:
+1. Not every node needs to connect to every network
+2. Maintain critical pathways actively
+3. Allow temporary connections for context switching
+4. Accept pruning of unused pathways
+5. Monitor energy cost of maintaining connections
+6. Keep enough connections to detect duplicates
+7. Intentionally isolate when beneficial""" .
+
+guidance:VirtualTreeManagement rdf:type owl:NamedIndividual ;
+    rdf:type guidance:OrganicNetworkPattern ;
+    rdfs:label "Virtual Tree Management" ;
+    guidance:sourceContext "Neural Networks" ;
+    guidance:targetContext "Ontology Organization" ;
+    guidance:complexity "4"^^xsd:integer ;
+    rdfs:comment """Virtual tree principles:
+1. Each context is a virtual tree
+2. Elements can exist in multiple trees
+3. The mu tree holds lost/undiscovered elements
+4. Orphaned elements must be intentionally isolated
+5. Context switching has energy costs
+6. Pattern recognition works across trees
+7. Not everything needs to be wickered""" .
+
+# Tree States
+guidance:TreeState rdf:type owl:Class ;
+    rdfs:label "Tree State" ;
+    rdfs:comment "Possible states for elements in the virtual tree system" .
+
+guidance:ActiveTree rdf:type guidance:TreeState ;
+    rdfs:label "Active Tree" ;
+    rdfs:comment "Currently active and maintained virtual tree" .
+
+guidance:MuTree rdf:type guidance:TreeState ;
+    rdfs:label "Mu Tree" ;
+    rdfs:comment "Contains lost or undiscovered elements that may need rediscovery" .
+
+guidance:OrphanedTree rdf:type guidance:TreeState ;
+    rdfs:label "Orphaned Tree" ;
+    rdfs:comment "Intentionally isolated elements" .
+
+# Context Management
+guidance:ContextSwitchingPattern rdf:type owl:NamedIndividual ;
+    rdf:type guidance:OrganicNetworkPattern ;
+    rdfs:label "Context Switching Pattern" ;
+    guidance:sourceContext "Neural Circuit Activation" ;
+    guidance:targetContext "Ontology Context Management" ;
+    guidance:complexity "3"^^xsd:integer ;
+    rdfs:comment """Context switching guidelines:
+1. Recognize energy cost of context switches
+2. Maintain minimal necessary active contexts
+3. Cache frequently used pathways
+4. Allow graceful context decay
+5. Document context boundaries
+6. Track context dependencies
+7. Monitor switching overhead""" .
+
+# Wickering Efficiency
+guidance:WickeringEfficiencyPattern rdf:type owl:NamedIndividual ;
+    rdf:type guidance:OrganicNetworkPattern ;
+    rdfs:label "Wickering Efficiency Pattern" ;
+    guidance:sourceContext "Synaptic Pruning" ;
+    guidance:targetContext "Ontology Connection Management" ;
+    guidance:complexity "4"^^xsd:integer ;
+    rdfs:comment """Efficient wickering guidelines:
+1. Maintain critical pathways only
+2. Allow temporary connections
+3. Document connection rationale
+4. Monitor maintenance costs
+5. Prune unused connections
+6. Track connection usage
+7. Balance coverage vs. cost""" .
+
+# SHACL Validation
+guidance:OrganicNetworkShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:OrganicNetworkPattern ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:message "Must specify biological source context"
+    ] ;
+    sh:property [
+        sh:path guidance:targetContext ;
+        sh:minCount 1 ;
+        sh:message "Must specify ontological target context"
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:message "Must provide management principles"
+    ] .
+
+# Pattern Relationships
+guidance:hasTreeState a owl:ObjectProperty ;
+    rdfs:label "has tree state" ;
+    rdfs:domain owl:Class ;
+    rdfs:range guidance:TreeState ;
+    rdfs:comment "Links an element to its current tree state" .
+
+guidance:contextSwitchCost a owl:DatatypeProperty ;
+    rdfs:label "context switch cost" ;
+    rdfs:domain guidance:OrganicNetworkPattern ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Relative cost of switching between contexts" .
+
+guidance:maintenanceCost a owl:DatatypeProperty ;
+    rdfs:label "maintenance cost" ;
+    rdfs:domain guidance:OrganicNetworkPattern ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Relative cost of maintaining connections" .
