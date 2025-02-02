@@ -3,31 +3,82 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix meta: <./meta#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
 
-# Core Classes
-meta:Person rdf:type owl:Class ;
-    rdfs:label "Person" ;
-    rdfs:comment "A human being" .
+# Classes
+meta:SecretStore a owl:Class ;
+    rdfs:label "Secret Store" ;
+    rdfs:comment "A secure storage system for sensitive information and credentials" .
 
-meta:Position rdf:type owl:Class ;
-    rdfs:label "Position" ;
-    rdfs:comment "A role or position held by a person" .
+meta:Secret a owl:Class ;
+    rdfs:label "Secret" ;
+    rdfs:comment "A piece of sensitive information that needs to be securely stored" .
 
-meta:AbstractionDimension rdf:type owl:Class ;
-    rdfs:label "Abstraction Dimension" ;
-    rdfs:comment "A dimension of abstraction in modeling" .
+meta:Configuration a owl:Class ;
+    rdfs:label "Configuration" ;
+    rdfs:comment "A collection of settings and parameters for the application" .
 
-# Core Properties
-meta:hasPosition rdf:type owl:ObjectProperty ;
-    rdfs:domain meta:Person ;
-    rdfs:range meta:Position ;
-    rdfs:label "has position" ;
-    owl:maxCardinality "1"^^xsd:nonNegativeInteger .
+meta:Environment a owl:Class ;
+    rdfs:label "Environment" ;
+    rdfs:comment "A deployment context (dev, staging, prod) with specific configuration needs" .
 
-# Core Ontology
-meta:CoreOntology rdf:type owl:Ontology ;
-    dc:title "Core Meta Ontology" ;
-    dc:version "1.0" ;
-    owl:versionInfo "1.0" ;
-    rdfs:comment "Core concepts shared across domain ontologies" . 
+meta:Reference a owl:Class ;
+    rdfs:label "Reference" ;
+    rdfs:comment "A pointer to a secret or configuration value stored in a secret store" .
+
+# Properties
+meta:hasSecret a owl:ObjectProperty ;
+    rdfs:domain meta:SecretStore ;
+    rdfs:range meta:Secret ;
+    rdfs:label "has secret" ;
+    rdfs:comment "Links a secret store to the secrets it contains" .
+
+meta:hasReference a owl:ObjectProperty ;
+    rdfs:domain meta:Configuration ;
+    rdfs:range meta:Reference ;
+    rdfs:label "has reference" ;
+    rdfs:comment "Links a configuration to its secret references" .
+
+meta:referencesSecret a owl:ObjectProperty ;
+    rdfs:domain meta:Reference ;
+    rdfs:range meta:Secret ;
+    rdfs:label "references secret" ;
+    rdfs:comment "Links a reference to the secret it points to" .
+
+meta:belongsToEnvironment a owl:ObjectProperty ;
+    rdfs:domain meta:Configuration ;
+    rdfs:range meta:Environment ;
+    rdfs:label "belongs to environment" ;
+    rdfs:comment "Links a configuration to its environment" .
+
+# Individuals
+meta:OnePassword a meta:SecretStore ;
+    rdfs:label "1Password" ;
+    rdfs:comment "1Password vault system for secure secret storage" .
+
+meta:AzureBotConfig a meta:Configuration ;
+    rdfs:label "Azure Bot Configuration" ;
+    rdfs:comment "Configuration for the Azure Teams Bot application" ;
+    meta:belongsToEnvironment meta:DevEnvironment .
+
+meta:DevEnvironment a meta:Environment ;
+    rdfs:label "Development Environment" ;
+    rdfs:comment "Development environment configuration" .
+
+meta:StagingEnvironment a meta:Environment ;
+    rdfs:label "Staging Environment" ;
+    rdfs:comment "Staging environment configuration" .
+
+meta:ProductionEnvironment a meta:Environment ;
+    rdfs:label "Production Environment" ;
+    rdfs:comment "Production environment configuration" .
+
+# TODO: Areas for Expansion
+# - Add validation rules for secret references
+# - Add deployment-specific configuration patterns
+# - Add backup and restore concepts
+# - Add audit trail concepts 
