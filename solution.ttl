@@ -5,6 +5,9 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix problem: <./problem#> .
 @prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
 
 :SolutionOntology a owl:Ontology ;
     rdfs:label "Solution Ontology" ;
@@ -77,3 +80,81 @@
         :Completed
         :Failed
     ) .
+
+# Classes
+:Vault a owl:Class ;
+    rdfs:label "1Password Vault" ;
+    rdfs:comment "A specific vault in 1Password for storing related secrets" .
+
+:Item a owl:Class ;
+    rdfs:label "1Password Item" ;
+    rdfs:comment "A configuration item stored in a 1Password vault" .
+
+:Field a owl:Class ;
+    rdfs:label "1Password Field" ;
+    rdfs:comment "A specific field within a 1Password item" .
+
+:Reference a owl:Class ;
+    rdfs:label "1Password Reference" ;
+    rdfs:comment "A reference to a 1Password field in the format op://vault/item/field" .
+
+# Properties
+:containsItem a owl:ObjectProperty ;
+    rdfs:domain :Vault ;
+    rdfs:range :Item ;
+    rdfs:label "contains item" ;
+    rdfs:comment "Links a vault to its items" .
+
+:hasField a owl:ObjectProperty ;
+    rdfs:domain :Item ;
+    rdfs:range :Field ;
+    rdfs:label "has field" ;
+    rdfs:comment "Links an item to its fields" .
+
+:referencesField a owl:ObjectProperty ;
+    rdfs:domain :Reference ;
+    rdfs:range :Field ;
+    rdfs:label "references field" ;
+    rdfs:comment "Links a reference to the field it points to" .
+
+# Individuals
+:AzureBotConfigVault a :Vault ;
+    rdfs:label "Azure-Bot-Config" ;
+    rdfs:comment "1Password vault for Azure Teams Bot configuration" .
+
+:BotCredentials a :Item ;
+    rdfs:label "Bot-Credentials" ;
+    rdfs:comment "Bot authentication credentials" ;
+    :containsItem :AzureBotConfigVault .
+
+:AzureConfiguration a :Item ;
+    rdfs:label "Azure-Configuration" ;
+    rdfs:comment "Azure resource configuration" ;
+    :containsItem :AzureBotConfigVault .
+
+:BotEnvironment a :Item ;
+    rdfs:label "Bot-Environment" ;
+    rdfs:comment "Environment-specific settings" ;
+    :containsItem :AzureBotConfigVault .
+
+:ApplicationInsights a :Item ;
+    rdfs:label "Application-Insights" ;
+    rdfs:comment "Application monitoring configuration" ;
+    :containsItem :AzureBotConfigVault .
+
+# Example Fields and References
+:AppIdField a :Field ;
+    rdfs:label "app_id" ;
+    rdfs:comment "Bot application ID" ;
+    :hasField :BotCredentials .
+
+:AppIdReference a :Reference ;
+    rdfs:label "BOT_APP_ID reference" ;
+    rdfs:comment "op://Azure-Bot-Config/Bot-Credentials/app_id" ;
+    :referencesField :AppIdField .
+
+# TODO: Areas for Expansion
+# - Add validation patterns for reference syntax
+# - Add backup and restore procedures
+# - Add deployment environment patterns
+# - Add access control and sharing patterns
