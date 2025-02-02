@@ -8,6 +8,7 @@
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 # Classes
 meta:SecretStore a owl:Class ;
@@ -29,6 +30,81 @@ meta:Environment a owl:Class ;
 meta:Reference a owl:Class ;
     rdfs:label "Reference" ;
     rdfs:comment "A pointer to a secret or configuration value stored in a secret store" .
+
+# Core Security Concepts
+meta:SecurityConcept a owl:Class ;
+    rdfs:label "Security Concept" ;
+    rdfs:comment "Base class for all security-related concepts" .
+
+meta:AuthenticationConcept a owl:Class ;
+    rdfs:subClassOf meta:SecurityConcept ;
+    rdfs:label "Authentication Concept" ;
+    rdfs:comment "Base class for authentication patterns and mechanisms" .
+
+meta:IdentityConcept a owl:Class ;
+    rdfs:subClassOf meta:SecurityConcept ;
+    rdfs:label "Identity Concept" ;
+    rdfs:comment "Base class for identity-related concepts" .
+
+meta:AccessControlConcept a owl:Class ;
+    rdfs:subClassOf meta:SecurityConcept ;
+    rdfs:label "Access Control Concept" ;
+    rdfs:comment "Base class for access control patterns" .
+
+# Pattern Framework
+meta:Pattern a owl:Class ;
+    rdfs:label "Pattern" ;
+    rdfs:comment "Base class for all patterns" .
+
+meta:PatternDimension a owl:Class ;
+    rdfs:subClassOf metameta:AbstractionDimension ;
+    rdfs:label "Pattern Dimension" ;
+    rdfs:comment "A dimension along which patterns can be organized" .
+
+meta:PatternInstance a owl:Class ;
+    rdfs:label "Pattern Instance" ;
+    rdfs:comment "A specific instance or implementation of a pattern" .
+
+# Pattern Properties
+meta:implementsPattern a owl:ObjectProperty ;
+    rdfs:label "implements pattern" ;
+    rdfs:domain meta:PatternInstance ;
+    rdfs:range meta:Pattern ;
+    rdfs:comment "Links a specific implementation to its base pattern" .
+
+meta:hasPatternDimension a owl:ObjectProperty ;
+    rdfs:label "has pattern dimension" ;
+    rdfs:domain meta:Pattern ;
+    rdfs:range meta:PatternDimension ;
+    rdfs:comment "Links a pattern to its organizational dimensions" .
+
+meta:relatesTo a owl:ObjectProperty ;
+    rdfs:label "relates to" ;
+    rdfs:domain meta:Pattern ;
+    rdfs:range meta:Pattern ;
+    rdfs:comment "Indicates a relationship between patterns" .
+
+# Pattern Dimensions
+meta:SecurityDimension a meta:PatternDimension ;
+    rdfs:label "Security Dimension" ;
+    rdfs:comment "Organizes patterns by security aspects" .
+
+meta:PlatformDimension a meta:PatternDimension ;
+    rdfs:label "Platform Dimension" ;
+    rdfs:comment "Organizes patterns by platform specifics" .
+
+meta:DataDimension a meta:PatternDimension ;
+    rdfs:label "Data Dimension" ;
+    rdfs:comment "Organizes patterns by data handling aspects" .
+
+# SHACL Validation
+meta:PatternShape a sh:NodeShape ;
+    sh:targetClass meta:Pattern ;
+    sh:property [
+        sh:path meta:hasPatternDimension ;
+        sh:minCount 1 ;
+        sh:message "Every pattern must have at least one dimension."
+    ] .
 
 # Properties
 meta:hasSecret a owl:ObjectProperty ;
