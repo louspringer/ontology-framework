@@ -12,7 +12,7 @@
 :SolutionOntology a owl:Ontology ;
     rdfs:label "Solution Ontology" ;
     rdfs:comment "Ontology for solution patterns and implementations" ;
-    owl:versionInfo "0.1" ;
+    owl:versionInfo "0.1.0" ;
     owl:imports <./meta> .
 
 :Solution a owl:Class ;
