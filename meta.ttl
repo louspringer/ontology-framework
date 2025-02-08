@@ -10,6 +10,12 @@
 @prefix guidance: <./guidance#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
+# Ontology metadata
+meta:MetaOntology a owl:Ontology ;
+    rdfs:label "Meta Ontology" ;
+    rdfs:comment "Core ontology for meta-level concepts and patterns" ;
+    owl:versionInfo "0.1.0" .
+
 # Classes
 meta:SecretStore a owl:Class ;
     rdfs:label "Secret Store" ;
