@@ -10,9 +10,9 @@
 
 guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
-    dc:version "1.1" ;
+    dc:version "1.2" ;
     dct:created "2024-01-20"^^xsd:date ;
-    dct:modified "2024-01-20"^^xsd:date ;
+    dct:modified "2024-02-09"^^xsd:date ;
     dct:publisher "Ontology Framework Project" ;
     dct:license <http://opensource.org/licenses/MIT> ;
     dct:description "Ontology for managing LLM guidance and interdisciplinary collaboration patterns" ;
@@ -21,7 +21,7 @@ guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dct:conformsTo <http://www.w3.org/2002/07/owl> ;
     dct:requires <./metameta> ;
     dct:audience "AI researchers, ontology engineers, and domain experts" ;
-    rdfs:comment "Updated to include guidance for interdisciplinary collaboration." ;
+    rdfs:comment "Updated to include guidance for Cursor rules and tool usage." ;
     owl:imports <./metameta> .
 
 # Core Classes
@@ -497,3 +497,69 @@ guidance:maintenanceCost a owl:DatatypeProperty ;
     rdfs:domain guidance:OrganicNetworkPattern ;
     rdfs:range xsd:integer ;
     rdfs:comment "Relative cost of maintaining connections" .
+
+# Development Environment
+guidance:DevelopmentEnvironment rdf:type owl:Class ;
+    rdfs:label "Development Environment" ;
+    rdfs:comment "Configuration and tools for development" .
+
+guidance:CursorRule rdf:type owl:Class ;
+    rdfs:subClassOf guidance:DevelopmentEnvironment ;
+    rdfs:label "Cursor Rule" ;
+    rdfs:comment "Rule for Cursor AI assistance" .
+
+guidance:RuleUsage rdf:type owl:Class ;
+    rdfs:label "Rule Usage" ;
+    rdfs:comment "Instructions for using Cursor rules" .
+
+# Individuals
+guidance:SPARQLQueryUsage rdf:type guidance:RuleUsage ;
+    rdfs:label "SPARQL Query Usage" ;
+    rdfs:comment "How to use SPARQL queries with Cursor" ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "1"^^xsd:integer ;
+        rdfs:label "Create Query File" ;
+        rdfs:comment "Create a .rq file with your SPARQL query"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "2"^^xsd:integer ;
+        rdfs:label "Include Prefixes" ;
+        rdfs:comment "Add standard RDF/RDFS/OWL prefixes"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "3"^^xsd:integer ;
+        rdfs:label "Execute Query" ;
+        rdfs:comment "Use Cursor to run the query against a TTL file"
+    ] .
+
+guidance:BlackFormatterUsage rdf:type guidance:RuleUsage ;
+    rdfs:label "Black Formatter Usage" ;
+    rdfs:comment "How to use Black formatting with Cursor" ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "1"^^xsd:integer ;
+        rdfs:label "Open Python File" ;
+        rdfs:comment "Open a .py file in Cursor"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "2"^^xsd:integer ;
+        rdfs:label "Format Code" ;
+        rdfs:comment "Use Black to format the code according to rules"
+    ] .
+
+# Properties
+guidance:hasStep rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Step" ;
+    rdfs:comment "Links usage instructions to steps" ;
+    rdfs:domain guidance:RuleUsage ;
+    rdfs:range guidance:Step .
+
+guidance:stepNumber rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Number" ;
+    rdfs:comment "Order number of the step" ;
+    rdfs:domain guidance:Step ;
+    rdfs:range xsd:integer .
