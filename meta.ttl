@@ -159,6 +159,99 @@ meta:ProductionEnvironment a meta:Environment ;
     rdfs:label "Production Environment" ;
     rdfs:comment "Production environment configuration" .
 
+# Task Management
+meta:Task rdf:type owl:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "A unit of work to be completed" ;
+    rdfs:subClassOf metameta:AbstractionDimension .
+
+meta:TaskStatus rdf:type owl:Class ;
+    rdfs:label "Task Status" ;
+    rdfs:comment "The status of a task" .
+
+meta:TaskPriority rdf:type owl:Class ;
+    rdfs:label "Task Priority" ;
+    rdfs:comment "The priority level of a task" .
+
+# Task Properties
+meta:hasStatus rdf:type owl:ObjectProperty ;
+    rdfs:label "has status" ;
+    rdfs:domain meta:Task ;
+    rdfs:range meta:TaskStatus ;
+    rdfs:comment "Links a task to its current status" .
+
+meta:hasPriority rdf:type owl:DatatypeProperty ;
+    rdfs:label "has priority" ;
+    rdfs:domain meta:Task ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Priority level of the task (1-5)" .
+
+meta:dependsOn rdf:type owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:domain meta:Task ;
+    rdfs:range meta:Task ;
+    rdfs:comment "Indicates task dependencies" .
+
+meta:hasDeadline rdf:type owl:DatatypeProperty ;
+    rdfs:label "has deadline" ;
+    rdfs:domain meta:Task ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "The deadline for completing the task" .
+
+meta:assignedTo rdf:type owl:ObjectProperty ;
+    rdfs:label "assigned to" ;
+    rdfs:domain meta:Task ;
+    rdfs:range meta:Agent ;
+    rdfs:comment "The agent responsible for completing the task" .
+
+meta:hasRequirement rdf:type owl:ObjectProperty ;
+    rdfs:label "has requirement" ;
+    rdfs:domain meta:Task ;
+    rdfs:range meta:Requirement ;
+    rdfs:comment "Links a task to its requirements" .
+
+meta:hasValidation rdf:type owl:ObjectProperty ;
+    rdfs:label "has validation" ;
+    rdfs:domain meta:Task ;
+    rdfs:range meta:ValidationCriteria ;
+    rdfs:comment "Links a task to its validation criteria" .
+
+# Status Instances
+meta:Pending rdf:type meta:TaskStatus ;
+    rdfs:label "Pending" ;
+    rdfs:comment "Task has not been started" .
+
+meta:InProgress rdf:type meta:TaskStatus ;
+    rdfs:label "In Progress" ;
+    rdfs:comment "Task is currently being worked on" .
+
+meta:Completed rdf:type meta:TaskStatus ;
+    rdfs:label "Completed" ;
+    rdfs:comment "Task has been completed" .
+
+meta:Blocked rdf:type meta:TaskStatus ;
+    rdfs:label "Blocked" ;
+    rdfs:comment "Task is blocked by dependencies or issues" .
+
+# SHACL Validation
+meta:TaskShape rdf:type sh:NodeShape ;
+    sh:targetClass meta:Task ;
+    sh:property [
+        sh:path meta:hasStatus ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Task must have exactly one status"
+    ] ;
+    sh:property [
+        sh:path meta:hasPriority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 5 ;
+        sh:message "Task must have a priority between 1 and 5"
+    ] .
+
 # TODO: Areas for Expansion
 # - Add validation rules for secret references
 # - Add deployment-specific configuration patterns
