@@ -2,54 +2,127 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prob: <./problem#> .
+@prefix meta: <./meta#> .
 @prefix metameta: <./metameta#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-
-prob:ProblemOntology rdf:type owl:Ontology ;
-    dc:title "Problem Ontology" ;
-    dc:version "1.0" ;
-    owl:imports <./metameta> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
 
 # Core Classes
-prob:BusinessNeed rdf:type owl:Class ;
-    rdfs:label "Business Need" ;
-    rdfs:comment "Fundamental business requirement or opportunity" ;
-    rdfs:subClassOf metameta:AbstractionDimension .
+problem:Problem a owl:Class ;
+    rdfs:label "Problem"@en ;
+    rdfs:comment "A problem or issue that needs to be addressed" .
 
-prob:Context rdf:type owl:Class ;
-    rdfs:label "Context" ;
-    rdfs:comment "Environmental or situational factors" .
+problem:SecurityProblem a owl:Class ;
+    rdfs:label "Security Problem"@en ;
+    rdfs:comment "A security-related problem" ;
+    rdfs:subClassOf problem:Problem .
 
-prob:Constraint rdf:type owl:Class ;
-    rdfs:label "Constraint" ;
-    rdfs:comment "Limiting factors or boundaries" .
+problem:AuthenticationProblem a owl:Class ;
+    rdfs:label "Authentication Problem"@en ;
+    rdfs:comment "An authentication-related problem" ;
+    rdfs:subClassOf problem:SecurityProblem .
 
-# Core Properties
-prob:hasValue rdf:type owl:DatatypeProperty ;
-    rdfs:domain prob:BusinessNeed ;
+problem:ConfigurationProblem a owl:Class ;
+    rdfs:label "Configuration Problem"@en ;
+    rdfs:comment "A configuration-related problem" ;
+    rdfs:subClassOf problem:Problem .
+
+problem:ComplianceProblem a owl:Class ;
+    rdfs:label "Compliance Problem"@en ;
+    rdfs:comment "A compliance-related problem" ;
+    rdfs:subClassOf problem:SecurityProblem .
+
+problem:DataSecurityProblem a owl:Class ;
+    rdfs:label "Data Security Problem"@en ;
+    rdfs:comment "A data security and privacy related problem" ;
+    rdfs:subClassOf problem:SecurityProblem .
+
+# Properties
+problem:hasSeverity a owl:DatatypeProperty ;
+    rdfs:domain problem:Problem ;
     rdfs:range xsd:string .
 
-prob:hasPriority rdf:type owl:DatatypeProperty ;
-    rdfs:domain prob:BusinessNeed ;
-    rdfs:range xsd:integer .
+problem:hasStatus a owl:DatatypeProperty ;
+    rdfs:domain problem:Problem ;
+    rdfs:range xsd:string .
 
-prob:hasContext rdf:type owl:ObjectProperty ;
-    rdfs:domain prob:BusinessNeed ;
-    rdfs:range prob:Context .
+problem:hasSolution a owl:ObjectProperty ;
+    rdfs:domain problem:Problem ;
+    rdfs:range solution:Solution .
 
-prob:hasConstraint rdf:type owl:ObjectProperty ;
-    rdfs:domain prob:BusinessNeed ;
-    rdfs:range prob:Constraint .
+problem:requiresControl a owl:ObjectProperty ;
+    rdfs:domain problem:SecurityProblem ;
+    rdfs:range meta:SecurityConcept ;
+    rdfs:comment "Links a security problem to required security controls" .
 
-# Add validation rules
-prob:BusinessNeed rdfs:subClassOf [
-    rdf:type owl:Restriction ;
-    owl:onProperty prob:hasPriority ;
-    owl:allValuesFrom [
-        rdf:type rdfs:Datatype ;
-        owl:onDatatype xsd:integer ;
-        owl:withRestrictions ([xsd:minInclusive "1"^^xsd:integer]
-                             [xsd:maxInclusive "5"^^xsd:integer])
-    ]
-] .
+problem:affectsComponent a owl:ObjectProperty ;
+    rdfs:domain problem:Problem ;
+    rdfs:range meta:Component ;
+    rdfs:comment "Indicates which component is affected by the problem" .
+
+problem:hasImpact a owl:DatatypeProperty ;
+    rdfs:domain problem:Problem ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Describes the impact of the problem" .
+
+# Problem Instances
+problem:snowflakeAuthIssue a problem:AuthenticationProblem ;
+    rdfs:label "Snowflake Authentication Issue"@en ;
+    rdfs:comment "Issues with Snowflake key-based authentication" ;
+    problem:hasSeverity "High"^^xsd:string ;
+    problem:hasStatus "Resolved"^^xsd:string ;
+    problem:hasSolution solution:snowflakeAuth ;
+    problem:requiresControl meta:AuthenticationConcept ;
+    problem:hasImpact "Service disruption and access failure" .
+
+problem:keyFormatIssue a problem:ConfigurationProblem ;
+    rdfs:label "Key Format Issue"@en ;
+    rdfs:comment "Private key not in correct PKCS#8 format" ;
+    problem:hasSeverity "Medium"^^xsd:string ;
+    problem:hasStatus "Resolved"^^xsd:string ;
+    problem:hasSolution solution:keyManagement ;
+    problem:affectsComponent meta:Configuration .
+
+problem:keyPermissionsIssue a problem:SecurityProblem ;
+    rdfs:label "Key Permissions Issue"@en ;
+    rdfs:comment "Incorrect permissions on private key file" ;
+    problem:hasSeverity "High"^^xsd:string ;
+    problem:hasStatus "Resolved"^^xsd:string ;
+    problem:hasSolution solution:keyManagement ;
+    problem:requiresControl meta:AccessControlConcept .
+
+problem:secretsManagementIssue a problem:SecurityProblem ;
+    rdfs:label "Secrets Management Issue"@en ;
+    rdfs:comment "Migration of secrets to Azure Key Vault completed" ;
+    problem:hasSeverity "High"^^xsd:string ;
+    problem:hasStatus "Resolved"^^xsd:string ;
+    problem:hasSolution solution:keyManagement ;
+    problem:requiresControl meta:SecurityConcept ;
+    problem:affectsComponent meta:SecretStore .
+
+problem:auditLoggingIssue a problem:ComplianceProblem ;
+    rdfs:label "Audit Logging Issue"@en ;
+    rdfs:comment "Comprehensive audit logging system implemented with Azure Monitor" ;
+    problem:hasSeverity "High"^^xsd:string ;
+    problem:hasStatus "Resolved"^^xsd:string ;
+    problem:requiresControl meta:SecurityConcept ;
+    problem:hasImpact "Compliance and traceability requirements met" .
+
+problem:dataEncryptionIssue a problem:DataSecurityProblem ;
+    rdfs:label "Data Encryption Issue"@en ;
+    rdfs:comment "Need to implement encryption at rest for logs" ;
+    problem:hasSeverity "Medium"^^xsd:string ;
+    problem:hasStatus "Pending"^^xsd:string ;
+    problem:requiresControl meta:SecurityConcept ;
+    problem:hasImpact "Data privacy and compliance risks" .
+
+# Current Issues
+problem:keyRotationNeeded a problem:SecurityProblem ;
+    rdfs:label "Key Rotation Needed"@en ;
+    rdfs:comment "Regular key rotation procedure needed" ;
+    problem:hasSeverity "Medium"^^xsd:string ;
+    problem:hasStatus "Pending"^^xsd:string ;
+    problem:requiresPattern guidance:KeyRotation ;
+    problem:hasImpact "Security best practice gap" .
