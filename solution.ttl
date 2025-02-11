@@ -153,6 +153,77 @@
     rdfs:comment "op://Azure-Bot-Config/Bot-Credentials/app_id" ;
     :referencesField :AppIdField .
 
+# Solution Classes
+:AuthenticationSolution a owl:Class ;
+    rdfs:label "Authentication Solution"@en ;
+    rdfs:comment "Solution for authentication and security" .
+
+:SnowflakeIntegration a owl:Class ;
+    rdfs:label "Snowflake Integration"@en ;
+    rdfs:comment "Integration with Snowflake database" .
+
+:KeyManagement a owl:Class ;
+    rdfs:label "Key Management"@en ;
+    rdfs:comment "Management of cryptographic keys" .
+
+:Configuration a owl:Class ;
+    rdfs:label "Configuration"@en ;
+    rdfs:comment "System configuration settings" .
+
+# Properties
+:implements a owl:ObjectProperty ;
+    rdfs:domain :AuthenticationSolution ;
+    rdfs:range guidance:SecurityPattern .
+
+:uses a owl:ObjectProperty ;
+    rdfs:domain :SnowflakeIntegration ;
+    rdfs:range :AuthenticationSolution .
+
+:manages a owl:ObjectProperty ;
+    rdfs:domain :KeyManagement ;
+    rdfs:range :AuthenticationSolution .
+
+# Solution Instances
+:snowflakeAuth a :AuthenticationSolution ;
+    rdfs:label "Snowflake Authentication"@en ;
+    :implements guidance:SecurityPatterns ;
+    :authMethod "RSA Key Pair"^^xsd:string ;
+    :keyFormat "PKCS#8"^^xsd:string ;
+    :status "Implemented"^^xsd:string .
+
+:snowflakeIntegration a :SnowflakeIntegration ;
+    rdfs:label "Snowflake Database Integration"@en ;
+    :uses :snowflakeAuth ;
+    :connectionType "Key-Based"^^xsd:string ;
+    :status "Configured"^^xsd:string .
+
+:keyManagement a :KeyManagement ;
+    rdfs:label "Key Management Solution"@en ;
+    :manages :snowflakeAuth ;
+    :keyType "RSA"^^xsd:string ;
+    :keyBits "2048"^^xsd:integer ;
+    :status "Implemented"^^xsd:string ;
+    :implementation [
+        a :Implementation ;
+        rdfs:label "Azure Key Vault Implementation"@en ;
+        :implementationType "Azure Key Vault"^^xsd:string ;
+        :auditLogging "Enabled"^^xsd:string ;
+        :diagnosticsEnabled "true"^^xsd:boolean ;
+        :secretsManaged [
+            rdf:_1 "bot-app-id" ;
+            rdf:_2 "bot-app-password" ;
+            rdf:_3 "cosmos-db-key" ;
+            rdf:_4 "snowflake-user" ;
+            rdf:_5 "state-encryption-key"
+        ]
+    ] .
+
+:config a :Configuration ;
+    rdfs:label "System Configuration"@en ;
+    :configType "Environment Variables"^^xsd:string ;
+    :template ".env.template"^^xsd:string ;
+    :status "Configured"^^xsd:string .
+
 # TODO: Areas for Expansion
 # - Add validation patterns for reference syntax
 # - Add backup and restore procedures

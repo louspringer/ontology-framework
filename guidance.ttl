@@ -7,6 +7,10 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
 
 guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
@@ -563,3 +567,81 @@ guidance:stepNumber rdf:type owl:DatatypeProperty ;
     rdfs:comment "Order number of the step" ;
     rdfs:domain guidance:Step ;
     rdfs:range xsd:integer .
+
+# Core Classes
+guidance:Pattern a owl:Class ;
+    rdfs:label "Pattern"@en ;
+    rdfs:comment "A reusable design or implementation pattern" .
+
+guidance:SecurityPattern a owl:Class ;
+    rdfs:label "Security Pattern"@en ;
+    rdfs:comment "A pattern for implementing security features" ;
+    rdfs:subClassOf guidance:Pattern .
+
+guidance:AuthenticationPattern a owl:Class ;
+    rdfs:label "Authentication Pattern"@en ;
+    rdfs:comment "A pattern for implementing authentication" ;
+    rdfs:subClassOf guidance:SecurityPattern .
+
+guidance:KeyManagementPattern a owl:Class ;
+    rdfs:label "Key Management Pattern"@en ;
+    rdfs:comment "A pattern for managing cryptographic keys" ;
+    rdfs:subClassOf guidance:SecurityPattern .
+
+# Properties
+guidance:implements a owl:ObjectProperty ;
+    rdfs:domain guidance:Pattern ;
+    rdfs:range solution:Solution .
+
+guidance:requires a owl:ObjectProperty ;
+    rdfs:domain guidance:Pattern ;
+    rdfs:range guidance:Pattern .
+
+guidance:recommends a owl:ObjectProperty ;
+    rdfs:domain guidance:Pattern ;
+    rdfs:range guidance:Pattern .
+
+# Pattern Instances
+guidance:RSAKeyPairAuth a guidance:AuthenticationPattern ;
+    rdfs:label "RSA Key Pair Authentication"@en ;
+    rdfs:comment "Authentication using RSA key pairs" ;
+    guidance:requires guidance:SecureKeyStorage ;
+    guidance:recommends guidance:KeyRotation .
+
+guidance:SecureKeyStorage a guidance:KeyManagementPattern ;
+    rdfs:label "Secure Key Storage"@en ;
+    rdfs:comment "Pattern for securely storing cryptographic keys" ;
+    guidance:recommends guidance:KeyEncryption .
+
+guidance:KeyRotation a guidance:KeyManagementPattern ;
+    rdfs:label "Key Rotation"@en ;
+    rdfs:comment "Pattern for regularly rotating cryptographic keys" ;
+    guidance:requires guidance:SecureKeyStorage .
+
+guidance:KeyEncryption a guidance:KeyManagementPattern ;
+    rdfs:label "Key Encryption"@en ;
+    rdfs:comment "Pattern for encrypting stored keys" .
+
+# Best Practices
+guidance:BestPractices a owl:Class ;
+    rdfs:label "Best Practices"@en ;
+    rdfs:comment "Collection of security best practices" .
+
+guidance:SecurityBestPractices a guidance:BestPractices ;
+    rdfs:label "Security Best Practices"@en ;
+    guidance:practice [
+        rdfs:label "Private Key Protection"@en ;
+        rdfs:comment "Store private keys with 600 permissions and never commit to VCS"
+    ] ;
+    guidance:practice [
+        rdfs:label "Key Format Standards"@en ;
+        rdfs:comment "Use PKCS#8 format for private keys and PEM format for storage"
+    ] ;
+    guidance:practice [
+        rdfs:label "Environment Variables"@en ;
+        rdfs:comment "Use environment variables for sensitive configuration"
+    ] ;
+    guidance:practice [
+        rdfs:label "Key Rotation Schedule"@en ;
+        rdfs:comment "Implement regular key rotation with proper procedures"
+    ] .
