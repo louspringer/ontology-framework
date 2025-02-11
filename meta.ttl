@@ -16,18 +16,87 @@ meta:MetaOntology a owl:Ontology ;
     rdfs:comment "Core ontology for meta-level concepts and patterns" ;
     owl:versionInfo "0.1.0" .
 
-# Classes
-meta:SecretStore a owl:Class ;
-    rdfs:label "Secret Store" ;
-    rdfs:comment "A secure storage system for sensitive information and credentials" .
+# Security Concepts
+meta:SecurityConcept a owl:Class ;
+    rdfs:label "Security Concept"@en ;
+    rdfs:comment "Core security concepts and controls" .
 
+meta:AuthenticationConcept a owl:Class ;
+    rdfs:label "Authentication Concept"@en ;
+    rdfs:comment "Authentication-related security concepts" ;
+    rdfs:subClassOf meta:SecurityConcept .
+
+meta:AccessControlConcept a owl:Class ;
+    rdfs:label "Access Control Concept"@en ;
+    rdfs:comment "Access control and authorization concepts" ;
+    rdfs:subClassOf meta:SecurityConcept .
+
+meta:EncryptionConcept a owl:Class ;
+    rdfs:label "Encryption Concept"@en ;
+    rdfs:comment "Data encryption and protection concepts" ;
+    rdfs:subClassOf meta:SecurityConcept .
+
+meta:ComplianceConcept a owl:Class ;
+    rdfs:label "Compliance Concept"@en ;
+    rdfs:comment "Regulatory compliance and audit concepts" ;
+    rdfs:subClassOf meta:SecurityConcept .
+
+# Component Classes
+meta:Component a owl:Class ;
+    rdfs:label "Component"@en ;
+    rdfs:comment "System component or module" .
+
+meta:Configuration a owl:Class ;
+    rdfs:label "Configuration"@en ;
+    rdfs:comment "Configuration component" ;
+    rdfs:subClassOf meta:Component .
+
+meta:SecretStore a owl:Class ;
+    rdfs:label "Secret Store"@en ;
+    rdfs:comment "Secure storage for secrets and keys" ;
+    rdfs:subClassOf meta:Component .
+
+meta:AuditLog a owl:Class ;
+    rdfs:label "Audit Log"@en ;
+    rdfs:comment "Audit logging component" ;
+    rdfs:subClassOf meta:Component .
+
+# Properties
+meta:implements a owl:ObjectProperty ;
+    rdfs:domain meta:Component ;
+    rdfs:range meta:SecurityConcept ;
+    rdfs:comment "Indicates which security concept a component implements" .
+
+meta:requires a owl:ObjectProperty ;
+    rdfs:domain meta:Component ;
+    rdfs:range meta:SecurityConcept ;
+    rdfs:comment "Indicates which security concept a component requires" .
+
+meta:dependsOn a owl:ObjectProperty ;
+    rdfs:domain meta:Component ;
+    rdfs:range meta:Component ;
+    rdfs:comment "Indicates component dependencies" .
+
+# Security Requirements
+meta:keyRotationRequirement a meta:SecurityConcept ;
+    rdfs:label "Key Rotation Requirement"@en ;
+    rdfs:comment "Regular key rotation for security" ;
+    meta:requires meta:AuthenticationConcept .
+
+meta:auditRequirement a meta:ComplianceConcept ;
+    rdfs:label "Audit Requirement"@en ;
+    rdfs:comment "Comprehensive audit logging" ;
+    meta:requires meta:AuditLog .
+
+meta:encryptionRequirement a meta:EncryptionConcept ;
+    rdfs:label "Encryption Requirement"@en ;
+    rdfs:comment "Data encryption at rest and in transit" ;
+    meta:requires meta:SecretStore .
+
+# Classes
 meta:Secret a owl:Class ;
     rdfs:label "Secret" ;
     rdfs:comment "A piece of sensitive information that needs to be securely stored" .
-
-meta:Configuration a owl:Class ;
-    rdfs:label "Configuration" ;
-    rdfs:comment "A collection of settings and parameters for the application" .
 
 meta:Environment a owl:Class ;
     rdfs:label "Environment" ;
@@ -36,26 +105,6 @@ meta:Environment a owl:Class ;
 meta:Reference a owl:Class ;
     rdfs:label "Reference" ;
     rdfs:comment "A pointer to a secret or configuration value stored in a secret store" .
-
-# Core Security Concepts
-meta:SecurityConcept a owl:Class ;
-    rdfs:label "Security Concept" ;
-    rdfs:comment "Base class for all security-related concepts" .
-
-meta:AuthenticationConcept a owl:Class ;
-    rdfs:subClassOf meta:SecurityConcept ;
-    rdfs:label "Authentication Concept" ;
-    rdfs:comment "Base class for authentication patterns and mechanisms" .
-
-meta:IdentityConcept a owl:Class ;
-    rdfs:subClassOf meta:SecurityConcept ;
-    rdfs:label "Identity Concept" ;
-    rdfs:comment "Base class for identity-related concepts" .
-
-meta:AccessControlConcept a owl:Class ;
-    rdfs:subClassOf meta:SecurityConcept ;
-    rdfs:label "Access Control Concept" ;
-    rdfs:comment "Base class for access control patterns" .
 
 # Pattern Framework
 meta:Pattern a owl:Class ;
@@ -185,24 +234,6 @@ meta:hasPriority rdf:type owl:DatatypeProperty ;
     rdfs:domain meta:Task ;
     rdfs:range xsd:integer ;
     rdfs:comment "Priority level of the task (1-5)" .
-
-meta:dependsOn rdf:type owl:ObjectProperty ;
-    rdfs:label "depends on" ;
-    rdfs:domain meta:Task ;
-    rdfs:range meta:Task ;
-    rdfs:comment "Indicates task dependencies" .
-
-meta:hasDeadline rdf:type owl:DatatypeProperty ;
-    rdfs:label "has deadline" ;
-    rdfs:domain meta:Task ;
-    rdfs:range xsd:dateTime ;
-    rdfs:comment "The deadline for completing the task" .
-
-meta:assignedTo rdf:type owl:ObjectProperty ;
-    rdfs:label "assigned to" ;
-    rdfs:domain meta:Task ;
-    rdfs:range meta:Agent ;
-    rdfs:comment "The agent responsible for completing the task" .
 
 meta:hasRequirement rdf:type owl:ObjectProperty ;
     rdfs:label "has requirement" ;
