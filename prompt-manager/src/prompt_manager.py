@@ -4,6 +4,7 @@ import yaml
 import time
 import click
 
+
 class PromptManager:
     def __init__(self):
         self._connect_with_retry()
@@ -23,7 +24,8 @@ class PromptManager:
 
     def setup_db(self):
         with self.conn.cursor() as cur:
-            cur.execute("""
+            cur.execute(
+                """
                 CREATE TABLE IF NOT EXISTS prompts (
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(255) UNIQUE,
@@ -32,10 +34,11 @@ class PromptManager:
                     tags TEXT[],
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """)
+            """
+            )
         self.conn.commit()
 
-    def add_prompt(self, name, content, category='general', tags=None):
+    def add_prompt(self, name, content, category="general", tags=None):
         with self.conn.cursor() as cur:
             cur.execute(
                 """
@@ -46,7 +49,7 @@ class PromptManager:
                     category = EXCLUDED.category,
                     tags = EXCLUDED.tags
                 """,
-                (name, content, category, tags or [])
+                (name, content, category, tags or []),
             )
         self.conn.commit()
 
@@ -60,7 +63,7 @@ class PromptManager:
                 OR name ILIKE %s 
                 OR category ILIKE %s
                 """,
-                (f'%{query}%', f'%{query}%', f'%{query}%')
+                (f"%{query}%", f"%{query}%", f"%{query}%"),
             )
             return cur.fetchall()
 
@@ -78,4 +81,4 @@ class PromptManager:
         with self.conn.cursor() as cur:
             cur.execute("SELECT content FROM prompts WHERE id = %s", (id,))
             result = cur.fetchone()
-            return result[0] if result else None 
+            return result[0] if result else None
