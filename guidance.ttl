@@ -761,3 +761,251 @@ guidance:TestCaseShape rdf:type sh:NodeShape ;
         sh:minCount 1 ;
         sh:message "Every test case must specify expected results"
     ] .
+
+# Configuration Management Pattern
+guidance:ConfigurationManagementPattern a owl:Class ;
+    rdfs:label "Configuration Management Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for managing project configuration files" .
+
+guidance:OntologyConfigurationPattern a owl:Class ;
+    rdfs:label "Ontology Configuration Pattern" ;
+    rdfs:subClassOf guidance:ConfigurationManagementPattern ;
+    rdfs:comment "Pattern for managing ontology configurations through .ontologies file" .
+
+# Properties for .ontologies configuration
+guidance:hasConfigurationFile a owl:ObjectProperty ;
+    rdfs:label "Has Configuration File" ;
+    rdfs:domain guidance:OntologyConfigurationPattern ;
+    rdfs:range guidance:ConfigurationFile ;
+    rdfs:comment "Links a pattern to its configuration file definition" .
+
+guidance:configurationKey a owl:DatatypeProperty ;
+    rdfs:label "Configuration Key" ;
+    rdfs:domain guidance:ConfigurationFile ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Key in the configuration file" .
+
+guidance:configurationValue a owl:DatatypeProperty ;
+    rdfs:label "Configuration Value" ;
+    rdfs:domain guidance:ConfigurationFile ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Value for the configuration key" .
+
+# .ontologies Configuration Instance
+guidance:OntologiesFilePattern a owl:NamedIndividual ;
+    rdf:type guidance:OntologyConfigurationPattern ;
+    rdfs:label ".ontologies Configuration Pattern" ;
+    guidance:sourceContext "Project Configuration" ;
+    guidance:targetContext "Ontology Management" ;
+    guidance:complexity "1"^^xsd:integer ;
+    rdfs:comment """Best practices for .ontologies file:
+1. Must define PROJECT_ONTOLOGY as the root ontology
+2. CORE_ONTOLOGIES lists fundamental, reusable ontologies
+3. PROJECT_SPECIFIC_ONTOLOGIES lists project-specific ontologies
+4. All ontologies must be directly or transitively related to PROJECT_ONTOLOGY
+5. Update when adding or removing ontology files
+6. Keep in project root directory
+7. Use with version control
+8. Validate relationships before adding""" .
+
+# Configuration File Structure
+guidance:OntologiesFile a guidance:ConfigurationFile ;
+    rdfs:label ".ontologies" ;
+    guidance:configurationKey "PROJECT_ONTOLOGY" ;
+    guidance:configurationValue "Root ontology file (e.g., chatbot.ttl)" ;
+    guidance:configurationKey "CORE_ONTOLOGIES" ;
+    guidance:configurationValue "Comma-separated list of core ontology files" ;
+    guidance:configurationKey "PROJECT_SPECIFIC_ONTOLOGIES" ;
+    guidance:configurationValue "Comma-separated list of project-specific ontology files" ;
+    guidance:requiredValidation [
+        rdf:_1 "All listed files must exist" ;
+        rdf:_2 "All ontologies must be reachable from PROJECT_ONTOLOGY" ;
+        rdf:_3 "Core ontologies must be properly imported" ;
+        rdf:_4 "Project-specific ontologies must have clear relationships"
+    ] .
+
+# SHACL Validation for .ontologies
+guidance:OntologiesFileShape a sh:NodeShape ;
+    sh:targetClass guidance:OntologiesFile ;
+    sh:property [
+        sh:path guidance:configurationKey ;
+        sh:minCount 3 ;
+        sh:message "Must define PROJECT_ONTOLOGY, CORE_ONTOLOGIES, and PROJECT_SPECIFIC_ONTOLOGIES"
+    ] ;
+    sh:property [
+        sh:path guidance:configurationValue ;
+        sh:minCount 3 ;
+        sh:message "Must provide values for all configuration keys"
+    ] .
+
+# Usage Examples
+guidance:OntologiesUsageExample a owl:NamedIndividual ;
+    rdf:type guidance:Example ;
+    rdfs:label ".ontologies Usage Example" ;
+    guidance:exampleContent """
+# Example .ontologies file
+PROJECT_ONTOLOGY=chatbot.ttl
+
+# Core ontologies that provide fundamental concepts and patterns
+CORE_ONTOLOGIES=guidance.ttl,meta.ttl,metameta.ttl,problem.ttl,solution.ttl,conversation.ttl,session.ttl
+
+# Project-specific ontologies
+PROJECT_SPECIFIC_ONTOLOGIES=cortexteams.ttl,deployment_validation.ttl,deployment_config.ttl
+""" ;
+    guidance:validationSteps [
+        rdf:_1 "Verify PROJECT_ONTOLOGY exists" ;
+        rdf:_2 "Check all CORE_ONTOLOGIES are present" ;
+        rdf:_3 "Validate PROJECT_SPECIFIC_ONTOLOGIES relationships" ;
+        rdf:_4 "Ensure no circular dependencies" ;
+        rdf:_5 "Verify imports in ontology files"
+    ] .
+
+# Integration with Other Patterns
+guidance:OntologiesFilePattern
+    guidance:requires guidance:VersioningBestPractice ;
+    guidance:recommends guidance:DocumentationPattern ;
+    guidance:implements [
+        rdf:type guidance:Implementation ;
+        rdfs:label "Configuration Management" ;
+        guidance:implementationSteps [
+            rdf:_1 "Place .ontologies in project root" ;
+            rdf:_2 "Define PROJECT_ONTOLOGY first" ;
+            rdf:_3 "List CORE_ONTOLOGIES in dependency order" ;
+            rdf:_4 "Add PROJECT_SPECIFIC_ONTOLOGIES as needed" ;
+            rdf:_5 "Validate relationships after changes"
+        ]
+    ] .
+
+# Session Logging Pattern
+guidance:SessionLoggingPattern a owl:Class ;
+    rdfs:label "Session Logging Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for maintaining session history and context changes" .
+
+guidance:SessionLogEntry a owl:Class ;
+    rdfs:label "Session Log Entry" ;
+    rdfs:comment "An entry in the session log recording a change to session.ttl" .
+
+# Properties for session logging
+guidance:hasActor a owl:ObjectProperty ;
+    rdfs:label "Has Actor" ;
+    rdfs:domain guidance:SessionLogEntry ;
+    rdfs:range [
+        rdf:type owl:Class ;
+        owl:unionOf (guidance:HumanActor guidance:AIActor)
+    ] ;
+    rdfs:comment "Who/what made the change" .
+
+guidance:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "Has Timestamp" ;
+    rdfs:domain guidance:SessionLogEntry ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "When the change was made" .
+
+guidance:hasPriorState a owl:ObjectProperty ;
+    rdfs:label "Has Prior State" ;
+    rdfs:domain guidance:SessionLogEntry ;
+    rdfs:range owl:Thing ;
+    rdfs:comment "The previous state of the changed elements" .
+
+guidance:hasChangeReason a owl:DatatypeProperty ;
+    rdfs:label "Has Change Reason" ;
+    rdfs:domain guidance:SessionLogEntry ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Why the change was made" .
+
+guidance:hasChangeContext a owl:ObjectProperty ;
+    rdfs:label "Has Change Context" ;
+    rdfs:domain guidance:SessionLogEntry ;
+    rdfs:range guidance:ChangeContext ;
+    rdfs:comment "The context in which the change was made" .
+
+# Session Log Management Pattern
+guidance:SessionLogManagementPattern a owl:NamedIndividual ;
+    rdf:type guidance:SessionLoggingPattern ;
+    rdfs:label "Session Log Management Pattern" ;
+    guidance:sourceContext "Session State Management" ;
+    guidance:targetContext "Session History Tracking" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Best practices for session log management:
+1. Every change to session.ttl must be logged in session_log.ttl
+2. Log entries must include who/what made the change
+3. Log entries must include timestamp in ISO format
+4. Log entries must preserve prior state
+5. Log entries must document reason for change
+6. Log entries must maintain context chain
+7. Use SPARQL for historical queries
+8. Maintain log entry order
+9. Never modify existing log entries
+10. Link log entries to relevant tasks/issues""" .
+
+# SHACL Validation for Session Log
+guidance:SessionLogEntryShape a sh:NodeShape ;
+    sh:targetClass guidance:SessionLogEntry ;
+    sh:property [
+        sh:path guidance:hasActor ;
+        sh:minCount 1 ;
+        sh:message "Log entry must specify who/what made the change"
+    ] ;
+    sh:property [
+        sh:path guidance:hasTimestamp ;
+        sh:minCount 1 ;
+        sh:datatype xsd:dateTime ;
+        sh:message "Log entry must have ISO format timestamp"
+    ] ;
+    sh:property [
+        sh:path guidance:hasPriorState ;
+        sh:minCount 1 ;
+        sh:message "Log entry must preserve prior state"
+    ] ;
+    sh:property [
+        sh:path guidance:hasChangeReason ;
+        sh:minCount 1 ;
+        sh:message "Log entry must document reason for change"
+    ] .
+
+# Example Queries
+guidance:SessionLogQueries a owl:NamedIndividual ;
+    rdf:type guidance:Example ;
+    rdfs:label "Session Log Query Examples" ;
+    guidance:exampleContent """
+# Query for changes by specific actor
+SELECT ?entry ?timestamp ?reason
+WHERE {
+    ?entry a guidance:SessionLogEntry ;
+           guidance:hasActor ?actor ;
+           guidance:hasTimestamp ?timestamp ;
+           guidance:hasChangeReason ?reason .
+    FILTER(?actor = ex:SpecificActor)
+}
+ORDER BY DESC(?timestamp)
+
+# Query for state at specific time
+SELECT ?state
+WHERE {
+    ?entry a guidance:SessionLogEntry ;
+           guidance:hasTimestamp ?timestamp ;
+           guidance:hasPriorState ?state .
+    FILTER(?timestamp <= "2024-03-20T00:00:00Z"^^xsd:dateTime)
+}
+ORDER BY DESC(?timestamp)
+LIMIT 1
+""" .
+
+# Integration with Session Management
+guidance:SessionLogPattern
+    guidance:requires guidance:SessionManagementPattern ;
+    guidance:recommends guidance:VersioningBestPractice ;
+    guidance:implements [
+        rdf:type guidance:Implementation ;
+        rdfs:label "Session Log Management" ;
+        guidance:implementationSteps [
+            rdf:_1 "Create session_log.ttl if not exists" ;
+            rdf:_2 "Log current state before changes" ;
+            rdf:_3 "Update session.ttl" ;
+            rdf:_4 "Create log entry with complete metadata" ;
+            rdf:_5 "Validate log entry" ;
+            rdf:_6 "Update relevant cross-references"
+        ]
+    ] .
