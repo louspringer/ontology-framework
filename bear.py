@@ -23,18 +23,21 @@ st.markdown(
 
 session = get_active_session()
 
+
 @st.cache_data(max_entries=100)
 def load_document_list():
     """Load and cache the list of available documents from Snowflake."""
     docs_list = session.sql(
         "SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE"
     ).to_pandas()
-    return docs_list['FILENAME'].tolist()
+    return docs_list["FILENAME"].tolist()
+
 
 @st.cache_resource
 def get_snowflake_session():
     """Create or get cached Snowflake session."""
     return session  # Assuming 'session' is created elsewhere in the app
+
 
 @st.cache_data(ttl="1h", max_entries=20)
 def extract_document_content(filename):
@@ -45,6 +48,7 @@ def extract_document_content(filename):
     )
     content_list = doc_extract.select(doc_extract["EXTRACTED_DATA"]).collect()
     return " ".join(str(row["EXTRACTED_DATA"]) for row in content_list)
+
 
 supported_languages = {
     "German": "de",
@@ -286,7 +290,7 @@ def pdocument():
             options=load_document_list(),
             placeholder="Choose a File",
         )
-        
+
         if selected_file:
             st.write("Extracting: ", selected_file)
             content_string = extract_document_content(selected_file)
