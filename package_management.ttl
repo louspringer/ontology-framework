@@ -1,0 +1,92 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix pkg: <./package_management#> .
+
+pkg:PackageManagementOntology rdf:type owl:Ontology ;
+    rdfs:label "Package Management Ontology" ;
+    rdfs:comment "Ontology for managing package dependencies and configurations" ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <./guidance>, <./meta>, <./metameta> .
+
+# Core Classes
+pkg:PackageManager rdf:type owl:Class ;
+    rdfs:label "Package Manager" ;
+    rdfs:comment "A system for managing package dependencies" .
+
+pkg:PackageConfiguration rdf:type owl:Class ;
+    rdfs:label "Package Configuration" ;
+    rdfs:comment "Configuration file for package management" .
+
+pkg:DependencyRequirement rdf:type owl:Class ;
+    rdfs:label "Dependency Requirement" ;
+    rdfs:comment "A required package dependency" .
+
+pkg:ValidationRule rdf:type owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Rule for validating package configurations" .
+
+# Properties
+pkg:hasConfiguration rdf:type owl:ObjectProperty ;
+    rdfs:label "has configuration" ;
+    rdfs:domain pkg:PackageManager ;
+    rdfs:range pkg:PackageConfiguration .
+
+pkg:requiresDependency rdf:type owl:ObjectProperty ;
+    rdfs:label "requires dependency" ;
+    rdfs:domain pkg:PackageConfiguration ;
+    rdfs:range pkg:DependencyRequirement .
+
+pkg:hasValidationRule rdf:type owl:ObjectProperty ;
+    rdfs:label "has validation rule" ;
+    rdfs:domain pkg:PackageConfiguration ;
+    rdfs:range pkg:ValidationRule .
+
+# Instances
+pkg:Conda rdf:type owl:NamedIndividual, pkg:PackageManager ;
+    rdfs:label "Conda" ;
+    rdfs:comment "Conda package manager" ;
+    pkg:hasConfiguration pkg:EnvironmentYml .
+
+pkg:Poetry rdf:type owl:NamedIndividual, pkg:PackageManager ;
+    rdfs:label "Poetry" ;
+    rdfs:comment "Poetry package manager" ;
+    pkg:hasConfiguration pkg:PyprojectToml .
+
+pkg:EnvironmentYml rdf:type owl:NamedIndividual, pkg:PackageConfiguration ;
+    rdfs:label "environment.yml" ;
+    rdfs:comment "Conda environment configuration file" .
+
+pkg:PyprojectToml rdf:type owl:NamedIndividual, pkg:PackageConfiguration ;
+    rdfs:label "pyproject.toml" ;
+    rdfs:comment "Python project configuration file" .
+
+# Validation Rules
+pkg:ConsistencyRule rdf:type owl:NamedIndividual, pkg:ValidationRule ;
+    rdfs:label "Consistency Rule" ;
+    rdfs:comment "Dependencies must be consistent across all configuration files" .
+
+pkg:NoRequirementsTxt rdf:type owl:NamedIndividual, pkg:ValidationRule ;
+    rdfs:label "No requirements.txt" ;
+    rdfs:comment "Project should not use requirements.txt" .
+
+pkg:OntologyTraceability rdf:type owl:NamedIndividual, pkg:ValidationRule ;
+    rdfs:label "Ontology Traceability" ;
+    rdfs:comment "Package changes must be traceable in ontologies" .
+
+# SHACL Validation
+pkg:PackageConfigurationShape rdf:type sh:NodeShape ;
+    sh:targetClass pkg:PackageConfiguration ;
+    sh:property [
+        sh:path pkg:hasValidationRule ;
+        sh:minCount 1 ;
+        sh:message "Configuration must have at least one validation rule"
+    ] . 
