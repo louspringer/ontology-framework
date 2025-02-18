@@ -1,3 +1,9 @@
+# Ontology: meta:MetaOntology
+# Implements: meta:OntologyFramework
+# Requirement: REQ-ONT-001 Core ontology framework
+# Guidance: guidance:OntologyPatterns#CoreOntology
+# Description: Core meta-ontology defining base concepts and relationships
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
