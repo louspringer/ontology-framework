@@ -3,14 +3,17 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix guidance: <../guidance#> .
 @prefix pm: <#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 # Core ontology metadata
 pm:PrefixManagementOntology a owl:Ontology ;
     dc:title "Prefix Management Ontology"@en ;
     dc:description """Simple, practical prefix management for ontology development.
     Uses relative paths by default and provides clear documentation."""@en ;
-    owl:versionInfo "0.1.0" .
+    owl:versionInfo "0.1.0" ;
+    owl:imports <../guidance> .
 
 # Core classes for prefix management
 pm:Prefix a owl:Class ;
@@ -136,4 +139,58 @@ pm:CognitionPatternsPrefix a pm:Prefix ;
     pm:hasURI "./cognition_patterns#" ;
     pm:inCategory pm:DomainCategory ;
     pm:isRelativePath true ;
-    rdfs:comment "Cognition patterns concepts"@en . 
+    rdfs:comment "Cognition patterns concepts"@en .
+
+pm:hasDocumentation a owl:DatatypeProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range xsd:string ;
+    rdfs:label "has documentation"@en ;
+    rdfs:comment "Documentation explaining the prefix's purpose and usage"@en .
+
+pm:followsGuidance a owl:ObjectProperty ;
+    rdfs:domain pm:Prefix ;
+    rdfs:range guidance:PrefixRule ;
+    rdfs:label "follows guidance"@en ;
+    rdfs:comment "Links prefix to the guidance rules it follows"@en .
+
+# SHACL Validation
+pm:PrefixShape a sh:NodeShape ;
+    sh:targetClass pm:Prefix ;
+    sh:property [
+        sh:path pm:hasPrefix ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Prefix must have exactly one prefix string"
+    ] ;
+    sh:property [
+        sh:path pm:hasURI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:message "Prefix must have exactly one URI"
+    ] ;
+    sh:property [
+        sh:path pm:inCategory ;
+        sh:minCount 1 ;
+        sh:class pm:PrefixCategory ;
+        sh:message "Prefix must belong to a category"
+    ] ;
+    sh:property [
+        sh:path pm:isRelativePath ;
+        sh:minCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Must specify if prefix uses relative path"
+    ] ;
+    sh:property [
+        sh:path pm:hasDocumentation ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Prefix must have documentation"
+    ] ;
+    sh:property [
+        sh:path pm:followsGuidance ;
+        sh:minCount 1 ;
+        sh:class guidance:PrefixRule ;
+        sh:message "Prefix must follow at least one guidance rule"
+    ] . 
