@@ -107,18 +107,86 @@ guidance:EnvironmentVariablePattern rdf:type owl:Class ;
     rdfs:subClassOf guidance:BestPractice ;
     rdfs:comment "Pattern for integrating environment variables across ontologies" .
 
-guidance:hasVariableDefinition rdf:type owl:ObjectProperty ;
-    rdfs:label "Has Variable Definition" ;
-    rdfs:domain guidance:EnvironmentVariablePattern ;
-    rdfs:range owl:Ontology ;
-    rdfs:comment "Links to the ontology containing environment variable definitions" .
+guidance:VariableDefinitionRule rdf:type owl:Class ;
+    rdfs:label "Variable Definition Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for defining environment variables" .
 
-guidance:hasVariableUsage rdf:type owl:ObjectProperty ;
-    rdfs:label "Has Variable Usage" ;
-    rdfs:domain guidance:EnvironmentVariablePattern ;
-    rdfs:range owl:Ontology ;
-    rdfs:comment "Links to ontologies that use environment variables" .
+guidance:VariableUsageRule rdf:type owl:Class ;
+    rdfs:label "Variable Usage Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for using environment variables" .
 
+guidance:VariableValidationRule rdf:type owl:Class ;
+    rdfs:label "Variable Validation Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for validating environment variables" .
+
+guidance:hasDefinitionRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Definition Rule" ;
+    rdfs:domain guidance:EnvironmentVariablePattern ;
+    rdfs:range guidance:VariableDefinitionRule ;
+    rdfs:comment "Links pattern to its definition rules" .
+
+guidance:hasUsageRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Usage Rule" ;
+    rdfs:domain guidance:EnvironmentVariablePattern ;
+    rdfs:range guidance:VariableUsageRule ;
+    rdfs:comment "Links pattern to its usage rules" .
+
+guidance:hasValidationRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Validation Rule" ;
+    rdfs:domain guidance:EnvironmentVariablePattern ;
+    rdfs:range guidance:VariableValidationRule ;
+    rdfs:comment "Links pattern to its validation rules" .
+
+guidance:requiresOntology rdf:type owl:ObjectProperty ;
+    rdfs:label "Requires Ontology" ;
+    rdfs:domain guidance:Rule ;
+    rdfs:range owl:Ontology ;
+    rdfs:comment "Specifies required ontology for a rule" .
+
+guidance:usesPrefix rdf:type owl:DatatypeProperty ;
+    rdfs:label "Uses Prefix" ;
+    rdfs:domain guidance:Rule ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies prefix to be used" .
+
+guidance:hasReferenceFormat rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Reference Format" ;
+    rdfs:domain guidance:Rule ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies format for references" .
+
+# Environment Variable Rules
+guidance:CentralizedDefinitionRule rdf:type guidance:VariableDefinitionRule ;
+    rdfs:label "Centralized Definition Rule" ;
+    rdfs:comment "All environment variables must be defined in environment_variables.ttl" ;
+    guidance:requiresOntology <./environment_variables> .
+
+guidance:PrefixUsageRule rdf:type guidance:VariableUsageRule ;
+    rdfs:label "Prefix Usage Rule" ;
+    rdfs:comment "Use env: prefix when importing environment_variables.ttl" ;
+    guidance:usesPrefix "env" .
+
+guidance:VariableUsagePropertyRule rdf:type guidance:VariableUsageRule ;
+    rdfs:label "Variable Usage Property Rule" ;
+    rdfs:comment "Use :usesEnvironmentVariable for general variable usage" .
+
+guidance:RequirementPropertyRule rdf:type guidance:VariableUsageRule ;
+    rdfs:label "Requirement Property Rule" ;
+    rdfs:comment "Use :hasEnvironmentRequirement for prerequisites" .
+
+guidance:ReferenceFormatRule rdf:type guidance:VariableUsageRule ;
+    rdfs:label "Reference Format Rule" ;
+    rdfs:comment "Reference variables using ${VAR_NAME} format" ;
+    guidance:hasReferenceFormat "${VAR_NAME}" .
+
+guidance:SHACLValidationRule rdf:type guidance:VariableValidationRule ;
+    rdfs:label "SHACL Validation Rule" ;
+    rdfs:comment "Add SHACL validation for variable requirements" .
+
+# Updated Environment Variable Guidance Instance
 guidance:environmentVariableGuidance rdf:type owl:NamedIndividual ;
     rdf:type guidance:EnvironmentVariablePattern ;
     rdfs:label "Environment Variable Integration Guidance" ;
@@ -127,27 +195,27 @@ guidance:environmentVariableGuidance rdf:type owl:NamedIndividual ;
     guidance:sourceContext "Environment Variable Management" ;
     guidance:targetContext "Cross-Ontology Integration" ;
     guidance:complexity "3"^^xsd:integer ;
-    rdfs:comment """Best practices for environment variable integration:
-1. Define all environment variables in environment_variables.ttl
-2. Import environment_variables.ttl in consuming ontologies using env: prefix
-3. Use :usesEnvironmentVariable for general variable usage
-4. Use :hasEnvironmentRequirement for prerequisites
-5. Reference variables using ${VAR_NAME} format
-6. Add SHACL validation for variable requirements.""" .
+    guidance:hasDefinitionRule guidance:CentralizedDefinitionRule ;
+    guidance:hasUsageRule guidance:PrefixUsageRule ;
+    guidance:hasUsageRule guidance:VariableUsagePropertyRule ;
+    guidance:hasUsageRule guidance:RequirementPropertyRule ;
+    guidance:hasUsageRule guidance:ReferenceFormatRule ;
+    guidance:hasValidationRule guidance:SHACLValidationRule .
 
-# SHACL Validation for Environment Variable Pattern
-guidance:EnvironmentVariablePatternShape rdf:type sh:NodeShape ;
-    sh:targetClass guidance:EnvironmentVariablePattern ;
+# SHACL Validation for Rules
+guidance:RuleShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:Rule ;
     sh:property [
-        sh:path guidance:hasVariableDefinition ;
+        sh:path rdfs:label ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Must specify exactly one environment variable definition ontology"
+        sh:datatype xsd:string ;
+        sh:message "Rule must have a label"
     ] ;
     sh:property [
-        sh:path guidance:hasVariableUsage ;
+        sh:path rdfs:comment ;
         sh:minCount 1 ;
-        sh:message "Must specify at least one ontology that uses environment variables"
+        sh:datatype xsd:string ;
+        sh:message "Rule must have a description"
     ] .
 
 # Ontology Relationship Pattern
@@ -215,15 +283,41 @@ guidance:prefixManagementGuidance rdf:type owl:NamedIndividual ;
 4. Maintain consistent prefix naming across ontologies
 5. Use prefix_management.ttl for centralized prefix definitions""" .
 
-# Documentation Organization Pattern
+# Documentation Structure Pattern
 guidance:DocumentationPattern rdf:type owl:Class ;
     rdfs:label "Documentation Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for documentation structure and cross-references" .
+
+guidance:documentationGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:DocumentationPattern ;
+    rdfs:label "Documentation Structure Guidance" ;
+    guidance:sourceContext "Documentation Organization" ;
+    guidance:targetContext "Documentation Standards" ;
+    guidance:complexity "2"^^xsd:integer .
+
+# Cross-Reference Pattern
+guidance:CrossReferencePattern rdf:type owl:Class ;
+    rdfs:label "Cross Reference Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for managing cross-references between ontologies" .
+
+guidance:crossReferenceGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:CrossReferencePattern ;
+    rdfs:label "Cross Reference Guidance" ;
+    guidance:sourceContext "Documentation Organization" ;
+    guidance:targetContext "Cross-Reference Standards" ;
+    guidance:complexity "2"^^xsd:integer .
+
+# Documentation Organization Pattern
+guidance:DocumentationOrganizationPattern rdf:type owl:Class ;
+    rdfs:label "Documentation Organization Pattern" ;
     rdfs:subClassOf guidance:BestPractice ;
     rdfs:comment "Pattern for organizing and validating documentation based on ontological concepts" .
 
 guidance:hasDocumentationType rdf:type owl:ObjectProperty ;
     rdfs:label "Has Documentation Type" ;
-    rdfs:domain guidance:DocumentationPattern ;
+    rdfs:domain guidance:DocumentationOrganizationPattern ;
     rdfs:range guidance:DocumentationType ;
     rdfs:comment "Links a documentation pattern to its type" .
 
@@ -244,7 +338,7 @@ guidance:ValidationDocumentation rdf:type guidance:DocumentationType ;
     rdfs:comment "Documentation of validation rules and constraints" .
 
 guidance:documentationOrganizationGuidance rdf:type owl:NamedIndividual ;
-    rdf:type guidance:DocumentationPattern ;
+    rdf:type guidance:DocumentationOrganizationPattern ;
     rdfs:label "Documentation Organization Guidance" ;
     guidance:sourceContext "Ontology Documentation" ;
     guidance:targetContext "Documentation Structure" ;
@@ -297,20 +391,6 @@ guidance:DocumentationStructurePattern rdf:type guidance:DocumentationPattern ;
 4. Version information in frontmatter
 5. Bidirectional navigation links
 6. Clear ontology mappings""" .
-
-# Cross-reference Pattern
-guidance:CrossReferencePattern rdf:type guidance:DocumentationPattern ;
-    rdfs:label "Cross Reference Pattern" ;
-    guidance:hasDocumentationType guidance:ValidationDocumentation ;
-    guidance:sourceContext "Documentation Links" ;
-    guidance:targetContext "Navigation Structure" ;
-    guidance:complexity "2"^^xsd:integer ;
-    rdfs:comment """Cross-reference requirements:
-1. All references must be bidirectional
-2. References must use relative paths
-3. References must include version context
-4. Broken references must be detected
-5. References must map to ontology relationships""" .
 
 # Authentication Pattern Guidance
 guidance:AuthenticationPatternGuidance rdf:type owl:NamedIndividual ;
@@ -1009,3 +1089,171 @@ guidance:SessionLogPattern
             rdf:_6 "Update relevant cross-references"
         ]
     ] .
+
+# Prefix Management Rules and Structure
+guidance:PrefixRule rdf:type owl:Class ;
+    rdfs:label "Prefix Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for prefix management and usage" .
+
+guidance:PrefixType rdf:type owl:Class ;
+    rdfs:label "Prefix Type" ;
+    rdfs:comment "Type of prefix (external or local)" .
+
+guidance:ExternalPrefix rdf:type guidance:PrefixType ;
+    rdfs:label "External Prefix" ;
+    rdfs:comment "Prefix for external standard ontologies" .
+
+guidance:LocalPrefix rdf:type guidance:PrefixType ;
+    rdfs:label "Local Prefix" ;
+    rdfs:comment "Prefix for local project ontologies" .
+
+guidance:hasPrefixType rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Prefix Type" ;
+    rdfs:domain guidance:PrefixRule ;
+    rdfs:range guidance:PrefixType ;
+    rdfs:comment "Links a prefix rule to its type" .
+
+guidance:requiresCentralization rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Centralization" ;
+    rdfs:domain guidance:PrefixRule ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether the prefix must be centrally managed" .
+
+guidance:hasDocumentationRequirement rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Documentation Requirement" ;
+    rdfs:domain guidance:PrefixRule ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether documentation is required for the prefix" .
+
+# Prefix Management Rules
+guidance:StandardPrefixRule rdf:type guidance:PrefixRule ;
+    rdfs:label "Standard Prefix Rule" ;
+    rdfs:comment "Use standard prefixes for external ontologies" ;
+    guidance:hasPrefixType guidance:ExternalPrefix ;
+    guidance:hasDocumentationRequirement true ;
+    guidance:requiresCentralization true .
+
+guidance:LocalPrefixRule rdf:type guidance:PrefixRule ;
+    rdfs:label "Local Prefix Rule" ;
+    rdfs:comment "Use relative paths for local ontologies" ;
+    guidance:hasPrefixType guidance:LocalPrefix ;
+    guidance:hasDocumentationRequirement true ;
+    guidance:requiresCentralization true .
+
+guidance:PrefixDocumentationRule rdf:type guidance:PrefixRule ;
+    rdfs:label "Prefix Documentation Rule" ;
+    rdfs:comment "Document prefix meanings and sources" ;
+    guidance:hasDocumentationRequirement true .
+
+guidance:PrefixConsistencyRule rdf:type guidance:PrefixRule ;
+    rdfs:label "Prefix Consistency Rule" ;
+    rdfs:comment "Maintain consistent prefix naming across ontologies" ;
+    guidance:requiresCentralization true .
+
+guidance:CentralizedPrefixRule rdf:type guidance:PrefixRule ;
+    rdfs:label "Centralized Prefix Rule" ;
+    rdfs:comment "Use prefix_management.ttl for centralized prefix definitions" ;
+    guidance:requiresOntology <./prefix_management> ;
+    guidance:requiresCentralization true .
+
+# Updated Prefix Management Guidance Instance
+guidance:prefixManagementGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:PrefixManagementPattern ;
+    rdfs:label "Prefix Management Guidance" ;
+    guidance:sourceContext "Ontology Organization" ;
+    guidance:targetContext "Prefix Standardization" ;
+    guidance:complexity "1"^^xsd:integer ;
+    guidance:hasRule guidance:StandardPrefixRule ;
+    guidance:hasRule guidance:LocalPrefixRule ;
+    guidance:hasRule guidance:PrefixDocumentationRule ;
+    guidance:hasRule guidance:PrefixConsistencyRule ;
+    guidance:hasRule guidance:CentralizedPrefixRule .
+
+# SHACL Validation for Prefix Rules
+guidance:PrefixRuleShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:PrefixRule ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Prefix rule must have a label"
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Prefix rule must have a description"
+    ] ;
+    sh:property [
+        sh:path guidance:requiresCentralization ;
+        sh:minCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Must specify if centralization is required"
+    ] ;
+    sh:property [
+        sh:path guidance:hasDocumentationRequirement ;
+        sh:minCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Must specify if documentation is required"
+    ] .
+
+# Documentation Structure Rules
+guidance:DocumentationRule rdf:type owl:Class ;
+    rdfs:label "Documentation Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for documentation structure and organization" .
+
+guidance:RootMappingRule rdf:type guidance:DocumentationRule ;
+    rdfs:label "Root Mapping Rule" ;
+    rdfs:comment "Root directory must map to core ontology" .
+
+guidance:SubdirectoryMappingRule rdf:type guidance:DocumentationRule ;
+    rdfs:label "Subdirectory Mapping Rule" ;
+    rdfs:comment "Subdirectories must map to sub-ontologies" .
+
+guidance:VersionInfoRule rdf:type guidance:DocumentationRule ;
+    rdfs:label "Version Info Rule" ;
+    rdfs:comment "Version information must be in frontmatter" .
+
+# Cross-Reference Rules
+guidance:CrossReferenceRule rdf:type owl:Class ;
+    rdfs:label "Cross Reference Rule" ;
+    rdfs:subClassOf guidance:Rule ;
+    rdfs:comment "Rule for cross-reference management" .
+
+guidance:BidirectionalRule rdf:type guidance:CrossReferenceRule ;
+    rdfs:label "Bidirectional Rule" ;
+    rdfs:comment "All references must be bidirectional" .
+
+guidance:RelativePathRule rdf:type guidance:CrossReferenceRule ;
+    rdfs:label "Relative Path Rule" ;
+    rdfs:comment "References must use relative paths" .
+
+guidance:VersionContextRule rdf:type guidance:CrossReferenceRule ;
+    rdfs:label "Version Context Rule" ;
+    rdfs:comment "References must include version context" .
+
+# Properties
+guidance:hasDocRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Documentation Rule" ;
+    rdfs:domain guidance:DocumentationPattern ;
+    rdfs:range guidance:DocumentationRule ;
+    rdfs:comment "Links pattern to documentation rules" .
+
+guidance:hasCrossRefRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Cross Reference Rule" ;
+    rdfs:domain guidance:CrossReferencePattern ;
+    rdfs:range guidance:CrossReferenceRule ;
+    rdfs:comment "Links pattern to cross-reference rules" .
+
+# Update Pattern Instances
+guidance:documentationGuidance
+    guidance:hasDocRule guidance:RootMappingRule ;
+    guidance:hasDocRule guidance:SubdirectoryMappingRule ;
+    guidance:hasDocRule guidance:VersionInfoRule .
+
+guidance:crossReferenceGuidance
+    guidance:hasCrossRefRule guidance:BidirectionalRule ;
+    guidance:hasCrossRefRule guidance:RelativePathRule ;
+    guidance:hasCrossRefRule guidance:VersionContextRule .
