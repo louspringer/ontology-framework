@@ -1365,3 +1365,332 @@ guidance:PRManagementShape rdf:type sh:NodeShape ;
         sh:minCount 1 ;
         sh:message "PR Management Pattern must have a review process"
     ] .
+
+# PR Creation Procedure Pattern
+guidance:PRCreationProcedure rdf:type owl:Class ;
+    rdfs:label "PR Creation Procedure" ;
+    rdfs:subClassOf guidance:PRManagementPattern ;
+    rdfs:comment "Detailed procedure for creating pull requests" .
+
+guidance:Step rdf:type owl:Class ;
+    rdfs:label "Procedure Step" ;
+    rdfs:comment "A step in a procedure" .
+
+guidance:hasStep rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Step" ;
+    rdfs:domain guidance:PRCreationProcedure ;
+    rdfs:range guidance:Step ;
+    rdfs:comment "Links a procedure to its steps" .
+
+guidance:stepNumber rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Number" ;
+    rdfs:domain guidance:Step ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Order number of the step" .
+
+guidance:stepDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Description" ;
+    rdfs:domain guidance:Step ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Description of what the step does" .
+
+guidance:stepValidation rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Validation" ;
+    rdfs:domain guidance:Step ;
+    rdfs:range xsd:string ;
+    rdfs:comment "How to validate this step was completed correctly" .
+
+# PR Creation Procedure Instance
+guidance:standardPRCreationProcedure rdf:type guidance:PRCreationProcedure ;
+    rdfs:label "Standard PR Creation Procedure" ;
+    guidance:sourceContext "PR Creation" ;
+    guidance:targetContext "GitHub Integration" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment "Standard procedure for creating pull requests" ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "1"^^xsd:integer ;
+        rdfs:label "Check Ontology Changes" ;
+        guidance:stepDescription "Review and validate all ontology file changes" ;
+        guidance:stepValidation "Run python tools/validate_guidance.py"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "2"^^xsd:integer ;
+        rdfs:label "Update Version" ;
+        guidance:stepDescription "Update ontology version if structural changes were made" ;
+        guidance:stepValidation "Check dc:version in ontology header"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "3"^^xsd:integer ;
+        rdfs:label "Add Traceability Headers" ;
+        guidance:stepDescription "Ensure all modified files have proper traceability headers" ;
+        guidance:stepValidation "Check for Ontology, Implements, Requirement, Guidance, and Description headers"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "4"^^xsd:integer ;
+        rdfs:label "Create PR Description" ;
+        guidance:stepDescription "Create pr_description.md with proper frontmatter and sections" ;
+        guidance:stepValidation "Verify frontmatter contains ontology, implements, requirement, guidance, and description"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "5"^^xsd:integer ;
+        rdfs:label "Stage Changes" ;
+        guidance:stepDescription "Stage all related changes including submodule updates" ;
+        guidance:stepValidation "git status shows no unstaged changes"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "6"^^xsd:integer ;
+        rdfs:label "Commit Changes" ;
+        guidance:stepDescription "Commit changes with proper type and scope" ;
+        guidance:stepValidation "Commit message follows type(scope): description format"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "7"^^xsd:integer ;
+        rdfs:label "Push Changes" ;
+        guidance:stepDescription "Push changes to feature branch" ;
+        guidance:stepValidation "git push succeeds with no errors"
+    ] ;
+    guidance:hasStep [
+        rdf:type guidance:Step ;
+        guidance:stepNumber "8"^^xsd:integer ;
+        rdfs:label "Create PR" ;
+        guidance:stepDescription "Create PR using gh cli or GitHub interface" ;
+        guidance:stepValidation "PR URL is generated and accessible"
+    ] .
+
+# SHACL Validation for PR Creation Procedure
+guidance:PRCreationProcedureShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:PRCreationProcedure ;
+    sh:property [
+        sh:path guidance:hasStep ;
+        sh:minCount 8 ;
+        sh:message "PR Creation Procedure must have all required steps"
+    ] ;
+    sh:property [
+        sh:path guidance:sourceContext ;
+        sh:minCount 1 ;
+        sh:message "PR Creation Procedure must specify source context"
+    ] ;
+    sh:property [
+        sh:path guidance:targetContext ;
+        sh:minCount 1 ;
+        sh:message "PR Creation Procedure must specify target context"
+    ] .
+
+# Step Validation Shape
+guidance:StepShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:Step ;
+    sh:property [
+        sh:path guidance:stepNumber ;
+        sh:minCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:message "Step must have a number"
+    ] ;
+    sh:property [
+        sh:path guidance:stepDescription ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Step must have a description"
+    ] ;
+    sh:property [
+        sh:path guidance:stepValidation ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Step must have validation criteria"
+    ] .
+
+# GitHub Integration Pattern Classes
+guidance:GitHubPattern rdf:type owl:Class ;
+    rdfs:label "GitHub Integration Pattern" ;
+    rdfs:subClassOf guidance:BestPractice ;
+    rdfs:comment "Pattern for managing GitHub-specific artifacts and workflows" .
+
+guidance:DirectoryStructure rdf:type owl:Class ;
+    rdfs:label "Directory Structure" ;
+    rdfs:subClassOf guidance:GitHubPattern ;
+    rdfs:comment "Standard directory structure for GitHub repositories" .
+
+guidance:FileNamingConvention rdf:type owl:Class ;
+    rdfs:label "File Naming Convention" ;
+    rdfs:subClassOf guidance:GitHubPattern ;
+    rdfs:comment "Conventions for naming files in GitHub repositories" .
+
+guidance:GitignorePattern rdf:type owl:Class ;
+    rdfs:label "Gitignore Pattern" ;
+    rdfs:subClassOf guidance:GitHubPattern ;
+    rdfs:comment "Patterns for specifying ignored files in Git" .
+
+guidance:TemplateLocation rdf:type owl:Class ;
+    rdfs:label "Template Location" ;
+    rdfs:subClassOf guidance:GitHubPattern ;
+    rdfs:comment "Standard locations for GitHub template files" .
+
+# GitHub Integration Properties
+guidance:hasDirectoryStructure rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Directory Structure" ;
+    rdfs:domain guidance:GitHubPattern ;
+    rdfs:range guidance:DirectoryStructure ;
+    rdfs:comment "Links GitHub pattern to its directory structure" .
+
+guidance:hasNamingConvention rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Naming Convention" ;
+    rdfs:domain guidance:GitHubPattern ;
+    rdfs:range guidance:FileNamingConvention ;
+    rdfs:comment "Links GitHub pattern to its file naming conventions" .
+
+guidance:hasGitignoreRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Gitignore Rule" ;
+    rdfs:domain guidance:GitHubPattern ;
+    rdfs:range guidance:GitignorePattern ;
+    rdfs:comment "Links GitHub pattern to its gitignore rules" .
+
+guidance:hasTemplateLocation rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Template Location" ;
+    rdfs:domain guidance:GitHubPattern ;
+    rdfs:range guidance:TemplateLocation ;
+    rdfs:comment "Links GitHub pattern to its template locations" .
+
+guidance:directoryPath rdf:type owl:DatatypeProperty ;
+    rdfs:label "Directory Path" ;
+    rdfs:domain guidance:DirectoryStructure ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies the path for a directory" .
+
+guidance:filePattern rdf:type owl:DatatypeProperty ;
+    rdfs:label "File Pattern" ;
+    rdfs:domain owl:Class ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies a file naming or matching pattern" .
+
+guidance:templatePath rdf:type owl:DatatypeProperty ;
+    rdfs:label "Template Path" ;
+    rdfs:domain guidance:TemplateLocation ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Specifies the path for a template file" .
+
+# GitHub Integration Instance
+guidance:githubIntegrationGuidance rdf:type owl:NamedIndividual ;
+    rdf:type guidance:GitHubPattern ;
+    rdfs:label "GitHub Integration Guidance" ;
+    guidance:sourceContext "GitHub Repository" ;
+    guidance:targetContext "Project Organization" ;
+    guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Best practices for GitHub integration:
+1. Follow standard directory structure
+2. Use consistent file naming conventions
+3. Maintain appropriate gitignore patterns
+4. Place templates in standard locations
+5. Keep documentation up to date
+6. Follow PR and branch guidelines
+7. Ensure CI/CD integration""" ;
+    guidance:hasDirectoryStructure [
+        rdf:type guidance:DirectoryStructure ;
+        rdfs:label "Standard Directory Structure" ;
+        guidance:directoryPath ".github/" ;
+        guidance:directoryPath ".github/ISSUE_TEMPLATE/" ;
+        guidance:directoryPath ".github/PULL_REQUEST_TEMPLATE/" ;
+        guidance:directoryPath ".github/workflows/" ;
+        guidance:directoryPath "docs/" ;
+        guidance:directoryPath "tests/" ;
+        guidance:directoryPath ".cursor/rules/"
+    ] ;
+    guidance:hasNamingConvention [
+        rdf:type guidance:FileNamingConvention ;
+        rdfs:label "File Naming Conventions" ;
+        guidance:filePattern "*.md" ;
+        guidance:filePattern "*.ttl" ;
+        guidance:filePattern "*.py" ;
+        guidance:filePattern "*.yml" ;
+        guidance:filePattern "*.yaml" ;
+        guidance:filePattern "*.json"
+    ] ;
+    guidance:hasGitignoreRule [
+        rdf:type guidance:GitignorePattern ;
+        rdfs:label "Standard Gitignore Rules" ;
+        guidance:filePattern "*.pyc" ;
+        guidance:filePattern "__pycache__/" ;
+        guidance:filePattern ".env" ;
+        guidance:filePattern ".venv/" ;
+        guidance:filePattern "*.log" ;
+        guidance:filePattern ".DS_Store" ;
+        guidance:filePattern "node_modules/"
+    ] ;
+    guidance:hasTemplateLocation [
+        rdf:type guidance:TemplateLocation ;
+        rdfs:label "Template Locations" ;
+        guidance:templatePath ".github/ISSUE_TEMPLATE/bug-report.md" ;
+        guidance:templatePath ".github/ISSUE_TEMPLATE/feature-request.md" ;
+        guidance:templatePath ".github/ISSUE_TEMPLATE/guidance-enhancement.md" ;
+        guidance:templatePath ".github/PULL_REQUEST_TEMPLATE/default.md" ;
+        guidance:templatePath ".github/PULL_REQUEST_TEMPLATE/test-coverage-enhancement.md"
+    ] .
+
+# SHACL Validation for GitHub Integration
+guidance:GitHubPatternShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:GitHubPattern ;
+    sh:property [
+        sh:path guidance:hasDirectoryStructure ;
+        sh:minCount 1 ;
+        sh:message "GitHub Pattern must specify directory structure"
+    ] ;
+    sh:property [
+        sh:path guidance:hasNamingConvention ;
+        sh:minCount 1 ;
+        sh:message "GitHub Pattern must specify naming conventions"
+    ] ;
+    sh:property [
+        sh:path guidance:hasGitignoreRule ;
+        sh:minCount 1 ;
+        sh:message "GitHub Pattern must specify gitignore rules"
+    ] ;
+    sh:property [
+        sh:path guidance:hasTemplateLocation ;
+        sh:minCount 1 ;
+        sh:message "GitHub Pattern must specify template locations"
+    ] .
+
+# Directory Structure Shape
+guidance:DirectoryStructureShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:DirectoryStructure ;
+    sh:property [
+        sh:path guidance:directoryPath ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Directory structure must specify paths"
+    ] .
+
+# File Naming Convention Shape
+guidance:FileNamingConventionShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:FileNamingConvention ;
+    sh:property [
+        sh:path guidance:filePattern ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "File naming convention must specify patterns"
+    ] .
+
+# Gitignore Pattern Shape
+guidance:GitignorePatternShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:GitignorePattern ;
+    sh:property [
+        sh:path guidance:filePattern ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Gitignore pattern must specify patterns"
+    ] .
+
+# Template Location Shape
+guidance:TemplateLocationShape rdf:type sh:NodeShape ;
+    sh:targetClass guidance:TemplateLocation ;
+    sh:property [
+        sh:path guidance:templatePath ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Template location must specify paths"
+    ] .
