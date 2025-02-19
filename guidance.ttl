@@ -1258,114 +1258,93 @@ guidance:crossReferenceGuidance
     guidance:hasCrossRefRule guidance:RelativePathRule ;
     guidance:hasCrossRefRule guidance:VersionContextRule .
 
-# PR Management Pattern
+# PR Management Pattern Classes
 guidance:PRManagementPattern rdf:type owl:Class ;
-    rdfs:label "Pull Request Management Pattern" ;
+    rdfs:label "PR Management Pattern" ;
     rdfs:subClassOf guidance:BestPractice ;
     rdfs:comment "Pattern for managing pull requests and GitHub integration" .
 
 guidance:PRTemplate rdf:type owl:Class ;
     rdfs:label "PR Template" ;
     rdfs:subClassOf guidance:PRManagementPattern ;
-    rdfs:comment "Template structure for pull requests" .
+    rdfs:comment "Template for pull request descriptions and requirements" .
 
 guidance:BranchStrategy rdf:type owl:Class ;
     rdfs:label "Branch Strategy" ;
     rdfs:subClassOf guidance:PRManagementPattern ;
-    rdfs:comment "Strategy for branch management and naming" .
+    rdfs:comment "Strategy for branch naming and management" .
 
 guidance:ReviewProcess rdf:type owl:Class ;
     rdfs:label "Review Process" ;
     rdfs:subClassOf guidance:PRManagementPattern ;
-    rdfs:comment "Process for code review and approval" .
+    rdfs:comment "Process for reviewing and approving pull requests" .
 
-# PR Properties
+# PR Management Properties
 guidance:hasTemplate rdf:type owl:ObjectProperty ;
     rdfs:label "Has Template" ;
     rdfs:domain guidance:PRManagementPattern ;
     rdfs:range guidance:PRTemplate ;
-    rdfs:comment "Links pattern to PR templates" .
+    rdfs:comment "Links PR management pattern to its template" .
 
 guidance:hasBranchStrategy rdf:type owl:ObjectProperty ;
     rdfs:label "Has Branch Strategy" ;
     rdfs:domain guidance:PRManagementPattern ;
     rdfs:range guidance:BranchStrategy ;
-    rdfs:comment "Links pattern to branch strategy" .
+    rdfs:comment "Links PR management pattern to its branch strategy" .
 
 guidance:hasReviewProcess rdf:type owl:ObjectProperty ;
     rdfs:label "Has Review Process" ;
     rdfs:domain guidance:PRManagementPattern ;
     rdfs:range guidance:ReviewProcess ;
-    rdfs:comment "Links pattern to review process" .
+    rdfs:comment "Links PR management pattern to its review process" .
 
 guidance:requiresOntologyHeader rdf:type owl:DatatypeProperty ;
     rdfs:label "Requires Ontology Header" ;
     rdfs:domain guidance:PRTemplate ;
     rdfs:range xsd:boolean ;
-    rdfs:comment "Whether the PR requires ontology headers" .
+    rdfs:comment "Indicates if PR template requires ontology header information" .
 
 guidance:requiresTestCoverage rdf:type owl:DatatypeProperty ;
     rdfs:label "Requires Test Coverage" ;
     rdfs:domain guidance:PRTemplate ;
-    rdfs:range xsd:decimal ;
-    rdfs:comment "Required test coverage percentage" .
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Indicates if PR template requires test coverage information" .
 
-guidance:branchNamingFormat rdf:type owl:DatatypeProperty ;
-    rdfs:label "Branch Naming Format" ;
+guidance:branchNameFormat rdf:type owl:DatatypeProperty ;
+    rdfs:label "Branch Name Format" ;
     rdfs:domain guidance:BranchStrategy ;
     rdfs:range xsd:string ;
-    rdfs:comment "Format for branch names" .
-
-guidance:requiredReviewers rdf:type owl:DatatypeProperty ;
-    rdfs:label "Required Reviewers" ;
-    rdfs:domain guidance:ReviewProcess ;
-    rdfs:range xsd:integer ;
-    rdfs:comment "Number of required reviewers" .
-
-# PR Rules
-guidance:PRTemplateRule rdf:type guidance:Rule ;
-    rdfs:label "PR Template Rule" ;
-    rdfs:comment """PR templates must include:
-1. Ontology headers with traceability
-2. Overview section
-3. Changes section
-4. Dependencies section
-5. Testing instructions""" .
-
-guidance:BranchNamingRule rdf:type guidance:Rule ;
-    rdfs:label "Branch Naming Rule" ;
-    rdfs:comment """Branch names must follow format:
-1. feature/issue-{number}-{description}
-2. fix/issue-{number}-{description}
-3. docs/issue-{number}-{description}""" .
-
-guidance:ReviewProcessRule rdf:type guidance:Rule ;
-    rdfs:label "Review Process Rule" ;
-    rdfs:comment """Review process must include:
-1. Code review by at least one maintainer
-2. Test coverage verification
-3. Ontology validation
-4. Documentation review""" .
+    rdfs:comment "Specifies the format for branch names" .
 
 # PR Management Instance
 guidance:prManagementGuidance rdf:type owl:NamedIndividual ;
     rdf:type guidance:PRManagementPattern ;
     rdfs:label "PR Management Guidance" ;
-    guidance:sourceContext "GitHub Pull Requests" ;
-    guidance:targetContext "Ontology Development" ;
+    guidance:sourceContext "GitHub Integration" ;
+    guidance:targetContext "Project Management" ;
     guidance:complexity "2"^^xsd:integer ;
+    rdfs:comment """Best practices for PR management:
+1. Use feature branches with format: feature/issue-{number}-{description}
+2. Include ontology header updates in PR description
+3. Maintain test coverage requirements
+4. Follow review process guidelines
+5. Update documentation as needed
+6. Ensure ontology consistency""" ;
     guidance:hasTemplate [
         rdf:type guidance:PRTemplate ;
+        rdfs:label "Standard PR Template" ;
         guidance:requiresOntologyHeader "true"^^xsd:boolean ;
-        guidance:requiresTestCoverage "80.0"^^xsd:decimal
+        guidance:requiresTestCoverage "true"^^xsd:boolean
     ] ;
     guidance:hasBranchStrategy [
         rdf:type guidance:BranchStrategy ;
-        guidance:branchNamingFormat "type/issue-number-description"
+        rdfs:label "Feature Branch Strategy" ;
+        guidance:branchNameFormat "feature/issue-{number}-{description}"
     ] ;
     guidance:hasReviewProcess [
         rdf:type guidance:ReviewProcess ;
-        guidance:requiredReviewers "1"^^xsd:integer
+        rdfs:label "Standard Review Process" ;
+        rdfs:comment "Requires one approval and passing tests"
     ] .
 
 # SHACL Validation for PR Management
