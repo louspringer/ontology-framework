@@ -14,9 +14,9 @@
 
 guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dc:title "LLM Guidance Meta-Ontology" ;
-    dc:version "1.2" ;
+    dc:version "1.3" ;
     dct:created "2024-01-20"^^xsd:date ;
-    dct:modified "2024-02-09"^^xsd:date ;
+    dct:modified "2024-03-20"^^xsd:date ;
     dct:publisher "Ontology Framework Project" ;
     dct:license <http://opensource.org/licenses/MIT> ;
     dct:description "Ontology for managing LLM guidance and interdisciplinary collaboration patterns" ;
@@ -25,7 +25,7 @@ guidance:LLMGuidanceOntology rdf:type owl:Ontology ;
     dct:conformsTo <http://www.w3.org/2002/07/owl> ;
     dct:requires <./metameta> ;
     dct:audience "AI researchers, ontology engineers, and domain experts" ;
-    rdfs:comment "Updated to include guidance for Cursor rules and tool usage." ;
+    rdfs:comment "Updated to include PR management and GitHub integration patterns." ;
     owl:imports <./metameta> .
 
 # Core Classes
@@ -1386,5 +1386,3 @@ guidance:PRManagementShape rdf:type sh:NodeShape ;
         sh:minCount 1 ;
         sh:message "PR Management Pattern must have a review process"
     ] .
-# PR Management Pattern
-# PR Management Pattern
