@@ -1,10 +1,8 @@
-import streamlit as st
 import altair as alt
 import pandas as pd
-
+import streamlit as st
 from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
-from snowflake.snowpark import DataFrame
 
 st.set_page_config(layout="wide")
 st.sidebar.image("assets/bear_snowflake_hello.png")
@@ -28,7 +26,7 @@ session = get_active_session()
 def load_document_list():
     """Load and cache the list of available documents from Snowflake."""
     docs_list = session.sql(
-        "SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE"
+        "SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE",
     ).to_pandas()
     return docs_list["FILENAME"].tolist()
 
@@ -44,7 +42,7 @@ def extract_document_content(filename):
     """Load and cache document content from Snowflake."""
     snowflake_session = get_snowflake_session()  # Get cached session
     doc_extract = snowflake_session.sql(
-        f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT ('@INPUT_STAGE','{filename}') as Extracted_Data"
+        f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT ('@INPUT_STAGE','{filename}') as Extracted_Data",
     )
     content_list = doc_extract.select(doc_extract["EXTRACTED_DATA"]).collect()
     return " ".join(str(row["EXTRACTED_DATA"]) for row in content_list)
@@ -99,7 +97,7 @@ def forecast():
 
         # Generate forecast values based on the user selected period
         df_forecast = session.sql(
-            f"call d4b_model!FORECAST(FORECASTING_PERIODS => {forecasting_period})"
+            f"call d4b_model!FORECAST(FORECASTING_PERIODS => {forecasting_period})",
         ).collect()
         df_forecast = pd.DataFrame(df_forecast)
 
@@ -115,7 +113,9 @@ def forecast():
 
         # Unpivot our dataframe from wide to long format so it works better with altair
         df = pd.DataFrame(df).melt(
-            "TS", var_name="Value Type", value_name="Number of Calls"
+            "TS",
+            var_name="Value Type",
+            value_name="Number of Calls",
         )
 
         line_chart = (
@@ -137,7 +137,8 @@ def translate():
         col1, col2 = st.columns(2)
         with col1:
             from_language = st.selectbox(
-                "From", dict(sorted(supported_languages.items()))
+                "From",
+                dict(sorted(supported_languages.items())),
             )
         with col2:
             to_language = st.selectbox("To", dict(sorted(supported_languages.items())))
@@ -151,7 +152,7 @@ def translate():
             entered_text = entered_text.replace("'", "\\'")
             cortex_response = (
                 session.sql(
-                    f"select snowflake.cortex.translate('{entered_text}','{supported_languages[from_language]}','{supported_languages[to_language]}') as response"
+                    f"select snowflake.cortex.translate('{entered_text}','{supported_languages[from_language]}','{supported_languages[to_language]}') as response",
                 )
                 .to_pandas()
                 .iloc[0]["RESPONSE"]
@@ -173,10 +174,10 @@ def sentiment():
         entered_transcript = entered_transcript.replace("'", "\\'")
         if entered_transcript:
             cortex_response = session.sql(
-                f"select snowflake.cortex.sentiment('{entered_transcript}') as sentiment"
+                f"select snowflake.cortex.sentiment('{entered_transcript}') as sentiment",
             ).to_pandas()
             st.caption(
-                "Score is between -1 and 1; -1 = Most negative, 1 = Positive, 0 = Neutral"
+                "Score is between -1 and 1; -1 = Most negative, 1 = Positive, 0 = Neutral",
             )
             # st.write(cortex_response)
             st.dataframe(cortex_response, hide_index=True, width=100)
@@ -206,7 +207,10 @@ def latest_call_summary():
 
         st.subheader("Aggregated Call Sentiments")
         st.bar_chart(
-            df_call_sentiments, x="Sentiment", y="Total Calls", use_container_width=True
+            df_call_sentiments,
+            x="Sentiment",
+            y="Total Calls",
+            use_container_width=True,
         )
 
 
@@ -224,7 +228,7 @@ def summary():
         entered_text = entered_text.replace("'", "\\'")
         if entered_text:
             cortex_response = session.sql(
-                f"select snowflake.cortex.summarize('{entered_text}') as Answer"
+                f"select snowflake.cortex.summarize('{entered_text}') as Answer",
             ).to_pandas()
             st.caption("Summarized data:")
             # df_string = cortex_response.to_string(index=False)
@@ -274,7 +278,7 @@ def emailcomplete():
 
         if st.button("Generate E-Mail"):
             cortex_response = session.sql(
-                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer"
+                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer",
             )
             st.caption("Customer E-Mail:")
             st.dataframe(cortex_response, hide_index=True, width=1100)
@@ -283,7 +287,7 @@ def emailcomplete():
 def pdocument():
     with st.container():
         st.subheader(
-            "This Demo Shows the SNOWFLAKE.CORTEX.PARSE_DOCUMENT Function that Extract Data From PDF & Text Files"
+            "This Demo Shows the SNOWFLAKE.CORTEX.PARSE_DOCUMENT Function that Extract Data From PDF & Text Files",
         )
         selected_file = st.selectbox(
             label="Please Select a Financial Report to Extract:",
@@ -337,7 +341,7 @@ def askaquestion():
 
         if st.button("Oh Great & Powerful LLM, Please provide Me a Wise answer!"):
             cortex_response = session.sql(
-                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer"
+                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer",
             )
             st.caption("Answer:")
             st.dataframe(cortex_response, hide_index=True, width=1100)
@@ -356,7 +360,7 @@ def classify():
 
         if entered_text:
             cortex_response = session.sql(
-                f"select snowflake.cortex.classify_text('{entered_text}',['Refund','Exchange','No Category']) as Answer"
+                f"select snowflake.cortex.classify_text('{entered_text}',['Refund','Exchange','No Category']) as Answer",
             )
             st.caption("Classified data:")
             st.dataframe(cortex_response, hide_index=True, width=200)
@@ -425,7 +429,7 @@ def codeconvert():
 
         if st.button("Run Conversion"):
             cortex_response = session.sql(
-                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer"
+                f"select snowflake.cortex.complete('{selected_model}',concat('[INST]','{model_instruct}','{entered_code}','[/INST]')) as Answer",
             )
             st.caption("Converted Code:")
             st.dataframe(cortex_response, hide_index=True, width=1100)

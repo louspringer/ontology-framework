@@ -1,5 +1,6 @@
-import rdflib
 import os
+
+import rdflib
 
 # List of ontology files to validate
 ontology_files = [

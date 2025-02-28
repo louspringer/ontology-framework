@@ -34,7 +34,7 @@ mu:PhilosophicalMu rdf:type owl:Class ;
 
 mu:HackerMu rdf:type owl:Class ;
     rdfs:label "Hacker Mu" ;
-    rdfs:comment "Hacker culture representations of mu (|\/||_|, |\|1|_|)" ;
+    rdfs:comment "Hacker culture representations of mu (&#124;/&#124;&#124;_&#124;, &#124;\\&#124;1&#124;_&#124;)" ;
     rdfs:subClassOf mu:MuConcept .
 
 mu:ManagementMu rdf:type owl:Class ;
@@ -89,15 +89,15 @@ mu:HexZero rdf:type mu:TechnicalMu ;
     mu:hasRepresentation "0x0" ;
     mu:hasPattern "0x0" .
 
-mu:L33tMu rdf:type mu:HackerMu ;
+mu:L33tMu a mu:HackerMu ;
     rdfs:label "L33t Mu" ;
-    mu:hasRepresentation "|\/||_|" ;
-    mu:hasPattern "\\|\\\\/\\|\\|_\\|" .
+    mu:hasRepresentation """"|/||_|""" ;
+    mu:hasPattern """"|/||_|""" .
 
-mu:L33tNull rdf:type mu:HackerMu ;
+mu:L33tNull a mu:HackerMu ;
     rdfs:label "L33t Null" ;
-    mu:hasRepresentation "|\|1|_|" ;
-    mu:hasPattern "\\|\\\\|1\\|_\\|" .
+    mu:hasRepresentation """|\\|1|_|""" ;
+    mu:hasPattern """|\\|1|_|""" .
 
 mu:Muney rdf:type mu:HackerMu ;
     rdfs:label "Muney" ;

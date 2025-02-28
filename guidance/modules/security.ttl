@@ -1,0 +1,105 @@
+@prefix : <./security#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix core: <../core#> .
+@prefix model: <../model#> .
+@prefix guidance: <../../guidance#> .
+
+# Security Module Definition
+:SecurityGuidanceModule rdf:type owl:Ontology ;
+    rdfs:label "Security Guidance Module" ;
+    rdfs:comment "Security patterns and best practices for guidance ontology" ;
+    dc:title "Security Guidance Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
+    owl:imports <core.ttl> ;
+    owl:imports <model.ttl> ;
+    owl:imports <validation.ttl> ;
+    owl:imports <collaboration.ttl> .
+
+# Security Pattern Classes
+:SecurityPattern rdf:type owl:Class ;
+    rdfs:label "SecurityPattern" ;
+    rdfs:comment "A pattern for implementing security features and best practices" ;
+    rdfs:subClassOf core:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
+:AuthenticationPattern rdf:type owl:Class ;
+    rdfs:label "AuthenticationPattern" ;
+    rdfs:comment "A pattern for implementing authentication mechanisms" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:KeyManagementPattern rdf:type owl:Class ;
+    rdfs:label "Key Management Pattern" ;
+    rdfs:comment "A pattern for managing cryptographic keys" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+# Security Properties
+:implements rdf:type owl:ObjectProperty ;
+    rdfs:label "Implements" ;
+    rdfs:comment "Links pattern to implemented solution" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range owl:Thing .
+
+:requires rdf:type owl:ObjectProperty ;
+    rdfs:label "Requires" ;
+    rdfs:comment "Links pattern to required dependencies" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range :SecurityPattern .
+
+:recommends rdf:type owl:ObjectProperty ;
+    rdfs:label "Recommends" ;
+    rdfs:comment "Links pattern to recommended practices" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range :SecurityPattern .
+
+# Security Pattern Instances
+:RSAKeyPairAuth rdf:type owl:NamedIndividual ;
+    rdf:type :AuthenticationPattern ;
+    rdfs:label "RSA Key Pair Authentication" ;
+    rdfs:comment "Authentication using RSA key pairs" ;
+    :requires :SecureKeyStorage ;
+    :recommends :KeyRotation .
+
+:SecureKeyStorage rdf:type owl:NamedIndividual ;
+    rdf:type :KeyManagementPattern ;
+    rdfs:label "Secure Key Storage" ;
+    rdfs:comment "Pattern for securely storing cryptographic keys" ;
+    :recommends :KeyEncryption .
+
+:KeyRotation rdf:type owl:NamedIndividual ;
+    rdf:type :KeyManagementPattern ;
+    rdfs:label "Key Rotation" ;
+    rdfs:comment "Pattern for regularly rotating cryptographic keys" ;
+    :requires :SecureKeyStorage .
+
+:KeyEncryption rdf:type owl:NamedIndividual ;
+    rdf:type :KeyManagementPattern ;
+    rdfs:label "Key Encryption" ;
+    rdfs:comment "Pattern for encrypting stored keys" .
+
+# Security Best Practices
+:SecurityBestPractices rdf:type owl:NamedIndividual ;
+    rdf:type core:BestPractice ;
+    rdfs:label "Security Best Practices" ;
+    rdfs:comment """Collection of security best practices:
+    1. Store private keys with 600 permissions
+    2. Never commit secrets to VCS
+    3. Use PKCS#8 format for private keys
+    4. Use environment variables for sensitive data
+    5. Implement regular key rotation""" .
+
+# Legacy Support
+:hasLegacySecurityConcept rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Legacy Security Concept" ;
+    rdfs:comment "Links modular security concept to legacy guidance" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range guidance:LLMGuidanceOntology . 

@@ -1,0 +1,116 @@
+@prefix : <./guidance_test#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix test: <./guidance_test#> .
+@prefix guidance: <../guidance#> .
+@prefix core: <../guidance/modules/core#> .
+@prefix model: <../guidance/modules/model#> .
+@prefix security: <../guidance/modules/security#> .
+@prefix validation: <../guidance/modules/validation#> .
+@prefix collaboration: <../guidance/modules/collaboration#> .
+@prefix chatbot: <../../chatbot#> .
+
+# Test Ontology Definition
+:GuidanceTestSuite rdf:type owl:Ontology ;
+    rdfs:label "Guidance Test Suite" ;
+    rdfs:comment "Test suite for validating modular guidance structure" ;
+    dc:title "Guidance Test Suite" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
+    owl:imports <../guidance.ttl> ;
+    owl:imports <../../chatbot.ttl> .
+
+# Module Registry Tests
+:ModuleRegistryShape a sh:NodeShape ;
+    sh:targetClass guidance:ModuleRegistry ;
+    rdfs:label "Module Registry Shape" ;
+    rdfs:comment "Validates module registry structure" ;
+    sh:property [
+        sh:path guidance:registeredModule ;
+        sh:minCount 5 ;  # Must have all 5 modules registered
+        sh:message "Module registry must contain all 5 core modules"
+    ] .
+
+# Module Import Tests
+:ModuleImportShape a sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    rdfs:label "Module Import Shape" ;
+    rdfs:comment "Validates module import structure" ;
+    sh:property [
+        sh:path owl:imports ;
+        sh:minCount 1 ;
+        sh:message "Each module must import at least one other module"
+    ] .
+
+# Legacy Support Tests
+:LegacySupportShape a sh:NodeShape ;
+    sh:targetClass guidance:LegacySupport ;
+    rdfs:label "Legacy Support Shape" ;
+    rdfs:comment "Validates legacy support mappings" ;
+    sh:property [
+        sh:path guidance:hasLegacyMapping ;
+        sh:minCount 5 ;  # Must map all 5 modules
+        sh:message "Legacy support must map all core modules"
+    ] .
+
+# Version Consistency Tests
+:VersionConsistencyShape a sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    rdfs:label "Version Consistency Shape" ;
+    rdfs:comment "Validates version information consistency" ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "All modules must have version information"
+    ] .
+
+# Test Queries
+:ModuleConsistencyTest rdf:type validation:TestCase ;
+    rdfs:label "Module Consistency Test" ;
+    rdfs:comment "Tests overall module consistency" ;
+    validation:hasTestQuery """
+    SELECT ?module ?version ?imports WHERE {
+        ?module rdf:type owl:Ontology ;
+                owl:versionInfo ?version ;
+                owl:imports ?imports .
+    }""" ;
+    validation:hasExpectedResult "Should find all modules with version info and imports" .
+
+:LegacyMappingTest rdf:type validation:TestCase ;
+    rdfs:label "Legacy Mapping Test" ;
+    rdfs:comment "Tests legacy mapping completeness" ;
+    validation:hasTestQuery """
+    SELECT ?concept ?legacy WHERE {
+        ?concept guidance:hasLegacyMapping ?legacy .
+    }""" ;
+    validation:hasExpectedResult "Should find all legacy mappings" .
+
+:ChatbotIntegrationTest rdf:type validation:TestCase ;
+    rdfs:label "Chatbot Integration Test" ;
+    rdfs:comment "Tests integration with chatbot.ttl" ;
+    validation:hasTestQuery """
+    SELECT ?guidanceElement ?chatbotElement WHERE {
+        ?guidanceElement rdf:type owl:Class .
+        ?chatbotElement rdf:type owl:Class ;
+                       rdfs:subClassOf ?guidanceElement .
+    }""" ;
+    validation:hasExpectedResult "Should find guidance elements used in chatbot ontology" .
+
+# Test Execution Plan
+:TestExecutionPlan rdf:type owl:Class ;
+    rdfs:label "Test Execution Plan" ;
+    rdfs:comment """Test execution sequence:
+    1. Validate module registry completeness
+    2. Check module import consistency
+    3. Verify legacy support mappings
+    4. Ensure version consistency
+    5. Test chatbot.ttl integration
+    6. Validate SHACL constraints""" . 

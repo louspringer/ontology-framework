@@ -8,6 +8,7 @@
 @prefix metameta: <./metameta#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 :SolutionOntology a owl:Ontology ;
     rdfs:label "Solution Ontology" ;
@@ -17,44 +18,61 @@
 
 :Solution a owl:Class ;
     rdfs:label "Solution" ;
-    rdfs:comment "A solution to a problem" .
+    rdfs:comment "A solution to a problem" ;
+    owl:versionInfo "1.0.0" .
 
 :Implementation a owl:Class ;
     rdfs:label "Implementation" ;
-    rdfs:comment "A specific implementation of a solution" .
+    rdfs:comment "A specific implementation of a solution" ;
+    owl:versionInfo "1.0.0" .
 
 :solves a owl:ObjectProperty ;
     rdfs:label "solves" ;
     rdfs:comment "Indicates that a solution addresses a problem" ;
     rdfs:domain :Solution ;
-    rdfs:range problem:Problem .
+    rdfs:range problem:Problem ;
+    owl:versionInfo "1.0.0" .
 
 # Core Classes
 :TechnicalSolution rdf:type owl:Class ;
     rdfs:label "Technical Solution" ;
     rdfs:comment "Proposed or implemented technical approach" ;
-    rdfs:subClassOf meta:AbstractionDimension .
+    rdfs:subClassOf meta:AbstractionDimension ;
+    owl:versionInfo "1.0.0" .
 
 :Validation rdf:type owl:Class ;
     rdfs:label "Validation" ;
-    rdfs:comment "Validation criteria and results" .
+    rdfs:comment "Validation criteria and results" ;
+    owl:versionInfo "1.0.0" .
 
 # Core Properties
 :satisfies rdf:type owl:ObjectProperty ;
+    rdfs:label "Satisfies" ;
+    rdfs:comment "Indicates that a solution satisfies a business need" ;
     rdfs:domain :TechnicalSolution ;
-    rdfs:range problem:BusinessNeed .
+    rdfs:range problem:BusinessNeed ;
+    owl:versionInfo "1.0.0" .
 
 :hasImplementation rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Implementation" ;
+    rdfs:comment "Links a solution to its implementation" ;
     rdfs:domain :TechnicalSolution ;
-    rdfs:range :Implementation .
+    rdfs:range :Implementation ;
+    owl:versionInfo "1.0.0" .
 
 :hasValidation rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Validation" ;
+    rdfs:comment "Links an implementation to its validation" ;
     rdfs:domain :Implementation ;
-    rdfs:range :Validation .
+    rdfs:range :Validation ;
+    owl:versionInfo "1.0.0" .
 
 :validationStatus rdf:type owl:DatatypeProperty ;
+    rdfs:label "Validation Status" ;
+    rdfs:comment "The status of a validation" ;
     rdfs:domain :Validation ;
-    rdfs:range xsd:string .
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
 # New Solutions
 :InterdisciplinaryWorkshop rdf:type :TechnicalSolution ;
@@ -64,6 +82,36 @@
 :SharedGlossarySolution rdf:type :TechnicalSolution ;
     rdfs:label "Shared Glossary Solution" ;
     rdfs:comment "Creating a shared glossary to bridge terminology gaps." .
+
+# Solution Instances
+:CommunicationSolution rdf:type :Solution ;
+    rdfs:label "Communication Solution" ;
+    rdfs:comment "A solution focused on improving team communication and collaboration." .
+
+:DocumentationSolution rdf:type :Solution ;
+    rdfs:label "Documentation Solution" ;
+    rdfs:comment "A solution focused on improving documentation practices and standards." .
+
+# ValidationStatus Instances
+:PendingValidation rdf:type :ValidationStatus ;
+    rdfs:label "Pending Validation" ;
+    rdfs:comment "Validation that has not yet started." ;
+    :validationStatus "Pending" .
+
+:InProgressValidation rdf:type :ValidationStatus ;
+    rdfs:label "In Progress Validation" ;
+    rdfs:comment "Validation that is currently being performed." ;
+    :validationStatus "InProgress" .
+
+:CompletedValidation rdf:type :ValidationStatus ;
+    rdfs:label "Completed Validation" ;
+    rdfs:comment "Validation that has been successfully completed." ;
+    :validationStatus "Completed" .
+
+:FailedValidation rdf:type :ValidationStatus ;
+    rdfs:label "Failed Validation" ;
+    rdfs:comment "Validation that has failed to meet requirements." ;
+    :validationStatus "Failed" .
 
 # Add cross-references to problem space
 :TechnicalSolution rdfs:subClassOf [
@@ -79,43 +127,51 @@
         :InProgress 
         :Completed
         :Failed
-    ) .
+    ) ;
+    owl:versionInfo "1.0.0" .
 
 # Classes
 :Vault a owl:Class ;
     rdfs:label "1Password Vault" ;
-    rdfs:comment "A specific vault in 1Password for storing related secrets" .
+    rdfs:comment "A specific vault in 1Password for storing related secrets" ;
+    owl:versionInfo "1.0.0" .
 
 :Item a owl:Class ;
     rdfs:label "1Password Item" ;
-    rdfs:comment "A configuration item stored in a 1Password vault" .
+    rdfs:comment "A configuration item stored in a 1Password vault" ;
+    owl:versionInfo "1.0.0" .
 
 :Field a owl:Class ;
     rdfs:label "1Password Field" ;
-    rdfs:comment "A specific field within a 1Password item" .
+    rdfs:comment "A specific field within a 1Password item" ;
+    owl:versionInfo "1.0.0" .
 
 :Reference a owl:Class ;
     rdfs:label "1Password Reference" ;
-    rdfs:comment "A reference to a 1Password field in the format op://vault/item/field" .
+    rdfs:comment "A reference to a 1Password field in the format op://vault/item/field" ;
+    owl:versionInfo "1.0.0" .
 
 # Properties
 :containsItem a owl:ObjectProperty ;
     rdfs:domain :Vault ;
     rdfs:range :Item ;
     rdfs:label "contains item" ;
-    rdfs:comment "Links a vault to its items" .
+    rdfs:comment "Links a vault to its items" ;
+    owl:versionInfo "1.0.0" .
 
 :hasField a owl:ObjectProperty ;
     rdfs:domain :Item ;
     rdfs:range :Field ;
     rdfs:label "has field" ;
-    rdfs:comment "Links an item to its fields" .
+    rdfs:comment "Links an item to its fields" ;
+    owl:versionInfo "1.0.0" .
 
 :referencesField a owl:ObjectProperty ;
     rdfs:domain :Reference ;
     rdfs:range :Field ;
     rdfs:label "references field" ;
-    rdfs:comment "Links a reference to the field it points to" .
+    rdfs:comment "Links a reference to the field it points to" ;
+    owl:versionInfo "1.0.0" .
 
 # Individuals
 :AzureBotConfigVault a :Vault ;
@@ -156,32 +212,45 @@
 # Solution Classes
 :AuthenticationSolution a owl:Class ;
     rdfs:label "Authentication Solution"@en ;
-    rdfs:comment "Solution for authentication and security" .
+    rdfs:comment "Solution for authentication and security" ;
+    owl:versionInfo "1.0.0" .
 
 :SnowflakeIntegration a owl:Class ;
     rdfs:label "Snowflake Integration"@en ;
-    rdfs:comment "Integration with Snowflake database" .
+    rdfs:comment "Integration with Snowflake database" ;
+    owl:versionInfo "1.0.0" .
 
 :KeyManagement a owl:Class ;
     rdfs:label "Key Management"@en ;
-    rdfs:comment "Management of cryptographic keys" .
+    rdfs:comment "Management of cryptographic keys" ;
+    owl:versionInfo "1.0.0" .
 
 :Configuration a owl:Class ;
     rdfs:label "Configuration"@en ;
-    rdfs:comment "System configuration settings" .
+    rdfs:comment "System configuration settings" ;
+    owl:versionInfo "1.0.0" .
 
 # Properties
 :implements a owl:ObjectProperty ;
+    rdfs:label "Implements" ;
+    rdfs:comment "Links a solution to the pattern it implements" ;
     rdfs:domain :AuthenticationSolution ;
-    rdfs:range guidance:SecurityPattern .
+    rdfs:range guidance:SecurityPattern ;
+    owl:versionInfo "1.0.0" .
 
 :uses a owl:ObjectProperty ;
+    rdfs:label "Uses" ;
+    rdfs:comment "Links an integration to the solution it uses" ;
     rdfs:domain :SnowflakeIntegration ;
-    rdfs:range :AuthenticationSolution .
+    rdfs:range :AuthenticationSolution ;
+    owl:versionInfo "1.0.0" .
 
 :manages a owl:ObjectProperty ;
+    rdfs:label "Manages" ;
+    rdfs:comment "Links key management to the solutions it manages" ;
     rdfs:domain :KeyManagement ;
-    rdfs:range :AuthenticationSolution .
+    rdfs:range :AuthenticationSolution ;
+    owl:versionInfo "1.0.0" .
 
 # Solution Instances
 :snowflakeAuth a :AuthenticationSolution ;
@@ -224,8 +293,239 @@
     :template ".env.template"^^xsd:string ;
     :status "Configured"^^xsd:string .
 
+# Implementation Instances
+:WorkshopImplementation rdf:type :Implementation ;
+    rdfs:label "Workshop Implementation" ;
+    rdfs:comment "Implementation details for the interdisciplinary workshop" ;
+    :hasValidation :WorkshopValidation .
+
+:GlossaryImplementation rdf:type :Implementation ;
+    rdfs:label "Glossary Implementation" ;
+    rdfs:comment "Implementation details for the shared glossary solution" ;
+    :hasValidation :GlossaryValidation .
+
+# Vault Instances
+:DevelopmentVault rdf:type :Vault ;
+    rdfs:label "Development Vault" ;
+    rdfs:comment "1Password vault for development environment secrets" ;
+    :containsItem :DevApiKeys .
+
+:ProductionVault rdf:type :Vault ;
+    rdfs:label "Production Vault" ;
+    rdfs:comment "1Password vault for production environment secrets" ;
+    :containsItem :ProdApiKeys .
+
+# Field Instances
+:ApiKeyField rdf:type :Field ;
+    rdfs:label "API Key Field" ;
+    rdfs:comment "Field containing an API key" ;
+    :fieldType "password" .
+
+:EnvironmentField rdf:type :Field ;
+    rdfs:label "Environment Field" ;
+    rdfs:comment "Field specifying the environment" ;
+    :fieldType "text" .
+
+# Reference Instances
+:DevApiKeyRef rdf:type :Reference ;
+    rdfs:label "Development API Key Reference" ;
+    rdfs:comment "Reference to development API key" ;
+    :referencesField :ApiKeyField .
+
+:ProdApiKeyRef rdf:type :Reference ;
+    rdfs:label "Production API Key Reference" ;
+    rdfs:comment "Reference to production API key" ;
+    :referencesField :ApiKeyField .
+
+# Authentication Solution Instances
+:OAuth2Authentication rdf:type :AuthenticationSolution ;
+    rdfs:label "OAuth2 Authentication" ;
+    rdfs:comment "OAuth2-based authentication implementation" ;
+    :hasImplementation :OAuth2Implementation .
+
+:MFAAuthentication rdf:type :AuthenticationSolution ;
+    rdfs:label "MFA Authentication" ;
+    rdfs:comment "Multi-factor authentication implementation" ;
+    :hasImplementation :MFAImplementation .
+
+# Snowflake Integration Instances
+:SnowflakeDataWarehouse rdf:type :SnowflakeIntegration ;
+    rdfs:label "Data Warehouse Integration" ;
+    rdfs:comment "Integration with Snowflake data warehouse" ;
+    :hasImplementation :WarehouseImplementation .
+
+:SnowflakeDataLake rdf:type :SnowflakeIntegration ;
+    rdfs:label "Data Lake Integration" ;
+    rdfs:comment "Integration with Snowflake data lake" ;
+    :hasImplementation :DataLakeImplementation .
+
+# Key Management Instances
+:AWSKeyManagement rdf:type :KeyManagement ;
+    rdfs:label "AWS KMS Integration" ;
+    rdfs:comment "AWS Key Management Service integration" ;
+    :hasImplementation :AWSKMSImplementation .
+
+:AzureKeyManagement rdf:type :KeyManagement ;
+    rdfs:label "Azure Key Vault Integration" ;
+    rdfs:comment "Azure Key Vault integration" ;
+    :hasImplementation :AzureKVImplementation .
+
+# Configuration Instances
+:DevelopmentConfig rdf:type :Configuration ;
+    rdfs:label "Development Configuration" ;
+    rdfs:comment "Development environment configuration" ;
+    :hasImplementation :DevConfigImplementation .
+
+:ProductionConfig rdf:type :Configuration ;
+    rdfs:label "Production Configuration" ;
+    rdfs:comment "Production environment configuration" ;
+    :hasImplementation :ProdConfigImplementation .
+
+# Validation Instances
+:WorkshopValidation rdf:type :Validation ;
+    rdfs:label "Workshop Validation" ;
+    rdfs:comment "Validation of the interdisciplinary workshop implementation" ;
+    :validationStatus "Completed" .
+
+:GlossaryValidation rdf:type :Validation ;
+    rdfs:label "Glossary Validation" ;
+    rdfs:comment "Validation of the shared glossary implementation" ;
+    :validationStatus "InProgress" .
+
+:OAuth2ValidationResults rdf:type :Validation ;
+    rdfs:label "OAuth2 Validation Results" ;
+    rdfs:comment "Validation of OAuth2 authentication implementation" ;
+    :validationStatus "Completed" .
+
+:MFAValidationResults rdf:type :Validation ;
+    rdfs:label "MFA Validation Results" ;
+    rdfs:comment "Validation of multi-factor authentication implementation" ;
+    :validationStatus "Completed" .
+
+:WarehouseValidationResults rdf:type :Validation ;
+    rdfs:label "Warehouse Validation Results" ;
+    rdfs:comment "Validation of Snowflake data warehouse integration" ;
+    :validationStatus "InProgress" .
+
+:DataLakeValidationResults rdf:type :Validation ;
+    rdfs:label "Data Lake Validation Results" ;
+    rdfs:comment "Validation of Snowflake data lake integration" ;
+    :validationStatus "Pending" .
+
+:AWSKMSValidationResults rdf:type :Validation ;
+    rdfs:label "AWS KMS Validation Results" ;
+    rdfs:comment "Validation of AWS Key Management Service integration" ;
+    :validationStatus "Completed" .
+
+:AzureKVValidationResults rdf:type :Validation ;
+    rdfs:label "Azure Key Vault Validation Results" ;
+    rdfs:comment "Validation of Azure Key Vault integration" ;
+    :validationStatus "Completed" .
+
+:DevConfigValidationResults rdf:type :Validation ;
+    rdfs:label "Development Config Validation Results" ;
+    rdfs:comment "Validation of development environment configuration" ;
+    :validationStatus "InProgress" .
+
+:ProdConfigValidationResults rdf:type :Validation ;
+    rdfs:label "Production Config Validation Results" ;
+    rdfs:comment "Validation of production environment configuration" ;
+    :validationStatus "Completed" .
+
+# Link validations to implementations
+:OAuth2Implementation :hasValidation :OAuth2ValidationResults .
+:MFAImplementation :hasValidation :MFAValidationResults .
+:WarehouseImplementation :hasValidation :WarehouseValidationResults .
+:DataLakeImplementation :hasValidation :DataLakeValidationResults .
+:AWSKMSImplementation :hasValidation :AWSKMSValidationResults .
+:AzureKVImplementation :hasValidation :AzureKVValidationResults .
+:DevConfigImplementation :hasValidation :DevConfigValidationResults .
+:ProdConfigImplementation :hasValidation :ProdConfigValidationResults .
+
 # TODO: Areas for Expansion
 # - Add validation patterns for reference syntax
 # - Add backup and restore procedures
 # - Add deployment environment patterns
 # - Add access control and sharing patterns
+
+# SHACL Shapes
+:SolutionShape a sh:NodeShape ;
+    sh:targetClass :Solution ;
+    sh:property [
+        sh:path :solves ;
+        sh:class problem:Problem ;
+        sh:minCount 1 ;
+        sh:message "Solution must solve at least one problem" ;
+    ] .
+
+:TechnicalSolutionShape a sh:NodeShape ;
+    sh:targetClass :TechnicalSolution ;
+    sh:property [
+        sh:path :satisfies ;
+        sh:class problem:BusinessNeed ;
+        sh:minCount 1 ;
+        sh:message "Technical solution must satisfy at least one business need" ;
+    ] ,
+    [
+        sh:path :hasImplementation ;
+        sh:class :Implementation ;
+        sh:minCount 1 ;
+        sh:message "Technical solution must have at least one implementation" ;
+    ] .
+
+:ImplementationShape a sh:NodeShape ;
+    sh:targetClass :Implementation ;
+    sh:property [
+        sh:path :hasValidation ;
+        sh:class :Validation ;
+        sh:minCount 1 ;
+        sh:message "Implementation must have at least one validation" ;
+    ] .
+
+:ValidationShape a sh:NodeShape ;
+    sh:targetClass :Validation ;
+    sh:property [
+        sh:path :validationStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("Pending" "InProgress" "Completed" "Failed") ;
+        sh:message "Validation must have exactly one status (Pending, InProgress, Completed, Failed)" ;
+    ] .
+
+:VaultShape a sh:NodeShape ;
+    sh:targetClass :Vault ;
+    sh:property [
+        sh:path :containsItem ;
+        sh:class :Item ;
+        sh:minCount 1 ;
+        sh:message "Vault must contain at least one item" ;
+    ] .
+
+:ItemShape a sh:NodeShape ;
+    sh:targetClass :Item ;
+    sh:property [
+        sh:path :hasField ;
+        sh:class :Field ;
+        sh:minCount 1 ;
+        sh:message "Item must have at least one field" ;
+    ] .
+
+:ReferenceShape a sh:NodeShape ;
+    sh:targetClass :Reference ;
+    sh:property [
+        sh:path :referencesField ;
+        sh:class :Field ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Reference must point to exactly one field" ;
+    ] .
+
+:AuthenticationSolutionShape a sh:NodeShape ;
+    sh:targetClass :AuthenticationSolution ;
+    sh:property [
+        sh:path :implements ;
+        sh:class guidance:SecurityPattern ;
+        sh:minCount 1 ;
+        sh:message "Authentication solution must implement at least one security pattern" ;
+    ] .

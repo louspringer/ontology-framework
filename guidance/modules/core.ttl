@@ -1,0 +1,93 @@
+@prefix : <./core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix guidance: <../../guidance#> .
+@prefix meta: <../../meta#> .
+
+# Core Module Definition
+:CoreGuidanceModule rdf:type owl:Ontology ;
+    rdfs:label "Core Guidance Module" ;
+    rdfs:comment "Core concepts and relationships for the guidance ontology" ;
+    dc:title "Core Guidance Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
+    owl:imports <model.ttl> ;
+    owl:imports <security.ttl> .
+
+# Core Classes
+:Interpretation rdf:type owl:Class ;
+    rdfs:label "Interpretation" ;
+    rdfs:comment "Guidance on how to interpret an ontology element" ;
+    rdfs:subClassOf meta:AbstractionDimension ;
+    owl:versionInfo "1.0.0" .
+
+:Action rdf:type owl:Class ;
+    rdfs:label "Action" ;
+    rdfs:comment "An action that can be taken based on interpretation" ;
+    owl:versionInfo "1.0.0" .
+
+:DomainAnalogy rdf:type owl:Class ;
+    rdfs:label "DomainAnalogy" ;
+    rdfs:comment "A pattern that draws parallels between domains to aid understanding and implementation" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:subClassOf :Interpretation .
+
+:BestPractice rdf:type owl:Class ;
+    rdfs:label "BestPractice" ;
+    rdfs:comment "A recommended practice for ontology development and management" ;
+    owl:versionInfo "1.0.0" .
+
+# Core Properties
+:hasAction rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Action" ;
+    rdfs:comment "Links interpretation to action" ;
+    rdfs:domain :Interpretation ;
+    rdfs:range :Action .
+
+:analogySource rdf:type owl:DatatypeProperty ;
+    rdfs:label "Analogy Source" ;
+    rdfs:comment "Source domain for analogy" ;
+    rdfs:domain :DomainAnalogy ;
+    rdfs:range xsd:string .
+
+:analogyTarget rdf:type owl:DatatypeProperty ;
+    rdfs:label "Analogy Target" ;
+    rdfs:comment "Target domain for analogy" ;
+    rdfs:domain :DomainAnalogy ;
+    rdfs:range xsd:string .
+
+:complexity rdf:type owl:DatatypeProperty ;
+    rdfs:label "Complexity" ;
+    rdfs:comment "Complexity level of interpretation" ;
+    rdfs:domain :Interpretation ;
+    rdfs:range xsd:integer .
+
+:sourceContext rdf:type owl:DatatypeProperty ;
+    rdfs:label "Source Context" ;
+    rdfs:comment "Context from which interpretation is derived" ;
+    rdfs:domain :Interpretation ;
+    rdfs:range xsd:string .
+
+:targetContext rdf:type owl:DatatypeProperty ;
+    rdfs:label "Target Context" ;
+    rdfs:comment "Context to which interpretation is applied" ;
+    rdfs:domain :Interpretation ;
+    rdfs:range xsd:string .
+
+# Legacy Support
+:LegacyMapping rdf:type owl:Class ;
+    rdfs:label "Legacy Mapping" ;
+    rdfs:comment "Maps legacy guidance concepts to modular equivalents" ;
+    owl:versionInfo "1.0.0" .
+
+:hasLegacyEquivalent rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Legacy Equivalent" ;
+    rdfs:comment "Links modular concept to its legacy equivalent" ;
+    rdfs:domain owl:Class ;
+    rdfs:range guidance:LLMGuidanceOntology . 

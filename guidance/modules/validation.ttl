@@ -1,0 +1,120 @@
+@prefix : <./validation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix core: <../core#> .
+@prefix guidance: <../../guidance#> .
+@prefix model: <../model#> .
+@prefix security: <../security#> .
+@prefix collaboration: <../collaboration#> .
+
+# Validation Module Definition
+:ValidationGuidanceModule rdf:type owl:Ontology ;
+    rdfs:label "Validation Guidance Module" ;
+    rdfs:comment "Validation rules and constraints for guidance ontology" ;
+    dc:title "Validation Guidance Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Module containing validation patterns and test cases" ;
+    owl:imports <core.ttl> ;
+    owl:imports <model.ttl> ;
+    owl:imports <security.ttl> ;
+    owl:imports <collaboration.ttl> .
+
+# Validation Classes
+:ValidationPattern rdf:type owl:Class ;
+    rdfs:label "ValidationPattern" ;
+    rdfs:comment "A pattern for implementing validation rules and constraints" ;
+    rdfs:subClassOf core:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
+:TestCase rdf:type owl:Class ;
+    rdfs:label "TestCase" ;
+    rdfs:comment "A test case for validating ontology components" ;
+    rdfs:subClassOf :ValidationPattern ;
+    owl:versionInfo "1.0.0" .
+
+# Validation Properties
+:hasTestQuery rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Test Query" ;
+    rdfs:comment "The SPARQL query used in the test case" ;
+    rdfs:domain :TestCase ;
+    rdfs:range xsd:string .
+
+:hasExpectedResult rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Expected Result" ;
+    rdfs:comment "Expected result or assertion for the test case" ;
+    rdfs:domain :TestCase ;
+    rdfs:range xsd:string .
+
+# SHACL Shapes
+:RuleShape rdf:type sh:NodeShape ;
+    sh:targetClass core:BestPractice ;
+    rdfs:label "Rule Shape" ;
+    rdfs:comment "Validation shape for best practice rules" ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Rule must have a label"
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Rule must have a description"
+    ] .
+
+:TestCaseShape rdf:type sh:NodeShape ;
+    sh:targetClass :TestCase ;
+    rdfs:label "Test Case Shape" ;
+    rdfs:comment "Validation shape for test cases" ;
+    sh:property [
+        sh:path :hasTestQuery ;
+        sh:minCount 1 ;
+        sh:message "Every test case must have a SPARQL query"
+    ] ;
+    sh:property [
+        sh:path :hasExpectedResult ;
+        sh:minCount 1 ;
+        sh:message "Every test case must specify expected results"
+    ] .
+
+# Test Cases
+:PolicyStructureTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Policy Structure Test" ;
+    rdfs:comment "Tests that policies drive requirements that influence decisions" ;
+    :hasTestQuery """
+    SELECT ?policy ?req ?decision WHERE {
+        ?policy rdf:type pdi:Policy ;
+                pdi:drivesRequirement ?req .
+        ?req pdi:influencesDecision ?decision .
+    }""" ;
+    :hasExpectedResult "Should find OntologyAccessibilityPolicy and its requirements" .
+
+:EnforcementMechanismsTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Enforcement Mechanisms Test" ;
+    rdfs:comment "Tests that enforcement mechanisms are properly defined" ;
+    :hasTestQuery """
+    SELECT ?mech ?impl ?pattern WHERE {
+        ?mech rdf:type pdi:EnforcementMechanism ;
+              pdi:implementedIn ?impl ;
+              pdi:usesPattern ?pattern .
+    }""" ;
+    :hasExpectedResult "Should find at least 3 enforcement mechanisms" .
+
+# Legacy Support
+:hasLegacyValidationConcept rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Legacy Validation Concept" ;
+    rdfs:comment "Links modular validation concept to legacy guidance" ;
+    rdfs:domain :ValidationPattern ;
+    rdfs:range guidance:LLMGuidanceOntology . 

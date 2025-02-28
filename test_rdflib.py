@@ -14,7 +14,7 @@ def main():
             rdflib.URIRef("http://example.org/subject"),
             rdflib.URIRef("http://example.org/predicate"),
             rdflib.Literal("Object"),
-        )
+        ),
     )
 
     # Print out the graph in Turtle format

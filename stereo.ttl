@@ -1,4 +1,4 @@
-@prefix ex: <http://example.org/audio#> .
+@prefix ex: <./stereo#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -41,7 +41,7 @@ ex:WholeAreaSoundReinforcement a ex:ProblemSpace ;
 # Individuals (Solution Space)
 ex:YamahaRXV4ASetup a ex:SolutionSpace ;
     ex:implementationComplexity "Medium"^^xsd:string ;
-    ex:estimatedCost "Moderate"^^xsd:string ;
+    ex:estimatedCost "63"^^xsd:integer ;
     rdfs:label "Yamaha RX-V4A Setup" ;
     rdfs:comment "Proposed solution to replace Fosi BT30D with Yamaha RX-V4A and integrate Hafler DH-220." .
 
@@ -112,7 +112,7 @@ ex:PassiveCrossoverSetup a ex:SolutionSpace ;
 # New Solution Space Details
 ex:PassiveCrossoverNetwork a ex:SolutionSpace ;
     rdfs:label "Passive Crossover Network Design" ;
-    ex:crossoverFrequency "2500"^^xsd:integer ;
+    ex:crossoverFrequency "2400"^^xsd:integer ;
     ex:slopeOrder "12"^^xsd:integer ;
     ex:componentType "L-pad with Zobel network"^^xsd:string ;
     rdfs:comment "Specific passive crossover design for horn/RS-100 integration." ;
@@ -157,7 +157,7 @@ ex:BasicPassiveCrossover a ex:SolutionSpace ;
 ex:MidTierPassiveCrossover a ex:SolutionSpace ;
     rdfs:label "Mid-Tier Passive Crossover" ;
     ex:implementationComplexity "Medium"^^xsd:string ;
-    ex:estimatedCost "150-200"^^xsd:integer ;
+    ex:estimatedCost "175"^^xsd:integer ;
     ex:qualityRating "4"^^xsd:integer ;
     ex:componentList """
         - 2nd order crossover
@@ -170,7 +170,7 @@ ex:MidTierPassiveCrossover a ex:SolutionSpace ;
 ex:PremiumPassiveCrossover a ex:SolutionSpace ;
     rdfs:label "Premium Passive Crossover" ;
     ex:implementationComplexity "High"^^xsd:string ;
-    ex:estimatedCost "300-400"^^xsd:integer ;
+    ex:estimatedCost "350"^^xsd:integer ;
     ex:qualityRating "5"^^xsd:integer ;
     ex:componentList """
         - 3rd order crossover
@@ -455,7 +455,7 @@ ex:RS100Specifications a ex:Constraint ;
     rdfs:label "RS-100 Crossover Specifications" ;
     rdfs:comment "The Klipsch RS-100 has a fixed crossover network." ;
     ex:crossoverType "Fixed passive, internal" ;
-    ex:crossoverFrequency "2.4kHz"^^xsd:integer ;
+    ex:crossoverFrequency "2400"^^xsd:integer ;
     ex:crossoverSlope "12dB/octave"^^xsd:string ;
     ex:speakerImpedance "8 ohms nominal"^^xsd:string .
 

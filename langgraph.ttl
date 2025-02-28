@@ -1,4 +1,4 @@
-@prefix : <http://example.org/langgraph#> .
+@prefix : <./langgraph#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
@@ -6,9 +6,9 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix meta: <./meta#> .
-@base <http://example.org/langgraph#> .
+@base <./langgraph#> .
 
-<http://example.org/langgraph> rdf:type owl:Ontology ;
+<./langgraph> rdf:type owl:Ontology ;
     dc:title "Language Graph Ontology"@en ;
     dc:description "An ontology for representing language processing graphs"@en ;
     dc:version "1.0"@en ;

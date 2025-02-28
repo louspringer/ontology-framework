@@ -1,0 +1,85 @@
+@prefix : <./model#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix core: <../core#> .
+@prefix guidance: <../../guidance#> .
+
+# Model Module Definition
+:ModelGuidanceModule rdf:type owl:Ontology ;
+    rdfs:label "Model Guidance Module" ;
+    rdfs:comment "Model-specific guidance concepts and principles" ;
+    dc:title "Model Guidance Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
+    owl:imports <core.ttl> ;
+    owl:imports <validation.ttl> .
+
+# Model-First Development Classes
+:ModelFirstPrinciple rdf:type owl:Class ;
+    rdfs:label "ModelFirstPrinciple" ;
+    rdfs:comment "Fundamental principle emphasizing model-driven development approach" ;
+    rdfs:subClassOf core:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
+:ModelQualityPrecedence rdf:type owl:Class ;
+    rdfs:label "ModelQualityPrecedence" ;
+    rdfs:comment "Principle establishing that model quality takes precedence over code quality" ;
+    rdfs:subClassOf :ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
+
+:ModelProjectionAlignment rdf:type owl:Class ;
+    rdfs:label "Model-Projection Alignment" ;
+    rdfs:comment "Principle for aligning code with model specifications" ;
+    rdfs:subClassOf :ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
+
+# Model Properties
+:hasModelingPrinciple rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Modeling Principle" ;
+    rdfs:comment "Links guidance to specific modeling principles" ;
+    rdfs:domain core:BestPractice ;
+    rdfs:range :ModelFirstPrinciple .
+
+:hasProjection rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Projection" ;
+    rdfs:comment "Links model to its projections (code, docs, etc.)" ;
+    rdfs:domain :ModelFirstPrinciple ;
+    rdfs:range :ModelProjection .
+
+# Model Instances
+:modelQualityGuidance rdf:type owl:NamedIndividual ;
+    rdf:type :ModelQualityPrecedence ;
+    rdfs:label "Model Quality Guidance" ;
+    core:sourceContext "Ontological Modeling" ;
+    core:targetContext "System Correctness" ;
+    core:complexity "1"^^xsd:integer ;
+    rdfs:comment """Ontological correctness is the foundation of all system correctness:
+    - If the model is right, its projections must be right
+    - Model correctness has a compounding effect
+    - Code quality issues are symptoms of model-projection misalignment
+    - Focus validation on model correctness
+    - Model refinement leads to code refinement""" .
+
+:modelProjectionGuidance rdf:type owl:NamedIndividual ;
+    rdf:type :ModelProjectionAlignment ;
+    rdfs:label "Model Projection Guidance" ;
+    core:sourceContext "Model-Code Relationship" ;
+    core:targetContext "Quality Assessment" ;
+    core:complexity "2"^^xsd:integer ;
+    rdfs:comment """When code quality issues arise:
+    1. First verify model correctness
+    2. Then check if code accurately projects the model
+    3. Only then consider code-level improvements""" .
+
+# Legacy Support
+:hasLegacyModelConcept rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Legacy Model Concept" ;
+    rdfs:comment "Links modular model concept to legacy guidance" ;
+    rdfs:domain :ModelFirstPrinciple ;
+    rdfs:range guidance:LLMGuidanceOntology . 

@@ -1,3 +1,9 @@
+# Ontology: conv:ConversationOntology
+# Implements: chatbot:ConversationManagement
+# Requirement: REQ-CONV-001 Conversation and backlog tracking
+# Guidance: guidance:conversation#Management
+# Description: Ontology for managing conversations, backlog items, and project artifacts
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -6,20 +12,23 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 conv:ConversationOntology rdf:type owl:Ontology ;
     dc:title "Conversation and Backlog Management Ontology" ;
     dc:version "1.0" ;
     rdfs:comment "Ontology for managing conversations, backlog items, and project artifacts." .
 
-# Core Classes
+# Core Classes with version info
 conv:BacklogItem rdf:type owl:Class ;
     rdfs:label "Backlog Item" ;
-    rdfs:comment "A work item in the project backlog that needs to be addressed." .
+    rdfs:comment "A work item in the project backlog that needs to be addressed." ;
+    owl:versionInfo "1.0.0" .
 
 conv:Conversation rdf:type owl:Class ;
     rdfs:label "Conversation" ;
-    rdfs:comment "A discussion or dialogue about project items." .
+    rdfs:comment "A discussion or dialogue about project items." ;
+    owl:versionInfo "1.0.0" .
 
 conv:Status rdf:type owl:Class ;
     rdfs:subClassOf skos:Concept ;
@@ -28,38 +37,114 @@ conv:Status rdf:type owl:Class ;
         conv:InProgress
         conv:Blocked
         conv:Completed
-    ) .
+    ) ;
+    owl:versionInfo "1.0.0" .
 
 # Properties
 conv:priority rdf:type owl:DatatypeProperty ;
+    rdfs:label "Priority" ;
+    rdfs:comment "Priority level of the backlog item (1-5)" ;
     rdfs:domain conv:BacklogItem ;
     rdfs:range xsd:integer ;
-    rdfs:comment "Priority level of the backlog item (1-5)" .
+    owl:versionInfo "1.0.0" .
 
 conv:status rdf:type owl:ObjectProperty ;
+    rdfs:label "Status" ;
+    rdfs:comment "Current status of the backlog item" ;
     rdfs:domain conv:BacklogItem ;
     rdfs:range conv:Status ;
-    rdfs:comment "Current status of the backlog item" .
+    owl:versionInfo "1.0.0" .
 
 conv:hasConversation rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Conversation" ;
+    rdfs:comment "Links a backlog item to related conversations" ;
     rdfs:domain conv:BacklogItem ;
     rdfs:range conv:Conversation ;
-    rdfs:comment "Links a backlog item to related conversations" .
+    owl:versionInfo "1.0.0" .
 
 conv:assignedTo rdf:type owl:ObjectProperty ;
+    rdfs:label "Assigned To" ;
+    rdfs:comment "Person assigned to the backlog item" ;
     rdfs:domain conv:BacklogItem ;
     rdfs:range conv:Person ;
-    rdfs:comment "Person assigned to the backlog item" .
+    owl:versionInfo "1.0.0" .
+
+conv:createdAt rdf:type owl:DatatypeProperty ;
+    rdfs:label "Created At" ;
+    rdfs:comment "Timestamp when the item was created" ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range xsd:dateTime ;
+    owl:versionInfo "1.0.0" .
+
+conv:updatedAt rdf:type owl:DatatypeProperty ;
+    rdfs:label "Updated At" ;
+    rdfs:comment "Timestamp when the item was last updated" ;
+    rdfs:domain conv:BacklogItem ;
+    rdfs:range xsd:dateTime ;
+    owl:versionInfo "1.0.0" .
 
 # Additional Classes
 conv:Person rdf:type owl:Class ;
     rdfs:label "Person" ;
-    rdfs:comment "A person involved in the project" .
+    rdfs:comment "A person involved in the project" ;
+    owl:versionInfo "1.0.0" .
 
 conv:Comment rdf:type owl:Class ;
     rdfs:label "Comment" ;
     rdfs:comment "A comment or note on a backlog item" ;
-    rdfs:subClassOf conv:Conversation .
+    rdfs:subClassOf conv:Conversation ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes
+conv:BacklogItemShape a sh:NodeShape ;
+    sh:targetClass conv:BacklogItem ;
+    sh:property [
+        sh:path conv:priority ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 5 ;
+        sh:message "Priority must be an integer between 1 and 5" ;
+    ] ,
+    [
+        sh:path conv:status ;
+        sh:class conv:Status ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Backlog item must have exactly one status" ;
+    ] ,
+    [
+        sh:path conv:assignedTo ;
+        sh:class conv:Person ;
+        sh:minCount 1 ;
+        sh:message "Backlog item must be assigned to at least one person" ;
+    ] ,
+    [
+        sh:path conv:createdAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Backlog item must have a creation timestamp" ;
+    ] .
+
+conv:ConversationShape a sh:NodeShape ;
+    sh:targetClass conv:Conversation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Conversation must have a label" ;
+    ] .
+
+conv:CommentShape a sh:NodeShape ;
+    sh:targetClass conv:Comment ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Comment must have content" ;
+    ] .
 
 # Status Instances
 conv:New rdf:type conv:Status ;

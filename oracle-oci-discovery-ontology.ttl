@@ -1,4 +1,4 @@
-@prefix : <http://louspringer.com/ontologies/oracle-learning#> .
+@prefix : <./oracle-oci-discovery#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -8,15 +8,15 @@
 @prefix cc: <http://creativecommons.org/ns#> .
 @prefix vann: <http://purl.org/vocab/vann/> .
 
-<http://louspringer.com/ontologies/oracle-learning> a owl:Ontology ;
-    dc:title "Oracle Technology Learning Ontology"@en ;
-    dc:description "An ontology for organizing knowledge about Oracle technologies and learning paths."@en ;
-    dct:created "2023-04-20"^^xsd:date ;
-    cc:license <http://opensource.org/licenses/MIT> ;
-    owl:versionInfo "1.0" ;
-    vann:preferredNamespacePrefix "orl" ;
-    vann:preferredNamespaceUri "http://louspringer.com/ontologies/oracle-learning#" ;
-    dct:source <https://github.com/louspringer/ontologies/oracle-learning> .
+<./oracle-oci-discovery> a owl:Ontology ;
+    rdfs:label "Oracle OCI Discovery Ontology" ;
+    rdfs:comment "Ontology for discovering and documenting Oracle Cloud Infrastructure resources" ;
+    owl:versionInfo "0.1.0" ;
+    cc:license <./licenses/MIT> ;
+    dct:creator "Lou Springer" ;
+    vann:preferredNamespacePrefix "oci" ;
+    vann:preferredNamespaceUri "./oracle-oci-discovery#" ;
+    dct:source <./oracle-oci-discovery> .
 
 # Main Classes
 :OracleTechnologyStack a owl:Class ;
