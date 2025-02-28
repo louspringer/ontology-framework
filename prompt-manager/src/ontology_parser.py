@@ -1,5 +1,5 @@
-from pathlib import Path
 import logging
+from pathlib import Path
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ class PromptManagerReadmeGenerator:
                 "- Uses conda environment 'ontology-framework'",
                 "- Docker and PostgreSQL required",
                 "- See docker-compose.yml for configuration",
-            ]
+            ],
         )
 
         return "\n".join(content)

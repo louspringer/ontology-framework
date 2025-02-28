@@ -10,6 +10,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix sop: <./secure-ontologist-prompt#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix guidance: <./guidance#> .
 
 sop:SecureOntologistPrompt rdf:type owl:Ontology ;
     rdfs:label "Secure Ontologist Prompt Ontology" ;

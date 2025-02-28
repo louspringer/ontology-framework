@@ -1,3 +1,9 @@
+# Ontology: problem:ProblemOntology
+# Implements: problem:ProblemManagement
+# Requirement: REQ-PROB-001 Problem tracking and management
+# Guidance: guidance:problem#Management
+# Description: Ontology for tracking and managing problems and issues
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -8,64 +14,130 @@
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
-# Core Classes
+# Core Classes with version info
 problem:Problem a owl:Class ;
     rdfs:label "Problem"@en ;
-    rdfs:comment "A problem or issue that needs to be addressed" .
+    rdfs:comment "A problem or issue that needs to be addressed" ;
+    owl:versionInfo "1.0.0" .
 
 problem:SecurityProblem a owl:Class ;
     rdfs:label "Security Problem"@en ;
     rdfs:comment "A security-related problem" ;
-    rdfs:subClassOf problem:Problem .
+    rdfs:subClassOf problem:Problem ;
+    owl:versionInfo "1.0.0" .
 
 problem:AuthenticationProblem a owl:Class ;
     rdfs:label "Authentication Problem"@en ;
     rdfs:comment "An authentication-related problem" ;
-    rdfs:subClassOf problem:SecurityProblem .
+    rdfs:subClassOf problem:SecurityProblem ;
+    owl:versionInfo "1.0.0" .
 
 problem:ConfigurationProblem a owl:Class ;
     rdfs:label "Configuration Problem"@en ;
     rdfs:comment "A configuration-related problem" ;
-    rdfs:subClassOf problem:Problem .
+    rdfs:subClassOf problem:Problem ;
+    owl:versionInfo "1.0.0" .
 
 problem:ComplianceProblem a owl:Class ;
     rdfs:label "Compliance Problem"@en ;
     rdfs:comment "A compliance-related problem" ;
-    rdfs:subClassOf problem:SecurityProblem .
+    rdfs:subClassOf problem:SecurityProblem ;
+    owl:versionInfo "1.0.0" .
 
 problem:DataSecurityProblem a owl:Class ;
     rdfs:label "Data Security Problem"@en ;
     rdfs:comment "A data security and privacy related problem" ;
-    rdfs:subClassOf problem:SecurityProblem .
+    rdfs:subClassOf problem:SecurityProblem ;
+    owl:versionInfo "1.0.0" .
 
-# Properties
+# Properties with version info
 problem:hasSeverity a owl:DatatypeProperty ;
-    rdfs:domain problem:Problem ;
-    rdfs:range xsd:string .
-
-problem:hasStatus a owl:DatatypeProperty ;
-    rdfs:domain problem:Problem ;
-    rdfs:range xsd:string .
-
-problem:hasSolution a owl:ObjectProperty ;
-    rdfs:domain problem:Problem ;
-    rdfs:range solution:Solution .
-
-problem:requiresControl a owl:ObjectProperty ;
-    rdfs:domain problem:SecurityProblem ;
-    rdfs:range meta:SecurityConcept ;
-    rdfs:comment "Links a security problem to required security controls" .
-
-problem:affectsComponent a owl:ObjectProperty ;
-    rdfs:domain problem:Problem ;
-    rdfs:range meta:Component ;
-    rdfs:comment "Indicates which component is affected by the problem" .
-
-problem:hasImpact a owl:DatatypeProperty ;
+    rdfs:label "Has Severity" ;
+    rdfs:comment "The severity level of the problem" ;
     rdfs:domain problem:Problem ;
     rdfs:range xsd:string ;
-    rdfs:comment "Describes the impact of the problem" .
+    owl:versionInfo "1.0.0" .
+
+problem:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "Has Status" ;
+    rdfs:comment "The current status of the problem" ;
+    rdfs:domain problem:Problem ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+problem:hasSolution a owl:ObjectProperty ;
+    rdfs:label "Has Solution" ;
+    rdfs:comment "Links a problem to its solution" ;
+    rdfs:domain problem:Problem ;
+    rdfs:range solution:Solution ;
+    owl:versionInfo "1.0.0" .
+
+problem:requiresControl a owl:ObjectProperty ;
+    rdfs:label "Requires Control" ;
+    rdfs:comment "Links a security problem to required security controls" ;
+    rdfs:domain problem:SecurityProblem ;
+    rdfs:range meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
+
+problem:affectsComponent a owl:ObjectProperty ;
+    rdfs:label "Affects Component" ;
+    rdfs:comment "Indicates which component is affected by the problem" ;
+    rdfs:domain problem:Problem ;
+    rdfs:range meta:Component ;
+    owl:versionInfo "1.0.0" .
+
+problem:hasImpact a owl:DatatypeProperty ;
+    rdfs:label "Has Impact" ;
+    rdfs:comment "Describes the impact of the problem" ;
+    rdfs:domain problem:Problem ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes
+problem:ProblemShape a sh:NodeShape ;
+    sh:targetClass problem:Problem ;
+    sh:property [
+        sh:path problem:hasSeverity ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("Low" "Medium" "High" "Critical") ;
+        sh:message "Problem must have exactly one severity level (Low, Medium, High, Critical)" ;
+    ] ,
+    [
+        sh:path problem:hasStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("New" "Pending" "In Progress" "Resolved" "Closed") ;
+        sh:message "Problem must have exactly one status (New, Pending, In Progress, Resolved, Closed)" ;
+    ] ,
+    [
+        sh:path problem:hasImpact ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Problem must have an impact description" ;
+    ] .
+
+problem:SecurityProblemShape a sh:NodeShape ;
+    sh:targetClass problem:SecurityProblem ;
+    sh:property [
+        sh:path problem:requiresControl ;
+        sh:class meta:SecurityConcept ;
+        sh:minCount 1 ;
+        sh:message "Security problem must specify at least one required security control" ;
+    ] .
+
+problem:ConfigurationProblemShape a sh:NodeShape ;
+    sh:targetClass problem:ConfigurationProblem ;
+    sh:property [
+        sh:path problem:affectsComponent ;
+        sh:class meta:Component ;
+        sh:minCount 1 ;
+        sh:message "Configuration problem must specify affected component" ;
+    ] .
 
 # Problem Instances
 problem:snowflakeAuthIssue a problem:AuthenticationProblem ;

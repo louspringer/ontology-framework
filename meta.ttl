@@ -25,63 +25,75 @@ meta:MetaOntology a owl:Ontology ;
 # Security Concepts
 meta:SecurityConcept a owl:Class ;
     rdfs:label "Security Concept"@en ;
-    rdfs:comment "Core security concepts and controls" .
+    rdfs:comment "Core security concepts and controls" ;
+    owl:versionInfo "1.0.0" .
 
 meta:AuthenticationConcept a owl:Class ;
     rdfs:label "Authentication Concept"@en ;
     rdfs:comment "Authentication-related security concepts" ;
-    rdfs:subClassOf meta:SecurityConcept .
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
 
 meta:AccessControlConcept a owl:Class ;
     rdfs:label "Access Control Concept"@en ;
     rdfs:comment "Access control and authorization concepts" ;
-    rdfs:subClassOf meta:SecurityConcept .
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
 
 meta:EncryptionConcept a owl:Class ;
     rdfs:label "Encryption Concept"@en ;
     rdfs:comment "Data encryption and protection concepts" ;
-    rdfs:subClassOf meta:SecurityConcept .
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
 
 meta:ComplianceConcept a owl:Class ;
     rdfs:label "Compliance Concept"@en ;
     rdfs:comment "Regulatory compliance and audit concepts" ;
-    rdfs:subClassOf meta:SecurityConcept .
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
 
 # Component Classes
 meta:Component a owl:Class ;
     rdfs:label "Component"@en ;
-    rdfs:comment "System component or module" .
+    rdfs:comment "System component or module" ;
+    owl:versionInfo "1.0.0" .
 
 meta:Configuration a owl:Class ;
     rdfs:label "Configuration"@en ;
     rdfs:comment "Configuration component" ;
-    rdfs:subClassOf meta:Component .
+    rdfs:subClassOf meta:Component ;
+    owl:versionInfo "1.0.0" .
 
 meta:SecretStore a owl:Class ;
     rdfs:label "Secret Store"@en ;
     rdfs:comment "Secure storage for secrets and keys" ;
-    rdfs:subClassOf meta:Component .
+    rdfs:subClassOf meta:Component ;
+    owl:versionInfo "1.0.0" .
 
 meta:AuditLog a owl:Class ;
     rdfs:label "Audit Log"@en ;
     rdfs:comment "Audit logging component" ;
-    rdfs:subClassOf meta:Component .
+    rdfs:subClassOf meta:Component ;
+    owl:versionInfo "1.0.0" .
 
 # Properties
 meta:implements a owl:ObjectProperty ;
     rdfs:domain meta:Component ;
     rdfs:range meta:SecurityConcept ;
-    rdfs:comment "Indicates which security concept a component implements" .
+    rdfs:comment "Indicates which security concept a component implements" ;
+    owl:versionInfo "1.0.0" .
 
 meta:requires a owl:ObjectProperty ;
     rdfs:domain meta:Component ;
     rdfs:range meta:SecurityConcept ;
-    rdfs:comment "Indicates which security concept a component requires" .
+    rdfs:comment "Indicates which security concept a component requires" ;
+    owl:versionInfo "1.0.0" .
 
 meta:dependsOn a owl:ObjectProperty ;
     rdfs:domain meta:Component ;
     rdfs:range meta:Component ;
-    rdfs:comment "Indicates component dependencies" .
+    rdfs:comment "Indicates component dependencies" ;
+    owl:versionInfo "1.0.0" .
 
 # Security Requirements
 meta:keyRotationRequirement a meta:SecurityConcept ;
@@ -271,22 +283,64 @@ meta:Blocked rdf:type meta:TaskStatus ;
     rdfs:comment "Task is blocked by dependencies or issues" .
 
 # SHACL Validation
-meta:TaskShape rdf:type sh:NodeShape ;
+meta:TaskShape a sh:NodeShape ;
     sh:targetClass meta:Task ;
     sh:property [
         sh:path meta:hasStatus ;
+        sh:class meta:TaskStatus ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:message "Task must have exactly one status"
-    ] ;
-    sh:property [
+        sh:message "Task must have exactly one status" ;
+    ] ,
+    [
         sh:path meta:hasPriority ;
+        sh:datatype xsd:integer ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
         sh:minInclusive 1 ;
         sh:maxInclusive 5 ;
-        sh:message "Task must have a priority between 1 and 5"
+        sh:message "Task must have a priority between 1 and 5" ;
+    ] .
+
+# Add SHACL shapes
+meta:SecurityConceptShape a sh:NodeShape ;
+    sh:targetClass meta:SecurityConcept ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Security concept must have a label" ;
+    ] .
+
+meta:ComponentShape a sh:NodeShape ;
+    sh:targetClass meta:Component ;
+    sh:property [
+        sh:path meta:implements ;
+        sh:class meta:SecurityConcept ;
+        sh:message "Component must implement at least one security concept" ;
+    ] ,
+    [
+        sh:path meta:requires ;
+        sh:class meta:SecurityConcept ;
+        sh:message "Component must specify required security concepts" ;
+    ] .
+
+meta:SecretStoreShape a sh:NodeShape ;
+    sh:targetClass meta:SecretStore ;
+    sh:property [
+        sh:path meta:hasSecret ;
+        sh:class meta:Secret ;
+        sh:message "Secret store must contain at least one secret" ;
+    ] .
+
+meta:ConfigurationShape a sh:NodeShape ;
+    sh:targetClass meta:Configuration ;
+    sh:property [
+        sh:path meta:belongsToEnvironment ;
+        sh:class meta:Environment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Configuration must belong to exactly one environment" ;
     ] .
 
 # TODO: Areas for Expansion

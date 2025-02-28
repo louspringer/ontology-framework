@@ -1,6 +1,5 @@
-from rdflib import Graph, Namespace, RDF, URIRef, OWL, RDFS
-from pathlib import Path
 import mdformat
+from rdflib import Graph
 
 
 def generate_markdown():

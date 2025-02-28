@@ -1,6 +1,6 @@
 import click
+
 from .prompt_manager import PromptManager
-from pathlib import Path
 
 
 @click.group()
@@ -58,7 +58,7 @@ def list_ids():
     prompts = pm.list_with_ids()
     for id, name, category, tags in prompts:
         click.echo(
-            f"[{id}] {name} ({category}) [{', '.join(tags) if tags else 'No tags'}]"
+            f"[{id}] {name} ({category}) [{', '.join(tags) if tags else 'No tags'}]",
         )
 
 
@@ -70,7 +70,8 @@ def get_raw(id):
     content = pm.get_by_id(id)
     if content:
         click.echo(
-            content, nl=False
+            content,
+            nl=False,
         )  # nl=False to avoid extra newline for clean piping
     else:
         click.echo(f"No prompt found with ID {id}", err=True)

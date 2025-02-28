@@ -1,8 +1,6 @@
-import psycopg2
-from pathlib import Path
-import yaml
 import time
-import click
+
+import psycopg2
 
 
 class PromptManager:
@@ -14,7 +12,7 @@ class PromptManager:
         for attempt in range(max_retries):
             try:
                 self.conn = psycopg2.connect(
-                    "dbname=prompts user=promptuser password=promptpass host=localhost"
+                    "dbname=prompts user=promptuser password=promptpass host=localhost",
                 )
                 return
             except psycopg2.OperationalError:
@@ -34,7 +32,7 @@ class PromptManager:
                     tags TEXT[],
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            """
+            """,
             )
         self.conn.commit()
 

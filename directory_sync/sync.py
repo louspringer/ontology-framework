@@ -1,10 +1,12 @@
-import subprocess
 import logging
+import subprocess
 
 
 def sync_directories(remote_path, local_path):
     logging.basicConfig(
-        filename="rsync_log.txt", level=logging.INFO, format="%(asctime)s - %(message)s"
+        filename="rsync_log.txt",
+        level=logging.INFO,
+        format="%(asctime)s - %(message)s",
     )
 
     rsync_command = [
@@ -18,7 +20,10 @@ def sync_directories(remote_path, local_path):
 
     try:
         result = subprocess.run(
-            rsync_command, check=True, capture_output=True, text=True
+            rsync_command,
+            check=True,
+            capture_output=True,
+            text=True,
         )
         logging.info("Rsync completed successfully.")
         logging.info(result.stdout)

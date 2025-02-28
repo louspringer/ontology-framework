@@ -1,3 +1,9 @@
+# Ontology: metameta:MetaMetaOntology
+# Implements: metameta:AbstractionFramework
+# Requirement: REQ-ONT-002 Meta-meta ontology framework
+# Guidance: guidance:OntologyPatterns#MetaMeta
+# Description: Core meta-meta concepts for ontology organization and abstraction hierarchies
+
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -5,6 +11,7 @@
 @prefix metameta: <./metameta#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 metameta:MetaMetaOntology rdf:type owl:Ontology ;
     dc:title "MetaMeta Core Ontology" ;
@@ -12,36 +19,78 @@ metameta:MetaMetaOntology rdf:type owl:Ontology ;
     dct:created "2024-01-20"^^xsd:date ;
     dct:modified "2024-01-20"^^xsd:date ;
     dct:publisher "Ontology Framework Project" ;
-    dct:license <http://opensource.org/licenses/MIT> ;
+    dct:license <./licenses/MIT> ;
     dct:description "Core meta-meta concepts for ontology organization and abstraction hierarchies" ;
-    dct:isPartOf <http://louspringer.com/ontology-framework> ;
+    dct:isPartOf <./ontology-framework> ;
     dct:type dct:Dataset ;
-    dct:conformsTo <http://www.w3.org/2002/07/owl> ;
+    dct:conformsTo <./owl> ;
     rdfs:comment "Core meta-meta concepts for ontology organization" .
 
-# Core Classes
+# Core Classes with version info
 metameta:AbstractionDimension rdf:type owl:Class ;
     rdfs:label "Abstraction Dimension" ;
-    rdfs:comment "A dimension along which knowledge can be abstracted" .
+    rdfs:comment "A dimension along which knowledge can be abstracted" ;
+    owl:versionInfo "1.0.0" .
 
 metameta:AbstractionLevel rdf:type owl:Class ;
     rdfs:label "Abstraction Level" ;
-    rdfs:comment "A specific level within an abstraction dimension" .
+    rdfs:comment "A specific level within an abstraction dimension" ;
+    owl:versionInfo "1.0.0" .
 
 metameta:KnowledgeDomain rdf:type owl:Class ;
     rdfs:label "Knowledge Domain" ;
-    rdfs:comment "A distinct area of knowledge" .
+    rdfs:comment "A distinct area of knowledge" ;
+    owl:versionInfo "1.0.0" .
 
-# Core Properties
+# Core Properties with version info
 metameta:hasLevel rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Level" ;
+    rdfs:comment "Links an abstraction dimension to its levels" ;
     rdfs:domain metameta:AbstractionDimension ;
     rdfs:range metameta:AbstractionLevel ;
-    owl:minCardinality "1"^^xsd:nonNegativeInteger .
+    owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:versionInfo "1.0.0" .
 
 metameta:levelNumber rdf:type owl:DatatypeProperty ;
+    rdfs:label "Level Number" ;
+    rdfs:comment "Numeric identifier for an abstraction level" ;
     rdfs:domain metameta:AbstractionLevel ;
-    rdfs:range xsd:integer .
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
 
 metameta:domainScope rdf:type owl:DatatypeProperty ;
+    rdfs:label "Domain Scope" ;
+    rdfs:comment "Textual description of the knowledge domain's scope" ;
     rdfs:domain metameta:KnowledgeDomain ;
-    rdfs:range xsd:string .
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes
+metameta:AbstractionDimensionShape a sh:NodeShape ;
+    sh:targetClass metameta:AbstractionDimension ;
+    sh:property [
+        sh:path metameta:hasLevel ;
+        sh:class metameta:AbstractionLevel ;
+        sh:minCount 1 ;
+        sh:message "Abstraction dimension must have at least one level" ;
+    ] .
+
+metameta:AbstractionLevelShape a sh:NodeShape ;
+    sh:targetClass metameta:AbstractionLevel ;
+    sh:property [
+        sh:path metameta:levelNumber ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+        sh:message "Abstraction level must have exactly one non-negative level number" ;
+    ] .
+
+metameta:KnowledgeDomainShape a sh:NodeShape ;
+    sh:targetClass metameta:KnowledgeDomain ;
+    sh:property [
+        sh:path metameta:domainScope ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Knowledge domain must have a scope description" ;
+    ] .

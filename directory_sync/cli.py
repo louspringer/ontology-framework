@@ -1,5 +1,6 @@
 import argparse
 import glob
+
 from directory_sync.sync import sync_directories
 
 
