@@ -1,0 +1,51 @@
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Classes
+:RequestHandler a rdfs:Class ;
+    rdfs:label "Request Handler" ;
+    rdfs:comment "Handles requests for playback licenses from AbemaTV." .
+
+:InfoExtractor a rdfs:Class ;
+    rdfs:label "Info Extractor" ;
+    rdfs:comment "Base class for extracting video information." .
+
+:AbemaTVIE a rdfs:Class ;
+    rdfs:label "AbemaTV Info Extractor" ;
+    rdfs:comment "Extracts video information from AbemaTV URLs." .
+
+:AbemaTVTitleIE a rdfs:Class ;
+    rdfs:label "AbemaTV Title Info Extractor" ;
+    rdfs:comment "Extracts playlists from AbemaTV titles." .
+
+# Properties
+:hasToken a rdf:Property ;
+    rdfs:domain :InfoExtractor ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Represents a token used for authentication." .
+
+:hasDeviceID a rdf:Property ;
+    rdfs:domain :InfoExtractor ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Represents a device ID used for generating tokens." .
+
+# Individuals
+:AbemaLicenseRHInstance a :RequestHandler ;
+    rdfs:label "Abema License Request Handler" ;
+    rdfs:comment "An instance of the request handler for AbemaTV licenses." .
+
+:AbemaTVBaseIEInstance a :InfoExtractor ;
+    rdfs:label "AbemaTV Base Info Extractor" ;
+    rdfs:comment "An instance of the base info extractor for AbemaTV." .
+
+# TODO
+# Extend the ontology with more detailed properties and classes as needed.
+# Consider adding validation rules and examples for each class and property. 
