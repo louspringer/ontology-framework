@@ -1,0 +1,15 @@
+test(abematv): enhance test logging and mock responses
+
+- Add comprehensive logging for API interactions
+- Improve mock response handling for JSON endpoints
+- Add detailed logging for m3u8 manifest parsing
+- Enhance assertion logging with detailed error messages
+
+Ontology-Version: 1.0.0
+Security-Pattern: SecretManagement
+Test-Coverage: AbemaTVIE._real_extract
+
+Related-Issues:
+- Enhancement: Register pytest.mark.integration
+- Enhancement: Improve m3u8 format validation
+- Documentation: Add security pattern documentation 
