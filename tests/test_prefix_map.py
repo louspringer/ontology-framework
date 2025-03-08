@@ -1,7 +1,7 @@
 """Tests for prefix map functionality."""
 
 import pytest
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, URIRef
 
 from ontology_framework.prefix_map import PrefixCategory, PrefixMap, default_prefix_map
 
@@ -39,8 +39,8 @@ def test_graph_binding():
     default_prefix_map.bind_to_graph(g)
     
     # Check that core prefixes are bound
-    assert g.namespace_manager.store.namespace("meta") == Namespace("./meta#")
-    assert g.namespace_manager.store.namespace("rdf") == Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+    assert str(g.namespace_manager.store.namespace("meta")) == "./meta#"
+    assert str(g.namespace_manager.store.namespace("rdf")) == "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
 
 def test_custom_prefix_registration():
