@@ -8,7 +8,7 @@ from typing import Any, List, Optional
 
 import oracledb
 import pytest
-from rdflib import Graph
+from rdflib import Graph, URIRef
 
 from ontology_framework.prefix_map import default_prefix_map, PrefixCategory
 
@@ -134,7 +134,16 @@ def execute_sparql(store: Any, query: str, store_type: StorageType) -> List[Any]
         Query results
     """
     if store_type == StorageType.LOCAL:
-        return list(store.query(query))
+        # Debug: Print all triples in the graph
+        print("\nAll triples in graph:")
+        for s, p, o in store:
+            print(f"{s} {p} {o}")
+            
+        # Debug: Print query and results
+        print(f"\nExecuting query: {query}")
+        results = list(store.query(query))
+        print(f"Query results: {results}")
+        return results
     else:
         return safe_execute_sparql_oracle(store, query)
 
@@ -148,7 +157,15 @@ def rdf_store(request):
         default_prefix_map.bind_to_graph(g)
         print("Loading test ontology...")
         test_data = Path(__file__).parent / "test_data" / "test_ontology.ttl"
+        print(f"Test data path: {test_data}")
+        print(f"Test data exists: {test_data.exists()}")
         g.parse(test_data, format="turtle")
+        
+        # Debug: Print all triples after loading
+        print("\nTriples after loading:")
+        for s, p, o in g:
+            print(f"{s} {p} {o}")
+        
         return g
     else:
         if not is_oracle_java_available():

@@ -10,9 +10,8 @@ from pyshacl import validate
 from rdflib import Graph, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 
-# Define namespaces
-META = Namespace("./meta#")
-GUIDANCE = Namespace("./guidance#")
+# Import prefix map
+from ontology_framework.prefix_map import default_prefix_map
 
 def load_graph(file_path: str) -> Graph:
     """Load an RDF graph from a file.
@@ -24,6 +23,10 @@ def load_graph(file_path: str) -> Graph:
         Loaded RDF graph
     """
     g = Graph()
+    
+    # Bind all standard prefixes
+    default_prefix_map.bind_to_graph(g)
+    
     g.parse(file_path, format="turtle")
     return g
 
@@ -42,12 +45,22 @@ def validate_ontology_file(file_path: str) -> Tuple[bool, str]:
         # Basic validation checks
         validation_errors = []
         
-        # Check for required namespaces
-        required_ns = {RDF, RDFS, OWL, META, GUIDANCE}
-        for ns in required_ns:
-            if not any(ns in triple[0] or ns in triple[1] or ns in triple[2] 
-                      for triple in g):
-                validation_errors.append(f"Missing required namespace: {ns}")
+        # Get all prefixes used in the file
+        used_prefixes = set()
+        for s, p, o in g:
+            for node in (s, p, o):
+                if isinstance(node, rdflib.URIRef):
+                    uri = str(node)
+                    for prefix, ns in default_prefix_map.get_all_prefixes().items():
+                        if uri.startswith(str(ns)):
+                            used_prefixes.add(prefix)
+                            break
+        
+        # Check for required prefixes
+        required_prefixes = {"rdf", "rdfs", "owl", "meta", "guidance"}
+        for prefix in required_prefixes:
+            if prefix not in used_prefixes:
+                validation_errors.append(f"Missing required prefix: {prefix}")
         
         # Check for classes having required properties
         for cls in g.subjects(RDF.type, OWL.Class):
