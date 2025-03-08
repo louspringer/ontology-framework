@@ -1,0 +1,44 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: check-ast
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: detect-private-key
+
+-   repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+    -   id: black
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+    -   id: flake8
+        additional_dependencies: [flake8-docstrings]
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+    -   id: isort
+
+-   repo: local
+    hooks:
+    -   id: validate-ontology
+        name: Validate Ontology Files
+        entry: python -m scripts.validate_ontology
+        language: python
+        files: \.(ttl|owl|rdf)$
+        additional_dependencies: ['rdflib>=6.0.0', 'pyshacl>=0.20.0']
+
+    -   id: pytest-check
+        name: pytest-check
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true 

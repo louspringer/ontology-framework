@@ -1,10 +1,15 @@
 name: ontology-framework
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
-  - python=3.11
-  - mdformat
+  - python=3.10.*
   - pip
+  - rdflib>=6.0.0
+  - pytest>=7.0.0
+  - pytest-cov>=4.0.0
+  - black>=22.0.0
   - pip:
-    - -e .
+    - oracledb>=1.0.0
+    - isort>=5.0.0
+    - mypy>=1.0.0
