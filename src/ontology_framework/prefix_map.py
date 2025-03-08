@@ -29,12 +29,12 @@ class PrefixMap:
         self.register_prefix("sh", "http://www.w3.org/ns/shacl#", PrefixCategory.EXTERNAL)
         
         # Core framework prefixes
-        self.register_prefix("meta", "./meta#", PrefixCategory.CORE)
-        self.register_prefix("metameta", "./metameta#", PrefixCategory.CORE)
-        self.register_prefix("problem", "./problem#", PrefixCategory.CORE)
-        self.register_prefix("solution", "./solution#", PrefixCategory.CORE)
-        self.register_prefix("conversation", "./conversation#", PrefixCategory.CORE)
-        self.register_prefix("guidance", "./guidance#", PrefixCategory.CORE)
+        self.register_prefix("meta", "http://ontologies.louspringer.com/meta#", PrefixCategory.CORE)
+        self.register_prefix("metameta", "http://ontologies.louspringer.com/metameta#", PrefixCategory.CORE)
+        self.register_prefix("problem", "http://ontologies.louspringer.com/problem#", PrefixCategory.CORE)
+        self.register_prefix("solution", "http://ontologies.louspringer.com/solution#", PrefixCategory.CORE)
+        self.register_prefix("conversation", "http://ontologies.louspringer.com/conversation#", PrefixCategory.CORE)
+        self.register_prefix("guidance", "http://ontologies.louspringer.com/guidance#", PrefixCategory.CORE)
         
     def register_prefix(self, prefix: str, uri: str, category: PrefixCategory) -> None:
         """Register a new prefix.

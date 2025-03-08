@@ -26,7 +26,7 @@ def test_namespace_resolution():
     """Test that namespaces are correctly resolved."""
     meta_ns = default_prefix_map.get_namespace("meta")
     assert meta_ns is not None
-    assert str(meta_ns) == "./meta#"
+    assert str(meta_ns) == "http://ontologies.louspringer.com/meta#"
 
     rdf_ns = default_prefix_map.get_namespace("rdf")
     assert rdf_ns is not None
@@ -39,7 +39,7 @@ def test_graph_binding():
     default_prefix_map.bind_to_graph(g)
     
     # Check that core prefixes are bound
-    assert str(g.namespace_manager.store.namespace("meta")) == "./meta#"
+    assert str(g.namespace_manager.store.namespace("meta")) == "http://ontologies.louspringer.com/meta#"
     assert str(g.namespace_manager.store.namespace("rdf")) == "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
 
