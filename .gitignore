@@ -163,3 +163,4 @@ cython_debug/
 prompt-manager/.DS_Store
 github_provider.json
 *.zip
+set_oracle_env.sh
