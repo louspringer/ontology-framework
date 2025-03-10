@@ -1,48 +1,40 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix meta: <http://ontologies.louspringer.com/meta#> .
-@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
 
 # Test Security Concepts
 meta:TestSecurityConcept a meta:SecurityConcept ;
     rdfs:label "Test Security Concept"@en ;
     rdfs:comment "A test security concept" ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Follow security best practices" .
+    owl:versionInfo "1.0.0" .
 
 meta:TestAuthenticationConcept a meta:SecurityConcept ;
     rdfs:label "Test Authentication Concept"@en ;
     rdfs:comment "A test authentication concept" ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Use strong authentication" .
+    owl:versionInfo "1.0.0" .
 
 # Test RCA Issues
 meta:TestRCAIssue a meta:RCAIssue ;
     rdfs:label "Test RCA Issue"@en ;
     rdfs:comment "A test RCA issue" ;
     meta:hasSolution meta:TestSolution ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Follow RCA process" .
+    owl:versionInfo "1.0.0" .
 
 meta:TestSolution a meta:Solution ;
     rdfs:label "Test Solution"@en ;
     rdfs:comment "A test solution" ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Implement the solution carefully" .
+    owl:versionInfo "1.0.0" .
 
 # Test Components
 meta:TestComponent a meta:Component ;
     rdfs:label "Test Component"@en ;
     rdfs:comment "A test component" ;
     meta:implements meta:TestSecurityConcept ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Follow component guidelines" .
+    owl:versionInfo "1.0.0" .
 
 meta:DependentComponent a meta:Component ;
     rdfs:label "Dependent Component"@en ;
     rdfs:comment "A component that depends on another" ;
     meta:dependsOn meta:TestComponent ;
-    owl:versionInfo "1.0.0" ;
-    guidance:hasGuidance "Check dependencies" . 
+    owl:versionInfo "1.0.0" . 

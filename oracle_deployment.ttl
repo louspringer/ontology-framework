@@ -1,0 +1,157 @@
+@prefix : <./oracle_deployment#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <./meta#> .
+@prefix oracle: <./oracle_rdf#> .
+
+# Ontology Definition
+:OracleDeploymentOntology rdf:type owl:Ontology ;
+    rdfs:label "Oracle RDF Deployment Ontology" ;
+    rdfs:comment "Ontology for modeling Oracle RDF deployment process and artifacts" ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <./oracle_rdf.ttl> .
+
+# Core Classes
+:SchemaPrivateNetwork rdf:type owl:Class ;
+    rdfs:label "Schema Private Network" ;
+    rdfs:comment "A schema-private semantic network in Oracle" ;
+    rdfs:subClassOf oracle:RDFNetwork .
+
+:NetworkOwner rdf:type owl:Class ;
+    rdfs:label "Network Owner" ;
+    rdfs:comment "Owner of a schema-private network" .
+
+:DeployedModel rdf:type owl:Class ;
+    rdfs:label "Deployed Model" ;
+    rdfs:comment "An RDF model deployed in a schema-private network" ;
+    rdfs:subClassOf oracle:RDFModel .
+
+:TransformedOntology rdf:type owl:Class ;
+    rdfs:label "Transformed Ontology" ;
+    rdfs:comment "A TTL file that has been transformed for Oracle deployment" .
+
+:SourceOntology rdf:type owl:Class ;
+    rdfs:label "Source Ontology" ;
+    rdfs:comment "Original TTL file before transformation" .
+
+# Properties
+:hasNetworkOwner rdf:type owl:ObjectProperty ;
+    rdfs:label "has network owner" ;
+    rdfs:domain :SchemaPrivateNetwork ;
+    rdfs:range :NetworkOwner .
+
+:hasDeployedModel rdf:type owl:ObjectProperty ;
+    rdfs:label "has deployed model" ;
+    rdfs:domain :SchemaPrivateNetwork ;
+    rdfs:range :DeployedModel .
+
+:transformedFrom rdf:type owl:ObjectProperty ;
+    rdfs:label "transformed from" ;
+    rdfs:domain :TransformedOntology ;
+    rdfs:range :SourceOntology .
+
+:deployedFrom rdf:type owl:ObjectProperty ;
+    rdfs:label "deployed from" ;
+    rdfs:domain :DeployedModel ;
+    rdfs:range :TransformedOntology .
+
+:networkName rdf:type owl:DatatypeProperty ;
+    rdfs:label "network name" ;
+    rdfs:domain :SchemaPrivateNetwork ;
+    rdfs:range xsd:string .
+
+:ownerSchema rdf:type owl:DatatypeProperty ;
+    rdfs:label "owner schema" ;
+    rdfs:domain :NetworkOwner ;
+    rdfs:range xsd:string .
+
+# SHACL Shapes for Validation
+:SchemaPrivateNetworkShape rdf:type sh:NodeShape ;
+    sh:targetClass :SchemaPrivateNetwork ;
+    sh:property [
+        sh:path :networkName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[A-Z][A-Z0-9_]{0,29}$" ;
+        sh:message "Network name must be uppercase, start with letter, max 30 chars"
+    ] ;
+    sh:property [
+        sh:path :hasNetworkOwner ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Network must have exactly one owner"
+    ] .
+
+:DeployedModelShape rdf:type sh:NodeShape ;
+    sh:targetClass :DeployedModel ;
+    sh:property [
+        sh:path oracle:modelName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[A-Z][A-Z0-9_]{0,24}$" ;
+        sh:message "Model name must be uppercase, start with letter, max 25 chars"
+    ] ;
+    sh:property [
+        # For schema-private networks, table and column are NULL
+        sh:path oracle:hasTable ;
+        sh:maxCount 0 ;
+        sh:message "Schema-private network models must not specify table"
+    ] ;
+    sh:property [
+        sh:path :deployedFrom ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Model must be deployed from exactly one transformed ontology"
+    ] .
+
+# Session Tracking Shape
+:SessionRegistrationShape rdf:type sh:NodeShape ;
+    sh:targetClass :DeployedModel ;
+    sh:property [
+        sh:path :modelName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Model name must be stored as xsd:string literal"
+    ] ;
+    sh:property [
+        sh:path :version ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Version must be stored as xsd:string literal"
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Label must be stored as xsd:string literal"
+    ] .
+
+# Example Instances
+:ontologyFrameworkNetwork rdf:type :SchemaPrivateNetwork ;
+    rdfs:label "Ontology Framework Network" ;
+    :networkName "ONTOLOGY_FRAMEWORK" ;
+    :hasNetworkOwner [
+        rdf:type :NetworkOwner ;
+        :ownerSchema "ADMIN"
+    ] .
+
+:metaModel rdf:type :DeployedModel ;
+    rdfs:label "Meta Model" ;
+    oracle:modelName "META" ;
+    :deployedFrom [
+        rdf:type :TransformedOntology ;
+        :transformedFrom [
+            rdf:type :SourceOntology ;
+            rdfs:label "meta.ttl"
+        ]
+    ] . 

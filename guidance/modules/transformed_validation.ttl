@@ -1,0 +1,102 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
+@prefix ns1: <http://ontologies.louspringer.com/guidance/modules/validation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:EnforcementMechanismsTest a ns1:TestCase,
+        owl:NamedIndividual ;
+    rdfs:label "Enforcement Mechanisms Test" ;
+    ns1:hasExpectedResult "Should find at least 3 enforcement mechanisms" ;
+    ns1:hasTestQuery """
+    SELECT ?mech ?impl ?pattern WHERE {
+        ?mech rdf:type pdi:EnforcementMechanism ;
+              pdi:implementedIn ?impl ;
+              pdi:usesPattern ?pattern .
+    }""" ;
+    rdfs:comment "Tests that enforcement mechanisms are properly defined" .
+
+ns1:PolicyStructureTest a ns1:TestCase,
+        owl:NamedIndividual ;
+    rdfs:label "Policy Structure Test" ;
+    ns1:hasExpectedResult "Should find OntologyAccessibilityPolicy and its requirements" ;
+    ns1:hasTestQuery """
+    SELECT ?policy ?req ?decision WHERE {
+        ?policy rdf:type pdi:Policy ;
+                pdi:drivesRequirement ?req .
+        ?req pdi:influencesDecision ?decision .
+    }""" ;
+    rdfs:comment "Tests that policies drive requirements that influence decisions" .
+
+ns1:RuleShape a sh:NodeShape ;
+    rdfs:label "Rule Shape" ;
+    rdfs:comment "Validation shape for best practice rules" ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:message "Rule must have a label" ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:message "Rule must have a description" ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ] ;
+    sh:targetClass <http://ontologies.louspringer.com/guidance/core#BestPractice> .
+
+ns1:TestCaseShape a sh:NodeShape ;
+    rdfs:label "Test Case Shape" ;
+    rdfs:comment "Validation shape for test cases" ;
+    sh:property [ sh:message "Every test case must have a SPARQL query" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestQuery ],
+        [ sh:message "Every test case must specify expected results" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasExpectedResult ] ;
+    sh:targetClass ns1:TestCase .
+
+ns1:ValidationGuidanceModule a owl:Ontology ;
+    rdfs:label "Validation Guidance Module" ;
+    dc:title "Validation Guidance Module" ;
+    dc:version "1.0.0" ;
+    dcterms:created "2024-03-21"^^xsd:dateTime ;
+    dcterms:description "Module containing validation patterns and test cases" ;
+    dcterms:modified "2024-03-21"^^xsd:dateTime ;
+    dcterms:publisher "Ontology Framework Project" ;
+    rdfs:comment "Validation rules and constraints for guidance ontology" ;
+    owl:imports <http://ontologies.louspringer.com/guidance/modules/collaboration.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/core.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/model.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/security.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasLegacyValidationConcept a owl:ObjectProperty ;
+    rdfs:label "Has Legacy Validation Concept" ;
+    rdfs:comment "Links modular validation concept to legacy guidance" ;
+    rdfs:domain ns1:ValidationPattern ;
+    rdfs:range guidance:LLMGuidanceOntology .
+
+ns1:hasExpectedResult a owl:DatatypeProperty ;
+    rdfs:label "Has Expected Result" ;
+    rdfs:comment "Expected result or assertion for the test case" ;
+    rdfs:domain ns1:TestCase ;
+    rdfs:range xsd:string .
+
+ns1:hasTestQuery a owl:DatatypeProperty ;
+    rdfs:label "Has Test Query" ;
+    rdfs:comment "The SPARQL query used in the test case" ;
+    rdfs:domain ns1:TestCase ;
+    rdfs:range xsd:string .
+
+ns1:ValidationPattern a owl:Class ;
+    rdfs:label "ValidationPattern" ;
+    rdfs:comment "A pattern for implementing validation rules and constraints" ;
+    rdfs:subClassOf <http://ontologies.louspringer.com/guidance/core#BestPractice> ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TestCase a owl:Class ;
+    rdfs:label "TestCase" ;
+    rdfs:comment "A test case for validating ontology components" ;
+    rdfs:subClassOf ns1:ValidationPattern ;
+    owl:versionInfo "1.0.0" .
+

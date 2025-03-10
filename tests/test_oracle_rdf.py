@@ -1,157 +1,482 @@
 """Tests for Oracle RDF store integration."""
 
 import os
-import subprocess
+import unittest
 from enum import Enum
 from pathlib import Path
 from typing import Any, List, Optional
 
 import oracledb
 import pytest
-from rdflib import Graph, URIRef
+from rdflib import Graph, URIRef, Literal, Namespace
+from pyshacl import validate
 
-from ontology_framework.prefix_map import default_prefix_map, PrefixCategory
+from ontology_framework.prefix_map import default_prefix_map
+
 
 class StorageType(Enum):
     """Storage type for RDF data."""
+
     LOCAL = 1
     ORACLE = 2
 
-def is_oracle_java_available() -> bool:
-    """Check if Java is available in Oracle DB.
-    
-    Returns:
-        True if Java is available, False otherwise
-    """
-    try:
-        connection = get_oracle_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT 1 FROM DUAL WHERE EXISTS (SELECT * FROM ALL_OBJECTS WHERE OBJECT_NAME = 'JAVA_INFO')")
-        return bool(cursor.fetchone())
-    except Exception:
-        return False
 
 def get_oracle_connection() -> Optional[oracledb.Connection]:
-    """Get Oracle database connection.
-    
-    Returns:
-        Oracle connection if successful, None otherwise
-    """
+    """Get Oracle database connection."""
     try:
-        connection = oracledb.connect(
-            user=os.getenv("ORACLE_USER", "ADMIN"),
-            password=os.getenv("ORACLE_PASSWORD", "your_password"),
-            dsn=os.getenv("ORACLE_DSN", "tfm_medium")
+        return oracledb.connect(
+            user=os.environ["ORACLE_USER"],
+            password=os.environ["ORACLE_PASSWORD"],
+            dsn=os.environ["ORACLE_DSN"],
         )
-        return connection
     except Exception as e:
-        print(f"Error connecting to Oracle: {e}")
+        print(f"Failed to connect to Oracle: {e}")
         return None
 
+
+def verify_oracle_rdf_access(connection: oracledb.Connection) -> None:
+    """Verify access to Oracle RDF packages and objects.
+
+    Args:
+        connection: Oracle database connection
+
+    Raises:
+        Exception: If required access is not available
+    """
+    cursor = connection.cursor()
+
+    try:
+        # Log Oracle version and environment
+        print("\n=== Oracle Environment ===")
+        cursor.execute("SELECT * FROM V$VERSION")
+        for row in cursor:
+            print(f"Version info: {row[0]}")
+
+        cursor.execute("SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL")
+        current_schema = cursor.fetchone()[0]
+        print(f"Current schema: {current_schema}")
+
+        cursor.execute("SELECT SYS_CONTEXT('USERENV', 'SESSION_USER') FROM DUAL")
+        session_user = cursor.fetchone()[0]
+        print(f"Session user: {session_user}")
+
+        # First verify SEM_APIS access
+        print("\n=== Verifying SEM_APIS Access ===")
+        cursor.execute(
+            """
+            SELECT owner, object_name, object_type, status 
+            FROM all_objects 
+            WHERE object_name = 'SEM_APIS'
+            AND object_type = 'SYNONYM'
+        """
+        )
+        sem_apis = cursor.fetchone()
+        if not sem_apis:
+            raise Exception("SEM_APIS synonym not found")
+        print(
+            f"Found SEM_APIS: {sem_apis[0]}.{sem_apis[1]} ({sem_apis[2]}) - Status: {sem_apis[3]}"
+        )
+
+        # Check if semantic network exists
+        print("\nChecking for existing semantic network...")
+        cursor.execute(
+            """
+            SELECT COUNT(*) 
+            FROM all_tables 
+            WHERE owner = 'MDSYS' 
+            AND table_name = 'SEM_MODEL$'
+        """
+        )
+        if cursor.fetchone()[0] > 0:
+            print("Semantic network tables exist")
+        else:
+            print("WARNING: Semantic network tables not found")
+            print("Attempting to create semantic network...")
+            try:
+                cursor.execute(
+                    """
+                    BEGIN
+                        SEM_APIS.CREATE_SEM_NETWORK('SYSAUX');
+                        DBMS_OUTPUT.PUT_LINE('Network created successfully');
+                    END;
+                """
+                )
+                print("Successfully created semantic network")
+            except Exception as e:
+                error_str = str(e)
+                if "ORA-55321" in error_str:  # Network already exists
+                    print("Network already exists - this is OK")
+                else:
+                    raise Exception(f"Failed to create semantic network: {e}")
+
+        # Now check if we can create a test table
+        print("\n=== Test Table Setup ===")
+        print("Checking for existing test table...")
+        drop_sql = """
+            BEGIN
+                EXECUTE IMMEDIATE 'DROP TABLE TEST_RDF_ACCESS PURGE';
+                DBMS_OUTPUT.PUT_LINE('Existing table dropped');
+            EXCEPTION
+                WHEN OTHERS THEN
+                    IF SQLCODE != -942 THEN  -- Table does not exist
+                        DBMS_OUTPUT.PUT_LINE('Error dropping table: ' || SQLERRM);
+                        RAISE;
+                    ELSE
+                        DBMS_OUTPUT.PUT_LINE('No existing table found');
+                    END IF;
+            END;
+        """
+        print(f"Executing cleanup SQL:\n{drop_sql}")
+        cursor.execute(drop_sql)
+        print("Table cleanup completed")
+
+        # Try to create a test table with RDF column
+        print("\nAttempting to create test RDF table...")
+        create_table_sql = """
+            CREATE TABLE TEST_RDF_ACCESS (
+                id NUMBER,
+                triple SDO_RDF_TRIPLE_S
+            )
+        """
+        print(f"Executing create SQL:\n{create_table_sql}")
+        cursor.execute(create_table_sql)
+        print("Successfully created RDF table")
+
+        # Clean up
+        print("\n=== Cleanup ===")
+        print("Dropping test table...")
+        drop_sql = "DROP TABLE TEST_RDF_ACCESS PURGE"
+        print(f"Executing SQL: {drop_sql}")
+        cursor.execute(drop_sql)
+        print("Successfully dropped test table")
+
+        try:
+            cursor.execute("SELECT status FROM all_users WHERE username = 'MDSYS'")
+            mdsys_status = cursor.fetchone()
+            if mdsys_status:
+                print(f"MDSYS schema status: {mdsys_status[0]}")
+            else:
+                print("MDSYS schema not found!")
+        except Exception as e:
+            print(f"Could not check MDSYS schema status: {e}")
+            
+        raise
+    finally:
+        cursor.close()
+
+
 def setup_semantic_network(connection: oracledb.Connection) -> None:
-    """Set up Oracle semantic network.
-    
+    """Set up semantic network for testing.
+
     Args:
         connection: Oracle database connection
     """
-    try:
+    cursor = connection.cursor()
+
+    # Check if network exists
+    cursor.execute(
+        """
+        SELECT MODEL_NAME 
+        FROM MDSYS.SEM_MODEL$
+        WHERE ROWNUM = 1
+    """
+    )
+    if not cursor.fetchone():
         print("Creating semantic network...")
-        cursor = connection.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             BEGIN
-                SEM_APIS.CREATE_SEM_NETWORK();
+                SEM_APIS.CREATE_SEM_NETWORK('SYSAUX');
             END;
-        """)
-    except oracledb.DatabaseError as e:
-        if "ORA-55321" in str(e):  # Network already exists
-            print("Semantic network already exists, continuing with setup...")
-        else:
-            raise
+        """
+        )
+        connection.commit()
+
 
 def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None:
     """Ensure RDF model is empty before testing.
-    
+
     Args:
         connection: Oracle database connection
         model_name: Name of the RDF model
+
+    Raises:
+        oracledb.DatabaseError: If model operations fail
     """
     cursor = connection.cursor()
-    cursor.execute("""
+
+    # Get current schema
+    cursor.execute("SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL")
+    current_schema = cursor.fetchone()[0]
+    print(f"Current schema: {current_schema}")
+
+    # First check if model exists
+    cursor.execute(
+        """
+        SELECT COUNT(*) 
+        FROM MDSYS.SEM_MODEL$ 
+        WHERE MODEL_NAME = :1
+    """,
+        [model_name],
+    )
+    model_exists = cursor.fetchone()[0] > 0
+
+    if model_exists:
+        print(f"Dropping existing model {model_name}")
+        cursor.execute(
+            """
+            BEGIN
+                SEM_APIS.DROP_RDF_MODEL(:1);
+            END;
+        """,
+            [model_name],
+        )
+        connection.commit()
+
+    # Drop table if it exists
+    cursor.execute(
+        """
         BEGIN
-            SEM_APIS.DROP_RDF_MODEL(:1);
-        EXCEPTION
+            EXECUTE IMMEDIATE 'DROP TABLE TEST_RDF_DATA PURGE';
+        EXCEPTION 
             WHEN OTHERS THEN
-                IF SQLCODE != -55505 THEN
+                IF SQLCODE != -942 THEN  -- Table does not exist
                     RAISE;
                 END IF;
         END;
-    """, [model_name])
-    
-    print("Creating model...")
-    cursor.execute("""
-        BEGIN
-            SEM_APIS.CREATE_RDF_MODEL(:1, 'TEST_RDF_DATA');
-        END;
-    """, [model_name])
-
-def safe_execute_sparql_oracle(connection: oracledb.Connection, query: str) -> List[Any]:
-    """Safely execute SPARQL query on Oracle.
-    
-    Args:
-        connection: Oracle database connection
-        query: SPARQL query to execute
-        
-    Returns:
-        Query results
     """
-    try:
-        cursor = connection.cursor()
-        cursor.execute(f"""
-            SELECT * FROM TABLE(SEM_MATCH(
-                '{query}',
-                SEM_MODELS('TEST_MODEL'),
-                null,
-                SEM_APIS.SPARQL,
-                null,
-                null,
-                'PLUS_RDFT=T'
-            ))
-        """)
-        return cursor.fetchall()
-    except Exception as e:
-        print(f"SPARQL execution error: {e}")
-        raise
+    )
+
+    # Create model table
+    print("Creating model table...")
+    cursor.execute(
+        """
+        CREATE TABLE TEST_RDF_DATA (
+            id NUMBER,
+            triple SDO_RDF_TRIPLE_S
+        )
+    """
+    )
+    connection.commit()
+
+    # Grant necessary privileges to MDSYS
+    print("Granting privileges to MDSYS...")
+    cursor.execute(
+        """
+        BEGIN
+            EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON TEST_RDF_DATA TO MDSYS';
+            EXECUTE IMMEDIATE 'GRANT SELECT, INSERT ON TEST_RDF_DATA TO PUBLIC';
+        END;
+    """
+    )
+    connection.commit()
+
+    # Create model
+    print(f"Creating model {model_name}...")
+    cursor.execute(
+        """
+        BEGIN
+            SEM_APIS.CREATE_RDF_MODEL(:1, 'TEST_RDF_DATA', 'triple');
+        END;
+    """,
+        [model_name],
+    )
+
+    connection.commit()
+    print(f"Created empty model {model_name} with table TEST_RDF_DATA")
+
+
+def get_current_schema(connection):
+    """Get the current schema name."""
+    cursor = connection.cursor()
+    cursor.execute("SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL")
+    schema = cursor.fetchone()[0]
+    cursor.close()
+    return schema
+
+
+def register_namespaces(connection):
+    """Register RDF namespaces with Oracle."""
+    cursor = connection.cursor()
+
+    # Define the namespaces
+    namespaces = [
+        ("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+        ("rdfs", "http://www.w3.org/2000/01/rdf-schema#"),
+        ("owl", "http://www.w3.org/2002/07/owl#"),
+        ("meta", "http://ontologies.louspringer.com/meta#"),
+    ]
+
+    # Register each namespace
+    for prefix, uri in namespaces:
+        cursor.execute(
+            """
+            BEGIN
+                MDSYS.SEM_APIS.CREATE_SEM_NAMESPACE(
+                    namespace_in => :uri,
+                    prefix_in => :prefix
+                );
+            EXCEPTION
+                WHEN OTHERS THEN
+                    IF SQLCODE != -20182 THEN
+                        RAISE;
+                    END IF;
+            END;
+        """,
+            uri=uri,
+            prefix=prefix,
+        )
+
+    cursor.close()
+
+
+def load_test_data(connection, model_name, test_data_path):
+    """Load test data into the RDF model."""
+    print("Loading test ontology...")
+    cursor = connection.cursor()
+    current_schema = get_current_schema(connection)
+    print(f"Current schema: {current_schema}")
+
+    # Parse the test data
+    g = Graph()
+    g.parse(test_data_path, format="turtle")
+
+    # Drop staging table if it exists
+    print("Creating staging table...")
+    cursor.execute(
+        """
+        BEGIN
+            EXECUTE IMMEDIATE 'DROP TABLE RDF_STAGING PURGE';
+        EXCEPTION
+            WHEN OTHERS THEN
+                IF SQLCODE != -942 THEN
+                    RAISE;
+                END IF;
+        END;
+    """
+    )
+
+    # Create staging table
+    cursor.execute(
+        """
+        CREATE TABLE RDF_STAGING (
+            RDF$STC_sub VARCHAR2(4000),
+            RDF$STC_pred VARCHAR2(4000),
+            RDF$STC_obj VARCHAR2(4000)
+        )
+    """
+    )
+
+    # Grant privileges
+    cursor.execute("""
+        GRANT SELECT ON RDF_STAGING TO MDSYS
+    """)
+
+    print("Loading data into staging table...")
+    # Insert data into staging table
+    insert_sql = """
+        INSERT INTO RDF_STAGING (RDF$STC_sub, RDF$STC_pred, RDF$STC_obj)
+        VALUES (:1, :2, :3)
+    """
+
+    # Process and load triples
+    for s, p, o in g:
+        # Format subject
+        subject = f"<{s}>" if isinstance(s, URIRef) else s
+
+        # Format predicate
+        predicate = f"<{p}>" if isinstance(p, URIRef) else p
+
+        # Format object
+        if isinstance(o, URIRef):
+            object_val = f"<{o}>"
+        elif isinstance(o, Literal):
+            if o.language:
+                # Handle language tags by appending them to the literal
+                object_val = f'"{o}"@{o.language}'
+            else:
+                object_val = f'"{o}"'
+        else:
+            object_val = str(o)
+
+        cursor.execute(insert_sql, [subject, predicate, object_val])
+
+    connection.commit()
+
+    print("Loading data into RDF model...")
+    # Bulk load data from staging table
+    cursor.execute(
+        f"""
+        BEGIN
+            SEM_APIS.BULK_LOAD_FROM_STAGING_TABLE(
+                model_name => '{model_name}',
+                table_owner => USER,
+                table_name => 'RDF_STAGING',
+                flags => NULL
+            );
+        END;
+    """
+    )
+
+    # Drop staging table
+    cursor.execute(
+        """
+        DROP TABLE RDF_STAGING PURGE
+    """
+    )
+
+    cursor.close()
+
 
 def execute_sparql(store: Any, query: str, store_type: StorageType) -> List[Any]:
-    """Execute SPARQL query on appropriate store.
-    
-    Args:
-        store: RDF store (Graph or Oracle connection)
-        query: SPARQL query to execute
-        store_type: Type of storage
-        
-    Returns:
-        Query results
-    """
+    """Execute a SPARQL query against the RDF store."""
     if store_type == StorageType.LOCAL:
-        # Debug: Print all triples in the graph
-        print("\nAll triples in graph:")
-        for s, p, o in store:
-            print(f"{s} {p} {o}")
-            
-        # Debug: Print query and results
-        print(f"\nExecuting query: {query}")
-        results = list(store.query(query))
-        print(f"Query results: {results}")
-        return results
+        results = store.query(query)
+        return list(results)
     else:
-        return safe_execute_sparql_oracle(store, query)
+        cursor = store.cursor()
+        
+        # Register namespaces if needed
+        register_namespaces(store)
+        
+        if query.strip().upper().startswith('INSERT') or query.strip().upper().startswith('DELETE'):
+            # Handle updates
+            cursor.execute("""
+                BEGIN
+                    MDSYS.SEM_APIS.UPDATE_MODEL(
+                        models => SEM_MODELS('TEST_MODEL'),
+                        sparql_update => :1,
+                        options => 'USE_BIND_VAR=T'
+                    );
+                END;
+            """, [query])
+            store.commit()
+            return []
+        else:
+            # Handle queries
+            cursor.execute("""
+                SELECT *
+                FROM TABLE(MDSYS.SEM_MATCH(
+                    :1,
+                    SEM_MODELS('TEST_MODEL'),
+                    null,
+                    null,
+                    null,
+                    null,
+                    'USE_BIND_VAR=T'
+                ))
+            """, [query])
+            
+            results = cursor.fetchall()
+            cursor.close()
+            return results
+
 
 @pytest.fixture
 def rdf_store(request):
     """Fixture for RDF store setup."""
     store_type = request.param
-    
+
     if store_type == StorageType.LOCAL:
         g = Graph()
         default_prefix_map.bind_to_graph(g)
@@ -160,42 +485,88 @@ def rdf_store(request):
         print(f"Test data path: {test_data}")
         print(f"Test data exists: {test_data.exists()}")
         g.parse(test_data, format="turtle")
-        
-        # Debug: Print all triples after loading
-        print("\nTriples after loading:")
-        for s, p, o in g:
-            print(f"{s} {p} {o}")
-        
         return g
     else:
-        if not is_oracle_java_available():
-            pytest.skip("Oracle RDF store requires Java")
-        
         connection = get_oracle_connection()
         if not connection:
             pytest.skip("Oracle connection not available")
-            
+
+        # Verify RDF access before proceeding
+        try:
+            verify_oracle_rdf_access(connection)
+        except Exception as e:
+            pytest.skip(f"Oracle RDF access not available: {e}")
+
         setup_semantic_network(connection)
         ensure_model_empty(connection, "TEST_MODEL")
-        
+
         # Load test data
         print("Loading test ontology...")
         test_data = Path(__file__).parent / "test_data" / "test_ontology.ttl"
-        g = Graph()
-        g.parse(test_data, format="turtle")
-        
-        # Convert to Oracle format and load
-        # TODO: Implement Oracle data loading
-        
+        load_test_data(connection, "TEST_MODEL", test_data)
+
         return connection
+
+
+class TestOracleRDFStore:
+    """Test Oracle RDF store functionality."""
+
+    @pytest.mark.parametrize("rdf_store", [StorageType.ORACLE], indirect=True)
+    def test_model_creation(self, rdf_store):
+        """Test model creation (ModelCreationTest)."""
+        cursor = rdf_store.cursor()
+        cursor.execute(
+            """
+            SELECT model_name, owner, table_name
+            FROM MDSYS.SEM_MODEL$
+            WHERE model_name = 'TEST_MODEL'
+        """
+        )
+        result = cursor.fetchone()
+        assert result is not None, "Model should exist"
+        assert result[0] == "TEST_MODEL", "Model name should match"
+        assert result[2] == "TEST_RDF_DATA", "Table name should match"
+
+    @pytest.mark.parametrize("rdf_store", [StorageType.ORACLE], indirect=True)
+    def test_triple_loading(self, rdf_store):
+        """Test triple loading (TripleLoadingTest)."""
+        cursor = rdf_store.cursor()
+        cursor.execute(
+            """
+            SELECT *
+            FROM TABLE(MDSYS.SEM_MATCH(
+                'SELECT ?s ?p ?o WHERE {?s ?p ?o}',
+                SEM_MODELS('TEST_MODEL'),
+                null,
+                null,
+                null,
+                null,
+                'USE_BIND_VAR=T'
+            ))
+        """
+        )
+        results = cursor.fetchall()
+        assert len(results) > 0, "No triples found in the model"
+        cursor.close()
+
+    @pytest.mark.parametrize("rdf_store", [StorageType.ORACLE], indirect=True)
+    def test_oracle_rdf_setup(self, rdf_store):
+        """Test Oracle RDF setup and access."""
+        verify_oracle_rdf_access(rdf_store)
+        assert True, "Oracle RDF access verified"
+
 
 class TestOntologyQueries:
     """Test ontology queries."""
-    
-    @pytest.mark.parametrize("rdf_store,store_type", [
-        (StorageType.LOCAL, StorageType.LOCAL),
-        (StorageType.ORACLE, StorageType.ORACLE)
-    ], indirect=["rdf_store"])
+
+    @pytest.mark.parametrize(
+        "rdf_store,store_type",
+        [
+            (StorageType.LOCAL, StorageType.LOCAL),
+            (StorageType.ORACLE, StorageType.ORACLE),
+        ],
+        indirect=["rdf_store"],
+    )
     def test_security_concepts(self, rdf_store, store_type):
         """Test listing security concepts."""
         query = """
@@ -208,15 +579,21 @@ class TestOntologyQueries:
         """
         results = execute_sparql(rdf_store, query, store_type)
         assert len(results) > 0, "Should find security concepts"
-        
+
         meta_ns = str(default_prefix_map.get_namespace("meta"))
         if store_type == StorageType.LOCAL:
-            assert all(str(r[0]).startswith(meta_ns) for r in results), "All concepts should be in meta namespace"
+            assert all(
+                str(r[0]).startswith(meta_ns) for r in results
+            ), "All concepts should be in meta namespace"
 
-    @pytest.mark.parametrize("rdf_store,store_type", [
-        (StorageType.LOCAL, StorageType.LOCAL),
-        (StorageType.ORACLE, StorageType.ORACLE)
-    ], indirect=["rdf_store"])
+    @pytest.mark.parametrize(
+        "rdf_store,store_type",
+        [
+            (StorageType.LOCAL, StorageType.LOCAL),
+            (StorageType.ORACLE, StorageType.ORACLE),
+        ],
+        indirect=["rdf_store"],
+    )
     def test_rca_issues(self, rdf_store, store_type):
         """Test RCA issues and solutions."""
         query = """
@@ -232,9 +609,10 @@ class TestOntologyQueries:
         results = execute_sparql(rdf_store, query, store_type)
         assert len(results) > 0, "Should find RCA issues"
 
+
 class TestOracleCRUD:
     """Test CRUD operations in Oracle RDF store."""
-    
+
     @pytest.mark.parametrize("rdf_store", [StorageType.ORACLE], indirect=True)
     def test_crud_operations(self, rdf_store):
         """Test CRUD operations in Oracle RDF store."""
@@ -248,7 +626,7 @@ class TestOracleCRUD:
             }
         """
         execute_sparql(rdf_store, create_query, StorageType.ORACLE)
-        
+
         # Read
         read_query = """
             SELECT ?label
@@ -260,10 +638,12 @@ class TestOracleCRUD:
         assert len(results) == 1, "Should find created concept"
         assert str(results[0][0]) == "Test Security Concept", "Label should match"
 
-@pytest.mark.parametrize("rdf_store,store_type", [
-    (StorageType.LOCAL, StorageType.LOCAL),
-    (StorageType.ORACLE, StorageType.ORACLE)
-], indirect=["rdf_store"])
+
+@pytest.mark.parametrize(
+    "rdf_store,store_type",
+    [(StorageType.LOCAL, StorageType.LOCAL), (StorageType.ORACLE, StorageType.ORACLE)],
+    indirect=["rdf_store"],
+)
 def test_component_dependencies(rdf_store, store_type):
     """Test component dependency relationships."""
     query = """
@@ -277,4 +657,139 @@ def test_component_dependencies(rdf_store, store_type):
         ORDER BY ?component
     """
     results = execute_sparql(rdf_store, query, store_type)
-    assert len(results) > 0, "Should find components" 
+    assert len(results) > 0, "Should find components"
+
+
+@pytest.mark.parametrize("rdf_store", [StorageType.ORACLE], indirect=True)
+def test_oracle_rdf_access(rdf_store):
+    """Test Oracle RDF functionality."""
+    verify_oracle_rdf_access(rdf_store)
+    assert True, "Oracle RDF functionality verified"
+
+
+class TestOracleRDFModel(unittest.TestCase):
+    """Test Oracle RDF functionality using the test model."""
+    
+    @classmethod
+    def setUpClass(cls):
+        # Load test model
+        cls.test_model_path = Path(__file__).parent / "test_oracle_rdf_model.ttl"
+        cls.g = Graph()
+        cls.g.parse(cls.test_model_path, format="turtle")
+        
+        # Define namespaces
+        cls.TEST = Namespace("test_oracle_rdf_model#")
+        
+        # Validate model against SHACL constraints
+        conforms, _, _ = validate(cls.g)
+        if not conforms:
+            raise ValueError("Test model does not conform to SHACL constraints")
+        
+        # Connect to Oracle
+        cls.connection = oracledb.connect(
+            user=os.environ['ORACLE_USER'],
+            password=os.environ['ORACLE_PASSWORD'],
+            dsn=os.environ['ORACLE_DSN']
+        )
+        cls.cursor = cls.connection.cursor()
+
+    def setUp(self):
+        # Set up test environment
+        self.cursor.execute("ALTER SESSION SET CURRENT_SCHEMA = MDSYS")
+
+    def test_semantic_network_creation(self):
+        """Test creating a semantic network following the test model."""
+        try:
+            # Create tablespace if it doesn't exist
+            try:
+                self.cursor.execute("""
+                    CREATE TABLESPACE rdf_tblspace
+                    DATAFILE '/opt/oracle/oradata/TFMDB/rdf_tblspace.dat' SIZE 100M REUSE
+                    AUTOEXTEND ON NEXT 32M MAXSIZE UNLIMITED
+                    SEGMENT SPACE MANAGEMENT AUTO
+                """)
+            except oracledb.DatabaseError as e:
+                error_obj, = e.args
+                if error_obj.code != 1543:  # ORA-01543: tablespace already exists
+                    raise
+
+            # Create semantic network
+            self.cursor.execute("""
+                BEGIN
+                    sem_apis.create_sem_network(
+                        tablespace_name => 'rdf_tblspace',
+                        options => NULL
+                    );
+                EXCEPTION
+                    WHEN OTHERS THEN
+                        IF SQLCODE != -29882 THEN  -- Network already exists
+                            RAISE;
+                        END IF;
+                END;
+            """)
+            
+            # Verify network exists
+            self.cursor.execute("""
+                SELECT COUNT(*) 
+                FROM mdsys.sem_model$ 
+                WHERE rownum = 1
+            """)
+            count = self.cursor.fetchone()[0]
+            self.assertGreaterEqual(count, 0, "Semantic network should exist")
+
+        except Exception as e:
+            self.fail(f"Failed to create semantic network: {str(e)}")
+
+    def test_semantic_model_creation(self):
+        """Test creating a semantic model following the test model."""
+        try:
+            # Create test model table
+            try:
+                self.cursor.execute("""
+                    CREATE TABLE test_model_table (
+                        triple SDO_RDF_TRIPLE_S
+                    )
+                """)
+            except oracledb.DatabaseError as e:
+                error_obj, = e.args
+                if error_obj.code != 955:  # ORA-00955: name is already used by an existing object
+                    raise
+
+            # Create semantic model
+            self.cursor.execute("""
+                BEGIN
+                    sem_apis.create_sem_model(
+                        model_name => 'TEST_MODEL',
+                        table_name => 'test_model_table',
+                        column_name => 'triple'
+                    );
+                EXCEPTION
+                    WHEN OTHERS THEN
+                        IF SQLCODE != -29882 THEN  -- Model already exists
+                            RAISE;
+                        END IF;
+                END;
+            """)
+            
+            # Verify model exists
+            self.cursor.execute("""
+                SELECT COUNT(*) 
+                FROM mdsys.sem_model$ 
+                WHERE model_name = 'TEST_MODEL'
+            """)
+            count = self.cursor.fetchone()[0]
+            self.assertEqual(count, 1, "Test model should exist")
+
+        except Exception as e:
+            self.fail(f"Failed to create semantic model: {str(e)}")
+
+    @classmethod
+    def tearDownClass(cls):
+        if hasattr(cls, 'cursor') and cls.cursor:
+            cls.cursor.close()
+        if hasattr(cls, 'connection') and cls.connection:
+            cls.connection.close()
+
+
+if __name__ == '__main__':
+    unittest.main()

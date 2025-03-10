@@ -1,0 +1,114 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
+@prefix ns1: <http://ontologies.louspringer.com/guidance/modules/collaboration#> .
+@prefix ns2: <http://ontologies.louspringer.com/guidance/modules/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:CollaborationGuidanceModule a owl:Ontology ;
+    rdfs:label "Collaboration Guidance Module" ;
+    dc:title "Collaboration Guidance Module" ;
+    dc:version "1.0.0" ;
+    dcterms:created "2024-03-21"^^xsd:dateTime ;
+    dcterms:description "Guidance for collaboration and PR management" ;
+    dcterms:modified "2024-03-21"^^xsd:dateTime ;
+    dcterms:publisher "Ontology Framework Project" ;
+    rdfs:comment "Collaboration patterns and best practices for guidance ontology" ;
+    owl:imports <http://ontologies.louspringer.com/guidance/modules/core.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/model.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/security.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/validation.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+ns1:branchNameFormat a owl:DatatypeProperty ;
+    rdfs:label "Branch Name Format" ;
+    rdfs:comment "Specifies the format for branch names" ;
+    rdfs:domain ns1:BranchStrategy ;
+    rdfs:range xsd:string .
+
+ns1:hasBranchStrategy a owl:ObjectProperty ;
+    rdfs:label "Has Branch Strategy" ;
+    rdfs:comment "Links PR management pattern to its branch strategy" ;
+    rdfs:domain ns1:PRManagementPattern ;
+    rdfs:range ns1:BranchStrategy .
+
+ns1:hasLegacyCollaborationConcept a owl:ObjectProperty ;
+    rdfs:label "Has Legacy Collaboration Concept" ;
+    rdfs:comment "Links modular collaboration concept to legacy guidance" ;
+    rdfs:domain ns1:PRManagementPattern ;
+    rdfs:range guidance:LLMGuidanceOntology .
+
+ns1:hasReviewProcess a owl:ObjectProperty ;
+    rdfs:label "Has Review Process" ;
+    rdfs:comment "Links PR management pattern to its review process" ;
+    rdfs:domain ns1:PRManagementPattern ;
+    rdfs:range ns1:ReviewProcess .
+
+ns1:hasTemplate a owl:ObjectProperty ;
+    rdfs:label "Has Template" ;
+    rdfs:comment "Links PR management pattern to its template" ;
+    rdfs:domain ns1:PRManagementPattern ;
+    rdfs:range ns1:PRTemplate .
+
+ns1:prManagementGuidance a ns1:PRManagementPattern,
+        owl:NamedIndividual ;
+    rdfs:label "PR Management Guidance" ;
+    ns1:hasBranchStrategy [ a ns1:BranchStrategy ;
+            rdfs:label "Feature Branch Strategy" ;
+            ns1:branchNameFormat "feature/issue-{number}-{description}" ] ;
+    ns1:hasReviewProcess [ a ns1:ReviewProcess ;
+            rdfs:label "Standard Review Process" ;
+            rdfs:comment "Requires one approval and passing tests" ] ;
+    ns1:hasTemplate [ a ns1:PRTemplate ;
+            rdfs:label "Standard PR Template" ;
+            ns1:requiresOntologyHeader true ;
+            ns1:requiresTestCoverage true ] ;
+    ns2:complexity 2 ;
+    ns2:sourceContext "GitHub Integration" ;
+    ns2:targetContext "Project Management" ;
+    rdfs:comment """Best practices for PR management:
+    1. Use feature branches with format: feature/issue-{number}-{description}
+    2. Include ontology header updates in PR description
+    3. Maintain test coverage requirements
+    4. Follow review process guidelines
+    5. Update documentation as needed
+    6. Ensure ontology consistency""" .
+
+ns1:requiresOntologyHeader a owl:DatatypeProperty ;
+    rdfs:label "Requires Ontology Header" ;
+    rdfs:comment "Indicates if PR template requires ontology header information" ;
+    rdfs:domain ns1:PRTemplate ;
+    rdfs:range xsd:boolean .
+
+ns1:requiresTestCoverage a owl:DatatypeProperty ;
+    rdfs:label "Requires Test Coverage" ;
+    rdfs:comment "Indicates if PR template requires test coverage information" ;
+    rdfs:domain ns1:PRTemplate ;
+    rdfs:range xsd:boolean .
+
+ns1:ReviewProcess a owl:Class ;
+    rdfs:label "Review Process" ;
+    rdfs:comment "Process for reviewing and approving pull requests" ;
+    rdfs:subClassOf ns1:PRManagementPattern ;
+    owl:versionInfo "1.0.0" .
+
+ns1:BranchStrategy a owl:Class ;
+    rdfs:label "Branch Strategy" ;
+    rdfs:comment "Strategy for branch naming and management" ;
+    rdfs:subClassOf ns1:PRManagementPattern ;
+    owl:versionInfo "1.0.0" .
+
+ns1:PRTemplate a owl:Class ;
+    rdfs:label "PRTemplate" ;
+    rdfs:comment "A template for structuring pull requests" ;
+    rdfs:subClassOf ns1:PRManagementPattern ;
+    owl:versionInfo "1.0.0" .
+
+ns1:PRManagementPattern a owl:Class ;
+    rdfs:label "PRManagementPattern" ;
+    rdfs:comment "A pattern for managing pull requests and code reviews" ;
+    rdfs:subClassOf ns2:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
