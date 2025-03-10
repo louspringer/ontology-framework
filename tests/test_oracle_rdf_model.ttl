@@ -1,0 +1,104 @@
+@prefix : <./test_oracle_rdf_model#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix test: <./test_oracle_rdf_model#> .
+@prefix meta: <../meta#> .
+@prefix guidance: <../guidance#> .
+@prefix model: <../guidance/modules/model#> .
+@prefix validation: <../guidance/modules/validation#> .
+
+# Test Model Definition
+:OracleRDFTestModel rdf:type owl:Ontology ;
+    rdfs:label "Oracle RDF Test Model" ;
+    rdfs:comment "Test model for Oracle RDF functionality" ;
+    dc:title "Oracle RDF Test Model" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-09"^^xsd:dateTime ;
+    dct:modified "2024-03-09"^^xsd:dateTime ;
+    owl:imports <../guidance.ttl> .
+
+# Test Components
+:SemanticNetwork rdf:type owl:Class ;
+    rdfs:label "Semantic Network" ;
+    rdfs:comment "Oracle RDF semantic network component" ;
+    owl:versionInfo "1.0.0" .
+
+:SemanticModel rdf:type owl:Class ;
+    rdfs:label "Semantic Model" ;
+    rdfs:comment "Oracle RDF semantic model component" ;
+    rdfs:subClassOf :SemanticNetwork ;
+    owl:versionInfo "1.0.0" .
+
+:TablespaceRequirement rdf:type owl:Class ;
+    rdfs:label "Tablespace Requirement" ;
+    rdfs:comment "Tablespace requirements for semantic network" ;
+    owl:versionInfo "1.0.0" .
+
+# Test Dependencies
+:requiresTablespace rdf:type owl:ObjectProperty ;
+    rdfs:label "Requires Tablespace" ;
+    rdfs:comment "Links semantic network to tablespace requirements" ;
+    rdfs:domain :SemanticNetwork ;
+    rdfs:range :TablespaceRequirement .
+
+:hasModel rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Model" ;
+    rdfs:comment "Links semantic network to semantic models" ;
+    rdfs:domain :SemanticNetwork ;
+    rdfs:range :SemanticModel .
+
+# Test Cases
+:NetworkCreationTest rdf:type validation:TestCase ;
+    rdfs:label "Network Creation Test" ;
+    rdfs:comment "Test case for creating semantic network" ;
+    validation:hasTestQuery """
+    SELECT ?network WHERE {
+        ?network rdf:type test:SemanticNetwork .
+    }""" ;
+    validation:hasExpectedResult "Should find one semantic network instance" .
+
+:ModelCreationTest rdf:type validation:TestCase ;
+    rdfs:label "Model Creation Test" ;
+    rdfs:comment "Test case for creating semantic model" ;
+    validation:hasTestQuery """
+    SELECT ?model WHERE {
+        ?model rdf:type test:SemanticModel .
+    }""" ;
+    validation:hasExpectedResult "Should find one semantic model instance" .
+
+# Test Instances
+:testNetwork rdf:type :SemanticNetwork ;
+    rdfs:label "Test Semantic Network" ;
+    :requiresTablespace [
+        rdf:type :TablespaceRequirement ;
+        rdfs:label "RDF Tablespace" ;
+        rdfs:comment "Tablespace for storing RDF data"
+    ] .
+
+:testModel rdf:type :SemanticModel ;
+    rdfs:label "Test Model" ;
+    rdfs:comment "Test semantic model instance" .
+
+# SHACL Validation
+:SemanticNetworkShape rdf:type sh:NodeShape ;
+    sh:targetClass :SemanticNetwork ;
+    sh:property [
+        sh:path :requiresTablespace ;
+        sh:minCount 1 ;
+        sh:message "Semantic network must have tablespace requirements"
+    ] .
+
+:SemanticModelShape rdf:type sh:NodeShape ;
+    sh:targetClass :SemanticModel ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Semantic model must have a label"
+    ] . 

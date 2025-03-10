@@ -1,0 +1,94 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
+@prefix ns1: <http://ontologies.louspringer.com/guidance/modules/validation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://ontologies.louspringer.com/tests/guidance_test#ChatbotIntegrationTest> a ns1:TestCase ;
+    rdfs:label "Chatbot Integration Test" ;
+    ns1:hasExpectedResult "Should find guidance elements used in chatbot ontology" ;
+    ns1:hasTestQuery """
+    SELECT ?guidanceElement ?chatbotElement WHERE {
+        ?guidanceElement rdf:type owl:Class .
+        ?chatbotElement rdf:type owl:Class ;
+                       rdfs:subClassOf ?guidanceElement .
+    }""" ;
+    rdfs:comment "Tests integration with chatbot.ttl" .
+
+<http://ontologies.louspringer.com/tests/guidance_test#GuidanceTestSuite> a owl:Ontology ;
+    rdfs:label "Guidance Test Suite" ;
+    dc:title "Guidance Test Suite" ;
+    dc:version "1.0.0" ;
+    dcterms:created "2024-03-21"^^xsd:dateTime ;
+    dcterms:modified "2024-03-21"^^xsd:dateTime ;
+    rdfs:comment "Test suite for validating modular guidance structure" ;
+    owl:imports <file:///Users/lou/Documents/chatbot.ttl>,
+        <http://ontologies.louspringer.com/guidance.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+<http://ontologies.louspringer.com/tests/guidance_test#LegacyMappingTest> a ns1:TestCase ;
+    rdfs:label "Legacy Mapping Test" ;
+    ns1:hasExpectedResult "Should find all legacy mappings" ;
+    ns1:hasTestQuery """
+    SELECT ?concept ?legacy WHERE {
+        ?concept guidance:hasLegacyMapping ?legacy .
+    }""" ;
+    rdfs:comment "Tests legacy mapping completeness" .
+
+<http://ontologies.louspringer.com/tests/guidance_test#LegacySupportShape> a sh:NodeShape ;
+    rdfs:label "Legacy Support Shape" ;
+    rdfs:comment "Validates legacy support mappings" ;
+    sh:property [ sh:message "Legacy support must map all core modules" ;
+            sh:minCount 5 ;
+            sh:path guidance:hasLegacyMapping ] ;
+    sh:targetClass guidance:LegacySupport .
+
+<http://ontologies.louspringer.com/tests/guidance_test#ModuleConsistencyTest> a ns1:TestCase ;
+    rdfs:label "Module Consistency Test" ;
+    ns1:hasExpectedResult "Should find all modules with version info and imports" ;
+    ns1:hasTestQuery """
+    SELECT ?module ?version ?imports WHERE {
+        ?module rdf:type owl:Ontology ;
+                owl:versionInfo ?version ;
+                owl:imports ?imports .
+    }""" ;
+    rdfs:comment "Tests overall module consistency" .
+
+<http://ontologies.louspringer.com/tests/guidance_test#ModuleImportShape> a sh:NodeShape ;
+    rdfs:label "Module Import Shape" ;
+    rdfs:comment "Validates module import structure" ;
+    sh:property [ sh:message "Each module must import at least one other module" ;
+            sh:minCount 1 ;
+            sh:path owl:imports ] ;
+    sh:targetClass owl:Ontology .
+
+<http://ontologies.louspringer.com/tests/guidance_test#ModuleRegistryShape> a sh:NodeShape ;
+    rdfs:label "Module Registry Shape" ;
+    rdfs:comment "Validates module registry structure" ;
+    sh:property [ sh:message "Module registry must contain all 5 core modules" ;
+            sh:minCount 5 ;
+            sh:path guidance:registeredModule ] ;
+    sh:targetClass guidance:ModuleRegistry .
+
+<http://ontologies.louspringer.com/tests/guidance_test#TestExecutionPlan> a owl:Class ;
+    rdfs:label "Test Execution Plan" ;
+    rdfs:comment """Test execution sequence:
+    1. Validate module registry completeness
+    2. Check module import consistency
+    3. Verify legacy support mappings
+    4. Ensure version consistency
+    5. Test chatbot.ttl integration
+    6. Validate SHACL constraints""" .
+
+<http://ontologies.louspringer.com/tests/guidance_test#VersionConsistencyShape> a sh:NodeShape ;
+    rdfs:label "Version Consistency Shape" ;
+    rdfs:comment "Validates version information consistency" ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:message "All modules must have version information" ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ] ;
+    sh:targetClass owl:Ontology .
+

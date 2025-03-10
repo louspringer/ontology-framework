@@ -12,13 +12,7 @@
 @prefix security: <./guidance/modules/security#> .
 @prefix validation: <./guidance/modules/validation#> .
 @prefix collaboration: <./guidance/modules/collaboration#> .
-@prefix vcs: <./guidance/modules/vcs#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-
-# Oracle RDF Compatibility Note:
-# - All datetime values must use xsd:dateTime with 'T' separator
-# - SHACL validation patterns should avoid complex regex
-# - String literals are stored as CLOBs - consider length constraints
 
 # Proxy Ontology Definition
 :GuidanceOntology rdf:type owl:Ontology ;
@@ -27,16 +21,15 @@
     dc:title "Guidance Ontology" ;
     dc:version "2.0.0" ;
     owl:versionInfo "2.0.0" ;
-    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime ;
     dct:publisher "Ontology Framework Project" ;
     dct:description "Modular guidance system for ontology development and management" ;
     owl:imports <./guidance/modules/core.ttl> ;
     owl:imports <./guidance/modules/model.ttl> ;
     owl:imports <./guidance/modules/security.ttl> ;
     owl:imports <./guidance/modules/validation.ttl> ;
-    owl:imports <./guidance/modules/collaboration.ttl> ;
-    owl:imports <./guidance/modules/vcs.ttl> .
+    owl:imports <./guidance/modules/collaboration.ttl> .
 
 # Module Registry
 :ModuleRegistry rdf:type owl:Class ;
@@ -75,8 +68,7 @@
     :registeredModule model:ModelGuidanceModule ;
     :registeredModule security:SecurityGuidanceModule ;
     :registeredModule validation:ValidationGuidanceModule ;
-    :registeredModule collaboration:CollaborationGuidanceModule ;
-    :registeredModule vcs:VCSGuidanceModule .
+    :registeredModule collaboration:CollaborationGuidanceModule .
 
 # Legacy Support
 :LegacySupport rdf:type owl:Class ;
@@ -100,17 +92,16 @@
     :hasLegacyMapping model:ModelGuidanceModule ;
     :hasLegacyMapping security:SecurityGuidanceModule ;
     :hasLegacyMapping validation:ValidationGuidanceModule ;
-    :hasLegacyMapping collaboration:CollaborationGuidanceModule ;
-    :hasLegacyMapping vcs:VCSGuidanceModule .
+    :hasLegacyMapping collaboration:CollaborationGuidanceModule .
 
-# SHACL Shapes - Oracle Compatible Version
+# SHACL Shapes
 :ModuleRegistryShape a sh:NodeShape ;
     sh:targetClass :ModuleRegistry ;
     sh:property [
         sh:path :registeredModule ;
         sh:class owl:Ontology ;
         sh:minCount 1 ;
-        sh:message "Module registry must have at least one registered module"^^xsd:string ;
+        sh:message "Module registry must have at least one registered module" ;
     ] .
 
 :ModuleShape a sh:NodeShape ;
@@ -120,15 +111,14 @@
         sh:datatype xsd:string ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:maxLength 50 ;  # Added length constraint for CLOB optimization
-        sh:message "Module must have exactly one version string (max 50 chars)"^^xsd:string ;
+        sh:pattern "^\\d+\\.\\d+\\.\\d+$" ;
+        sh:message "Module must have exactly one version in semantic versioning format" ;
     ] ,
     [
         sh:path :moduleDescription ;
         sh:datatype xsd:string ;
         sh:minCount 1 ;
-        sh:maxLength 4000 ;  # Added length constraint for CLOB optimization
-        sh:message "Module must have a description (max 4000 chars)"^^xsd:string ;
+        sh:message "Module must have a description" ;
     ] .
 
 :LegacySupportShape a sh:NodeShape ;
@@ -137,154 +127,5 @@
         sh:path :hasLegacyMapping ;
         sh:class owl:Thing ;
         sh:minCount 1 ;
-        sh:message "Legacy support must have at least one mapping"^^xsd:string ;
-    ] .
-
-# Version Control Process
-:VersionControlProcess rdf:type owl:Class ;
-    rdfs:label "Version Control Process" ;
-    rdfs:comment "Defines the check-in sequence and version control workflow" ;
-    owl:versionInfo "1.0.0" ;
-    rdfs:isDefinedBy :GuidanceOntology .
-
-:CheckInStep rdf:type owl:Class ;
-    rdfs:label "Check-in Step" ;
-    rdfs:comment "A step in the check-in process" ;
-    owl:versionInfo "1.0.0" ;
-    rdfs:isDefinedBy :GuidanceOntology .
-
-:hasStep rdf:type owl:ObjectProperty ;
-    rdfs:label "Has Step" ;
-    rdfs:comment "Links a process to its steps" ;
-    rdfs:domain :VersionControlProcess ;
-    rdfs:range :CheckInStep ;
-    owl:versionInfo "1.0.0" .
-
-:nextStep rdf:type owl:ObjectProperty ;
-    rdfs:label "Next Step" ;
-    rdfs:comment "Links a step to its next step in sequence" ;
-    rdfs:domain :CheckInStep ;
-    rdfs:range :CheckInStep ;
-    owl:versionInfo "1.0.0" .
-
-:stepOrder rdf:type owl:DatatypeProperty ;
-    rdfs:label "Step Order" ;
-    rdfs:comment "Numeric order of the step in the sequence" ;
-    rdfs:domain :CheckInStep ;
-    rdfs:range xsd:integer ;
-    owl:versionInfo "1.0.0" .
-
-:stepDescription rdf:type owl:DatatypeProperty ;
-    rdfs:label "Step Description" ;
-    rdfs:comment "Detailed description of what the step does" ;
-    rdfs:domain :CheckInStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:requiresValidation rdf:type owl:DatatypeProperty ;
-    rdfs:label "Requires Validation" ;
-    rdfs:comment "Indicates if the step requires validation" ;
-    rdfs:domain :CheckInStep ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
-# Check-in Process Instance
-:standardCheckInProcess rdf:type owl:NamedIndividual, :VersionControlProcess ;
-    rdfs:label "Standard Check-in Process" ;
-    rdfs:comment "Standard process for checking in changes" ;
-    :hasStep :stageChanges ;
-    :hasStep :validateChanges ;
-    :hasStep :runTests ;
-    :hasStep :addTraceability ;
-    :hasStep :commitChanges ;
-    :hasStep :pushChanges ;
-    :hasStep :createPullRequest .
-
-:stageChanges rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Stage Changes" ;
-    rdfs:comment "Stage changes using git add" ;
-    :stepOrder 1 ;
-    :stepDescription "Stage all changes using git add command"^^xsd:string ;
-    :requiresValidation false ;
-    :nextStep :validateChanges .
-
-:validateChanges rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Validate Changes" ;
-    rdfs:comment "Run validation checks on staged changes" ;
-    :stepOrder 2 ;
-    :stepDescription "Run all validation checks including linting and static analysis"^^xsd:string ;
-    :requiresValidation true ;
-    :nextStep :runTests .
-
-:runTests rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Run Tests" ;
-    rdfs:comment "Execute test suite" ;
-    :stepOrder 3 ;
-    :stepDescription "Run complete test suite including unit and integration tests"^^xsd:string ;
-    :requiresValidation true ;
-    :nextStep :addTraceability .
-
-:addTraceability rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Add Traceability" ;
-    rdfs:comment "Add traceability headers and documentation" ;
-    :stepOrder 4 ;
-    :stepDescription "Add required traceability headers and update documentation"^^xsd:string ;
-    :requiresValidation true ;
-    :nextStep :commitChanges .
-
-:commitChanges rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Commit Changes" ;
-    rdfs:comment "Commit changes with proper message" ;
-    :stepOrder 5 ;
-    :stepDescription "Commit changes with semantic version and proper description"^^xsd:string ;
-    :requiresValidation true ;
-    :nextStep :pushChanges .
-
-:pushChanges rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Push Changes" ;
-    rdfs:comment "Push changes to remote repository" ;
-    :stepOrder 6 ;
-    :stepDescription "Push committed changes to the remote repository"^^xsd:string ;
-    :requiresValidation false ;
-    :nextStep :createPullRequest .
-
-:createPullRequest rdf:type owl:NamedIndividual, :CheckInStep ;
-    rdfs:label "Create Pull Request" ;
-    rdfs:comment "Create and submit pull request" ;
-    :stepOrder 7 ;
-    :stepDescription "Create pull request with proper description and reviewers"^^xsd:string ;
-    :requiresValidation true .
-
-# SHACL Shapes for Version Control
-:VersionControlProcessShape a sh:NodeShape ;
-    sh:targetClass :VersionControlProcess ;
-    sh:property [
-        sh:path :hasStep ;
-        sh:class :CheckInStep ;
-        sh:minCount 1 ;
-        sh:message "Process must have at least one step"^^xsd:string ;
-    ] .
-
-:CheckInStepShape a sh:NodeShape ;
-    sh:targetClass :CheckInStep ;
-    sh:property [
-        sh:path :stepOrder ;
-        sh:datatype xsd:integer ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Step must have exactly one order number"^^xsd:string ;
-    ] ,
-    [
-        sh:path :stepDescription ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxLength 4000 ;
-        sh:message "Step must have a description (max 4000 chars)"^^xsd:string ;
-    ] ,
-    [
-        sh:path :requiresValidation ;
-        sh:datatype xsd:boolean ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Step must specify if validation is required"^^xsd:string ;
+        sh:message "Legacy support must have at least one mapping" ;
     ] .

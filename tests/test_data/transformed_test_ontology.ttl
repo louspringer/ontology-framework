@@ -1,0 +1,44 @@
+@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
+@prefix meta: <http://ontologies.louspringer.com/meta#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+meta:DependentComponent a meta:Component ;
+    rdfs:label "Dependent Component"@en ;
+    guidance:hasGuidance "Check dependencies" ;
+    meta:dependsOn meta:TestComponent ;
+    rdfs:comment "A component that depends on another" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestAuthenticationConcept a meta:SecurityConcept ;
+    rdfs:label "Test Authentication Concept"@en ;
+    guidance:hasGuidance "Use strong authentication" ;
+    rdfs:comment "A test authentication concept" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestRCAIssue a meta:RCAIssue ;
+    rdfs:label "Test RCA Issue"@en ;
+    guidance:hasGuidance "Follow RCA process" ;
+    meta:hasSolution meta:TestSolution ;
+    rdfs:comment "A test RCA issue" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestComponent a meta:Component ;
+    rdfs:label "Test Component"@en ;
+    guidance:hasGuidance "Follow component guidelines" ;
+    meta:implements meta:TestSecurityConcept ;
+    rdfs:comment "A test component" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestSecurityConcept a meta:SecurityConcept ;
+    rdfs:label "Test Security Concept"@en ;
+    guidance:hasGuidance "Follow security best practices" ;
+    rdfs:comment "A test security concept" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestSolution a meta:Solution ;
+    rdfs:label "Test Solution"@en ;
+    guidance:hasGuidance "Implement the solution carefully" ;
+    rdfs:comment "A test solution" ;
+    owl:versionInfo "1.0.0" .
+
