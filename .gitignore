@@ -161,3 +161,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 prompt-manager/.DS_Store
+github_provider.json
+*.zip
+set_oracle_env.sh

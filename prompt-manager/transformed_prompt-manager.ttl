@@ -1,0 +1,251 @@
+@prefix ns1: <http://ontologies.louspringer.com/prompt-manager/prompt-manager#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:CLICommands a ns1:Implementation ;
+    rdfs:label "CLI Commands" ;
+    ns1:hasValue """
+        add: Add/update prompt with metadata
+        search: Search prompts
+        list: List all prompts
+        list-ids: List prompts with IDs
+        get-raw: Get prompt content by ID
+    """ .
+
+ns1:PostgresConfig a ns1:Implementation ;
+    rdfs:label "PostgreSQL Configuration" ;
+    ns1:hasValue """
+        POSTGRES_DB: prompts
+        POSTGRES_USER: promptuser
+        POSTGRES_PASSWORD: promptpass
+        Schema:
+            - id SERIAL PRIMARY KEY
+            - name VARCHAR(255) UNIQUE
+            - content TEXT
+            - category VARCHAR(100)
+            - tags TEXT[]
+            - created_at TIMESTAMP
+    """ .
+
+ns1:PromptManagerOntology a owl:Ontology ;
+    rdfs:label "Prompt Manager System Ontology" ;
+    rdfs:comment "Documents the components and relationships in the prompt management system" .
+
+ns1:TodoSection a owl:Class ;
+    rdfs:label "TODO Items" ;
+    rdfs:comment "Planned features and improvements" .
+
+ns1:addBackupRestore a ns1:TodoItem ;
+    rdfs:label "Add backup/restore procedures" ;
+    ns1:hasPriority 4 ;
+    rdfs:comment "Implement system backup and restore functionality" .
+
+ns1:addBulkOperations a ns1:TodoItem ;
+    rdfs:label "Add bulk import/export" ;
+    ns1:hasPriority 10 ;
+    rdfs:comment "Support bulk operations for prompts" .
+
+ns1:addDetailedCommands a ns1:TodoItem ;
+    rdfs:label "Add detailed command specifications" ;
+    ns1:hasPriority 2 ;
+    rdfs:comment "Enhance CLI command documentation and parameters" .
+
+ns1:addErrorHandling a ns1:TodoItem ;
+    rdfs:label "Include error handling patterns" ;
+    ns1:hasPriority 3 ;
+    rdfs:comment "Implement comprehensive error handling and recovery" .
+
+ns1:addPromptTemplates a ns1:TodoItem ;
+    rdfs:label "Include prompt templates" ;
+    ns1:hasPriority 7 ;
+    rdfs:comment "Add support for prompt templates and variations" .
+
+ns1:addPromptValidation a ns1:TodoItem ;
+    rdfs:label "Add prompt validation" ;
+    ns1:hasPriority 9 ;
+    rdfs:comment "Implement prompt content validation rules",
+        """Implement prompt content validation rules.
+Initial structure added with ValidationRule class and related properties.
+TODO: Implement validation framework in prompt-manager.""" .
+
+ns1:addSHACLValidation a ns1:TodoItem ;
+    rdfs:label "Add SHACL shapes for validation" ;
+    ns1:hasPriority 1 ;
+    rdfs:comment "Implement SHACL shapes for ontology and data validation" .
+
+ns1:addSecurity a ns1:TodoItem ;
+    rdfs:label "Include security configurations" ;
+    ns1:hasPriority 5 ;
+    rdfs:comment "Add security features and access controls" .
+
+ns1:addUserManagement a ns1:TodoItem ;
+    rdfs:label "Add user management" ;
+    ns1:hasPriority 8 ;
+    rdfs:comment "Implement user accounts and permissions" .
+
+ns1:addVersioning a ns1:TodoItem ;
+    rdfs:label "Add versioning support" ;
+    ns1:hasPriority 6 ;
+    rdfs:comment "Implement prompt versioning and history tracking",
+        """Implement prompt versioning and history tracking.
+Initial structure added with PromptVersion class and related properties.
+TODO: Implement version control logic in prompt-manager.""" .
+
+ns1:adminer a ns1:DockerComponent ;
+    rdfs:label "Adminer Interface" ;
+    ns1:dependsOn ns1:postgres ;
+    ns1:exposes 8080 ;
+    rdfs:comment "Web interface for database management" .
+
+ns1:createdDate a owl:DatatypeProperty ;
+    rdfs:label "created date" ;
+    rdfs:domain ns1:PromptVersion ;
+    rdfs:range xsd:dateTime .
+
+ns1:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:domain ns1:Component ;
+    rdfs:range ns1:Component .
+
+ns1:examplePromptVersion a ns1:PromptVersion ;
+    rdfs:label "Example Prompt Version 1" ;
+    ns1:createdDate "2024-03-20T10:00:00+00:00"^^xsd:dateTime ;
+    ns1:versionNumber 1 .
+
+ns1:exposes a owl:DatatypeProperty ;
+    rdfs:label "exposes port" ;
+    rdfs:domain ns1:Component ;
+    rdfs:range xsd:integer .
+
+ns1:hasCategory a owl:DatatypeProperty ;
+    rdfs:label "has category" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range xsd:string .
+
+ns1:hasId a owl:DatatypeProperty ;
+    rdfs:label "has ID" ;
+    rdfs:comment "Unique identifier for the prompt" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range xsd:integer .
+
+ns1:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain ns1:TodoItem ;
+    rdfs:range xsd:integer .
+
+ns1:hasStatus a owl:DatatypeProperty ;
+    rdfs:domain ns1:TodoItem ;
+    rdfs:range xsd:string .
+
+ns1:hasTag a owl:DatatypeProperty ;
+    rdfs:label "has tag" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range xsd:string .
+
+ns1:hasVersion a owl:ObjectProperty ;
+    rdfs:label "has version" ;
+    rdfs:comment "Links a prompt to its versions" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range ns1:PromptVersion .
+
+ns1:lengthValidationRule a ns1:ValidationRule ;
+    rdfs:label "Length Validation" ;
+    ns1:validationDescription "Prompt must be between 10 and 1000 characters" .
+
+ns1:previousVersion a owl:ObjectProperty ;
+    rdfs:label "previous version" ;
+    rdfs:comment "Links to the previous version of the prompt" ;
+    rdfs:domain ns1:PromptVersion ;
+    rdfs:range ns1:PromptVersion .
+
+ns1:promptCLI a ns1:PythonComponent ;
+    rdfs:label "Command Line Interface" ;
+    ns1:dependsOn ns1:promptManager ;
+    rdfs:comment "CLI for interacting with the prompt manager" .
+
+ns1:stores a owl:ObjectProperty ;
+    rdfs:label "stores data for" ;
+    rdfs:domain ns1:StorageComponent ;
+    rdfs:range ns1:Component .
+
+ns1:validatedBy a owl:ObjectProperty ;
+    rdfs:label "validated by" ;
+    rdfs:comment "Links a prompt to its validation rules" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range ns1:ValidationRule .
+
+ns1:validationDescription a owl:DatatypeProperty ;
+    rdfs:label "validation description" ;
+    rdfs:domain ns1:ValidationRule ;
+    rdfs:range xsd:string .
+
+ns1:validationResult a owl:DatatypeProperty ;
+    rdfs:label "validation result" ;
+    rdfs:domain ns1:ValidationRule ;
+    rdfs:range xsd:boolean .
+
+ns1:versionNumber a owl:DatatypeProperty ;
+    rdfs:label "version number" ;
+    rdfs:domain ns1:PromptVersion ;
+    rdfs:range xsd:integer .
+
+ns1:PromptOperations a ns1:Implementation ;
+    rdfs:label "Prompt Operations" ;
+    ns1:hasValue """
+        list_with_ids: List prompts with IDs
+        get_by_id: Get raw prompt content
+        add: Add/update prompt with tags
+    """ .
+
+ns1:promptManager a ns1:PythonComponent ;
+    rdfs:label "Prompt Manager Class" ;
+    ns1:dependsOn ns1:postgres ;
+    ns1:implements ns1:PromptOperations ;
+    rdfs:comment "Core functionality for managing prompts" .
+
+ns1:DockerComponent a owl:Class ;
+    rdfs:label "Docker Component" ;
+    rdfs:comment "Docker-related components of the system" ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:PythonComponent a owl:Class ;
+    rdfs:label "Python Component" ;
+    rdfs:comment "Python-based components of the system" ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:StorageComponent a owl:Class ;
+    rdfs:label "Storage Component" ;
+    rdfs:comment "Data storage components" ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:postgres a ns1:DockerComponent,
+        ns1:StorageComponent ;
+    rdfs:label "PostgreSQL Database" ;
+    ns1:exposes 5432 ;
+    ns1:stores ns1:Prompt ;
+    rdfs:comment "Stores prompts and metadata" .
+
+ns1:Implementation a owl:Class ;
+    rdfs:label "Implementation Detail" ;
+    rdfs:comment "Specific implementation details of components" .
+
+ns1:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Defines rules for validating prompts" .
+
+ns1:Prompt a owl:Class ;
+    rdfs:label "Prompt" ;
+    rdfs:comment "A stored prompt with metadata" .
+
+ns1:PromptVersion a owl:Class ;
+    rdfs:label "Prompt Version" ;
+    rdfs:comment "Represents a specific version of a prompt" .
+
+ns1:Component a owl:Class ;
+    rdfs:label "System Component" ;
+    rdfs:comment "A component of the prompt management system" .
+
+ns1:TodoItem a owl:Class ;
+    rdfs:label "TODO Item" ;
+    rdfs:comment "A specific planned feature or improvement" .
+

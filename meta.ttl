@@ -343,6 +343,296 @@ meta:ConfigurationShape a sh:NodeShape ;
         sh:message "Configuration must belong to exactly one environment" ;
     ] .
 
+# Oracle RDF Storage
+meta:OracleRDFStorage a owl:Class ;
+    rdfs:label "Oracle RDF Storage"@en ;
+    rdfs:comment "Oracle database RDF storage configuration and management" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RDFNetwork a owl:Class ;
+    rdfs:label "RDF Network"@en ;
+    rdfs:comment "Schema-private semantic network in Oracle" ;
+    rdfs:subClassOf meta:OracleRDFStorage ;
+    owl:versionInfo "1.0.0" .
+
+meta:RDFGraph a owl:Class ;
+    rdfs:label "RDF Graph"@en ;
+    rdfs:comment "Named graph within an Oracle RDF network" ;
+    rdfs:subClassOf meta:OracleRDFStorage ;
+    owl:versionInfo "1.0.0" .
+
+meta:StagingTable a owl:Class ;
+    rdfs:label "Staging Table"@en ;
+    rdfs:comment "Temporary table for bulk loading RDF data" ;
+    rdfs:subClassOf meta:OracleRDFStorage ;
+    owl:versionInfo "1.0.0" .
+
+# Oracle RDF Properties
+meta:hasNetwork a owl:ObjectProperty ;
+    rdfs:domain meta:RDFGraph ;
+    rdfs:range meta:RDFNetwork ;
+    rdfs:label "has network" ;
+    rdfs:comment "Links a graph to its semantic network" .
+
+meta:hasTablespace a owl:DatatypeProperty ;
+    rdfs:domain meta:RDFNetwork ;
+    rdfs:range xsd:string ;
+    rdfs:label "has tablespace" ;
+    rdfs:comment "Specifies the tablespace for RDF storage" .
+
+meta:hasOwner a owl:DatatypeProperty ;
+    rdfs:domain meta:OracleRDFStorage ;
+    rdfs:range xsd:string ;
+    rdfs:label "has owner" ;
+    rdfs:comment "Specifies the owner of the RDF storage object" .
+
+meta:hasName a owl:DatatypeProperty ;
+    rdfs:domain meta:OracleRDFStorage ;
+    rdfs:range xsd:string ;
+    rdfs:label "has name" ;
+    rdfs:comment "Specifies the name of the RDF storage object" .
+
+# Root Cause Analysis
+meta:RCAIssue a owl:Class ;
+    rdfs:label "RCA Issue"@en ;
+    rdfs:comment "Issue identified during root cause analysis" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RCASolution a owl:Class ;
+    rdfs:label "RCA Solution"@en ;
+    rdfs:comment "Solution identified during root cause analysis" ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasSolution a owl:ObjectProperty ;
+    rdfs:domain meta:RCAIssue ;
+    rdfs:range meta:RCASolution ;
+    rdfs:label "has solution" ;
+    rdfs:comment "Links an issue to its solution" .
+
+# RCA Instances for Oracle RDF Loading
+meta:URITransformationIssue a meta:RCAIssue ;
+    rdfs:label "URI Transformation Issue" ;
+    rdfs:comment "Issue with transforming file-based and relative URIs to web-based URIs" ;
+    meta:hasSolution meta:URITransformationSolution .
+
+meta:URITransformationSolution a meta:RCASolution ;
+    rdfs:label "URI Transformation Solution" ;
+    rdfs:comment """Implemented transform_uri function to convert:
+    1. File-based URIs to http://louspringer.com/ontology-framework/
+    2. Relative URIs (./) to http://louspringer.com/ontology-framework/
+    Applied transformation to all URIs (subject, predicate, object) before loading""" .
+
+meta:BulkLoadParameterIssue a meta:RCAIssue ;
+    rdfs:label "Bulk Load Parameter Issue" ;
+    rdfs:comment "Issues with SEM_APIS.BULK_LOAD_FROM_STAGING_TABLE parameters" ;
+    meta:hasSolution meta:BulkLoadParameterSolution .
+
+meta:BulkLoadParameterSolution a meta:RCASolution ;
+    rdfs:label "Bulk Load Parameter Solution" ;
+    rdfs:comment """Fixed parameter order and format:
+    1. Changed from named to positional parameters
+    2. Added all required parameters in correct order
+    3. Set PARSE flag for N-Triple parsing
+    4. Included network_owner and network_name parameters""" .
+
+meta:GraphNamingIssue a meta:RCAIssue ;
+    rdfs:label "Graph Naming Issue" ;
+    rdfs:comment "Issues with invalid SQL names in graph identifiers" ;
+    meta:hasSolution meta:GraphNamingSolution .
+
+meta:GraphNamingSolution a meta:RCASolution ;
+    rdfs:label "Graph Naming Solution" ;
+    rdfs:comment """Resolved graph naming issues:
+    1. Removed ADMIN. prefix from graph names
+    2. Used simple uppercase file stem for graph names
+    3. Avoided dots and special characters in names""" .
+
+# Test Framework
+meta:TestCase a owl:Class ;
+    rdfs:label "Test Case"@en ;
+    rdfs:comment "Test case for validating RDF operations" ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestQuery a owl:Class ;
+    rdfs:label "Test Query"@en ;
+    rdfs:comment "SPARQL query for testing" ;
+    rdfs:subClassOf meta:TestCase ;
+    owl:versionInfo "1.0.0" .
+
+meta:TestOperation a owl:Class ;
+    rdfs:label "Test Operation"@en ;
+    rdfs:comment "CRUD operation for testing" ;
+    rdfs:subClassOf meta:TestCase ;
+    owl:versionInfo "1.0.0" .
+
+meta:ExpectedResult a owl:Class ;
+    rdfs:label "Expected Result"@en ;
+    rdfs:comment "Expected result of a test case" ;
+    owl:versionInfo "1.0.0" .
+
+# Test Properties
+meta:hasQuery a owl:DatatypeProperty ;
+    rdfs:domain meta:TestQuery ;
+    rdfs:range xsd:string ;
+    rdfs:label "has query" ;
+    rdfs:comment "SPARQL query text" .
+
+meta:hasExpectedResult a owl:ObjectProperty ;
+    rdfs:domain meta:TestCase ;
+    rdfs:range meta:ExpectedResult ;
+    rdfs:label "has expected result" ;
+    rdfs:comment "Links a test case to its expected result" .
+
+meta:hasOperation a owl:DatatypeProperty ;
+    rdfs:domain meta:TestOperation ;
+    rdfs:range xsd:string ;
+    rdfs:label "has operation" ;
+    rdfs:comment "CRUD operation text" .
+
+# Test Instances - Basic Queries
+meta:ListSecurityConceptsTest a meta:TestQuery ;
+    rdfs:label "List Security Concepts Test" ;
+    rdfs:comment "Query to list all security concepts" ;
+    meta:hasQuery """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?concept ?label
+        WHERE {
+            ?concept a meta:SecurityConcept ;
+                    rdfs:label ?label .
+        }
+        ORDER BY ?label
+    """ ;
+    meta:hasExpectedResult meta:SecurityConceptsResult .
+
+meta:SecurityConceptsResult a meta:ExpectedResult ;
+    rdfs:comment """Expected results include:
+        - Authentication Concept
+        - Access Control Concept
+        - Encryption Concept
+        - Compliance Concept""" .
+
+meta:RCAIssuesTest a meta:TestQuery ;
+    rdfs:label "RCA Issues and Solutions Test" ;
+    rdfs:comment "Query to match RCA issues with their solutions" ;
+    meta:hasQuery """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?issue ?issueName ?solution ?solutionDesc
+        WHERE {
+            ?issue a meta:RCAIssue ;
+                   rdfs:label ?issueName ;
+                   meta:hasSolution ?solution .
+            ?solution rdfs:comment ?solutionDesc .
+        }
+        ORDER BY ?issueName
+    """ ;
+    meta:hasExpectedResult meta:RCAIssuesResult .
+
+meta:RCAIssuesResult a meta:ExpectedResult ;
+    rdfs:comment """Expected results include:
+        - Bulk Load Parameter Issue with solution
+        - Graph Naming Issue with solution
+        - URI Transformation Issue with solution""" .
+
+# Test Instances - CRUD Operations
+meta:CreateNewConceptTest a meta:TestOperation ;
+    rdfs:label "Create New Concept Test" ;
+    rdfs:comment "Test creating a new security concept" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        
+        INSERT DATA {
+            meta:TestSecurityConcept a meta:SecurityConcept ;
+                rdfs:label "Test Security Concept"@en ;
+                rdfs:comment "Test concept for CRUD operations" ;
+                owl:versionInfo "1.0.0" .
+        }
+    """ .
+
+meta:UpdateConceptTest a meta:TestOperation ;
+    rdfs:label "Update Concept Test" ;
+    rdfs:comment "Test updating a security concept" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        DELETE {
+            meta:TestSecurityConcept rdfs:comment ?oldComment
+        }
+        INSERT {
+            meta:TestSecurityConcept rdfs:comment "Updated test concept description"
+        }
+        WHERE {
+            meta:TestSecurityConcept rdfs:comment ?oldComment
+        }
+    """ .
+
+meta:DeleteConceptTest a meta:TestOperation ;
+    rdfs:label "Delete Concept Test" ;
+    rdfs:comment "Test deleting a security concept" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        
+        DELETE WHERE {
+            meta:TestSecurityConcept ?p ?o
+        }
+    """ .
+
+# Test Instances - Complex Queries
+meta:ComponentDependencyTest a meta:TestQuery ;
+    rdfs:label "Component Dependency Test" ;
+    rdfs:comment "Query to analyze component dependencies" ;
+    meta:hasQuery """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?component ?dependsOn ?implements
+        WHERE {
+            ?component a meta:Component ;
+                      rdfs:label ?name .
+            OPTIONAL { ?component meta:dependsOn ?dependsOn }
+            OPTIONAL { ?component meta:implements ?implements }
+        }
+        ORDER BY ?component
+    """ ;
+    meta:hasExpectedResult meta:ComponentDependencyResult .
+
+meta:ComponentDependencyResult a meta:ExpectedResult ;
+    rdfs:comment """Expected results include component relationships:
+        - SecretStore dependencies
+        - AuditLog implementations
+        - Configuration dependencies""" .
+
+# SHACL Validation for Tests
+meta:TestQueryShape a sh:NodeShape ;
+    sh:targetClass meta:TestQuery ;
+    sh:property [
+        sh:path meta:hasQuery ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Test query must have a SPARQL query string"
+    ] ,
+    [
+        sh:path meta:hasExpectedResult ;
+        sh:class meta:ExpectedResult ;
+        sh:minCount 1 ;
+        sh:message "Test query must have expected results"
+    ] .
+
+meta:TestOperationShape a sh:NodeShape ;
+    sh:targetClass meta:TestOperation ;
+    sh:property [
+        sh:path meta:hasOperation ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Test operation must have a CRUD operation string"
+    ] .
+
 # TODO: Areas for Expansion
 # - Add validation rules for secret references
 # - Add deployment-specific configuration patterns

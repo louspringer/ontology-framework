@@ -1,0 +1,185 @@
+@prefix ns1: <http://ontologies.louspringer.com/prompt-manager/llm-failure#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:InteractionShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasAttemptCount ],
+        [ sh:minCount 1 ;
+            sh:path ns1:hasFailure ] ;
+    sh:targetClass ns1:Interaction .
+
+ns1:LLM a owl:Class ;
+    rdfs:label "Language Model" ;
+    rdfs:comment "A large language model system" .
+
+ns1:LLMFailureOntology a owl:Ontology ;
+    rdfs:label "LLM Failure Analysis Ontology" ;
+    rdfs:comment "Documents patterns of LLM failures in basic tasks" .
+
+ns1:appliesTo a owl:ObjectProperty ;
+    rdfs:label "applies to" ;
+    rdfs:domain ns1:RecoveryStrategy ;
+    rdfs:range ns1:Failure .
+
+ns1:clearPromptGuideline a ns1:LearningPoint ;
+    rdfs:label "Clear Prompt Guideline" ;
+    ns1:relatedToFailure ns1:comprehensionFailure ;
+    rdfs:comment "Ensure prompts are specific and unambiguous" .
+
+ns1:hasFailureType a owl:ObjectProperty ;
+    rdfs:label "has failure type" ;
+    rdfs:domain ns1:Failure ;
+    rdfs:range ns1:FailureType .
+
+ns1:hasLearning a owl:ObjectProperty ;
+    rdfs:label "has learning point" ;
+    rdfs:domain ns1:Failure ;
+    rdfs:range ns1:LearningPoint .
+
+ns1:hasPrompt a owl:ObjectProperty ;
+    rdfs:label "has prompt" ;
+    rdfs:domain ns1:Task ;
+    rdfs:range ns1:Prompt .
+
+ns1:hasRecoveryStrategy a owl:ObjectProperty ;
+    rdfs:label "has recovery strategy" ;
+    rdfs:domain ns1:Failure ;
+    rdfs:range ns1:RecoveryStrategy .
+
+ns1:hasSeverity a owl:ObjectProperty ;
+    rdfs:label "has severity" ;
+    rdfs:domain ns1:Failure ;
+    rdfs:range ns1:FailureSeverity .
+
+ns1:involvesTask a owl:ObjectProperty ;
+    rdfs:label "involves task" ;
+    rdfs:domain ns1:Interaction ;
+    rdfs:range ns1:Task .
+
+ns1:isForTask a owl:ObjectProperty ;
+    rdfs:label "is for task" ;
+    rdfs:domain ns1:Prompt ;
+    rdfs:range ns1:Task .
+
+ns1:promptReformulation a ns1:RecoveryStrategy ;
+    rdfs:label "Prompt Reformulation" ;
+    ns1:appliesTo ns1:comprehensionFailure ;
+    rdfs:comment "Reformulate the prompt to be more specific and clear" .
+
+ns1:readmeInteraction a ns1:Interaction ;
+    rdfs:label "README Generation Interaction" ;
+    ns1:hasAttemptCount 6 ;
+    ns1:hasFailure ns1:comprehensionFailure,
+        ns1:fileGenerationFailure,
+        ns1:tokenWaste ;
+    ns1:involvesTask ns1:readmeTask ;
+    rdfs:comment "Attempted to generate a single README file" .
+
+ns1:readmePrompt a ns1:Prompt ;
+    rdfs:label "README Generation Prompt" ;
+    ns1:isForTask ns1:readmeTask ;
+    rdfs:comment """Given an ontology describing LLM failures, generate a single README.md file that:
+1. MUST output only raw file content without code block wrappers or paths
+2. MUST NOT include empty lines within code blocks
+3. MUST NOT trigger multiple file download prompts
+4. SHOULD include failure patterns, lessons, and guidelines
+
+Output ONLY the raw README content, nothing else.""" .
+
+ns1:relatedToFailure a owl:ObjectProperty ;
+    rdfs:label "related to failure" ;
+    rdfs:domain ns1:LearningPoint ;
+    rdfs:range ns1:Failure .
+
+ns1:tokenEfficiencyGuideline a ns1:LearningPoint ;
+    rdfs:label "Token Efficiency Guideline" ;
+    ns1:relatedToFailure ns1:tokenWaste ;
+    rdfs:comment "Optimize prompts to minimize token usage" .
+
+ns1:tokenOptimization a ns1:RecoveryStrategy ;
+    rdfs:label "Token Optimization" ;
+    ns1:appliesTo ns1:tokenWaste ;
+    rdfs:comment "Optimize prompt structure to reduce token usage" .
+
+ns1:criticalSeverity a ns1:FailureSeverity ;
+    rdfs:label "Critical" ;
+    skos:definition "Completely blocks task completion" .
+
+ns1:fileGenerationFailure a ns1:Failure,
+        ns1:FailureType ;
+    rdfs:label "File Generation Failure" ;
+    ns1:hasSeverity ns1:highSeverity ;
+    rdfs:comment "Failed to generate a single clean file" .
+
+ns1:hasAttemptCount a owl:DatatypeProperty ;
+    rdfs:label "number of attempts" ;
+    rdfs:domain ns1:Interaction ;
+    rdfs:range xsd:integer .
+
+ns1:hasFailure a owl:ObjectProperty ;
+    rdfs:label "has failure" ;
+    rdfs:domain ns1:Interaction ;
+    rdfs:range ns1:Failure .
+
+ns1:highSeverity a ns1:FailureSeverity ;
+    rdfs:label "High" ;
+    skos:definition "Significantly impacts task completion" .
+
+ns1:mediumSeverity a ns1:FailureSeverity ;
+    rdfs:label "Medium" ;
+    skos:definition "Partially impacts task completion" .
+
+ns1:readmeTask a ns1:Task ;
+    rdfs:label "README Generation" ;
+    rdfs:comment "Generate a single downloadable README file" .
+
+ns1:Prompt a owl:Class ;
+    rdfs:label "Prompt" ;
+    rdfs:comment "A structured instruction set for LLMs" .
+
+ns1:comprehensionFailure a ns1:Failure,
+        ns1:FailureType ;
+    rdfs:label "Comprehension Failure" ;
+    ns1:hasSeverity ns1:criticalSeverity ;
+    rdfs:comment "Failed to understand basic requirements" .
+
+ns1:tokenWaste a ns1:Failure,
+        ns1:FailureType ;
+    rdfs:label "Token Waste" ;
+    ns1:hasSeverity ns1:mediumSeverity ;
+    rdfs:comment "Repeatedly failed while consuming tokens" .
+
+ns1:FailureSeverity a owl:Class ;
+    rdfs:label "Failure Severity" ;
+    rdfs:comment "Indicates how severe a failure instance is" .
+
+ns1:FailureType a owl:Class ;
+    rdfs:label "Failure Type" ;
+    rdfs:comment "A category of LLM failure" .
+
+ns1:LearningPoint a owl:Class ;
+    rdfs:label "Learning Point" ;
+    rdfs:comment "A lesson learned from a failure instance" .
+
+ns1:RecoveryStrategy a owl:Class ;
+    rdfs:label "Recovery Strategy" ;
+    rdfs:comment "A strategy to recover from a failure" .
+
+ns1:Task a owl:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "A requested operation or action" .
+
+ns1:Interaction a owl:Class ;
+    rdfs:label "Interaction" ;
+    rdfs:comment "A conversation between user and LLM" .
+
+ns1:Failure a owl:Class ;
+    rdfs:label "Failure" ;
+    rdfs:comment "A specific way an LLM failed" .
+

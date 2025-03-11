@@ -1,0 +1,445 @@
+@prefix : <./oracle_rdf#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <./meta#> .
+
+# Ontology Definition
+:OracleRDFOntology rdf:type owl:Ontology ;
+    rdfs:label "Oracle RDF Storage Ontology" ;
+    rdfs:comment "Ontology for modeling Oracle RDF storage functionality and constraints" ;
+    dc:title "Oracle RDF Storage Ontology" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21"^^xsd:dateTime ;
+    dct:modified "2024-03-21"^^xsd:dateTime .
+
+# Core Classes
+:RDFModel rdf:type owl:Class ;
+    rdfs:label "RDF Model" ;
+    rdfs:comment "An Oracle RDF model that stores semantic data" .
+
+:RDFTable rdf:type owl:Class ;
+    rdfs:label "RDF Table" ;
+    rdfs:comment "A database table that stores RDF data for a model" .
+
+:RDFColumn rdf:type owl:Class ;
+    rdfs:label "RDF Column" ;
+    rdfs:comment "A column in an RDF table that stores triple components" .
+
+:StagingTable rdf:type owl:Class ;
+    rdfs:label "Staging Table" ;
+    rdfs:comment "Temporary table used for bulk loading RDF data" .
+
+:LoadingOperation rdf:type owl:Class ;
+    rdfs:label "Loading Operation" ;
+    rdfs:comment "Operation for loading RDF data into Oracle" .
+
+# Properties
+:hasTable rdf:type owl:ObjectProperty ;
+    rdfs:label "has table" ;
+    rdfs:domain :RDFModel ;
+    rdfs:range :RDFTable .
+
+:hasColumn rdf:type owl:ObjectProperty ;
+    rdfs:label "has column" ;
+    rdfs:domain :RDFTable ;
+    rdfs:range :RDFColumn .
+
+:usesStaging rdf:type owl:ObjectProperty ;
+    rdfs:label "uses staging" ;
+    rdfs:domain :LoadingOperation ;
+    rdfs:range :StagingTable .
+
+:modelName rdf:type owl:DatatypeProperty ;
+    rdfs:label "model name" ;
+    rdfs:domain :RDFModel ;
+    rdfs:range xsd:string .
+
+:tableName rdf:type owl:DatatypeProperty ;
+    rdfs:label "table name" ;
+    rdfs:domain :RDFTable ;
+    rdfs:range xsd:string .
+
+:columnName rdf:type owl:DatatypeProperty ;
+    rdfs:label "column name" ;
+    rdfs:domain :RDFColumn ;
+    rdfs:range xsd:string .
+
+# SHACL Shapes
+:RDFModelShape rdf:type sh:NodeShape ;
+    sh:targetClass :RDFModel ;
+    sh:property [
+        sh:path :modelName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[A-Z][A-Z0-9_]{0,24}$" ;  # Oracle naming convention
+        sh:message "Model name must be uppercase, start with letter, max 25 chars"
+    ] ;
+    sh:property [
+        sh:path :hasTable ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Model must have exactly one table"
+    ] .
+
+:RDFTableShape rdf:type sh:NodeShape ;
+    sh:targetClass :RDFTable ;
+    sh:property [
+        sh:path :tableName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[A-Z][A-Z0-9_]{0,29}$" ;  # Oracle naming convention
+        sh:message "Table name must be uppercase, start with letter, max 30 chars"
+    ] ;
+    sh:property [
+        sh:path :hasColumn ;
+        sh:minCount 1 ;
+        sh:message "Table must have at least one column"
+    ] .
+
+:StagingTableShape rdf:type sh:NodeShape ;
+    sh:targetClass :StagingTable ;
+    sh:property [
+        sh:path :tableName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[A-Z][A-Z0-9_]{0,29}$" ;  # Oracle naming convention
+        sh:message "Staging table name must be uppercase, start with letter, max 30 chars"
+    ] .
+
+# Required Staging Table Columns
+:RequiredStagingColumns rdf:type owl:Class ;
+    rdfs:label "Required Staging Columns" ;
+    rdfs:comment "Required columns for staging tables in Oracle RDF bulk load" ;
+    owl:equivalentClass [
+        rdf:type owl:Class ;
+        owl:oneOf (
+            "RDF$STC_sub"
+            "RDF$STC_pred"
+            "RDF$STC_obj"
+        )
+    ] .
+
+# Oracle RDF Procedures
+:OracleProcedure rdf:type owl:Class ;
+    rdfs:label "Oracle Procedure" ;
+    rdfs:comment "An Oracle database procedure for RDF operations" .
+
+:CreateRDFModel rdf:type owl:Class ;
+    rdfs:label "Create RDF Model" ;
+    rdfs:comment "SEM_APIS.CREATE_RDF_MODEL procedure" ;
+    rdfs:subClassOf :OracleProcedure .
+
+:BulkLoadFromStaging rdf:type owl:Class ;
+    rdfs:label "Bulk Load From Staging" ;
+    rdfs:comment "SEM_APIS.BULK_LOAD_FROM_STAGING_TABLE procedure" ;
+    rdfs:subClassOf :OracleProcedure .
+
+# Procedure Parameters
+:hasParameter rdf:type owl:ObjectProperty ;
+    rdfs:label "has parameter" ;
+    rdfs:domain :OracleProcedure ;
+    rdfs:range :ProcedureParameter .
+
+:ProcedureParameter rdf:type owl:Class ;
+    rdfs:label "Procedure Parameter" ;
+    rdfs:comment "Parameter for an Oracle procedure" .
+
+# Example Instances
+:createModelParams rdf:type owl:NamedIndividual, :ProcedureParameter ;
+    rdfs:label "Create Model Parameters" ;
+    rdfs:comment """Required parameters for CREATE_RDF_MODEL:
+    1. model_name VARCHAR2
+    2. table_name VARCHAR2
+    3. column_name VARCHAR2""" .
+
+:bulkLoadParams rdf:type owl:NamedIndividual, :ProcedureParameter ;
+    rdfs:label "Bulk Load Parameters" ;
+    rdfs:comment """Required parameters for BULK_LOAD_FROM_STAGING_TABLE:
+    1. model_name VARCHAR2
+    2. table_owner VARCHAR2
+    3. table_name VARCHAR2
+    4. flags VARCHAR2 (optional)""" .
+
+# Error Codes
+:OracleError rdf:type owl:Class ;
+    rdfs:label "Oracle Error" ;
+    rdfs:comment "Oracle database error code and message" .
+
+:ModelExistsError rdf:type owl:NamedIndividual, :OracleError ;
+    rdfs:label "Model Exists Error" ;
+    rdfs:comment "ORA-55505: Model already exists" ;
+    :errorCode "ORA-55505" .
+
+:NoQuotaError rdf:type owl:NamedIndividual, :OracleError ;
+    rdfs:label "No Quota Error" ;
+    rdfs:comment "No quota on SYSAUX tablespace" .
+
+# Value Validation
+:RDFValue rdf:type owl:Class ;
+    rdfs:label "RDF Value" ;
+    rdfs:comment "A value in an RDF triple (subject, predicate, or object)" .
+
+:URIValue rdf:type owl:Class ;
+    rdfs:label "URI Value" ;
+    rdfs:comment "A URI value in an RDF triple" ;
+    rdfs:subClassOf :RDFValue .
+
+:LiteralValue rdf:type owl:Class ;
+    rdfs:label "Literal Value" ;
+    rdfs:comment "A literal value in an RDF triple" ;
+    rdfs:subClassOf :RDFValue .
+
+:BlankNodeValue rdf:type owl:Class ;
+    rdfs:label "Blank Node Value" ;
+    rdfs:comment "A blank node value in an RDF triple" ;
+    rdfs:subClassOf :RDFValue .
+
+# Value Validation Rules
+:ValueValidationRule rdf:type owl:Class ;
+    rdfs:label "Value Validation Rule" ;
+    rdfs:comment "A rule for validating RDF values in Oracle" .
+
+:URIValidationRule rdf:type owl:Class ;
+    rdfs:label "URI Validation Rule" ;
+    rdfs:comment "Rules for validating URIs in Oracle RDF" ;
+    rdfs:subClassOf :ValueValidationRule .
+
+:LiteralValidationRule rdf:type owl:Class ;
+    rdfs:label "Literal Validation Rule" ;
+    rdfs:comment "Rules for validating literals in Oracle RDF" ;
+    rdfs:subClassOf :ValueValidationRule .
+
+# Value Validation Properties
+:hasValidationRule rdf:type owl:ObjectProperty ;
+    rdfs:label "has validation rule" ;
+    rdfs:domain :RDFValue ;
+    rdfs:range :ValueValidationRule .
+
+:hasPattern rdf:type owl:DatatypeProperty ;
+    rdfs:label "has pattern" ;
+    rdfs:domain :ValueValidationRule ;
+    rdfs:range xsd:string .
+
+:hasErrorCode rdf:type owl:DatatypeProperty ;
+    rdfs:label "has error code" ;
+    rdfs:domain :ValueValidationRule ;
+    rdfs:range xsd:string .
+
+# Value Validation Shapes
+:URIValueShape rdf:type sh:NodeShape ;
+    sh:targetClass :URIValue ;
+    sh:property [
+        sh:path rdf:value ;
+        sh:pattern "^[a-zA-Z][a-zA-Z0-9+.-]*://[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|/))*$" ;
+        sh:message "URI must be a valid URI with no spaces or special characters"
+    ] .
+
+:LiteralValueShape rdf:type sh:NodeShape ;
+    sh:targetClass :LiteralValue ;
+    sh:property [
+        sh:path rdf:value ;
+        sh:maxLength 4000 ;
+        sh:pattern "^[^\\x00-\\x1F\\x7F]*$" ;  # No control characters
+        sh:message "Literal must not contain control characters and must be under 4000 chars"
+    ] .
+
+# Example Validation Rules
+:uriValidationRule rdf:type owl:NamedIndividual, :URIValidationRule ;
+    rdfs:label "URI Validation Rule" ;
+    rdfs:comment "URIs must be valid and not contain spaces or special characters" ;
+    :hasPattern "^[a-zA-Z][a-zA-Z0-9+.-]*://[^\\s()<>]+(?:\\([\\w\\d]+\\)|([^[:punct:]\\s]|/))*$" ;
+    :hasErrorCode "ORA-13199" .
+
+:literalValidationRule rdf:type owl:NamedIndividual, :LiteralValidationRule ;
+    rdfs:label "Literal Validation Rule" ;
+    rdfs:comment "Literals must not contain control characters and must be under 4000 chars" ;
+    :hasPattern "^[^\\x00-\\x1F\\x7F]*$" ;
+    :hasErrorCode "ORA-13199" .
+
+# Value Preprocessing
+:ValuePreprocessor rdf:type owl:Class ;
+    rdfs:label "Value Preprocessor" ;
+    rdfs:comment "Preprocessor for cleaning RDF values before loading into Oracle" .
+
+:URIPreprocessor rdf:type owl:Class ;
+    rdfs:label "URI Preprocessor" ;
+    rdfs:comment "Preprocessor for cleaning URIs" ;
+    rdfs:subClassOf :ValuePreprocessor .
+
+:LiteralPreprocessor rdf:type owl:Class ;
+    rdfs:label "Literal Preprocessor" ;
+    rdfs:comment "Preprocessor for cleaning literals" ;
+    rdfs:subClassOf :ValuePreprocessor .
+
+:preprocessesValue rdf:type owl:ObjectProperty ;
+    rdfs:label "preprocesses value" ;
+    rdfs:domain :ValuePreprocessor ;
+    rdfs:range :RDFValue .
+
+# Example Preprocessors
+:uriPreprocessor rdf:type owl:NamedIndividual, :URIPreprocessor ;
+    rdfs:label "URI Preprocessor" ;
+    rdfs:comment """Preprocesses URIs by:
+    1. Encoding special characters
+    2. Replacing spaces with %20
+    3. Validating URI format""" .
+
+:literalPreprocessor rdf:type owl:NamedIndividual, :LiteralPreprocessor ;
+    rdfs:label "Literal Preprocessor" ;
+    rdfs:comment """Preprocesses literals by:
+    1. Removing control characters
+    2. Truncating to 4000 chars if needed
+    3. Escaping special characters""" .
+
+# Oracle-Specific Value Constraints
+:OracleURIConstraint rdf:type owl:Class ;
+    rdfs:label "Oracle URI Constraint" ;
+    rdfs:comment "Oracle-specific constraints for URI values" ;
+    rdfs:subClassOf :ValueValidationRule .
+
+:OracleLiteralConstraint rdf:type owl:Class ;
+    rdfs:label "Oracle Literal Constraint" ;
+    rdfs:comment "Oracle-specific constraints for literal values" ;
+    rdfs:subClassOf :ValueValidationRule .
+
+:OracleBlankNodeConstraint rdf:type owl:Class ;
+    rdfs:label "Oracle Blank Node Constraint" ;
+    rdfs:comment "Oracle-specific constraints for blank node values" ;
+    rdfs:subClassOf :ValueValidationRule .
+
+# Oracle-Specific Value Validation Rules
+:oracleURIRule rdf:type owl:NamedIndividual, :OracleURIConstraint ;
+    rdfs:label "Oracle URI Rule" ;
+    rdfs:comment """Oracle URI validation rules:
+    1. Must be a valid absolute URI
+    2. Must not contain spaces or special characters
+    3. Must use percent-encoding for non-ASCII characters
+    4. Must not exceed 4000 bytes
+    5. Must have a valid scheme (http, https, urn, etc.)
+    6. Must not contain control characters
+    7. Must not contain unencoded brackets, braces, or parentheses""" ;
+    :hasPattern "^[a-zA-Z][a-zA-Z0-9+.-]*://[^\\s()<>{}\\[\\]]+$" ;
+    :hasErrorCode "ORA-13199" .
+
+:oracleLiteralRule rdf:type owl:NamedIndividual, :OracleLiteralConstraint ;
+    rdfs:label "Oracle Literal Rule" ;
+    rdfs:comment """Oracle literal validation rules:
+    1. Must not contain control characters
+    2. Must not exceed 4000 bytes
+    3. Must be properly escaped
+    4. Must not contain unescaped quotes
+    5. Must be valid for its datatype
+    6. Must use N-Triples escaping rules
+    7. Must handle language tags properly""" ;
+    :hasPattern "^[^\\x00-\\x1F\\x7F]*$" ;
+    :hasErrorCode "ORA-13199" .
+
+:oracleBlankNodeRule rdf:type owl:NamedIndividual, :OracleBlankNodeConstraint ;
+    rdfs:label "Oracle Blank Node Rule" ;
+    rdfs:comment """Oracle blank node validation rules:
+    1. Must start with '_:' prefix
+    2. Must be followed by valid NCName
+    3. Must not exceed 4000 bytes
+    4. Must not contain spaces or special characters
+    5. Must be unique within the model""" ;
+    :hasPattern "^_:[A-Za-z][A-Za-z0-9_]*$" ;
+    :hasErrorCode "ORA-13199" .
+
+# Value Preprocessing Steps
+:PreprocessingStep rdf:type owl:Class ;
+    rdfs:label "Preprocessing Step" ;
+    rdfs:comment "A step in preprocessing RDF values for Oracle" .
+
+:URIPreprocessingStep rdf:type owl:Class ;
+    rdfs:label "URI Preprocessing Step" ;
+    rdfs:comment "Steps for preprocessing URIs" ;
+    rdfs:subClassOf :PreprocessingStep .
+
+:LiteralPreprocessingStep rdf:type owl:Class ;
+    rdfs:label "Literal Preprocessing Step" ;
+    rdfs:comment "Steps for preprocessing literals" ;
+    rdfs:subClassOf :PreprocessingStep .
+
+:BlankNodePreprocessingStep rdf:type owl:Class ;
+    rdfs:label "Blank Node Preprocessing Step" ;
+    rdfs:comment "Steps for preprocessing blank nodes" ;
+    rdfs:subClassOf :PreprocessingStep .
+
+# Example Preprocessing Steps
+:uriPreprocessingSteps rdf:type owl:NamedIndividual, :URIPreprocessingStep ;
+    rdfs:label "URI Preprocessing Steps" ;
+    rdfs:comment """Steps for preprocessing URIs:
+    1. Remove any whitespace
+    2. Percent-encode special characters
+    3. Ensure absolute URI with valid scheme
+    4. Handle non-ASCII characters
+    5. Truncate if too long
+    6. Encode brackets, braces, parentheses
+    7. Validate final format""" .
+
+:literalPreprocessingSteps rdf:type owl:NamedIndividual, :LiteralPreprocessingStep ;
+    rdfs:label "Literal Preprocessing Steps" ;
+    rdfs:comment """Steps for preprocessing literals:
+    1. Remove control characters
+    2. Escape quotes and backslashes
+    3. Handle datatype-specific formatting
+    4. Truncate if too long
+    5. Apply N-Triples escaping
+    6. Handle language tags
+    7. Validate final format""" .
+
+:blankNodePreprocessingSteps rdf:type owl:NamedIndividual, :BlankNodePreprocessingStep ;
+    rdfs:label "Blank Node Preprocessing Steps" ;
+    rdfs:comment """Steps for preprocessing blank nodes:
+    1. Ensure '_:' prefix
+    2. Clean up node identifier
+    3. Remove invalid characters
+    4. Ensure uniqueness
+    5. Truncate if too long
+    6. Validate final format""" .
+
+# Test Cases
+:OracleRDFTestCase rdf:type owl:Class ;
+    rdfs:label "Oracle RDF Test Case" ;
+    rdfs:comment "Test case for Oracle RDF store functionality" ;
+    rdfs:subClassOf meta:TestCase .
+
+:ModelCreationTest rdf:type :OracleRDFTestCase ;
+    rdfs:label "Model Creation Test" ;
+    rdfs:comment "Test case for creating an Oracle RDF model" ;
+    meta:hasTestQuery """
+        SELECT model_name, owner, table_name
+        FROM MDSYS.SEM_MODEL$
+        WHERE model_name = 'TEST_MODEL'
+    """ ;
+    meta:hasExpectedResult :ModelCreationResult .
+
+:ModelCreationResult rdf:type meta:ExpectedResult ;
+    rdfs:comment "Expected result for model creation test: model exists with correct owner and table" .
+
+:TripleLoadingTest rdf:type :OracleRDFTestCase ;
+    rdfs:label "Triple Loading Test" ;
+    rdfs:comment "Test case for loading triples into Oracle RDF store" ;
+    meta:hasTestQuery """
+        SELECT s.VALUE_NAME, p.VALUE_NAME, o.VALUE_NAME
+        FROM TABLE(SEM_MATCH(
+            'SELECT ?s ?p ?o WHERE {?s ?p ?o}',
+            SEM_Models('TEST_MODEL'),
+            null, null, null))
+        JOIN MDSYS.RDF_VALUE$ s ON s.VALUE_ID = SUBSTR(SEM_MATCH.s, 2)
+        JOIN MDSYS.RDF_VALUE$ p ON p.VALUE_ID = SUBSTR(SEM_MATCH.p, 2)
+        JOIN MDSYS.RDF_VALUE$ o ON o.VALUE_ID = SUBSTR(SEM_MATCH.o, 2)
+    """ ;
+    meta:hasExpectedResult :TripleLoadingResult .
+
+:TripleLoadingResult rdf:type meta:ExpectedResult ;
+    rdfs:comment "Expected result for triple loading test: triples are correctly stored and queryable" . 

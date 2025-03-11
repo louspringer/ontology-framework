@@ -1,0 +1,60 @@
+@prefix : <file:///Users/lou/Documents/ontology-framework/session#> .
+@prefix collab: <file:///Users/lou/Documents/ontology-framework/guidance/modules/collaboration#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix model: <file:///Users/lou/Documents/ontology-framework/guidance/modules/model#> .
+
+:GitHubIntegrationTask a :Task ;
+    rdfs:label "GitHub Integration" ;
+    collab:followsBranchStrategy [ a collab:BranchStrategy ;
+            collab:branchNameFormat "feature/issue-1-github-integration" ] ;
+    :description """Set up GitHub configuration source provider for OCI Resource Manager with the following:
+    1. Created GitHub access token configuration
+    2. Configured provider in OCI Resource Manager
+    3. Verified provider status is ACTIVE
+    4. Created feature branch following naming convention
+    5. Updated session tracking""" ;
+    :status "Completed" ;
+    dct:created "2024-03-06T00:25:00+00:00"^^xsd:dateTime .
+
+:OracleRDFTestUpdate a :Task ;
+    rdfs:label "Oracle RDF Test Updates" ;
+    :description """Updated Oracle RDF tests with the following changes:
+    1. Fixed linting issues in test_oracle_rdf.py
+    2. Removed unused imports (subprocess, PrefixCategory)
+    3. Improved code formatting with black
+    4. Verified all tests pass
+    5. Updated test model following ModelFirstPrinciple""" ;
+    :status "Completed" ;
+    model:followsModelFirstPrinciple true ;
+    dct:created "2024-03-21T14:30:00+00:00"^^xsd:dateTime .
+
+:META a :RegisteredOntology ;
+    rdfs:label "meta" ;
+    :hasModelName "META" ;
+    :hasVersion "1.0.0" .
+
+:SessionOntology a owl:Ontology ;
+    rdfs:label "Session Tracking Ontology" ;
+    dct:created "2024-03-06T00:25:00+00:00"^^xsd:dateTime ;
+    rdfs:comment "Tracks tasks and changes during development sessions" ;
+    owl:versionInfo "1.0.0" .
+
+:description a owl:DatatypeProperty ;
+    rdfs:label "Description" ;
+    rdfs:comment "Detailed description of a task" ;
+    rdfs:domain :Task ;
+    rdfs:range xsd:string .
+
+:status a owl:DatatypeProperty ;
+    rdfs:label "Status" ;
+    rdfs:comment "Current status of a task" ;
+    rdfs:domain :Task ;
+    rdfs:range xsd:string .
+
+:Task a owl:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "A development or configuration task" .
+
