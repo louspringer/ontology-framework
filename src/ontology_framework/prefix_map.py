@@ -1,16 +1,17 @@
 """Prefix map module for managing ontology prefixes."""
 
-from enum import Enum
+from enum import Enum, auto
 from rdflib import Graph, Namespace
 from typing import Dict, Optional
 
 
-class PrefixCategory(Enum):
+class PrefixCategory(str, Enum):
     """Categories for prefixes."""
     STANDARD = "standard"      # RDF, RDFS, OWL, etc.
     DOMAIN = "domain"         # Domain-specific ontologies
     EXTERNAL = "external"     # External ontologies
     LOCAL = "local"          # Local project ontologies
+    CORE = "core"           # Core framework ontologies
 
 
 class PrefixMap:
@@ -34,6 +35,23 @@ class PrefixMap:
             'time': 'http://ontologies.louspringer.com/time#',
             'sh': 'http://www.w3.org/ns/shacl#'
         }
+        self.categories: Dict[str, PrefixCategory] = {
+            'rdf': PrefixCategory.EXTERNAL,
+            'rdfs': PrefixCategory.EXTERNAL,
+            'owl': PrefixCategory.EXTERNAL,
+            'xsd': PrefixCategory.EXTERNAL,
+            'dc': PrefixCategory.EXTERNAL,
+            'dct': PrefixCategory.EXTERNAL,
+            'meta': PrefixCategory.CORE,
+            'guidance': PrefixCategory.CORE,
+            'problem': PrefixCategory.CORE,
+            'solution': PrefixCategory.CORE,
+            'conversation': PrefixCategory.CORE,
+            'process': PrefixCategory.CORE,
+            'agent': PrefixCategory.CORE,
+            'time': PrefixCategory.CORE,
+            'sh': PrefixCategory.EXTERNAL
+        }
         
     def add_prefix(self, prefix: str, uri: str) -> None:
         """Add a new prefix mapping."""
@@ -43,7 +61,7 @@ class PrefixMap:
         """Get the URI for a prefix."""
         return self.prefixes.get(prefix)
         
-    def get_namespace(self, prefix: str) -> Optional[str]:
+    def get_namespace(self, prefix: str) -> Optional[Namespace]:
         """Get the namespace URI for a prefix."""
         uri = self.get_uri(prefix)
         if uri:
@@ -73,6 +91,23 @@ class PrefixMap:
                 'ontologies.louspringer.com'
             )
         return uri_str
+
+    def get_category(self, prefix: str) -> Optional[PrefixCategory]:
+        """Get the category of a prefix."""
+        return self.categories.get(prefix)
+
+    def is_valid_prefix(self, prefix: str) -> bool:
+        """Check if a prefix is valid."""
+        return prefix in self.prefixes
+
+    def get_all_prefixes(self) -> Dict[str, Namespace]:
+        """Get all registered prefixes as a dictionary mapping prefix to Namespace."""
+        return {prefix: Namespace(uri) for prefix, uri in self.prefixes.items()}
+
+    def register_prefix(self, prefix: str, uri: str, category: PrefixCategory) -> None:
+        """Register a new prefix with its category."""
+        self.prefixes[prefix] = uri
+        self.categories[prefix] = category
 
 # Create a default instance
 default_prefix_map = PrefixMap() 

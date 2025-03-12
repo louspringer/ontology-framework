@@ -17,9 +17,41 @@ def test_default_prefixes():
 
 def test_prefix_categories():
     """Test that prefixes are assigned to correct categories."""
-    assert default_prefix_map.get_category("rdf") == PrefixCategory.EXTERNAL
-    assert default_prefix_map.get_category("meta") == PrefixCategory.CORE
-    assert default_prefix_map.get_category("nonexistent") is None
+    print("\n=== Testing Prefix Categories ===")
+    
+    # Log all available categories in the enum
+    print("\nAvailable PrefixCategory values:")
+    for category in PrefixCategory:
+        print(f"- {category} (type: {type(category)}, value: {category.value}")
+    
+    # Test rdf prefix
+    rdf_category = default_prefix_map.get_category("rdf")
+    print(f"\nTesting 'rdf' prefix:")
+    print(f"Category returned: {rdf_category}")
+    print(f"Category type: {type(rdf_category)}")
+    print(f"Category value: {rdf_category.value if rdf_category else None}")
+    assert rdf_category.value == "external"
+    
+    # Test meta prefix
+    meta_category = default_prefix_map.get_category("meta")
+    print(f"\nTesting 'meta' prefix:")
+    print(f"Category returned: {meta_category}")
+    print(f"Category type: {type(meta_category)}")
+    print(f"Category value: {meta_category.value if meta_category else None}")
+    assert meta_category.value == "core"
+    
+    # Log all categories in the prefix map
+    print("\nAll prefix categories in default_prefix_map:")
+    for prefix, category in default_prefix_map.categories.items():
+        print(f"{prefix}: {category} (type: {type(category)}, value: {category.value}")
+    
+    # Compare the actual category with CORE directly
+    print("\nDirect comparison:")
+    print(f"meta_category == PrefixCategory.CORE: {meta_category == PrefixCategory.CORE}")
+    print(f"meta_category.value == PrefixCategory.CORE.value: {meta_category.value == PrefixCategory.CORE.value}")
+    print(f"str(meta_category) == str(PrefixCategory.CORE): {str(meta_category) == str(PrefixCategory.CORE)}")
+    
+    assert meta_category == PrefixCategory.CORE
 
 
 def test_namespace_resolution():

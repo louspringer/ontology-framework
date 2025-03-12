@@ -681,10 +681,24 @@ class TestOracleRDFModel(unittest.TestCase):
         cls.TEST = Namespace("test_oracle_rdf_model#")
         
         # Validate model against SHACL constraints
-        conforms, _, _ = validate(cls.g)
+        conforms, results_graph, results_text = validate(cls.g)
         if not conforms:
+            print("\nSHACL Validation Results:")
+            print(results_text)
             raise ValueError("Test model does not conform to SHACL constraints")
         
+        # Check if Oracle environment variables are set
+        if not all(os.environ.get(var) for var in ['ORACLE_USER', 'ORACLE_PASSWORD', 'ORACLE_DSN']):
+            pytest.skip("Oracle environment variables not set")
+            return
+            
+        # Initialize thick mode for Oracle
+        try:
+            oracledb.init_oracle_client()
+        except oracledb.ProgrammingError:
+            # Client already initialized
+            pass
+    
         # Connect to Oracle
         cls.connection = oracledb.connect(
             user=os.environ['ORACLE_USER'],

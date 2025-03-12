@@ -13,11 +13,27 @@ SHACL = Namespace('http://www.w3.org/ns/shacl#')
 
 class TestSemanticEquivalence(unittest.TestCase):
     def setUp(self):
+        # Check if Oracle environment variables are set
+        oracle_user = os.environ.get('ORACLE_USER')
+        oracle_password = os.environ.get('ORACLE_PASSWORD')
+        oracle_dsn = os.environ.get('ORACLE_DSN')
+        
+        if not all([oracle_user, oracle_password, oracle_dsn]):
+            self.skipTest("Oracle environment variables not set")
+            return
+        
+        # Initialize thick mode for Oracle
+        try:
+            oracledb.init_oracle_client()
+        except oracledb.ProgrammingError:
+            # Client already initialized
+            pass
+        
         # Set up database connection
         self.connection = oracledb.connect(
-            user=os.environ.get('ORACLE_USER'),
-            password=os.environ.get('ORACLE_PASSWORD'),
-            dsn=os.environ.get('ORACLE_DSN')
+            user=oracle_user,
+            password=oracle_password,
+            dsn=oracle_dsn
         )
         self.cursor = self.connection.cursor()
 

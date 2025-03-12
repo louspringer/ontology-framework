@@ -19,8 +19,8 @@
     dc:title "Oracle RDF Test Model" ;
     dc:version "1.0.0" ;
     owl:versionInfo "1.0.0" ;
-    dct:created "2024-03-09"^^xsd:dateTime ;
-    dct:modified "2024-03-09"^^xsd:dateTime ;
+    dct:created "2024-03-09T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-09T00:00:00"^^xsd:dateTime ;
     owl:imports <../guidance.ttl> .
 
 # Test Components
@@ -83,7 +83,12 @@
 
 :testModel rdf:type :SemanticModel ;
     rdfs:label "Test Model" ;
-    rdfs:comment "Test semantic model instance" .
+    rdfs:comment "Test semantic model instance" ;
+    :requiresTablespace [
+        rdf:type :TablespaceRequirement ;
+        rdfs:label "Model Tablespace" ;
+        rdfs:comment "Tablespace for storing semantic model data"
+    ] .
 
 # SHACL Validation
 :SemanticNetworkShape rdf:type sh:NodeShape ;
