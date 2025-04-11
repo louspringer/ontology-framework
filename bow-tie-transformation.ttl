@@ -1,0 +1,399 @@
+@prefix bt: <http://example.org/bow-tie-pattern#> .
+@prefix ex: <http://example.org/bow-tie-examples#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# Ontology Declaration
+bt:BowTieOntology a owl:Ontology ;
+    rdfs:label "Bow Tie Transformation Pattern Ontology" ;
+    rdfs:comment "Formal pattern for modeling lossy compression, latent representations, and expansion strategies" ;
+    dc:title "Bow Tie Transformation Pattern" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-04-11T10:00:00Z"^^xsd:dateTime ;
+    dct:modified "2024-04-11T10:00:00Z"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Pattern for modeling information transformation through compression and expansion" .
+
+# === Core Pattern Definitions ===
+
+bt:TransformationPattern a owl:Class ;
+    rdfs:label "Transformation Pattern" ;
+    rdfs:comment "Abstract class for patterns that involve model compression, latent representation, and expansion." ;
+    owl:versionInfo "1.0.0" .
+
+bt:CompressionMap a owl:Class ;
+    rdfs:subClassOf bt:TransformationPattern ;
+    rdfs:label "Compression Mapping" ;
+    rdfs:comment "A transformation that reduces model complexity, dimensionality, or expressiveness while preserving essential structure." ;
+    owl:versionInfo "1.0.0" .
+
+bt:LatentModel a owl:Class ;
+    rdfs:subClassOf bt:TransformationPattern ;
+    rdfs:label "Latent Model" ;
+    rdfs:comment "An abstract or compressed form that captures essential structure for later elaboration." ;
+    owl:versionInfo "1.0.0" .
+
+bt:ExpansionMap a owl:Class ;
+    rdfs:subClassOf bt:TransformationPattern ;
+    rdfs:label "Expansion Mapping" ;
+    rdfs:comment "A transformation that derives more detailed, expressive, or instantiated structures from a latent or compressed form." ;
+    owl:versionInfo "1.0.0" .
+
+# Properties with explicit domains and ranges
+bt:hasCompressionMap a owl:ObjectProperty ;
+    rdfs:domain bt:InformationStructure ;
+    rdfs:range bt:CompressionMap ;
+    rdfs:label "has compression mapping" ;
+    owl:versionInfo "1.0.0" .
+
+bt:hasLatentModel a owl:ObjectProperty ;
+    rdfs:domain bt:InformationStructure ;
+    rdfs:range bt:LatentModel ;
+    rdfs:label "has latent model" ;
+    owl:versionInfo "1.0.0" .
+
+bt:hasExpansionMap a owl:ObjectProperty ;
+    rdfs:domain bt:LatentModel ;
+    rdfs:range bt:ExpansionMap ;
+    rdfs:label "has expansion mapping" ;
+    owl:versionInfo "1.0.0" .
+
+bt:isDerivedFrom a owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:label "is derived from" ;
+    owl:versionInfo "1.0.0" .
+
+bt:InformationStructure a owl:Class ;
+    rdfs:label "Information Structure" ;
+    rdfs:comment "A conceptual or formal model of information that may undergo compression or expansion." ;
+    owl:versionInfo "1.0.0" .
+
+# === Lossiness Extensions ===
+
+bt:LossyTransformation a owl:Class ;
+    rdfs:subClassOf bt:CompressionMap ;
+    rdfs:label "Lossy Transformation" ;
+    rdfs:comment "A transformation that reduces information by discarding detail, often irreversibly. Common in abstraction and encoding steps." ;
+    owl:versionInfo "1.0.0" .
+
+bt:hasLossinessLevel a owl:DatatypeProperty ;
+    rdfs:domain bt:TransformationPattern ;
+    rdfs:range xsd:float ;
+    rdfs:label "has lossiness level" ;
+    rdfs:comment "The degree of information loss in the transformation" ;
+    owl:versionInfo "1.0.0" .
+
+bt:LossRestorationStrategy a owl:Class ;
+    rdfs:label "Loss Restoration Strategy" ;
+    rdfs:comment "A strategy used during expansion to hallucinate or infer information lost in a prior lossy transformation." ;
+    owl:versionInfo "1.0.0" .
+
+# === SHACL Validation ===
+
+bt:TransformationPatternShape a sh:NodeShape ;
+    sh:targetClass bt:TransformationPattern ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Every transformation pattern must have exactly one label" ;
+    ] ,
+    [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:message "Every transformation pattern must have a description" ;
+    ] ,
+    [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^\\d+\\.\\d+\\.\\d+$" ;
+        sh:message "Every transformation pattern must have a semantic version" ;
+    ] .
+
+ex:LossyTransformationShape a sh:NodeShape ;
+    sh:targetClass bt:LossyTransformation ;
+    sh:property [
+        sh:path bt:hasLossinessLevel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:message "Lossy transformations must have a lossiness level between 0 and 1" ;
+    ] .
+
+# === Example Instances ===
+
+# JPEG Compression Example
+ex:JPEGCompression a bt:LossyTransformation ;
+    rdfs:label "JPEG Image Compression" ;
+    rdfs:comment "Standard lossy compression for digital images" ;
+    bt:hasLossinessLevel "0.3"^^xsd:decimal ;
+    owl:versionInfo "1.0.0" ;
+    owl:versionIRI <http://example.org/bow-tie-examples#JPEGCompression-1.0.0> ;
+    owl:priorVersion <http://example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
+    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
+    owl:deprecated "false"^^xsd:boolean ;
+    owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
+    owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .
+
+ex:JPEGLatent a bt:LatentModel ;
+    rdfs:label "JPEG Compressed Image" ;
+    rdfs:comment "Latent representation of an image after JPEG compression" ;
+    owl:versionInfo "1.0.0" .
+
+ex:JPEGRestoration a bt:LossRestorationStrategy ;
+    rdfs:label "JPEG Decompression" ;
+    rdfs:comment "Strategy for reconstructing image from JPEG compressed data" ;
+    owl:versionInfo "1.0.0" .
+
+# Neural Network Compression Example
+ex:NeuralNetworkPruning a bt:LossyTransformation ;
+    rdfs:label "Neural Network Pruning" ;
+    rdfs:comment "Removes redundant weights from a neural network while preserving essential connections" ;
+    bt:hasLossinessLevel "0.4"^^xsd:decimal ;
+    owl:versionInfo "1.0.0" ;
+    owl:versionIRI <http://example.org/bow-tie-examples#NeuralNetworkPruning-1.0.0> ;
+    owl:priorVersion <http://example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
+    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
+    owl:deprecated "false"^^xsd:boolean ;
+    owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
+    owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .
+
+ex:PrunedNetwork a bt:LatentModel ;
+    rdfs:label "Pruned Neural Network" ;
+    rdfs:comment "Compressed neural network with reduced parameter count" ;
+    owl:versionInfo "1.0.0" .
+
+ex:NetworkFineTuning a bt:LossRestorationStrategy ;
+    rdfs:label "Network Fine-Tuning" ;
+    rdfs:comment "Strategy to recover performance after pruning through targeted training" ;
+    owl:versionInfo "1.0.0" .
+
+# Text Summarization Example
+ex:TextSummarization a bt:LossyTransformation ;
+    rdfs:label "Text Summarization" ;
+    rdfs:comment "Extracts key information from text while discarding less important details" ;
+    bt:hasLossinessLevel "0.6"^^xsd:decimal ;
+    owl:versionInfo "1.0.0" ;
+    owl:versionIRI <http://example.org/bow-tie-examples#TextSummarization-1.0.0> ;
+    owl:priorVersion <http://example.org/bow-tie-examples#TextSummarization-0.9.0> ;
+    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#TextSummarization-0.9.0> ;
+    owl:deprecated "false"^^xsd:boolean ;
+    owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
+    owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .
+
+ex:Summary a bt:LatentModel ;
+    rdfs:label "Text Summary" ;
+    rdfs:comment "Compressed representation of text content" ;
+    owl:versionInfo "1.0.0" .
+
+ex:SummaryExpansion a bt:LossRestorationStrategy ;
+    rdfs:label "Summary Expansion" ;
+    rdfs:comment "Strategy to generate detailed text from a summary" ;
+    owl:versionInfo "1.0.0" .
+
+# === Additional SHACL Rules ===
+
+ex:TransformationChainShape a sh:NodeShape ;
+    sh:targetClass bt:InformationStructure ;
+    sh:property [
+        sh:path bt:hasCompressionMap ;
+        sh:minCount 1 ;
+        sh:message "Information structure must have at least one compression mapping" ;
+    ] ,
+    [
+        sh:path bt:hasLatentModel ;
+        sh:minCount 1 ;
+        sh:message "Information structure must have at least one latent model" ;
+    ] .
+
+ex:LossyTransformationChainShape a sh:NodeShape ;
+    sh:targetClass bt:LossyTransformation ;
+    sh:property [
+        sh:path bt:hasLossinessLevel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:message "Lossy transformation must have a valid lossiness level" ;
+    ] .
+
+ex:RestorationStrategyShape a sh:NodeShape ;
+    sh:targetClass bt:LossRestorationStrategy ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:message "Restoration strategy must have a description" ;
+    ] .
+
+# === SPARQL Validation Queries ===
+
+ex:ValidationQueries a owl:NamedIndividual ;
+    rdfs:label "Validation Queries" ;
+    rdfs:comment "SPARQL queries for validating the ontology structure" ;
+    owl:versionInfo "1.0.0" .
+
+ex:hasValidationQuery a owl:DatatypeProperty ;
+    rdfs:label "has validation query" ;
+    rdfs:comment "Links a validation query to its SPARQL implementation" ;
+    rdfs:domain ex:ValidationQueries ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ex:ValidationQueries ex:hasValidationQuery """
+    # Query 1: Check for complete transformation chains
+    SELECT ?structure ?compression ?latent ?expansion
+    WHERE {
+        ?structure bt:hasCompressionMap ?compression .
+        ?structure bt:hasLatentModel ?latent .
+        ?latent bt:hasExpansionMap ?expansion .
+    }
+""" ;
+    ex:hasValidationQuery """
+    # Query 2: Verify lossiness levels
+    SELECT ?transformation ?level
+    WHERE {
+        ?transformation a bt:LossyTransformation .
+        ?transformation bt:hasLossinessLevel ?level .
+        FILTER (?level < 0 || ?level > 1)
+    }
+""" ;
+    ex:hasValidationQuery """
+    # Query 3: Check for missing descriptions
+    SELECT ?entity
+    WHERE {
+        ?entity a ?type .
+        FILTER (?type IN (bt:TransformationPattern, bt:LossyTransformation, bt:LossRestorationStrategy))
+        FILTER NOT EXISTS { ?entity rdfs:comment ?comment }
+    }
+""" .
+
+# === Inferred Requirements ===
+
+ex:InferredRequirements a owl:NamedIndividual ;
+    rdfs:label "Inferred Requirements" ;
+    rdfs:comment "Requirements inferred from the transformation patterns" ;
+    owl:versionInfo "1.0.0" .
+
+ex:hasRequirement a owl:DatatypeProperty ;
+    rdfs:label "has requirement" ;
+    rdfs:comment "Links a requirement to its description" ;
+    rdfs:domain ex:InferredRequirements ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ex:InferredRequirements ex:hasRequirement """
+    R1: All transformation chains must maintain traceability between original and transformed content
+""" ;
+    ex:hasRequirement """
+    R2: Lossy transformations must document their information loss characteristics
+""" ;
+    ex:hasRequirement """
+    R3: Restoration strategies must specify their assumptions about lost information
+""" ;
+    ex:hasRequirement """
+    R4: Transformation patterns must be versioned to track changes in behavior
+""" .
+
+# === Test Script Model ===
+
+bt:TestScript a owl:Class ;
+    rdfs:subClassOf bt:InformationStructure ;
+    rdfs:label "Test Script" ;
+    rdfs:comment "A script that tests the implementation of bow-tie transformation patterns" ;
+    owl:versionInfo "1.0.0" .
+
+bt:TestCase a owl:Class ;
+    rdfs:subClassOf bt:InformationStructure ;
+    rdfs:label "Test Case" ;
+    rdfs:comment "An individual test case for a specific transformation pattern" ;
+    owl:versionInfo "1.0.0" .
+
+bt:hasTestCase a owl:ObjectProperty ;
+    rdfs:domain bt:TestScript ;
+    rdfs:range bt:TestCase ;
+    rdfs:label "has test case" ;
+    rdfs:comment "Links a test script to its test cases" ;
+    owl:versionInfo "1.0.0" .
+
+bt:testInput a owl:DatatypeProperty ;
+    rdfs:domain bt:TestCase ;
+    rdfs:range xsd:string ;
+    rdfs:label "test input" ;
+    rdfs:comment "Input data for the test case" ;
+    owl:versionInfo "1.0.0" .
+
+bt:expectedOutput a owl:DatatypeProperty ;
+    rdfs:domain bt:TestCase ;
+    rdfs:range xsd:string ;
+    rdfs:label "expected output" ;
+    rdfs:comment "Expected output data for the test case" ;
+    owl:versionInfo "1.0.0" .
+
+bt:testResult a owl:DatatypeProperty ;
+    rdfs:domain bt:TestCase ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "test result" ;
+    rdfs:comment "Result of the test case execution" ;
+    owl:versionInfo "1.0.0" .
+
+# Example Test Script
+ex:BowTieTestScript a bt:TestScript ;
+    rdfs:label "Bow Tie Pattern Test Script" ;
+    rdfs:comment "Test script for bow-tie transformation patterns" ;
+    owl:versionInfo "1.0.0" .
+
+ex:JPEGCompressionTest a bt:TestCase ;
+    rdfs:label "JPEG Compression Test" ;
+    rdfs:comment "Test case for JPEG compression transformation" ;
+    bt:testInput "test_image.jpg" ;
+    bt:expectedOutput "compressed_image.jpg" ;
+    owl:versionInfo "1.0.0" .
+
+ex:NeuralNetworkPruningTest a bt:TestCase ;
+    rdfs:label "Neural Network Pruning Test" ;
+    rdfs:comment "Test case for neural network pruning transformation" ;
+    bt:testInput "original_network.h5" ;
+    bt:expectedOutput "pruned_network.h5" ;
+    owl:versionInfo "1.0.0" .
+
+ex:TextSummarizationTest a bt:TestCase ;
+    rdfs:label "Text Summarization Test" ;
+    rdfs:comment "Test case for text summarization transformation" ;
+    bt:testInput "original_text.txt" ;
+    bt:expectedOutput "summary.txt" ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Validation for Test Scripts
+ex:TestScriptShape a sh:NodeShape ;
+    sh:targetClass bt:TestScript ;
+    sh:property [
+        sh:path bt:hasTestCase ;
+        sh:class bt:TestCase ;
+        sh:minCount 1 ;
+        sh:message "Test script must have at least one test case" ;
+    ] .
+
+ex:TestCaseShape a sh:NodeShape ;
+    sh:targetClass bt:TestCase ;
+    sh:property [
+        sh:path bt:testInput ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Test case must have input data" ;
+    ] ,
+    [
+        sh:path bt:expectedOutput ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Test case must have expected output" ;
+    ] .

@@ -129,3 +129,165 @@
         sh:minCount 1 ;
         sh:message "Legacy support must have at least one mapping" ;
     ] .
+
+# Model Conformance Rules
+:ModelConformance rdf:type owl:Class ;
+    rdfs:label "Model Conformance" ;
+    rdfs:comment "Rules for ensuring model consistency and integration" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:hasConformanceCheck rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Conformance Check" ;
+    rdfs:comment "Links a model to its conformance validation rules" ;
+    rdfs:domain owl:Ontology ;
+    rdfs:range :ModelConformance ;
+    owl:versionInfo "1.0.0" .
+
+:conformanceLevel rdf:type owl:DatatypeProperty ;
+    rdfs:label "Conformance Level" ;
+    rdfs:comment "Level of conformance required (STRICT, MODERATE, RELAXED)" ;
+    rdfs:domain :ModelConformance ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:requiresPrefixValidation rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Prefix Validation" ;
+    rdfs:comment "Whether prefix validation is required" ;
+    rdfs:domain :ModelConformance ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+:requiresNamespaceValidation rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Namespace Validation" ;
+    rdfs:comment "Whether namespace validation is required" ;
+    rdfs:domain :ModelConformance ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+# Integration Process Rules
+:IntegrationProcess rdf:type owl:Class ;
+    rdfs:label "Integration Process" ;
+    rdfs:comment "Rules for model integration and version management" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:hasIntegrationStep rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Integration Step" ;
+    rdfs:comment "Links to specific integration process steps" ;
+    rdfs:domain :IntegrationProcess ;
+    rdfs:range :IntegrationStep ;
+    owl:versionInfo "1.0.0" .
+
+:IntegrationStep rdf:type owl:Class ;
+    rdfs:label "Integration Step" ;
+    rdfs:comment "A step in the model integration process" ;
+    owl:versionInfo "1.0.0" .
+
+:stepOrder rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Order" ;
+    rdfs:comment "Order of execution for integration steps" ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+:stepDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Description" ;
+    rdfs:comment "Description of the integration step" ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes for Model Conformance
+:ModelConformanceShape a sh:NodeShape ;
+    sh:targetClass :ModelConformance ;
+    sh:property [
+        sh:path :conformanceLevel ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("STRICT" "MODERATE" "RELAXED") ;
+        sh:message "Conformance level must be STRICT, MODERATE, or RELAXED" ;
+    ] ,
+    [
+        sh:path :requiresPrefixValidation ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether prefix validation is required" ;
+    ] ,
+    [
+        sh:path :requiresNamespaceValidation ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether namespace validation is required" ;
+    ] .
+
+# SHACL Shapes for Integration Process
+:IntegrationProcessShape a sh:NodeShape ;
+    sh:targetClass :IntegrationProcess ;
+    sh:property [
+        sh:path :hasIntegrationStep ;
+        sh:class :IntegrationStep ;
+        sh:minCount 1 ;
+        sh:message "Integration process must have at least one step" ;
+    ] .
+
+:IntegrationStepShape a sh:NodeShape ;
+    sh:targetClass :IntegrationStep ;
+    sh:property [
+        sh:path :stepOrder ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+        sh:message "Step must have a positive integer order" ;
+    ] ,
+    [
+        sh:path :stepDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Step must have a description" ;
+    ] .
+
+# Example Integration Process
+:standardIntegrationProcess rdf:type owl:NamedIndividual, :IntegrationProcess ;
+    rdfs:label "Standard Integration Process" ;
+    rdfs:comment "Standard process for model integration" ;
+    :hasIntegrationStep :prefixValidationStep ;
+    :hasIntegrationStep :namespaceValidationStep ;
+    :hasIntegrationStep :modelConformanceStep ;
+    :hasIntegrationStep :versionAlignmentStep .
+
+:prefixValidationStep rdf:type owl:NamedIndividual, :IntegrationStep ;
+    rdfs:label "Prefix Validation" ;
+    rdfs:comment "Validate prefix usage against prefix management rules" ;
+    :stepOrder 1 ;
+    :stepDescription "Check prefix format, uniqueness, and URI patterns" .
+
+:namespaceValidationStep rdf:type owl:NamedIndividual, :IntegrationStep ;
+    rdfs:label "Namespace Validation" ;
+    rdfs:comment "Validate namespace usage and relationships" ;
+    :stepOrder 2 ;
+    :stepDescription "Verify namespace consistency and imports" .
+
+:modelConformanceStep rdf:type owl:NamedIndividual, :IntegrationStep ;
+    rdfs:label "Model Conformance" ;
+    rdfs:comment "Check model against conformance rules" ;
+    :stepOrder 3 ;
+    :stepDescription "Validate model structure and relationships" .
+
+:versionAlignmentStep rdf:type owl:NamedIndividual, :IntegrationStep ;
+    rdfs:label "Version Alignment" ;
+    rdfs:comment "Ensure version compatibility" ;
+    :stepOrder 4 ;
+    :stepDescription "Check version numbers and dependencies" .
+
+# Example Conformance Rules
+:strictConformance rdf:type owl:NamedIndividual, :ModelConformance ;
+    rdfs:label "Strict Conformance" ;
+    rdfs:comment "Strict conformance rules for model validation" ;
+    :conformanceLevel "STRICT" ;
+    :requiresPrefixValidation true ;
+    :requiresNamespaceValidation true .

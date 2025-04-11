@@ -1,60 +1,87 @@
-@prefix : <file:///Users/lou/Documents/ontology-framework/session#> .
-@prefix collab: <file:///Users/lou/Documents/ontology-framework/guidance/modules/collaboration#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix bt: <http://example.org/bow-tie-pattern#> .
+@prefix ex: <http://example.org/bow-tie-examples#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix model: <file:///Users/lou/Documents/ontology-framework/guidance/modules/model#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
 
-:GitHubIntegrationTask a :Task ;
-    rdfs:label "GitHub Integration" ;
-    collab:followsBranchStrategy [ a collab:BranchStrategy ;
-            collab:branchNameFormat "feature/issue-1-github-integration" ] ;
-    :description """Set up GitHub configuration source provider for OCI Resource Manager with the following:
-    1. Created GitHub access token configuration
-    2. Configured provider in OCI Resource Manager
-    3. Verified provider status is ACTIVE
-    4. Created feature branch following naming convention
-    5. Updated session tracking""" ;
-    :status "Completed" ;
-    dct:created "2024-03-06T00:25:00+00:00"^^xsd:dateTime .
+# Session Information
+ex:CurrentSession a owl:NamedIndividual ;
+    rdfs:label "Bow Tie Transformation Pattern Development" ;
+    rdfs:comment "Session for developing and validating the bow tie transformation pattern ontology" ;
+    prov:startedAtTime "2024-04-11T14:00:00Z"^^xsd:dateTime ;
+    prov:wasAssociatedWith ex:OntologyDeveloper .
 
-:OracleRDFTestUpdate a :Task ;
-    rdfs:label "Oracle RDF Test Updates" ;
-    :description """Updated Oracle RDF tests with the following changes:
-    1. Fixed linting issues in test_oracle_rdf.py
-    2. Removed unused imports (subprocess, PrefixCategory)
-    3. Improved code formatting with black
-    4. Verified all tests pass
-    5. Updated test model following ModelFirstPrinciple""" ;
-    :status "Completed" ;
-    model:followsModelFirstPrinciple true ;
-    dct:created "2024-03-21T14:30:00+00:00"^^xsd:dateTime .
+# Work Items
+ex:BowTiePatternDevelopment a owl:NamedIndividual ;
+    rdfs:label "Bow Tie Pattern Development" ;
+    rdfs:comment "Development of the bow tie transformation pattern ontology" ;
+    prov:wasGeneratedBy ex:CurrentSession ;
+    prov:generatedAtTime "2024-04-11T14:00:00Z"^^xsd:dateTime ;
+    prov:used bt:BowTieOntology .
 
-:META a :RegisteredOntology ;
-    rdfs:label "meta" ;
-    :hasModelName "META" ;
-    :hasVersion "1.0.0" .
+# Completed Tasks
+ex:CompletedTasks a owl:NamedIndividual ;
+    rdfs:label "Completed Development Tasks" ;
+    rdfs:comment "Tasks completed during the development session" ;
+    ex:hasCompletedTask [
+        rdfs:label "Refactored Namespace Structure" ;
+        rdfs:comment "Separated pattern definitions (bt:) from example instances (ex:)" ;
+        prov:generatedAtTime "2024-04-11T16:00:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Added Neural Network Example" ;
+        rdfs:comment "Created example instances for neural network pruning and fine-tuning" ;
+        prov:generatedAtTime "2024-04-11T14:30:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Added Text Summarization Example" ;
+        rdfs:comment "Created example instances for text summarization and expansion" ;
+        prov:generatedAtTime "2024-04-11T14:45:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Added SHACL Validation Rules" ;
+        rdfs:comment "Created additional SHACL shapes for transformation chains and restoration strategies" ;
+        prov:generatedAtTime "2024-04-11T15:00:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Added SPARQL Validation Queries" ;
+        rdfs:comment "Created SPARQL queries for validating ontology structure and completeness" ;
+        prov:generatedAtTime "2024-04-11T15:15:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Added Inferred Requirements" ;
+        rdfs:comment "Documented requirements inferred from the transformation patterns" ;
+        prov:generatedAtTime "2024-04-11T15:30:00Z"^^xsd:dateTime ;
+    ] .
 
-:SessionOntology a owl:Ontology ;
-    rdfs:label "Session Tracking Ontology" ;
-    dct:created "2024-03-06T00:25:00+00:00"^^xsd:dateTime ;
-    rdfs:comment "Tracks tasks and changes during development sessions" ;
-    owl:versionInfo "1.0.0" .
+# Next Steps
+ex:NextSteps a owl:NamedIndividual ;
+    rdfs:label "Next Steps for Bow Tie Pattern" ;
+    rdfs:comment "Planned next steps for the bow tie transformation pattern" ;
+    ex:hasPriority "HIGH" ;
+    ex:targetDate "2024-04-18"^^xsd:date ;
+    ex:requires [
+        rdfs:label "Implement validation pipeline" ;
+        rdfs:comment "Create automated validation pipeline using the SPARQL queries" ;
+    ] ,
+    [
+        rdfs:label "Add more transformation scenarios" ;
+        rdfs:comment "Create examples for additional domains (e.g., audio, video, knowledge graphs)" ;
+    ] ,
+    [
+        rdfs:label "Document best practices" ;
+        rdfs:comment "Create guidelines for implementing and using the transformation patterns" ;
+    ] .
 
-:description a owl:DatatypeProperty ;
-    rdfs:label "Description" ;
-    rdfs:comment "Detailed description of a task" ;
-    rdfs:domain :Task ;
-    rdfs:range xsd:string .
-
-:status a owl:DatatypeProperty ;
-    rdfs:label "Status" ;
-    rdfs:comment "Current status of a task" ;
-    rdfs:domain :Task ;
-    rdfs:range xsd:string .
-
-:Task a owl:Class ;
-    rdfs:label "Task" ;
-    rdfs:comment "A development or configuration task" .
+# Traceability
+bt:BowTieOntology prov:wasDerivedFrom ex:GuidanceOntology ;
+    prov:wasAttributedTo ex:OntologyDeveloper ;
+    prov:generatedAtTime "2024-04-11T14:00:00Z"^^xsd:dateTime ;
+    prov:wasRevisionOf [
+        prov:specializationOf ex:BowTiePatternDevelopment ;
+        prov:atTime "2024-04-11T16:00:00Z"^^xsd:dateTime ;
+        prov:hadPrimarySource ex:CompletedTasks ;
+    ] .
 

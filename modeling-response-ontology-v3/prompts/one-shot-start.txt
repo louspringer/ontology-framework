@@ -1,0 +1,4 @@
+Load this ontology:
+https://raw.githubusercontent.com/louspringer/ontology-framework/main/ontology/modeling-response-ontology.ttl
+
+Then, run a SPARQL query to list each piece of advice recommended in 2025 and the cross-cutting concerns it addresses. Show results as a table. After that, tell me which concerns the user most clearly supports, and explain how the model makes that clear.

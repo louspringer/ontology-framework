@@ -1,0 +1,96 @@
+@prefix : <http://example.org/boldo/requirements#> .
+@prefix ex: <http://ontology-framework.example.org/requirements#> .
+@prefix guidance: <http://ontology-framework.example.org/guidance#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix file: <file:./boldo_structural_scraper.py> .
+
+:file_requirements a ex:RequirementDocument ;
+    sh:targetClass ex:RequirementDocument ;
+    sh:property [
+        sh:path ex:includesRequirement ;
+        sh:minCount 1 ;
+        sh:message "At least one requirement must be included." ;
+    ] ;
+    guidance:driftNote "This SHACL shape is locally defined for validation and is not part of upstream guidance.ttl. Requires upstream reconciliation." ;
+    guidance:notes "Requirements vocabulary is currently integrated into guidance.ttl. No separate requirements.ttl exists at this time." ;
+    dct:title "Boldo Scraper Runtime & Validation Requirements" ;
+    dct:created "2025-04-09T00:00:00Z"^^xsd:dateTime ;
+    ex:includesRequirement 
+        :C1_filename_constraint, 
+        :C2_hash_constraint,
+        :C3_shacl_validation,
+        :C4_single_file_limit,
+        :C5_manifest_required,
+        :A1_ip_binding,
+        :A2_html_expected,
+        :A3_pyshacl_available,
+        :A4_file_runtime_known,
+        :A5_model_shape_sync,
+        :R1_false_positive,
+        :R2_url_network_shadow,
+        :R3_silent_html_block,
+        :R4_anchor_failures,
+        :R5_geoip_failure .
+
+:C1_filename_constraint a ex:Constraint ;
+    ex:hasLabel "Script must be named 'boldo_structural_scraper.py'" ;
+    ex:appliesTo file: ;
+    dct:description "Filename is part of runtime validation logic and manifest matching." .
+
+:C2_hash_constraint a ex:Constraint ;
+    ex:hasLabel "Script must match expected SHA-256 hash if defined" ;
+    ex:appliesTo file: .
+
+:C3_shacl_validation a ex:Constraint ;
+    ex:hasLabel "TTL output must conform to SHACL model 'site-structure-shapes.ttl'" ;
+    ex:appliesTo file: .
+
+:C4_single_file_limit a ex:Constraint ;
+    ex:hasLabel "Script must exist as a single Python file" ;
+    ex:appliesTo file: .
+
+:C5_manifest_required a ex:Constraint ;
+    ex:hasLabel "Script must emit a structured JSON manifest of crawl results" ;
+    ex:appliesTo file: .
+
+:A1_ip_binding a ex:Assumption ;
+    ex:hasLabel "Start URL is valid only from approved or known IP addresses" ;
+    ex:appliesTo file: .
+
+:A2_html_expected a ex:Assumption ;
+    ex:hasLabel "Crawlable pages return well-formed HTML" ;
+    ex:appliesTo file: .
+
+:A3_pyshacl_available a ex:Assumption ;
+    ex:hasLabel "pySHACL is installed and available in PATH" ;
+    ex:appliesTo file: .
+
+:A4_file_runtime_known a ex:Assumption ;
+    ex:hasLabel "Python runtime supports __file__ introspection" ;
+    ex:appliesTo file: .
+
+:A5_model_shape_sync a ex:Assumption ;
+    ex:hasLabel "TTL and SHACL shape model are semantically synchronized" ;
+    ex:appliesTo file: .
+
+:R1_false_positive a ex:Risk ;
+    ex:hasLabel "TTL may validate against SHACL even if HTML input is incorrect" ;
+    ex:appliesTo file: .
+
+:R2_url_network_shadow a ex:Risk ;
+    ex:hasLabel "URL may appear valid but be inaccessible due to source IP limits" ;
+    ex:appliesTo file: .
+
+:R3_silent_html_block a ex:Risk ;
+    ex:hasLabel "HTML pages may return 200-OK but with unusable content (e.g. captchas)" ;
+    ex:appliesTo file: .
+
+:R4_anchor_failures a ex:Risk ;
+    ex:hasLabel "Anchor tags may be malformed or non-semantic, breaking label inference" ;
+    ex:appliesTo file: .
+
+:R5_geoip_failure a ex:Risk ;
+    ex:hasLabel "GeoIP restrictions may block scraper or redirect content silently" ;
+    ex:appliesTo file: .

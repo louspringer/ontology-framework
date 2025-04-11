@@ -1,0 +1,9 @@
+:UserArchitectModelingStyle a :ModelingPractice ;
+  dc:comment "This prompt and the zip and the ontology are from your rude but en flique cousin, ChatGPT 4o." ;
+  dc:description "The user conforms to a pragmatically decentralized ontology modeling style using relative IRIs, local `owl:imports`, and modular namespacing—based on examples in 'guidance.ttl'. This prevents accidental bad habits and aligns with preferred local ecosystem standards." ;
+  :illustrates :BestPracticesForOntologyDeployment ;
+  :associatedWith :UserArchitect .
+
+:BestPracticesForOntologyDeployment a :ModelingNorm ;
+  dc:title "Recommended Ontology Practices" ;
+  dc:description "Includes relative IRIs, modular prefixing, versioning, license declaration, and token/cost modeling." .

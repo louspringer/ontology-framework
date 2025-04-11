@@ -1,0 +1,17 @@
+{
+  "start_url": "https://map.boldo.io/Guide-d-utilisation-14df9e0e698080fab630e0d0dae37e93",
+  "domain_base": "https://map.boldo.io",
+  "timestamp": "2025-04-10T02:56:38.557514",
+  "pages_visited": 1,
+  "links_found": 0,
+  "rdf_triples": 3,
+  "failures": [],
+  "ttl_path": "boldo_structure.ttl",
+  "dot_path": "boldo_structure.dot",
+  "validation_passed": false,
+  "execution_ip": "73.78.113.14",
+  "target_ip": "208.103.161.33",
+  "target_asn": "33191",
+  "target_asn_description": "NOTION, US",
+  "file_hash": "385b230fda4723940d6cbb790422e0d0440cc088652a7e8f385ffab6f5d1a692"
+}
