@@ -1,0 +1,209 @@
+@prefix : <./api_documentation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <./meta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Ontology Definition
+:APIDocumentationOntology rdf:type owl:Ontology ;
+    rdfs:label "API Documentation Ontology" ;
+    rdfs:comment "Models API documentation endpoints, their status, and requirements" ;
+    dc:title "API Documentation Ontology" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Models API documentation endpoints and their requirements" .
+
+# Core Classes
+:DocumentationEndpoint rdf:type owl:Class ;
+    rdfs:label "Documentation Endpoint" ;
+    rdfs:comment "An endpoint that provides API documentation" ;
+    owl:versionInfo "1.0.0" .
+
+:EndpointStatus rdf:type owl:Class ;
+    rdfs:label "Endpoint Status" ;
+    rdfs:comment "The status of a documentation endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+:DocumentationFormat rdf:type owl:Class ;
+    rdfs:label "Documentation Format" ;
+    rdfs:comment "The format of the API documentation" ;
+    owl:versionInfo "1.0.0" .
+
+:EndpointRequirement rdf:type owl:Class ;
+    rdfs:label "Endpoint Requirement" ;
+    rdfs:comment "A requirement for a documentation endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+# Properties
+:hasPath rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Path" ;
+    rdfs:comment "The URL path of the documentation endpoint" ;
+    rdfs:domain :DocumentationEndpoint ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasStatus rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Status" ;
+    rdfs:comment "The current status of the endpoint" ;
+    rdfs:domain :DocumentationEndpoint ;
+    rdfs:range :EndpointStatus ;
+    owl:versionInfo "1.0.0" .
+
+:hasFormat rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Format" ;
+    rdfs:comment "The format of the documentation" ;
+    rdfs:domain :DocumentationEndpoint ;
+    rdfs:range :DocumentationFormat ;
+    owl:versionInfo "1.0.0" .
+
+:hasRequirement rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Requirement" ;
+    rdfs:comment "A requirement for the endpoint" ;
+    rdfs:domain :DocumentationEndpoint ;
+    rdfs:range :EndpointRequirement ;
+    owl:versionInfo "1.0.0" .
+
+:statusCode rdf:type owl:DatatypeProperty ;
+    rdfs:label "Status Code" ;
+    rdfs:comment "The HTTP status code returned" ;
+    rdfs:domain :EndpointStatus ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+:statusMessage rdf:type owl:DatatypeProperty ;
+    rdfs:label "Status Message" ;
+    rdfs:comment "A message describing the status" ;
+    rdfs:domain :EndpointStatus ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:requirementType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requirement Type" ;
+    rdfs:comment "The type of requirement" ;
+    rdfs:domain :EndpointRequirement ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:requirementDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requirement Description" ;
+    rdfs:comment "Description of the requirement" ;
+    rdfs:domain :EndpointRequirement ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Individuals
+:docsEndpoint rdf:type :DocumentationEndpoint ;
+    rdfs:label "/docs endpoint" ;
+    rdfs:comment "The /docs documentation endpoint" ;
+    :hasPath "/docs" ;
+    :hasStatus :docsNotFoundStatus ;
+    :hasFormat :openapiFormat ;
+    :hasRequirement :docsAccessRequirement .
+
+:swaggerEndpoint rdf:type :DocumentationEndpoint ;
+    rdfs:label "/swagger endpoint" ;
+    rdfs:comment "The /swagger documentation endpoint" ;
+    :hasPath "/swagger" ;
+    :hasStatus :swaggerNotFoundStatus ;
+    :hasFormat :swaggerFormat ;
+    :hasRequirement :swaggerAccessRequirement .
+
+:docsNotFoundStatus rdf:type :EndpointStatus ;
+    rdfs:label "Not Found Status" ;
+    rdfs:comment "The endpoint returned a 404 status" ;
+    :statusCode 404 ;
+    :statusMessage "Endpoint not found" .
+
+:swaggerNotFoundStatus rdf:type :EndpointStatus ;
+    rdfs:label "Not Found Status" ;
+    rdfs:comment "The endpoint returned a 404 status" ;
+    :statusCode 404 ;
+    :statusMessage "Endpoint not found" .
+
+:openapiFormat rdf:type :DocumentationFormat ;
+    rdfs:label "OpenAPI Format" ;
+    rdfs:comment "OpenAPI/Swagger documentation format" .
+
+:swaggerFormat rdf:type :DocumentationFormat ;
+    rdfs:label "Swagger Format" ;
+    rdfs:comment "Swagger documentation format" .
+
+:docsAccessRequirement rdf:type :EndpointRequirement ;
+    rdfs:label "Documentation Access Requirement" ;
+    rdfs:comment "Requirement for accessing API documentation" ;
+    :requirementType "ACCESS" ;
+    :requirementDescription "Documentation endpoint must be accessible" .
+
+:swaggerAccessRequirement rdf:type :EndpointRequirement ;
+    rdfs:label "Swagger Access Requirement" ;
+    rdfs:comment "Requirement for accessing Swagger documentation" ;
+    :requirementType "ACCESS" ;
+    :requirementDescription "Swagger endpoint must be accessible" .
+
+# SHACL Shapes
+:DocumentationEndpointShape a sh:NodeShape ;
+    sh:targetClass :DocumentationEndpoint ;
+    sh:property [
+        sh:path :hasPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Documentation endpoint must have exactly one path" ;
+    ] ,
+    [
+        sh:path :hasStatus ;
+        sh:class :EndpointStatus ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Documentation endpoint must have exactly one status" ;
+    ] ,
+    [
+        sh:path :hasFormat ;
+        sh:class :DocumentationFormat ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Documentation endpoint must have exactly one format" ;
+    ] .
+
+:EndpointStatusShape a sh:NodeShape ;
+    sh:targetClass :EndpointStatus ;
+    sh:property [
+        sh:path :statusCode ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Endpoint status must have exactly one status code" ;
+    ] ,
+    [
+        sh:path :statusMessage ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Endpoint status must have exactly one status message" ;
+    ] .
+
+:EndpointRequirementShape a sh:NodeShape ;
+    sh:targetClass :EndpointRequirement ;
+    sh:property [
+        sh:path :requirementType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Endpoint requirement must have exactly one type" ;
+    ] ,
+    [
+        sh:path :requirementDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Endpoint requirement must have exactly one description" ;
+    ] . 

@@ -1,0 +1,377 @@
+@prefix : <./api_exploration#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix meta: <./meta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix api_doc: <./api_documentation#> .
+
+# Ontology Definition
+:APIExplorationOntology rdf:type owl:Ontology ;
+    rdfs:label "API Exploration Ontology" ;
+    rdfs:comment "Tracks API exploration procedures and findings" ;
+    dc:title "API Exploration Ontology" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Models API exploration procedures and findings" .
+
+# Core Classes
+:ExplorationStep rdf:type owl:Class ;
+    rdfs:label "Exploration Step" ;
+    rdfs:comment "A step in the API exploration process" ;
+    owl:versionInfo "1.0.0" .
+
+:ExplorationFinding rdf:type owl:Class ;
+    rdfs:label "Exploration Finding" ;
+    rdfs:comment "A finding from API exploration" ;
+    owl:versionInfo "1.0.0" .
+
+:ExplorationMethod rdf:type owl:Class ;
+    rdfs:label "Exploration Method" ;
+    rdfs:comment "A method used to explore the API" ;
+    owl:versionInfo "1.0.0" .
+
+:ExplorationResult rdf:type owl:Class ;
+    rdfs:label "Exploration Result" ;
+    rdfs:comment "The result of an exploration step" ;
+    owl:versionInfo "1.0.0" .
+
+# Properties
+:hasStepNumber rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Step Number" ;
+    rdfs:comment "The sequential number of the exploration step" ;
+    rdfs:domain :ExplorationStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+:hasMethod rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Method" ;
+    rdfs:comment "The method used in the exploration step" ;
+    rdfs:domain :ExplorationStep ;
+    rdfs:range :ExplorationMethod ;
+    owl:versionInfo "1.0.0" .
+
+:hasResult rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Result" ;
+    rdfs:comment "The result of the exploration step" ;
+    rdfs:domain :ExplorationStep ;
+    rdfs:range :ExplorationResult ;
+    owl:versionInfo "1.0.0" .
+
+:hasFinding rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Finding" ;
+    rdfs:comment "A finding from the exploration step" ;
+    rdfs:domain :ExplorationStep ;
+    rdfs:range :ExplorationFinding ;
+    owl:versionInfo "1.0.0" .
+
+:methodName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Method Name" ;
+    rdfs:comment "The name of the exploration method" ;
+    rdfs:domain :ExplorationMethod ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:methodDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Method Description" ;
+    rdfs:comment "Description of the exploration method" ;
+    rdfs:domain :ExplorationMethod ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:resultStatus rdf:type owl:DatatypeProperty ;
+    rdfs:label "Result Status" ;
+    rdfs:comment "The status of the exploration result" ;
+    rdfs:domain :ExplorationResult ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:resultDetails rdf:type owl:DatatypeProperty ;
+    rdfs:label "Result Details" ;
+    rdfs:comment "Details of the exploration result" ;
+    rdfs:domain :ExplorationResult ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:findingType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Finding Type" ;
+    rdfs:comment "The type of finding" ;
+    rdfs:domain :ExplorationFinding ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:findingDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Finding Description" ;
+    rdfs:comment "Description of the finding" ;
+    rdfs:domain :ExplorationFinding ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Individuals
+:step1 rdf:type :ExplorationStep ;
+    rdfs:label "Initial Documentation Check" ;
+    rdfs:comment "First step: checking for API documentation endpoints" ;
+    :hasStepNumber 1 ;
+    :hasMethod :swaggerProbeMethod ;
+    :hasResult :step1Result ;
+    :hasFinding :step1Finding .
+
+:swaggerProbeMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Swagger Documentation Probe" ;
+    rdfs:comment "Method to probe for Swagger/OpenAPI documentation endpoints" ;
+    :methodName "Swagger Probe" ;
+    :methodDescription "Attempting to access common Swagger/OpenAPI documentation endpoints" .
+
+:step1Result rdf:type :ExplorationResult ;
+    rdfs:label "Documentation Not Found" ;
+    rdfs:comment "Result of initial documentation check" ;
+    :resultStatus "FAILURE" ;
+    :resultDetails "404 responses from /docs and /swagger endpoints" .
+
+:step1Finding rdf:type :ExplorationFinding ;
+    rdfs:label "No Swagger Documentation" ;
+    rdfs:comment "Finding from initial documentation check" ;
+    :findingType "DOCUMENTATION" ;
+    :findingDescription "No Swagger/OpenAPI documentation found at common endpoints" .
+
+:step2 rdf:type :ExplorationStep ;
+    rdfs:label "Inventory Endpoint Probe" ;
+    rdfs:comment "Second step: probing the inventory endpoint" ;
+    :hasStepNumber 2 ;
+    :hasMethod :inventoryProbeMethod ;
+    :hasResult :step2Result ;
+    :hasFinding :step2Finding .
+
+:inventoryProbeMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Inventory Endpoint Probe" ;
+    rdfs:comment "Method to probe the inventory endpoint" ;
+    :methodName "Inventory Probe" ;
+    :methodDescription "Attempting to access the inventory endpoint" .
+
+:step2Result rdf:type :ExplorationResult ;
+    rdfs:label "Inventory Endpoint Response" ;
+    rdfs:comment "Result of inventory endpoint probe" ;
+    :resultStatus "FAILURE" ;
+    :resultDetails "404 response from /inventory endpoint" .
+
+:step2Finding rdf:type :ExplorationFinding ;
+    rdfs:label "Inventory Endpoint Status" ;
+    rdfs:comment "Finding from inventory endpoint probe" ;
+    :findingType "ENDPOINT" ;
+    :findingDescription "Inventory endpoint not found at /inventory" .
+
+:step3 rdf:type :ExplorationStep ;
+    rdfs:label "API Documentation Discovery" ;
+    rdfs:comment "Third step: discovering the correct API documentation endpoint" ;
+    :hasStepNumber 3 ;
+    :hasMethod :docDiscoveryMethod ;
+    :hasResult :step3Result ;
+    :hasFinding :step3Finding .
+
+:docDiscoveryMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Documentation Discovery" ;
+    rdfs:comment "Method to discover the correct API documentation endpoint" ;
+    :methodName "Documentation Discovery" ;
+    :methodDescription "Discovered API documentation through token creation screen at /api-doc endpoint" .
+
+:step3Result rdf:type :ExplorationResult ;
+    rdfs:label "Documentation Found" ;
+    rdfs:comment "Result of documentation discovery through token creation interface" ;
+    :resultStatus "SUCCESS" ;
+    :resultDetails "API documentation discovered via token creation screen at https://app.boldo.io/api-doc" .
+
+:step3Finding rdf:type :ExplorationFinding ;
+    rdfs:label "API Documentation Location" ;
+    rdfs:comment "Finding from documentation discovery through token creation interface" ;
+    :findingType "DOCUMENTATION" ;
+    :findingDescription "API documentation available at /api-doc endpoint, discovered through token creation screen" .
+
+:step4 rdf:type :ExplorationStep ;
+    rdfs:label "Token Creation Context" ;
+    rdfs:comment "Fourth step: documenting the token creation context of documentation discovery" ;
+    :hasStepNumber 4 ;
+    :hasMethod :tokenContextMethod ;
+    :hasResult :step4Result ;
+    :hasFinding :step4Finding .
+
+:tokenContextMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Token Context Analysis" ;
+    rdfs:comment "Method to analyze the token creation context" ;
+    :methodName "Token Context Analysis" ;
+    :methodDescription "Analyzing the token creation interface as a source of API documentation" .
+
+:step4Result rdf:type :ExplorationResult ;
+    rdfs:label "Token Context Analysis" ;
+    rdfs:comment "Result of token creation context analysis" ;
+    :resultStatus "SUCCESS" ;
+    :resultDetails "Documentation discovery occurred during token creation process" .
+
+:step4Finding rdf:type :ExplorationFinding ;
+    rdfs:label "Token Creation Documentation" ;
+    rdfs:comment "Finding from token creation context analysis" ;
+    :findingType "CONTEXT" ;
+    :findingDescription "API documentation is accessible through the token creation interface" .
+
+:step5 rdf:type :ExplorationStep ;
+    rdfs:label "API Documentation Analysis" ;
+    rdfs:comment "Fifth step: analyzing the API documentation structure" ;
+    :hasStepNumber 5 ;
+    :hasMethod :docAnalysisMethod ;
+    :hasResult :step5Result ;
+    :hasFinding :step5Finding .
+
+:docAnalysisMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Documentation Analysis" ;
+    rdfs:comment "Method to analyze the API documentation structure" ;
+    :methodName "Documentation Analysis" ;
+    :methodDescription "Using prance to parse and analyze the Swagger/OpenAPI documentation" .
+
+:step5Result rdf:type :ExplorationResult ;
+    rdfs:label "Documentation Analysis" ;
+    rdfs:comment "Result of API documentation analysis" ;
+    :resultStatus "PENDING" ;
+    :resultDetails "Analyzing Swagger/OpenAPI documentation structure" .
+
+:step5Finding rdf:type :ExplorationFinding ;
+    rdfs:label "Documentation Structure" ;
+    rdfs:comment "Finding from documentation analysis" ;
+    :findingType "ANALYSIS" ;
+    :findingDescription "Analyzing the structure and endpoints of the API documentation" .
+
+:step6 rdf:type :ExplorationStep ;
+    rdfs:label "Documentation Response Analysis" ;
+    rdfs:comment "Sixth step: analyzing the API documentation response characteristics" ;
+    :hasStepNumber 6 ;
+    :hasMethod :responseAnalysisMethod ;
+    :hasResult :step6Result ;
+    :hasFinding :step6Finding .
+
+:responseAnalysisMethod rdf:type :ExplorationMethod ;
+    rdfs:label "Response Analysis" ;
+    rdfs:comment "Method to analyze the API documentation response" ;
+    :methodName "Response Analysis" ;
+    :methodDescription "Detailed analysis of HTTP response characteristics and content structure" .
+
+:step6Result rdf:type :ExplorationResult ;
+    rdfs:label "Response Analysis Results" ;
+    rdfs:comment "Results from analyzing the API documentation response" ;
+    :resultStatus "SUCCESS" ;
+    :resultDetails """Response analysis revealed:
+        1. Status: 200 OK
+        2. Content-Type: text/html; charset=utf-8
+        3. Content: Next.js rendered documentation UI
+        4. Headers indicate dynamic routing and middleware processing""" .
+
+:step6Finding rdf:type :ExplorationFinding ;
+    rdfs:label "Documentation Interface Type" ;
+    rdfs:comment "Finding about the nature of the documentation interface" ;
+    :findingType "INTERFACE" ;
+    :findingDescription """Documentation endpoint serves a web UI rather than raw specification:
+        1. Uses Next.js framework
+        2. Includes client-side routing
+        3. Contains dynamic content loading
+        4. Implements middleware rewriting (/en/api-doc)""" .
+
+:step6Finding2 rdf:type :ExplorationFinding ;
+    rdfs:label "Response Headers Analysis" ;
+    rdfs:comment "Analysis of significant response headers" ;
+    :findingType "HEADERS" ;
+    :findingDescription """Key headers indicate:
+        1. Dynamic content (Cache-Control: private, no-cache)
+        2. Localization support (NEXT_LOCALE cookie)
+        3. Middleware processing (X-Middleware-Rewrite)
+        4. Next.js powered interface (X-Powered-By)""" .
+
+:step6Finding3 rdf:type :ExplorationFinding ;
+    rdfs:label "Content Structure" ;
+    rdfs:comment "Analysis of the response content structure" ;
+    :findingType "CONTENT" ;
+    :findingDescription """Content characteristics:
+        1. HTML document with UTF-8 encoding
+        2. Contains Next.js specific class names and data attributes
+        3. Includes dynamic script loading
+        4. Not a direct OpenAPI/Swagger specification""" .
+
+# SHACL Shapes
+:ExplorationStepShape a sh:NodeShape ;
+    sh:targetClass :ExplorationStep ;
+    sh:property [
+        sh:path :hasStepNumber ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration step must have exactly one step number" ;
+    ] ,
+    [
+        sh:path :hasMethod ;
+        sh:class :ExplorationMethod ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration step must have exactly one method" ;
+    ] ,
+    [
+        sh:path :hasResult ;
+        sh:class :ExplorationResult ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration step must have exactly one result" ;
+    ] .
+
+:ExplorationMethodShape a sh:NodeShape ;
+    sh:targetClass :ExplorationMethod ;
+    sh:property [
+        sh:path :methodName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration method must have exactly one name" ;
+    ] ,
+    [
+        sh:path :methodDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration method must have exactly one description" ;
+    ] .
+
+:ExplorationResultShape a sh:NodeShape ;
+    sh:targetClass :ExplorationResult ;
+    sh:property [
+        sh:path :resultStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration result must have exactly one status" ;
+    ] ,
+    [
+        sh:path :resultDetails ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration result must have exactly one details" ;
+    ] .
+
+:ExplorationFindingShape a sh:NodeShape ;
+    sh:targetClass :ExplorationFinding ;
+    sh:property [
+        sh:path :findingType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration finding must have exactly one type" ;
+    ] ,
+    [
+        sh:path :findingDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Exploration finding must have exactly one description" ;
+    ] . 
