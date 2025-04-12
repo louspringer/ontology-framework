@@ -169,3 +169,7 @@ set_oracle_env.sh
 # macOS system files
 .DS_Store
 **/.DS_Store
+
+# API documentation raw files
+raw_api_doc.txt
+raw_api_doc_error.txt
