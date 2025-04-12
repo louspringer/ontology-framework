@@ -164,3 +164,8 @@ prompt-manager/.DS_Store
 github_provider.json
 *.zip
 set_oracle_env.sh
+.DS_Store
+
+# macOS system files
+.DS_Store
+**/.DS_Store

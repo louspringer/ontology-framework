@@ -1,6 +1,0 @@
-rdflib>=6.0.0
-pyshacl>=0.20.0
-pytest>=7.0.0  # For additional test features if needed
-pillow>=9.0.0  # For image processing
-tensorflow>=2.8.0  # For neural network tests
-nltk>=3.7  # For text processing 

@@ -286,12 +286,17 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that all validation patterns have complete metadata"""
         logger.info("Testing validation patterns completeness")
         query = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX guidance: <./guidance#>
+        PREFIX validation: <./guidance/modules/validation#>
+        
         SELECT ?pattern WHERE {
-            ?pattern rdf:type guidance:ValidationPattern
+            ?pattern rdf:type validation:ValidationPattern
             FILTER NOT EXISTS {
                 ?pattern rdfs:label ?label ;
                          rdfs:comment ?comment ;
-                         guidance:targetClass ?target
+                         validation:hasTargetClass ?target
             }
         }
         """
@@ -346,7 +351,10 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that all requirements, aspects, and components have test coverage"""
         logger.info("Running test coverage check")
         query = """
-        PREFIX validation: <guidance/modules/validation#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX guidance: <./guidance#>
+        PREFIX validation: <./guidance/modules/validation#>
+        
         SELECT ?entity ?type WHERE {
             {
                 ?entity rdf:type guidance:Requirement .
