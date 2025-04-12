@@ -15,12 +15,88 @@
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix validation: <./guidance/modules/validation#> .
 
 # Ontology metadata
 meta:MetaOntology a owl:Ontology ;
     rdfs:label "Meta Ontology" ;
     rdfs:comment "Core ontology for meta-level concepts and patterns" ;
     owl:versionInfo "0.1.0" .
+
+# Modeling Discipline Rules
+meta:ModelingDisciplineRule a owl:Class ;
+    rdfs:label "Modeling Discipline Rule"@en ;
+    rdfs:comment "A rule that governs ontology modeling practices and discipline" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RuleSeverity a owl:Class ;
+    rdfs:label "Rule Severity"@en ;
+    rdfs:comment "The severity level of a modeling discipline rule" ;
+    owl:versionInfo "1.0.0" .
+
+meta:CriticalPractice a meta:RuleSeverity ;
+    rdfs:label "Critical Practice"@en ;
+    rdfs:comment "A critical practice that must be followed" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RecommendedPractice a meta:RuleSeverity ;
+    rdfs:label "Recommended Practice"@en ;
+    rdfs:comment "A recommended practice that should be followed" ;
+    owl:versionInfo "1.0.0" .
+
+meta:OptionalPractice a meta:RuleSeverity ;
+    rdfs:label "Optional Practice"@en ;
+    rdfs:comment "An optional practice that may be followed" ;
+    owl:versionInfo "1.0.0" .
+
+meta:addressesPitfall a owl:DatatypeProperty ;
+    rdfs:label "Addresses Pitfall"@en ;
+    rdfs:comment "Identifies a common pitfall that this rule addresses" ;
+    rdfs:domain meta:ModelingDisciplineRule ;
+    rdfs:range xsd:string .
+
+meta:motivates a owl:DatatypeProperty ;
+    rdfs:label "Motivates"@en ;
+    rdfs:comment "Describes the motivation for the rule" ;
+    rdfs:domain meta:ModelingDisciplineRule ;
+    rdfs:range xsd:string .
+
+meta:example a owl:DatatypeProperty ;
+    rdfs:label "Example"@en ;
+    rdfs:comment "Provides an example of the rule's application" ;
+    rdfs:domain meta:ModelingDisciplineRule ;
+    rdfs:range xsd:string .
+
+meta:severity a owl:ObjectProperty ;
+    rdfs:label "Severity"@en ;
+    rdfs:comment "Indicates the severity level of the rule" ;
+    rdfs:domain meta:ModelingDisciplineRule ;
+    rdfs:range meta:RuleSeverity .
+
+meta:governs a owl:ObjectProperty ;
+    rdfs:label "Governs"@en ;
+    rdfs:comment "Specifies what aspects of modeling this rule governs" ;
+    rdfs:domain meta:ModelingDisciplineRule ;
+    rdfs:range owl:Class .
+
+meta:NamingConventions a owl:Class ;
+    rdfs:label "Naming Conventions"@en ;
+    rdfs:comment "Aspects of naming conventions in ontology modeling" ;
+    owl:versionInfo "1.0.0" .
+
+meta:ModularOntologyDesign a owl:Class ;
+    rdfs:label "Modular Ontology Design"@en ;
+    rdfs:comment "Aspects of modular ontology design" ;
+    owl:versionInfo "1.0.0" .
+
+meta:ArtifactRepresentationSeparationRule a meta:ModelingDisciplineRule ;
+    rdfs:label "Artifact-Representation-Concept Separation Rule" ;
+    rdfs:comment "Do not conflate ontological concepts, their representations in a syntax (e.g., Turtle), and the physical artifacts (e.g., .ttl files) in which they reside." ;
+    meta:addressesPitfall "Confusing an ontology class name with a file name" ;
+    meta:motivates "Correct modularization, consistent imports, and predictable reasoning behavior" ;
+    meta:example "An owl:Class ex:PatternRegistry should not be confused with its containing file pattern-registry.ttl or its Turtle prefix declaration." ;
+    meta:severity meta:CriticalPractice ;
+    meta:governs meta:NamingConventions, meta:ModularOntologyDesign .
 
 # Security Concepts
 meta:SecurityConcept a owl:Class ;
@@ -97,17 +173,17 @@ meta:dependsOn a owl:ObjectProperty ;
 
 # Security Requirements
 meta:keyRotationRequirement a meta:SecurityConcept ;
-    rdfs:label "Key Rotation Requirement"@en ;
+    rdfs:label "Key Rotation Requirement" ;
     rdfs:comment "Regular key rotation for security" ;
     meta:requires meta:AuthenticationConcept .
 
 meta:auditRequirement a meta:ComplianceConcept ;
-    rdfs:label "Audit Requirement"@en ;
+    rdfs:label "Audit Requirement" ;
     rdfs:comment "Comprehensive audit logging" ;
     meta:requires meta:AuditLog .
 
 meta:encryptionRequirement a meta:EncryptionConcept ;
-    rdfs:label "Encryption Requirement"@en ;
+    rdfs:label "Encryption Requirement" ;
     rdfs:comment "Data encryption at rest and in transit" ;
     meta:requires meta:SecretStore .
 
@@ -633,8 +709,798 @@ meta:TestOperationShape a sh:NodeShape ;
         sh:message "Test operation must have a CRUD operation string"
     ] .
 
+# Test Instances - Modeling Discipline Rules
+meta:ListModelingRulesTest a meta:TestQuery ;
+    rdfs:label "List Modeling Discipline Rules Test" ;
+    rdfs:comment "Query to list all modeling discipline rules with their severity and governed aspects" ;
+    meta:hasQuery """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?rule ?label ?severity ?governs
+        WHERE {
+            ?rule a meta:ModelingDisciplineRule ;
+                  rdfs:label ?label ;
+                  meta:severity ?severity ;
+                  meta:governs ?governs .
+        }
+        ORDER BY ?label
+    """ ;
+    meta:hasExpectedResult meta:ModelingRulesResult .
+
+meta:ModelingRulesResult a meta:ExpectedResult ;
+    rdfs:comment """Expected results include:
+        - ArtifactRepresentationSeparationRule with CriticalPractice severity
+        - Rules governing NamingConventions and ModularOntologyDesign""" .
+
+meta:RulePitfallsTest a meta:TestQuery ;
+    rdfs:label "Rule Pitfalls Test" ;
+    rdfs:comment "Query to match rules with their addressed pitfalls" ;
+    meta:hasQuery """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?rule ?label ?pitfall ?motivation
+        WHERE {
+            ?rule a meta:ModelingDisciplineRule ;
+                  rdfs:label ?label ;
+                  meta:addressesPitfall ?pitfall ;
+                  meta:motivates ?motivation .
+        }
+        ORDER BY ?label
+    """ ;
+    meta:hasExpectedResult meta:RulePitfallsResult .
+
+meta:RulePitfallsResult a meta:ExpectedResult ;
+    rdfs:comment """Expected results include:
+        - ArtifactRepresentationSeparationRule with its pitfall about confusing class names with file names
+        - Motivation for correct modularization and consistent imports""" .
+
+# Test Instances - CRUD Operations for Rules
+meta:CreateNewRuleTest a meta:TestOperation ;
+    rdfs:label "Create New Rule Test" ;
+    rdfs:comment "Test creating a new modeling discipline rule" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        
+        INSERT DATA {
+            meta:TestModelingRule a meta:ModelingDisciplineRule ;
+                rdfs:label "Test Modeling Rule"@en ;
+                rdfs:comment "Test rule for CRUD operations" ;
+                meta:addressesPitfall "Test pitfall" ;
+                meta:motivates "Test motivation" ;
+                meta:example "Test example" ;
+                meta:severity meta:RecommendedPractice ;
+                meta:governs meta:NamingConventions .
+        }
+    """ .
+
+meta:UpdateRuleTest a meta:TestOperation ;
+    rdfs:label "Update Rule Test" ;
+    rdfs:comment "Test updating a modeling discipline rule" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        DELETE {
+            meta:TestModelingRule meta:severity ?oldSeverity
+        }
+        INSERT {
+            meta:TestModelingRule meta:severity meta:CriticalPractice
+        }
+        WHERE {
+            meta:TestModelingRule meta:severity ?oldSeverity
+        }
+    """ .
+
+meta:DeleteRuleTest a meta:TestOperation ;
+    rdfs:label "Delete Rule Test" ;
+    rdfs:comment "Test deleting a modeling discipline rule" ;
+    meta:hasOperation """
+        PREFIX meta: <./meta#>
+        
+        DELETE WHERE {
+            meta:TestModelingRule ?p ?o
+        }
+    """ .
+
+# SHACL Validation for Modeling Rules
+meta:ModelingRuleShape a sh:NodeShape ;
+    sh:targetClass meta:ModelingDisciplineRule ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Modeling rule must have a label"
+    ] ,
+    [
+        sh:path meta:addressesPitfall ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Modeling rule must address at least one pitfall"
+    ] ,
+    [
+        sh:path meta:motivates ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Modeling rule must have a motivation"
+    ] ,
+    [
+        sh:path meta:example ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Modeling rule must have an example"
+    ] ,
+    [
+        sh:path meta:severity ;
+        sh:class meta:RuleSeverity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Modeling rule must have exactly one severity level"
+    ] ,
+    [
+        sh:path meta:governs ;
+        sh:class owl:Class ;
+        sh:minCount 1 ;
+        sh:message "Modeling rule must govern at least one aspect"
+    ] .
+
+# Model Conformance Rules
+meta:ModelingRulesConformance a guidance:ModelConformance ;
+    rdfs:label "Modeling Rules Conformance"@en ;
+    rdfs:comment "Conformance rules for modeling discipline rules" ;
+    guidance:conformanceLevel "STRICT" ;
+    guidance:requiresPrefixValidation true ;
+    guidance:requiresNamespaceValidation true ;
+    owl:versionInfo "1.0.0" .
+
+# Integration Process
+meta:ModelingRulesIntegration a guidance:IntegrationProcess ;
+    rdfs:label "Modeling Rules Integration"@en ;
+    rdfs:comment "Integration process for modeling discipline rules" ;
+    guidance:hasIntegrationStep meta:RuleValidationStep ;
+    guidance:hasIntegrationStep meta:RuleTestingStep ;
+    owl:versionInfo "1.0.0" .
+
+meta:RuleValidationStep a guidance:IntegrationStep ;
+    rdfs:label "Rule Validation Step"@en ;
+    rdfs:comment "First step: Validate modeling rules against SHACL shapes" ;
+    guidance:stepOrder 1 ;
+    guidance:stepDescription "Validate modeling rules against SHACL shapes and ensure all required properties are present" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RuleTestingStep a guidance:IntegrationStep ;
+    rdfs:label "Rule Testing Step"@en ;
+    rdfs:comment "Second step: Execute test cases for modeling rules" ;
+    guidance:stepOrder 2 ;
+    guidance:stepDescription "Execute SPARQL test queries and verify expected results" ;
+    owl:versionInfo "1.0.0" .
+
+# Additional Test Cases
+meta:RuleConformanceTest a validation:TestCase ;
+    rdfs:label "Rule Conformance Test"@en ;
+    rdfs:comment "Tests that modeling rules conform to validation patterns" ;
+    validation:hasTestQuery """
+        PREFIX meta: <./meta#>
+        PREFIX validation: <./guidance/modules/validation#>
+        
+        SELECT ?rule ?pattern
+        WHERE {
+            ?rule a meta:ModelingDisciplineRule .
+            ?pattern a validation:ValidationPattern .
+            ?rule validation:conformsTo ?pattern .
+        }
+    """ ;
+    validation:hasExpectedResult "All modeling rules should conform to validation patterns" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RuleSeverityTest a validation:TestCase ;
+    rdfs:label "Rule Severity Test"@en ;
+    rdfs:comment "Tests that all rules have valid severity levels" ;
+    validation:hasTestQuery """
+        PREFIX meta: <./meta#>
+        
+        SELECT ?rule ?severity
+        WHERE {
+            ?rule a meta:ModelingDisciplineRule .
+            ?rule meta:severity ?severity .
+            FILTER NOT EXISTS {
+                ?severity a meta:RuleSeverity
+            }
+        }
+    """ ;
+    validation:hasExpectedResult "No rules should have invalid severity levels" ;
+    owl:versionInfo "1.0.0" .
+
+meta:RuleGovernanceTest a validation:TestCase ;
+    rdfs:label "Rule Governance Test"@en ;
+    rdfs:comment "Tests that all rules govern valid aspects" ;
+    validation:hasTestQuery """
+        PREFIX meta: <./meta#>
+        
+        SELECT ?rule ?governs
+        WHERE {
+            ?rule a meta:ModelingDisciplineRule .
+            ?rule meta:governs ?governs .
+            FILTER NOT EXISTS {
+                ?governs a owl:Class
+            }
+        }
+    """ ;
+    validation:hasExpectedResult "No rules should govern invalid aspects" ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Validation for Integration Process
+meta:IntegrationProcessShape a sh:NodeShape ;
+    sh:targetClass guidance:IntegrationProcess ;
+    sh:property [
+        sh:path guidance:hasIntegrationStep ;
+        sh:class guidance:IntegrationStep ;
+        sh:minCount 1 ;
+        sh:message "Integration process must have at least one step"
+    ] .
+
+meta:IntegrationStepShape a sh:NodeShape ;
+    sh:targetClass guidance:IntegrationStep ;
+    sh:property [
+        sh:path guidance:stepOrder ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+        sh:message "Step must have a positive integer order"
+    ] ,
+    [
+        sh:path guidance:stepDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Step must have a description"
+    ] .
+
+# Test Requirements
+meta:TestCoverageRequirement a meta:Requirement ;
+    rdfs:label "Test Coverage Requirement" ;
+    rdfs:comment "All framework aspects, requirements, and components must have test coverage" ;
+    meta:hasValidation meta:TestCoverageValidation ;
+    meta:hasTest meta:ComprehensiveCoverageTest ;
+    meta:severity meta:CriticalPractice .
+
+meta:PatternValidationRequirement a meta:Requirement ;
+    rdfs:label "Pattern Validation Requirement" ;
+    rdfs:comment "Validation patterns must have complete metadata and target classes" ;
+    meta:hasValidation meta:PatternValidation ;
+    meta:hasTest meta:PatternValidationTest ;
+    meta:severity meta:CriticalPractice .
+
+meta:ProtocolValidationRequirement a meta:Requirement ;
+    rdfs:label "Protocol Validation Requirement" ;
+    rdfs:comment "Test protocols must have proper phases, coverage, and test cases" ;
+    meta:hasValidation meta:ProtocolValidation ;
+    meta:hasTest meta:ProtocolValidationTest ;
+    meta:severity meta:CriticalPractice .
+
+meta:SecurityValidationRequirement a meta:Requirement ;
+    rdfs:label "Security Validation Requirement" ;
+    rdfs:comment "Security-related patterns must have appropriate constraints" ;
+    meta:hasValidation meta:SecurityValidation ;
+    meta:hasTest meta:SecurityValidationTest ;
+    meta:severity meta:CriticalPractice .
+
+meta:CollaborationValidationRequirement a meta:Requirement ;
+    rdfs:label "Collaboration Validation Requirement" ;
+    rdfs:comment "Collaboration-related patterns must have appropriate constraints" ;
+    meta:hasValidation meta:CollaborationValidation ;
+    meta:hasTest meta:CollaborationValidationTest ;
+    meta:severity meta:RecommendedPractice .
+
+meta:ModelConformanceRequirement a meta:Requirement ;
+    rdfs:label "Model Conformance Requirement" ;
+    rdfs:comment "Model-related patterns must have appropriate constraints" ;
+    meta:hasValidation meta:ModelConformanceValidation ;
+    meta:hasTest meta:ModelConformanceTest ;
+    meta:severity meta:CriticalPractice .
+
+# Validation Criteria
+meta:TestCoverageValidation a meta:ValidationCriteria ;
+    rdfs:label "Test Coverage Validation" ;
+    rdfs:comment "Validates comprehensive test coverage across framework" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <./guidance#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?entity ?type ?testCount
+    WHERE {
+        {
+            ?entity rdf:type guidance:Requirement
+        } UNION {
+            ?entity rdf:type guidance:FrameworkAspect
+        } UNION {
+            ?entity rdf:type guidance:Component
+        }
+        BIND(IF(?entity rdf:type guidance:Requirement, "Requirement",
+               IF(?entity rdf:type guidance:FrameworkAspect, "Aspect",
+               "Component")) AS ?type)
+        OPTIONAL {
+            ?test rdf:type validation:TestCase ;
+                  validation:validates ?entity
+        }
+        BIND(COUNT(?test) AS ?testCount)
+    }
+    GROUP BY ?entity ?type
+    HAVING (?testCount = 0)
+    """ .
+
+meta:PatternValidation a meta:ValidationCriteria ;
+    rdfs:label "Pattern Validation" ;
+    rdfs:comment "Validates completeness of validation patterns" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?pattern ?label ?comment ?version ?target
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        OPTIONAL { ?pattern rdfs:label ?label }
+        OPTIONAL { ?pattern rdfs:comment ?comment }
+        OPTIONAL { ?pattern owl:versionInfo ?version }
+        OPTIONAL { ?pattern validation:hasTargetClass ?target }
+        FILTER (!bound(?label) || !bound(?comment) || !bound(?version) || !bound(?target))
+    }
+    """ .
+
+meta:ProtocolValidation a meta:ValidationCriteria ;
+    rdfs:label "Protocol Validation" ;
+    rdfs:comment "Validates test protocol structure and compliance" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <./guidance#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?protocol ?phase ?coverage ?testCase
+    WHERE {
+        ?protocol rdf:type guidance:TestProtocol .
+        ?protocol guidance:hasTestPhase ?phase .
+        ?protocol guidance:hasTestCoverage ?coverage .
+        ?coverage guidance:coverageThreshold ?threshold .
+        ?phase validation:hasTestCase ?testCase .
+        FILTER (
+            ?threshold < "0.95"^^xsd:decimal ||
+            NOT EXISTS { ?testCase validation:hasTestQuery ?query } ||
+            NOT EXISTS { ?testCase validation:hasExpectedResult ?result }
+        )
+    }
+    """ .
+
+meta:SecurityValidation a meta:ValidationCriteria ;
+    rdfs:label "Security Validation" ;
+    rdfs:comment "Validates security-related pattern constraints" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX security: <./guidance/modules/security#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?pattern ?securityConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?securityConcept .
+        ?securityConcept rdf:type security:SecurityConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasSecurityConstraint ?constraint
+        }
+    }
+    """ .
+
+meta:CollaborationValidation a meta:ValidationCriteria ;
+    rdfs:label "Collaboration Validation" ;
+    rdfs:comment "Validates collaboration-related pattern constraints" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX collaboration: <./guidance/modules/collaboration#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?pattern ?collaborationConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?collaborationConcept .
+        ?collaborationConcept rdf:type collaboration:CollaborationConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasCollaborationConstraint ?constraint
+        }
+    }
+    """ .
+
+meta:ModelConformanceValidation a meta:ValidationCriteria ;
+    rdfs:label "Model Conformance Validation" ;
+    rdfs:comment "Validates model-related pattern constraints" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX model: <./guidance/modules/model#>
+    PREFIX validation: <./guidance/modules/validation#>
+    
+    SELECT ?pattern ?modelConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?modelConcept .
+        ?modelConcept rdf:type model:ModelConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasModelConstraint ?constraint
+        }
+    }
+    """ .
+
+# SHACL Validation for Requirements
+meta:TestRequirementShape a sh:NodeShape ;
+    sh:targetClass meta:Requirement ;
+    sh:property [
+        sh:path meta:hasValidation ;
+        sh:class meta:ValidationCriteria ;
+        sh:minCount 1 ;
+        sh:message "Test requirement must have validation criteria"
+    ] ,
+    [
+        sh:path meta:hasTest ;
+        sh:class meta:TestCase ;
+        sh:minCount 1 ;
+        sh:message "Test requirement must have associated test cases"
+    ] ,
+    [
+        sh:path meta:severity ;
+        sh:class meta:RuleSeverity ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Test requirement must have exactly one severity level"
+    ] .
+
+# Audit Trail Classes
+meta:AuditTrailConcept a owl:Class ;
+    rdfs:label "Audit Trail Concept"@en ;
+    rdfs:comment "Core concepts for audit trail and logging" ;
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:AuditEvent a owl:Class ;
+    rdfs:label "Audit Event"@en ;
+    rdfs:comment "An auditable event in the system" ;
+    rdfs:subClassOf meta:AuditTrailConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:AuditRecord a owl:Class ;
+    rdfs:label "Audit Record"@en ;
+    rdfs:comment "A record of an audit event" ;
+    rdfs:subClassOf meta:AuditTrailConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:AuditPolicy a owl:Class ;
+    rdfs:label "Audit Policy"@en ;
+    rdfs:comment "Policy governing audit trail requirements" ;
+    rdfs:subClassOf meta:AuditTrailConcept ;
+    owl:versionInfo "1.0.0" .
+
+# Audit Properties
+meta:hasAuditTimestamp a owl:DatatypeProperty ;
+    rdfs:label "Has Audit Timestamp"@en ;
+    rdfs:comment "Timestamp when the audit event occurred" ;
+    rdfs:domain meta:AuditEvent ;
+    rdfs:range xsd:dateTime ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasAuditActor a owl:ObjectProperty ;
+    rdfs:label "Has Audit Actor"@en ;
+    rdfs:comment "Actor who triggered the audit event" ;
+    rdfs:domain meta:AuditEvent ;
+    rdfs:range meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasAuditAction a owl:DatatypeProperty ;
+    rdfs:label "Has Audit Action"@en ;
+    rdfs:comment "Action performed in the audit event" ;
+    rdfs:domain meta:AuditEvent ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasAuditResource a owl:ObjectProperty ;
+    rdfs:label "Has Audit Resource"@en ;
+    rdfs:comment "Resource affected by the audit event" ;
+    rdfs:domain meta:AuditEvent ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasAuditOutcome a owl:DatatypeProperty ;
+    rdfs:label "Has Audit Outcome"@en ;
+    rdfs:comment "Outcome of the audit event" ;
+    rdfs:domain meta:AuditEvent ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasRetentionPeriod a owl:DatatypeProperty ;
+    rdfs:label "Has Retention Period"@en ;
+    rdfs:comment "Required retention period for audit records" ;
+    rdfs:domain meta:AuditPolicy ;
+    rdfs:range xsd:duration ;
+    owl:versionInfo "1.0.0" .
+
+meta:requiresEncryption a owl:DatatypeProperty ;
+    rdfs:label "Requires Encryption"@en ;
+    rdfs:comment "Whether audit records require encryption" ;
+    rdfs:domain meta:AuditPolicy ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Validation Shapes
+meta:AuditEventShape a sh:NodeShape ;
+    sh:targetClass meta:AuditEvent ;
+    sh:property [
+        sh:path meta:hasAuditTimestamp ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Audit event must have exactly one timestamp"
+    ] ,
+    [
+        sh:path meta:hasAuditActor ;
+        sh:class meta:SecurityConcept ;
+        sh:minCount 1 ;
+        sh:message "Audit event must have an actor"
+    ] ,
+    [
+        sh:path meta:hasAuditAction ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Audit event must have exactly one action"
+    ] ,
+    [
+        sh:path meta:hasAuditResource ;
+        sh:minCount 1 ;
+        sh:message "Audit event must have a resource"
+    ] ,
+    [
+        sh:path meta:hasAuditOutcome ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Audit event must have exactly one outcome"
+    ] .
+
+meta:AuditPolicyShape a sh:NodeShape ;
+    sh:targetClass meta:AuditPolicy ;
+    sh:property [
+        sh:path meta:hasRetentionPeriod ;
+        sh:datatype xsd:duration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Audit policy must specify retention period"
+    ] ,
+    [
+        sh:path meta:requiresEncryption ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Audit policy must specify encryption requirement"
+    ] .
+
+# Test Requirements
+meta:AuditTrailRequirement a meta:Requirement ;
+    rdfs:label "Audit Trail Requirement" ;
+    rdfs:comment "Audit trail must capture all required events with proper metadata" ;
+    meta:hasValidation meta:AuditTrailValidation ;
+    meta:hasTest meta:AuditTrailTest ;
+    meta:severity meta:CriticalPractice .
+
+# Validation Criteria
+meta:AuditTrailValidation a meta:ValidationCriteria ;
+    rdfs:label "Audit Trail Validation" ;
+    rdfs:comment "Validates audit trail completeness and compliance" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX meta: <./meta#>
+    
+    SELECT ?event ?timestamp ?actor ?action ?resource ?outcome
+    WHERE {
+        ?event rdf:type meta:AuditEvent .
+        OPTIONAL { ?event meta:hasAuditTimestamp ?timestamp }
+        OPTIONAL { ?event meta:hasAuditActor ?actor }
+        OPTIONAL { ?event meta:hasAuditAction ?action }
+        OPTIONAL { ?event meta:hasAuditResource ?resource }
+        OPTIONAL { ?event meta:hasAuditOutcome ?outcome }
+        FILTER (!bound(?timestamp) || !bound(?actor) || !bound(?action) || 
+                !bound(?resource) || !bound(?outcome))
+    }
+    """ .
+
+# Example Instances
+meta:StandardAuditPolicy a meta:AuditPolicy ;
+    rdfs:label "Standard Audit Policy" ;
+    rdfs:comment "Default audit policy for the framework" ;
+    meta:hasRetentionPeriod "P1Y"^^xsd:duration ;  # 1 year retention
+    meta:requiresEncryption true .
+
+meta:ComplianceAuditPolicy a meta:AuditPolicy ;
+    rdfs:label "Compliance Audit Policy" ;
+    rdfs:comment "Strict audit policy for compliance requirements" ;
+    meta:hasRetentionPeriod "P7Y"^^xsd:duration ;  # 7 year retention
+    meta:requiresEncryption true .
+
 # TODO: Areas for Expansion
 # - Add validation rules for secret references
 # - Add deployment-specific configuration patterns
-# - Add backup and restore concepts
-# - Add audit trail concepts 
+
+# Backup and Restore Concepts
+meta:BackupRestoreConcept a owl:Class ;
+    rdfs:label "Backup and Restore Concept"@en ;
+    rdfs:comment "Core concepts for backup and restore operations" ;
+    rdfs:subClassOf meta:SecurityConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:BackupOperation a owl:Class ;
+    rdfs:label "Backup Operation"@en ;
+    rdfs:comment "An operation to create a backup of system data" ;
+    rdfs:subClassOf meta:BackupRestoreConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:RestoreOperation a owl:Class ;
+    rdfs:label "Restore Operation"@en ;
+    rdfs:comment "An operation to restore system data from a backup" ;
+    rdfs:subClassOf meta:BackupRestoreConcept ;
+    owl:versionInfo "1.0.0" .
+
+meta:BackupPolicy a owl:Class ;
+    rdfs:label "Backup Policy"@en ;
+    rdfs:comment "Policy governing backup requirements and schedules" ;
+    rdfs:subClassOf meta:BackupRestoreConcept ;
+    owl:versionInfo "1.0.0" .
+
+# Backup and Restore Properties
+meta:hasBackupTimestamp a owl:DatatypeProperty ;
+    rdfs:label "Has Backup Timestamp"@en ;
+    rdfs:comment "Timestamp when the backup was created" ;
+    rdfs:domain meta:BackupOperation ;
+    rdfs:range xsd:dateTime ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasBackupLocation a owl:DatatypeProperty ;
+    rdfs:label "Has Backup Location"@en ;
+    rdfs:comment "Location where the backup is stored" ;
+    rdfs:domain meta:BackupOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasBackupType a owl:DatatypeProperty ;
+    rdfs:label "Has Backup Type"@en ;
+    rdfs:comment "Type of backup (full, incremental, differential)" ;
+    rdfs:domain meta:BackupOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasBackupStatus a owl:DatatypeProperty ;
+    rdfs:label "Has Backup Status"@en ;
+    rdfs:comment "Status of the backup operation" ;
+    rdfs:domain meta:BackupOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasRestorePoint a owl:ObjectProperty ;
+    rdfs:label "Has Restore Point"@en ;
+    rdfs:comment "Reference to the backup used for restore" ;
+    rdfs:domain meta:RestoreOperation ;
+    rdfs:range meta:BackupOperation ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasBackupSchedule a owl:DatatypeProperty ;
+    rdfs:label "Has Backup Schedule"@en ;
+    rdfs:comment "Schedule for performing backups" ;
+    rdfs:domain meta:BackupPolicy ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+meta:hasRetentionPolicy a owl:DatatypeProperty ;
+    rdfs:label "Has Retention Policy"@en ;
+    rdfs:comment "Policy for backup retention periods" ;
+    rdfs:domain meta:BackupPolicy ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Validation Shapes
+meta:BackupOperationShape a sh:NodeShape ;
+    sh:targetClass meta:BackupOperation ;
+    sh:property [
+        sh:path meta:hasBackupTimestamp ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Backup operation must have exactly one timestamp"
+    ] ,
+    [
+        sh:path meta:hasBackupLocation ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Backup operation must have a location"
+    ] ,
+    [
+        sh:path meta:hasBackupType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Backup operation must have exactly one type"
+    ] ,
+    [
+        sh:path meta:hasBackupStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Backup operation must have exactly one status"
+    ] .
+
+meta:RestoreOperationShape a sh:NodeShape ;
+    sh:targetClass meta:RestoreOperation ;
+    sh:property [
+        sh:path meta:hasRestorePoint ;
+        sh:class meta:BackupOperation ;
+        sh:minCount 1 ;
+        sh:message "Restore operation must reference a backup"
+    ] .
+
+meta:BackupPolicyShape a sh:NodeShape ;
+    sh:targetClass meta:BackupPolicy ;
+    sh:property [
+        sh:path meta:hasBackupSchedule ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Backup policy must specify a schedule"
+    ] ,
+    [
+        sh:path meta:hasRetentionPolicy ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Backup policy must specify retention policy"
+    ] .
+
+# Test Requirements
+meta:BackupRestoreRequirement a meta:Requirement ;
+    rdfs:label "Backup and Restore Requirement" ;
+    rdfs:comment "Backup and restore operations must follow security and compliance requirements" ;
+    meta:hasValidation meta:BackupRestoreValidation ;
+    meta:hasTest meta:BackupRestoreTest ;
+    meta:severity meta:CriticalPractice .
+
+# Validation Criteria
+meta:BackupRestoreValidation a meta:ValidationCriteria ;
+    rdfs:label "Backup and Restore Validation" ;
+    rdfs:comment "Validates backup and restore operations compliance" ;
+    meta:hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX meta: <./meta#>
+    
+    SELECT ?operation ?timestamp ?location ?type ?status
+    WHERE {
+        {
+            ?operation rdf:type meta:BackupOperation .
+            OPTIONAL { ?operation meta:hasBackupTimestamp ?timestamp }
+            OPTIONAL { ?operation meta:hasBackupLocation ?location }
+            OPTIONAL { ?operation meta:hasBackupType ?type }
+            OPTIONAL { ?operation meta:hasBackupStatus ?status }
+        } UNION {
+            ?operation rdf:type meta:RestoreOperation .
+            FILTER NOT EXISTS { ?operation meta:hasRestorePoint ?backup }
+        }
+        FILTER (!bound(?timestamp) || !bound(?location) || !bound(?type) || !bound(?status))
+    }
+    """ .
+
+# Example Instances
+meta:StandardBackupPolicy a meta:BackupPolicy ;
+    rdfs:label "Standard Backup Policy" ;
+    rdfs:comment "Default backup policy for the framework" ;
+    meta:hasBackupSchedule "0 0 * * *" ; # Daily at midnight
+    meta:hasRetentionPolicy "P30D" . # 30 days retention
+
+meta:ComplianceBackupPolicy a meta:BackupPolicy ;
+    rdfs:label "Compliance Backup Policy" ;
+    rdfs:comment "Strict backup policy for compliance requirements" ;
+    meta:hasBackupSchedule "0 */4 * * *" ; # Every 4 hours
+    meta:hasRetentionPolicy "P7Y" . # 7 years retention 

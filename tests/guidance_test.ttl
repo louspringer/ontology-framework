@@ -22,8 +22,8 @@
     dc:title "Guidance Test Suite" ;
     dc:version "1.0.0" ;
     owl:versionInfo "1.0.0" ;
-    dct:created "2024-03-21"^^xsd:dateTime ;
-    dct:modified "2024-03-21"^^xsd:dateTime ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     owl:imports <../guidance.ttl> ;
     owl:imports <../../chatbot.ttl> .
 
