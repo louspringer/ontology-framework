@@ -1,0 +1,11 @@
+PREFIX meta: <./meta#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?rule ?severity
+WHERE {
+    ?rule a meta:ModelingDisciplineRule ;
+          meta:severity ?severity .
+    FILTER NOT EXISTS {
+        ?severity a meta:RuleSeverity
+    }
+} 

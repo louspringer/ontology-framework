@@ -19,8 +19,8 @@
     dc:title "Validation Guidance Module" ;
     dc:version "1.0.0" ;
     owl:versionInfo "1.0.0" ;
-    dct:created "2024-03-21"^^xsd:dateTime ;
-    dct:modified "2024-03-21"^^xsd:dateTime ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:publisher "Ontology Framework Project" ;
     dct:description "Module containing validation patterns and test cases" ;
     owl:imports <core.ttl> ;
@@ -112,9 +112,395 @@
     }""" ;
     :hasExpectedResult "Should find at least 3 enforcement mechanisms" .
 
+# Framework Test Cases
+:ModelStructureTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Model Structure Test" ;
+    rdfs:comment "Tests ontology model structure and constraints" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT ?class ?label ?comment ?version
+    WHERE {
+        ?class rdf:type owl:Class ;
+               rdfs:label ?label .
+        OPTIONAL { ?class rdfs:comment ?comment }
+        OPTIONAL { ?class owl:versionInfo ?version }
+    }""" ;
+    :hasExpectedResult "All classes should have labels, comments, and version info" .
+
+:RequirementCoverageTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Comprehensive Coverage Test" ;
+    rdfs:comment "Tests coverage of requirements, aspects, and components" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?entity ?type ?testCount
+    WHERE {
+        {
+            ?entity rdf:type guidance:Requirement
+        } UNION {
+            ?entity rdf:type guidance:FrameworkAspect
+        } UNION {
+            ?entity rdf:type guidance:Component
+        }
+        BIND(IF(?entity rdf:type guidance:Requirement, "Requirement",
+               IF(?entity rdf:type guidance:FrameworkAspect, "Aspect",
+               "Component")) AS ?type)
+        OPTIONAL {
+            ?test rdf:type validation:TestCase ;
+                  validation:validates ?entity
+        }
+        BIND(COUNT(?test) AS ?testCount)
+    }
+    GROUP BY ?entity ?type
+    HAVING (?testCount = 0)
+    """ ;
+    :hasExpectedResult "No requirements, aspects, or components should be without test coverage" .
+
+:ComponentIntegrationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Component Integration Test" ;
+    rdfs:comment "Tests integration between ontology components" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?comp1 ?comp2 ?relation
+    WHERE {
+        ?comp1 rdf:type guidance:Component .
+        ?comp2 rdf:type guidance:Component .
+        ?relation rdf:type owl:ObjectProperty ;
+                 rdfs:domain ?comp1 ;
+                 rdfs:range ?comp2 .
+    }""" ;
+    :hasExpectedResult "All component relationships should be properly defined" .
+
+:RequirementComplianceTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Requirement Compliance Test" ;
+    rdfs:comment "Tests compliance with requirement testing directive" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?req ?directive ?level
+    WHERE {
+        ?req rdf:type guidance:Requirement .
+        ?directive rdf:type guidance:RequirementTestingDirective ;
+                  guidance:requirementTestingLevel ?level .
+        FILTER NOT EXISTS {
+            ?test rdf:type guidance:TestCase ;
+                  guidance:tests ?req ;
+                  guidance:meetsTestingLevel ?level .
+        }
+    }""" ;
+    :hasExpectedResult "All requirements should meet the specified testing level" .
+
 # Legacy Support
 :hasLegacyValidationConcept rdf:type owl:ObjectProperty ;
     rdfs:label "Has Legacy Validation Concept" ;
     rdfs:comment "Links modular validation concept to legacy guidance" ;
     rdfs:domain :ValidationPattern ;
-    rdfs:range guidance:LLMGuidanceOntology . 
+    rdfs:range guidance:LLMGuidanceOntology .
+
+# Additional Test Cases
+:SHACLValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "SHACL Validation Test" ;
+    rdfs:comment "Tests SHACL validation rules and constraints" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    
+    SELECT ?shape ?target ?property ?constraint
+    WHERE {
+        ?shape a sh:NodeShape ;
+               sh:targetClass ?target .
+        ?shape sh:property ?propertyShape .
+        ?propertyShape sh:path ?property ;
+                      sh:minCount ?constraint .
+        FILTER (?constraint > 0)
+    }""" ;
+    :hasExpectedResult "All SHACL shapes should have valid target classes and property constraints" .
+
+:TestProtocolComplianceTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Test Protocol Compliance Test" ;
+    rdfs:comment "Tests compliance with test protocol requirements" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?protocol ?phase ?coverage
+    WHERE {
+        ?protocol rdf:type guidance:TestProtocol .
+        ?protocol guidance:hasTestPhase ?phase .
+        ?protocol guidance:hasTestCoverage ?coverage .
+        ?coverage guidance:coverageThreshold ?threshold .
+        FILTER (?threshold < "0.95"^^xsd:decimal)
+    }""" ;
+    :hasExpectedResult "All test protocols should have required phases and meet coverage threshold" .
+
+:IntegrationProcessValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Integration Process Validation Test" ;
+    rdfs:comment "Tests integration process steps and validation" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?process ?step ?order ?description
+    WHERE {
+        ?process rdf:type guidance:IntegrationProcess .
+        ?process guidance:hasIntegrationStep ?step .
+        ?step guidance:stepOrder ?order ;
+              guidance:stepDescription ?description .
+        FILTER NOT EXISTS {
+            ?step guidance:stepOrder ?otherOrder .
+            FILTER (?otherOrder != ?order)
+        }
+    }""" ;
+    :hasExpectedResult "Integration processes should have properly ordered steps with descriptions" .
+
+:LegacySupportValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Legacy Support Validation Test" ;
+    rdfs:comment "Tests legacy support mappings and compatibility" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?support ?mapping ?module
+    WHERE {
+        ?support rdf:type guidance:LegacySupport .
+        ?support guidance:hasLegacyMapping ?mapping .
+        ?module rdf:type owl:Ontology .
+        FILTER NOT EXISTS {
+            ?mapping guidance:moduleVersion ?version .
+            FILTER regex(?version, "^\\d+\\.\\d+\\.\\d+$")
+        }
+    }""" ;
+    :hasExpectedResult "All legacy support mappings should have valid module versions" .
+
+:TestPhaseValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Test Phase Validation Test" ;
+    rdfs:comment "Tests test phase structure and validation" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?phase ?order ?testCase
+    WHERE {
+        ?phase rdf:type guidance:TestPhase .
+        ?phase guidance:phaseOrder ?order .
+        ?phase validation:hasTestCase ?testCase .
+        FILTER NOT EXISTS {
+            ?testCase validation:hasTestQuery ?query ;
+                      validation:hasExpectedResult ?result
+        }
+    }""" ;
+    :hasExpectedResult "All test phases should have valid test cases with queries and expected results" .
+
+:RequirementTestingLevelTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Requirement Testing Level Test" ;
+    rdfs:comment "Tests requirement testing level compliance" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    
+    SELECT ?directive ?level ?test
+    WHERE {
+        ?directive rdf:type guidance:RequirementTestingDirective .
+        ?directive guidance:requirementTestingLevel ?level .
+        ?test rdf:type guidance:TestCase .
+        FILTER NOT EXISTS {
+            ?test guidance:meetsTestingLevel ?level
+        }
+    }""" ;
+    :hasExpectedResult "All test cases should meet the required testing level" .
+
+:TestCoverageAnalysisTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Test Coverage Analysis Test" ;
+    rdfs:comment "Analyzes test case coverage across framework aspects" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?aspect (COUNT(?test) as ?testCount)
+    WHERE {
+        ?aspect rdf:type guidance:FrameworkAspect .
+        OPTIONAL {
+            ?test rdf:type validation:TestCase ;
+                  validation:validates ?aspect
+        }
+    }
+    GROUP BY ?aspect
+    HAVING (?testCount = 0)
+    """ ;
+    :hasExpectedResult "No framework aspects should be without test coverage" .
+
+:ValidationPatternConsistencyTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Validation Pattern Consistency Test" ;
+    rdfs:comment "Tests consistency of validation pattern definitions" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?pattern ?label ?comment
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        OPTIONAL { ?pattern rdfs:label ?label }
+        OPTIONAL { ?pattern rdfs:comment ?comment }
+        FILTER (!bound(?label) || !bound(?comment))
+    }
+    """ ;
+    :hasExpectedResult "All validation patterns should have consistent labels and comments" .
+
+:TestDependenciesTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Test Dependencies Test" ;
+    rdfs:comment "Tests proper definition of test case dependencies" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?test ?dependsOn ?order
+    WHERE {
+        ?test rdf:type validation:TestCase .
+        OPTIONAL {
+            ?test validation:dependsOn ?dependsOn ;
+                  validation:testOrder ?order
+        }
+        FILTER (!bound(?order))
+    }
+    """ ;
+    :hasExpectedResult "All test cases should have proper dependency ordering" .
+
+# Consolidated Pattern Validation Test
+:PatternValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Pattern Validation Test" ;
+    rdfs:comment "Tests consistency and completeness of validation patterns" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?pattern ?label ?comment ?version ?target
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        OPTIONAL { ?pattern rdfs:label ?label }
+        OPTIONAL { ?pattern rdfs:comment ?comment }
+        OPTIONAL { ?pattern owl:versionInfo ?version }
+        OPTIONAL { ?pattern validation:hasTargetClass ?target }
+        FILTER (!bound(?label) || !bound(?comment) || !bound(?version) || !bound(?target))
+    }
+    """ ;
+    :hasExpectedResult "All validation patterns should have complete metadata and target classes" .
+
+# Consolidated Protocol Validation Test
+:ProtocolValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Protocol Validation Test" ;
+    rdfs:comment "Tests test protocol structure and compliance" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX guidance: <../../guidance#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?protocol ?phase ?coverage ?testCase
+    WHERE {
+        ?protocol rdf:type guidance:TestProtocol .
+        ?protocol guidance:hasTestPhase ?phase .
+        ?protocol guidance:hasTestCoverage ?coverage .
+        ?coverage guidance:coverageThreshold ?threshold .
+        ?phase validation:hasTestCase ?testCase .
+        FILTER (
+            ?threshold < "0.95"^^xsd:decimal ||
+            NOT EXISTS { ?testCase validation:hasTestQuery ?query } ||
+            NOT EXISTS { ?testCase validation:hasExpectedResult ?result }
+        )
+    }
+    """ ;
+    :hasExpectedResult "All test protocols should have proper phases, coverage, and test cases" .
+
+# New Test Cases
+:SecurityValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Security Validation Test" ;
+    rdfs:comment "Tests security-related validation patterns" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX security: <../security#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?pattern ?securityConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?securityConcept .
+        ?securityConcept rdf:type security:SecurityConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasSecurityConstraint ?constraint
+        }
+    }
+    """ ;
+    :hasExpectedResult "All security-related validation patterns should have security constraints" .
+
+:CollaborationValidationTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Collaboration Validation Test" ;
+    rdfs:comment "Tests collaboration-related validation patterns" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX collaboration: <../collaboration#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?pattern ?collaborationConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?collaborationConcept .
+        ?collaborationConcept rdf:type collaboration:CollaborationConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasCollaborationConstraint ?constraint
+        }
+    }
+    """ ;
+    :hasExpectedResult "All collaboration-related validation patterns should have collaboration constraints" .
+
+:ModelConformanceTest rdf:type owl:NamedIndividual ;
+    rdf:type :TestCase ;
+    rdfs:label "Model Conformance Test" ;
+    rdfs:comment "Tests model conformance validation patterns" ;
+    :hasTestQuery """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX model: <../model#>
+    PREFIX validation: <./validation#>
+    
+    SELECT ?pattern ?modelConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?modelConcept .
+        ?modelConcept rdf:type model:ModelConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasModelConstraint ?constraint
+        }
+    }
+    """ ;
+    :hasExpectedResult "All model-related validation patterns should have model constraints" . 

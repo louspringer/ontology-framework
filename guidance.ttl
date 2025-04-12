@@ -19,10 +19,10 @@
     rdfs:label "Guidance Ontology" ;
     rdfs:comment "Main guidance ontology that imports and coordinates all guidance modules" ;
     dc:title "Guidance Ontology" ;
-    dc:version "2.0.0" ;
-    owl:versionInfo "2.0.0" ;
-    dct:created "2024-03-21"^^xsd:dateTime ;
-    dct:modified "2024-03-21"^^xsd:dateTime ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:publisher "Ontology Framework Project" ;
     dct:description "Modular guidance system for ontology development and management" ;
     owl:imports <./guidance/modules/core.ttl> ;
@@ -291,3 +291,151 @@
     :conformanceLevel "STRICT" ;
     :requiresPrefixValidation true ;
     :requiresNamespaceValidation true .
+
+# Test Protocol Definition
+:TestProtocol rdf:type owl:Class ;
+    rdfs:label "Test Protocol" ;
+    rdfs:comment "Formal definition of testing requirements and procedures" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:RequirementTestingDirective rdf:type owl:Class ;
+    rdfs:label "Requirement Testing Directive" ;
+    rdfs:comment "Directive specifying requirements testing coverage and validation" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:TestPhase rdf:type owl:Class ;
+    rdfs:label "Test Phase" ;
+    rdfs:comment "A phase in the testing protocol" ;
+    owl:versionInfo "1.0.0" .
+
+:TestCoverage rdf:type owl:Class ;
+    rdfs:label "Test Coverage" ;
+    rdfs:comment "Specification of required test coverage" ;
+    owl:versionInfo "1.0.0" .
+
+# Test Protocol Properties
+:hasTestPhase rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Test Phase" ;
+    rdfs:comment "Links test protocol to its phases" ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range :TestPhase .
+
+:hasTestCoverage rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Test Coverage" ;
+    rdfs:comment "Links test protocol to coverage requirements" ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range :TestCoverage .
+
+:phaseOrder rdf:type owl:DatatypeProperty ;
+    rdfs:label "Phase Order" ;
+    rdfs:comment "Order of execution for test phases" ;
+    rdfs:domain :TestPhase ;
+    rdfs:range xsd:integer .
+
+:coverageThreshold rdf:type owl:DatatypeProperty ;
+    rdfs:label "Coverage Threshold" ;
+    rdfs:comment "Required percentage of coverage" ;
+    rdfs:domain :TestCoverage ;
+    rdfs:range xsd:decimal .
+
+:requirementTestingLevel rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requirement Testing Level" ;
+    rdfs:comment "Required level of testing for requirements (FULL, PARTIAL)" ;
+    rdfs:domain :RequirementTestingDirective ;
+    rdfs:range xsd:string .
+
+# Test Protocol Instance
+:ontologyFrameworkTestProtocol rdf:type :TestProtocol ;
+    rdfs:label "Ontology Framework Test Protocol" ;
+    rdfs:comment "Standard test protocol for ontology framework components" ;
+    :hasTestPhase :modelValidationPhase, :requirementValidationPhase, :integrationTestPhase ;
+    :hasTestCoverage :standardCoverage .
+
+:modelValidationPhase rdf:type :TestPhase ;
+    rdfs:label "Model Validation Phase" ;
+    rdfs:comment "Validate ontology model structure and constraints" ;
+    :phaseOrder 1 ;
+    validation:hasTestCase validation:ModelStructureTest .
+
+:requirementValidationPhase rdf:type :TestPhase ;
+    rdfs:label "Requirement Validation Phase" ;
+    rdfs:comment "Validate requirements and their test coverage" ;
+    :phaseOrder 2 ;
+    validation:hasTestCase validation:RequirementCoverageTest .
+
+:integrationTestPhase rdf:type :TestPhase ;
+    rdfs:label "Integration Test Phase" ;
+    rdfs:comment "Test integration between components" ;
+    :phaseOrder 3 ;
+    validation:hasTestCase validation:ComponentIntegrationTest .
+
+:standardCoverage rdf:type :TestCoverage ;
+    rdfs:label "Standard Coverage" ;
+    rdfs:comment "Standard coverage requirements for ontology framework" ;
+    :coverageThreshold "0.95"^^xsd:decimal .
+
+# Requirement Testing Directive Instance
+:comprehensiveTestingDirective rdf:type :RequirementTestingDirective ;
+    rdfs:label "Comprehensive Testing Directive" ;
+    rdfs:comment "Directive requiring comprehensive testing of all requirements" ;
+    :requirementTestingLevel "FULL" ;
+    validation:hasTestCase validation:RequirementComplianceTest .
+
+# SHACL Shapes for Test Protocol
+:TestProtocolShape a sh:NodeShape ;
+    sh:targetClass :TestProtocol ;
+    sh:property [
+        sh:path :hasTestPhase ;
+        sh:class :TestPhase ;
+        sh:minCount 1 ;
+        sh:message "Test protocol must have at least one phase"
+    ] ,
+    [
+        sh:path :hasTestCoverage ;
+        sh:class :TestCoverage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Test protocol must specify coverage requirements"
+    ] .
+
+:TestPhaseShape a sh:NodeShape ;
+    sh:targetClass :TestPhase ;
+    sh:property [
+        sh:path :phaseOrder ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+        sh:message "Test phase must have a valid order"
+    ] ,
+    [
+        sh:path validation:hasTestCase ;
+        sh:class validation:TestCase ;
+        sh:minCount 1 ;
+        sh:message "Test phase must have at least one test case"
+    ] .
+
+:TestCoverageShape a sh:NodeShape ;
+    sh:targetClass :TestCoverage ;
+    sh:property [
+        sh:path :coverageThreshold ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:message "Coverage threshold must be between 0 and 1"
+    ] .
+
+:RequirementTestingDirectiveShape a sh:NodeShape ;
+    sh:targetClass :RequirementTestingDirective ;
+    sh:property [
+        sh:path :requirementTestingLevel ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("FULL" "PARTIAL") ;
+        sh:message "Testing level must be either FULL or PARTIAL"
+    ] .

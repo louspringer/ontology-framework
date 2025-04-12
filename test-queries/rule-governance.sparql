@@ -1,0 +1,12 @@
+PREFIX meta: <./meta#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?rule ?governs
+WHERE {
+    ?rule a meta:ModelingDisciplineRule ;
+          meta:governs ?governs .
+    FILTER NOT EXISTS {
+        ?governs a owl:Class
+    }
+} 

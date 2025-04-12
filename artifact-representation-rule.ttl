@@ -1,0 +1,12 @@
+@prefix meta: <http://example.org/meta#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+meta:ArtifactRepresentationSeparationRule a meta:ModelingDisciplineRule ;
+    rdfs:label "Artifact-Representation-Concept Separation Rule" ;
+    rdfs:comment "Do not conflate ontological concepts, their representations in a syntax (e.g., Turtle), and the physical artifacts (e.g., .ttl files) in which they reside." ;
+    meta:addressesPitfall "Confusing an ontology class name with a file name" ;
+    meta:motivates "Correct modularization, consistent imports, and predictable reasoning behavior" ;
+    meta:example "An owl:Class ex:PatternRegistry should not be confused with its containing file pattern-registry.ttl or its Turtle prefix declaration." ;
+    meta:severity meta:CriticalPractice ;
+    meta:governs meta:NamingConventions, meta:ModularOntologyDesign .

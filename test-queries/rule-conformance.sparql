@@ -1,0 +1,10 @@
+PREFIX meta: <./meta#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?rule ?label ?severity ?governs
+WHERE {
+    ?rule a meta:ModelingDisciplineRule ;
+          rdfs:label ?label ;
+          meta:severity ?severity ;
+          meta:governs ?governs .
+} 
