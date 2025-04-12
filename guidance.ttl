@@ -439,3 +439,70 @@
         sh:in ("FULL" "PARTIAL") ;
         sh:message "Testing level must be either FULL or PARTIAL"
     ] .
+
+# Additional Model Requirements
+:ModelRequirements rdf:type owl:Class ;
+    rdfs:label "Model Requirements" ;
+    rdfs:comment "Additional requirements for model management" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:requiresVersionTracking rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Version Tracking" ;
+    rdfs:comment "Whether version tracking is required for models" ;
+    rdfs:domain :ModelRequirements ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+:requiresDependencyManagement rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Dependency Management" ;
+    rdfs:comment "Whether dependency management is required" ;
+    rdfs:domain :ModelRequirements ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+:requiresValidationPipeline rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Validation Pipeline" ;
+    rdfs:comment "Whether a validation pipeline is required" ;
+    rdfs:domain :ModelRequirements ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+:requiresDocumentation rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requires Documentation" ;
+    rdfs:comment "Whether documentation is required" ;
+    rdfs:domain :ModelRequirements ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes for Model Requirements
+:ModelRequirementsShape a sh:NodeShape ;
+    sh:targetClass :ModelRequirements ;
+    sh:property [
+        sh:path :requiresVersionTracking ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether version tracking is required" ;
+    ] ,
+    [
+        sh:path :requiresDependencyManagement ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether dependency management is required" ;
+    ] ,
+    [
+        sh:path :requiresValidationPipeline ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether validation pipeline is required" ;
+    ] ,
+    [
+        sh:path :requiresDocumentation ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Must specify whether documentation is required" ;
+    ] .

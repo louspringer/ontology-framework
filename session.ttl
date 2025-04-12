@@ -54,6 +54,16 @@ ex:CompletedTasks a owl:NamedIndividual ;
         rdfs:label "Added Inferred Requirements" ;
         rdfs:comment "Documented requirements inferred from the transformation patterns" ;
         prov:generatedAtTime "2024-04-11T15:30:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Identified Correct API Documentation Endpoint" ;
+        rdfs:comment "Confirmed API documentation is available at https://app.boldo.io/api-doc" ;
+        prov:generatedAtTime "2024-04-11T16:35:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Documented Failed API Documentation Scraping Attempts" ;
+        rdfs:comment "Recorded failed attempts to access API documentation endpoints /api/alpha/docs and /api/alpha/swagger" ;
+        prov:generatedAtTime "2024-04-11T16:30:00Z"^^xsd:dateTime ;
     ] .
 
 # Next Steps
