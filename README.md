@@ -1,130 +1,89 @@
-# Ontology Framework
+# Spore Validation Framework
 
-A framework for managing and validating ontologies with support for both local and Oracle RDF storage.
+This framework provides tools for validating spore instances against governance rules and transformation patterns, ensuring compliance with the Spore Governance Discipline.
 
-## Features
+## Overview
 
-- Consistent prefix and namespace management
-- Local and Oracle RDF store support
-- Pre-commit hooks for ontology validation
+The validation framework implements the Spore Governance Discipline by checking spore instances for:
+- Pattern registration via `meta:TransformationPattern`
 - SHACL validation support
-- Automated testing infrastructure
+- Runtime feedback through `meta:distributesPatch`
+- Conformance tracking via `meta:confirmedViolation`
+- Propagation and reintegration of corrections via `meta:ConceptPatch`
 
-## Requirements
+## Installation
 
-### Python Dependencies
-
-Install using conda (recommended):
-
+1. Create a virtual environment:
 ```bash
-conda env create -f environment.yml
-conda activate ontology-framework
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-Or using pip:
-
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Oracle RDF Store Requirements
+## Usage
 
-To use the Oracle RDF store functionality:
-
-1. Oracle Database with RDF support
-2. Java must be installed and configured in the Oracle database
-3. Required environment variables:
-   - `ORACLE_USER`: Database username
-   - `ORACLE_PASSWORD`: Database password
-   - `ORACLE_DSN`: Database connection string
-
-To verify Oracle setup:
-
-```bash
-python -m scripts.verify_oracle_setup
-```
-
-## Development Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ontology-framework.git
-   cd ontology-framework
-   ```
-
-2. Install pre-commit hooks:
-   ```bash
-   pip install pre-commit
-   pre-commit install
-   ```
-
-3. Run tests:
-   ```bash
-   pytest tests/
-   ```
-
-## Ontology Development
-
-### Prefix Management
-
-The framework provides consistent prefix management through the `PrefixMap` class:
+### Basic Validation
 
 ```python
-from ontology_framework.prefix_map import default_prefix_map
+from spore_validation import SporeValidator
 
-# Get standard namespace
-meta_ns = default_prefix_map.get_namespace("meta")
+validator = SporeValidator()
+spore_uri = "http://example.org/spores/example-spore"
+results = validator.validate_spore(spore_uri)
 
-# Register custom prefix
-default_prefix_map.register_prefix("custom", "./custom#", PrefixCategory.DOMAIN)
-
-# Bind prefixes to graph
-g = Graph()
-default_prefix_map.bind_to_graph(g)
+print(results)
 ```
 
-### Pre-commit Hooks
+### Running Tests
 
-The following checks are run on commit:
+```bash
+python -m pytest test_spore_validation.py -v
+```
 
-1. Python code formatting (black)
-2. Import sorting (isort)
-3. Python code quality (flake8)
-4. Ontology validation:
-   - Required prefixes
-   - Class property requirements
-   - SHACL constraints
+## Validation Rules
 
-### Ontology Validation
+The framework validates spore instances against the following governance rules:
 
-Ontologies must follow these rules:
+1. **Pattern Registration**
+   - Spore must be registered as a `meta:TransformationPattern`
+   - Must have proper type assertions
+   - Must be properly documented with labels and comments
 
-1. Use standard prefixes from `prefix_map.py`
-2. Include required properties:
-   - `rdfs:label`
-   - `rdfs:comment`
-   - `owl:versionInfo`
-3. Pass SHACL validation if shapes are defined
+2. **SHACL Validation**
+   - Must have associated SHACL shapes
+   - Shapes must target the spore class
+   - Validation rules must be properly defined
+   - Must support runtime validation
+
+3. **Patch Support**
+   - Must support patch distribution via `meta:distributesPatch`
+   - Patches must be of type `meta:ConceptPatch`
+   - Must support propagation and reintegration of corrections
+   - Must maintain patch history and versioning
+
+4. **Conformance Tracking**
+   - Must track conformance violations via `meta:confirmedViolation`
+   - Must support LLM or system-evaluated conformance
+   - Must document remediation paths
+   - Must maintain violation history
 
 ## Contributing
 
-1. Create a feature branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. Make changes and ensure all tests pass:
-   ```bash
-   pytest tests/
-   ```
-
-3. Commit with appropriate type and version:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes with appropriate type and version:
    ```bash
    git commit -m "onto(scope): description
-
+   
    Ontology-Version: X.Y.Z"
    ```
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-[Your license here]
+This project is licensed under the MIT License - see the LICENSE file for details.

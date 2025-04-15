@@ -1,0 +1,13 @@
+@prefix meta: <http://example.org/guidance#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+meta:SporeGovernanceGuidance a meta:ModelingDisciplineRule ;
+    rdfs:label "Spore Governance Discipline" ;
+    rdfs:comment """
+        Modeling systems must support governance of Semantic Spores by:
+        - Registering patterns via meta:TransformationPattern
+        - Supporting validation through SHACL or equivalent rules
+        - Allowing meta:distributesPatch to encode runtime feedback
+        - Enabling propagation and reintegration of corrections via meta:ConceptPatch
+        - Tracking LLM or system-evaluated conformance via meta:confirmedViolation and related triples
+    """ .

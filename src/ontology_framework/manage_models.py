@@ -399,12 +399,12 @@ class ModelManager:
             logger.debug(f"Traceback: {traceback.format_exc()}")
             raise
             
-    def validate_model_quality(self, model_name: str) -> bool:
+    def validate_model_quality(self, model_name_or_path: str) -> bool:
         """
         Validate model quality according to guidance ontology rules.
         
         Args:
-            model_name: Name of the model to validate
+            model_name_or_path: Name of the model to validate or path to the model file
             
         Returns:
             bool: True if model passes all quality checks
@@ -412,15 +412,16 @@ class ModelManager:
         Raises:
             ModelQualityError: If model fails quality checks
         """
-        logger.info(f"Starting quality validation for model: {model_name}")
+        logger.info(f"Starting quality validation for model: {model_name_or_path}")
         
         try:
-            # Check if model exists
-            if model_name not in self.models:
-                logger.error(f"Model {model_name} not found in loaded models")
-                raise ModelQualityError(f"Model {model_name} not found")
+            # Get the model graph
+            if model_name_or_path in self.models:
+                model_graph = self.models[model_name_or_path]
+            else:
+                model_graph = Graph()
+                model_graph.parse(model_name_or_path, format="turtle")
                 
-            model_graph = self.models[model_name]
             logger.debug(f"Model graph contains {len(model_graph)} triples")
             
             # Check documentation
@@ -444,7 +445,7 @@ class ModelManager:
                     {"unbound_properties": structure_issues}
                 )
                 
-            logger.info(f"Quality validation completed successfully for model: {model_name}")
+            logger.info(f"Quality validation completed successfully for model: {model_name_or_path}")
             return True
             
         except ModelQualityError:

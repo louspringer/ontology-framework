@@ -6,6 +6,7 @@ from typing import Optional, Dict, Any, List, Union, Set, cast
 import requests
 from pathlib import Path
 from datetime import datetime
+from urllib.parse import urljoin
 
 # Configure logging
 logging.basicConfig(
@@ -15,13 +16,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class BoldoAPIError(Exception):
-    """Custom exception for Boldo API errors."""
-    pass
+    """Raised when a Boldo API request fails."""
+    def __init__(self, message: str, status_code: Optional[int] = None):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(self.message)
 
 class BoldoAPIExplorer:
     """A secure explorer for the Boldo API."""
     
-    BASE_URL = "https://app.boldo.io/api/alpha/"
+    BASE_URL = "https://app.boldo.io/api/v1/"
     FAILURE_LOG_FILE = "failed_endpoints.log"
     MAX_FAILURES = 3
     
@@ -90,47 +94,57 @@ class BoldoAPIExplorer:
             logger.error(f"Failed endpoints: {', '.join(self._failed_endpoints)}")
             sys.exit(1)
     
-    def _make_request(self, method: str, endpoint: str, **kwargs) -> Union[Dict[str, Any], str]:
-        """Make an authenticated request to the Boldo API.
+    def _handle_error(self, response: requests.Response) -> None:
+        """Handle API error responses.
+        
+        Args:
+            response: The response object from the API call
+            
+        Raises:
+            BoldoAPIError: If the API returns an error
+        """
+        try:
+            error_data = response.json()
+            error_msg = error_data.get('message', 'Unknown error')
+            error_code = error_data.get('code', 'UNKNOWN')
+        except ValueError:
+            error_msg = response.text or 'Unknown error'
+            error_code = 'UNKNOWN'
+        
+        raise BoldoAPIError(
+            message=error_msg,
+            code=error_code,
+            status_code=response.status_code
+        )
+
+    def _make_request(self, method: str, endpoint: str, **kwargs) -> Dict:
+        """Make an API request with error handling.
         
         Args:
             method: HTTP method (GET, POST, etc.)
-            endpoint: API endpoint path
-            **kwargs: Additional arguments to pass to requests
+            endpoint: API endpoint
+            **kwargs: Additional request parameters
             
         Returns:
-            Dict containing the JSON response or str if response is not JSON
+            Dict: Response data
             
         Raises:
-            BoldoAPIError: If the request fails
+            BoldoAPIError: If the API returns an error
         """
-        url = f"{self.BASE_URL.rstrip('/')}/{endpoint.lstrip('/')}"
         try:
-            logger.debug(f"Making {method} request to {url}")
-            response = self.session.request(method, url, **kwargs)
+            response = requests.request(
+                method,
+                f"{self.BASE_URL.rstrip('/')}/{endpoint.lstrip('/')}",
+                headers=self.session.headers,
+                **kwargs
+            )
             
-            # Log the full response for debugging
-            logger.debug(f"Response status: {response.status_code}")
-            logger.debug(f"Response headers: {dict(response.headers)}")
-            logger.debug(f"Response content: {response.text[:1000]}...")  # First 1000 chars
+            if not response.ok:
+                self._handle_error(response)
             
-            # Specifically handle 404 responses
-            if response.status_code == 404:
-                logger.warning(f"Endpoint not found (404): {url}")
-                logger.warning(f"Response content: {response.text}")
-                self._log_failed_endpoint(endpoint, 404, "Endpoint not found")
-                response.raise_for_status()
-            
-            response.raise_for_status()
-            
-            # Try to parse as JSON, but don't fail if it's not JSON
-            try:
-                return response.json()
-            except json.JSONDecodeError:
-                return response.text
-            
-        except requests.exceptions.RequestException as e:
-            error_msg = f"API request failed: {str(e)}"
+            return response.json()
+        except requests.RequestException as e:
+            error_msg = str(e)
             status_code = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
             
             if hasattr(e, 'response') and e.response is not None:
@@ -148,7 +162,11 @@ class BoldoAPIExplorer:
                 logger.error(error_msg)
                 self._log_failed_endpoint(endpoint, status_code or 0, error_msg)
                 
-            raise BoldoAPIError(error_msg)
+            raise BoldoAPIError(
+                message=error_msg,
+                code='REQUEST_ERROR',
+                status_code=status_code or 500
+            )
     
     def explore_endpoints(self, force_refresh: bool = False) -> Dict[str, Any]:
         """Explore available API endpoints.

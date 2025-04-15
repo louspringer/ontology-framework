@@ -515,8 +515,9 @@ test:TestClass
             mock_shacl.return_value = True
             
             # Load and validate model
-            self.manager.load_model(str(self.test_model_path))
-            result = self.manager.validate_model("test_model")
+            model_path = str(self.test_model_path)
+            self.manager.load_model(model_path)
+            result = self.manager.validate_model(model_path)
             
             # Verify validation was called
             mock_shacl.assert_called_once()
