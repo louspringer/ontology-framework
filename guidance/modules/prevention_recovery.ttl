@@ -1,0 +1,124 @@
+@prefix : <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix prev: <./prevention#> .
+
+# Prevention Measures
+prev:PreventionMeasure rdf:type owl:Class ;
+    rdfs:label "Prevention Measure" ;
+    rdfs:comment "Base class for error prevention measures" ;
+    owl:versionInfo "1.0.0" .
+
+prev:hasDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Description" ;
+    rdfs:domain prev:PreventionMeasure ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+prev:InputValidation rdf:type owl:Class ;
+    rdfs:subClassOf prev:PreventionMeasure ;
+    rdfs:label "Input Validation" ;
+    rdfs:comment "Validates input data before processing" ;
+    owl:versionInfo "1.0.0" .
+
+prev:ErrorBoundary rdf:type owl:Class ;
+    rdfs:subClassOf prev:PreventionMeasure ;
+    rdfs:label "Error Boundary" ;
+    rdfs:comment "Isolates error handling from main logic" ;
+    owl:versionInfo "1.0.0" .
+
+prev:ResourceMonitoring rdf:type owl:Class ;
+    rdfs:subClassOf prev:PreventionMeasure ;
+    rdfs:label "Resource Monitoring" ;
+    rdfs:comment "Monitors system resources to prevent overload" ;
+    owl:versionInfo "1.0.0" .
+
+# Prevention Measure Instances
+prev:InputValidationInstance rdf:type prev:InputValidation ;
+    prev:hasDescription "Validate all input data against schema" ;
+    prev:hasDescription "Check for required fields" ;
+    prev:hasDescription "Validate data types and ranges" .
+
+prev:ErrorBoundaryInstance rdf:type prev:ErrorBoundary ;
+    prev:hasDescription "Implement error boundaries in UI components" ;
+    prev:hasDescription "Isolate error-prone operations" ;
+    prev:hasDescription "Provide fallback UI for errors" .
+
+prev:ResourceMonitoringInstance rdf:type prev:ResourceMonitoring ;
+    prev:hasDescription "Monitor memory usage" ;
+    prev:hasDescription "Track CPU utilization" ;
+    prev:hasDescription "Monitor network bandwidth" .
+
+# Recovery Strategies
+prev:RecoveryStrategy rdf:type owl:Class ;
+    rdfs:label "Recovery Strategy" ;
+    rdfs:comment "Base class for error recovery strategies" ;
+    owl:versionInfo "1.0.0" .
+
+prev:hasStrategy rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Strategy" ;
+    rdfs:domain prev:RecoveryStrategy ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+prev:AutoRetry rdf:type owl:Class ;
+    rdfs:subClassOf prev:RecoveryStrategy ;
+    rdfs:label "Auto Retry" ;
+    rdfs:comment "Automatically retries failed operations" ;
+    owl:versionInfo "1.0.0" .
+
+prev:Fallback rdf:type owl:Class ;
+    rdfs:subClassOf prev:RecoveryStrategy ;
+    rdfs:label "Fallback" ;
+    rdfs:comment "Provides alternative functionality when primary fails" ;
+    owl:versionInfo "1.0.0" .
+
+prev:Rollback rdf:type owl:Class ;
+    rdfs:subClassOf prev:RecoveryStrategy ;
+    rdfs:label "Rollback" ;
+    rdfs:comment "Reverts system to previous stable state" ;
+    owl:versionInfo "1.0.0" .
+
+# Recovery Strategy Instances
+prev:AutoRetryInstance rdf:type prev:AutoRetry ;
+    prev:hasStrategy "Retry failed operation up to 3 times" ;
+    prev:hasStrategy "Use exponential backoff between retries" ;
+    prev:hasStrategy "Log retry attempts" .
+
+prev:FallbackInstance rdf:type prev:Fallback ;
+    prev:hasStrategy "Use cached data when live data unavailable" ;
+    prev:hasStrategy "Provide simplified functionality" ;
+    prev:hasStrategy "Display maintenance message" .
+
+prev:RollbackInstance rdf:type prev:Rollback ;
+    prev:hasStrategy "Maintain transaction logs" ;
+    prev:hasStrategy "Create restore points" ;
+    prev:hasStrategy "Implement undo operations" .
+
+# SHACL Validation Rules
+prev:PreventionMeasureShape rdf:type sh:NodeShape ;
+    sh:targetClass prev:PreventionMeasure ;
+    sh:property [
+        sh:path prev:hasDescription ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+prev:RecoveryStrategyShape rdf:type sh:NodeShape ;
+    sh:targetClass prev:RecoveryStrategy ;
+    sh:property [
+        sh:path prev:hasStrategy ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] . 

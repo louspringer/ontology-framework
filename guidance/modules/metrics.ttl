@@ -1,0 +1,106 @@
+@prefix : <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix metric: <./metrics#> .
+
+# Performance Metrics
+metric:PerformanceMetric rdf:type owl:Class ;
+    rdfs:label "Performance Metric" ;
+    rdfs:comment "Base class for performance metrics" ;
+    owl:versionInfo "1.0.0" .
+
+metric:hasThreshold rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Threshold" ;
+    rdfs:domain metric:PerformanceMetric ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+metric:hasUnit rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Unit" ;
+    rdfs:domain metric:PerformanceMetric ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Response Time Metrics
+metric:ResponseTime rdf:type owl:Class ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    rdfs:label "Response Time" ;
+    rdfs:comment "Measures system response time" ;
+    owl:versionInfo "1.0.0" .
+
+metric:ResolutionTime rdf:type owl:Class ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    rdfs:label "Resolution Time" ;
+    rdfs:comment "Measures error resolution time" ;
+    owl:versionInfo "1.0.0" .
+
+metric:LoggingLatency rdf:type owl:Class ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    rdfs:label "Logging Latency" ;
+    rdfs:comment "Measures logging system latency" ;
+    owl:versionInfo "1.0.0" .
+
+# Resource Metrics
+metric:ResourceMetric rdf:type owl:Class ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    rdfs:label "Resource Metric" ;
+    rdfs:comment "Measures system resource usage" ;
+    owl:versionInfo "1.0.0" .
+
+metric:MemoryUsage rdf:type owl:Class ;
+    rdfs:subClassOf metric:ResourceMetric ;
+    rdfs:label "Memory Usage" ;
+    rdfs:comment "Measures memory consumption" ;
+    owl:versionInfo "1.0.0" .
+
+metric:CPUUsage rdf:type owl:Class ;
+    rdfs:subClassOf metric:ResourceMetric ;
+    rdfs:label "CPU Usage" ;
+    rdfs:comment "Measures CPU utilization" ;
+    owl:versionInfo "1.0.0" .
+
+# Metric Instances
+metric:ResponseTimeInstance rdf:type metric:ResponseTime ;
+    metric:hasThreshold "1000" ;
+    metric:hasUnit "milliseconds" .
+
+metric:ResolutionTimeInstance rdf:type metric:ResolutionTime ;
+    metric:hasThreshold "5000" ;
+    metric:hasUnit "milliseconds" .
+
+metric:LoggingLatencyInstance rdf:type metric:LoggingLatency ;
+    metric:hasThreshold "100" ;
+    metric:hasUnit "milliseconds" .
+
+metric:MemoryUsageInstance rdf:type metric:MemoryUsage ;
+    metric:hasThreshold "80" ;
+    metric:hasUnit "percent" .
+
+metric:CPUUsageInstance rdf:type metric:CPUUsage ;
+    metric:hasThreshold "70" ;
+    metric:hasUnit "percent" .
+
+# SHACL Validation Rules
+metric:PerformanceMetricShape rdf:type sh:NodeShape ;
+    sh:targetClass metric:PerformanceMetric ;
+    sh:property [
+        sh:path metric:hasThreshold ;
+        sh:minCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path metric:hasUnit ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] . 

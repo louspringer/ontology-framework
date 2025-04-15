@@ -1,0 +1,138 @@
+@prefix : <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix step: <./error_steps#> .
+
+# Error Handling Steps
+step:ErrorHandlingStep rdf:type owl:Class ;
+    rdfs:label "Error Handling Step" ;
+    rdfs:comment "A step in the error handling process" ;
+    owl:versionInfo "1.0.0" .
+
+step:hasStepOrder rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Step Order" ;
+    rdfs:domain step:ErrorHandlingStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+step:hasStepAction rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Step Action" ;
+    rdfs:domain step:ErrorHandlingStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+step:ErrorIdentification rdf:type owl:Class ;
+    rdfs:subClassOf step:ErrorHandlingStep ;
+    rdfs:label "Error Identification" ;
+    rdfs:comment "Step to identify and classify errors" ;
+    owl:versionInfo "1.0.0" .
+
+step:ErrorAnalysis rdf:type owl:Class ;
+    rdfs:subClassOf step:ErrorHandlingStep ;
+    rdfs:label "Error Analysis" ;
+    rdfs:comment "Step to analyze error causes and impacts" ;
+    owl:versionInfo "1.0.0" .
+
+step:ErrorRecovery rdf:type owl:Class ;
+    rdfs:subClassOf step:ErrorHandlingStep ;
+    rdfs:label "Error Recovery" ;
+    rdfs:comment "Step to recover from errors" ;
+    owl:versionInfo "1.0.0" .
+
+step:ErrorPrevention rdf:type owl:Class ;
+    rdfs:subClassOf step:ErrorHandlingStep ;
+    rdfs:label "Error Prevention" ;
+    rdfs:comment "Step to prevent future errors" ;
+    owl:versionInfo "1.0.0" .
+
+# Step Instances
+step:ErrorIdentificationInstance rdf:type step:ErrorIdentification ;
+    step:hasStepOrder "1"^^xsd:integer ;
+    step:hasStepAction "Identify error type and severity" .
+
+step:ErrorAnalysisInstance rdf:type step:ErrorAnalysis ;
+    step:hasStepOrder "2"^^xsd:integer ;
+    step:hasStepAction "Analyze error cause and impact" .
+
+step:ErrorRecoveryInstance rdf:type step:ErrorRecovery ;
+    step:hasStepOrder "3"^^xsd:integer ;
+    step:hasStepAction "Recover from the error" .
+
+step:ErrorPreventionInstance rdf:type step:ErrorPrevention ;
+    step:hasStepOrder "4"^^xsd:integer ;
+    step:hasStepAction "Prevent future errors" .
+
+# Test Error Handling Steps
+step:TestErrorHandlingStep rdf:type owl:Class ;
+    rdfs:subClassOf step:ErrorHandlingStep ;
+    rdfs:label "Test Error Handling Step" ;
+    rdfs:comment "A step in the test error handling process" ;
+    owl:versionInfo "1.0.0" .
+
+step:TestErrorIdentification rdf:type owl:Class ;
+    rdfs:subClassOf step:TestErrorHandlingStep ;
+    rdfs:label "Test Error Identification" ;
+    rdfs:comment "Step to identify test failures" ;
+    owl:versionInfo "1.0.0" .
+
+step:TestErrorAnalysis rdf:type owl:Class ;
+    rdfs:subClassOf step:TestErrorHandlingStep ;
+    rdfs:label "Test Error Analysis" ;
+    rdfs:comment "Step to analyze test failures" ;
+    owl:versionInfo "1.0.0" .
+
+step:TestErrorRecovery rdf:type owl:Class ;
+    rdfs:subClassOf step:TestErrorHandlingStep ;
+    rdfs:label "Test Error Recovery" ;
+    rdfs:comment "Step to recover from test failures" ;
+    owl:versionInfo "1.0.0" .
+
+step:TestErrorPrevention rdf:type owl:Class ;
+    rdfs:subClassOf step:TestErrorHandlingStep ;
+    rdfs:label "Test Error Prevention" ;
+    rdfs:comment "Step to prevent future test failures" ;
+    owl:versionInfo "1.0.0" .
+
+# Test Step Instances
+step:TestErrorIdentificationInstance rdf:type step:TestErrorIdentification ;
+    step:hasStepOrder "1"^^xsd:integer ;
+    step:hasStepAction "Identify test errors" .
+
+step:TestErrorAnalysisInstance rdf:type step:TestErrorAnalysis ;
+    step:hasStepOrder "2"^^xsd:integer ;
+    step:hasStepAction "Analyze test errors" .
+
+step:TestErrorRecoveryInstance rdf:type step:TestErrorRecovery ;
+    step:hasStepOrder "3"^^xsd:integer ;
+    step:hasStepAction "Recover from test errors" .
+
+step:TestErrorPreventionInstance rdf:type step:TestErrorPrevention ;
+    step:hasStepOrder "4"^^xsd:integer ;
+    step:hasStepAction "Prevent future test errors" .
+
+# SHACL Validation Rules
+step:ErrorHandlingStepShape rdf:type sh:NodeShape ;
+    sh:targetClass step:ErrorHandlingStep ;
+    sh:property [
+        sh:path step:hasStepOrder ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+    ] ;
+    sh:property [
+        sh:path step:hasStepAction ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] . 

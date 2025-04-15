@@ -2,7 +2,7 @@ import unittest
 import os
 from pathlib import Path
 from rdflib import Graph, Namespace, Literal, URIRef, RDF, RDFS
-from register_ontology import update_session_ttl
+from ontology_framework.register_ontology import update_session_ttl
 
 class TestSessionUpdate(unittest.TestCase):
     def setUp(self):

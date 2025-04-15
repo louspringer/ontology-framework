@@ -1,0 +1,57 @@
+@prefix ns1: <./runtime_error_handling#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Validation Rules
+ns1:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Rules for error validation" .
+
+ns1:RiskValidation a ns1:ValidationRule ;
+    rdfs:label "Risk Validation" ;
+    rdfs:comment "Validation of error risks" .
+
+ns1:ConstraintValidation a ns1:ValidationRule ;
+    rdfs:label "Constraint Validation" ;
+    rdfs:comment "Validation of error constraints" .
+
+# Resource Constraints
+ns1:ResourceConstraint a owl:Class ;
+    rdfs:label "Resource Constraint" ;
+    rdfs:comment "Constraints on resource usage" .
+
+ns1:MemoryLimit a ns1:ResourceConstraint ;
+    rdfs:label "Memory Limit" ;
+    rdfs:comment "Maximum memory usage allowed" .
+
+ns1:TimeLimit a ns1:ResourceConstraint ;
+    rdfs:label "Time Limit" ;
+    rdfs:comment "Maximum time allowed for operation" .
+
+# Validation Properties
+ns1:hasValidationRule a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:ValidationRule .
+
+ns1:hasResourceConstraint a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:ResourceConstraint .
+
+# Validation Shapes
+ns1:ErrorValidationShape a sh:NodeShape ;
+    sh:targetClass ns1:RuntimeError ;
+    sh:property [
+        sh:path ns1:hasValidationRule ;
+        sh:minCount 1 ;
+        sh:class ns1:ValidationRule
+    ] .
+
+ns1:ResourceConstraintShape a sh:NodeShape ;
+    sh:targetClass ns1:RuntimeError ;
+    sh:property [
+        sh:path ns1:hasResourceConstraint ;
+        sh:minCount 1 ;
+        sh:class ns1:ResourceConstraint
+    ] . 

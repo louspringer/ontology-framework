@@ -1,0 +1,75 @@
+@prefix ns1: <./runtime_error_handling#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# Test Case Components
+ns1:Requirement a owl:Class ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "Error handling requirements" .
+
+ns1:TestCase a owl:Class ;
+    rdfs:label "Test Case" ;
+    rdfs:comment "Test cases for error handling" .
+
+ns1:TestImplementation a owl:Class ;
+    rdfs:label "Test Implementation" ;
+    rdfs:comment "Implementation of test cases" .
+
+# Error Type Requirements
+ns1:ErrorTypeRequirement a ns1:Requirement ;
+    rdfs:label "Error Type Requirement" ;
+    rdfs:comment "Requirement for error type handling" .
+
+ns1:ErrorTypeTestCase a ns1:TestCase ;
+    rdfs:label "Error Type Test Case" ;
+    rdfs:comment "Test case for error type handling" ;
+    ns1:validatesRequirement ns1:ErrorTypeRequirement ;
+    ns1:hasTestImplementation ns1:ErrorTypeTestImplementation .
+
+ns1:ErrorTypeTestImplementation a ns1:TestImplementation ;
+    rdfs:label "Error Type Test Implementation" ;
+    rdfs:comment "Implementation of error type test case" .
+
+# Test Assumptions
+ns1:TestAssumption a owl:Class ;
+    rdfs:label "Test Assumption" ;
+    rdfs:comment "Assumptions for error handling tests" .
+
+ns1:ErrorTypeExclusivity a ns1:TestAssumption ;
+    rdfs:label "Error Type Exclusivity" ;
+    rdfs:comment "Each error belongs to exactly one type" .
+
+# Test Steps
+ns1:TestStep a owl:Class ;
+    rdfs:label "Test Step" ;
+    rdfs:comment "Steps in test execution" .
+
+ns1:TestErrorIdentification a ns1:TestStep ;
+    rdfs:label "Test Error Identification" ;
+    rdfs:comment "Step to identify test errors" ;
+    ns1:hasStepOrder 1 .
+
+ns1:TestErrorAnalysis a ns1:TestStep ;
+    rdfs:label "Test Error Analysis" ;
+    rdfs:comment "Step to analyze test errors" ;
+    ns1:hasStepOrder 2 .
+
+ns1:TestErrorResolution a ns1:TestStep ;
+    rdfs:label "Test Error Resolution" ;
+    rdfs:comment "Step to resolve test errors" ;
+    ns1:hasStepOrder 3 .
+
+ns1:TestErrorVerification a ns1:TestStep ;
+    rdfs:label "Test Error Verification" ;
+    rdfs:comment "Step to verify test error resolution" ;
+    ns1:hasStepOrder 4 .
+
+# Properties
+ns1:validatesRequirement a owl:ObjectProperty ;
+    rdfs:domain ns1:TestCase ;
+    rdfs:range ns1:Requirement .
+
+ns1:hasTestImplementation a owl:ObjectProperty ;
+    rdfs:domain ns1:TestCase ;
+    rdfs:range ns1:TestImplementation . 

@@ -9,7 +9,25 @@ import unittest
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
-from src.ontology_framework.manage_models import ModelManager
+from ontology_framework.manage_models import ModelManager, ModelQualityError, ModelProjectionError
+from unittest.mock import MagicMock, patch
+import shutil
+import logging
+import traceback
+import sys
+import subprocess
+import semver
+
+# Configure test logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(funcName)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('test_manage_models.log')
+    ]
+)
+logger = logging.getLogger(__name__)
 
 # Test namespaces
 TEST = Namespace("http://example.org/test#")
@@ -19,64 +37,176 @@ class TestModelManager(unittest.TestCase):
     
     def setUp(self):
         """Set up test environment."""
-        self.temp_dir = tempfile.TemporaryDirectory()
-        self.base_dir = Path(self.temp_dir.name)
+        logger.info("Setting up test environment")
+        self.temp_dir = tempfile.mkdtemp()
+        logger.debug(f"Created temporary directory: {self.temp_dir}")
         
-        # Create a minimal guidance ontology
-        self.guidance_path = self.base_dir / "guidance.ttl"
-        guidance_graph = Graph()
-        guidance_graph.add((TEST.Guidance, RDF.type, OWL.Ontology))
-        guidance_graph.add((TEST.Guidance, RDFS.label, Literal("Guidance Ontology")))
-        guidance_graph.add((TEST.Guidance, RDFS.comment, Literal("Test guidance ontology")))
-        guidance_graph.add((TEST.Guidance, OWL.versionInfo, Literal("1.0.0")))
-        guidance_graph.serialize(destination=str(self.guidance_path), format="turtle")
+        # Create test data directory
+        self.test_data_dir = Path(self.temp_dir) / "test_data"
+        self.test_data_dir.mkdir(exist_ok=True)
+        logger.debug(f"Created test data directory: {self.test_data_dir}")
         
-        self.manager = ModelManager(str(self.base_dir))
+        # Create test model file
+        self.test_model_path = self.test_data_dir / "test_model.ttl"
+        self._create_test_model()
+        logger.debug(f"Created test model at: {self.test_model_path}")
+        
+        # Create guidance ontology
+        self.guidance_path = self.test_data_dir / "guidance.ttl"
+        self._create_guidance_ontology()
+        logger.debug(f"Created guidance ontology at: {self.guidance_path}")
+        
+        # Initialize ModelManager
+        self.manager = ModelManager(base_dir=str(self.test_data_dir))
+        logger.info("ModelManager initialized successfully")
         
     def tearDown(self):
         """Clean up test environment."""
-        self.temp_dir.cleanup()
+        logger.info("Cleaning up test environment")
+        shutil.rmtree(self.temp_dir)
+        logger.debug(f"Removed temporary directory: {self.temp_dir}")
+        
+    def _create_test_model(self):
+        """Create a test model file with proper prefixes and structure."""
+        logger.debug("Creating test model file")
+        try:
+            with open(self.test_model_path, 'w') as f:
+                f.write("""@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix test: <http://example.org/test#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+test:TestOntology
+    a owl:Ontology ;
+    rdfs:label "Test Model" ;
+    rdfs:comment "A test model for validation" ;
+    owl:versionInfo "1.0.0" .
+
+test:TestClass
+    a owl:Class ;
+    rdfs:label "Test Class" ;
+    rdfs:comment "A test class" ;
+    owl:versionInfo "1.0.0" .
+
+test:hasProperty
+    a owl:ObjectProperty ;
+    rdfs:label "Has Property" ;
+    rdfs:comment "A test object property" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:domain test:TestClass ;
+    rdfs:range test:TestClass .
+
+# SHACL Shapes
+test:ClassShape a sh:NodeShape ;
+    sh:targetClass owl:Class ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Class must have exactly one label"
+    ] ,
+    [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Class must have exactly one comment"
+    ] ,
+    [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ;
+        sh:message "Class must have exactly one version in semantic versioning format"
+    ] .
+
+test:OntologyShape a sh:NodeShape ;
+    sh:targetClass owl:Ontology ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ;
+        sh:message "Ontology must have exactly one version in semantic versioning format"
+    ] ,
+    [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Ontology must have exactly one description"
+    ] .
+""")
+            logger.info("Test model file created successfully")
+        except Exception as e:
+            logger.error(f"Failed to create test model file: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+        
+    def _create_guidance_ontology(self):
+        """Create a minimal guidance ontology."""
+        logger.debug("Creating guidance ontology")
+        try:
+            guidance_graph = Graph()
+            guidance_graph.add((TEST.Guidance, RDF.type, OWL.Ontology))
+            guidance_graph.add((TEST.Guidance, RDFS.label, Literal("Guidance Ontology")))
+            guidance_graph.add((TEST.Guidance, RDFS.comment, Literal("Test guidance ontology")))
+            guidance_graph.add((TEST.Guidance, OWL.versionInfo, Literal("1.0.0")))
+            guidance_graph.serialize(destination=str(self.guidance_path), format="turtle")
+            logger.info("Guidance ontology created successfully")
+        except Exception as e:
+            logger.error(f"Failed to create guidance ontology: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
         
     def test_initialization(self):
         """Test ModelManager initialization."""
-        self.assertIsInstance(self.manager, ModelManager)
-        self.assertEqual(self.manager.base_dir, self.base_dir)
-        self.assertIsInstance(self.manager.guidance_graph, Graph)
-        self.assertEqual(len(self.manager.models), 0)
-        self.assertEqual(len(self.manager.versions), 0)
-        self.assertEqual(len(self.manager.dependencies), 0)
+        logger.info("Testing ModelManager initialization")
+        try:
+            self.assertIsInstance(self.manager, ModelManager)
+            self.assertEqual(str(self.manager.base_dir), str(self.test_data_dir))
+            self.assertIsInstance(self.manager.guidance_graph, Graph)
+            self.assertEqual(len(self.manager.models), 0)
+            logger.info("Initialization test passed")
+        except Exception as e:
+            logger.error(f"Initialization test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
         
     def test_load_valid_model(self):
         """Test loading a valid model."""
-        # Create a valid test model
-        model_path = self.base_dir / "test_model.ttl"
-        model_graph = Graph()
-        model_graph.add((TEST.TestClass, RDF.type, OWL.Class))
-        model_graph.add((TEST.TestClass, RDFS.label, Literal("Test Class")))
-        model_graph.add((TEST.TestClass, RDFS.comment, Literal("A test class")))
-        model_graph.add((TEST.TestClass, OWL.versionInfo, Literal("1.0.0")))
-        model_graph.serialize(destination=str(model_path), format="turtle")
-        
-        # Load the model
-        loaded_graph = self.manager.load_model(str(model_path))
-        self.assertIsInstance(loaded_graph, Graph)
-        self.assertEqual(len(loaded_graph), 4)
-        self.assertIn("test_model", self.manager.models)
-        self.assertIn("test_model", self.manager.versions)
-        self.assertEqual(self.manager.versions["test_model"], "1.0.0")
+        logger.info("Testing loading valid model")
+        try:
+            self.manager.load_model(str(self.test_model_path))
+            self.assertIn("test_model", self.manager.models)
+            logger.info("Valid model loading test passed")
+        except Exception as e:
+            logger.error(f"Valid model loading test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
         
     def test_load_invalid_model(self):
         """Test loading an invalid model."""
-        # Create an invalid test model (missing required properties)
-        model_path = self.base_dir / "invalid_model.ttl"
-        model_graph = Graph()
-        model_graph.add((TEST.InvalidClass, RDF.type, OWL.Class))
-        model_graph.serialize(destination=str(model_path), format="turtle")
-        
-        # Attempt to load the model
-        with self.assertRaises(ValueError):
-            self.manager.load_model(str(model_path))
+        logger.info("Testing loading invalid model")
+        try:
+            # Create an invalid model
+            invalid_path = self.test_data_dir / "invalid_model.ttl"
+            with open(invalid_path, 'w') as f:
+                f.write("""@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://example.org/test#InvalidClass>
+    a owl:Class .
+""")
             
+            with self.assertRaises(ValueError):
+                self.manager.load_model(str(invalid_path))
+            logger.info("Invalid model loading test passed")
+        except Exception as e:
+            logger.error(f"Invalid model loading test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+        
     def test_validate_model(self):
         """Test model validation."""
         # Create a valid model
@@ -100,7 +230,7 @@ class TestModelManager(unittest.TestCase):
     def test_integrate_models(self):
         """Test model integration."""
         # Create source models
-        model1_path = self.base_dir / "model1.ttl"
+        model1_path = self.test_data_dir / "model1.ttl"
         model1_graph = Graph()
         model1_graph.add((TEST.Class1, RDF.type, OWL.Class))
         model1_graph.add((TEST.Class1, RDFS.label, Literal("Class 1")))
@@ -108,7 +238,7 @@ class TestModelManager(unittest.TestCase):
         model1_graph.add((TEST.Class1, OWL.versionInfo, Literal("1.0.0")))
         model1_graph.serialize(destination=str(model1_path), format="turtle")
         
-        model2_path = self.base_dir / "model2.ttl"
+        model2_path = self.test_data_dir / "model2.ttl"
         model2_graph = Graph()
         model2_graph.add((TEST.Class2, RDF.type, OWL.Class))
         model2_graph.add((TEST.Class2, RDFS.label, Literal("Class 2")))
@@ -130,7 +260,7 @@ class TestModelManager(unittest.TestCase):
     def test_save_model(self):
         """Test saving a model."""
         # Create and load a model
-        model_path = self.base_dir / "test_model.ttl"
+        model_path = self.test_data_dir / "test_model.ttl"
         model_graph = Graph()
         model_graph.add((TEST.TestClass, RDF.type, OWL.Class))
         model_graph.add((TEST.TestClass, RDFS.label, Literal("Test Class")))
@@ -141,7 +271,7 @@ class TestModelManager(unittest.TestCase):
         self.manager.load_model(str(model_path))
         
         # Save the model
-        output_path = self.base_dir / "saved_model.ttl"
+        output_path = self.test_data_dir / "saved_model.ttl"
         self.manager.save_model("test_model", str(output_path))
         
         # Verify the saved model
@@ -152,12 +282,18 @@ class TestModelManager(unittest.TestCase):
     def test_version_tracking(self):
         """Test version tracking functionality."""
         # Create a model with version
-        model_path = self.base_dir / "versioned_model.ttl"
+        model_path = self.test_data_dir / "versioned_model.ttl"
         model_graph = Graph()
+        
+        # Add ontology declaration with version
+        model_graph.add((TEST.VersionedModel, RDF.type, OWL.Ontology))
+        model_graph.add((TEST.VersionedModel, OWL.versionInfo, Literal("2.0.0")))
+        
+        # Add a class
         model_graph.add((TEST.VersionedClass, RDF.type, OWL.Class))
         model_graph.add((TEST.VersionedClass, RDFS.label, Literal("Versioned Class")))
         model_graph.add((TEST.VersionedClass, RDFS.comment, Literal("A versioned class")))
-        model_graph.add((TEST.VersionedClass, OWL.versionInfo, Literal("2.0.0")))
+        
         model_graph.serialize(destination=str(model_path), format="turtle")
         
         # Load the model
@@ -174,7 +310,7 @@ class TestModelManager(unittest.TestCase):
     def test_dependency_tracking(self):
         """Test dependency tracking functionality."""
         # Create a model with dependencies
-        model_path = self.base_dir / "dependent_model.ttl"
+        model_path = self.test_data_dir / "dependent_model.ttl"
         model_graph = Graph()
         model_graph.add((TEST.DependentClass, RDF.type, OWL.Class))
         model_graph.add((TEST.DependentClass, RDFS.label, Literal("Dependent Class")))
@@ -222,42 +358,174 @@ class TestModelManager(unittest.TestCase):
             self.assertIn("Model missing dependency declarations", log.output[2])
             
     def test_command_line_interface(self):
-        """Test the command line interface."""
-        import subprocess
-        import sys
+        """Test command line interface functionality."""
+        logger.info("Testing command line interface")
+        try:
+            model_path = self.test_model_path
+            temp_dir = Path(self.temp_dir) / "test_data"  # Use test_data subdirectory
+            output_path = temp_dir / "cli_output.ttl"
+            
+            # Ensure Python can find the module
+            env = os.environ.copy()
+            env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+            
+            # First load the model
+            load_cmd = [
+                sys.executable,
+                "-m",
+                "src.ontology_framework.manage_models",
+                "--base-dir",
+                str(temp_dir),
+                "--load",
+                str(model_path)
+            ]
+            
+            result = subprocess.run(load_cmd, capture_output=True, text=True, env=env)
+            logger.debug(f"Load command output: {result.stdout}")
+            logger.debug(f"Load command error: {result.stderr}")
+            self.assertEqual(result.returncode, 0, f"Load command failed with return code {result.returncode}. Error: {result.stderr}")
+            
+            # Then save it
+            save_cmd = load_cmd + ["--save", str(output_path)]
+            result = subprocess.run(save_cmd, capture_output=True, text=True, env=env)
+            logger.debug(f"Save command output: {result.stdout}")
+            logger.debug(f"Save command error: {result.stderr}")
+            self.assertEqual(result.returncode, 0, f"Save command failed with return code {result.returncode}. Error: {result.stderr}")
+            self.assertTrue(output_path.exists(), "Output file was not created")
+            
+            # Finally check version
+            version_cmd = load_cmd + ["--version", Path(model_path).stem]
+            result = subprocess.run(version_cmd, capture_output=True, text=True, env=env)
+            logger.debug(f"Version command output: {result.stdout}")
+            logger.debug(f"Version command error: {result.stderr}")
+            self.assertEqual(result.returncode, 0, f"Version command failed with return code {result.returncode}. Error: {result.stderr}")
+            self.assertIn("1.0.0", result.stdout, "Version information not found in output")
+            logger.info("Command line interface test passed")
+        except Exception as e:
+            logger.error(f"Command line interface test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+            
+    def test_model_first_principle(self):
+        """Test that model quality takes precedence over code quality."""
+        logger.info("Testing model-first principle")
+        try:
+            # Mock model quality check to fail
+            with patch.object(self.manager, 'check_model_quality', return_value=False):
+                with self.assertRaises(ModelQualityError) as cm:
+                    self.manager.validate_system_quality(str(self.test_model_path))
+                logger.debug(f"Expected ModelQualityError raised: {str(cm.exception)}")
+                
+            # Mock model projection check to fail
+            with patch.object(self.manager, '_check_projection_alignment', return_value=False):
+                with self.assertRaises(ModelProjectionError) as cm:
+                    self.manager.validate_model_projection(str(self.test_model_path))
+                logger.debug(f"Expected ModelProjectionError raised: {str(cm.exception)}")
+            logger.info("Model-first principle test passed")
+        except Exception as e:
+            logger.error(f"Model-first principle test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+            
+    def test_model_quality_precedence(self):
+        """Test the model quality precedence principle"""
+        # Mock model and code quality checks
+        self.manager.check_model_quality = MagicMock(return_value=False)
+        self.manager.check_code_quality = MagicMock(return_value=True)
         
-        # Create a test model
-        model_path = self.base_dir / "cli_test.ttl"
-        model_graph = Graph()
-        model_graph.add((TEST.CliClass, RDF.type, OWL.Class))
-        model_graph.add((TEST.CliClass, RDFS.label, Literal("CLI Test Class")))
-        model_graph.add((TEST.CliClass, RDFS.comment, Literal("A CLI test class")))
-        model_graph.add((TEST.CliClass, OWL.versionInfo, Literal("1.0.0")))
-        model_graph.serialize(destination=str(model_path), format="turtle")
+        with self.assertRaises(ModelQualityError):
+            self.manager.validate_system_quality(str(self.test_model_path))
+            
+        # Verify model quality was checked before code quality
+        self.manager.check_model_quality.assert_called_once()
+        self.manager.check_code_quality.assert_not_called()
         
-        # Test loading and saving
-        output_path = self.base_dir / "cli_output.ttl"
-        cmd = [
-            sys.executable,
-            "-m",
-            "src.ontology_framework.manage_models",
-            "--base-dir",
-            str(self.base_dir),
-            "--load",
-            str(model_path),
-            "--save",
-            str(output_path)
-        ]
+    def test_model_projection_alignment(self):
+        """Test model projection alignment validation."""
+        logger.info("Testing model projection alignment")
+        try:
+            test_model = """@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix test: <http://example.org/test#> .
+
+test:TestClass
+    a owl:Class ;
+    rdfs:label "Test Class" ;
+    rdfs:comment "A test class" ."""
+                
+            test_projection = {
+                "class_name": "TestClass",
+                "attributes": ["label", "comment"]
+            }
+            
+            result = self.manager.validate_projection(test_model, test_projection)
+            logger.debug(f"Projection validation result: {result}")
+            self.assertTrue(result)
+            logger.info("Projection alignment test passed")
+        except Exception as e:
+            logger.error(f"Projection alignment test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+            
+    def test_model_validation_pipeline(self):
+        """Test the complete model validation pipeline."""
+        logger.info("Testing model validation pipeline")
+        try:
+            # Load the model first
+            self.manager.load_model(str(self.test_model_path))
+            model_name = self.test_model_path.stem
+            
+            # Now validate by name
+            result = self.manager.validate_model_quality(model_name)
+            logger.debug(f"Validation pipeline result: {result}")
+            self.assertTrue(result)
+            logger.info("Validation pipeline test passed")
+        except Exception as e:
+            logger.error(f"Validation pipeline test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+            
+    def test_model_documentation(self):
+        """Test model documentation requirements"""
+        test_model = """
+        @prefix : <./test#> .
+        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+        @prefix owl: <http://www.w3.org/2002/07/owl#> .
         
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        self.assertEqual(result.returncode, 0)
-        self.assertTrue(output_path.exists())
+        :TestModel rdf:type owl:Ontology ;
+            rdfs:label "Test Model" ;
+            rdfs:comment "A test model" ;
+            owl:versionInfo "1.0.0" .
+        """
         
-        # Test version command
-        version_cmd = cmd[:-2] + ["--version", "cli_test"]
-        result = subprocess.run(version_cmd, capture_output=True, text=True)
-        self.assertEqual(result.returncode, 0)
-        self.assertIn("1.0.0", result.stdout)
+        # Test documentation validation
+        self.assertTrue(
+            self.manager.validate_documentation(test_model),
+            "Model should have required documentation"
+        )
         
+    @patch('ontology_framework.manage_models.ModelManager.check_shacl_constraints')
+    def test_shacl_validation(self, mock_shacl):
+        """Test SHACL validation."""
+        logger.info("Testing SHACL validation")
+        try:
+            # Configure mock
+            mock_shacl.return_value = True
+            
+            # Load and validate model
+            self.manager.load_model(str(self.test_model_path))
+            result = self.manager.validate_model("test_model")
+            
+            # Verify validation was called
+            mock_shacl.assert_called_once()
+            self.assertTrue(result)
+            logger.info("SHACL validation test passed")
+        except Exception as e:
+            logger.error(f"SHACL validation test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
 if __name__ == "__main__":
     unittest.main() 

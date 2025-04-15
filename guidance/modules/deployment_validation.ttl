@@ -1,0 +1,205 @@
+@prefix : <http://example.org/guidance/modules/deployment_validation#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sparql: <http://example.org/guidance/modules/sparql_service#> .
+@prefix env: <http://example.org/guidance/modules/environment#> .
+
+# Deployment Validation Module
+:DeploymentValidationModule rdf:type owl:Ontology ;
+    rdfs:label "Deployment Validation Module" ;
+    rdfs:comment "Module defining deployment validation tasks and CRUD operation testing" ;
+    dc:title "Deployment Validation Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Defines validation tasks for deployment and CRUD operation testing" .
+
+# Classes
+:ValidationTask rdf:type owl:Class ;
+    rdfs:label "Validation Task" ;
+    rdfs:comment "A task for validating deployment or CRUD operations" ;
+    owl:versionInfo "1.0.0" .
+
+:CrudOperation rdf:type owl:Class ;
+    rdfs:label "CRUD Operation" ;
+    rdfs:comment "A Create, Read, Update, or Delete operation" ;
+    owl:versionInfo "1.0.0" .
+
+:ValidationStep rdf:type owl:Class ;
+    rdfs:label "Validation Step" ;
+    rdfs:comment "A step in the validation process" ;
+    owl:versionInfo "1.0.0" .
+
+# Properties
+:hasTaskType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Task Type" ;
+    rdfs:comment "Type of validation task (e.g., Deployment, CRUD)" ;
+    rdfs:domain :ValidationTask ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:involvesOperation rdf:type owl:ObjectProperty ;
+    rdfs:label "Involves Operation" ;
+    rdfs:comment "Links a validation step to its CRUD operation" ;
+    rdfs:domain :ValidationStep ;
+    rdfs:range :CrudOperation ;
+    owl:versionInfo "1.0.0" .
+
+:hasOperationType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Operation Type" ;
+    rdfs:comment "Type of CRUD operation (Create, Read, Update, Delete)" ;
+    rdfs:domain :CrudOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasSparqlQuery rdf:type owl:DatatypeProperty ;
+    rdfs:label "SPARQL Query" ;
+    rdfs:comment "SPARQL query for the operation" ;
+    rdfs:domain :CrudOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasExpectedResult rdf:type owl:DatatypeProperty ;
+    rdfs:label "Expected Result" ;
+    rdfs:comment "Expected result of the operation" ;
+    rdfs:domain :CrudOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasValidationStep rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Validation Step" ;
+    rdfs:comment "Links a task to its validation steps" ;
+    rdfs:domain :ValidationTask ;
+    rdfs:range :ValidationStep ;
+    owl:versionInfo "1.0.0" .
+
+:hasEnvironment rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Environment" ;
+    rdfs:comment "Links a task to its target environment" ;
+    rdfs:domain :ValidationTask ;
+    rdfs:range env:Environment ;
+    owl:versionInfo "1.0.0" .
+
+:stepOrder rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Order" ;
+    rdfs:comment "Order of execution for validation steps" ;
+    rdfs:domain :ValidationStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+:stepDescription rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Description" ;
+    rdfs:comment "Description of the validation step" ;
+    rdfs:domain :ValidationStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Example CRUD Operations
+:createOperation rdf:type owl:NamedIndividual, :CrudOperation ;
+    rdfs:label "Create Operation" ;
+    rdfs:comment "Create a new resource" ;
+    :hasOperationType "Create" ;
+    :hasSparqlQuery """
+        INSERT DATA {
+            <http://example.org/resource> a <http://example.org/Class> .
+        }
+    """ ;
+    :hasExpectedResult "Resource created successfully" .
+
+:readOperation rdf:type owl:NamedIndividual, :CrudOperation ;
+    rdfs:label "Read Operation" ;
+    rdfs:comment "Read an existing resource" ;
+    :hasOperationType "Read" ;
+    :hasSparqlQuery """
+        SELECT ?s ?p ?o WHERE {
+            <http://example.org/resource> ?p ?o .
+        }
+    """ ;
+    :hasExpectedResult "Resource data retrieved" .
+
+:updateOperation rdf:type owl:NamedIndividual, :CrudOperation ;
+    rdfs:label "Update Operation" ;
+    rdfs:comment "Update an existing resource" ;
+    :hasOperationType "Update" ;
+    :hasSparqlQuery """
+        DELETE { <http://example.org/resource> ?p ?o }
+        INSERT { <http://example.org/resource> ?p ?newValue }
+        WHERE {
+            <http://example.org/resource> ?p ?o .
+        }
+    """ ;
+    :hasExpectedResult "Resource updated successfully" .
+
+:deleteOperation rdf:type owl:NamedIndividual, :CrudOperation ;
+    rdfs:label "Delete Operation" ;
+    rdfs:comment "Delete an existing resource" ;
+    :hasOperationType "Delete" ;
+    :hasSparqlQuery """
+        DELETE WHERE {
+            <http://example.org/resource> ?p ?o .
+        }
+    """ ;
+    :hasExpectedResult "Resource deleted successfully" .
+
+# Example Validation Tasks
+:deploymentValidationTask rdf:type owl:NamedIndividual, :ValidationTask ;
+    rdfs:label "Deployment Validation Task" ;
+    rdfs:comment "Validate deployment configuration" ;
+    :hasTaskType "Deployment" ;
+    :hasEnvironment env:developmentEnvironment ;
+    :hasValidationStep :checkServiceStep, :checkDatasetStep .
+
+:crudValidationTask rdf:type owl:NamedIndividual, :ValidationTask ;
+    rdfs:label "CRUD Validation Task" ;
+    rdfs:comment "Validate CRUD operations" ;
+    :hasTaskType "CRUD" ;
+    :hasEnvironment env:developmentEnvironment ;
+    :hasValidationStep :createStep, :readStep, :updateStep, :deleteStep .
+
+# Example Validation Steps
+:checkServiceStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Check Service Step" ;
+    rdfs:comment "Check if SPARQL service is running" ;
+    :stepOrder 1 ;
+    :stepDescription "Verify SPARQL service availability" .
+
+:checkDatasetStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Check Dataset Step" ;
+    rdfs:comment "Check if default dataset exists" ;
+    :stepOrder 2 ;
+    :stepDescription "Verify dataset configuration" .
+
+:createStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Create Step" ;
+    rdfs:comment "Test resource creation" ;
+    :stepOrder 1 ;
+    :stepDescription "Execute create operation" ;
+    :involvesOperation :createOperation .
+
+:readStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Read Step" ;
+    rdfs:comment "Test resource reading" ;
+    :stepOrder 2 ;
+    :stepDescription "Execute read operation" ;
+    :involvesOperation :readOperation .
+
+:updateStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Update Step" ;
+    rdfs:comment "Test resource updating" ;
+    :stepOrder 3 ;
+    :stepDescription "Execute update operation" ;
+    :involvesOperation :updateOperation .
+
+:deleteStep rdf:type owl:NamedIndividual, :ValidationStep ;
+    rdfs:label "Delete Step" ;
+    rdfs:comment "Test resource deletion" ;
+    :stepOrder 4 ;
+    :stepDescription "Execute delete operation" ;
+    :involvesOperation :deleteOperation .

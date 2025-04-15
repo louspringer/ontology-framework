@@ -1,0 +1,96 @@
+@prefix : <./environment#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Environment Module
+:EnvironmentModule rdf:type owl:Ontology ;
+    rdfs:label "Environment Module" ;
+    rdfs:comment "Module defining environment types and configurations" ;
+    dc:title "Environment Module" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Defines environment types and their configurations" .
+
+# Environment Class
+:Environment rdf:type owl:Class ;
+    rdfs:label "Environment" ;
+    rdfs:comment "A deployment or development environment" ;
+    owl:versionInfo "1.0.0" .
+
+# Environment Properties
+:hasEnvironmentType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Environment Type" ;
+    rdfs:comment "Type of environment (e.g., Development, Testing, Production)" ;
+    rdfs:domain :Environment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasEnvironmentName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Environment Name" ;
+    rdfs:comment "Name of the environment" ;
+    rdfs:domain :Environment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasEnvironmentUrl rdf:type owl:DatatypeProperty ;
+    rdfs:label "Environment URL" ;
+    rdfs:comment "Base URL of the environment" ;
+    rdfs:domain :Environment ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes
+:EnvironmentShape a sh:NodeShape ;
+    sh:targetClass :Environment ;
+    sh:property [
+        sh:path :hasEnvironmentType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("Development" "Testing" "Staging" "Production") ;
+        sh:message "Environment must have exactly one type from the allowed set" ;
+    ] ,
+    [
+        sh:path :hasEnvironmentName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Environment must have exactly one name" ;
+    ] ,
+    [
+        sh:path :hasEnvironmentUrl ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Environment must have exactly one URL" ;
+    ] .
+
+# Default Environment Instances
+:developmentEnvironment rdf:type owl:NamedIndividual, :Environment ;
+    rdfs:label "Development Environment" ;
+    rdfs:comment "Development environment configuration" ;
+    :hasEnvironmentType "Development" ;
+    :hasEnvironmentName "dev" ;
+    :hasEnvironmentUrl "http://localhost:3030" .
+
+:testingEnvironment rdf:type owl:NamedIndividual, :Environment ;
+    rdfs:label "Testing Environment" ;
+    rdfs:comment "Testing environment configuration" ;
+    :hasEnvironmentType "Testing" ;
+    :hasEnvironmentName "test" ;
+    :hasEnvironmentUrl "http://test:3030" .
+
+:productionEnvironment rdf:type owl:NamedIndividual, :Environment ;
+    rdfs:label "Production Environment" ;
+    rdfs:comment "Production environment configuration" ;
+    :hasEnvironmentType "Production" ;
+    :hasEnvironmentName "prod" ;
+    :hasEnvironmentUrl "http://prod:3030" . 

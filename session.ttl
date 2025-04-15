@@ -5,6 +5,9 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix time: <http://www.w3.org/2006/time#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix process: <http://www.w3.org/ns/prov#> .
+@prefix task: <http://www.w3.org/ns/adms#Task> .
 
 # Session Information
 ex:CurrentSession a owl:NamedIndividual ;
@@ -64,6 +67,26 @@ ex:CompletedTasks a owl:NamedIndividual ;
         rdfs:label "Documented Failed API Documentation Scraping Attempts" ;
         rdfs:comment "Recorded failed attempts to access API documentation endpoints /api/alpha/docs and /api/alpha/swagger" ;
         prov:generatedAtTime "2024-04-11T16:30:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Fixed Boldo API Tests" ;
+        rdfs:comment "Updated API endpoints from /api/alpha/ to /api/v1/ and improved error handling" ;
+        prov:generatedAtTime "2024-04-11T17:30:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Fixed Conformance Tracking Tests" ;
+        rdfs:comment "Added missing namespace definitions and updated violation URI generation" ;
+        prov:generatedAtTime "2024-04-11T18:00:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Fixed Patch Management Tests" ;
+        rdfs:comment "Added missing namespace definitions, operation methods, and error handling" ;
+        prov:generatedAtTime "2024-04-11T18:30:00Z"^^xsd:dateTime ;
+    ] ,
+    [
+        rdfs:label "Fixed Spore Integration Tests" ;
+        rdfs:comment "Created SporeIntegrator implementation with all required methods" ;
+        prov:generatedAtTime "2024-04-11T19:00:00Z"^^xsd:dateTime ;
     ] .
 
 # Next Steps
@@ -94,4 +117,60 @@ bt:BowTieOntology prov:wasDerivedFrom ex:GuidanceOntology ;
         prov:atTime "2024-04-11T16:00:00Z"^^xsd:dateTime ;
         prov:hadPrimarySource ex:CompletedTasks ;
     ] .
+
+# Test Fixing Session
+ex:TestFixingSession a owl:NamedIndividual ;
+    rdfs:label "Test Suite Fixing Session" ;
+    rdfs:comment "Session for fixing failing tests in the test suite" ;
+    prov:startedAtTime "2024-04-11T17:00:00Z"^^xsd:dateTime ;
+    prov:wasAssociatedWith ex:OntologyDeveloper .
+
+# Test Fixing Work Items
+ex:TestFixingWork a owl:NamedIndividual ;
+    rdfs:label "Test Suite Fixing Work" ;
+    rdfs:comment "Work items for fixing failing tests" ;
+    prov:wasGeneratedBy ex:TestFixingSession ;
+    prov:generatedAtTime "2024-04-11T17:00:00Z"^^xsd:dateTime ;
+    ex:hasPriority "HIGH" ;
+    ex:targetDate "2024-04-11"^^xsd:date ;
+    ex:requires [
+        rdfs:label "Fix Boldo API Tests" ;
+        rdfs:comment "Update API endpoints and test data for Boldo explorer tests" ;
+    ] ,
+    [
+        rdfs:label "Fix Conformance Tracking Tests" ;
+        rdfs:comment "Add missing namespace definitions and update conformance tracking tests" ;
+    ] ,
+    [
+        rdfs:label "Fix Patch Management Tests" ;
+        rdfs:comment "Update PatchManager implementation to match test expectations" ;
+    ] ,
+    [
+        rdfs:label "Fix Spore Integration Tests" ;
+        rdfs:comment "Update spore integration test assertions and definitions" ;
+    ] ,
+    [
+        rdfs:label "Fix Oracle RDF Tests" ;
+        rdfs:comment "Create missing test ontology files and update test queries" ;
+    ] .
+
+# Traceability
+ex:TestFixingWork prov:wasDerivedFrom ex:GuidanceOntology ;
+    prov:wasAttributedTo ex:OntologyDeveloper ;
+    prov:generatedAtTime "2024-04-11T17:00:00Z"^^xsd:dateTime ;
+    prov:wasRevisionOf [
+        prov:specializationOf ex:TestFixingSession ;
+        prov:atTime "2024-04-11T17:00:00Z"^^xsd:dateTime ;
+        prov:hadPrimarySource ex:TestFixingWork ;
+    ] .
+
+task:OracleRDFImplementation
+    a task:Task ;
+    rdfs:label "Oracle RDF Implementation" ;
+    rdfs:comment "Implementation of Oracle RDF store integration" ;
+    process:startedAtTime "2024-03-21T10:00:00Z"^^xsd:dateTime ;
+    process:endedAtTime "2024-03-21T11:00:00Z"^^xsd:dateTime ;
+    process:wasAssociatedWith <https://github.com/louspringer/ontology-framework> ;
+    process:generated <src/ontology_framework/oracle_rdf.py> ;
+    rdfs:seeAlso <tests/test_oracle_rdf.py> .
 

@@ -1,0 +1,53 @@
+@prefix ns1: <./runtime_error_handling#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Compliance Standards
+ns1:ComplianceStandard a owl:Class ;
+    rdfs:label "Compliance Standard" ;
+    rdfs:comment "Security and compliance standards" .
+
+ns1:ISO27001 a ns1:ComplianceStandard ;
+    rdfs:label "ISO27001" ;
+    rdfs:comment "Information security management standard" .
+
+ns1:compliesWith a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:ComplianceStandard .
+
+# Security Validation
+ns1:SecurityValidation a owl:Class ;
+    rdfs:label "Security Validation" ;
+    rdfs:comment "Security validation rules" .
+
+ns1:SensitiveDataHandling a ns1:SecurityValidation ;
+    rdfs:label "Sensitive Data Handling" ;
+    rdfs:comment "Validation rules for handling sensitive data" .
+
+ns1:hasSecurityValidation a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:SecurityValidation .
+
+# Security Constraints
+ns1:SecurityConstraint a owl:Class ;
+    rdfs:label "Security Constraint" ;
+    rdfs:comment "Security-related constraints" .
+
+ns1:DataEncryption a ns1:SecurityConstraint ;
+    rdfs:label "Data Encryption" ;
+    rdfs:comment "Requirements for data encryption" .
+
+ns1:AccessControl a ns1:SecurityConstraint ;
+    rdfs:label "Access Control" ;
+    rdfs:comment "Requirements for access control" .
+
+# Security Risks
+ns1:SecurityRisk a owl:Class ;
+    rdfs:label "Security Risk" ;
+    rdfs:comment "Security-related risks" .
+
+ns1:DataLossRisk a ns1:SecurityRisk ;
+    rdfs:label "Data Loss Risk" ;
+    rdfs:comment "Risk of data loss or exposure" . 

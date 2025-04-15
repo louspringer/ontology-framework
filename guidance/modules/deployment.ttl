@@ -1,0 +1,192 @@
+@prefix ns1: <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Deployment Configuration Classes
+ns1:Deployment rdf:type owl:Class ;
+    rdfs:label "Deployment" ;
+    rdfs:comment "Base class for deployment configurations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ServiceDeployment rdf:type owl:Class ;
+    rdfs:label "Service Deployment" ;
+    rdfs:comment "Configuration for service deployment" ;
+    rdfs:subClassOf ns1:Deployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:JenaFusekiDeployment rdf:type owl:Class ;
+    rdfs:label "Jena Fuseki Deployment" ;
+    rdfs:comment "Configuration for Jena Fuseki deployment" ;
+    rdfs:subClassOf ns1:ServiceDeployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ContainerRuntime rdf:type owl:Class ;
+    rdfs:label "Container Runtime" ;
+    rdfs:comment "Configuration for container runtime environment" ;
+    rdfs:subClassOf ns1:Deployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ColimaRuntime rdf:type owl:Class ;
+    rdfs:label "Colima Runtime" ;
+    rdfs:comment "Configuration for Colima container runtime" ;
+    rdfs:subClassOf ns1:ContainerRuntime ;
+    owl:versionInfo "1.0.0" .
+
+# Deployment Properties
+ns1:hasServiceName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Service Name" ;
+    rdfs:comment "Name of the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServiceVersion rdf:type owl:DatatypeProperty ;
+    rdfs:label "Service Version" ;
+    rdfs:comment "Version of the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServicePort rdf:type owl:DatatypeProperty ;
+    rdfs:label "Service Port" ;
+    rdfs:comment "Port number for the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServiceEndpoint rdf:type owl:DatatypeProperty ;
+    rdfs:label "Service Endpoint" ;
+    rdfs:comment "Base URL for the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasDatasetName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Dataset Name" ;
+    rdfs:comment "Name of the dataset" ;
+    rdfs:domain ns1:JenaFusekiDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Runtime Name" ;
+    rdfs:comment "Name of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeVersion rdf:type owl:DatatypeProperty ;
+    rdfs:label "Runtime Version" ;
+    rdfs:comment "Version of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeStatus rdf:type owl:DatatypeProperty ;
+    rdfs:label "Runtime Status" ;
+    rdfs:comment "Current status of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Deployment Instances
+ns1:fusekiDeployment rdf:type ns1:JenaFusekiDeployment ;
+    rdfs:label "Fuseki Deployment" ;
+    rdfs:comment "Deployment configuration for Jena Fuseki" ;
+    ns1:hasServiceName "fuseki" ;
+    ns1:hasServiceVersion "4.10.0" ;
+    ns1:hasServicePort 3030 ;
+    ns1:hasServiceEndpoint "http://localhost:3030" ;
+    ns1:hasDatasetName "guidance" .
+
+ns1:colimaRuntime rdf:type ns1:ColimaRuntime ;
+    rdfs:label "Colima Runtime" ;
+    rdfs:comment "Colima container runtime configuration" ;
+    ns1:hasRuntimeName "colima" ;
+    ns1:hasRuntimeVersion "0.5.6" ;
+    ns1:hasRuntimeStatus "running" .
+
+# Test Configuration Classes
+ns1:TestConfiguration rdf:type owl:Class ;
+    rdfs:label "Test Configuration" ;
+    rdfs:comment "Base class for test configurations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:JenaFusekiTest rdf:type owl:Class ;
+    rdfs:label "Jena Fuseki Test" ;
+    rdfs:comment "Configuration for Jena Fuseki tests" ;
+    rdfs:subClassOf ns1:TestConfiguration ;
+    owl:versionInfo "1.0.0" .
+
+ns1:LoggingTest rdf:type owl:Class ;
+    rdfs:label "Logging Test" ;
+    rdfs:comment "Configuration for logging tests" ;
+    rdfs:subClassOf ns1:TestConfiguration ;
+    owl:versionInfo "1.0.0" .
+
+# Test Configuration Properties
+ns1:hasTestName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Test Name" ;
+    rdfs:comment "Name of the test" ;
+    rdfs:domain ns1:TestConfiguration ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTestEndpoint rdf:type owl:DatatypeProperty ;
+    rdfs:label "Test Endpoint" ;
+    rdfs:comment "Endpoint to test" ;
+    rdfs:domain ns1:JenaFusekiTest ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasExpectedResponse rdf:type owl:DatatypeProperty ;
+    rdfs:label "Expected Response" ;
+    rdfs:comment "Expected response from the test" ;
+    rdfs:domain ns1:JenaFusekiTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasLogLevel rdf:type owl:DatatypeProperty ;
+    rdfs:label "Log Level" ;
+    rdfs:comment "Log level to check" ;
+    rdfs:domain ns1:LoggingTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasLogPattern rdf:type owl:DatatypeProperty ;
+    rdfs:label "Log Pattern" ;
+    rdfs:comment "Pattern to match in logs" ;
+    rdfs:domain ns1:LoggingTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Test Configuration Instances
+ns1:healthCheckTest rdf:type ns1:JenaFusekiTest ;
+    rdfs:label "Health Check Test" ;
+    rdfs:comment "Test for Fuseki health check endpoint" ;
+    ns1:hasTestName "health_check" ;
+    ns1:hasTestEndpoint "http://localhost:3030/" ;
+    ns1:hasExpectedResponse "200" .
+
+ns1:datasetCheckTest rdf:type ns1:JenaFusekiTest ;
+    rdfs:label "Dataset Check Test" ;
+    rdfs:comment "Test for dataset existence" ;
+    ns1:hasTestName "dataset_check" ;
+    ns1:hasTestEndpoint "http://localhost:3030/guidance" ;
+    ns1:hasExpectedResponse "200" .
+
+ns1:serverLogTest rdf:type ns1:LoggingTest ;
+    rdfs:label "Server Log Test" ;
+    rdfs:comment "Test for server log patterns" ;
+    ns1:hasTestName "log_check" ;
+    ns1:hasLogLevel "INFO" ;
+    ns1:hasLogPattern "Server started" .
+
+ns1:errorLogTest rdf:type ns1:LoggingTest ;
+    rdfs:label "Error Log Test" ;
+    rdfs:comment "Test for error log patterns" ;
+    ns1:hasTestName "error_log_check" ;
+    ns1:hasLogLevel "ERROR" ;
+    ns1:hasLogPattern "" . 

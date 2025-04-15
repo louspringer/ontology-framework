@@ -4,7 +4,7 @@ import oracledb
 from pathlib import Path
 from rdflib import Graph, Namespace, URIRef, Literal, RDF, RDFS, OWL, BNode
 from rdflib.namespace import XSD
-from register_ontology import register_ontology, load_ontology
+from ontology_framework.register_ontology import register_ontology, load_ontology
 import re
 from collections import defaultdict
 

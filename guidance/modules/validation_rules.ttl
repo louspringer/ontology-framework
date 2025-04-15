@@ -1,0 +1,92 @@
+@prefix : <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix valid: <./validation_rules#> .
+
+# Validation Rules
+valid:ValidationRule rdf:type owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Base class for validation rules" ;
+    owl:versionInfo "1.0.0" .
+
+valid:hasValidationType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Validation Type" ;
+    rdfs:domain valid:ValidationRule ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+valid:SeverityValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Severity Validation" ;
+    rdfs:comment "Validates error severity levels" ;
+    owl:versionInfo "1.0.0" .
+
+valid:BasicMatrixValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Basic Matrix Validation" ;
+    rdfs:comment "Validates basic confusion matrix metrics" ;
+    owl:versionInfo "1.0.0" .
+
+valid:SensitiveDataValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Sensitive Data Validation" ;
+    rdfs:comment "Validates handling of sensitive data" ;
+    owl:versionInfo "1.0.0" .
+
+valid:RiskValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Risk Validation" ;
+    rdfs:comment "Validates risk assessment and mitigation" ;
+    owl:versionInfo "1.0.0" .
+
+valid:MatrixValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Matrix Validation" ;
+    rdfs:comment "Validates confusion matrix metrics" ;
+    owl:versionInfo "1.0.0" .
+
+valid:PerformanceValidation rdf:type owl:Class ;
+    rdfs:subClassOf valid:ValidationRule ;
+    rdfs:label "Performance Validation" ;
+    rdfs:comment "Validates performance metrics" ;
+    owl:versionInfo "1.0.0" .
+
+# Validation Rule Instances
+valid:SeverityValidationInstance rdf:type valid:SeverityValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:BasicMatrixValidationInstance rdf:type valid:BasicMatrixValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:SensitiveDataValidationInstance rdf:type valid:SensitiveDataValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:RiskValidationInstance rdf:type valid:RiskValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:MatrixValidationInstance rdf:type valid:MatrixValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:PerformanceValidationInstance rdf:type valid:PerformanceValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+# SHACL Validation Rules
+valid:ValidationRuleShape rdf:type sh:NodeShape ;
+    sh:targetClass valid:ValidationRule ;
+    sh:property [
+        sh:path valid:hasValidationType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] . 

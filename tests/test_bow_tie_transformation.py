@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, XSD
 from rdflib.namespace import RDFS, OWL
+from ontology_framework.bow_tie_transformation import BowTieTransformation
 
 class TestBowTieTransformation(unittest.TestCase):
     """Test suite for bow-tie transformation patterns.
@@ -170,6 +171,39 @@ class TestBowTieTransformation(unittest.TestCase):
         for file in cls.test_dir.glob('*'):
             file.unlink()
         cls.test_dir.rmdir()
+
+    def test_guidance_conformance(self):
+        transformation = BowTieTransformation()
+        assert transformation.is_guidance_conformant()
+
+    def test_jpeg_compression(self):
+        transformation = BowTieTransformation()
+        compression = transformation.apply_jpeg_compression("test.jpg", quality=85)
+        assert compression is not None
+        assert compression.lossiness_level == 0.15  # 85% quality = 15% loss
+
+    def test_neural_network_pruning(self):
+        transformation = BowTieTransformation()
+        pruning = transformation.apply_neural_network_pruning("model.h5", ratio=0.3)
+        assert pruning is not None
+        assert pruning.lossiness_level == 0.3  # 30% pruning = 30% loss
+
+    def test_text_summarization(self):
+        transformation = BowTieTransformation()
+        text = "This is a long text that needs to be summarized for testing purposes."
+        summarization = transformation.apply_text_summarization(text, ratio=0.5)
+        assert summarization is not None
+        assert summarization.lossiness_level == 0.5  # 50% summarization = 50% loss
+
+    def test_prefix_validation(self):
+        transformation = BowTieTransformation()
+        assert transformation.validate_prefixes()
+
+    def test_transformation_chain(self):
+        transformation = BowTieTransformation()
+        result = transformation.apply_transformation_chain("input.txt")
+        assert result is not None
+        assert result.is_valid  # Access is_valid as a property
 
 if __name__ == '__main__':
     unittest.main() 

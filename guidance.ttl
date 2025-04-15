@@ -12,6 +12,10 @@
 @prefix security: <./guidance/modules/security#> .
 @prefix validation: <./guidance/modules/validation#> .
 @prefix collaboration: <./guidance/modules/collaboration#> .
+@prefix testing: <./guidance/modules/testing#> .
+@prefix sparql: <./guidance/modules/sparql_service#> .
+@prefix env: <./guidance/modules/environment#> .
+@prefix deploy: <./guidance/modules/deployment_validation#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
 # Proxy Ontology Definition
@@ -29,7 +33,10 @@
     owl:imports <./guidance/modules/model.ttl> ;
     owl:imports <./guidance/modules/security.ttl> ;
     owl:imports <./guidance/modules/validation.ttl> ;
-    owl:imports <./guidance/modules/collaboration.ttl> .
+    owl:imports <./guidance/modules/collaboration.ttl> ;
+    owl:imports <./guidance/modules/sparql_service.ttl> ;
+    owl:imports <./guidance/modules/environment.ttl> ;
+    owl:imports <./guidance/modules/deployment_validation.ttl> .
 
 # Module Registry
 :ModuleRegistry rdf:type owl:Class ;
@@ -68,7 +75,10 @@
     :registeredModule model:ModelGuidanceModule ;
     :registeredModule security:SecurityGuidanceModule ;
     :registeredModule validation:ValidationGuidanceModule ;
-    :registeredModule collaboration:CollaborationGuidanceModule .
+    :registeredModule collaboration:CollaborationGuidanceModule ;
+    :registeredModule sparql:SparqlServiceModule ;
+    :registeredModule env:EnvironmentModule ;
+    :registeredModule deploy:DeploymentValidationModule .
 
 # Legacy Support
 :LegacySupport rdf:type owl:Class ;
@@ -111,7 +121,7 @@
         sh:datatype xsd:string ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:pattern "^\\d+\\.\\d+\\.\\d+$" ;
+        sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ;
         sh:message "Module must have exactly one version in semantic versioning format" ;
     ] ,
     [
@@ -506,3 +516,395 @@
         sh:maxCount 1 ;
         sh:message "Must specify whether documentation is required" ;
     ] .
+
+# SHACL Pattern Syntax Rules
+:ShaclPatternRule rdf:type owl:Class ;
+    rdfs:label "SHACL Pattern Syntax Rules" ;
+    rdfs:comment "Rules for writing SHACL patterns in Turtle syntax" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:hasPatternRule rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Pattern Rule" ;
+    rdfs:comment "Links to specific SHACL pattern rules" ;
+    rdfs:domain :ShaclPatternRule ;
+    rdfs:range :PatternRule ;
+    owl:versionInfo "1.0.0" .
+
+:PatternRule rdf:type owl:Class ;
+    rdfs:label "Pattern Rule" ;
+    rdfs:comment "A specific rule for SHACL pattern syntax" ;
+    owl:versionInfo "1.0.0" .
+
+:ruleText rdf:type owl:DatatypeProperty ;
+    rdfs:label "Rule Text" ;
+    rdfs:comment "Text description of the rule" ;
+    rdfs:domain :PatternRule ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:ruleExample rdf:type owl:DatatypeProperty ;
+    rdfs:label "Rule Example" ;
+    rdfs:comment "Example of correct pattern usage" ;
+    rdfs:domain :PatternRule ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:ruleCounterExample rdf:type owl:DatatypeProperty ;
+    rdfs:label "Rule Counter Example" ;
+    rdfs:comment "Example of incorrect pattern usage" ;
+    rdfs:domain :PatternRule ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes for Pattern Rules
+:ShaclPatternRuleShape a sh:NodeShape ;
+    sh:targetClass :ShaclPatternRule ;
+    sh:property [
+        sh:path :hasPatternRule ;
+        sh:class :PatternRule ;
+        sh:minCount 1 ;
+        sh:message "Must have at least one pattern rule"
+    ] .
+
+:PatternRuleShape a sh:NodeShape ;
+    sh:targetClass :PatternRule ;
+    sh:property [
+        sh:path :ruleText ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Must have rule text"
+    ] ,
+    [
+        sh:path :ruleExample ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Must have an example"
+    ] ,
+    [
+        sh:path :ruleCounterExample ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Must have a counter example"
+    ] .
+
+# Instances
+:standardShaclPatternRules rdf:type owl:NamedIndividual, :ShaclPatternRule ;
+    rdfs:label "Standard SHACL Pattern Rules" ;
+    rdfs:comment "Standard rules for SHACL pattern syntax" ;
+    :hasPatternRule :characterClassRule, :literalDotRule, :binaryStringRule .
+
+:characterClassRule rdf:type owl:NamedIndividual, :PatternRule ;
+    rdfs:label "Character Class Rule" ;
+    rdfs:comment "Use character classes instead of escape sequences" ;
+    :ruleText "Use character classes [0-9] instead of \\d" ;
+    :ruleExample "[0-9]+[.][0-9]+[.][0-9]+" ;
+    :ruleCounterExample "[0-9]+[.][0-9]+[.][0-9]+" .
+
+:literalDotRule rdf:type owl:NamedIndividual, :PatternRule ;
+    rdfs:label "Literal Dot Rule" ;
+    rdfs:comment "Use [.] for literal dots" ;
+    :ruleText "Use [.] for literal dots instead of \\." ;
+    :ruleExample "[0-9]+[.][0-9]+" ;
+    :ruleCounterExample "[0-9]+\\.\\d+" .
+
+:binaryStringRule rdf:type owl:NamedIndividual, :PatternRule ;
+    rdfs:label "Binary String Rule" ;
+    rdfs:comment "Avoid binary string markers" ;
+    :ruleText "Avoid binary string markers (b'...')" ;
+    :ruleExample "sh:pattern \"[0-9]+\"" ;
+    :ruleCounterExample "sh:pattern b'[0-9]+'" .
+
+# Model Structure Requirements
+:ModelStructureRule rdf:type owl:Class ;
+    rdfs:label "Model Structure Requirements" ;
+    rdfs:comment "Basic requirements for model structure validation" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:hasStructureRequirement rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Structure Requirement" ;
+    rdfs:comment "Links to specific model structure requirements" ;
+    rdfs:domain :ModelStructureRule ;
+    rdfs:range :StructureRequirement ;
+    owl:versionInfo "1.0.0" .
+
+:StructureRequirement rdf:type owl:Class ;
+    rdfs:label "Structure Requirement" ;
+    rdfs:comment "A specific requirement for model structure" ;
+    owl:versionInfo "1.0.0" .
+
+:requirementText rdf:type owl:DatatypeProperty ;
+    rdfs:label "Requirement Text" ;
+    rdfs:comment "Text description of the requirement" ;
+    rdfs:domain :StructureRequirement ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:validationQuery rdf:type owl:DatatypeProperty ;
+    rdfs:label "Validation Query" ;
+    rdfs:comment "Turtle pattern to validate the requirement" ;
+    rdfs:domain :StructureRequirement ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes for Structure Requirements
+:ModelStructureRuleShape a sh:NodeShape ;
+    sh:targetClass :ModelStructureRule ;
+    sh:property [
+        sh:path :hasStructureRequirement ;
+        sh:class :StructureRequirement ;
+        sh:minCount 1 ;
+        sh:message "Must have at least one structure requirement"
+    ] .
+
+:StructureRequirementShape a sh:NodeShape ;
+    sh:targetClass :StructureRequirement ;
+    sh:property [
+        sh:path :requirementText ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Must have requirement text"
+    ] ,
+    [
+        sh:path :validationQuery ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Must have a validation query"
+    ] .
+
+# Instances
+:standardModelStructureRules rdf:type owl:NamedIndividual, :ModelStructureRule ;
+    rdfs:label "Standard Model Structure Rules" ;
+    rdfs:comment "Standard requirements for model structure" ;
+    :hasStructureRequirement :classRequirement, :propertyRequirement .
+
+:classRequirement rdf:type owl:NamedIndividual, :StructureRequirement ;
+    rdfs:label "Class Requirement" ;
+    rdfs:comment "Models must contain at least one class" ;
+    :requirementText "Models must contain at least one owl:Class" ;
+    :validationQuery """
+        [] a owl:Class .
+    """ .
+
+:propertyRequirement rdf:type owl:NamedIndividual, :StructureRequirement ;
+    rdfs:label "Property Requirement" ;
+    rdfs:comment "Models must contain at least one object property" ;
+    :requirementText "Models must contain at least one owl:ObjectProperty" ;
+    :validationQuery """
+        [] a owl:ObjectProperty .
+    """ .
+
+# Test Configuration
+:TestConfiguration rdf:type owl:Class ;
+    rdfs:label "Test Configuration" ;
+    rdfs:comment "Configuration settings for test execution" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:testConfigFile rdf:type owl:DatatypeProperty ;
+    rdfs:label "Test Configuration File" ;
+    rdfs:comment "Path to the test configuration file" ;
+    rdfs:domain :TestConfiguration ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:testEnvironment rdf:type owl:DatatypeProperty ;
+    rdfs:label "Test Environment" ;
+    rdfs:comment "Environment for test execution (development, staging, production)" ;
+    rdfs:domain :TestConfiguration ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:testTimeout rdf:type owl:DatatypeProperty ;
+    rdfs:label "Test Timeout" ;
+    rdfs:comment "Maximum time allowed for test execution in seconds" ;
+    rdfs:domain :TestConfiguration ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+# Test Procedure
+:TestProcedure rdf:type owl:Class ;
+    rdfs:label "Test Procedure" ;
+    rdfs:comment "Standardized procedure for test execution" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:testStep rdf:type owl:ObjectProperty ;
+    rdfs:label "Test Step" ;
+    rdfs:comment "Individual step in the test procedure" ;
+    rdfs:domain :TestProcedure ;
+    rdfs:range :TestStep ;
+    owl:versionInfo "1.0.0" .
+
+:TestStep rdf:type owl:Class ;
+    rdfs:label "Test Step" ;
+    rdfs:comment "A step in the test procedure" ;
+    owl:versionInfo "1.0.0" .
+
+:stepType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Type" ;
+    rdfs:comment "Type of test step (setup, execution, validation, cleanup)" ;
+    rdfs:domain :TestStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:stepCommand rdf:type owl:DatatypeProperty ;
+    rdfs:label "Step Command" ;
+    rdfs:comment "Command to execute for this step" ;
+    rdfs:domain :TestStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:stepExpectedResult rdf:type owl:DatatypeProperty ;
+    rdfs:label "Expected Result" ;
+    rdfs:comment "Expected outcome of the test step" ;
+    rdfs:domain :TestStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Test Report
+:TestReport rdf:type owl:Class ;
+    rdfs:label "Test Report" ;
+    rdfs:comment "Report of test execution results" ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:isDefinedBy :GuidanceOntology .
+
+:reportFile rdf:type owl:DatatypeProperty ;
+    rdfs:label "Report File" ;
+    rdfs:comment "Path to the test report file" ;
+    rdfs:domain :TestReport ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:reportFormat rdf:type owl:DatatypeProperty ;
+    rdfs:label "Report Format" ;
+    rdfs:comment "Format of the test report (markdown, html, json)" ;
+    rdfs:domain :TestReport ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# SHACL Shapes for Test Configuration
+:TestConfigurationShape a sh:NodeShape ;
+    sh:targetClass :TestConfiguration ;
+    sh:property [
+        sh:path :testConfigFile ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Test configuration must specify a configuration file" ;
+    ] ,
+    [
+        sh:path :testEnvironment ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:in ("development" "staging" "production") ;
+        sh:message "Test environment must be development, staging, or production" ;
+    ] ,
+    [
+        sh:path :testTimeout ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:minInclusive 1 ;
+        sh:message "Test timeout must be a positive integer" ;
+    ] .
+
+# SHACL Shapes for Test Procedure
+:TestProcedureShape a sh:NodeShape ;
+    sh:targetClass :TestProcedure ;
+    sh:property [
+        sh:path :testStep ;
+        sh:class :TestStep ;
+        sh:minCount 1 ;
+        sh:message "Test procedure must have at least one step" ;
+    ] .
+
+:TestStepShape a sh:NodeShape ;
+    sh:targetClass :TestStep ;
+    sh:property [
+        sh:path :stepType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:in ("setup" "execution" "validation" "cleanup") ;
+        sh:message "Step type must be setup, execution, validation, or cleanup" ;
+    ] ,
+    [
+        sh:path :stepCommand ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Step must have a command to execute" ;
+    ] ,
+    [
+        sh:path :stepExpectedResult ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Step must have an expected result" ;
+    ] .
+
+# SHACL Shapes for Test Report
+:TestReportShape a sh:NodeShape ;
+    sh:targetClass :TestReport ;
+    sh:property [
+        sh:path :reportFile ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Test report must specify a report file" ;
+    ] ,
+    [
+        sh:path :reportFormat ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:in ("markdown" "html" "json") ;
+        sh:message "Report format must be markdown, html, or json" ;
+    ] .
+
+# Test Procedure Instance
+:standardTestProcedure rdf:type owl:NamedIndividual, :TestProcedure ;
+    rdfs:label "Standard Test Procedure" ;
+    rdfs:comment "Standard procedure for running ontology framework tests" ;
+    :testStep :setupStep ;
+    :testStep :executionStep ;
+    :testStep :validationStep ;
+    :testStep :cleanupStep .
+
+:setupStep rdf:type owl:NamedIndividual, :TestStep ;
+    rdfs:label "Setup Step" ;
+    rdfs:comment "Setup test environment and dependencies" ;
+    :stepType "setup" ;
+    :stepCommand "python -m pip install -e ." ;
+    :stepExpectedResult "Package installed in development mode" .
+
+:executionStep rdf:type owl:NamedIndividual, :TestStep ;
+    rdfs:label "Execution Step" ;
+    rdfs:comment "Execute the test suite" ;
+    :stepType "execution" ;
+    :stepCommand "python tests/run_tests.py" ;
+    :stepExpectedResult "All tests executed with results" .
+
+:validationStep rdf:type owl:NamedIndividual, :TestStep ;
+    rdfs:label "Validation Step" ;
+    rdfs:comment "Validate test results" ;
+    :stepType "validation" ;
+    :stepCommand "python -m pytest tests/ --tb=short -v" ;
+    :stepExpectedResult "All tests passed" .
+
+:cleanupStep rdf:type owl:NamedIndividual, :TestStep ;
+    rdfs:label "Cleanup Step" ;
+    rdfs:comment "Clean up test environment" ;
+    :stepType "cleanup" ;
+    :stepCommand "rm -rf .pytest_cache/ __pycache__/ .mypy_cache/" ;
+    :stepExpectedResult "Test artifacts cleaned up" .
+
+# Test Configuration Instance
+:standardTestConfig rdf:type owl:NamedIndividual, :TestConfiguration ;
+    rdfs:label "Standard Test Configuration" ;
+    rdfs:comment "Standard configuration for ontology framework tests" ;
+    :testConfigFile "pytest.ini" ;
+    :testEnvironment "development" ;
+    :testTimeout 300 .
+
+# Test Report Instance
+:standardTestReport rdf:type owl:NamedIndividual, :TestReport ;
+    rdfs:label "Standard Test Report" ;
+    rdfs:comment "Standard report format for test results" ;
+    :reportFile "tests/test_report.md" ;
+    :reportFormat "markdown" .

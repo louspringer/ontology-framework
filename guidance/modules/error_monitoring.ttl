@@ -1,0 +1,65 @@
+@prefix ns1: <./runtime_error_handling#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Performance Metrics
+ns1:PerformanceMetric a owl:Class ;
+    rdfs:label "Performance Metric" ;
+    rdfs:comment "Metrics for measuring error handling performance" .
+
+ns1:LoggingLatency a ns1:PerformanceMetric ;
+    rdfs:label "Logging Latency" ;
+    rdfs:comment "Time taken to log error information" ;
+    ns1:metricUnit "milliseconds" .
+
+ns1:ErrorCount a ns1:PerformanceMetric ;
+    rdfs:label "Error Count" ;
+    rdfs:comment "Number of errors occurred" ;
+    ns1:metricUnit "count" .
+
+ns1:ResolutionTime a ns1:PerformanceMetric ;
+    rdfs:label "Resolution Time" ;
+    rdfs:comment "Time taken to resolve errors" ;
+    ns1:metricUnit "seconds" .
+
+ns1:hasPerformanceMetric a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:PerformanceMetric .
+
+# Monitoring Integration
+ns1:MonitoringComponent a owl:Class ;
+    rdfs:label "Monitoring Component" ;
+    rdfs:comment "Components for error monitoring" .
+
+ns1:ErrorLogger a ns1:MonitoringComponent ;
+    rdfs:label "Error Logger" ;
+    rdfs:comment "Component for logging errors" .
+
+ns1:MetricsCollector a ns1:MonitoringComponent ;
+    rdfs:label "Metrics Collector" ;
+    rdfs:comment "Component for collecting error metrics" .
+
+ns1:MonitoringIntegration a sh:NodeShape ;
+    sh:targetClass ns1:RuntimeError ;
+    sh:property [
+        sh:path ns1:hasMonitoringComponent ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean
+    ] .
+
+# Documentation Types
+ns1:ErrorDocumentation a owl:Class ;
+    rdfs:label "Error Documentation" ;
+    rdfs:comment "Documentation types for errors" .
+
+ns1:ErrorReport a ns1:ErrorDocumentation ;
+    rdfs:label "Error Report" ;
+    rdfs:comment "Detailed report of error occurrence and resolution" .
+
+ns1:MetricsReport a ns1:ErrorDocumentation ;
+    rdfs:label "Metrics Report" ;
+    rdfs:comment "Report of error handling metrics" . 

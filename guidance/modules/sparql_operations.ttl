@@ -1,0 +1,83 @@
+@prefix ns1: <http://example.org/guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# SPARQL Operation Classes
+ns1:SparqlOperation rdf:type owl:Class ;
+    rdfs:label "SPARQL Operation" ;
+    rdfs:comment "Base class for SPARQL operations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TemporaryOntology rdf:type owl:Class ;
+    rdfs:label "Temporary Ontology" ;
+    rdfs:comment "Temporary ontology for CRUD operations" ;
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+
+ns1:SparqlQuery rdf:type owl:Class ;
+    rdfs:label "SPARQL Query" ;
+    rdfs:comment "SPARQL query for operations" ;
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+
+# SPARQL Operation Properties
+ns1:hasQueryString rdf:type owl:DatatypeProperty ;
+    rdfs:label "Query String" ;
+    rdfs:comment "The SPARQL query string" ;
+    rdfs:domain ns1:SparqlQuery ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasOperationType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Operation Type" ;
+    rdfs:comment "Type of SPARQL operation (SELECT, INSERT, DELETE, etc.)" ;
+    rdfs:domain ns1:SparqlOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTemporaryDataset rdf:type owl:DatatypeProperty ;
+    rdfs:label "Temporary Dataset" ;
+    rdfs:comment "Name of the temporary dataset" ;
+    rdfs:domain ns1:TemporaryOntology ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasValidationQuery rdf:type owl:ObjectProperty ;
+    rdfs:label "Validation Query" ;
+    rdfs:comment "SPARQL query for validation" ;
+    rdfs:domain ns1:TemporaryOntology ;
+    rdfs:range ns1:SparqlQuery ;
+    owl:versionInfo "1.0.0" .
+
+# Example SPARQL Queries
+ns1:selectAllTriples rdf:type ns1:SparqlQuery ;
+    rdfs:label "Select All Triples" ;
+    rdfs:comment "Query to select all triples in the dataset" ;
+    ns1:hasQueryString """
+        SELECT ?s ?p ?o
+        WHERE {
+            ?s ?p ?o
+        }
+    """ ;
+    ns1:hasOperationType "SELECT" .
+
+ns1:validateOntology rdf:type ns1:SparqlQuery ;
+    rdfs:label "Validate Ontology" ;
+    rdfs:comment "Query to validate ontology structure" ;
+    ns1:hasQueryString """
+        SELECT ?class ?property
+        WHERE {
+            ?class a owl:Class .
+            ?property a owl:ObjectProperty .
+        }
+    """ ;
+    ns1:hasOperationType "SELECT" .
+
+# Temporary Ontology Instance
+ns1:tempOntology rdf:type ns1:TemporaryOntology ;
+    rdfs:label "Temporary Ontology" ;
+    rdfs:comment "Temporary ontology for CRUD operations" ;
+    ns1:hasTemporaryDataset "temp_ontology" ;
+    ns1:hasValidationQuery ns1:validateOntology . 
