@@ -153,7 +153,7 @@ class SparqlClient:
             return True
         except DatasetError:
             return False
-            
+        
     def create_dataset(self, dataset_name: Optional[str] = None) -> bool:
         """Create a new dataset in Fuseki.
         
@@ -251,8 +251,8 @@ class SparqlClient:
                             'Accept': ','.join(self.TURTLE_CONTENT_TYPES)
                         }
                     )
-                    logger.info(f"Loaded ontology from: {file_path}")
-                    return True
+                logger.info(f"Loaded ontology from: {file_path}")
+                return True
                 except QueryError:
                     continue
             
@@ -311,7 +311,7 @@ class SparqlClient:
                         response = self._make_request(
                             'POST',
                             f"{self.dataset_url}/sparql",
-                            data={'query': query},
+                data={'query': query},
                             headers={
                                 'Accept': 'application/sparql-results+json'
                             }
@@ -328,12 +328,12 @@ class SparqlClient:
                         )
                     
                     try:
-                        results = response.json()
+            results = response.json()
                     except json.JSONDecodeError as e:
                         logger.error(f"Failed to decode JSON response: {e}")
                         continue
                         
-                    return results.get('results', {}).get('bindings', [])
+            return results.get('results', {}).get('bindings', [])
                 except QueryError:
                     continue
             
@@ -396,6 +396,7 @@ class SparqlClient:
             return validation_errors
         except SparqlClientError as e:
             logger.error(f"Failed to validate ontology: {e}")
+            return [f"Validation error: {str(e)}"] 
             return [f"Validation error: {str(e)}"] 
             return [f"Validation error: {str(e)}"] 
             return [f"Validation error: {str(e)}"] 
