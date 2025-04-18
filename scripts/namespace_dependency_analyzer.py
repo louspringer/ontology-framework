@@ -8,13 +8,38 @@ from datetime import datetime
 import networkx as nx
 import matplotlib.pyplot as plt
 
-# Configure logging
+# Configure logging with detailed error monitoring
+class ErrorMonitor(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.error_count = 0
+        self.error_details = []
+        self.processing_steps = []
+        self.validation_states = []
+        self.validation_errors = 0  # Track validation errors separately
+
+    def emit(self, record):
+        if record.levelno >= logging.ERROR:
+            self.error_count += 1
+            if "Malformed URI" in record.getMessage():
+                self.validation_errors += 1
+            self.error_details.append({
+                'timestamp': datetime.now().isoformat(),
+                'level': record.levelname,
+                'message': record.getMessage(),
+                'step': self.processing_steps[-1] if self.processing_steps else 'unknown'
+            })
+            logging.error(f"Error #{self.error_count} (Validation: {self.validation_errors}): {record.getMessage()} in step {self.processing_steps[-1] if self.processing_steps else 'unknown'}")
+
+error_monitor = ErrorMonitor()
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('logs/namespace_dependency_analyzer.log'),
-        logging.StreamHandler()
+        logging.StreamHandler(),
+        error_monitor
     ]
 )
 
@@ -28,18 +53,39 @@ class NamespaceDependencyAnalyzer:
         self.graph = nx.DiGraph()
         self.namespace_usage: Dict[str, Dict[str, int]] = {}
         self.errors: List[str] = []
+        self.processing_steps: List[str] = []
+        self.validation_errors: int = 0  # Track validation errors in instance
+
+    def log_processing_step(self, step: str) -> None:
+        """Log the current processing step for error tracking."""
+        self.processing_steps.append(step)
+        error_monitor.processing_steps.append(step)
+        logging.info(f"Starting processing step: {step}")
 
     def validate_uri(self, uri: str) -> bool:
         """Validate URI format and log errors."""
+        self.log_processing_step("validate_uri")
         if not uri.startswith('http://'):
-            self.errors.append(f"Malformed URI: {uri} - missing double slash")
-            logging.error(f"Malformed URI detected: {uri}")
+            error_msg = f"Malformed URI: {uri} - missing double slash"
+            self.errors.append(error_msg)
+            self.validation_errors += 1
+            logging.error(error_msg)
+            error_monitor.validation_states.append({
+                'uri': uri,
+                'valid': False,
+                'error': error_msg
+            })
             return False
+        error_monitor.validation_states.append({
+            'uri': uri,
+            'valid': True
+        })
         return True
 
     def parse_inventory(self) -> None:
         """Parse the inventory file to extract namespace definitions and usage."""
         try:
+            self.log_processing_step("parse_inventory")
             with open(self.inventory_file, 'r', encoding='utf-8') as f:
                 current_file = None
                 self.dependencies = {}  # Clear any existing dependencies
@@ -47,6 +93,7 @@ class NamespaceDependencyAnalyzer:
                 has_validation_errors = False
                 
                 # First pass: validate all URIs
+                self.log_processing_step("first_pass_validation")
                 for line in f:
                     if line.startswith('## '):
                         current_file = line[3:].strip()
@@ -63,8 +110,15 @@ class NamespaceDependencyAnalyzer:
                             if not self.validate_uri(uri):
                                 has_validation_errors = True
                 
+                # Log validation state
+                logging.info(f"Validation complete. Errors found: {has_validation_errors}")
+                logging.info(f"Total error count: {error_monitor.error_count}")
+                logging.info(f"Validation error count: {self.validation_errors}")
+                logging.info(f"Validation states: {error_monitor.validation_states}")
+                
                 # If any validation errors were found, return without processing
-                if has_validation_errors:
+                if has_validation_errors or self.validation_errors > 0:
+                    logging.error(f"Validation errors detected ({self.validation_errors} errors), aborting processing")
                     return
                 
                 # Reset file pointer for second pass
@@ -72,6 +126,7 @@ class NamespaceDependencyAnalyzer:
                 current_file = None
                 
                 # Second pass: process valid URIs
+                self.log_processing_step("second_pass_processing")
                 for line in f:
                     if line.startswith('## '):
                         current_file = line[3:].strip()
