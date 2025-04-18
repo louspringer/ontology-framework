@@ -1,0 +1,99 @@
+@prefix mcp: <https:/github.com/louspringer/ontology-framework/mcp#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+
+# Classes
+mcp:MaintenanceModel a owl:Class ;
+    rdfs:label "Maintenance Model" ;
+    rdfs:comment "Root class for maintenance model" .
+
+mcp:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Class for validation rules" .
+
+mcp:MaintenanceMetric a owl:Class ;
+    rdfs:label "Maintenance Metric" ;
+    rdfs:comment "Class for maintenance metrics" .
+
+mcp:ChangeLog a owl:Class ;
+    rdfs:label "Change Log" ;
+    rdfs:comment "Class for tracking changes" .
+
+mcp:Artifact a owl:Class ;
+    rdfs:label "Artifact" ;
+    rdfs:comment "Class for project artifacts" .
+
+# Properties
+mcp:hasValidationRule a owl:ObjectProperty ;
+    rdfs:domain mcp:MaintenanceModel ;
+    rdfs:range mcp:ValidationRule ;
+    rdfs:label "has validation rule" .
+
+mcp:hasMetric a owl:ObjectProperty ;
+    rdfs:domain mcp:MaintenanceModel ;
+    rdfs:range mcp:MaintenanceMetric ;
+    rdfs:label "has metric" .
+
+mcp:hasChange a owl:ObjectProperty ;
+    rdfs:domain mcp:MaintenanceModel ;
+    rdfs:range mcp:ChangeLog ;
+    rdfs:label "has change" .
+
+mcp:hasArtifact a owl:ObjectProperty ;
+    rdfs:domain mcp:MaintenanceModel ;
+    rdfs:range mcp:Artifact ;
+    rdfs:label "has artifact" .
+
+mcp:metricValue a owl:DatatypeProperty ;
+    rdfs:domain mcp:MaintenanceMetric ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "metric value" .
+
+mcp:metricType a owl:DatatypeProperty ;
+    rdfs:domain mcp:MaintenanceMetric ;
+    rdfs:range xsd:string ;
+    rdfs:label "metric type" .
+
+mcp:changeDescription a owl:DatatypeProperty ;
+    rdfs:domain mcp:ChangeLog ;
+    rdfs:range xsd:string ;
+    rdfs:label "change description" .
+
+mcp:changeDate a owl:DatatypeProperty ;
+    rdfs:domain mcp:ChangeLog ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "change date" .
+
+mcp:affectedComponent a owl:DatatypeProperty ;
+    rdfs:domain mcp:ChangeLog ;
+    rdfs:range xsd:string ;
+    rdfs:label "affected component" .
+
+# Instances
+mcp:MaintenanceModel1 a mcp:MaintenanceModel .
+
+mcp:ValidationRule1 a mcp:ValidationRule ;
+    rdfs:label "Namespace Validation Rule" ;
+    rdfs:comment "Validates namespace declarations" .
+
+mcp:MaintenanceMetric1 a mcp:MaintenanceMetric ;
+    mcp:metricType "validation_coverage" ;
+    mcp:metricValue "0.95"^^xsd:decimal .
+
+mcp:ChangeLog1 a mcp:ChangeLog ;
+    mcp:changeDescription "Initial setup of maintenance model" ;
+    mcp:changeDate "2024-03-20T00:00:00"^^xsd:dateTime ;
+    mcp:affectedComponent "MaintenanceModel" .
+
+mcp:Artifact1 a mcp:Artifact ;
+    rdfs:label "Project Ontology" ;
+    rdfs:comment "Main project ontology file" .
+
+# Links
+mcp:MaintenanceModel1 mcp:hasValidationRule mcp:ValidationRule1 ;
+    mcp:hasMetric mcp:MaintenanceMetric1 ;
+    mcp:hasChange mcp:ChangeLog1 ;
+    mcp:hasArtifact mcp:Artifact1 . 

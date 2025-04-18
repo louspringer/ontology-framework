@@ -1,0 +1,45 @@
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix : <./checkin_process#> .
+
+:CheckinProcess a owl:Class ;
+    rdfs:label "Checkin Process" ;
+    rdfs:comment "Process for managing ontology changes and checkins" .
+
+:RunTests a owl:Class ;
+    rdfs:subClassOf :CheckinProcess ;
+    rdfs:label "Run Tests" ;
+    rdfs:comment "Step to run tests before checkin" .
+
+:FixErrors a owl:Class ;
+    rdfs:subClassOf :CheckinProcess ;
+    rdfs:label "Fix Errors" ;
+    rdfs:comment "Step to fix any test failures" .
+
+:GitAdd a owl:Class ;
+    rdfs:subClassOf :CheckinProcess ;
+    rdfs:label "Git Add" ;
+    rdfs:comment "Step to add changes to git" .
+
+:CreateCommitMessage a owl:Class ;
+    rdfs:subClassOf :CheckinProcess ;
+    rdfs:label "Create Commit Message" ;
+    rdfs:comment "Step to generate commit message" .
+
+:Commit a owl:Class ;
+    rdfs:subClassOf :CheckinProcess ;
+    rdfs:label "Commit" ;
+    rdfs:comment "Step to commit changes" .
+
+:hasNextStep a owl:ObjectProperty ;
+    rdfs:domain :CheckinProcess ;
+    rdfs:range :CheckinProcess ;
+    rdfs:label "has next step" ;
+    rdfs:comment "Specifies the next step in the process" .
+
+:RunTests :hasNextStep :FixErrors .
+:FixErrors :hasNextStep :GitAdd .
+:GitAdd :hasNextStep :CreateCommitMessage .
+:CreateCommitMessage :hasNextStep :Commit . 
