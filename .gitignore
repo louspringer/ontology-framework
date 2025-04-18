@@ -173,6 +173,8 @@ set_oracle_env.sh
 # API documentation raw files
 raw_api_doc.txt
 raw_api_doc_error.txt
+logs/**
+data/**
 
 # Coverage
 .coverage*
