@@ -1,0 +1,4762 @@
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix recovery: <./models/recovery#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix process: <./process#> .
+@prefix time: <./time#> .
+
+# Recovery Plan Model
+recovery:NamespaceRecoveryPlan a owl:Class ;
+    rdfs:label "Namespace Recovery Plan" ;
+    rdfs:comment "Plan to recover from incorrect namespace usage" .
+
+# Current State
+recovery:CurrentState a owl:Class ;
+    rdfs:label "Current State" ;
+    rdfs:comment "Current state of namespace usage" .
+
+recovery:hasExampleOrgUsage a owl:ObjectProperty ;
+    rdfs:domain recovery:CurrentState ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Has example.org usage" ;
+    rdfs:comment "Indicates if example.org is being used" .
+
+recovery:hasRelativePathUsage a owl:ObjectProperty ;
+    rdfs:domain recovery:CurrentState ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Has relative path usage" ;
+    rdfs:comment "Indicates if relative paths are being used" .
+
+# Recovery Steps
+recovery:RecoveryStep a owl:Class ;
+    rdfs:label "Recovery Step" ;
+    rdfs:comment "A step in the recovery process" .
+
+recovery:hasStepOrder a owl:DatatypeProperty ;
+    rdfs:domain recovery:RecoveryStep ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Step order" ;
+    rdfs:comment "Order of the recovery step" .
+
+recovery:hasStepDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:RecoveryStep ;
+    rdfs:range xsd:string ;
+    rdfs:label "Step description" ;
+    rdfs:comment "Description of the recovery step" .
+
+# Recovery Steps Instances
+recovery:Step1 a recovery:RecoveryStep ;
+    recovery:hasStepOrder 1 ;
+    recovery:hasStepDescription "Identify all files using example.org" .
+
+recovery:Step2 a recovery:RecoveryStep ;
+    recovery:hasStepOrder 2 ;
+    recovery:hasStepDescription "Restore original relative paths" .
+
+recovery:Step3 a recovery:RecoveryStep ;
+    recovery:hasStepOrder 3 ;
+    recovery:hasStepDescription "Validate guidance.ttl loading" .
+
+recovery:Step4 a recovery:RecoveryStep ;
+    recovery:hasStepOrder 4 ;
+    recovery:hasStepDescription "Implement namespace validation" .
+
+# Current State Instance
+recovery:CurrentStateInstance a recovery:CurrentState ;
+    recovery:hasExampleOrgUsage true ;
+    recovery:hasRelativePathUsage false .
+
+# Prevention Measures
+recovery:PreventionMeasure a owl:Class ;
+    rdfs:label "Prevention Measure" ;
+    rdfs:comment "Measures to prevent namespace issues" .
+
+recovery:hasValidationRule a owl:ObjectProperty ;
+    rdfs:domain recovery:PreventionMeasure ;
+    rdfs:range xsd:string ;
+    rdfs:label "Validation rule" ;
+    rdfs:comment "Rule to validate namespace usage" .
+
+recovery:Prevention1 a recovery:PreventionMeasure ;
+    recovery:hasValidationRule "Check guidance.ttl before any changes" .
+
+recovery:Prevention2 a recovery:PreventionMeasure ;
+    recovery:hasValidationRule "Verify against existing patterns" .
+
+recovery:Prevention3 a recovery:PreventionMeasure ;
+    recovery:hasValidationRule "Follow project ontology standards" .
+
+# TODO Section
+recovery:TodoItem a owl:Class ;
+    rdfs:label "Todo Item" ;
+    rdfs:comment "Items to be completed" .
+
+recovery:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain recovery:TodoItem ;
+    rdfs:range xsd:string ;
+    rdfs:label "Priority" ;
+    rdfs:comment "Priority of the todo item" .
+
+recovery:Todo1 a recovery:TodoItem ;
+    recovery:hasPriority "HIGH" ;
+    rdfs:comment "Add CI/CD validation for example.org usage" .
+
+recovery:Todo2 a recovery:TodoItem ;
+    recovery:hasPriority "HIGH" ;
+    rdfs:comment "Document namespace standards in guidance.ttl" .
+
+# Problem Statement
+recovery:ProblemStatement a owl:Class ;
+    rdfs:label "Problem Statement" ;
+    rdfs:comment "Description of the namespace issue" .
+
+recovery:hasProblemDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:ProblemStatement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Problem description" .
+
+recovery:ProblemInstance a recovery:ProblemStatement ;
+    recovery:hasProblemDescription "Incorrect usage of example.org in production code instead of relative paths, causing validation failures and potential security risks" .
+
+# Requirements
+recovery:Requirement a owl:Class ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A requirement for the recovery plan" .
+
+recovery:hasRequirementID a owl:DatatypeProperty ;
+    rdfs:domain recovery:Requirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Requirement ID" .
+
+recovery:hasRequirementDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Requirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Requirement description" .
+
+recovery:hasRequirementPriority a owl:DatatypeProperty ;
+    rdfs:domain recovery:Requirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Requirement priority" .
+
+recovery:Req1 a recovery:Requirement ;
+    recovery:hasRequirementID "REQ-001" ;
+    recovery:hasRequirementDescription "Restore all relative paths in production code" ;
+    recovery:hasRequirementPriority "HIGH" .
+
+recovery:Req2 a recovery:Requirement ;
+    recovery:hasRequirementID "REQ-002" ;
+    recovery:hasRequirementDescription "Implement namespace validation in CI/CD" ;
+    recovery:hasRequirementPriority "HIGH" .
+
+recovery:Req3 a recovery:Requirement ;
+    recovery:hasRequirementID "REQ-003" ;
+    recovery:hasRequirementDescription "Document namespace standards" ;
+    recovery:hasRequirementPriority "MEDIUM" .
+
+# Risks
+recovery:Risk a owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "A risk associated with the recovery plan" .
+
+recovery:hasRiskID a owl:DatatypeProperty ;
+    rdfs:domain recovery:Risk ;
+    rdfs:range xsd:string ;
+    rdfs:label "Risk ID" .
+
+recovery:hasRiskDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Risk ;
+    rdfs:range xsd:string ;
+    rdfs:label "Risk description" .
+
+recovery:hasRiskSeverity a owl:DatatypeProperty ;
+    rdfs:domain recovery:Risk ;
+    rdfs:range xsd:string ;
+    rdfs:label "Risk severity" .
+
+recovery:hasRiskMitigation a owl:DatatypeProperty ;
+    rdfs:domain recovery:Risk ;
+    rdfs:range xsd:string ;
+    rdfs:label "Risk mitigation" .
+
+recovery:Risk1 a recovery:Risk ;
+    recovery:hasRiskID "RISK-001" ;
+    recovery:hasRiskDescription "Breaking changes in production code" ;
+    recovery:hasRiskSeverity "HIGH" ;
+    recovery:hasRiskMitigation "Implement comprehensive testing before deployment" .
+
+recovery:Risk2 a recovery:Risk ;
+    recovery:hasRiskID "RISK-002" ;
+    recovery:hasRiskDescription "Incomplete namespace restoration" ;
+    recovery:hasRiskSeverity "MEDIUM" ;
+    recovery:hasRiskMitigation "Automated validation and manual review" .
+
+# Constraints
+recovery:Constraint a owl:Class ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "A constraint on the recovery plan" .
+
+recovery:hasConstraintID a owl:DatatypeProperty ;
+    rdfs:domain recovery:Constraint ;
+    rdfs:range xsd:string ;
+    rdfs:label "Constraint ID" .
+
+recovery:hasConstraintDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Constraint ;
+    rdfs:range xsd:string ;
+    rdfs:label "Constraint description" .
+
+recovery:Constraint1 a recovery:Constraint ;
+    recovery:hasConstraintID "CONST-001" ;
+    recovery:hasConstraintDescription "Must maintain backward compatibility" .
+
+recovery:Constraint2 a recovery:Constraint ;
+    recovery:hasConstraintID "CONST-002" ;
+    recovery:hasConstraintDescription "Must follow project ontology standards" .
+
+# Assumptions
+recovery:Assumption a owl:Class ;
+    rdfs:label "Assumption" ;
+    rdfs:comment "An assumption for the recovery plan" .
+
+recovery:hasAssumptionID a owl:DatatypeProperty ;
+    rdfs:domain recovery:Assumption ;
+    rdfs:range xsd:string ;
+    rdfs:label "Assumption ID" .
+
+recovery:hasAssumptionDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Assumption ;
+    rdfs:range xsd:string ;
+    rdfs:label "Assumption description" .
+
+recovery:Assumption1 a recovery:Assumption ;
+    recovery:hasAssumptionID "ASSUMP-001" ;
+    recovery:hasAssumptionDescription "All namespace changes can be tracked" .
+
+recovery:Assumption2 a recovery:Assumption ;
+    recovery:hasAssumptionID "ASSUMP-002" ;
+    recovery:hasAssumptionDescription "CI/CD pipeline can be modified" .
+
+# Lifecycle Concerns
+recovery:LifecycleConcern a owl:Class ;
+    rdfs:label "Lifecycle Concern" ;
+    rdfs:comment "A concern about the lifecycle of the recovery plan" .
+
+recovery:hasLifecyclePhase a owl:DatatypeProperty ;
+    rdfs:domain recovery:LifecycleConcern ;
+    rdfs:range xsd:string ;
+    rdfs:label "Lifecycle phase" .
+
+recovery:hasLifecycleDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:LifecycleConcern ;
+    rdfs:range xsd:string ;
+    rdfs:label "Lifecycle description" .
+
+recovery:Lifecycle1 a recovery:LifecycleConcern ;
+    recovery:hasLifecyclePhase "Development" ;
+    recovery:hasLifecycleDescription "Namespace changes must be tracked" .
+
+recovery:Lifecycle2 a recovery:LifecycleConcern ;
+    recovery:hasLifecyclePhase "Deployment" ;
+    recovery:hasLifecycleDescription "Changes must be validated before deployment" .
+
+# Deployment Models
+recovery:DeploymentModel a owl:Class ;
+    rdfs:label "Deployment Model" ;
+    rdfs:comment "A deployment model for the recovery plan" .
+
+recovery:hasDeploymentType a owl:DatatypeProperty ;
+    rdfs:domain recovery:DeploymentModel ;
+    rdfs:range xsd:string ;
+    rdfs:label "Deployment type" .
+
+recovery:hasDeploymentDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:DeploymentModel ;
+    rdfs:range xsd:string ;
+    rdfs:label "Deployment description" .
+
+recovery:Deployment1 a recovery:DeploymentModel ;
+    recovery:hasDeploymentType "Phased" ;
+    recovery:hasDeploymentDescription "Implement changes in phases with validation" .
+
+recovery:Deployment2 a recovery:DeploymentModel ;
+    recovery:hasDeploymentType "Rollback" ;
+    recovery:hasDeploymentDescription "Maintain ability to rollback changes" .
+
+# Change Log
+recovery:Change1 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-001" ;
+    recovery:hasChangeDate "2024-03-20T00:00:00Z" ;
+    recovery:hasChangeDescription "Initial recovery plan created" .
+
+recovery:Change2 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-002" ;
+    recovery:hasChangeDate "2024-04-17T08:44:24Z" ;
+    recovery:hasChangeDescription "Added References section and cross-references to model components" .
+
+recovery:Change3 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-003" ;
+    recovery:hasChangeDate "2024-04-17T08:44:24Z" ;
+    recovery:hasChangeDescription "Added GitHub project links and updated documentation" .
+
+recovery:Change4 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-004" ;
+    recovery:hasChangeDate "2024-04-17T09:00:00Z" ;
+    recovery:hasChangeDescription "Added GitHub issue tracking and documentation links" .
+
+recovery:Change5 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-005" ;
+    recovery:hasChangeDate "2024-04-17T09:30:00Z" ;
+    recovery:hasChangeDescription "Added planned CI/CD integration details" .
+
+recovery:Change6 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-006" ;
+    recovery:hasChangeDate "2024-04-17T10:00:00Z" ;
+    recovery:hasChangeDescription "Added GitHub integration properties and task links" .
+
+recovery:Change7 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-007" ;
+    recovery:hasChangeDate "2024-04-17T10:15:00Z" ;
+    recovery:hasChangeDescription "Added documentation links to model components" .
+
+recovery:Change8 a recovery:ChangeLog ;
+    recovery:hasChangeID "CHG-008" ;
+    recovery:hasChangeDate "2024-04-17T10:30:00Z" ;
+    recovery:hasChangeDescription "Added CI/CD integration class and requirements" .
+
+# Link Changes to Affected Components
+recovery:Change2 recovery:affects recovery:Reference, recovery:hasRelatedReference .
+recovery:Change3 recovery:affects recovery:Ref9, recovery:Ref10 .
+recovery:Change4 recovery:affects recovery:Ref11, recovery:Ref12, recovery:Ref13, recovery:Ref14, recovery:Ref15, recovery:Ref16 .
+recovery:Change5 recovery:affects recovery:CICDIntegration, recovery:CICDInstance .
+recovery:Change6 recovery:affects recovery:hasGitHubIssue, recovery:hasGitHubPR .
+recovery:Change7 recovery:affects recovery:ValidationCriteria, recovery:RollbackProcedure, recovery:SecurityConsideration, recovery:PreventionMeasure .
+recovery:Change8 recovery:affects recovery:Task5, recovery:CICDInstance .
+
+# Add Change Tracking Properties
+recovery:affects a owl:ObjectProperty ;
+    rdfs:domain recovery:ChangeLog ;
+    rdfs:range owl:Thing ;
+    rdfs:label "Affects" ;
+    rdfs:comment "Links a change to the components it affects" .
+
+recovery:hasChangeType a owl:DatatypeProperty ;
+    rdfs:domain recovery:ChangeLog ;
+    rdfs:range xsd:string ;
+    rdfs:label "Change type" ;
+    rdfs:comment "Type of change (ADD, MODIFY, DELETE)" .
+
+# Update Change Types
+recovery:Change1 recovery:hasChangeType "ADD" .
+recovery:Change2 recovery:hasChangeType "ADD" .
+recovery:Change3 recovery:hasChangeType "ADD" .
+recovery:Change4 recovery:hasChangeType "ADD" .
+recovery:Change5 recovery:hasChangeType "ADD" .
+recovery:Change6 recovery:hasChangeType "ADD" .
+recovery:Change7 recovery:hasChangeType "ADD" .
+recovery:Change8 recovery:hasChangeType "ADD" .
+
+# Solution
+recovery:Solution a owl:Class ;
+    rdfs:label "Solution" ;
+    rdfs:comment "The solution for the namespace issue" .
+
+recovery:hasSolutionDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Solution ;
+    rdfs:range xsd:string ;
+    rdfs:label "Solution description" .
+
+recovery:SolutionInstance a recovery:Solution ;
+    recovery:hasSolutionDescription "Implement comprehensive namespace recovery plan with validation and monitoring" .
+
+# Validation Criteria
+recovery:ValidationCriteria a owl:Class ;
+    rdfs:label "Validation Criteria" ;
+    rdfs:comment "Criteria for validating the success of the recovery plan" .
+
+recovery:hasValidationMetric a owl:DatatypeProperty ;
+    rdfs:domain recovery:ValidationCriteria ;
+    rdfs:range xsd:string ;
+    rdfs:label "Validation metric" .
+
+recovery:hasSuccessThreshold a owl:DatatypeProperty ;
+    rdfs:domain recovery:ValidationCriteria ;
+    rdfs:range xsd:string ;
+    rdfs:label "Success threshold" .
+
+recovery:Validation1 a recovery:ValidationCriteria ;
+    recovery:hasValidationMetric "Percentage of files with correct namespace" ;
+    recovery:hasSuccessThreshold "100%" .
+
+recovery:Validation2 a recovery:ValidationCriteria ;
+    recovery:hasValidationMetric "Number of validation failures" ;
+    recovery:hasSuccessThreshold "0" .
+
+# Resource Requirements
+recovery:ResourceRequirement a owl:Class ;
+    rdfs:label "Resource Requirement" ;
+    rdfs:comment "Resources needed for the recovery plan" .
+
+recovery:hasResourceType a owl:DatatypeProperty ;
+    rdfs:domain recovery:ResourceRequirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Resource type" .
+
+recovery:hasResourceDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:ResourceRequirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "Resource description" .
+
+recovery:Resource1 a recovery:ResourceRequirement ;
+    recovery:hasResourceType "Team" ;
+    recovery:hasResourceDescription "Ontology development team" .
+
+recovery:Resource2 a recovery:ResourceRequirement ;
+    recovery:hasResourceType "Tool" ;
+    recovery:hasResourceDescription "SPARQL validation tools" .
+
+# Communication Plan
+recovery:CommunicationPlan a owl:Class ;
+    rdfs:label "Communication Plan" ;
+    rdfs:comment "Plan for communicating recovery progress" .
+
+recovery:hasStakeholder a owl:DatatypeProperty ;
+    rdfs:domain recovery:CommunicationPlan ;
+    rdfs:range xsd:string ;
+    rdfs:label "Stakeholder" .
+
+recovery:hasFrequency a owl:DatatypeProperty ;
+    rdfs:domain recovery:CommunicationPlan ;
+    rdfs:range xsd:string ;
+    rdfs:label "Communication frequency" .
+
+recovery:Communication1 a recovery:CommunicationPlan ;
+    recovery:hasStakeholder "Development Team" ;
+    recovery:hasFrequency "Daily" .
+
+recovery:Communication2 a recovery:CommunicationPlan ;
+    recovery:hasStakeholder "Project Stakeholders" ;
+    recovery:hasFrequency "Weekly" .
+
+# Testing Strategy
+recovery:TestingStrategy a owl:Class ;
+    rdfs:label "Testing Strategy" ;
+    rdfs:comment "Strategy for testing namespace changes" .
+
+recovery:hasTestType a owl:DatatypeProperty ;
+    rdfs:domain recovery:TestingStrategy ;
+    rdfs:range xsd:string ;
+    rdfs:label "Test type" .
+
+recovery:hasTestEnvironment a owl:DatatypeProperty ;
+    rdfs:domain recovery:TestingStrategy ;
+    rdfs:range xsd:string ;
+    rdfs:label "Test environment" .
+
+recovery:Test1 a recovery:TestingStrategy ;
+    recovery:hasTestType "Unit Test" ;
+    recovery:hasTestEnvironment "Development" .
+
+recovery:Test2 a recovery:TestingStrategy ;
+    recovery:hasTestType "Integration Test" ;
+    recovery:hasTestEnvironment "Staging" .
+
+# Rollback Procedures
+recovery:RollbackProcedure a owl:Class ;
+    rdfs:label "Rollback Procedure" ;
+    rdfs:comment "Procedures for rolling back changes" .
+
+recovery:hasTriggerCondition a owl:DatatypeProperty ;
+    rdfs:domain recovery:RollbackProcedure ;
+    rdfs:range xsd:string ;
+    rdfs:label "Trigger condition" .
+
+recovery:hasRollbackSteps a owl:DatatypeProperty ;
+    rdfs:domain recovery:RollbackProcedure ;
+    rdfs:range xsd:string ;
+    rdfs:label "Rollback steps" .
+
+recovery:Rollback1 a recovery:RollbackProcedure ;
+    recovery:hasTriggerCondition "Validation failure" ;
+    recovery:hasRollbackSteps "Restore previous namespace configuration" .
+
+recovery:Rollback2 a recovery:RollbackProcedure ;
+    recovery:hasTriggerCondition "System instability" ;
+    recovery:hasRollbackSteps "Revert to last stable version" .
+
+# Dependencies
+recovery:Dependency a owl:Class ;
+    rdfs:label "Dependency" ;
+    rdfs:comment "Dependencies for the recovery plan" .
+
+recovery:hasDependencyType a owl:DatatypeProperty ;
+    rdfs:domain recovery:Dependency ;
+    rdfs:range xsd:string ;
+    rdfs:label "Dependency type" .
+
+recovery:hasDependencyDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Dependency ;
+    rdfs:range xsd:string ;
+    rdfs:label "Dependency description" .
+
+recovery:Dependency1 a recovery:Dependency ;
+    recovery:hasDependencyType "External" ;
+    recovery:hasDependencyDescription "SPARQL engine availability" .
+
+recovery:Dependency2 a recovery:Dependency ;
+    recovery:hasDependencyType "Internal" ;
+    recovery:hasDependencyDescription "CI/CD pipeline access" .
+
+# Timeline
+recovery:Timeline a owl:Class ;
+    rdfs:label "Timeline" ;
+    rdfs:comment "Timeline for the recovery plan" .
+
+recovery:hasPhase a owl:DatatypeProperty ;
+    rdfs:domain recovery:Timeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "Phase" .
+
+recovery:hasStartDate a owl:DatatypeProperty ;
+    rdfs:domain recovery:Timeline ;
+    rdfs:range xsd:date ;
+    rdfs:label "Start date" .
+
+recovery:hasEndDate a owl:DatatypeProperty ;
+    rdfs:domain recovery:Timeline ;
+    rdfs:range xsd:date ;
+    rdfs:label "End date" .
+
+recovery:Timeline1 a recovery:Timeline ;
+    recovery:hasPhase "Phase 1: Analysis" ;
+    recovery:hasStartDate "2024-03-20" ;
+    recovery:hasEndDate "2024-03-27" .
+
+recovery:Timeline2 a recovery:Timeline ;
+    recovery:hasPhase "Phase 2: Implementation" ;
+    recovery:hasStartDate "2024-03-28" ;
+    recovery:hasEndDate "2024-04-10" .
+
+# Security Considerations
+recovery:SecurityConsideration a owl:Class ;
+    rdfs:label "Security Consideration" ;
+    rdfs:comment "Security aspects of the recovery plan" .
+
+recovery:hasSecurityImpact a owl:DatatypeProperty ;
+    rdfs:domain recovery:SecurityConsideration ;
+    rdfs:range xsd:string ;
+    rdfs:label "Security impact" .
+
+recovery:hasSecurityControl a owl:DatatypeProperty ;
+    rdfs:domain recovery:SecurityConsideration ;
+    rdfs:range xsd:string ;
+    rdfs:label "Security control" .
+
+recovery:Security1 a recovery:SecurityConsideration ;
+    recovery:hasSecurityImpact "Access control" ;
+    recovery:hasSecurityControl "Role-based access for namespace changes" .
+
+recovery:Security2 a recovery:SecurityConsideration ;
+    recovery:hasSecurityImpact "Audit trail" ;
+    recovery:hasSecurityControl "Log all namespace modifications" .
+
+# Current Status
+recovery:CurrentStatus a owl:Class ;
+    rdfs:label "Current Status" ;
+    rdfs:comment "Current status of the recovery plan" .
+
+recovery:hasStatusPhase a owl:DatatypeProperty ;
+    rdfs:domain recovery:CurrentStatus ;
+    rdfs:range xsd:string ;
+    rdfs:label "Current phase" .
+
+recovery:hasStatusProgress a owl:DatatypeProperty ;
+    rdfs:domain recovery:CurrentStatus ;
+    rdfs:range xsd:string ;
+    rdfs:label "Progress percentage" .
+
+recovery:hasStatusLastUpdate a owl:DatatypeProperty ;
+    rdfs:domain recovery:CurrentStatus ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Last update" .
+
+recovery:hasStatusNextMilestone a owl:DatatypeProperty ;
+    rdfs:domain recovery:CurrentStatus ;
+    rdfs:range xsd:string ;
+    rdfs:label "Next milestone" .
+
+recovery:StatusInstance a recovery:CurrentStatus ;
+    recovery:hasStatusPhase "Analysis" ;
+    recovery:hasStatusProgress "20%" ;
+    recovery:hasStatusLastUpdate "2024-03-20T15:00:00Z" ;
+    recovery:hasStatusNextMilestone "Complete file inventory" ;
+    recovery:hasStatusDescription "Task ANAL-001 in progress, estimated completion in 1.5 days" .
+
+# Analysis Phase Backlog
+recovery:AnalysisTask a owl:Class ;
+    rdfs:label "Analysis Task" ;
+    rdfs:comment "A task in the analysis phase" .
+
+recovery:hasTaskID a owl:DatatypeProperty ;
+    rdfs:domain recovery:AnalysisTask ;
+    rdfs:range xsd:string ;
+    rdfs:label "Task ID" .
+
+recovery:hasTaskDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:AnalysisTask ;
+    rdfs:range xsd:string ;
+    rdfs:label "Task description" .
+
+recovery:hasTaskPriority a owl:DatatypeProperty ;
+    rdfs:domain recovery:AnalysisTask ;
+    rdfs:range xsd:string ;
+    rdfs:label "Task priority" .
+
+recovery:hasTaskStatus a owl:DatatypeProperty ;
+    rdfs:domain recovery:AnalysisTask ;
+    rdfs:range xsd:string ;
+    rdfs:label "Task status" .
+
+recovery:hasTaskOwner a owl:DatatypeProperty ;
+    rdfs:domain recovery:AnalysisTask ;
+    rdfs:range xsd:string ;
+    rdfs:label "Task owner" .
+
+recovery:Task1 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-001" ;
+    recovery:hasTaskDescription "Inventory all files using example.org" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "IN_PROGRESS" ;
+    recovery:hasTaskOwner "Ontology Team" ;
+    recovery:hasEstimateHours 16 ;
+    recovery:hasCompletionCriteria "Complete list of all files using example.org with line numbers and context" ;
+    recovery:hasResourceAllocation "2 team members, 2 days" ;
+    recovery:hasAssociatedRisk recovery:Risk1 .
+
+recovery:Task2 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-002" ;
+    recovery:hasTaskDescription "Map namespace dependencies" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Ontology Team" ;
+    recovery:hasEstimateHours 24 ;
+    recovery:hasCompletionCriteria "Dependency graph showing all namespace relationships" ;
+    recovery:hasResourceAllocation "2 team members, 3 days" ;
+    recovery:hasAssociatedRisk recovery:Risk2 ;
+    recovery:hasDependsOn recovery:Task1 .
+
+recovery:Task3 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-003" ;
+    recovery:hasTaskDescription "Identify validation requirements" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Testing Team" ;
+    recovery:hasEstimateHours 16 ;
+    recovery:hasCompletionCriteria "List of validation rules and test cases" ;
+    recovery:hasResourceAllocation "1 team member, 2 days" ;
+    recovery:hasAssociatedRisk recovery:Risk1 ;
+    recovery:hasDependsOn recovery:Task1 .
+
+recovery:Task4 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-004" ;
+    recovery:hasTaskDescription "Document current namespace patterns" ;
+    recovery:hasTaskPriority "MEDIUM" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Documentation Team" ;
+    recovery:hasEstimateHours 8 ;
+    recovery:hasCompletionCriteria "Documentation of all namespace patterns" ;
+    recovery:hasResourceAllocation "1 team member, 1 day" ;
+    recovery:hasDependsOn recovery:Task2 .
+
+recovery:Task5 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-005" ;
+    recovery:hasTaskDescription "Assess impact on CI/CD pipeline" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "DevOps Team" ;
+    recovery:hasEstimateHours 12 ;
+    recovery:hasCompletionCriteria "Impact assessment report" ;
+    recovery:hasResourceAllocation "1 team member, 1.5 days" ;
+    recovery:hasAssociatedRisk recovery:Risk1 ;
+    recovery:hasDependsOn recovery:Task1 .
+
+recovery:Task6 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-006" ;
+    recovery:hasTaskDescription "Review security implications" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Security Team" ;
+    recovery:hasEstimateHours 16 ;
+    recovery:hasCompletionCriteria "Security assessment report" ;
+    recovery:hasResourceAllocation "1 team member, 2 days" ;
+    recovery:hasAssociatedRisk recovery:Risk1 ;
+    recovery:hasDependsOn recovery:Task1 .
+
+recovery:Task7 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-007" ;
+    recovery:hasTaskDescription "Create test scenarios" ;
+    recovery:hasTaskPriority "MEDIUM" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Testing Team" ;
+    recovery:hasEstimateHours 16 ;
+    recovery:hasCompletionCriteria "Test scenarios document" ;
+    recovery:hasResourceAllocation "1 team member, 2 days" ;
+    recovery:hasDependsOn recovery:Task3 .
+
+recovery:Task8 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-008" ;
+    recovery:hasTaskDescription "Define rollback procedures" ;
+    recovery:hasTaskPriority "HIGH" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Operations Team" ;
+    recovery:hasEstimateHours 12 ;
+    recovery:hasCompletionCriteria "Rollback procedures document" ;
+    recovery:hasResourceAllocation "1 team member, 1.5 days" ;
+    recovery:hasAssociatedRisk recovery:Risk2 ;
+    recovery:hasDependsOn recovery:Task5 .
+
+recovery:Task9 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-009" ;
+    recovery:hasTaskDescription "Estimate resource requirements" ;
+    recovery:hasTaskPriority "MEDIUM" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Project Manager" ;
+    recovery:hasEstimateHours 8 ;
+    recovery:hasCompletionCriteria "Resource requirements document" ;
+    recovery:hasResourceAllocation "1 team member, 1 day" ;
+    recovery:hasDependsOn recovery:Task1, recovery:Task2, recovery:Task3 .
+
+recovery:Task10 a recovery:AnalysisTask ;
+    recovery:hasTaskID "ANAL-010" ;
+    recovery:hasTaskDescription "Draft communication plan" ;
+    recovery:hasTaskPriority "MEDIUM" ;
+    recovery:hasTaskStatus "TODO" ;
+    recovery:hasTaskOwner "Project Manager" ;
+    recovery:hasEstimateHours 8 ;
+    recovery:hasCompletionCriteria "Communication plan document" ;
+    recovery:hasResourceAllocation "1 team member, 1 day" ;
+    recovery:hasDependsOn recovery:Task9 .
+
+# References
+recovery:Reference a owl:Class ;
+    rdfs:label "Reference" ;
+    rdfs:comment "A reference to external resources or related artifacts" .
+
+recovery:hasReferenceType a owl:DatatypeProperty ;
+    rdfs:domain recovery:Reference ;
+    rdfs:range xsd:string ;
+    rdfs:label "Reference type" ;
+    rdfs:comment "Type of the reference (e.g., project, documentation, standard)" .
+
+recovery:hasReferenceURL a owl:DatatypeProperty ;
+    rdfs:domain recovery:Reference ;
+    rdfs:range xsd:anyURI ;
+    rdfs:label "Reference URL" ;
+    rdfs:comment "URL of the reference" .
+
+recovery:hasReferenceDescription a owl:DatatypeProperty ;
+    rdfs:domain recovery:Reference ;
+    rdfs:range xsd:string ;
+    rdfs:label "Reference description" ;
+    rdfs:comment "Description of the reference" .
+
+# Reference Instances
+recovery:Ref1 a recovery:Reference ;
+    recovery:hasReferenceType "Project" ;
+    recovery:hasReferenceURL "file:///src/ontology_framework/namespace_recovery.py" ;
+    recovery:hasReferenceDescription "Namespace Recovery Project Implementation" .
+
+recovery:Ref2 a recovery:Reference ;
+    recovery:hasReferenceType "Documentation" ;
+    recovery:hasReferenceURL "https://www.w3.org/TR/turtle/" ;
+    recovery:hasReferenceDescription "Turtle - Terse RDF Triple Language" .
+
+recovery:Ref3 a recovery:Reference ;
+    recovery:hasReferenceType "Standard" ;
+    recovery:hasReferenceURL "https://www.w3.org/TR/rdf11-concepts/" ;
+    recovery:hasReferenceDescription "RDF 1.1 Concepts and Abstract Syntax" .
+
+recovery:Ref4 a recovery:Reference ;
+    recovery:hasReferenceType "Guidance" ;
+    recovery:hasReferenceURL "file:///guidance.ttl" ;
+    recovery:hasReferenceDescription "Project Ontology Guidance" .
+
+recovery:Ref5 a recovery:Reference ;
+    recovery:hasReferenceType "Validation" ;
+    recovery:hasReferenceURL "https://www.w3.org/TR/shacl/" ;
+    recovery:hasReferenceDescription "SHACL - Shapes Constraint Language" .
+
+recovery:Ref6 a recovery:Reference ;
+    recovery:hasReferenceType "Best Practice" ;
+    recovery:hasReferenceURL "https://www.w3.org/TR/swbp-n-aryRelations/" ;
+    recovery:hasReferenceDescription "Defining N-ary Relations on the Semantic Web" .
+
+recovery:Ref7 a recovery:Reference ;
+    recovery:hasReferenceType "Implementation" ;
+    recovery:hasReferenceURL "file:///src/ontology_framework/github_project_manager.py" ;
+    recovery:hasReferenceDescription "GitHub Project Manager Implementation" .
+
+recovery:Ref8 a recovery:Reference ;
+    recovery:hasReferenceType "Test" ;
+    recovery:hasReferenceURL "file:///tests/test_namespace_recovery.py" ;
+    recovery:hasReferenceDescription "Namespace Recovery Project Tests" .
+
+# Additional References
+recovery:Ref9 a recovery:Reference ;
+    recovery:hasReferenceType "Repository" ;
+    recovery:hasReferenceURL "https://github.com/louspringer/ontology-framework" ;
+    recovery:hasReferenceDescription "Ontology Framework GitHub Repository" .
+
+recovery:Ref10 a recovery:Reference ;
+    recovery:hasReferenceType "Project Board" ;
+    recovery:hasReferenceURL "https://github.com/louspringer/ontology-framework/projects/1" ;
+    recovery:hasReferenceDescription "Namespace Recovery Project Board" .
+
+recovery:Ref11 a recovery:Reference ;
+    recovery:hasReferenceType "Issue" ;
+    recovery:hasReferenceURL "https://github.com/louspringer/ontology-framework/issues/1" ;
+    recovery:hasReferenceDescription "Namespace Recovery Tracking Issue" .
+
+recovery:Ref12 a recovery:Reference ;
+    recovery:hasReferenceType "Pull Request" ;
+    recovery:hasReferenceURL "https://github.com/louspringer/ontology-framework/pull/1" ;
+    recovery:hasReferenceDescription "Initial Namespace Recovery Implementation" .
+
+recovery:Ref13 a recovery:Reference ;
+    recovery:hasReferenceType "Documentation" ;
+    recovery:hasReferenceURL "file:///docs/namespace_standards.md" ;
+    recovery:hasReferenceDescription "Namespace Standards Documentation" .
+
+recovery:Ref14 a recovery:Reference ;
+    recovery:hasReferenceType "Documentation" ;
+    recovery:hasReferenceURL "file:///docs/validation_procedures.md" ;
+    recovery:hasReferenceDescription "Validation Procedures Documentation" .
+
+recovery:Ref15 a recovery:Reference ;
+    recovery:hasReferenceType "Documentation" ;
+    recovery:hasReferenceURL "file:///docs/rollback_procedures.md" ;
+    recovery:hasReferenceDescription "Rollback Procedures Documentation" .
+
+recovery:Ref16 a recovery:Reference ;
+    recovery:hasReferenceType "Documentation" ;
+    recovery:hasReferenceURL "file:///docs/security_guidelines.md" ;
+    recovery:hasReferenceDescription "Security Guidelines Documentation" .
+
+# Link References to Model Components
+recovery:NamespaceRecoveryPlan recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:CurrentStatus recovery:hasRelatedReference recovery:Ref10 .
+
+recovery:AnalysisTask recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref11, recovery:Ref16 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref11, recovery:Ref15 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref11, recovery:Ref12 .
+
+# Link Documentation to Model Components
+recovery:ValidationCriteria recovery:hasRelatedReference recovery:Ref14 .
+
+recovery:RollbackProcedure recovery:hasRelatedReference recovery:Ref15 .
+
+recovery:SecurityConsideration recovery:hasRelatedReference recovery:Ref16 .
+
+recovery:PreventionMeasure recovery:hasRelatedReference recovery:Ref13 .
+
+# Link GitHub References to Specific Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task5 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task6 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task7 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task8 recovery:hasRelatedReference recovery:Ref9 .
+
+recovery:Task9 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+recovery:Task10 recovery:hasRelatedReference recovery:Ref9, recovery:Ref10 .
+
+# Link GitHub Issues to Tasks
+recovery:Task1 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task2 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task3 recovery:hasRelatedReference recovery:Ref11, recovery:Ref14 .
+
+recovery:Task4 recovery:hasRelatedReference recovery:Ref11, recovery:Ref13 .
+
+recovery:Task5 recovery:hasRelatedReference

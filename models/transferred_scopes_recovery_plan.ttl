@@ -1,0 +1,236 @@
+@prefix : <./transferred_scopes_recovery_plan#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# Classes
+:TransferredScopesRecoveryPlan a owl:Class ;
+    rdfs:label "Transferred Scopes Recovery Plan" ;
+    rdfs:comment "Plan for implementing GraphDB validation, monitoring, security, and performance optimization" .
+
+:IntegrationStep a owl:Class ;
+    rdfs:label "Integration Step" ;
+    rdfs:comment "A step in the integration process" .
+
+:Requirement a owl:Class ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A requirement for the implementation" .
+
+:ValidationCriterion a owl:Class ;
+    rdfs:label "Validation Criterion" ;
+    rdfs:comment "A criterion for validating the implementation" .
+
+:Risk a owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "A potential risk in the implementation" .
+
+:Constraint a owl:Class ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "A constraint on the implementation" .
+
+:Assumption a owl:Class ;
+    rdfs:label "Assumption" ;
+    rdfs:comment "An assumption about the implementation" .
+
+# Properties
+:hasStep a owl:ObjectProperty ;
+    rdfs:label "has step" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :IntegrationStep .
+
+:hasRequirement a owl:ObjectProperty ;
+    rdfs:label "has requirement" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :Requirement .
+
+:hasValidationCriterion a owl:ObjectProperty ;
+    rdfs:label "has validation criterion" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :ValidationCriterion .
+
+:hasRisk a owl:ObjectProperty ;
+    rdfs:label "has risk" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :Risk .
+
+:hasConstraint a owl:ObjectProperty ;
+    rdfs:label "has constraint" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :Constraint .
+
+:hasAssumption a owl:ObjectProperty ;
+    rdfs:label "has assumption" ;
+    rdfs:domain :TransferredScopesRecoveryPlan ;
+    rdfs:range :Assumption .
+
+:priority a owl:DatatypeProperty ;
+    rdfs:label "priority" ;
+    rdfs:range xsd:string .
+
+:status a owl:DatatypeProperty ;
+    rdfs:label "status" ;
+    rdfs:range xsd:string .
+
+:completionCriteria a owl:DatatypeProperty ;
+    rdfs:label "completion criteria" ;
+    rdfs:range xsd:string .
+
+:successThreshold a owl:DatatypeProperty ;
+    rdfs:label "success threshold" ;
+    rdfs:range xsd:string .
+
+:severity a owl:DatatypeProperty ;
+    rdfs:label "severity" ;
+    rdfs:range xsd:string .
+
+:mitigation a owl:DatatypeProperty ;
+    rdfs:label "mitigation" ;
+    rdfs:range xsd:string .
+
+:impact a owl:DatatypeProperty ;
+    rdfs:label "impact" ;
+    rdfs:range xsd:string .
+
+# Individuals
+:GraphDBValidationStep a :IntegrationStep ;
+    rdfs:label "GraphDB Validation Step" ;
+    rdfs:comment "Step for implementing GraphDB validation" .
+
+:MonitoringImplementationStep a :IntegrationStep ;
+    rdfs:label "Monitoring Implementation Step" ;
+    rdfs:comment "Step for implementing monitoring" .
+
+:SecurityControlsStep a :IntegrationStep ;
+    rdfs:label "Security Controls Step" ;
+    rdfs:comment "Step for implementing security controls" .
+
+:PerformanceOptimizationStep a :IntegrationStep ;
+    rdfs:label "Performance Optimization Step" ;
+    rdfs:comment "Step for implementing performance optimization" .
+
+:GraphDBValidationRequirement a :Requirement ;
+    rdfs:label "GraphDB Validation Requirement" ;
+    :priority "HIGH" ;
+    :status "TODO" .
+
+:MonitoringSystemRequirement a :Requirement ;
+    rdfs:label "Monitoring System Requirement" ;
+    :priority "HIGH" ;
+    :status "TODO" .
+
+:SecurityControlsRequirement a :Requirement ;
+    rdfs:label "Security Controls Requirement" ;
+    :priority "HIGH" ;
+    :status "TODO" .
+
+:PerformanceOptimizationRequirement a :Requirement ;
+    rdfs:label "Performance Optimization Requirement" ;
+    :priority "MEDIUM" ;
+    :status "TODO" .
+
+:GraphDBValidationCriterion a :ValidationCriterion ;
+    rdfs:label "GraphDB Validation Criterion" ;
+    :successThreshold "100%" .
+
+:MonitoringCoverageCriterion a :ValidationCriterion ;
+    rdfs:label "Monitoring Coverage Criterion" ;
+    :successThreshold "100%" .
+
+:SecurityComplianceCriterion a :ValidationCriterion ;
+    rdfs:label "Security Compliance Criterion" ;
+    :successThreshold "100%" .
+
+:PerformanceImprovementCriterion a :ValidationCriterion ;
+    rdfs:label "Performance Improvement Criterion" ;
+    :successThreshold "20%" .
+
+:GraphDBSetupRisk a :Risk ;
+    rdfs:label "GraphDB Setup Risk" ;
+    :severity "HIGH" ;
+    :mitigation "Implement health checks" .
+
+:MonitoringGapsRisk a :Risk ;
+    rdfs:label "Monitoring Gaps Risk" ;
+    :severity "MEDIUM" ;
+    :mitigation "Comprehensive coverage" .
+
+:SecurityVulnerabilitiesRisk a :Risk ;
+    rdfs:label "Security Vulnerabilities Risk" ;
+    :severity "HIGH" ;
+    :mitigation "Regular security audits" .
+
+:PerformanceDegradationRisk a :Risk ;
+    rdfs:label "Performance Degradation Risk" ;
+    :severity "MEDIUM" ;
+    :mitigation "Continuous monitoring" .
+
+:ResourceLimitationsConstraint a :Constraint ;
+    rdfs:label "Resource Limitations Constraint" ;
+    :impact "HIGH" ;
+    :mitigation "Optimize resource usage" .
+
+:TimeConstraintsConstraint a :Constraint ;
+    rdfs:label "Time Constraints Constraint" ;
+    :impact "MEDIUM" ;
+    :mitigation "Prioritize critical tasks" .
+
+:ToolCompatibilityConstraint a :Constraint ;
+    rdfs:label "Tool Compatibility Constraint" ;
+    :impact "MEDIUM" ;
+    :mitigation "Thorough testing" .
+
+:SecurityRequirementsConstraint a :Constraint ;
+    rdfs:label "Security Requirements Constraint" ;
+    :impact "HIGH" ;
+    :mitigation "Regular compliance checks" .
+
+:GraphDBAvailabilityAssumption a :Assumption ;
+    rdfs:label "GraphDB Availability Assumption" ;
+    :status "PENDING" ;
+    :impact "High - Need alternative" .
+
+:ResourceSufficiencyAssumption a :Assumption ;
+    rdfs:label "Resource Sufficiency Assumption" ;
+    :status "PENDING" ;
+    :impact "Medium - Need optimization" .
+
+:SecurityRequirementsStabilityAssumption a :Assumption ;
+    rdfs:label "Security Requirements Stability Assumption" ;
+    :status "PENDING" ;
+    :impact "High - Need flexible security" .
+
+:PerformanceRequirementsStabilityAssumption a :Assumption ;
+    rdfs:label "Performance Requirements Stability Assumption" ;
+    :status "PENDING" ;
+    :impact "Medium - Need scalable solution" .
+
+# Recovery Plan Instance
+:TransferredScopesRecoveryPlanInstance a :TransferredScopesRecoveryPlan ;
+    rdfs:label "Transferred Scopes Recovery Plan Instance" ;
+    :hasStep :GraphDBValidationStep ;
+    :hasStep :MonitoringImplementationStep ;
+    :hasStep :SecurityControlsStep ;
+    :hasStep :PerformanceOptimizationStep ;
+    :hasRequirement :GraphDBValidationRequirement ;
+    :hasRequirement :MonitoringSystemRequirement ;
+    :hasRequirement :SecurityControlsRequirement ;
+    :hasRequirement :PerformanceOptimizationRequirement ;
+    :hasValidationCriterion :GraphDBValidationCriterion ;
+    :hasValidationCriterion :MonitoringCoverageCriterion ;
+    :hasValidationCriterion :SecurityComplianceCriterion ;
+    :hasValidationCriterion :PerformanceImprovementCriterion ;
+    :hasRisk :GraphDBSetupRisk ;
+    :hasRisk :MonitoringGapsRisk ;
+    :hasRisk :SecurityVulnerabilitiesRisk ;
+    :hasRisk :PerformanceDegradationRisk ;
+    :hasConstraint :ResourceLimitationsConstraint ;
+    :hasConstraint :TimeConstraintsConstraint ;
+    :hasConstraint :ToolCompatibilityConstraint ;
+    :hasConstraint :SecurityRequirementsConstraint ;
+    :hasAssumption :GraphDBAvailabilityAssumption ;
+    :hasAssumption :ResourceSufficiencyAssumption ;
+    :hasAssumption :SecurityRequirementsStabilityAssumption ;
+    :hasAssumption :PerformanceRequirementsStabilityAssumption . 

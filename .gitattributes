@@ -1,10 +1,8 @@
 # Git LFS file tracking
 *.pdf filter=lfs diff=lfs merge=lfs -text
-*.png filter=lfs diff=lfs merge=lfs -text
 *.tar filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.gz filter=lfs diff=lfs merge=lfs -text
-
 # Text files
 *.ttl text
 *.py text
@@ -16,17 +14,14 @@
 *.yaml text
 *.sh text
 *.bash text
-
 # Documentation
 *.html text
 *.css text
 *.js text
-
 # Git configuration
 .gitattributes text
 .gitignore text
 .gitconfig text
-
 # Binary files that should not be tracked
 *.DS_Store binary
 *.swp binary
