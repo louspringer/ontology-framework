@@ -1,0 +1,106 @@
+@prefix : <./boldo#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
+@prefix dct: <http:/purl.org/dc/terms/#> .
+@prefix env: <./environment#> .
+@prefix sec: <./security#> .
+@prefix core: <./core#> .
+
+# Boldo API Configuration
+:BoldoAPIConfig rdf:type owl:Ontology ;
+    rdfs:label "Boldo API Configuration" ;
+    rdfs:comment "Configuration for Boldo API implementation" ;
+    dc:title "Boldo API Configuration" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-04-17T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-04-17T00:00:00"^^xsd:dateTime ;
+    owl:imports <environment.ttl> ;
+    owl:imports <security.ttl> ;
+    owl:imports <core.ttl> .
+
+# Environment Configuration
+:BoldoEnvironment rdf:type env:Environment ;
+    rdfs:label "Boldo API Environment" ;
+    rdfs:comment "Environment configuration for Boldo API" ;
+    env:hasEnvironmentType "Development" ;
+    env:hasEnvironmentName "boldo-dev" ;
+    env:hasEnvironmentUrl "http://localhost:7200" .
+
+# Security Implementation
+:BoldoSecurity rdf:type sec:CIAPattern ;
+    rdfs:label "Boldo API Security Implementation" ;
+    rdfs:comment "Security implementation for Boldo API" ;
+    sec:implements :BoldoEnvironment .
+
+:BoldoAuth rdf:type sec:AuthenticationPattern ;
+    rdfs:label "Boldo API Authentication" ;
+    rdfs:comment "Authentication implementation for Boldo API" ;
+    sec:implements :BoldoSecurity .
+
+:BoldoKeyManagement rdf:type sec:KeyManagementPattern ;
+    rdfs:label "Boldo API Key Management" ;
+    rdfs:comment "Key management implementation for Boldo API" ;
+    sec:implements :BoldoSecurity .
+
+:BoldoEmergencyAccess rdf:type sec:EmergencyAccessPattern ;
+    rdfs:label "Boldo API Emergency Access" ;
+    rdfs:comment "Emergency access implementation for Boldo API" ;
+    sec:implements :BoldoSecurity .
+
+# Core Implementation
+:BoldoInterpretation rdf:type core:Interpretation ;
+    rdfs:label "Boldo API Interpretation" ;
+    rdfs:comment "Interpretation of Boldo API requirements" ;
+    core:complexity 2 ;
+    core:sourceContext "Ontology Framework" ;
+    core:targetContext "Boldo API" .
+
+:BoldoAction rdf:type core:Action ;
+    rdfs:label "Boldo API Action" ;
+    rdfs:comment "Actions for Boldo API implementation" .
+
+:BoldoBestPractice rdf:type core:BestPractice ;
+    rdfs:label "Boldo API Best Practices" ;
+    rdfs:comment "Best practices for Boldo API implementation" .
+
+# SHACL Validation
+:BoldoShape a sh:NodeShape ;
+    sh:targetClass :BoldoAPIConfig ;
+    sh:property [
+        sh:path env:hasEnvironmentType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("Development" "Testing" "Staging" "Production") ;
+        sh:message "Environment must have exactly one type from the allowed set" ;
+    ] ,
+    [
+        sh:path env:hasEnvironmentName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Environment must have exactly one name" ;
+    ] ,
+    [
+        sh:path env:hasEnvironmentUrl ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Environment must have exactly one URL" ;
+    ] ,
+    [
+        sh:path sec:implements ;
+        sh:minCount 1 ;
+        sh:message "Must implement at least one security pattern" ;
+    ] ,
+    [
+        sh:path core:complexity ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 5 ;
+        sh:message "Complexity must be between 1 and 5" ;
+    ] . 
