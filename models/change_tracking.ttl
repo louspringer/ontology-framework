@@ -1,0 +1,131 @@
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix recovery: <./models/recovery#> .
+@prefix change: <./models/change#> .
+
+# Change Tracking Model
+change:ChangeTracking a owl:Class ;
+    rdfs:label "Change Tracking" ;
+    rdfs:comment "Tracks changes to the recovery plan model" .
+
+change:hasChangeID a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:string ;
+    rdfs:label "Change ID" .
+
+change:hasChangeDate a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "Change date" .
+
+change:hasChangeDescription a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:string ;
+    rdfs:label "Change description" .
+
+change:hasChangeType a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:string ;
+    rdfs:label "Change type" .
+
+change:hasAffectedComponent a owl:ObjectProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range owl:Thing ;
+    rdfs:label "Affected component" .
+
+# Recent Changes
+change:Change1 a change:ChangeTracking ;
+    change:hasChangeID "CHG-001" ;
+    change:hasChangeDate "2024-03-20T00:00:00Z" ;
+    change:hasChangeDescription "Initial recovery plan created" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:NamespaceRecoveryPlan .
+
+change:Change2 a change:ChangeTracking ;
+    change:hasChangeID "CHG-002" ;
+    change:hasChangeDate "2024-04-17T08:44:24Z" ;
+    change:hasChangeDescription "Added References section and cross-references" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:Reference .
+
+change:Change3 a change:ChangeTracking ;
+    change:hasChangeID "CHG-003" ;
+    change:hasChangeDate "2024-04-17T08:44:24Z" ;
+    change:hasChangeDescription "Added GitHub project links" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:Ref9, recovery:Ref10 .
+
+change:Change4 a change:ChangeTracking ;
+    change:hasChangeID "CHG-004" ;
+    change:hasChangeDate "2024-04-17T09:00:00Z" ;
+    change:hasChangeDescription "Added GitHub issue tracking" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:Ref11, recovery:Ref12 .
+
+change:Change5 a change:ChangeTracking ;
+    change:hasChangeID "CHG-005" ;
+    change:hasChangeDate "2024-04-17T09:30:00Z" ;
+    change:hasChangeDescription "Added CI/CD integration" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:CICDIntegration .
+
+change:Change6 a change:ChangeTracking ;
+    change:hasChangeID "CHG-006" ;
+    change:hasChangeDate "2024-04-17T10:00:00Z" ;
+    change:hasChangeDescription "Added GitHub integration properties" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:hasGitHubIssue, recovery:hasGitHubPR .
+
+change:Change7 a change:ChangeTracking ;
+    change:hasChangeID "CHG-007" ;
+    change:hasChangeDate "2024-04-17T10:15:00Z" ;
+    change:hasChangeDescription "Added documentation links" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:Ref13, recovery:Ref14, recovery:Ref15, recovery:Ref16 .
+
+change:Change8 a change:ChangeTracking ;
+    change:hasChangeID "CHG-008" ;
+    change:hasChangeDate "2024-04-17T10:30:00Z" ;
+    change:hasChangeDescription "Added CI/CD requirements" ;
+    change:hasChangeType "ADD" ;
+    change:hasAffectedComponent recovery:CICDInstance .
+
+# Change Impact Analysis
+change:hasImpactLevel a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:string ;
+    rdfs:label "Impact level" ;
+    rdfs:comment "Level of impact (HIGH, MEDIUM, LOW)" .
+
+change:hasAffectedFiles a owl:DatatypeProperty ;
+    rdfs:domain change:ChangeTracking ;
+    rdfs:range xsd:string ;
+    rdfs:label "Affected files" ;
+    rdfs:comment "Files affected by the change" .
+
+# Update Impact Levels
+change:Change1 change:hasImpactLevel "HIGH" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change2 change:hasImpactLevel "MEDIUM" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change3 change:hasImpactLevel "MEDIUM" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change4 change:hasImpactLevel "HIGH" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change5 change:hasImpactLevel "HIGH" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change6 change:hasImpactLevel "MEDIUM" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change7 change:hasImpactLevel "MEDIUM" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" .
+
+change:Change8 change:hasImpactLevel "HIGH" ;
+    change:hasAffectedFiles "models/recovery_plan.ttl" . 

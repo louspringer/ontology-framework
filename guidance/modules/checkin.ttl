@@ -1,0 +1,206 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/checkin#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix test: <./testing#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:exampleCheckinErrorHandling1 a :CheckinErrorHandling  ;
+    rdfs:label "Example CheckinErrorHandling 1" ;
+    rdfs:comment "This is example instance 1 of class CheckinErrorHandling" ;
+    :hasFixCycle :exampleFixCycle1 .
+
+:exampleCheckinErrorHandling2 a :CheckinErrorHandling  ;
+    rdfs:label "Example CheckinErrorHandling 2" ;
+    rdfs:comment "This is example instance 2 of class CheckinErrorHandling" ;
+    :hasFixCycle :exampleFixCycle2 .
+
+:exampleCheckinStep1 a :CheckinStep  ;
+    rdfs:label "Example CheckinStep 1" ;
+    rdfs:comment "This is example instance 1 of class CheckinStep" ;
+    :hasErrorTrap :exampleErrorTrap1  ;
+    :hasStepAction "Example value 1"  ;
+    :hasStepOrder 1  ;
+    :hasStepStatus "Example value 1" .
+
+:exampleCheckinStep2 a :CheckinStep  ;
+    rdfs:label "Example CheckinStep 2" ;
+    rdfs:comment "This is example instance 2 of class CheckinStep" ;
+    :hasErrorTrap :exampleErrorTrap2  ;
+    :hasStepAction "Example value 2"  ;
+    :hasStepOrder 2  ;
+    :hasStepStatus "Example value 2" .
+
+:CheckinErrorHandlingShape a sh:NodeShape  ;
+    sh:property :shape1sh:class test:FixCycle ;
+            sh:maxCount 1 ;
+            sh:message "Checkin error handling must specify a fix cycle" ;
+            sh:minCount 1 ;
+            sh:path :hasFixCycle ;
+    sh:targetClass :CheckinErrorHandling .
+
+<./checkin#CheckinProcess#ModuleShape> a sh:NodeShape  ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./checkin#CheckinProcess#description>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./checkin#CheckinProcess#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./checkin#CheckinProcess#version> ;
+    sh:targetClass <./checkin#CheckinProcess#Module> .
+
+:CheckinStepShape a sh:NodeShape  ;
+    sh:property :shape3sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have exactly one order" ;
+            sh:minCount 1 ;
+            sh:path :hasStepOrder .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have exactly one action" ;
+            sh:minCount 1 ;
+            sh:path :hasStepAction .
+        :shape1 sh:datatype xsd:string  ;
+            sh:in ( "PENDING" "IN_PROGRESS" "COMPLETED" "FAILED" ) ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have a valid status" ;
+            sh:minCount 1 ;
+            sh:path :hasStepStatus ;
+    sh:targetClass :CheckinStep .
+
+:CommitStep a :CheckinStep  ;
+    rdfs:label "Commit Changes" ;
+    rdfs:comment "Commit changes with the created message" ;
+    :hasErrorTrap [
+         a test:ErrorTrap  ;
+            test:hasTrapMessage "Git commit failed" ;
+            test:hasTrapType "commit_error" ;
+    :hasStepAction "git commit with message"  ;
+    :hasStepOrder 5  ;
+    :hasStepStatus "PENDING" .
+
+:CreateCommitMessageStep a :CheckinStep  ;
+    rdfs:label "Create Commit Message" ;
+    rdfs:comment "Create a friendly commit message with emoji" ;
+    :hasErrorTrap [ a test:ErrorTrap  ;
+            test:hasTrapMessage "Invalid commit message format" ;
+            test:hasTrapType "message_error" ;
+    :hasStepAction "Create markdown commit message"  ;
+    :hasStepOrder 4  ;
+    :hasStepStatus "PENDING" .
+
+:FixErrorsStep a :CheckinStep  ;
+    rdfs:label "Fix Errors" ;
+    rdfs:comment "Fix any test failures or errors" ;
+    :hasErrorTrap [ a test:ErrorTrap  ;
+            test:hasTrapMessage "Error not properly trapped" ;
+            test:hasTrapType "untrapped_error" ;
+    :hasStepAction "Modify model and code to handle errors"  ;
+    :hasStepOrder 2  ;
+    :hasStepStatus "PENDING" .
+
+:GitAddStep a :CheckinStep  ;
+    rdfs:label "Git Add" ;
+    rdfs:comment "Add changes to git staging area" ;
+    :hasErrorTrap [ a test:ErrorTrap  ;
+            test:hasTrapMessage "Git add failed" ;
+            test:hasTrapType "git_error" ;
+    :hasStepAction "git add modified files"  ;
+    :hasStepOrder 3  ;
+    :hasStepStatus "PENDING" .
+
+:RunTestsStep a :CheckinStep  ;
+    rdfs:label "Run Tests" ;
+    rdfs:comment "Run all tests in the test suite" ;
+    :hasErrorTrap [ a test:ErrorTrap  ;
+            test:hasTrapMessage "Test failures detected" ;
+            test:hasTrapType "test_failure" ;
+    :hasStepAction "Run pytest with coverage and type checking"  ;
+    :hasStepOrder 1  ;
+    :hasStepStatus "PENDING" .
+
+:hasErrorTrap a owl:ObjectProperty  ;
+    rdfs:label "has error trap" ;
+    rdfs:comment "Specifies the error trapping mechanism" ;
+    rdfs:domain :CheckinStep ;
+    rdfs:range test:ErrorTrap ;
+    owl:versionInfo "1.0.0" .
+
+:hasFixCycle a owl:ObjectProperty  ;
+    rdfs:label "has fix cycle" ;
+    rdfs:comment "Specifies the steps in the error fix cycle" ;
+    rdfs:domain :CheckinErrorHandling ;
+    rdfs:range test:FixCycle ;
+    owl:versionInfo "1.0.0" .
+
+:hasStepAction a owl:DatatypeProperty  ;
+    rdfs:label "has step action" ;
+    rdfs:comment "Specifies the action to take in this step" ;
+    rdfs:domain :CheckinStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasStepOrder a owl:DatatypeProperty  ;
+    rdfs:label "has step order" ;
+    rdfs:comment "Specifies the order of the checkin step" ;
+    rdfs:domain :CheckinStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+:hasStepStatus a owl:DatatypeProperty  ;
+    rdfs:label "has step status" ;
+    rdfs:comment "Specifies the status of the step" ;
+    rdfs:domain :CheckinStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:CheckinProcess a owl:Ontology  ;
+    rdfs:label "Checkin Process" ;
+    dc:title "Checkin Process" ;
+    dc:version "1.0.0" ;
+    dct:created "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dct:description "Process for checking in code changes with error handling and validation" ;
+    dct:modified "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    rdfs:comment "Defines the process for checking in code changes" ;
+    owl:versionInfo "1.0.0" .
+
+:CheckinErrorHandling a owl:Class  ;
+    rdfs:label "Checkin Error Handling" ;
+    rdfs:comment "Defines the process for handling checkin errors" ;
+    rdfs:isDefinedBy :CheckinProcess ;
+    owl:versionInfo "1.0.0" .
+
+:CheckinStep a owl:Class  ;
+    rdfs:label "Checkin Step" ;
+    rdfs:comment "A step in the checkin process" ;
+    rdfs:isDefinedBy :CheckinProcess ;
+    owl:versionInfo "1.0.0" .
+
+[
+    ] a sh:NodeShape ;
+    sh:property :shape4sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape5sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ;
+    sh:targetClass owl:Class .
+

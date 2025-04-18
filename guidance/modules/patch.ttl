@@ -1,0 +1,257 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#> .
+
+@prefix : <./#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix model: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/model#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:exampleAddOperation1 a :AddOperation  ;
+    rdfs:label "Example AddOperation 1" ;
+    rdfs:comment "This is example instance 1 of class AddOperation" .
+
+:exampleAddOperation2 a :AddOperation  ;
+    rdfs:label "Example AddOperation 2" ;
+    rdfs:comment "This is example instance 2 of class AddOperation" .
+
+:examplePatchModel1 a :PatchModel  ;
+    rdfs:label "Example PatchModel 1" ;
+    rdfs:comment "This is example instance 1 of class PatchModel" ;
+    :createdAt "2024-03-21T12:00:01+00:00"^^xsd:dateTime  ;
+    :hasOperation :examplePatchOperation1  ;
+    :hasTargetSpore :exampleOntology1 .
+
+:examplePatchModel2 a :PatchModel  ;
+    rdfs:label "Example PatchModel 2" ;
+    rdfs:comment "This is example instance 2 of class PatchModel" ;
+    :createdAt "2024-03-21T12:00:02+00:00"^^xsd:dateTime  ;
+    :hasOperation :examplePatchOperation2  ;
+    :hasTargetSpore :exampleOntology2 .
+
+:exampleRemoveOperation1 a :RemoveOperation  ;
+    rdfs:label "Example RemoveOperation 1" ;
+    rdfs:comment "This is example instance 1 of class RemoveOperation" .
+
+:exampleRemoveOperation2 a :RemoveOperation  ;
+    rdfs:label "Example RemoveOperation 2" ;
+    rdfs:comment "This is example instance 2 of class RemoveOperation" .
+
+:OperationShape a sh:NodeShape  ;
+    sh:property sh:property [
+        
+        sh:message "Operation must have a subject" ;
+        sh:minCount 1 ;
+        sh:path :hasSubject 
+    ]  .
+        :shape1 sh:message "Operation must have a predicate"  ;
+            sh:minCount 1 ;
+            sh:path :hasPredicate .
+        :shape1 sh:message "Operation must have an object"  ;
+            sh:minCount 1 ;
+            sh:path :hasObject ;
+    sh:targetClass :PatchOperation .
+
+:PatchGuidanceModule a owl:Ontology  ;
+    rdfs:label "Patch Guidance Module" ;
+    dc:title "Patch Guidance Module" ;
+    dc:version "1.0.0" ;
+    dct:created "2024-04-16T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-04-16T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Guidance for patch creation, validation, and management" ;
+    owl:imports <./core.ttl>,
+        <./model.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+<./patch#PatchGuidanceModule#ModuleShape> a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./patch#PatchGuidanceModule#version>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./patch#PatchGuidanceModule#description>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./patch#PatchGuidanceModule#label> ;
+    sh:targetClass <./patch#PatchGuidanceModule#Module> .
+
+:PatchShape a sh:NodeShape  ;
+    sh:property sh:property [
+        
+        sh:message "Patch must have a target SPORE" ;
+        sh:minCount 1 ;
+        sh:path :hasTargetSpore 
+    ]  .
+        :shape1 sh:datatype xsd:dateTime  ;
+            sh:message "Patch must have a creation timestamp" ;
+            sh:minCount 1 ;
+            sh:path :createdAt .
+        :shape1 sh:message "Patch must have at least one operation"  ;
+            sh:minCount 1 ;
+            sh:path :hasOperation .
+        :shape1 sh:datatype xsd:string  ;
+            sh:message "Patch must have a label" ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:message "Patch must have a comment" ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:message "Patch must have a semantic version number" ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+            sh:pattern "^[
+        0-9
+    ]+\\.[
+        0-9
+    ]+\\.[
+        0-9
+    ]+$" ;
+    sh:targetClass :PatchModel .
+
+:URIShape a sh:NodeShape  ;
+    sh:property :shape4sh:message "Target spore must use relative path (e.g. 'spore.ttl')" ;
+            sh:path :hasTargetSpore ;
+            sh:pattern "^[
+        ^/
+    ]+\\.ttl$"  .
+        :shape1 sh:path :hasOperation  ;
+            sh:property :shape5sh:message "Subject must use relative URI" ;
+                    sh:path :hasSubject ;
+                    sh:pattern "^[
+        ^/
+    ]+$"  .
+        :shape1 sh:message "Predicate must use relative URI"  ;
+                    sh:path :hasPredicate ;
+                    sh:pattern "^[
+        ^/
+    ]+$"  .
+        :shape1 sh:message "Object must use relative URI"  ;
+                    sh:path :hasObject ;
+                    sh:pattern "^[
+        ^/
+    ]+$" ;
+    sh:targetClass :PatchModel .
+
+:examplePatch a :PatchModel  ;
+    rdfs:label "Example Patch" ;
+    rdfs:comment "An example patch demonstrating model-first principles" ;
+    owl:versionInfo "1.0.0" ;
+    :createdAt "2024-04-16T00:00:00"^^xsd:dateTime  ;
+    :hasOperation :exampleOperation  ;
+    :hasTargetSpore "example_spore.ttl" .
+
+:patchGuidance a owl:NamedIndividual,
+        :ModelFirstPrinciple  ;
+    rdfs:label "Patch Management Guidance" ;
+    rdfs:comment """Patch management follows model-first principles:
+    1. Patches must be model-valid before code changes
+    2. Patch validation ensures ontological consistency
+    3. Code changes must align with patch model""" ;
+    core:complexity 2 ;
+    core:sourceContext "Model-Driven Development" ;
+    core:targetContext "Patch Management" .
+
+:examplePatchOperation1 a :PatchOperation  ;
+    rdfs:label "Example PatchOperation 1" ;
+    rdfs:comment "This is example instance 1 of class PatchOperation" ;
+    :hasObject :exampleThing1  ;
+    :hasPredicate :exampleThing1  ;
+    :hasSubject :exampleThing1 .
+
+:examplePatchOperation2 a :PatchOperation  ;
+    rdfs:label "Example PatchOperation 2" ;
+    rdfs:comment "This is example instance 2 of class PatchOperation" ;
+    :hasObject :exampleThing2  ;
+    :hasPredicate :exampleThing2  ;
+    :hasSubject :exampleThing2 .
+
+:createdAt a owl:DatatypeProperty  ;
+    rdfs:label "Created At" ;
+    rdfs:comment "Timestamp when patch was created" ;
+    rdfs:domain :PatchModel ;
+    rdfs:range xsd:dateTime .
+
+:exampleOperation a :AddOperation  ;
+    :hasObject "example_object"  ;
+    :hasPredicate "example_predicate"  ;
+    :hasSubject "example_subject" .
+
+:RemoveOperation a owl:Class  ;
+    rdfs:label "Remove Operation" ;
+    rdfs:comment "Operation to remove a triple" ;
+    rdfs:subClassOf :PatchOperation ;
+    owl:versionInfo "1.0.0" .
+
+:hasObject a owl:ObjectProperty  ;
+    rdfs:label "Has Object" ;
+    rdfs:comment "Object of the operation triple" ;
+    rdfs:domain :PatchOperation ;
+    rdfs:range owl:Thing .
+
+:hasOperation a owl:ObjectProperty  ;
+    rdfs:label "Has Operation" ;
+    rdfs:comment "Links a patch to its operations" ;
+    rdfs:domain :PatchModel ;
+    rdfs:range :PatchOperation .
+
+:hasPredicate a owl:ObjectProperty  ;
+    rdfs:label "Has Predicate" ;
+    rdfs:comment "Predicate of the operation triple" ;
+    rdfs:domain :PatchOperation ;
+    rdfs:range owl:Thing .
+
+:hasSubject a owl:ObjectProperty  ;
+    rdfs:label "Has Subject" ;
+    rdfs:comment "Subject of the operation triple" ;
+    rdfs:domain :PatchOperation ;
+    rdfs:range owl:Thing .
+
+:hasTargetSpore a owl:ObjectProperty  ;
+    rdfs:label "Has Target SPORE" ;
+    rdfs:comment "The SPORE this patch targets" ;
+    rdfs:domain :PatchModel ;
+    rdfs:range owl:Ontology .
+
+:AddOperation a owl:Class  ;
+    rdfs:label "Add Operation" ;
+    rdfs:comment "Operation to add a triple" ;
+    rdfs:subClassOf :PatchOperation ;
+    owl:versionInfo "1.0.0" .
+
+:PatchModel a owl:Class  ;
+    rdfs:label "Patch Model" ;
+    rdfs:comment "Model for semantic patches" ;
+    rdfs:subClassOf model:ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
+
+:PatchOperation a owl:Class  ;
+    rdfs:label "Patch Operation" ;
+    rdfs:comment "An operation within a patch" ;
+    rdfs:subClassOf :PatchModel ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape6sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape7sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+
