@@ -1,165 +1,35 @@
-@prefix : <./testing#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/testing#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix ns1: <http://example.org/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix meta: <./meta#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix ns1: <http://example.org/guidance#> .
-@prefix guidance: <./guidance#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Test Module Definition
-:TestingGuidanceModule rdf:type owl:Ontology ;
-    rdfs:label "Testing Guidance Module" ;
-    rdfs:comment "Guidance for testing procedures and configurations" ;
-    dc:title "Testing Guidance Module" ;
-    dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
-    dct:created "2024-04-15T00:00:00"^^xsd:dateTime ;
-    dct:modified "2024-04-15T00:00:00"^^xsd:dateTime ;
-    dct:publisher "Ontology Framework Project" ;
-    dct:description "Guidance for testing procedures, configurations, and reporting" .
+ns1:ErrorHandlingShape a sh:NodeShape ;
+    sh:property :shape1sh:message "Test error handling must specify a fix cycle" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasFixCycle ;
+    sh:targetClass ns1:TestErrorHandling .
 
-# Test File Structure
-:TestFileStructure rdf:type owl:Class ;
-    rdfs:label "Test File Structure" ;
-    rdfs:comment "Structure and organization of test files" ;
-    owl:versionInfo "1.0.0" ;
-    rdfs:isDefinedBy :TestingGuidanceModule .
+ns1:ErrorTrapShape a sh:NodeShape ;
+    sh:property :shape2sh:message "Error trap must specify a trap type" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTrapType  .
+        :shape1 sh:message "Error trap must specify an expected error message"  ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTrapMessage ;
+    sh:targetClass ns1:ErrorTrap .
 
-:testDirectory rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test Directory" ;
-    rdfs:comment "Directory containing test files" ;
-    rdfs:domain :TestFileStructure ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:testFilePattern rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test File Pattern" ;
-    rdfs:comment "Pattern for test file names" ;
-    rdfs:domain :TestFileStructure ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-# Test Configuration Files
-:TestConfigFiles rdf:type owl:Class ;
-    rdfs:label "Test Configuration Files" ;
-    rdfs:comment "Configuration files for test execution" ;
-    owl:versionInfo "1.0.0" ;
-    rdfs:isDefinedBy :TestingGuidanceModule .
-
-:configFileLocation rdf:type owl:DatatypeProperty ;
-    rdfs:label "Configuration File Location" ;
-    rdfs:comment "Location of configuration file" ;
-    rdfs:domain :TestConfigFiles ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:configFileFormat rdf:type owl:DatatypeProperty ;
-    rdfs:label "Configuration File Format" ;
-    rdfs:comment "Format of configuration file" ;
-    rdfs:domain :TestConfigFiles ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-# Test Execution
-:TestExecution rdf:type owl:Class ;
-    rdfs:label "Test Execution" ;
-    rdfs:comment "Rules for test execution" ;
-    owl:versionInfo "1.0.0" ;
-    rdfs:isDefinedBy :TestingGuidanceModule .
-
-:executionOrder rdf:type owl:DatatypeProperty ;
-    rdfs:label "Execution Order" ;
-    rdfs:comment "Order of test execution" ;
-    rdfs:domain :TestExecution ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:testDependencies rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test Dependencies" ;
-    rdfs:comment "Dependencies required for test execution" ;
-    rdfs:domain :TestExecution ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-# SHACL Shapes for Test File Structure
-:TestFileStructureShape a sh:NodeShape ;
-    sh:targetClass :TestFileStructure ;
-    sh:property [
-        sh:path :testDirectory ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:message "Test file structure must specify a test directory" ;
-    ] ,
-    [
-        sh:path :testFilePattern ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:pattern "test_.*\\.py" ;
-        sh:message "Test file pattern must match 'test_*.py'" ;
-    ] .
-
-# SHACL Shapes for Test Configuration Files
-:TestConfigFilesShape a sh:NodeShape ;
-    sh:targetClass :TestConfigFiles ;
-    sh:property [
-        sh:path :configFileLocation ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:message "Test configuration must specify file location" ;
-    ] ,
-    [
-        sh:path :configFileFormat ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:in ("ini" "toml" "yaml" "json") ;
-        sh:message "Configuration file format must be ini, toml, yaml, or json" ;
-    ] .
-
-# SHACL Shapes for Test Execution
-:TestExecutionShape a sh:NodeShape ;
-    sh:targetClass :TestExecution ;
-    sh:property [
-        sh:path :executionOrder ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:in ("sequential" "parallel") ;
-        sh:message "Execution order must be sequential or parallel" ;
-    ] ,
-    [
-        sh:path :testDependencies ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:message "Test execution must specify dependencies" ;
-    ] .
-
-# Test File Structure Instance
-:standardTestStructure rdf:type owl:NamedIndividual, :TestFileStructure ;
-    rdfs:label "Standard Test Structure" ;
-    rdfs:comment "Standard structure for test files" ;
-    :testDirectory "tests" ;
-    :testFilePattern "test_*.py" .
-
-# Test Configuration Files Instance
-:standardTestConfigFiles rdf:type owl:NamedIndividual, :TestConfigFiles ;
-    rdfs:label "Standard Test Configuration Files" ;
-    rdfs:comment "Standard configuration files for tests" ;
-    :configFileLocation "pytest.ini" ;
-    :configFileFormat "ini" .
-
-# Test Execution Instance
-:standardTestExecution rdf:type owl:NamedIndividual, :TestExecution ;
-    rdfs:label "Standard Test Execution" ;
-    rdfs:comment "Standard rules for test execution" ;
-    :executionOrder "sequential" ;
-    :testDependencies "pytest pytest-cov mypy" .
-
-ns1:TestErrorHandling a owl:Class ;
-    rdfs:label "Test Error Handling" ;
-    rdfs:comment "Defines the process for handling test failures and implementing fixes" .
+ns1:FixCycleShape a sh:NodeShape ;
+    sh:property :shape3sh:message "Fix cycle must include all required steps" ;
+            sh:minCount 4 ;
+            sh:path ns1:hasFixStep ;
+    sh:targetClass ns1:FixCycle .
 
 ns1:hasErrorTrap a owl:ObjectProperty ;
     rdfs:label "has error trap" ;
@@ -167,41 +37,11 @@ ns1:hasErrorTrap a owl:ObjectProperty ;
     rdfs:domain ns1:TestStep ;
     rdfs:range ns1:ErrorTrap .
 
-ns1:hasFixCycle a owl:ObjectProperty ;
-    rdfs:label "has fix cycle" ;
-    rdfs:comment "Specifies the steps in the error fix cycle" ;
-    rdfs:domain ns1:TestErrorHandling ;
-    rdfs:range ns1:FixCycle .
-
-ns1:ErrorTrap a owl:Class ;
-    rdfs:label "Error Trap" ;
-    rdfs:comment "Defines how to properly trap and handle test errors" .
-
-ns1:FixCycle a owl:Class ;
-    rdfs:label "Fix Cycle" ;
-    rdfs:comment "Defines the steps in the error fix cycle" .
-
-ns1:hasTrapType a owl:DatatypeProperty ;
-    rdfs:label "has trap type" ;
-    rdfs:comment "Specifies the type of error trap (assertion, exception, etc.)" ;
-    rdfs:domain ns1:ErrorTrap ;
+ns1:hasStepAction a owl:DatatypeProperty ;
+    rdfs:label "has step action" ;
+    rdfs:comment "Specifies the action to take in this step" ;
+    rdfs:domain ns1:FixStep ;
     rdfs:range xsd:string .
-
-ns1:hasTrapMessage a owl:DatatypeProperty ;
-    rdfs:label "has trap message" ;
-    rdfs:comment "Specifies the expected error message" ;
-    rdfs:domain ns1:ErrorTrap ;
-    rdfs:range xsd:string .
-
-ns1:hasFixStep a owl:ObjectProperty ;
-    rdfs:label "has fix step" ;
-    rdfs:comment "Specifies a step in the fix cycle" ;
-    rdfs:domain ns1:FixCycle ;
-    rdfs:range ns1:FixStep .
-
-ns1:FixStep a owl:Class ;
-    rdfs:label "Fix Step" ;
-    rdfs:comment "A step in the error fix cycle" .
 
 ns1:hasStepOrder a owl:DatatypeProperty ;
     rdfs:label "has step order" ;
@@ -209,89 +49,274 @@ ns1:hasStepOrder a owl:DatatypeProperty ;
     rdfs:domain ns1:FixStep ;
     rdfs:range xsd:integer .
 
-ns1:hasStepAction a owl:DatatypeProperty ;
-    rdfs:label "has step action" ;
-    rdfs:comment "Specifies the action to take in this step" ;
-    rdfs:domain ns1:FixStep ;
+:exampleErrorTrap1 a ns1:ErrorTrap  ;
+    rdfs:label "Example ErrorTrap 1" ;
+    ns1:hasTrapMessage "Example value 1" ;
+    ns1:hasTrapType "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorTrap" .
+
+:exampleErrorTrap2 a ns1:ErrorTrap  ;
+    rdfs:label "Example ErrorTrap 2" ;
+    ns1:hasTrapMessage "Example value 2" ;
+    ns1:hasTrapType "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorTrap" .
+
+:exampleTestConfigFiles1 a :TestConfigFiles  ;
+    rdfs:label "Example TestConfigFiles 1" ;
+    rdfs:comment "This is example instance 1 of class TestConfigFiles" ;
+    :configFileFormat "Example value 1"  ;
+    :configFileLocation "Example value 1" .
+
+:exampleTestConfigFiles2 a :TestConfigFiles  ;
+    rdfs:label "Example TestConfigFiles 2" ;
+    rdfs:comment "This is example instance 2 of class TestConfigFiles" ;
+    :configFileFormat "Example value 2"  ;
+    :configFileLocation "Example value 2" .
+
+:exampleTestErrorHandling1 a ns1:TestErrorHandling  ;
+    rdfs:label "Example TestErrorHandling 1" ;
+    ns1:hasFixCycle :exampleFixCycle1 ;
+    rdfs:comment "This is example instance 1 of class TestErrorHandling" .
+
+:exampleTestErrorHandling2 a ns1:TestErrorHandling  ;
+    rdfs:label "Example TestErrorHandling 2" ;
+    ns1:hasFixCycle :exampleFixCycle2 ;
+    rdfs:comment "This is example instance 2 of class TestErrorHandling" .
+
+:exampleTestExecution1 a :TestExecution  ;
+    rdfs:label "Example TestExecution 1" ;
+    rdfs:comment "This is example instance 1 of class TestExecution" ;
+    :executionOrder "Example value 1"  ;
+    :testDependencies "Example value 1" .
+
+:exampleTestExecution2 a :TestExecution  ;
+    rdfs:label "Example TestExecution 2" ;
+    rdfs:comment "This is example instance 2 of class TestExecution" ;
+    :executionOrder "Example value 2"  ;
+    :testDependencies "Example value 2" .
+
+:exampleTestFileStructure1 a :TestFileStructure  ;
+    rdfs:label "Example TestFileStructure 1" ;
+    rdfs:comment "This is example instance 1 of class TestFileStructure" ;
+    :testDirectory "Example value 1"  ;
+    :testFilePattern "Example value 1" .
+
+:exampleTestFileStructure2 a :TestFileStructure  ;
+    rdfs:label "Example TestFileStructure 2" ;
+    rdfs:comment "This is example instance 2 of class TestFileStructure" ;
+    :testDirectory "Example value 2"  ;
+    :testFilePattern "Example value 2" .
+
+:exampleTestPatternApplication1 a :TestPatternApplication  ;
+    rdfs:label "Example TestPatternApplication 1" ;
+    rdfs:comment "This is example instance 1 of class TestPatternApplication" ;
+    :appliesPattern :exampleSPARQLTestPattern1  ;
+    :targetOntology :exampleOntology1  ;
+    :testResult "Example value 1" .
+
+:exampleTestPatternApplication2 a :TestPatternApplication  ;
+    rdfs:label "Example TestPatternApplication 2" ;
+    rdfs:comment "This is example instance 2 of class TestPatternApplication" ;
+    :appliesPattern :exampleSPARQLTestPattern2  ;
+    :targetOntology :exampleOntology2  ;
+    :testResult "Example value 2" .
+
+:ExampleApplication a :TestPatternApplication  ;
+    :appliesPattern :PropertyCardinalityTest  ;
+    :targetOntology <./runtime_error_handling.ttl>  ;
+    :testResult "PASS"^^xsd:string .
+
+:ProcessCompletenessApplication a :TestPatternApplication  ;
+    rdfs:label "Process Completeness Application" ;
+    rdfs:comment "Application of process completeness test to error handling ontology" ;
+    :appliesPattern :ProcessCompletenessTest  ;
+    :targetOntology <./runtime_error_handling.ttl>  ;
+    :testResult true .
+
+:PropertyCardinalityApplication a :TestPatternApplication  ;
+    rdfs:label "Property Cardinality Application" ;
+    rdfs:comment "Application of property cardinality test to error handling ontology" ;
+    :appliesPattern :PropertyCardinalityTest  ;
+    :targetOntology <./runtime_error_handling.ttl>  ;
+    :testResult true .
+
+:SPARQLTestPatternShape a sh:NodeShape  ;
+    sh:property :shape4sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern must have exactly one SPARQL query" ;
+            sh:minCount 1 ;
+            sh:path :hasTestQuery .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern must have exactly one purpose" ;
+            sh:minCount 1 ;
+            sh:path :hasTestPurpose .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern must have exactly one category" ;
+            sh:minCount 1 ;
+            sh:path :hasTestCategory ;
+    sh:targetClass :SPARQLTestPattern .
+
+:TestConfigFilesShape a sh:NodeShape  ;
+    sh:property :shape5sh:datatype xsd:string ;
+            sh:message "Test configuration must specify file location" ;
+            sh:minCount 1 ;
+            sh:path :configFileLocation .
+        :shape1 sh:datatype xsd:string  ;
+            sh:in ( "ini" "toml" "yaml" "json" ) ;
+            sh:message "Configuration file format must be ini, toml, yaml, or json" ;
+            sh:minCount 1 ;
+            sh:path :configFileFormat ;
+    sh:targetClass :TestConfigFiles .
+
+:TestExecutionShape a sh:NodeShape  ;
+    sh:property :shape6sh:datatype xsd:string ;
+            sh:in ( "sequential" "parallel" ) ;
+            sh:message "Execution order must be sequential or parallel" ;
+            sh:minCount 1 ;
+            sh:path :executionOrder .
+        :shape1 sh:datatype xsd:string  ;
+            sh:message "Test execution must specify dependencies" ;
+            sh:minCount 1 ;
+            sh:path :testDependencies ;
+    sh:targetClass :TestExecution .
+
+:TestFileStructureShape a sh:NodeShape  ;
+    sh:property :shape7sh:datatype xsd:string ;
+            sh:message "Test file structure must specify a test directory" ;
+            sh:minCount 1 ;
+            sh:path :testDirectory .
+        :shape1 sh:datatype xsd:string  ;
+            sh:message "Test file pattern must match 'test_*.py'" ;
+            sh:minCount 1 ;
+            sh:path :testFilePattern ;
+            sh:pattern "test_.*\\.py" ;
+    sh:targetClass :TestFileStructure .
+
+:TestPatternApplicationShape a sh:NodeShape  ;
+    sh:property :shape8sh:class :SPARQLTestPattern ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern application must specify one pattern" ;
+            sh:minCount 1 ;
+            sh:path :appliesPattern .
+        :shape1 sh:class owl:Ontology  ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern application must specify one target ontology" ;
+            sh:minCount 1 ;
+            sh:path :targetOntology .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Test pattern application must have a result" ;
+            sh:minCount 1 ;
+            sh:path :testResult ;
+    sh:targetClass :TestPatternApplication .
+
+<./testing#TestingGuidanceModule#ModuleShape> a sh:NodeShape  ;
+    sh:property :shape9sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./testing#TestingGuidanceModule#version>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./testing#TestingGuidanceModule#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./testing#TestingGuidanceModule#description> ;
+    sh:targetClass <./testing#TestingGuidanceModule#Module> .
+
+:TypeHierarchyApplication a :TestPatternApplication  ;
+    rdfs:label "Type Hierarchy Application" ;
+    rdfs:comment "Application of type hierarchy test to error handling ontology" ;
+    :appliesPattern :TypeHierarchyTest  ;
+    :targetOntology <./runtime_error_handling.ttl>  ;
+    :testResult true .
+
+:standardTestConfigFiles a owl:NamedIndividual,
+        :TestConfigFiles  ;
+    rdfs:label "Standard Test Configuration Files" ;
+    rdfs:comment "Standard configuration files for tests" ;
+    :configFileFormat "ini"  ;
+    :configFileLocation "pytest.ini" .
+
+:standardTestExecution a owl:NamedIndividual,
+        :TestExecution  ;
+    rdfs:label "Standard Test Execution" ;
+    rdfs:comment "Standard rules for test execution" ;
+    :executionOrder "sequential"  ;
+    :testDependencies "pytest pytest-cov mypy" .
+
+:standardTestStructure a owl:NamedIndividual,
+        :TestFileStructure  ;
+    rdfs:label "Standard Test Structure" ;
+    rdfs:comment "Standard structure for test files" ;
+    :testDirectory "tests"  ;
+    :testFilePattern "test_*.py" .
+
+ns1:hasFixCycle a owl:ObjectProperty  ;
+    rdfs:label "has fix cycle" ;
+    rdfs:comment "Specifies the steps in the error fix cycle" ;
+    rdfs:domain ns1:TestErrorHandling ;
+    rdfs:range ns1:FixCycle .
+
+ns1:hasFixStep a owl:ObjectProperty ;
+    rdfs:label "has fix step" ;
+    rdfs:comment "Specifies a step in the fix cycle" ;
+    rdfs:domain ns1:FixCycle ;
+    rdfs:range ns1:FixStep .
+
+ns1:hasTrapMessage a owl:DatatypeProperty ;
+    rdfs:label "has trap message" ;
+    rdfs:comment "Specifies the expected error message" ;
+    rdfs:domain ns1:ErrorTrap ;
     rdfs:range xsd:string .
 
-# SHACL shapes for error handling
-ns1:ErrorHandlingShape a sh:NodeShape ;
-    sh:targetClass ns1:TestErrorHandling ;
-    sh:property [
-        sh:path ns1:hasFixCycle ;
-        sh:minCount 1 ;
-        sh:message "Test error handling must specify a fix cycle" ;
-    ] .
+ns1:hasTrapType a owl:DatatypeProperty ;
+    rdfs:label "has trap type" ;
+    rdfs:comment "Specifies the type of error trap (assertion, exception, etc.)" ;
+    rdfs:domain ns1:ErrorTrap ;
+    rdfs:range xsd:string .
 
-ns1:ErrorTrapShape a sh:NodeShape ;
-    sh:targetClass ns1:ErrorTrap ;
-    sh:property [
-        sh:path ns1:hasTrapType ;
-        sh:minCount 1 ;
-        sh:message "Error trap must specify a trap type" ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasTrapMessage ;
-        sh:minCount 1 ;
-        sh:message "Error trap must specify an expected error message" ;
-    ] .
+:exampleFixCycle1 a ns1:FixCycle  ;
+    rdfs:label "Example FixCycle 1" ;
+    ns1:hasFixStep :exampleFixStep1 ;
+    rdfs:comment "This is example instance 1 of class FixCycle" .
 
-ns1:FixCycleShape a sh:NodeShape ;
-    sh:targetClass ns1:FixCycle ;
-    sh:property [
-        sh:path ns1:hasFixStep ;
-        sh:minCount 4 ;
-        sh:message "Fix cycle must include all required steps" ;
-    ] .
+:exampleFixCycle2 a ns1:FixCycle  ;
+    rdfs:label "Example FixCycle 2" ;
+    ns1:hasFixStep :exampleFixStep2 ;
+    rdfs:comment "This is example instance 2 of class FixCycle" .
 
-# Test Pattern Class
-:SPARQLTestPattern rdf:type owl:Class ;
-    rdfs:label "SPARQL Test Pattern"@en ;
-    rdfs:comment "A pattern for testing ontology properties using SPARQL queries"@en .
+:exampleFixStep1 a ns1:FixStep  ;
+    rdfs:label "Example FixStep 1" ;
+    ns1:hasStepAction "Example value 1" ;
+    ns1:hasStepOrder 1 ;
+    rdfs:comment "This is example instance 1 of class FixStep" .
 
-# Test Pattern Properties
-:hasTestQuery rdf:type owl:DatatypeProperty ;
-    rdfs:domain :SPARQLTestPattern ;
-    rdfs:range xsd:string ;
-    rdfs:label "has test query"@en ;
-    rdfs:comment "The SPARQL query used to test the pattern"@en .
+:exampleFixStep2 a ns1:FixStep  ;
+    rdfs:label "Example FixStep 2" ;
+    ns1:hasStepAction "Example value 2" ;
+    ns1:hasStepOrder 2 ;
+    rdfs:comment "This is example instance 2 of class FixStep" .
 
-:hasTestPurpose rdf:type owl:DatatypeProperty ;
-    rdfs:domain :SPARQLTestPattern ;
-    rdfs:range xsd:string ;
-    rdfs:label "has test purpose"@en ;
-    rdfs:comment "The purpose of the test pattern"@en .
+:exampleSPARQLTestPattern1 a :SPARQLTestPattern  ;
+    rdfs:label "Example SPARQLTestPattern 1" ;
+    rdfs:comment "This is example instance 1 of class SPARQLTestPattern" ;
+    :hasTestCategory "Example value 1"  ;
+    :hasTestPurpose "Example value 1"  ;
+    :hasTestQuery "Example value 1" .
 
-:hasTestCategory rdf:type owl:DatatypeProperty ;
-    rdfs:domain :SPARQLTestPattern ;
-    rdfs:range xsd:string ;
-    rdfs:label "has test category"@en ;
-    rdfs:comment "The category of the test pattern"@en .
+:exampleSPARQLTestPattern2 a :SPARQLTestPattern  ;
+    rdfs:label "Example SPARQLTestPattern 2" ;
+    rdfs:comment "This is example instance 2 of class SPARQLTestPattern" ;
+    :hasTestCategory "Example value 2"  ;
+    :hasTestPurpose "Example value 2"  ;
+    :hasTestQuery "Example value 2" .
 
-# Test Pattern Instances
-:PropertyCardinalityTest rdf:type :SPARQLTestPattern ;
-    rdfs:label "Property Cardinality Test" ;
-    rdfs:comment "Tests that properties have the correct cardinality" ;
-    :hasTestQuery """
-        SELECT ?subject ?property (COUNT(?value) as ?count)
-        WHERE {
-            ?shape a sh:NodeShape ;
-                   sh:property ?propertyShape .
-            ?propertyShape sh:path ?property ;
-                          sh:minCount ?minCount ;
-                          sh:maxCount ?maxCount .
-            ?subject ?property ?value .
-        }
-        GROUP BY ?subject ?property
-        HAVING (COUNT(?value) < ?minCount || COUNT(?value) > ?maxCount)
-    """ ;
-    :hasTestPurpose "Ensure properties have correct cardinality" ;
-    :hasTestCategory "Cardinality" .
-
-:ProcessCompletenessTest rdf:type :SPARQLTestPattern ;
+:ProcessCompletenessTest a :SPARQLTestPattern  ;
     rdfs:label "Process Completeness Test" ;
     rdfs:comment "Tests that processes have all required steps" ;
+    :hasTestCategory "Completeness"  ;
+    :hasTestPurpose "Ensure processes have all required steps"  ;
     :hasTestQuery """
         SELECT ?process
         WHERE {
@@ -301,13 +326,13 @@ ns1:FixCycleShape a sh:NodeShape ;
                 ?step error:hasStepOrder ?order .
             }
         }
-    """ ;
-    :hasTestPurpose "Ensure processes have all required steps" ;
-    :hasTestCategory "Completeness" .
+    """ .
 
-:TypeHierarchyTest rdf:type :SPARQLTestPattern ;
+:TypeHierarchyTest a :SPARQLTestPattern  ;
     rdfs:label "Type Hierarchy Test" ;
     rdfs:comment "Tests the correctness of type hierarchies" ;
+    :hasTestCategory "Hierarchy"  ;
+    :hasTestPurpose "Ensure type hierarchies are valid"  ;
     :hasTestQuery """
         SELECT ?type ?superType
         WHERE {
@@ -317,108 +342,185 @@ ns1:FixCycleShape a sh:NodeShape ;
                 ?superType rdf:type owl:Class .
             }
         }
-    """ ;
-    :hasTestPurpose "Ensure type hierarchies are valid" ;
-    :hasTestCategory "Hierarchy" .
+    """ .
 
-# SHACL Shape for Test Pattern Validation
-:SPARQLTestPatternShape rdf:type sh:NodeShape ;
-    sh:targetClass :SPARQLTestPattern ;
-    sh:property [
-        sh:path :hasTestQuery ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern must have exactly one SPARQL query" ;
-    ] ;
-    sh:property [
-        sh:path :hasTestPurpose ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern must have exactly one purpose" ;
-    ] ;
-    sh:property [
-        sh:path :hasTestCategory ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern must have exactly one category" ;
-    ] .
+:appliesPattern a owl:ObjectProperty  ;
+    rdfs:label "applies pattern"@en ;
+    rdfs:comment "The test pattern being applied"@en ;
+    rdfs:domain :TestPatternApplication ;
+    rdfs:range :SPARQLTestPattern .
 
-# Test Pattern Application
-:TestPatternApplication rdf:type owl:Class ;
+:configFileFormat a owl:DatatypeProperty  ;
+    rdfs:label "Configuration File Format" ;
+    rdfs:comment "Format of configuration file" ;
+    rdfs:domain :TestConfigFiles ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:configFileLocation a owl:DatatypeProperty  ;
+    rdfs:label "Configuration File Location" ;
+    rdfs:comment "Location of configuration file" ;
+    rdfs:domain :TestConfigFiles ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:executionOrder a owl:DatatypeProperty  ;
+    rdfs:label "Execution Order" ;
+    rdfs:comment "Order of test execution" ;
+    rdfs:domain :TestExecution ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasTestCategory a owl:DatatypeProperty  ;
+    rdfs:label "has test category"@en ;
+    rdfs:comment "The category of the test pattern"@en ;
+    rdfs:domain :SPARQLTestPattern ;
+    rdfs:range xsd:string .
+
+:hasTestPurpose a owl:DatatypeProperty  ;
+    rdfs:label "has test purpose"@en ;
+    rdfs:comment "The purpose of the test pattern"@en ;
+    rdfs:domain :SPARQLTestPattern ;
+    rdfs:range xsd:string .
+
+:hasTestQuery a owl:DatatypeProperty  ;
+    rdfs:label "has test query"@en ;
+    rdfs:comment "The SPARQL query used to test the pattern"@en ;
+    rdfs:domain :SPARQLTestPattern ;
+    rdfs:range xsd:string .
+
+:targetOntology a owl:ObjectProperty  ;
+    rdfs:label "target ontology"@en ;
+    rdfs:comment "The ontology being tested"@en ;
+    rdfs:domain :TestPatternApplication ;
+    rdfs:range owl:Ontology .
+
+:testDependencies a owl:DatatypeProperty  ;
+    rdfs:label "Test Dependencies" ;
+    rdfs:comment "Dependencies required for test execution" ;
+    rdfs:domain :TestExecution ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:testDirectory a owl:DatatypeProperty  ;
+    rdfs:label "Test Directory" ;
+    rdfs:comment "Directory containing test files" ;
+    rdfs:domain :TestFileStructure ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:testFilePattern a owl:DatatypeProperty  ;
+    rdfs:label "Test File Pattern" ;
+    rdfs:comment "Pattern for test file names" ;
+    rdfs:domain :TestFileStructure ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:testResult a owl:DatatypeProperty  ;
+    rdfs:label "test result"@en ;
+    rdfs:comment "The result of applying the test pattern"@en ;
+    rdfs:domain :TestPatternApplication ;
+    rdfs:range xsd:string .
+
+:PropertyCardinalityTest a :SPARQLTestPattern  ;
+    rdfs:label "Property Cardinality Test" ;
+    rdfs:comment "Tests that properties have the correct cardinality" ;
+    :hasTestCategory "Cardinality"  ;
+    :hasTestPurpose "Ensure properties have correct cardinality"  ;
+    :hasTestQuery """
+        SELECT ?subject ?property (COUNT(?value) as ?count)
+        WHERE {
+            ?shape a sh:NodeShape  ;
+                   sh:property ?propertyShape .
+            ?propertyShape sh:path ?property ;
+                          sh:minCount ?minCount ;
+                          sh:maxCount ?maxCount .
+            ?subject ?property ?value .
+        }
+        GROUP BY ?subject ?property
+        HAVING (COUNT(?value) < ?minCount || COUNT(?value) > ?maxCount)
+    """ .
+
+:TestingGuidanceModule a owl:Ontology  ;
+    rdfs:label "Testing Guidance Module" ;
+    dc:title "Testing Guidance Module" ;
+    dc:version "1.0.0" ;
+    dct:created "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dct:description "Guidance for testing procedures, configurations, and reporting" ;
+    dct:modified "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    rdfs:comment "Guidance for testing procedures and configurations" ;
+    rdfs:seeAlso [
+         a owl:Thing ;
+            rdfs:label "Systemic Issue: Large Ontology File Handling" ;
+            dct:created "2024-04-16T00:00:00"^^xsd:dateTime ;
+            dct:modified "2024-04-16T00:00:00"^^xsd:dateTime ;
+            rdfs:comment "Investigate and resolve systemic issues with handling large ontology files, particularly in guidance.ttl. Consider implementing chunked reading, caching, or alternative storage strategies." ;
+            owl:versionInfo "1.0.0" ;
+            :priority "HIGH"  ;
+            :status "OPEN"  ;
+            :targetDate "2024-Q2"  ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TestErrorHandling a owl:Class ;
+    rdfs:label "Test Error Handling" ;
+    rdfs:comment "Defines the process for handling test failures and implementing fixes" .
+
+ns1:FixCycle a owl:Class ;
+    rdfs:label "Fix Cycle" ;
+    rdfs:comment "Defines the steps in the error fix cycle" .
+
+ns1:FixStep a owl:Class ;
+    rdfs:label "Fix Step" ;
+    rdfs:comment "A step in the error fix cycle" .
+
+ns1:ErrorTrap a owl:Class ;
+    rdfs:label "Error Trap" ;
+    rdfs:comment "Defines how to properly trap and handle test errors" .
+
+:TestConfigFiles a owl:Class  ;
+    rdfs:label "Test Configuration Files" ;
+    rdfs:comment "Configuration files for test execution" ;
+    rdfs:isDefinedBy :TestingGuidanceModule ;
+    owl:versionInfo "1.0.0" .
+
+:TestExecution a owl:Class  ;
+    rdfs:label "Test Execution" ;
+    rdfs:comment "Rules for test execution" ;
+    rdfs:isDefinedBy :TestingGuidanceModule ;
+    owl:versionInfo "1.0.0" .
+
+:TestFileStructure a owl:Class  ;
+    rdfs:label "Test File Structure" ;
+    rdfs:comment "Structure and organization of test files" ;
+    rdfs:isDefinedBy :TestingGuidanceModule ;
+    owl:versionInfo "1.0.0" .
+
+:TestPatternApplication a owl:Class  ;
     rdfs:label "Test Pattern Application"@en ;
     rdfs:comment "An application of a test pattern to a specific ontology"@en .
 
-# Test Pattern Application Properties
-:appliesPattern rdf:type owl:ObjectProperty ;
-    rdfs:domain :TestPatternApplication ;
-    rdfs:range :SPARQLTestPattern ;
-    rdfs:label "applies pattern"@en ;
-    rdfs:comment "The test pattern being applied"@en .
+:SPARQLTestPattern a owl:Class  ;
+    rdfs:label "SPARQL Test Pattern"@en ;
+    rdfs:comment "A pattern for testing ontology properties using SPARQL queries"@en .
 
-:targetOntology rdf:type owl:ObjectProperty ;
-    rdfs:domain :TestPatternApplication ;
-    rdfs:range owl:Ontology ;
-    rdfs:label "target ontology"@en ;
-    rdfs:comment "The ontology being tested"@en .
+[
+    ] a sh:NodeShape ;
+    sh:property :shape10sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
 
-:testResult rdf:type owl:DatatypeProperty ;
-    rdfs:domain :TestPatternApplication ;
-    rdfs:range xsd:string ;
-    rdfs:label "test result"@en ;
-    rdfs:comment "The result of applying the test pattern"@en .
+[] a sh:NodeShape ;
+    sh:property :shape11sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
 
-# Example Test Pattern Application
-:ExampleApplication rdf:type :TestPatternApplication ;
-    :appliesPattern :PropertyCardinalityTest ;
-    :targetOntology <./runtime_error_handling.ttl> ;
-    :testResult "PASS"^^xsd:string .
-
-# SHACL Shape for Test Pattern Application
-:TestPatternApplicationShape rdf:type sh:NodeShape ;
-    sh:targetClass :TestPatternApplication ;
-    sh:property [
-        sh:path :appliesPattern ;
-        sh:class :SPARQLTestPattern ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern application must specify one pattern" ;
-    ] ;
-    sh:property [
-        sh:path :targetOntology ;
-        sh:class owl:Ontology ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern application must specify one target ontology" ;
-    ] ;
-    sh:property [
-        sh:path :testResult ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Test pattern application must have a result" ;
-    ] .
-
-# Pattern Applications
-:PropertyCardinalityApplication rdf:type :TestPatternApplication ;
-    rdfs:label "Property Cardinality Application" ;
-    rdfs:comment "Application of property cardinality test to error handling ontology" ;
-    :appliesPattern :PropertyCardinalityTest ;
-    :targetOntology <./runtime_error_handling.ttl> ;
-    :testResult true .
-
-:ProcessCompletenessApplication rdf:type :TestPatternApplication ;
-    rdfs:label "Process Completeness Application" ;
-    rdfs:comment "Application of process completeness test to error handling ontology" ;
-    :appliesPattern :ProcessCompletenessTest ;
-    :targetOntology <./runtime_error_handling.ttl> ;
-    :testResult true .
-
-:TypeHierarchyApplication rdf:type :TestPatternApplication ;
-    rdfs:label "Type Hierarchy Application" ;
-    rdfs:comment "Application of type hierarchy test to error handling ontology" ;
-    :appliesPattern :TypeHierarchyTest ;
-    :targetOntology <./runtime_error_handling.ttl> ;
-    :testResult true . 

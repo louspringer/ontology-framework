@@ -1,72 +1,72 @@
-@prefix ns1: <http://purl.org/dc/elements/1.1/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sol: <http://louspringer.com/ontology/solution#> .
-@prefix prob: <http://louspringer.com/ontology/problem#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix ns1: <http:/purl.org/dc/elements/1.1/#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix sol: <http:/louspringer.com/ontology/solution#> .
+@prefix prob: <http:/louspringer.com/ontology/problem#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
 
-<http://louspringer.com/ontology/solution#SolutionSpaceOntology> a owl:Ontology ;
+<http:/louspringer.com/ontology/solution#SolutionSpaceOntology> a owl:Ontology ;
     ns1:title "Solution Space Ontology" ;
     ns1:version "1.1" ;
     rdfs:comment "Updated to include solutions for interdisciplinary collaboration." .
 
-<http://louspringer.com/ontology/solution#TechnicalSolution> a owl:Class ;
+<http:/louspringer.com/ontology/solution#TechnicalSolution> a owl:Class ;
     rdfs:label "Technical Solution" ;
     rdfs:comment "Proposed or implemented technical approach" .
 
-<http://louspringer.com/ontology/solution#Implementation> a owl:Class ;
+<http:/louspringer.com/ontology/solution#Implementation> a owl:Class ;
     rdfs:label "Implementation" ;
     rdfs:comment "Concrete implementation details" .
 
-<http://louspringer.com/ontology/solution#Validation> a owl:Class ;
+<http:/louspringer.com/ontology/solution#Validation> a owl:Class ;
     rdfs:label "Validation" ;
     rdfs:comment "Validation criteria and results" .
 
-<http://louspringer.com/ontology/solution#satisfies> a owl:ObjectProperty ;
+<http:/louspringer.com/ontology/solution#satisfies> a owl:ObjectProperty ;
     rdfs:domain sol:TechnicalSolution ;
     rdfs:range prob:BusinessNeed .
 
-<http://louspringer.com/ontology/solution#hasImplementation> a owl:ObjectProperty ;
+<http:/louspringer.com/ontology/solution#hasImplementation> a owl:ObjectProperty ;
     rdfs:domain sol:TechnicalSolution ;
     rdfs:range sol:Implementation .
 
-<http://louspringer.com/ontology/solution#hasValidation> a owl:ObjectProperty ;
+<http:/louspringer.com/ontology/solution#hasValidation> a owl:ObjectProperty ;
     rdfs:domain sol:Implementation ;
     rdfs:range sol:Validation .
 
-<http://louspringer.com/ontology/solution#validationStatus> a owl:DatatypeProperty ;
+<http:/louspringer.com/ontology/solution#validationStatus> a owl:DatatypeProperty ;
     rdfs:domain sol:Validation ;
     rdfs:range xsd:string .
 
-<http://louspringer.com/ontology/solution#InterdisciplinaryWorkshop> a sol:TechnicalSolution ;
+<http:/louspringer.com/ontology/solution#InterdisciplinaryWorkshop> a sol:TechnicalSolution ;
     rdfs:label "Interdisciplinary Workshop" ;
     rdfs:comment "Workshop designed to facilitate communication between biologists and programmers." .
 
-<http://louspringer.com/ontology/solution#SharedGlossarySolution> a sol:TechnicalSolution ;
+<http:/louspringer.com/ontology/solution#SharedGlossarySolution> a sol:TechnicalSolution ;
     rdfs:label "Shared Glossary Solution" ;
     rdfs:comment "Creating a shared glossary to bridge terminology gaps." .
 
-<http://louspringer.com/ontology/solution#CollaborationPattern> a owl:Class ;
+<http:/louspringer.com/ontology/solution#CollaborationPattern> a owl:Class ;
     rdfs:label "Collaboration Pattern" ;
     rdfs:comment "Reusable patterns for interdisciplinary collaboration" .
 
-<http://louspringer.com/ontology/solution#CommunicationArtifact> a owl:Class ;
+<http:/louspringer.com/ontology/solution#CommunicationArtifact> a owl:Class ;
     rdfs:label "Communication Artifact" ;
     rdfs:comment "Tangible outputs that facilitate communication" .
 
-<http://louspringer.com/ontology/solution#VisualModelingSolution> a sol:TechnicalSolution ;
+<http:/louspringer.com/ontology/solution#VisualModelingSolution> a sol:TechnicalSolution ;
     rdfs:label "Visual Modeling Solution" ;
     rdfs:comment "Using visual models to bridge understanding between disciplines" .
 
-<http://louspringer.com/ontology/solution#CrossDisciplinaryReview> a sol:TechnicalSolution ;
+<http:/louspringer.com/ontology/solution#CrossDisciplinaryReview> a sol:TechnicalSolution ;
     rdfs:label "Cross-Disciplinary Review" ;
     rdfs:comment "Regular review sessions with representatives from different disciplines" .
 
-<http://louspringer.com/ontology/solution#PairExpertise> a sol:CollaborationPattern ;
+<http:/louspringer.com/ontology/solution#PairExpertise> a sol:CollaborationPattern ;
     rdfs:label "Pair Expertise" ;
     rdfs:comment "Pairing experts from different disciplines for knowledge transfer" .
 
-<http://louspringer.com/ontology/solution#IterativeFeedback> a sol:CollaborationPattern ;
+<http:/louspringer.com/ontology/solution#IterativeFeedback> a sol:CollaborationPattern ;
     rdfs:label "Iterative Feedback" ;
     rdfs:comment "Regular feedback cycles between disciplinary teams" .
 

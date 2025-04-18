@@ -66,12 +66,25 @@ class NamespaceDependencyMapper:
 
     def generate_dependency_graph(self) -> None:
         """Generate a visualization of the namespace dependency graph."""
-        plt.figure(figsize=(12, 8))
+        plt.figure(figsize=(12, 8), facecolor='white')
+        ax = plt.gca()
+        ax.set_facecolor('white')
+        
         pos = nx.spring_layout(self.graph)
-        nx.draw(self.graph, pos, with_labels=True, node_color='lightblue', 
-                node_size=2000, font_size=8, font_weight='bold')
-        plt.title("Namespace Dependency Graph")
-        plt.savefig('docs/namespace_dependency_graph.png')
+        nx.draw(self.graph, pos, with_labels=True, 
+                node_color='lightblue',
+                node_size=2000, 
+                font_size=8,
+                font_weight='bold',
+                edge_color='#666666',
+                width=1.5)
+        
+        plt.title("Namespace Dependency Graph", pad=20)
+        plt.savefig('docs/namespace_dependency_graph.svg', 
+                   format='svg',
+                   facecolor='white',
+                   edgecolor='none',
+                   bbox_inches='tight')
         plt.close()
 
     def generate_migration_plan(self) -> str:

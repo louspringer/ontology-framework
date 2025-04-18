@@ -1,10 +1,10 @@
-@prefix : <http://example.org/boldo/requirements#> .
-@prefix ex: <http://ontology-framework.example.org/requirements#> .
-@prefix guidance: <http://ontology-framework.example.org/guidance#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix file: <file:./boldo_structural_scraper.py> .
+@prefix : <http:/example.org/boldo/requirements#> .
+@prefix ex: <http:/ontology-framework.example.org/requirements#> .
+@prefix guidance: <http:/ontology-framework.example.org/guidance#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix dct: <http:/purl.org/dc/terms/#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix file: <file:./boldo_structural_scraper.py#> .
 
 :file_requirements a ex:RequirementDocument ;
     sh:targetClass ex:RequirementDocument ;

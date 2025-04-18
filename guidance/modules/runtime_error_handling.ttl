@@ -1,1040 +1,1208 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix : <http://example.org/error-handling#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix meta: <./meta#> .
-@prefix metameta: <./metameta#> .
-@prefix problem: <./problem#> .
-@prefix solution: <./solution#> .
-@prefix conversation: <./conversation#> .
-@prefix guidance: <./guidance#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Ontology Definition
-:OntologyFramework rdf:type owl:Ontology ;
+:APIErrorInstance a :APIError  ;
+    rdfs:label "API Error Instance" ;
+    :hasAlertingIntegration true  ;
+    :hasMonitoringIntegration true  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Instance of an API error" .
+
+:ErrorBoundary a :PreventionMeasure  ;
+    rdfs:label "Error Boundary" ;
+    rdfs:comment "Measure to contain error propagation" ;
+    owl:versionInfo "1.0.0" .
+
+:ErrorClassificationMatrix a :ConfusionMatrix  ;
+    rdfs:label "Error Classification Matrix" ;
+    :hasAccuracy 0.98  ;
+    :hasFalseNegative 5  ;
+    :hasFalsePositive 10  ;
+    :hasTrueNegative 1000  ;
+    :hasTruePositive 100  ;
+    :hasVersion "1.0.0"  ;
+    :lastUpdated "2024-03-21T00:00:00"^^xsd:dateTime  ;
+    rdfs:comment "Matrix for error classification accuracy" .
+
+:ErrorCount a :Metric  ;
+    rdfs:label "Error Count" ;
+    :hasMetricDescription "Total number of errors encountered"  ;
+    :hasMetricTarget "100"  ;
+    :hasMetricUnit "count"  ;
+    :hasThreshold 100  ;
+    rdfs:comment "Count of errors encountered" .
+
+:ErrorDetectionTime a :Metric  ;
+    rdfs:label "Error Detection Time" ;
+    :hasMetricDescription "Average time to detect errors"  ;
+    :hasMetricTarget "300"  ;
+    :hasMetricUnit "seconds"  ;
+    :hasThreshold 300  ;
+    rdfs:comment "Time taken to detect errors" .
+
+:ErrorHandlingComplianceStandardShape a sh:NodeShape  ;
+    sh:property :shape1sh:maxCount 1 ;
+            sh:message "Compliance standard must have a description" ;
+            sh:minCount 1 ;
+            sh:path :hasStandardDescription .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Compliance standard must have a version" ;
+            sh:minCount 1 ;
+            sh:path :hasStandardVersion ;
+    sh:targetClass :ErrorHandlingComplianceStandard .
+
+:ErrorHandlingConstraintShape a sh:NodeShape  ;
+    sh:property :shape2sh:maxCount 1 ;
+            sh:message "Constraint must have a description" ;
+            sh:minCount 1 ;
+            sh:path :hasConstraintDescription .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Constraint must have a type" ;
+            sh:minCount 1 ;
+            sh:path :hasConstraintType .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Constraint must have a value" ;
+            sh:minCount 1 ;
+            sh:path :hasConstraintValue ;
+    sh:targetClass :ErrorHandlingConstraint .
+
+:ErrorHandlingGuide a :Documentation  ;
+    rdfs:label "Error Handling Guide" ;
+    rdfs:comment "Guide for error handling procedures" .
+
+:ErrorHandlingProcessShape a sh:NodeShape  ;
+    sh:property :shape3sh:maxCount 4 ;
+            sh:message "Error handling process must have exactly 4 steps" ;
+            sh:minCount 4 ;
+            sh:path :hasProcessStep .
+        :shape1 sh:maxCount 4  ;
+            sh:minCount 4 ;
+            sh:path :hasProcessStep ;
+    sh:targetClass :ErrorHandlingProcess .
+
+:ErrorHandlingRiskShape a sh:NodeShape  ;
+    sh:property :shape4sh:maxCount 1 ;
+            sh:message "Risk must have a description" ;
+            sh:minCount 1 ;
+            sh:path :hasRiskDescription .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Risk must have a severity level" ;
+            sh:minCount 1 ;
+            sh:path :hasRiskSeverity .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Risk must have a mitigation strategy" ;
+            sh:minCount 1 ;
+            sh:path :hasRiskMitigation ;
+    sh:targetClass :ErrorHandlingRisk .
+
+:ErrorHandlingValidationRuleShape a sh:NodeShape  ;
+    sh:property :shape5sh:maxCount 1 ;
+            sh:message "Validation rule must have a description" ;
+            sh:minCount 1 ;
+            sh:path :hasRuleDescription .
+        :shape1 sh:maxCount 1  ;
+            sh:message "Validation rule must have a severity level" ;
+            sh:minCount 1 ;
+            sh:path :hasRuleSeverity ;
+    sh:targetClass :ErrorHandlingValidationRule .
+
+:ErrorLogShape a sh:NodeShape  ;
+    sh:property :shape6sh:datatype xsd:string ;
+            sh:in ( "PUBLIC" "PRIVATE" "CONFIDENTIAL" ) ;
+            sh:path :hasLogSecurityLevel ;
+    sh:targetClass :ErrorLog .
+
+:ErrorRate a :Metric  ;
+    rdfs:label "Error Rate" ;
+    :hasMetricDescription "Number of errors per hour"  ;
+    :hasMetricTarget "10"  ;
+    :hasMetricUnit "errors/hour"  ;
+    :hasThreshold 10  ;
+    rdfs:comment "Rate of errors per time unit" .
+
+:ErrorRecoveryTime a :Metric  ;
+    rdfs:label "Error Recovery Time" ;
+    :hasMetricDescription "Average time to recover from errors"  ;
+    :hasMetricTarget "3600"  ;
+    :hasMetricUnit "seconds"  ;
+    :hasThreshold 3600  ;
+    rdfs:comment "Time taken to recover from errors" .
+
+:ErrorReport a :Documentation,
+        :ErrorDocumentation  ;
+    rdfs:label "Error Report" ;
+    rdfs:comment "Detailed error report",
+        "Documentation of error reports" ;
+    owl:versionInfo "1.0.0" .
+
+:ErrorTypeExclusivity a :Assumption,
+        :ValidationRule  ;
+    rdfs:label "Error Type Exclusivity" ;
+    :hasRuleType "OPERATIONAL"  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Assumes error types are mutually exclusive",
+        "Validates that error types are mutually exclusive" .
+
+:ErrorTypeShape a sh:NodeShape  ;
+    sh:property :shape7sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasSeverity .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasMonitoringIntegration .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasAlertingIntegration ;
+    sh:targetClass :ErrorType .
+
+:ErrorTypeTestCase a :TestCase  ;
+    rdfs:label "Error Type Test Case" ;
+    :hasTestCaseType "Validation"  ;
+    rdfs:comment "Test case for error type validation" .
+
+:FallbackStrategy a :RecoveryStrategy  ;
+    rdfs:label "Fallback Strategy" ;
+    rdfs:comment "Strategy to use fallback mechanisms" ;
+    owl:versionInfo "1.0.0" .
+
+:GDPR a :ComplianceStandard  ;
+    rdfs:label "GDPR" ;
+    :hasComplianceStatus "COMPLIANT"  ;
+    :hasRequirement "Protect personal data during error handling"  ;
+    rdfs:comment "General Data Protection Regulation" .
+
+:IOErrorInstance a :IOError  ;
+    rdfs:label "I/O Error Instance" ;
+    :hasAlertingIntegration true  ;
+    :hasMonitoringIntegration true  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Instance of an I/O error" .
+
+:IOErrorMatrix a :ConfusionMatrix  ;
+    :hasAccuracy 0.965  ;
+    :hasF1Score 0.963  ;
+    :hasFalseNegatives 3  ;
+    :hasFalsePositives 4  ;
+    :hasPrecision 0.958  ;
+    :hasRecall 0.968  ;
+    :hasTrueNegatives 101  ;
+    :hasTruePositives 92  ;
+    :hasVersion "1.0.0"  ;
+    :lastUpdated "2024-04-15T00:00:00+00:00"^^xsd:dateTime .
+
+:ISO27001 a :ComplianceStandard  ;
+    rdfs:label "ISO 27001" ;
+    :hasComplianceStatus "COMPLIANT"  ;
+    :hasRequirement "Implement error handling controls"  ;
+    rdfs:comment "Information security management standard" .
+
+:InputValidation a :PreventionMeasure  ;
+    rdfs:label "Input Validation" ;
+    rdfs:comment "Measure to validate input data" ;
+    owl:versionInfo "1.0.0" .
+
+:LoggingLatency a :Metric  ;
+    rdfs:label "Logging Latency" ;
+    :hasMetricDescription "Average time to log errors"  ;
+    :hasMetricTarget "1000"  ;
+    :hasMetricUnit "milliseconds"  ;
+    :hasThreshold 1000  ;
+    rdfs:comment "Time taken to log errors" .
+
+:MatrixValidation a :ValidationRule  ;
+    rdfs:label "Matrix Validation" ;
+    :hasRuleType "OPERATIONAL"  ;
+    :hasSeverity "HIGH"  ;
+    :hasValidationType "MATRIX"  ;
+    rdfs:comment "Validates confusion matrix calculations" .
+
+:MetricShape a sh:NodeShape  ;
+    sh:property :shape8sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Metric must have a description" ;
+            sh:minCount 1 ;
+            sh:path :hasMetricDescription .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Metric must have a unit" ;
+            sh:minCount 1 ;
+            sh:path :hasMetricUnit .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Metric must have a target value" ;
+            sh:minCount 1 ;
+            sh:path :hasMetricTarget .
+        :shape1 sh:datatype xsd:integer  ;
+            sh:maxCount 1 ;
+            sh:message "Metric must have a threshold value" ;
+            sh:minCount 1 ;
+            sh:path :hasThreshold ;
+    sh:targetClass :Metric .
+
+:MetricsReport a :ErrorDocumentation  ;
+    rdfs:label "Metrics Report" ;
+    rdfs:comment "Error handling metrics report" ;
+    owl:versionInfo "1.0.0" .
+
+:OntologyFramework a owl:Ontology  ;
     rdfs:label "Ontology Framework" ;
-    rdfs:comment "Framework for ontology development and management" ;
     dc:title "Ontology Framework" ;
     dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:description "Framework for ontology development and management" ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:publisher "Ontology Framework Project" ;
-    dct:description "Framework for ontology development and management" ;
-    owl:imports <./meta.ttl> ;
-    owl:imports <./metameta.ttl> ;
-    owl:imports <./problem.ttl> ;
-    owl:imports <./solution.ttl> ;
-    owl:imports <./conversation.ttl> ;
-    owl:imports <./guidance.ttl> .
-
-# Base Classes
-:ErrorType rdf:type owl:Class ;
-    rdfs:label "Error Type" ;
-    rdfs:comment "Base class for all error types" ;
+    rdfs:comment "Framework for ontology development and management" ;
+    owl:imports <./conversation.ttl>,
+        <./guidance.ttl>,
+        <./meta.ttl>,
+        <./metameta.ttl>,
+        <./problem.ttl>,
+        <./solution.ttl> ;
     owl:versionInfo "1.0.0" .
 
-:ErrorHandlingStep rdf:type owl:Class ;
-    rdfs:label "Error Handling Step" ;
-    rdfs:comment "Base class for error handling steps" ;
+<http://example.org/error-handling#OntologyFramework#ModuleShape> a sh:NodeShape ;
+    sh:property :shape9sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <http://example.org/error-handling#OntologyFramework#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <http://example.org/error-handling#OntologyFramework#version>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <http://example.org/error-handling#OntologyFramework#description> ;
+    sh:targetClass <http://example.org/error-handling#OntologyFramework#Module> .
+
+:PerformanceRisk a :Risk  ;
+    rdfs:label "Performance Risk" ;
+    :hasSeverity "MEDIUM"  ;
+    rdfs:comment "Risk of performance degradation during error handling" .
+
+:PreventionGuide a :ErrorDocumentation  ;
+    rdfs:label "Prevention Guide" ;
+    rdfs:comment "Error prevention guidelines" ;
     owl:versionInfo "1.0.0" .
 
-:ValidationRule rdf:type owl:Class ;
-    rdfs:label "Validation Rule" ;
-    rdfs:comment "Base class for validation rules" ;
+:ResolutionGuide a :ErrorDocumentation  ;
+    rdfs:label "Resolution Guide" ;
+    rdfs:comment "Step-by-step resolution guide" ;
     owl:versionInfo "1.0.0" .
 
-:Metric rdf:type owl:Class ;
-    rdfs:label "Metric" ;
-    rdfs:comment "Base class for metrics" ;
+:ResolutionTime a :Metric  ;
+    rdfs:label "Resolution Time" ;
+    :hasMetricDescription "Average time to fully resolve errors"  ;
+    :hasMetricTarget "3600"  ;
+    :hasMetricUnit "seconds"  ;
+    :hasThreshold 3600  ;
+    rdfs:comment "Time taken to resolve errors" .
+
+:ResourceConstraint a :Constraint,
+        :ValidationRule  ;
+    rdfs:label "Resource Constraint" ;
+    :hasMaxCPU "80%"  ;
+    :hasMaxMemory "2GB"  ;
+    :hasRuleType "PERFORMANCE"  ;
+    :hasSeverity "MEDIUM"  ;
+    rdfs:comment "Constraints on resource usage",
+        "Validates resource usage during error handling" .
+
+:RetryStrategy a :RecoveryStrategy  ;
+    rdfs:label "Retry Strategy" ;
+    rdfs:comment "Strategy to retry failed operations" ;
     owl:versionInfo "1.0.0" .
 
-:Risk rdf:type owl:Class ;
-    rdfs:label "Risk" ;
-    rdfs:comment "Base class for risks" ;
-    owl:versionInfo "1.0.0" .
+:RiskValidation a :ValidationRule  ;
+    rdfs:label "Risk Validation" ;
+    :hasRuleType "OPERATIONAL"  ;
+    :hasSeverity "HIGH"  ;
+    :hasValidationType "RISK_ASSESSMENT"  ;
+    rdfs:comment "Validates risk assessment",
+        "Validates risk assessment in error handling" .
 
-:ComplianceStandard rdf:type owl:Class ;
-    rdfs:label "Compliance Standard" ;
-    rdfs:comment "Base class for compliance standards" ;
-    owl:versionInfo "1.0.0" .
+:RuntimeErrorInstance a :RuntimeError  ;
+    rdfs:label "Runtime Error Instance" ;
+    :hasAlertingIntegration true  ;
+    :hasMonitoringIntegration true  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Instance of a runtime error" .
 
-:PreventionMeasure rdf:type owl:Class ;
-    rdfs:label "Prevention Measure" ;
-    rdfs:comment "Base class for prevention measures" ;
-    owl:versionInfo "1.0.0" .
+:SecurityRisk a :Risk  ;
+    rdfs:label "Security Risk" ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Risk of security breaches during error handling" .
 
-:RecoveryStrategy rdf:type owl:Class ;
-    rdfs:label "Recovery Strategy" ;
-    rdfs:comment "Base class for recovery strategies" ;
-    owl:versionInfo "1.0.0" .
+:SensitiveDataValidation a :ValidationRule  ;
+    rdfs:label "Sensitive Data Validation" ;
+    :hasValidationType "DATA_PROTECTION"  ;
+    rdfs:comment "Validates sensitive data handling" .
 
-:TestCase rdf:type owl:Class ;
-    rdfs:label "Test Case" ;
-    rdfs:comment "Base class for test cases" ;
-    owl:versionInfo "1.0.0" .
+:TestErrorHandlingProcessShape a sh:NodeShape  ;
+    sh:property :shape10sh:maxCount 4 ;
+            sh:minCount 4 ;
+            sh:path :hasProcessStep ;
+    sh:targetClass :TestErrorHandlingProcess .
 
-:Documentation rdf:type owl:Class ;
-    rdfs:label "Documentation" ;
-    rdfs:comment "Base class for documentation" ;
-    owl:versionInfo "1.0.0" .
+:TestErrorHandlingStepShape a sh:NodeShape  ;
+    sh:property :shape11sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasStepOrder .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasStepAction ;
+    sh:targetClass :TestErrorHandlingStep .
 
-:Assumption rdf:type owl:Class ;
-    rdfs:label "Assumption" ;
-    rdfs:comment "Base class for assumptions" ;
-    owl:versionInfo "1.0.0" .
+:TestFailureInstance a :TestFailure  ;
+    rdfs:label "Test Failure Instance" ;
+    :hasAlertingIntegration true  ;
+    :hasMonitoringIntegration true  ;
+    :hasSeverity "MEDIUM"  ;
+    rdfs:comment "Instance of a test failure" .
 
-:Constraint rdf:type owl:Class ;
-    rdfs:label "Constraint" ;
-    rdfs:comment "Base class for constraints" ;
-    owl:versionInfo "1.0.0" .
+:ValidationErrorInstance a :ValidationError  ;
+    rdfs:label "Validation Error Instance" ;
+    :hasAlertingIntegration true  ;
+    :hasMonitoringIntegration true  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Instance of a validation error" .
 
-:ConfusionMatrix rdf:type owl:Class ;
-    rdfs:label "Confusion Matrix" ;
-    rdfs:comment "Base class for confusion matrices" ;
-    owl:versionInfo "1.0.0" .
-
-# Properties
-:hasStepOrder rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ErrorHandlingStep ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has step order" ;
-    rdfs:comment "Specifies the order of an error handling step" .
-
-:hasStepAction rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ErrorHandlingStep ;
-    rdfs:range xsd:string ;
-    rdfs:label "has step action" ;
-    rdfs:comment "Specifies the action of an error handling step" .
-
-:hasThreshold rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Metric ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has threshold" ;
-    rdfs:comment "Specifies the threshold value for a metric" .
-
-:hasSeverity rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Risk ;
-    rdfs:range xsd:string ;
-    rdfs:label "has severity" ;
-    rdfs:comment "Specifies the severity level of a risk" .
-
-:hasRequirement rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ComplianceStandard ;
-    rdfs:range xsd:string ;
-    rdfs:label "has requirement" ;
-    rdfs:comment "Specifies a requirement for a compliance standard" .
-
-:hasComplianceStatus rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ComplianceStandard ;
-    rdfs:range xsd:string ;
-    rdfs:label "has compliance status" ;
-    rdfs:comment "Specifies the compliance status" .
-
-:hasTestCaseType rdf:type owl:DatatypeProperty ;
-    rdfs:domain :TestCase ;
-    rdfs:range xsd:string ;
-    rdfs:label "has test case type" ;
-    rdfs:comment "Specifies the type of a test case" .
-
-:hasValidationType rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule ;
-    rdfs:range xsd:string ;
-    rdfs:label "has validation type" ;
-    rdfs:comment "Specifies the type of validation" .
-
-:hasMaxMemory rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Constraint ;
-    rdfs:range xsd:string ;
-    rdfs:label "has max memory" ;
-    rdfs:comment "Specifies the maximum memory limit" .
-
-:hasMaxCPU rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Constraint ;
-    rdfs:range xsd:string ;
-    rdfs:label "has max CPU" ;
-    rdfs:comment "Specifies the maximum CPU usage limit" .
-
-:hasTruePositive rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has true positive" ;
-    rdfs:comment "Number of true positive predictions" .
-
-:hasFalsePositive rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has false positive" ;
-    rdfs:comment "Number of false positive predictions" .
-
-:hasTrueNegative rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has true negative" ;
-    rdfs:comment "Number of true negative predictions" .
-
-:hasFalseNegative rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:integer ;
-    rdfs:label "has false negative" ;
-    rdfs:comment "Number of false negative predictions" .
-
-:hasAccuracy rdf:type owl:DatatypeProperty ;
-    rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:decimal ;
+:hasAccuracy a owl:DatatypeProperty  ;
     rdfs:label "has accuracy" ;
-    rdfs:comment "Accuracy of the confusion matrix" .
-
-:hasVersion rdf:type owl:DatatypeProperty ;
+    rdfs:comment "Accuracy of the confusion matrix" ;
     rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:string ;
+    rdfs:range xsd:decimal .
+
+:hasComplianceStandard a owl:ObjectProperty  ;
+    rdfs:label "has compliance standard" ;
+    rdfs:comment "Specifies a compliance standard for error handling" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingComplianceStandard .
+
+:hasComplianceStatus a owl:DatatypeProperty  ;
+    rdfs:label "has compliance status" ;
+    rdfs:comment "Specifies the compliance status" ;
+    rdfs:domain :ComplianceStandard ;
+    rdfs:range xsd:string .
+
+:hasConstraint a owl:ObjectProperty  ;
+    rdfs:label "has constraint" ;
+    rdfs:comment "Specifies a constraint for error handling" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingConstraint .
+
+:hasDocumentationContent a owl:DatatypeProperty  ;
+    rdfs:comment "The content of the error documentation" ;
+    rdfs:domain :ErrorDocumentation ;
+    rdfs:range xsd:string .
+
+:hasDocumentationTitle a owl:DatatypeProperty  ;
+    rdfs:comment "The title of the error documentation" ;
+    rdfs:domain :ErrorDocumentation ;
+    rdfs:range xsd:string .
+
+:hasErrorCode a owl:DatatypeProperty  ;
+    rdfs:comment "The code identifying the error" ;
+    rdfs:domain :ErrorType ;
+    rdfs:range xsd:string .
+
+:hasErrorSeverity a owl:DatatypeProperty  ;
+    rdfs:comment "The severity level of the error" ;
+    rdfs:domain :ErrorType ;
+    rdfs:range xsd:string .
+
+:hasFalseNegative a owl:DatatypeProperty  ;
+    rdfs:label "has false negative" ;
+    rdfs:comment "Number of false negative predictions" ;
+    rdfs:domain :ConfusionMatrix ;
+    rdfs:range xsd:integer .
+
+:hasFalsePositive a owl:DatatypeProperty  ;
+    rdfs:label "has false positive" ;
+    rdfs:comment "Number of false positive predictions" ;
+    rdfs:domain :ConfusionMatrix ;
+    rdfs:range xsd:integer .
+
+:hasLastUpdated a owl:DatatypeProperty  ;
+    rdfs:comment "The last update time of the error documentation" ;
+    rdfs:domain :ErrorDocumentation ;
+    rdfs:range xsd:dateTime .
+
+:hasMaxCPU a owl:DatatypeProperty  ;
+    rdfs:label "has max CPU" ;
+    rdfs:comment "Specifies the maximum CPU usage limit" ;
+    rdfs:domain :Constraint ;
+    rdfs:range xsd:string .
+
+:hasMaxMemory a owl:DatatypeProperty  ;
+    rdfs:label "has max memory" ;
+    rdfs:comment "Specifies the maximum memory limit" ;
+    rdfs:domain :Constraint ;
+    rdfs:range xsd:string .
+
+:hasMetric a owl:ObjectProperty  ;
+    rdfs:label "has metric" ;
+    rdfs:comment "Specifies a metric for error handling" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingMetric .
+
+:hasMetricName a owl:DatatypeProperty  ;
+    rdfs:comment "The name of the error metric" ;
+    rdfs:domain :ErrorMetric ;
+    rdfs:range xsd:string .
+
+:hasMetricValue a owl:DatatypeProperty  ;
+    rdfs:comment "The value of the error metric" ;
+    rdfs:domain :ErrorMetric ;
+    rdfs:range xsd:decimal .
+
+:hasProcessDescription a owl:DatatypeProperty  ;
+    rdfs:comment "The description of the error handling process" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range xsd:string .
+
+:hasProcessName a owl:DatatypeProperty  ;
+    rdfs:comment "The name of the error handling process" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range xsd:string .
+
+:hasRequirement a owl:DatatypeProperty  ;
+    rdfs:label "has requirement" ;
+    rdfs:comment "Specifies a requirement for a compliance standard" ;
+    rdfs:domain :ComplianceStandard ;
+    rdfs:range xsd:string .
+
+:hasRisk a owl:ObjectProperty  ;
+    rdfs:label "has risk" ;
+    rdfs:comment "Specifies a risk for error handling" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingRisk .
+
+:hasStepDescription a owl:DatatypeProperty  ;
+    rdfs:comment "The description of the error handling step" ;
+    rdfs:domain :ErrorHandlingStep ;
+    rdfs:range xsd:string .
+
+:hasTestCaseType a owl:DatatypeProperty  ;
+    rdfs:label "has test case type" ;
+    rdfs:comment "Specifies the type of a test case" ;
+    rdfs:domain :TestCase ;
+    rdfs:range xsd:string .
+
+:hasTrueNegative a owl:DatatypeProperty  ;
+    rdfs:label "has true negative" ;
+    rdfs:comment "Number of true negative predictions" ;
+    rdfs:domain :ConfusionMatrix ;
+    rdfs:range xsd:integer .
+
+:hasTruePositive a owl:DatatypeProperty  ;
+    rdfs:label "has true positive" ;
+    rdfs:comment "Number of true positive predictions" ;
+    rdfs:domain :ConfusionMatrix ;
+    rdfs:range xsd:integer .
+
+:hasValidationRule a owl:ObjectProperty  ;
+    rdfs:label "has validation rule" ;
+    rdfs:comment "Specifies a validation rule for error handling" ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingValidationRule .
+
+:hasValidationType a owl:DatatypeProperty  ;
+    rdfs:label "has validation type" ;
+    rdfs:comment "Specifies the type of validation" ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range xsd:string .
+
+:hasVersion a owl:DatatypeProperty  ;
     rdfs:label "has version" ;
-    rdfs:comment "Version of the confusion matrix" .
-
-:lastUpdated rdf:type owl:DatatypeProperty ;
+    rdfs:comment "Version of the confusion matrix" ;
     rdfs:domain :ConfusionMatrix ;
-    rdfs:range xsd:dateTime ;
+    rdfs:range xsd:string .
+
+:lastUpdated a owl:DatatypeProperty  ;
     rdfs:label "last updated" ;
-    rdfs:comment "Last update timestamp" .
+    rdfs:comment "Last update timestamp" ;
+    rdfs:domain :ConfusionMatrix ;
+    rdfs:range xsd:dateTime .
 
-# Error Types
-:ValidationError rdf:type owl:Class ;
-    rdfs:label "Validation Error" ;
-    rdfs:comment "Errors in data validation" ;
-    rdfs:subClassOf :ErrorType ;
-    owl:versionInfo "1.0.0" .
+:standardErrorHandling a :ErrorHandlingProcess  ;
+    rdfs:label "Standard Error Handling" ;
+    :hasComplianceStandard :GDPRErrorHandling,
+        :ISO27001ErrorHandling  ;
+    :hasConstraint :DataIntegrityConstraint,
+        :ResolutionTimeConstraint,
+        :ResponseTimeConstraint  ;
+    :hasMetric :ErrorPreventionRate,
+        :ErrorRecurrenceRate,
+        :ErrorResolutionTime  ;
+    :hasProcessStep :ErrorAnalysis,
+        :ErrorIdentification,
+        :ErrorPrevention,
+        :ErrorRecovery  ;
+    :hasRisk :DataLossRisk,
+        :SecurityBreachRisk,
+        :ServiceDisruptionRisk  ;
+    :hasValidationRule :ErrorHandlingRule1,
+        :ErrorHandlingRule2,
+        :ErrorHandlingRule3,
+        :ErrorHandlingRule4  ;
+    rdfs:comment "Standard process for handling errors" .
 
-:IOError rdf:type owl:Class ;
-    rdfs:label "I/O Error" ;
-    rdfs:comment "Errors in input/output operations" ;
-    rdfs:subClassOf :ErrorType ;
-    owl:versionInfo "1.0.0" .
+:standardTestErrorHandling a :TestErrorHandlingProcess  ;
+    rdfs:label "Standard Test Error Handling" ;
+    :hasComplianceStandard :GDPRErrorHandling,
+        :ISO27001ErrorHandling  ;
+    :hasConstraint :DataIntegrityConstraint,
+        :ResolutionTimeConstraint,
+        :ResponseTimeConstraint  ;
+    :hasMetric :ErrorPreventionRate,
+        :ErrorRecurrenceRate,
+        :ErrorResolutionTime  ;
+    :hasProcessStep :TestErrorAnalysis,
+        :TestErrorIdentification,
+        :TestErrorPrevention,
+        :TestErrorRecovery  ;
+    :hasRisk :DataLossRisk,
+        :SecurityBreachRisk,
+        :ServiceDisruptionRisk  ;
+    :hasValidationRule :ErrorHandlingRule1,
+        :ErrorHandlingRule2,
+        :ErrorHandlingRule3,
+        :ErrorHandlingRule4  ;
+    rdfs:comment "Standard process for handling test errors" .
 
-:RuntimeError rdf:type owl:Class ;
-    rdfs:label "Runtime Error" ;
-    rdfs:comment "General runtime errors" ;
-    rdfs:subClassOf :ErrorType ;
-    owl:versionInfo "1.0.0" .
+:testErrorHandlingProcess a :TestErrorHandlingProcess  ;
+    rdfs:label "Test Error Handling Process" ;
+    :hasProcessDescription "Standard process for identifying, analyzing, fixing and preventing test errors"  ;
+    :hasProcessName "Standard Test Error Handling"  ;
+    :hasProcessStep :TestErrorAnalysis,
+        :TestErrorIdentification,
+        :TestErrorPrevention,
+        :TestErrorResolution  ;
+    rdfs:comment "Standard process for handling test errors" .
 
-:APIError rdf:type owl:Class ;
+:exampleAPIError1 a :APIError  ;
+    rdfs:label "Example APIError 1" ;
+    rdfs:comment "This is example instance 1 of class APIError" .
+
+:exampleAPIError2 a :APIError  ;
+    rdfs:label "Example APIError 2" ;
+    rdfs:comment "This is example instance 2 of class APIError" .
+
+:exampleAssumption1 a :Assumption  ;
+    rdfs:label "Example Assumption 1" ;
+    rdfs:comment "This is example instance 1 of class Assumption" .
+
+:exampleAssumption2 a :Assumption  ;
+    rdfs:label "Example Assumption 2" ;
+    rdfs:comment "This is example instance 2 of class Assumption" .
+
+:exampleComplianceStandard1 a :ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 1" ;
+    :hasComplianceStatus "Example value 1"  ;
+    :hasRequirement "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class ComplianceStandard" .
+
+:exampleComplianceStandard2 a :ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 2" ;
+    :hasComplianceStatus "Example value 2"  ;
+    :hasRequirement "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class ComplianceStandard" .
+
+:exampleConfusionMatrix1 a :ConfusionMatrix  ;
+    rdfs:label "Example ConfusionMatrix 1" ;
+    :hasAccuracy :exampledecimal1  ;
+    :hasFalseNegative 1  ;
+    :hasFalsePositive 1  ;
+    :hasTrueNegative 1  ;
+    :hasTruePositive 1  ;
+    :hasVersion "Example value 1"  ;
+    :lastUpdated "2024-03-21T12:00:01+00:00"^^xsd:dateTime  ;
+    rdfs:comment "This is example instance 1 of class ConfusionMatrix" .
+
+:exampleConfusionMatrix2 a :ConfusionMatrix  ;
+    rdfs:label "Example ConfusionMatrix 2" ;
+    :hasAccuracy :exampledecimal2  ;
+    :hasFalseNegative 2  ;
+    :hasFalsePositive 2  ;
+    :hasTrueNegative 2  ;
+    :hasTruePositive 2  ;
+    :hasVersion "Example value 2"  ;
+    :lastUpdated "2024-03-21T12:00:02+00:00"^^xsd:dateTime  ;
+    rdfs:comment "This is example instance 2 of class ConfusionMatrix" .
+
+:exampleConstraint1 a :Constraint  ;
+    rdfs:label "Example Constraint 1" ;
+    :hasMaxCPU "Example value 1"  ;
+    :hasMaxMemory "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class Constraint" .
+
+:exampleConstraint2 a :Constraint  ;
+    rdfs:label "Example Constraint 2" ;
+    :hasMaxCPU "Example value 2"  ;
+    :hasMaxMemory "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class Constraint" .
+
+:exampleDocumentation1 a :Documentation  ;
+    rdfs:label "Example Documentation 1" ;
+    rdfs:comment "This is example instance 1 of class Documentation" .
+
+:exampleDocumentation2 a :Documentation  ;
+    rdfs:label "Example Documentation 2" ;
+    rdfs:comment "This is example instance 2 of class Documentation" .
+
+:exampleErrorDocumentation1 a :ErrorDocumentation  ;
+    rdfs:label "Example ErrorDocumentation 1" ;
+    :hasDocumentationContent "Example value 1"  ;
+    :hasDocumentationTitle "Example value 1"  ;
+    :hasLastUpdated "2024-03-21T12:00:01+00:00"^^xsd:dateTime  ;
+    rdfs:comment "This is example instance 1 of class ErrorDocumentation" .
+
+:exampleErrorDocumentation2 a :ErrorDocumentation  ;
+    rdfs:label "Example ErrorDocumentation 2" ;
+    :hasDocumentationContent "Example value 2"  ;
+    :hasDocumentationTitle "Example value 2"  ;
+    :hasLastUpdated "2024-03-21T12:00:02+00:00"^^xsd:dateTime  ;
+    rdfs:comment "This is example instance 2 of class ErrorDocumentation" .
+
+:exampleErrorHandlingProcess1 a :ErrorHandlingProcess  ;
+    rdfs:label "Example ErrorHandlingProcess 1" ;
+    :hasComplianceStandard :exampleErrorHandlingComplianceStandard1  ;
+    :hasConstraint :exampleErrorHandlingConstraint1  ;
+    :hasMetric :exampleErrorHandlingMetric1  ;
+    :hasProcessDescription "Example value 1"  ;
+    :hasProcessName "Example value 1"  ;
+    :hasRisk :exampleErrorHandlingRisk1  ;
+    :hasValidationRule :exampleErrorHandlingValidationRule1  ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingProcess" .
+
+:exampleErrorHandlingProcess2 a :ErrorHandlingProcess  ;
+    rdfs:label "Example ErrorHandlingProcess 2" ;
+    :hasComplianceStandard :exampleErrorHandlingComplianceStandard2  ;
+    :hasConstraint :exampleErrorHandlingConstraint2  ;
+    :hasMetric :exampleErrorHandlingMetric2  ;
+    :hasProcessDescription "Example value 2"  ;
+    :hasProcessName "Example value 2"  ;
+    :hasRisk :exampleErrorHandlingRisk2  ;
+    :hasValidationRule :exampleErrorHandlingValidationRule2  ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingProcess" .
+
+:exampleErrorHandlingStep1 a :ErrorHandlingStep  ;
+    rdfs:label "Example ErrorHandlingStep 1" ;
+    :hasStepAction "Example value 1"  ;
+    :hasStepDescription "Example value 1"  ;
+    :hasStepOrder 1  ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingStep" .
+
+:exampleErrorHandlingStep2 a :ErrorHandlingStep  ;
+    rdfs:label "Example ErrorHandlingStep 2" ;
+    :hasStepAction "Example value 2"  ;
+    :hasStepDescription "Example value 2"  ;
+    :hasStepOrder 2  ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingStep" .
+
+:exampleErrorLog1 a :ErrorLog  ;
+    rdfs:label "Example ErrorLog 1" ;
+    :hasLogSecurityLevel "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class ErrorLog" .
+
+:exampleErrorLog2 a :ErrorLog  ;
+    rdfs:label "Example ErrorLog 2" ;
+    :hasLogSecurityLevel "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class ErrorLog" .
+
+:exampleErrorType1 a :ErrorType  ;
+    rdfs:label "Example ErrorType 1" ;
+    :hasAlertingIntegration :exampleboolean1  ;
+    :hasErrorCode "Example value 1"  ;
+    :hasErrorSeverity "Example value 1"  ;
+    :hasMonitoringIntegration :exampleboolean1  ;
+    rdfs:comment "This is example instance 1 of class ErrorType" .
+
+:exampleErrorType2 a :ErrorType  ;
+    rdfs:label "Example ErrorType 2" ;
+    :hasAlertingIntegration :exampleboolean2  ;
+    :hasErrorCode "Example value 2"  ;
+    :hasErrorSeverity "Example value 2"  ;
+    :hasMonitoringIntegration :exampleboolean2  ;
+    rdfs:comment "This is example instance 2 of class ErrorType" .
+
+:exampleIOError1 a :IOError  ;
+    rdfs:label "Example IOError 1" ;
+    rdfs:comment "This is example instance 1 of class IOError" .
+
+:exampleIOError2 a :IOError  ;
+    rdfs:label "Example IOError 2" ;
+    rdfs:comment "This is example instance 2 of class IOError" .
+
+:exampleMetric1 a :Metric  ;
+    rdfs:label "Example Metric 1" ;
+    :hasThreshold 1  ;
+    rdfs:comment "This is example instance 1 of class Metric" .
+
+:exampleMetric2 a :Metric  ;
+    rdfs:label "Example Metric 2" ;
+    :hasThreshold 2  ;
+    rdfs:comment "This is example instance 2 of class Metric" .
+
+:examplePreventionMeasure1 a :PreventionMeasure  ;
+    rdfs:label "Example PreventionMeasure 1" ;
+    rdfs:comment "This is example instance 1 of class PreventionMeasure" .
+
+:examplePreventionMeasure2 a :PreventionMeasure  ;
+    rdfs:label "Example PreventionMeasure 2" ;
+    rdfs:comment "This is example instance 2 of class PreventionMeasure" .
+
+:exampleRecoveryStrategy1 a :RecoveryStrategy  ;
+    rdfs:label "Example RecoveryStrategy 1" ;
+    rdfs:comment "This is example instance 1 of class RecoveryStrategy" .
+
+:exampleRecoveryStrategy2 a :RecoveryStrategy  ;
+    rdfs:label "Example RecoveryStrategy 2" ;
+    rdfs:comment "This is example instance 2 of class RecoveryStrategy" .
+
+:exampleRisk1 a :Risk  ;
+    rdfs:label "Example Risk 1" ;
+    :hasSeverity "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class Risk" .
+
+:exampleRisk2 a :Risk  ;
+    rdfs:label "Example Risk 2" ;
+    :hasSeverity "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class Risk" .
+
+:exampleRuntimeError1 a :RuntimeError  ;
+    rdfs:label "Example RuntimeError 1" ;
+    rdfs:comment "This is example instance 1 of class RuntimeError" .
+
+:exampleRuntimeError2 a :RuntimeError  ;
+    rdfs:label "Example RuntimeError 2" ;
+    rdfs:comment "This is example instance 2 of class RuntimeError" .
+
+:exampleTestCase1 a :TestCase  ;
+    rdfs:label "Example TestCase 1" ;
+    :hasTestCaseType "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class TestCase" .
+
+:exampleTestCase2 a :TestCase  ;
+    rdfs:label "Example TestCase 2" ;
+    :hasTestCaseType "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class TestCase" .
+
+:exampleTestErrorHandlingProcess1 a :TestErrorHandlingProcess  ;
+    rdfs:label "Example TestErrorHandlingProcess 1" ;
+    rdfs:comment "This is example instance 1 of class TestErrorHandlingProcess" .
+
+:exampleTestErrorHandlingProcess2 a :TestErrorHandlingProcess  ;
+    rdfs:label "Example TestErrorHandlingProcess 2" ;
+    rdfs:comment "This is example instance 2 of class TestErrorHandlingProcess" .
+
+:exampleTestFailure1 a :TestFailure  ;
+    rdfs:label "Example TestFailure 1" ;
+    rdfs:comment "This is example instance 1 of class TestFailure" .
+
+:exampleTestFailure2 a :TestFailure  ;
+    rdfs:label "Example TestFailure 2" ;
+    rdfs:comment "This is example instance 2 of class TestFailure" .
+
+:exampleValidationError1 a :ValidationError  ;
+    rdfs:label "Example ValidationError 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationError" .
+
+:exampleValidationError2 a :ValidationError  ;
+    rdfs:label "Example ValidationError 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationError" .
+
+:exampleValidationRule1 a :ValidationRule  ;
+    rdfs:label "Example ValidationRule 1" ;
+    :hasValidationType "Example value 1"  ;
+    rdfs:comment "This is example instance 1 of class ValidationRule" .
+
+:exampleValidationRule2 a :ValidationRule  ;
+    rdfs:label "Example ValidationRule 2" ;
+    :hasValidationType "Example value 2"  ;
+    rdfs:comment "This is example instance 2 of class ValidationRule" .
+
+:ErrorAnalysis a :ErrorHandlingStep  ;
+    rdfs:label "Error Analysis" ;
+    :hasStepAction "Analyze error cause and impact"  ;
+    :hasStepOrder 2  ;
+    rdfs:comment "Step for analyzing error cause" .
+
+:ErrorIdentification a :ErrorHandlingStep  ;
+    rdfs:label "Error Identification" ;
+    :hasStepAction "Identify and log the error"  ;
+    :hasStepOrder 1  ;
+    rdfs:comment "Step for identifying errors" .
+
+:ErrorPrevention a :ErrorHandlingStep  ;
+    rdfs:label "Error Prevention" ;
+    :hasStepAction "Implement prevention measures"  ;
+    :hasStepOrder 4  ;
+    rdfs:comment "Step for preventing future errors" .
+
+:ErrorRecovery a :ErrorHandlingStep  ;
+    rdfs:label "Error Recovery" ;
+    :hasStepAction "Implement recovery strategy"  ;
+    :hasStepOrder 3  ;
+    rdfs:comment "Step for recovering from errors" .
+
+:hasAlertingIntegration a owl:DatatypeProperty  ;
+    rdfs:comment "Whether the error type is integrated with alerting" ;
+    rdfs:domain :ErrorType ;
+    rdfs:range xsd:boolean .
+
+:hasLogSecurityLevel a owl:DatatypeProperty  ;
+    rdfs:comment "The security level of the error log" ;
+    rdfs:domain :ErrorLog ;
+    rdfs:range xsd:string .
+
+:hasMetricUnit a owl:DatatypeProperty  ;
+    rdfs:comment "The unit of the error metric" ;
+    rdfs:domain :ErrorMetric ;
+    rdfs:range xsd:string .
+
+:hasMonitoringIntegration a owl:DatatypeProperty  ;
+    rdfs:comment "Whether the error type is integrated with monitoring" ;
+    rdfs:domain :ErrorType ;
+    rdfs:range xsd:boolean .
+
+:hasSeverity a owl:DatatypeProperty  ;
+    rdfs:label "has severity" ;
+    rdfs:comment "Specifies the severity level of a risk" ;
+    rdfs:domain :Risk ;
+    rdfs:range xsd:string .
+
+:hasStepAction a owl:DatatypeProperty  ;
+    rdfs:label "has step action" ;
+    rdfs:comment "Specifies the action of an error handling step" ;
+    rdfs:domain :ErrorHandlingStep ;
+    rdfs:range xsd:string .
+
+:hasStepOrder a owl:DatatypeProperty  ;
+    rdfs:label "has step order" ;
+    rdfs:comment "Specifies the order of an error handling step" ;
+    rdfs:domain :ErrorHandlingStep ;
+    rdfs:range xsd:integer .
+
+:hasThreshold a owl:DatatypeProperty  ;
+    rdfs:label "has threshold" ;
+    rdfs:comment "Specifies the threshold value for a metric" ;
+    rdfs:domain :Metric ;
+    rdfs:range xsd:integer .
+
+:exampleErrorHandlingComplianceStandard1 a :ErrorHandlingComplianceStandard  ;
+    rdfs:label "Example ErrorHandlingComplianceStandard 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingComplianceStandard" .
+
+:exampleErrorHandlingComplianceStandard2 a :ErrorHandlingComplianceStandard  ;
+    rdfs:label "Example ErrorHandlingComplianceStandard 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingComplianceStandard" .
+
+:exampleErrorHandlingConstraint1 a :ErrorHandlingConstraint  ;
+    rdfs:label "Example ErrorHandlingConstraint 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingConstraint" .
+
+:exampleErrorHandlingConstraint2 a :ErrorHandlingConstraint  ;
+    rdfs:label "Example ErrorHandlingConstraint 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingConstraint" .
+
+:exampleErrorHandlingMetric1 a :ErrorHandlingMetric  ;
+    rdfs:label "Example ErrorHandlingMetric 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingMetric" .
+
+:exampleErrorHandlingMetric2 a :ErrorHandlingMetric  ;
+    rdfs:label "Example ErrorHandlingMetric 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingMetric" .
+
+:exampleErrorHandlingRisk1 a :ErrorHandlingRisk  ;
+    rdfs:label "Example ErrorHandlingRisk 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingRisk" .
+
+:exampleErrorHandlingRisk2 a :ErrorHandlingRisk  ;
+    rdfs:label "Example ErrorHandlingRisk 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingRisk" .
+
+:exampleErrorHandlingValidationRule1 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Example ErrorHandlingValidationRule 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorHandlingValidationRule" .
+
+:exampleErrorHandlingValidationRule2 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Example ErrorHandlingValidationRule 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorHandlingValidationRule" .
+
+:DataIntegrityConstraint a :ErrorHandlingConstraint  ;
+    rdfs:label "Data Integrity Constraint" ;
+    :hasConstraintDescription "No data corruption allowed during error recovery"  ;
+    :hasConstraintType "DATA"  ;
+    :hasConstraintValue "100"  ;
+    rdfs:comment "Data must remain consistent during error handling" .
+
+:DataLossRisk a :ErrorHandlingRisk,
+        :Risk  ;
+    rdfs:label "Data Loss Risk" ;
+    :hasRiskDescription "Potential loss of data during error recovery"  ;
+    :hasRiskMitigation "Regular backups and data validation"  ;
+    :hasRiskSeverity "HIGH"  ;
+    :hasSeverity "HIGH"  ;
+    rdfs:comment "Risk of data loss during error handling" .
+
+:ErrorHandlingRule1 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Error Identification Rule" ;
+    :hasRuleDescription "All errors must be properly identified and logged"  ;
+    :hasRuleSeverity "HIGH"  ;
+    rdfs:comment "Rule for validating error identification" .
+
+:ErrorHandlingRule2 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Error Analysis Rule" ;
+    :hasRuleDescription "All errors must be analyzed for root cause"  ;
+    :hasRuleSeverity "HIGH"  ;
+    rdfs:comment "Rule for validating error analysis" .
+
+:ErrorHandlingRule3 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Error Recovery Rule" ;
+    :hasRuleDescription "All errors must have a recovery strategy"  ;
+    :hasRuleSeverity "HIGH"  ;
+    rdfs:comment "Rule for validating error recovery" .
+
+:ErrorHandlingRule4 a :ErrorHandlingValidationRule  ;
+    rdfs:label "Error Prevention Rule" ;
+    :hasRuleDescription "All errors must have prevention measures"  ;
+    :hasRuleSeverity "HIGH"  ;
+    rdfs:comment "Rule for validating error prevention" .
+
+:ErrorPreventionRate a :ErrorHandlingMetric,
+        :Metric  ;
+    rdfs:label "Error Prevention Rate" ;
+    :hasMetricDescription "Percentage of potential errors prevented"  ;
+    :hasMetricTarget "95"  ;
+    :hasMetricUnit "percent"  ;
+    :hasThreshold 90  ;
+    rdfs:comment "Rate at which errors are prevented",
+        "Rate of prevented errors" .
+
+:ErrorRecurrenceRate a :ErrorHandlingMetric  ;
+    rdfs:label "Error Recurrence Rate" ;
+    :hasMetricDescription "Percentage of errors that recur"  ;
+    :hasMetricTarget "5"  ;
+    :hasMetricUnit "percent"  ;
+    rdfs:comment "Rate at which errors recur" .
+
+:ErrorResolutionTime a :ErrorHandlingMetric  ;
+    rdfs:label "Error Resolution Time" ;
+    :hasMetricDescription "Average time to resolve errors"  ;
+    :hasMetricTarget "30"  ;
+    :hasMetricUnit "minutes"  ;
+    rdfs:comment "Time taken to resolve errors" .
+
+:GDPRErrorHandling a :ErrorHandlingComplianceStandard  ;
+    rdfs:label "GDPR Error Handling" ;
+    :hasStandardDescription "GDPR requirements for error handling"  ;
+    :hasStandardVersion "2018"  ;
+    rdfs:comment "GDPR standard for error handling" .
+
+:ISO27001ErrorHandling a :ErrorHandlingComplianceStandard  ;
+    rdfs:label "ISO 27001 Error Handling" ;
+    :hasStandardDescription "ISO 27001 requirements for error handling"  ;
+    :hasStandardVersion "2022"  ;
+    rdfs:comment "ISO 27001 standard for error handling" .
+
+:ResolutionTimeConstraint a :ErrorHandlingConstraint  ;
+    rdfs:label "Resolution Time Constraint" ;
+    :hasConstraintDescription "Error must be resolved within 24 hours"  ;
+    :hasConstraintType "TIME"  ;
+    :hasConstraintValue "24"  ;
+    rdfs:comment "Maximum time allowed for error resolution" .
+
+:ResponseTimeConstraint a :ErrorHandlingConstraint  ;
+    rdfs:label "Response Time Constraint" ;
+    :hasConstraintDescription "Error must be acknowledged within 5 minutes"  ;
+    :hasConstraintType "TIME"  ;
+    :hasConstraintValue "5"  ;
+    rdfs:comment "Maximum time allowed for error response" .
+
+:SecurityBreachRisk a :ErrorHandlingRisk  ;
+    rdfs:label "Security Breach Risk" ;
+    :hasRiskDescription "Potential security vulnerabilities during error handling"  ;
+    :hasRiskMitigation "Security audits and access controls"  ;
+    :hasRiskSeverity "HIGH"  ;
+    rdfs:comment "Risk of security breach during error handling" .
+
+:ServiceDisruptionRisk a :ErrorHandlingRisk  ;
+    rdfs:label "Service Disruption Risk" ;
+    :hasRiskDescription "Potential service downtime during error recovery"  ;
+    :hasRiskMitigation "Failover systems and redundancy"  ;
+    :hasRiskSeverity "MEDIUM"  ;
+    rdfs:comment "Risk of service disruption during error handling" .
+
+:APIError a owl:Class  ;
     rdfs:label "API Error" ;
     rdfs:comment "Errors in API operations" ;
     rdfs:subClassOf :ErrorType ;
     owl:versionInfo "1.0.0" .
 
-:TestFailure rdf:type owl:Class ;
+:Assumption a owl:Class  ;
+    rdfs:label "Assumption" ;
+    rdfs:comment "Base class for assumptions" ;
+    owl:versionInfo "1.0.0" .
+
+:IOError a owl:Class  ;
+    rdfs:label "I/O Error" ;
+    rdfs:comment "Errors in input/output operations" ;
+    rdfs:subClassOf :ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+:RuntimeError a owl:Class  ;
+    rdfs:label "Runtime Error" ;
+    rdfs:comment "General runtime errors" ;
+    rdfs:subClassOf :ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+:TestFailure a owl:Class  ;
     rdfs:label "Test Failure" ;
     rdfs:comment "Errors in test execution" ;
     rdfs:subClassOf :ErrorType ;
     owl:versionInfo "1.0.0" .
 
-# Error Handling Steps
-:ErrorIdentification rdf:type :ErrorHandlingStep ;
-    rdfs:label "Error Identification" ;
-    rdfs:comment "Step for identifying errors" ;
-    :hasStepOrder "1"^^xsd:integer ;
-    :hasStepAction "Identify and log the error" .
-
-:ErrorAnalysis rdf:type :ErrorHandlingStep ;
-    rdfs:label "Error Analysis" ;
-    rdfs:comment "Step for analyzing error cause" ;
-    :hasStepOrder "2"^^xsd:integer ;
-    :hasStepAction "Analyze error cause and impact" .
-
-:ErrorRecovery rdf:type :ErrorHandlingStep ;
-    rdfs:label "Error Recovery" ;
-    rdfs:comment "Step for recovering from errors" ;
-    :hasStepOrder "3"^^xsd:integer ;
-    :hasStepAction "Implement recovery strategy" .
-
-:ErrorPrevention rdf:type :ErrorHandlingStep ;
-    rdfs:label "Error Prevention" ;
-    rdfs:comment "Step for preventing future errors" ;
-    :hasStepOrder "4"^^xsd:integer ;
-    :hasStepAction "Implement prevention measures" .
-
-# Error Type Instances
-:ValidationErrorInstance rdf:type :ValidationError ;
-    rdfs:label "Validation Error Instance" ;
-    rdfs:comment "Instance of a validation error" ;
-    :hasSeverity "HIGH" ;
-    :hasMonitoringIntegration true ;
-    :hasAlertingIntegration true .
-
-:IOErrorInstance rdf:type :IOError ;
-    rdfs:label "I/O Error Instance" ;
-    rdfs:comment "Instance of an I/O error" ;
-    :hasSeverity "HIGH" ;
-    :hasMonitoringIntegration true ;
-    :hasAlertingIntegration true .
-
-:RuntimeErrorInstance rdf:type :RuntimeError ;
-    rdfs:label "Runtime Error Instance" ;
-    rdfs:comment "Instance of a runtime error" ;
-    :hasSeverity "HIGH" ;
-    :hasMonitoringIntegration true ;
-    :hasAlertingIntegration true .
-
-:APIErrorInstance rdf:type :APIError ;
-    rdfs:label "API Error Instance" ;
-    rdfs:comment "Instance of an API error" ;
-    :hasSeverity "HIGH" ;
-    :hasMonitoringIntegration true ;
-    :hasAlertingIntegration true .
-
-:TestFailureInstance rdf:type :TestFailure ;
-    rdfs:label "Test Failure Instance" ;
-    rdfs:comment "Instance of a test failure" ;
-    :hasSeverity "MEDIUM" ;
-    :hasMonitoringIntegration true ;
-    :hasAlertingIntegration true .
-
-# Metrics
-:ErrorCount rdf:type :Metric ;
-    rdfs:label "Error Count" ;
-    rdfs:comment "Count of errors encountered" ;
-    :hasMetricDescription "Total number of errors encountered" ;
-    :hasMetricUnit "count" ;
-    :hasMetricTarget "100" ;
-    :hasThreshold "100"^^xsd:integer .
-
-:ErrorRate rdf:type :Metric ;
-    rdfs:label "Error Rate" ;
-    rdfs:comment "Rate of errors per time unit" ;
-    :hasMetricDescription "Number of errors per hour" ;
-    :hasMetricUnit "errors/hour" ;
-    :hasMetricTarget "10" ;
-    :hasThreshold "10"^^xsd:integer .
-
-:ErrorRecoveryTime rdf:type :Metric ;
-    rdfs:label "Error Recovery Time" ;
-    rdfs:comment "Time taken to recover from errors" ;
-    :hasMetricDescription "Average time to recover from errors" ;
-    :hasMetricUnit "seconds" ;
-    :hasMetricTarget "3600" ;
-    :hasThreshold "3600"^^xsd:integer .
-
-:ErrorDetectionTime rdf:type :Metric ;
-    rdfs:label "Error Detection Time" ;
-    rdfs:comment "Time taken to detect errors" ;
-    :hasMetricDescription "Average time to detect errors" ;
-    :hasMetricUnit "seconds" ;
-    :hasMetricTarget "300" ;
-    :hasThreshold "300"^^xsd:integer .
-
-:ErrorPreventionRate rdf:type :Metric ;
-    rdfs:label "Error Prevention Rate" ;
-    rdfs:comment "Rate of prevented errors" ;
-    :hasMetricDescription "Percentage of potential errors prevented" ;
-    :hasMetricUnit "percent" ;
-    :hasThreshold "90"^^xsd:integer .
-
-:LoggingLatency rdf:type :Metric ;
-    rdfs:label "Logging Latency" ;
-    rdfs:comment "Time taken to log errors" ;
-    :hasMetricDescription "Average time to log errors" ;
-    :hasMetricUnit "milliseconds" ;
-    :hasMetricTarget "1000" ;
-    :hasThreshold "1000"^^xsd:integer .
-
-:ResolutionTime rdf:type :Metric ;
-    rdfs:label "Resolution Time" ;
-    rdfs:comment "Time taken to resolve errors" ;
-    :hasMetricDescription "Average time to fully resolve errors" ;
-    :hasMetricUnit "seconds" ;
-    :hasMetricTarget "3600" ;
-    :hasThreshold "3600"^^xsd:integer .
-
-# Risks
-:DataLossRisk rdf:type :Risk ;
-    rdfs:label "Data Loss Risk" ;
-    rdfs:comment "Risk of data loss during error handling" ;
-    :hasSeverity "HIGH" .
-
-:SecurityRisk rdf:type :Risk ;
-    rdfs:label "Security Risk" ;
-    rdfs:comment "Risk of security breaches during error handling" ;
-    :hasSeverity "HIGH" .
-
-:PerformanceRisk rdf:type :Risk ;
-    rdfs:label "Performance Risk" ;
-    rdfs:comment "Risk of performance degradation during error handling" ;
-    :hasSeverity "MEDIUM" .
-
-# Compliance Standards
-:ISO27001 rdf:type :ComplianceStandard ;
-    rdfs:label "ISO 27001" ;
-    rdfs:comment "Information security management standard" ;
-    :hasRequirement "Implement error handling controls" ;
-    :hasComplianceStatus "COMPLIANT" .
-
-:GDPR rdf:type :ComplianceStandard ;
-    rdfs:label "GDPR" ;
-    rdfs:comment "General Data Protection Regulation" ;
-    :hasRequirement "Protect personal data during error handling" ;
-    :hasComplianceStatus "COMPLIANT" .
-
-# Validation Rules
-:RiskValidation rdf:type :ValidationRule ;
-    rdfs:label "Risk Validation" ;
-    rdfs:comment "Validates risk assessment" ;
-    :hasValidationType "RISK_ASSESSMENT" .
-
-:SensitiveDataValidation rdf:type :ValidationRule ;
-    rdfs:label "Sensitive Data Validation" ;
-    rdfs:comment "Validates sensitive data handling" ;
-    :hasValidationType "DATA_PROTECTION" .
-
-:MatrixValidation rdf:type :ValidationRule ;
-    rdfs:label "Matrix Validation" ;
-    rdfs:comment "Validates confusion matrix calculations" ;
-    :hasValidationType "MATRIX" .
-
-# Documentation
-:ErrorReport rdf:type :Documentation ;
-    rdfs:label "Error Report" ;
-    rdfs:comment "Documentation of error reports" .
-
-:ErrorHandlingGuide rdf:type :Documentation ;
-    rdfs:label "Error Handling Guide" ;
-    rdfs:comment "Guide for error handling procedures" .
-
-# Assumptions
-:ErrorTypeExclusivity rdf:type :Assumption ;
-    rdfs:label "Error Type Exclusivity" ;
-    rdfs:comment "Assumes error types are mutually exclusive" .
-
-# Constraints
-:ResourceConstraint rdf:type :Constraint ;
-    rdfs:label "Resource Constraint" ;
-    rdfs:comment "Constraints on resource usage" ;
-    :hasMaxMemory "2GB" ;
-    :hasMaxCPU "80%" .
-
-# Confusion Matrix
-:ErrorClassificationMatrix rdf:type :ConfusionMatrix ;
-    rdfs:label "Error Classification Matrix" ;
-    rdfs:comment "Matrix for error classification accuracy" ;
-    :hasTruePositive "100"^^xsd:integer ;
-    :hasFalsePositive "10"^^xsd:integer ;
-    :hasTrueNegative "1000"^^xsd:integer ;
-    :hasFalseNegative "5"^^xsd:integer ;
-    :hasAccuracy "0.98"^^xsd:decimal ;
-    :hasVersion "1.0.0" ;
-    :lastUpdated "2024-03-21T00:00:00"^^xsd:dateTime .
-
-# Test Cases
-:ErrorTypeTestCase rdf:type :TestCase ;
-    rdfs:label "Error Type Test Case" ;
-    rdfs:comment "Test case for error type validation" ;
-    :hasTestCaseType "Validation" .
-
-# SHACL Shapes
-:ErrorTypeShape a sh:NodeShape ;
-    sh:targetClass :ErrorType ;
-    sh:property [
-        sh:path :hasSeverity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] .
-
-# Error Handling Process
-:ErrorHandlingProcess rdf:type owl:Class ;
-    rdfs:label "Error Handling Process" ;
-    rdfs:comment "Process for handling errors" ;
+:ValidationError a owl:Class  ;
+    rdfs:label "Validation Error" ;
+    rdfs:comment "Errors in data validation" ;
+    rdfs:subClassOf :ErrorType ;
     owl:versionInfo "1.0.0" .
 
-:standardErrorHandling rdf:type :ErrorHandlingProcess ;
-    rdfs:label "Standard Error Handling" ;
-    rdfs:comment "Standard process for handling errors" ;
-    :hasProcessStep :ErrorIdentification ;
-    :hasProcessStep :ErrorAnalysis ;
-    :hasProcessStep :ErrorRecovery ;
-    :hasProcessStep :ErrorPrevention .
+:Documentation a owl:Class  ;
+    rdfs:label "Documentation" ;
+    rdfs:comment "Base class for documentation" ;
+    owl:versionInfo "1.0.0" .
 
-# Test Error Handling Process
-:TestErrorHandlingProcess rdf:type owl:Class ;
+:ErrorLog a owl:Class  ;
+    rdfs:label "Error Log" ;
+    rdfs:comment "Base class for error logs" ;
+    owl:versionInfo "1.0.0" .
+
+:PreventionMeasure a owl:Class  ;
+    rdfs:label "Prevention Measure" ;
+    rdfs:comment "Base class for prevention measures" ;
+    owl:versionInfo "1.0.0" .
+
+:RecoveryStrategy a owl:Class  ;
+    rdfs:label "Recovery Strategy" ;
+    rdfs:comment "Base class for recovery strategies" ;
+    owl:versionInfo "1.0.0" .
+
+:TestCase a owl:Class  ;
+    rdfs:label "Test Case" ;
+    rdfs:comment "Base class for test cases" ;
+    owl:versionInfo "1.0.0" .
+
+:Constraint a owl:Class  ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "Base class for constraints" ;
+    owl:versionInfo "1.0.0" .
+
+:TestErrorHandlingProcess a owl:Class  ;
     rdfs:label "Test Error Handling Process" ;
     rdfs:comment "Process for handling test errors" ;
     rdfs:subClassOf :ErrorHandlingProcess ;
     owl:versionInfo "1.0.0" .
 
-:standardTestErrorHandling rdf:type :TestErrorHandlingProcess ;
-    rdfs:label "Standard Test Error Handling" ;
-    rdfs:comment "Standard process for handling test errors" ;
-    :hasProcessStep :TestErrorIdentification ;
-    :hasProcessStep :TestErrorAnalysis ;
-    :hasProcessStep :TestErrorRecovery ;
-    :hasProcessStep :TestErrorPrevention .
-
-# SHACL Validation for Error Handling Process
-:ErrorHandlingProcessShape a sh:NodeShape ;
-    sh:targetClass :ErrorHandlingProcess ;
-    sh:property [
-        sh:path :hasProcessStep ;
-        sh:minCount 4 ;
-        sh:maxCount 4 ;
-        sh:message "Error handling process must have exactly 4 steps"
-    ] .
-
-# Properties for Error Handling Process
-:hasProcessName a owl:DatatypeProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The name of the error handling process" .
-
-:hasProcessDescription a owl:DatatypeProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The description of the error handling process" .
-
-# Properties for Error Types
-:hasErrorSeverity a owl:DatatypeProperty ;
-    rdfs:domain :ErrorType ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The severity level of the error" .
-
-:hasErrorCode a owl:DatatypeProperty ;
-    rdfs:domain :ErrorType ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The code identifying the error" .
-
-# Properties for Integration
-:hasMonitoringIntegration a owl:DatatypeProperty ;
-    rdfs:domain :ErrorType ;
-    rdfs:range xsd:boolean ;
-    rdfs:comment "Whether the error type is integrated with monitoring" .
-
-:hasAlertingIntegration a owl:DatatypeProperty ;
-    rdfs:domain :ErrorType ;
-    rdfs:range xsd:boolean ;
-    rdfs:comment "Whether the error type is integrated with alerting" .
-
-# Properties for Error Logs
-:hasLogSecurityLevel a owl:DatatypeProperty ;
-    rdfs:domain :ErrorLog ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The security level of the error log" .
-
-# Properties for Error Documentation
-:hasDocumentationTitle a owl:DatatypeProperty ;
-    rdfs:domain :ErrorDocumentation ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The title of the error documentation" .
-
-:hasDocumentationContent a owl:DatatypeProperty ;
-    rdfs:domain :ErrorDocumentation ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The content of the error documentation" .
-
-:hasLastUpdated a owl:DatatypeProperty ;
-    rdfs:domain :ErrorDocumentation ;
-    rdfs:range xsd:dateTime ;
-    rdfs:comment "The last update time of the error documentation" .
-
-# Properties for Error Metrics
-:hasMetricName a owl:DatatypeProperty ;
-    rdfs:domain :ErrorMetric ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The name of the error metric" .
-
-:hasMetricValue a owl:DatatypeProperty ;
-    rdfs:domain :ErrorMetric ;
-    rdfs:range xsd:decimal ;
-    rdfs:comment "The value of the error metric" .
-
-:hasMetricUnit a owl:DatatypeProperty ;
-    rdfs:domain :ErrorMetric ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The unit of the error metric" .
-
-# Properties for Error Handling Steps
-:hasStepDescription a owl:DatatypeProperty ;
-    rdfs:domain :ErrorHandlingStep ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The description of the error handling step" .
-
-# Validation Rules
-:RiskValidation rdf:type :ValidationRule ;
-    rdfs:label "Risk Validation" ;
-    rdfs:comment "Validates risk assessment in error handling" ;
-    :hasRuleType "OPERATIONAL" ;
-    :hasSeverity "HIGH" .
-
-:MatrixValidation rdf:type :ValidationRule ;
-    rdfs:label "Matrix Validation" ;
-    rdfs:comment "Validates confusion matrix calculations" ;
-    :hasRuleType "OPERATIONAL" ;
-    :hasSeverity "HIGH" .
-
-# Test Cases
-:ErrorTypeTestCase rdf:type :TestCase ;
-    rdfs:label "Error Type Test Case" ;
-    rdfs:comment "Test case for error type validation" .
-
-# Recovery Strategies
-:RetryStrategy rdf:type :RecoveryStrategy ;
-    rdfs:label "Retry Strategy" ;
-    rdfs:comment "Strategy to retry failed operations" ;
+:ComplianceStandard a owl:Class  ;
+    rdfs:label "Compliance Standard" ;
+    rdfs:comment "Base class for compliance standards" ;
     owl:versionInfo "1.0.0" .
 
-:FallbackStrategy rdf:type :RecoveryStrategy ;
-    rdfs:label "Fallback Strategy" ;
-    rdfs:comment "Strategy to use fallback mechanisms" ;
-    owl:versionInfo "1.0.0" .
-
-# Prevention Measures
-:InputValidation rdf:type :PreventionMeasure ;
-    rdfs:label "Input Validation" ;
-    rdfs:comment "Measure to validate input data" ;
-    owl:versionInfo "1.0.0" .
-
-:ErrorBoundary rdf:type :PreventionMeasure ;
-    rdfs:label "Error Boundary" ;
-    rdfs:comment "Measure to contain error propagation" ;
-    owl:versionInfo "1.0.0" .
-
-# Confusion Matrices
-:IOErrorMatrix rdf:type :ConfusionMatrix ;
-    :hasTruePositives "92"^^xsd:integer ;
-    :hasFalsePositives "4"^^xsd:integer ;
-    :hasFalseNegatives "3"^^xsd:integer ;
-    :hasTrueNegatives "101"^^xsd:integer ;
-    :hasPrecision "0.958"^^xsd:decimal ;
-    :hasRecall "0.968"^^xsd:decimal ;
-    :hasF1Score "0.963"^^xsd:decimal ;
-    :hasAccuracy "0.965"^^xsd:decimal ;
-    :lastUpdated "2024-04-15T00:00:00Z"^^xsd:dateTime ;
-    :hasVersion "1.0.0" .
-
-# Test Error Handling Process
-:testErrorHandlingProcess rdf:type :TestErrorHandlingProcess ;
-    rdfs:label "Test Error Handling Process" ;
-    rdfs:comment "Standard process for handling test errors" ;
-    :hasProcessStep :TestErrorIdentification ;
-    :hasProcessStep :TestErrorAnalysis ;
-    :hasProcessStep :TestErrorResolution ;
-    :hasProcessStep :TestErrorPrevention ;
-    :hasProcessName "Standard Test Error Handling" ;
-    :hasProcessDescription "Standard process for identifying, analyzing, fixing and preventing test errors" .
-
-# Error Type Hierarchy
-:ValidationError rdfs:subClassOf :ErrorType ;
-    rdfs:label "Validation Error" ;
-    rdfs:comment "Errors in data validation" .
-
-:IOError rdfs:subClassOf :ErrorType ;
-    rdfs:label "I/O Error" ;
-    rdfs:comment "Errors in input/output operations" .
-
-:RuntimeError rdfs:subClassOf :ErrorType ;
-    rdfs:label "Runtime Error" ;
-    rdfs:comment "General runtime errors" .
-
-:APIError rdfs:subClassOf :ErrorType ;
-    rdfs:label "API Error" ;
-    rdfs:comment "Errors in API operations" .
-
-:TestFailure rdfs:subClassOf :ErrorType ;
-    rdfs:label "Test Failure" ;
-    rdfs:comment "Errors in test execution" .
-
-# Test Error Handling Process
-:standardTestErrorHandling a :TestErrorHandlingProcess ;
-    :hasProcessStep :TestErrorIdentification, 
-                      :TestErrorAnalysis,
-                      :TestErrorRecovery,
-                      :TestErrorPrevention .
-
-# SHACL Validation for Test Error Handling Process
-:TestErrorHandlingProcessShape a sh:NodeShape ;
-    sh:targetClass :TestErrorHandlingProcess ;
-    sh:property [
-        sh:path :hasProcessStep ;
-        sh:minCount 4 ;
-        sh:maxCount 4
-    ] .
-
-# SHACL Validation for Error Handling Process
-:ErrorHandlingProcessShape a sh:NodeShape ;
-    sh:targetClass :ErrorHandlingProcess ;
-    sh:property [
-        sh:path :hasProcessStep ;
-        sh:minCount 4 ;
-        sh:maxCount 4
-    ] .
-
-# SHACL Validation for Test Error Handling Steps
-:TestErrorHandlingStepShape a sh:NodeShape ;
-    sh:targetClass :TestErrorHandlingStep ;
-    sh:property [
-        sh:path :hasStepOrder ;
-        sh:datatype xsd:integer ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path :hasStepAction ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] .
-
-# Additional Validation Rules
-:ErrorTypeExclusivity rdf:type :ValidationRule ;
-    rdfs:label "Error Type Exclusivity" ;
-    rdfs:comment "Validates that error types are mutually exclusive" ;
-    :hasRuleType "OPERATIONAL" ;
-    :hasSeverity "HIGH" .
-
-:ResourceConstraint rdf:type :ValidationRule ;
-    rdfs:label "Resource Constraint" ;
-    rdfs:comment "Validates resource usage during error handling" ;
-    :hasRuleType "PERFORMANCE" ;
-    :hasSeverity "MEDIUM" .
-
-# Error Documentation
-:ErrorDocumentation rdf:type owl:Class ;
-    rdfs:label "Error Documentation" ;
-    rdfs:comment "Base class for error documentation" ;
-    owl:versionInfo "1.0.0" .
-
-:ErrorReport rdf:type :ErrorDocumentation ;
-    rdfs:label "Error Report" ;
-    rdfs:comment "Detailed error report" ;
-    owl:versionInfo "1.0.0" .
-
-:ResolutionGuide rdf:type :ErrorDocumentation ;
-    rdfs:label "Resolution Guide" ;
-    rdfs:comment "Step-by-step resolution guide" ;
-    owl:versionInfo "1.0.0" .
-
-:PreventionGuide rdf:type :ErrorDocumentation ;
-    rdfs:label "Prevention Guide" ;
-    rdfs:comment "Error prevention guidelines" ;
-    owl:versionInfo "1.0.0" .
-
-:MetricsReport rdf:type :ErrorDocumentation ;
-    rdfs:label "Metrics Report" ;
-    rdfs:comment "Error handling metrics report" ;
-    owl:versionInfo "1.0.0" .
-
-# Security Measures
-:ErrorLog rdf:type owl:Class ;
-    rdfs:label "Error Log" ;
-    rdfs:comment "Base class for error logs" ;
-    owl:versionInfo "1.0.0" .
-
-:ErrorLogShape a sh:NodeShape ;
-    sh:targetClass :ErrorLog ;
-    sh:property [
-        sh:path :hasLogSecurityLevel ;
-        sh:datatype xsd:string ;
-        sh:in ("PUBLIC" "PRIVATE" "CONFIDENTIAL") ;
-    ] .
-
-# Integration
-:ErrorTypeShape a sh:NodeShape ;
-    sh:targetClass :ErrorType ;
-    sh:property [
-        sh:path :hasMonitoringIntegration ;
-        sh:datatype xsd:boolean ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path :hasAlertingIntegration ;
-        sh:datatype xsd:boolean ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] .
-
-# Validation Rules
-:ErrorHandlingValidationRule rdf:type owl:Class ;
-    rdfs:label "Error Handling Validation Rule" ;
-    rdfs:comment "Rule for validating error handling" ;
-    owl:versionInfo "1.0.0" .
-
-:hasValidationRule rdf:type owl:ObjectProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range :ErrorHandlingValidationRule ;
-    rdfs:label "has validation rule" ;
-    rdfs:comment "Specifies a validation rule for error handling" .
-
-:ErrorHandlingRule1 rdf:type :ErrorHandlingValidationRule ;
-    rdfs:label "Error Identification Rule" ;
-    rdfs:comment "Rule for validating error identification" ;
-    :hasRuleDescription "All errors must be properly identified and logged" ;
-    :hasRuleSeverity "HIGH" .
-
-:ErrorHandlingRule2 rdf:type :ErrorHandlingValidationRule ;
-    rdfs:label "Error Analysis Rule" ;
-    rdfs:comment "Rule for validating error analysis" ;
-    :hasRuleDescription "All errors must be analyzed for root cause" ;
-    :hasRuleSeverity "HIGH" .
-
-:ErrorHandlingRule3 rdf:type :ErrorHandlingValidationRule ;
-    rdfs:label "Error Recovery Rule" ;
-    rdfs:comment "Rule for validating error recovery" ;
-    :hasRuleDescription "All errors must have a recovery strategy" ;
-    :hasRuleSeverity "HIGH" .
-
-:ErrorHandlingRule4 rdf:type :ErrorHandlingValidationRule ;
-    rdfs:label "Error Prevention Rule" ;
-    rdfs:comment "Rule for validating error prevention" ;
-    :hasRuleDescription "All errors must have prevention measures" ;
-    :hasRuleSeverity "HIGH" .
-
-# Compliance Standards
-:ErrorHandlingComplianceStandard rdf:type owl:Class ;
+:ErrorHandlingComplianceStandard a owl:Class  ;
     rdfs:label "Error Handling Compliance Standard" ;
     rdfs:comment "Standard for error handling compliance" ;
     owl:versionInfo "1.0.0" .
 
-:hasComplianceStandard rdf:type owl:ObjectProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range :ErrorHandlingComplianceStandard ;
-    rdfs:label "has compliance standard" ;
-    rdfs:comment "Specifies a compliance standard for error handling" .
-
-:ISO27001ErrorHandling rdf:type :ErrorHandlingComplianceStandard ;
-    rdfs:label "ISO 27001 Error Handling" ;
-    rdfs:comment "ISO 27001 standard for error handling" ;
-    :hasStandardDescription "ISO 27001 requirements for error handling" ;
-    :hasStandardVersion "2022" .
-
-:GDPRErrorHandling rdf:type :ErrorHandlingComplianceStandard ;
-    rdfs:label "GDPR Error Handling" ;
-    rdfs:comment "GDPR standard for error handling" ;
-    :hasStandardDescription "GDPR requirements for error handling" ;
-    :hasStandardVersion "2018" .
-
-# Link validation rules and compliance standards to processes
-:standardErrorHandling :hasValidationRule :ErrorHandlingRule1, :ErrorHandlingRule2, :ErrorHandlingRule3, :ErrorHandlingRule4 ;
-    :hasComplianceStandard :ISO27001ErrorHandling, :GDPRErrorHandling .
-
-:standardTestErrorHandling :hasValidationRule :ErrorHandlingRule1, :ErrorHandlingRule2, :ErrorHandlingRule3, :ErrorHandlingRule4 ;
-    :hasComplianceStandard :ISO27001ErrorHandling, :GDPRErrorHandling .
-
-# SHACL Validation for Validation Rules
-:ErrorHandlingValidationRuleShape rdf:type sh:NodeShape ;
-    sh:targetClass :ErrorHandlingValidationRule ;
-    sh:property [
-        sh:path :hasRuleDescription ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Validation rule must have a description"
-    ] ;
-    sh:property [
-        sh:path :hasRuleSeverity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Validation rule must have a severity level"
-    ] .
-
-# SHACL Validation for Compliance Standards
-:ErrorHandlingComplianceStandardShape rdf:type sh:NodeShape ;
-    sh:targetClass :ErrorHandlingComplianceStandard ;
-    sh:property [
-        sh:path :hasStandardDescription ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Compliance standard must have a description"
-    ] ;
-    sh:property [
-        sh:path :hasStandardVersion ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Compliance standard must have a version"
-    ] .
-
-# Metrics
-:ErrorHandlingMetric rdf:type owl:Class ;
+:ErrorHandlingMetric a owl:Class  ;
     rdfs:label "Error Handling Metric" ;
     rdfs:comment "Metric for measuring error handling effectiveness" ;
     owl:versionInfo "1.0.0" .
 
-:hasMetric rdf:type owl:ObjectProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range :ErrorHandlingMetric ;
-    rdfs:label "has metric" ;
-    rdfs:comment "Specifies a metric for error handling" .
-
-:ErrorResolutionTime rdf:type :ErrorHandlingMetric ;
-    rdfs:label "Error Resolution Time" ;
-    rdfs:comment "Time taken to resolve errors" ;
-    :hasMetricDescription "Average time to resolve errors" ;
-    :hasMetricUnit "minutes" ;
-    :hasMetricTarget "30" .
-
-:ErrorRecurrenceRate rdf:type :ErrorHandlingMetric ;
-    rdfs:label "Error Recurrence Rate" ;
-    rdfs:comment "Rate at which errors recur" ;
-    :hasMetricDescription "Percentage of errors that recur" ;
-    :hasMetricUnit "percent" ;
-    :hasMetricTarget "5" .
-
-:ErrorPreventionRate rdf:type :ErrorHandlingMetric ;
-    rdfs:label "Error Prevention Rate" ;
-    rdfs:comment "Rate at which errors are prevented" ;
-    :hasMetricDescription "Percentage of potential errors prevented" ;
-    :hasMetricUnit "percent" ;
-    :hasMetricTarget "95" .
-
-# Risks
-:ErrorHandlingRisk rdf:type owl:Class ;
-    rdfs:label "Error Handling Risk" ;
-    rdfs:comment "Risk associated with error handling" ;
+:Risk a owl:Class  ;
+    rdfs:label "Risk" ;
+    rdfs:comment "Base class for risks" ;
     owl:versionInfo "1.0.0" .
 
-:hasRisk rdf:type owl:ObjectProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range :ErrorHandlingRisk ;
-    rdfs:label "has risk" ;
-    rdfs:comment "Specifies a risk for error handling" .
-
-:DataLossRisk rdf:type :ErrorHandlingRisk ;
-    rdfs:label "Data Loss Risk" ;
-    rdfs:comment "Risk of data loss during error handling" ;
-    :hasRiskDescription "Potential loss of data during error recovery" ;
-    :hasRiskSeverity "HIGH" ;
-    :hasRiskMitigation "Regular backups and data validation" .
-
-:ServiceDisruptionRisk rdf:type :ErrorHandlingRisk ;
-    rdfs:label "Service Disruption Risk" ;
-    rdfs:comment "Risk of service disruption during error handling" ;
-    :hasRiskDescription "Potential service downtime during error recovery" ;
-    :hasRiskSeverity "MEDIUM" ;
-    :hasRiskMitigation "Failover systems and redundancy" .
-
-:SecurityBreachRisk rdf:type :ErrorHandlingRisk ;
-    rdfs:label "Security Breach Risk" ;
-    rdfs:comment "Risk of security breach during error handling" ;
-    :hasRiskDescription "Potential security vulnerabilities during error handling" ;
-    :hasRiskSeverity "HIGH" ;
-    :hasRiskMitigation "Security audits and access controls" .
-
-# Link metrics and risks to processes
-:standardErrorHandling :hasMetric :ErrorResolutionTime, :ErrorRecurrenceRate, :ErrorPreventionRate ;
-    :hasRisk :DataLossRisk, :ServiceDisruptionRisk, :SecurityBreachRisk .
-
-:standardTestErrorHandling :hasMetric :ErrorResolutionTime, :ErrorRecurrenceRate, :ErrorPreventionRate ;
-    :hasRisk :DataLossRisk, :ServiceDisruptionRisk, :SecurityBreachRisk .
-
-# SHACL Validation for Metrics
-:MetricShape a sh:NodeShape ;
-    sh:targetClass :Metric ;
-    sh:property [
-        sh:path :hasMetricDescription ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:message "Metric must have a description" ;
-    ] ;
-    sh:property [
-        sh:path :hasMetricUnit ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:message "Metric must have a unit" ;
-    ] ;
-    sh:property [
-        sh:path :hasMetricTarget ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:message "Metric must have a target value" ;
-    ] ;
-    sh:property [
-        sh:path :hasThreshold ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
-        sh:message "Metric must have a threshold value" ;
-    ] .
-
-# SHACL Validation for Risks
-:ErrorHandlingRiskShape rdf:type sh:NodeShape ;
-    sh:targetClass :ErrorHandlingRisk ;
-    sh:property [
-        sh:path :hasRiskDescription ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Risk must have a description"
-    ] ;
-    sh:property [
-        sh:path :hasRiskSeverity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Risk must have a severity level"
-    ] ;
-    sh:property [
-        sh:path :hasRiskMitigation ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Risk must have a mitigation strategy"
-    ] .
-
-# Constraints
-:ErrorHandlingConstraint rdf:type owl:Class ;
+:ErrorHandlingConstraint a owl:Class  ;
     rdfs:label "Error Handling Constraint" ;
     rdfs:comment "Constraint for error handling processes" ;
     owl:versionInfo "1.0.0" .
 
-:hasConstraint rdf:type owl:ObjectProperty ;
-    rdfs:domain :ErrorHandlingProcess ;
-    rdfs:range :ErrorHandlingConstraint ;
-    rdfs:label "has constraint" ;
-    rdfs:comment "Specifies a constraint for error handling" .
+:ErrorHandlingRisk a owl:Class  ;
+    rdfs:label "Error Handling Risk" ;
+    rdfs:comment "Risk associated with error handling" ;
+    owl:versionInfo "1.0.0" .
 
-:ResponseTimeConstraint rdf:type :ErrorHandlingConstraint ;
-    rdfs:label "Response Time Constraint" ;
-    rdfs:comment "Maximum time allowed for error response" ;
-    :hasConstraintDescription "Error must be acknowledged within 5 minutes" ;
-    :hasConstraintType "TIME" ;
-    :hasConstraintValue "5" .
+:ErrorHandlingValidationRule a owl:Class  ;
+    rdfs:label "Error Handling Validation Rule" ;
+    rdfs:comment "Rule for validating error handling" ;
+    owl:versionInfo "1.0.0" .
 
-:ResolutionTimeConstraint rdf:type :ErrorHandlingConstraint ;
-    rdfs:label "Resolution Time Constraint" ;
-    rdfs:comment "Maximum time allowed for error resolution" ;
-    :hasConstraintDescription "Error must be resolved within 24 hours" ;
-    :hasConstraintType "TIME" ;
-    :hasConstraintValue "24" .
+:ValidationRule a owl:Class  ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Base class for validation rules" ;
+    owl:versionInfo "1.0.0" .
 
-:DataIntegrityConstraint rdf:type :ErrorHandlingConstraint ;
-    rdfs:label "Data Integrity Constraint" ;
-    rdfs:comment "Data must remain consistent during error handling" ;
-    :hasConstraintDescription "No data corruption allowed during error recovery" ;
-    :hasConstraintType "DATA" ;
-    :hasConstraintValue "100" .
+:ErrorDocumentation a owl:Class  ;
+    rdfs:label "Error Documentation" ;
+    rdfs:comment "Base class for error documentation" ;
+    owl:versionInfo "1.0.0" .
 
-# Link constraints to processes
-:standardErrorHandling :hasConstraint :ResponseTimeConstraint, :ResolutionTimeConstraint, :DataIntegrityConstraint .
+:ErrorHandlingStep a owl:Class  ;
+    rdfs:label "Error Handling Step" ;
+    rdfs:comment "Base class for error handling steps" ;
+    owl:versionInfo "1.0.0" .
 
-:standardTestErrorHandling :hasConstraint :ResponseTimeConstraint, :ResolutionTimeConstraint, :DataIntegrityConstraint .
+:ConfusionMatrix a owl:Class  ;
+    rdfs:label "Confusion Matrix" ;
+    rdfs:comment "Base class for confusion matrices" ;
+    owl:versionInfo "1.0.0" .
 
-# SHACL Validation for Constraints
-:ErrorHandlingConstraintShape rdf:type sh:NodeShape ;
-    sh:targetClass :ErrorHandlingConstraint ;
-    sh:property [
-        sh:path :hasConstraintDescription ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Constraint must have a description"
-    ] ;
-    sh:property [
-        sh:path :hasConstraintType ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Constraint must have a type"
-    ] ;
-    sh:property [
-        sh:path :hasConstraintValue ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Constraint must have a value"
-    ] . 
+:Metric a owl:Class  ;
+    rdfs:label "Metric" ;
+    rdfs:comment "Base class for metrics" ;
+    owl:versionInfo "1.0.0" .
+
+:ErrorHandlingProcess a owl:Class  ;
+    rdfs:label "Error Handling Process" ;
+    rdfs:comment "Process for handling errors" ;
+    owl:versionInfo "1.0.0" .
+
+:ErrorType a owl:Class  ;
+    rdfs:label "Error Type" ;
+    rdfs:comment "Base class for all error types" ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape12sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape13sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+

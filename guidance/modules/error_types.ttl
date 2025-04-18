@@ -1,136 +1,189 @@
-@prefix : <http://example.org/guidance#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#> .
+
+@prefix : <./#> .
+@prefix error: <./error_types#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix meta: <./meta#> .
-@prefix metameta: <./metameta#> .
-@prefix problem: <./problem#> .
-@prefix solution: <./solution#> .
-@prefix conversation: <./conversation#> .
-@prefix guidance: <./guidance#> .
-@prefix error: <./error_types#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Error Types
-error:ErrorType rdf:type owl:Class ;
-    rdfs:label "Error Type" ;
-    rdfs:comment "Base class for all error types" ;
-    owl:versionInfo "1.0.0" .
+:exampleAPIError1 a error:APIError  ;
+    rdfs:label "Example APIError 1" ;
+    rdfs:comment "This is example instance 1 of class APIError" .
 
-error:ValidationError rdf:type owl:Class ;
-    rdfs:subClassOf error:ErrorType ;
-    rdfs:label "Validation Error" ;
-    rdfs:comment "Errors related to data validation failures" ;
-    owl:versionInfo "1.0.0" .
+:exampleAPIError2 a error:APIError  ;
+    rdfs:label "Example APIError 2" ;
+    rdfs:comment "This is example instance 2 of class APIError" .
 
-error:IOError rdf:type owl:Class ;
-    rdfs:subClassOf error:ErrorType ;
-    rdfs:label "IO Error" ;
-    rdfs:comment "Errors related to input/output operations" ;
-    owl:versionInfo "1.0.0" .
+:exampleErrorType1 a error:ErrorType  ;
+    rdfs:label "Example ErrorType 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorType" ;
+    error:hasAlertingIntegration :exampleboolean1 ;
+    error:hasErrorCode "Example value 1" ;
+    error:hasErrorSeverity "Example value 1" ;
+    error:hasMonitoringIntegration :exampleboolean1 ;
+    error:hasSensitiveData :exampleboolean1 .
 
-error:RuntimeError rdf:type owl:Class ;
-    rdfs:subClassOf error:ErrorType ;
-    rdfs:label "Runtime Error" ;
-    rdfs:comment "Errors that occur during program execution" ;
-    owl:versionInfo "1.0.0" .
+:exampleErrorType2 a error:ErrorType  ;
+    rdfs:label "Example ErrorType 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorType" ;
+    error:hasAlertingIntegration :exampleboolean2 ;
+    error:hasErrorCode "Example value 2" ;
+    error:hasErrorSeverity "Example value 2" ;
+    error:hasMonitoringIntegration :exampleboolean2 ;
+    error:hasSensitiveData :exampleboolean2 .
 
-error:TestFailure rdf:type owl:Class ;
-    rdfs:subClassOf error:ErrorType ;
-    rdfs:label "Test Failure" ;
-    rdfs:comment "Errors that occur during testing" ;
-    owl:versionInfo "1.0.0" .
+:exampleIOError1 a error:IOError  ;
+    rdfs:label "Example IOError 1" ;
+    rdfs:comment "This is example instance 1 of class IOError" .
 
-error:APIError rdf:type owl:Class ;
-    rdfs:subClassOf error:ErrorType ;
-    rdfs:label "API Error" ;
-    rdfs:comment "Errors related to API calls and responses" ;
-    owl:versionInfo "1.0.0" .
+:exampleIOError2 a error:IOError  ;
+    rdfs:label "Example IOError 2" ;
+    rdfs:comment "This is example instance 2 of class IOError" .
 
-# Error Properties
-error:hasErrorSeverity rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Error Severity" ;
-    rdfs:domain error:ErrorType ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+:exampleRuntimeError1 a error:RuntimeError  ;
+    rdfs:label "Example RuntimeError 1" ;
+    rdfs:comment "This is example instance 1 of class RuntimeError" .
 
-error:hasErrorCode rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Error Code" ;
-    rdfs:domain error:ErrorType ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+:exampleRuntimeError2 a error:RuntimeError  ;
+    rdfs:label "Example RuntimeError 2" ;
+    rdfs:comment "This is example instance 2 of class RuntimeError" .
 
-error:hasSensitiveData rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Sensitive Data" ;
-    rdfs:domain error:ErrorType ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
+:exampleTestFailure1 a error:TestFailure  ;
+    rdfs:label "Example TestFailure 1" ;
+    rdfs:comment "This is example instance 1 of class TestFailure" .
 
-error:hasMonitoringIntegration rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Monitoring Integration" ;
-    rdfs:domain error:ErrorType ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
+:exampleTestFailure2 a error:TestFailure  ;
+    rdfs:label "Example TestFailure 2" ;
+    rdfs:comment "This is example instance 2 of class TestFailure" .
 
-error:hasAlertingIntegration rdf:type owl:DatatypeProperty ;
+:exampleValidationError1 a error:ValidationError  ;
+    rdfs:label "Example ValidationError 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationError" .
+
+:exampleValidationError2 a error:ValidationError  ;
+    rdfs:label "Example ValidationError 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationError" .
+
+error:ErrorTypeShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path error:hasErrorSeverity  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path error:hasErrorCode  .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path error:hasSensitiveData  .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path error:hasMonitoringIntegration  .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path error:hasAlertingIntegration ;
+    sh:targetClass error:ErrorType .
+
+error:IOErrorInstance a error:IOError ;
+    error:hasAlertingIntegration true ;
+    error:hasErrorCode "IO_ERR" ;
+    error:hasErrorSeverity "ERROR" ;
+    error:hasMonitoringIntegration true ;
+    error:hasSensitiveData false .
+
+error:ValidationErrorInstance a error:ValidationError ;
+    error:hasAlertingIntegration true ;
+    error:hasErrorCode "VAL_ERR" ;
+    error:hasErrorSeverity "ERROR" ;
+    error:hasMonitoringIntegration true ;
+    error:hasSensitiveData false .
+
+error:hasAlertingIntegration a owl:DatatypeProperty ;
     rdfs:label "Has Alerting Integration" ;
     rdfs:domain error:ErrorType ;
     rdfs:range xsd:boolean ;
     owl:versionInfo "1.0.0" .
 
-# Error Instances
-error:ValidationErrorInstance rdf:type error:ValidationError ;
-    error:hasErrorSeverity "ERROR" ;
-    error:hasErrorCode "VAL_ERR" ;
-    error:hasSensitiveData "false"^^xsd:boolean ;
-    error:hasMonitoringIntegration "true"^^xsd:boolean ;
-    error:hasAlertingIntegration "true"^^xsd:boolean .
+error:hasErrorCode a owl:DatatypeProperty ;
+    rdfs:label "Has Error Code" ;
+    rdfs:domain error:ErrorType ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
-error:IOErrorInstance rdf:type error:IOError ;
-    error:hasErrorSeverity "ERROR" ;
-    error:hasErrorCode "IO_ERR" ;
-    error:hasSensitiveData "false"^^xsd:boolean ;
-    error:hasMonitoringIntegration "true"^^xsd:boolean ;
-    error:hasAlertingIntegration "true"^^xsd:boolean .
+error:hasErrorSeverity a owl:DatatypeProperty ;
+    rdfs:label "Has Error Severity" ;
+    rdfs:domain error:ErrorType ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
-# SHACL Validation Rules
-error:ErrorTypeShape rdf:type sh:NodeShape ;
-    sh:targetClass error:ErrorType ;
-    sh:property [
-        sh:path error:hasErrorSeverity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path error:hasErrorCode ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path error:hasSensitiveData ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:boolean ;
-    ] ;
-    sh:property [
-        sh:path error:hasMonitoringIntegration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:boolean ;
-    ] ;
-    sh:property [
-        sh:path error:hasAlertingIntegration ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:boolean ;
-    ] .
+error:hasMonitoringIntegration a owl:DatatypeProperty ;
+    rdfs:label "Has Monitoring Integration" ;
+    rdfs:domain error:ErrorType ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
 
-# TODO Section
-# - Add more specific error types
-# - Define additional error properties
-# - Add validation rules for new properties 
+error:hasSensitiveData a owl:DatatypeProperty ;
+    rdfs:label "Has Sensitive Data" ;
+    rdfs:domain error:ErrorType ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+error:APIError a owl:Class ;
+    rdfs:label "API Error" ;
+    rdfs:comment "Errors related to API calls and responses" ;
+    rdfs:subClassOf error:ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+error:RuntimeError a owl:Class ;
+    rdfs:label "Runtime Error" ;
+    rdfs:comment "Errors that occur during program execution" ;
+    rdfs:subClassOf error:ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+error:TestFailure a owl:Class ;
+    rdfs:label "Test Failure" ;
+    rdfs:comment "Errors that occur during testing" ;
+    rdfs:subClassOf error:ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+error:IOError a owl:Class ;
+    rdfs:label "IO Error" ;
+    rdfs:comment "Errors related to input/output operations" ;
+    rdfs:subClassOf error:ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+error:ValidationError a owl:Class ;
+    rdfs:label "Validation Error" ;
+    rdfs:comment "Errors related to data validation failures" ;
+    rdfs:subClassOf error:ErrorType ;
+    owl:versionInfo "1.0.0" .
+
+error:ErrorType a owl:Class ;
+    rdfs:label "Error Type" ;
+    rdfs:comment "Base class for all error types" ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ;
+    sh:targetClass owl:Class .
+

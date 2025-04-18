@@ -1,88 +1,177 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/transformed_core#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
 @prefix guidance: <http://ontologies.louspringer.com/guidance#> .
 @prefix meta: <http://ontologies.louspringer.com/meta#> .
+@prefix ns1: <./core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://ontologies.louspringer.com/guidance/modules/core#BestPractice> a owl:Class ;
-    rdfs:label "BestPractice" ;
-    rdfs:comment "A recommended practice for ontology development and management" ;
-    owl:versionInfo "1.0.0" .
-
-<http://ontologies.louspringer.com/guidance/modules/core#CoreGuidanceModule> a owl:Ontology ;
+ns1:CoreGuidanceModule a owl:Ontology ;
     rdfs:label "Core Guidance Module" ;
     dc:title "Core Guidance Module" ;
     dc:version "1.0.0" ;
-    dcterms:created "2024-03-21"^^xsd:dateTime ;
-    dcterms:modified "2024-03-21"^^xsd:dateTime ;
+    dcterms:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     rdfs:comment "Core concepts and relationships for the guidance ontology" ;
     owl:imports <http://ontologies.louspringer.com/guidance/modules/model.ttl>,
         <http://ontologies.louspringer.com/guidance/modules/security.ttl> ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/core#LegacyMapping> a owl:Class ;
-    rdfs:label "Legacy Mapping" ;
-    rdfs:comment "Maps legacy guidance concepts to modular equivalents" ;
-    owl:versionInfo "1.0.0" .
+:CoreGuidanceModule#ModuleShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path :CoreGuidanceModule#version  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path :CoreGuidanceModule#description  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path :CoreGuidanceModule#label ;
+    sh:targetClass :CoreGuidanceModule#Module .
 
-<http://ontologies.louspringer.com/guidance/modules/core#analogySource> a owl:DatatypeProperty ;
+ns1:analogySource a owl:DatatypeProperty ;
     rdfs:label "Analogy Source" ;
     rdfs:comment "Source domain for analogy" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#DomainAnalogy> ;
+    rdfs:domain ns1:DomainAnalogy ;
     rdfs:range xsd:string .
 
-<http://ontologies.louspringer.com/guidance/modules/core#analogyTarget> a owl:DatatypeProperty ;
+ns1:analogyTarget a owl:DatatypeProperty ;
     rdfs:label "Analogy Target" ;
     rdfs:comment "Target domain for analogy" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#DomainAnalogy> ;
+    rdfs:domain ns1:DomainAnalogy ;
     rdfs:range xsd:string .
 
-<http://ontologies.louspringer.com/guidance/modules/core#complexity> a owl:DatatypeProperty ;
+ns1:complexity a owl:DatatypeProperty ;
     rdfs:label "Complexity" ;
     rdfs:comment "Complexity level of interpretation" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#Interpretation> ;
+    rdfs:domain ns1:Interpretation ;
     rdfs:range xsd:integer .
 
-<http://ontologies.louspringer.com/guidance/modules/core#hasAction> a owl:ObjectProperty ;
+ns1:hasAction a owl:ObjectProperty ;
     rdfs:label "Has Action" ;
     rdfs:comment "Links interpretation to action" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#Interpretation> ;
-    rdfs:range <http://ontologies.louspringer.com/guidance/modules/core#Action> .
+    rdfs:domain ns1:Interpretation ;
+    rdfs:range ns1:Action .
 
-<http://ontologies.louspringer.com/guidance/modules/core#hasLegacyEquivalent> a owl:ObjectProperty ;
+ns1:hasLegacyEquivalent a owl:ObjectProperty ;
     rdfs:label "Has Legacy Equivalent" ;
     rdfs:comment "Links modular concept to its legacy equivalent" ;
     rdfs:domain owl:Class ;
     rdfs:range guidance:LLMGuidanceOntology .
 
-<http://ontologies.louspringer.com/guidance/modules/core#sourceContext> a owl:DatatypeProperty ;
+ns1:sourceContext a owl:DatatypeProperty ;
     rdfs:label "Source Context" ;
     rdfs:comment "Context from which interpretation is derived" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#Interpretation> ;
+    rdfs:domain ns1:Interpretation ;
     rdfs:range xsd:string .
 
-<http://ontologies.louspringer.com/guidance/modules/core#targetContext> a owl:DatatypeProperty ;
+ns1:targetContext a owl:DatatypeProperty ;
     rdfs:label "Target Context" ;
     rdfs:comment "Context to which interpretation is applied" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/core#Interpretation> ;
+    rdfs:domain ns1:Interpretation ;
     rdfs:range xsd:string .
 
-<http://ontologies.louspringer.com/guidance/modules/core#Action> a owl:Class ;
+:exampleBestPractice1 a ns1:BestPractice  ;
+    rdfs:label "Example BestPractice 1" ;
+    rdfs:comment "This is example instance 1 of class BestPractice" .
+
+:exampleBestPractice2 a ns1:BestPractice  ;
+    rdfs:label "Example BestPractice 2" ;
+    rdfs:comment "This is example instance 2 of class BestPractice" .
+
+:exampleDomainAnalogy1 a ns1:DomainAnalogy  ;
+    rdfs:label "Example DomainAnalogy 1" ;
+    ns1:analogySource "Example value 1" ;
+    ns1:analogyTarget "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class DomainAnalogy" .
+
+:exampleDomainAnalogy2 a ns1:DomainAnalogy  ;
+    rdfs:label "Example DomainAnalogy 2" ;
+    ns1:analogySource "Example value 2" ;
+    ns1:analogyTarget "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class DomainAnalogy" .
+
+:exampleInterpretation1 a ns1:Interpretation  ;
+    rdfs:label "Example Interpretation 1" ;
+    ns1:complexity 1 ;
+    ns1:hasAction :exampleAction1 ;
+    ns1:sourceContext "Example value 1" ;
+    ns1:targetContext "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class Interpretation" .
+
+:exampleInterpretation2 a ns1:Interpretation  ;
+    rdfs:label "Example Interpretation 2" ;
+    ns1:complexity 2 ;
+    ns1:hasAction :exampleAction2 ;
+    ns1:sourceContext "Example value 2" ;
+    ns1:targetContext "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class Interpretation" .
+
+:exampleLegacyMapping1 a ns1:LegacyMapping  ;
+    rdfs:label "Example LegacyMapping 1" ;
+    rdfs:comment "This is example instance 1 of class LegacyMapping" .
+
+:exampleLegacyMapping2 a ns1:LegacyMapping  ;
+    rdfs:label "Example LegacyMapping 2" ;
+    rdfs:comment "This is example instance 2 of class LegacyMapping" .
+
+:exampleAction1 a ns1:Action  ;
+    rdfs:label "Example Action 1" ;
+    rdfs:comment "This is example instance 1 of class Action" .
+
+:exampleAction2 a ns1:Action  ;
+    rdfs:label "Example Action 2" ;
+    rdfs:comment "This is example instance 2 of class Action" .
+
+ns1:BestPractice a owl:Class ;
+    rdfs:label "BestPractice" ;
+    rdfs:comment "A recommended practice for ontology development and management" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:LegacyMapping a owl:Class ;
+    rdfs:label "Legacy Mapping" ;
+    rdfs:comment "Maps legacy guidance concepts to modular equivalents" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:Action a owl:Class ;
     rdfs:label "Action" ;
     rdfs:comment "An action that can be taken based on interpretation" ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/core#DomainAnalogy> a owl:Class ;
+ns1:DomainAnalogy a owl:Class ;
     rdfs:label "DomainAnalogy" ;
     rdfs:comment "A pattern that draws parallels between domains to aid understanding and implementation" ;
-    rdfs:subClassOf <http://ontologies.louspringer.com/guidance/modules/core#Interpretation> ;
+    rdfs:subClassOf ns1:Interpretation ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/core#Interpretation> a owl:Class ;
+ns1:Interpretation a owl:Class ;
     rdfs:label "Interpretation" ;
     rdfs:comment "Guidance on how to interpret an ontology element" ;
     rdfs:subClassOf meta:AbstractionDimension ;
     owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
 

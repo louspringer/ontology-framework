@@ -1,92 +1,50 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/test_error_plan#> .
+
+@prefix : <./#> .
 @prefix ns1: <http://example.org/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:PlanStepShape a sh:NodeShape ;
+    sh:property :shape1sh:message "Plan step must have an order" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasStepOrder  .
+        :shape1 sh:message "Plan step must have an action"  ;
+            sh:minCount 1 ;
+            sh:path ns1:hasStepAction ;
+    sh:targetClass ns1:PlanStep .
+
+ns1:TestErrorPlanShape a sh:NodeShape ;
+    sh:property :shape2sh:message "Test error plan must include all required steps" ;
+            sh:minCount 6 ;
+            sh:path ns1:hasPlanStep ;
+    sh:targetClass ns1:TestErrorPlan .
+
+ns1:standardTestErrorPlan a ns1:TestErrorPlan ;
+    rdfs:label "Standard Test Error Plan" ;
+    ns1:hasPlanStep ns1:documentationStep,
+        ns1:errorAnalysisStep,
+        ns1:errorIdentificationStep,
+        ns1:errorTrappingStep,
+        ns1:fixImplementationStep,
+        ns1:verificationStep ;
+    rdfs:comment "Standard plan for handling test errors" .
 
 ns1:TestErrorPlan a owl:NamedIndividual ;
     rdfs:label "Standard Test Error Handling Plan" ;
-    rdfs:comment "A conforming plan for handling test errors" ;
-    ns1:hasPlanStep ns1:errorIdentificationStep,
-                   ns1:errorTrappingStep,
-                   ns1:errorAnalysisStep,
-                   ns1:fixImplementationStep,
-                   ns1:verificationStep,
-                   ns1:documentationStep .
-
-ns1:errorIdentificationStep a ns1:PlanStep ;
-    rdfs:label "Error Identification" ;
-    rdfs:comment "Identify and log the test error" ;
-    ns1:hasStepOrder 1 ;
-    ns1:hasStepAction """
-    1. Capture error details:
-       - Test name and location
-       - Error message
-       - Full traceback
-       - Test environment state
-    2. Log error at ERROR level
-    3. Generate initial error report
-    """ .
-
-ns1:errorTrappingStep a ns1:PlanStep ;
-    rdfs:label "Error Trapping" ;
-    rdfs:comment "Update test to properly trap the error" ;
-    ns1:hasStepOrder 2 ;
-    ns1:hasStepAction """
-    1. Review error type and context
-    2. Choose appropriate trapping mechanism:
-       - assertRaises for expected exceptions
-       - try/except for complex error handling
-       - custom assertions for specific conditions
-    3. Update test with proper error trapping
-    4. Add detailed error message expectations
-    """ .
-
-ns1:errorAnalysisStep a ns1:PlanStep ;
-    rdfs:label "Error Analysis" ;
-    rdfs:comment "Analyze the root cause of the error" ;
-    ns1:hasStepOrder 3 ;
-    ns1:hasStepAction """
-    1. Review error context and test environment
-    2. Identify potential root causes:
-       - Code logic errors
-       - Configuration issues
-       - Environmental factors
-       - Dependency problems
-    3. Document analysis findings
-    4. Determine required fixes
-    """ .
-
-ns1:fixImplementationStep a ns1:PlanStep ;
-    rdfs:label "Fix Implementation" ;
-    rdfs:comment "Implement the required fixes" ;
-    ns1:hasStepOrder 4 ;
-    ns1:hasStepAction """
-    1. Implement code fixes:
-       - Update error handling
-       - Fix logic errors
-       - Update configurations
-    2. Update test environment if needed
-    3. Document changes made
-    4. Prepare for verification
-    """ .
-
-ns1:verificationStep a ns1:PlanStep ;
-    rdfs:label "Verification" ;
-    rdfs:comment "Verify the fixes resolve the error" ;
-    ns1:hasStepOrder 5 ;
-    ns1:hasStepAction """
-    1. Run updated tests
-    2. Verify error is properly trapped
-    3. Confirm fix resolves the issue
-    4. Check for regression issues
-    5. Update test report
-    """ .
+    ns1:hasPlanStep ns1:documentationStep,
+        ns1:errorAnalysisStep,
+        ns1:errorIdentificationStep,
+        ns1:errorTrappingStep,
+        ns1:fixImplementationStep,
+        ns1:verificationStep ;
+    rdfs:comment "A conforming plan for handling test errors" .
 
 ns1:documentationStep a ns1:PlanStep ;
     rdfs:label "Documentation" ;
-    rdfs:comment "Document the error and resolution" ;
-    ns1:hasStepOrder 6 ;
     ns1:hasStepAction """
     1. Update test documentation:
        - Error description
@@ -96,37 +54,95 @@ ns1:documentationStep a ns1:PlanStep ;
     2. Update guidance if needed
     3. Add to error knowledge base
     4. Review for process improvements
-    """ .
+    """ ;
+    ns1:hasStepOrder 6 ;
+    rdfs:comment "Document the error and resolution" .
 
-# SHACL shapes for plan validation
-ns1:TestErrorPlanShape a sh:NodeShape ;
-    sh:targetClass ns1:TestErrorPlan ;
-    sh:property [
-        sh:path ns1:hasPlanStep ;
-        sh:minCount 6 ;
-        sh:message "Test error plan must include all required steps" ;
-    ] .
+ns1:errorAnalysisStep a ns1:PlanStep ;
+    rdfs:label "Error Analysis" ;
+    ns1:hasStepAction """
+    1. Review error context and test environment
+    2. Identify potential root causes:
+       - Code logic errors
+       - Configuration issues
+       - Environmental factors
+       - Dependency problems
+    3. Document analysis findings
+    4. Determine required fixes
+    """ ;
+    ns1:hasStepOrder 3 ;
+    rdfs:comment "Analyze the root cause of the error" .
 
-ns1:PlanStepShape a sh:NodeShape ;
-    sh:targetClass ns1:PlanStep ;
-    sh:property [
-        sh:path ns1:hasStepOrder ;
-        sh:minCount 1 ;
-        sh:message "Plan step must have an order" ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasStepAction ;
-        sh:minCount 1 ;
-        sh:message "Plan step must have an action" ;
-    ] .
+ns1:errorIdentificationStep a ns1:PlanStep ;
+    rdfs:label "Error Identification" ;
+    ns1:hasStepAction """
+    1. Capture error details:
+       - Test name and location
+       - Error message
+       - Full traceback
+       - Test environment state
+    2. Log error at ERROR level
+    3. Generate initial error report
+    """ ;
+    ns1:hasStepOrder 1 ;
+    rdfs:comment "Identify and log the test error" .
 
-# Standard error handling instance
-ns1:standardTestErrorPlan a ns1:TestErrorPlan ;
-    rdfs:label "Standard Test Error Plan" ;
-    rdfs:comment "Standard plan for handling test errors" ;
-    ns1:hasPlanStep ns1:errorIdentificationStep,
-                   ns1:errorTrappingStep,
-                   ns1:errorAnalysisStep,
-                   ns1:fixImplementationStep,
-                   ns1:verificationStep,
-                   ns1:documentationStep . 
+ns1:errorTrappingStep a ns1:PlanStep ;
+    rdfs:label "Error Trapping" ;
+    ns1:hasStepAction """
+    1. Review error type and context
+    2. Choose appropriate trapping mechanism:
+       - assertRaises for expected exceptions
+       - try/except for complex error handling
+       - custom assertions for specific conditions
+    3. Update test with proper error trapping
+    4. Add detailed error message expectations
+    """ ;
+    ns1:hasStepOrder 2 ;
+    rdfs:comment "Update test to properly trap the error" .
+
+ns1:fixImplementationStep a ns1:PlanStep ;
+    rdfs:label "Fix Implementation" ;
+    ns1:hasStepAction """
+    1. Implement code fixes:
+       - Update error handling
+       - Fix logic errors
+       - Update configurations
+    2. Update test environment if needed
+    3. Document changes made
+    4. Prepare for verification
+    """ ;
+    ns1:hasStepOrder 4 ;
+    rdfs:comment "Implement the required fixes" .
+
+ns1:verificationStep a ns1:PlanStep ;
+    rdfs:label "Verification" ;
+    ns1:hasStepAction """
+    1. Run updated tests
+    2. Verify error is properly trapped
+    3. Confirm fix resolves the issue
+    4. Check for regression issues
+    5. Update test report
+    """ ;
+    ns1:hasStepOrder 5 ;
+    rdfs:comment "Verify the fixes resolve the error" .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape4sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+

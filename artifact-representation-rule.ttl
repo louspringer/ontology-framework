@@ -1,6 +1,6 @@
-@prefix meta: <http://example.org/meta#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix meta: <http:/example.org/meta#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
 
 meta:ArtifactRepresentationSeparationRule a meta:ModelingDisciplineRule ;
     rdfs:label "Artifact-Representation-Concept Separation Rule" ;

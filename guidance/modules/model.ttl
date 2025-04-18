@@ -1,85 +1,143 @@
-@prefix : <./model#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> .
+
+@prefix : <./#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix core: <../core#> .
-@prefix guidance: <../../guidance#> .
 
-# Model Module Definition
-:ModelGuidanceModule rdf:type owl:Ontology ;
+:exampleModelFirstPrinciple1 a :ModelFirstPrinciple  ;
+    rdfs:label "Example ModelFirstPrinciple 1" ;
+    rdfs:comment "This is example instance 1 of class ModelFirstPrinciple" ;
+    :hasLegacyModelConcept :exampleLLMGuidanceOntology1  ;
+    :hasProjection :exampleModelProjection1 .
+
+:exampleModelFirstPrinciple2 a :ModelFirstPrinciple  ;
+    rdfs:label "Example ModelFirstPrinciple 2" ;
+    rdfs:comment "This is example instance 2 of class ModelFirstPrinciple" ;
+    :hasLegacyModelConcept :exampleLLMGuidanceOntology2  ;
+    :hasProjection :exampleModelProjection2 .
+
+:exampleModelProjectionAlignment1 a :ModelProjectionAlignment  ;
+    rdfs:label "Example ModelProjectionAlignment 1" ;
+    rdfs:comment "This is example instance 1 of class ModelProjectionAlignment" .
+
+:exampleModelProjectionAlignment2 a :ModelProjectionAlignment  ;
+    rdfs:label "Example ModelProjectionAlignment 2" ;
+    rdfs:comment "This is example instance 2 of class ModelProjectionAlignment" .
+
+:exampleModelQualityPrecedence1 a :ModelQualityPrecedence  ;
+    rdfs:label "Example ModelQualityPrecedence 1" ;
+    rdfs:comment "This is example instance 1 of class ModelQualityPrecedence" .
+
+:exampleModelQualityPrecedence2 a :ModelQualityPrecedence  ;
+    rdfs:label "Example ModelQualityPrecedence 2" ;
+    rdfs:comment "This is example instance 2 of class ModelQualityPrecedence" .
+
+:ModelGuidanceModule a owl:Ontology  ;
     rdfs:label "Model Guidance Module" ;
-    rdfs:comment "Model-specific guidance concepts and principles" ;
     dc:title "Model Guidance Module" ;
     dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    owl:imports <core.ttl> ;
-    owl:imports <validation.ttl> .
-
-# Model-First Development Classes
-:ModelFirstPrinciple rdf:type owl:Class ;
-    rdfs:label "ModelFirstPrinciple" ;
-    rdfs:comment "Fundamental principle emphasizing model-driven development approach" ;
-    rdfs:subClassOf core:BestPractice ;
+    rdfs:comment "Model-specific guidance concepts and principles" ;
+    owl:imports <./core.ttl>,
+        <./validation.ttl> ;
     owl:versionInfo "1.0.0" .
 
-:ModelQualityPrecedence rdf:type owl:Class ;
-    rdfs:label "ModelQualityPrecedence" ;
-    rdfs:comment "Principle establishing that model quality takes precedence over code quality" ;
-    rdfs:subClassOf :ModelFirstPrinciple ;
-    owl:versionInfo "1.0.0" .
+<./model#ModelGuidanceModule#ModuleShape> a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./model#ModelGuidanceModule#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./model#ModelGuidanceModule#description>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./model#ModelGuidanceModule#version> ;
+    sh:targetClass <./model#ModelGuidanceModule#Module> .
 
-:ModelProjectionAlignment rdf:type owl:Class ;
-    rdfs:label "Model-Projection Alignment" ;
-    rdfs:comment "Principle for aligning code with model specifications" ;
-    rdfs:subClassOf :ModelFirstPrinciple ;
-    owl:versionInfo "1.0.0" .
+:hasLegacyModelConcept a owl:ObjectProperty  ;
+    rdfs:label "Has Legacy Model Concept" ;
+    rdfs:comment "Links modular model concept to legacy guidance" ;
+    rdfs:domain :ModelFirstPrinciple ;
+    rdfs:range guidance:LLMGuidanceOntology .
 
-# Model Properties
-:hasModelingPrinciple rdf:type owl:ObjectProperty ;
+:hasModelingPrinciple a owl:ObjectProperty  ;
     rdfs:label "Has Modeling Principle" ;
     rdfs:comment "Links guidance to specific modeling principles" ;
     rdfs:domain core:BestPractice ;
     rdfs:range :ModelFirstPrinciple .
 
-:hasProjection rdf:type owl:ObjectProperty ;
+:hasProjection a owl:ObjectProperty  ;
     rdfs:label "Has Projection" ;
     rdfs:comment "Links model to its projections (code, docs, etc.)" ;
     rdfs:domain :ModelFirstPrinciple ;
     rdfs:range :ModelProjection .
 
-# Model Instances
-:modelQualityGuidance rdf:type owl:NamedIndividual ;
-    rdf:type :ModelQualityPrecedence ;
+:modelProjectionGuidance a owl:NamedIndividual,
+        :ModelProjectionAlignment  ;
+    rdfs:label "Model Projection Guidance" ;
+    rdfs:comment """When code quality issues arise:
+    1. First verify model correctness
+    2. Then check if code accurately projects the model
+    3. Only then consider code-level improvements""" ;
+    core:complexity 2 ;
+    core:sourceContext "Model-Code Relationship" ;
+    core:targetContext "Quality Assessment" .
+
+:modelQualityGuidance a owl:NamedIndividual,
+        :ModelQualityPrecedence  ;
     rdfs:label "Model Quality Guidance" ;
-    core:sourceContext "Ontological Modeling" ;
-    core:targetContext "System Correctness" ;
-    core:complexity "1"^^xsd:integer ;
     rdfs:comment """Ontological correctness is the foundation of all system correctness:
     - If the model is right, its projections must be right
     - Model correctness has a compounding effect
     - Code quality issues are symptoms of model-projection misalignment
     - Focus validation on model correctness
-    - Model refinement leads to code refinement""" .
+    - Model refinement leads to code refinement""" ;
+    core:complexity 1 ;
+    core:sourceContext "Ontological Modeling" ;
+    core:targetContext "System Correctness" .
 
-:modelProjectionGuidance rdf:type owl:NamedIndividual ;
-    rdf:type :ModelProjectionAlignment ;
-    rdfs:label "Model Projection Guidance" ;
-    core:sourceContext "Model-Code Relationship" ;
-    core:targetContext "Quality Assessment" ;
-    core:complexity "2"^^xsd:integer ;
-    rdfs:comment """When code quality issues arise:
-    1. First verify model correctness
-    2. Then check if code accurately projects the model
-    3. Only then consider code-level improvements""" .
+:ModelProjectionAlignment a owl:Class  ;
+    rdfs:label "Model-Projection Alignment" ;
+    rdfs:comment "Principle for aligning code with model specifications" ;
+    rdfs:subClassOf :ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
 
-# Legacy Support
-:hasLegacyModelConcept rdf:type owl:ObjectProperty ;
-    rdfs:label "Has Legacy Model Concept" ;
-    rdfs:comment "Links modular model concept to legacy guidance" ;
-    rdfs:domain :ModelFirstPrinciple ;
-    rdfs:range guidance:LLMGuidanceOntology . 
+:ModelQualityPrecedence a owl:Class  ;
+    rdfs:label "ModelQualityPrecedence" ;
+    rdfs:comment "Principle establishing that model quality takes precedence over code quality" ;
+    rdfs:subClassOf :ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
+
+:ModelFirstPrinciple a owl:Class  ;
+    rdfs:label "ModelFirstPrinciple" ;
+    rdfs:comment "Fundamental principle emphasizing model-driven development approach" ;
+    rdfs:subClassOf core:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ;
+    sh:targetClass owl:Class .
+

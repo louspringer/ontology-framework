@@ -1,9 +1,9 @@
-@prefix ex: <http://example.org/boldo#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <http:/example.org/boldo#> .
+@prefix skos: <http:/www.w3.org/2004/02/skos/core#> .
 
-<https://map.boldo.io/Guide-d-utilisation-14df9e0e698080fab630e0d0dae37e93> a ex:WebPage ;
+<https:/map.boldo.io/Guide-d-utilisation-14df9e0e698080fab630e0d0dae37e93> a ex:WebPage ;
     ex:metaDescription "A new tool that blends your everyday work apps into one. It's the all-in-one workspace for you and your team" ;
     ex:title "Your connected workspace for wiki, docs & projects | Notion" ;
     ex:url "https://map.boldo.io/Guide-d-utilisation-14df9e0e698080fab630e0d0dae37e93" ;
-    skos:broader <https://map.boldo.io> .
+    skos:broader <https:/map.boldo.io> .
 

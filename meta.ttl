@@ -4,17 +4,17 @@
 # Guidance: guidance:OntologyPatterns#CoreOntology
 # Description: Core meta-ontology defining base concepts and relationships
 
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
 @prefix meta: <./meta#> .
 @prefix metameta: <./metameta#> .
 @prefix problem: <./problem#> .
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
 @prefix validation: <./guidance/modules/validation#> .
 
 # Ontology metadata
@@ -571,7 +571,7 @@ meta:ListSecurityConceptsTest a meta:TestQuery ;
     rdfs:comment "Query to list all security concepts" ;
     meta:hasQuery """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         SELECT ?concept ?label
         WHERE {
@@ -594,7 +594,7 @@ meta:RCAIssuesTest a meta:TestQuery ;
     rdfs:comment "Query to match RCA issues with their solutions" ;
     meta:hasQuery """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         SELECT ?issue ?issueName ?solution ?solutionDesc
         WHERE {
@@ -619,8 +619,8 @@ meta:CreateNewConceptTest a meta:TestOperation ;
     rdfs:comment "Test creating a new security concept" ;
     meta:hasOperation """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http:/www.w3.org/2002/07/owl#>
         
         INSERT DATA {
             meta:TestSecurityConcept a meta:SecurityConcept ;
@@ -635,7 +635,7 @@ meta:UpdateConceptTest a meta:TestOperation ;
     rdfs:comment "Test updating a security concept" ;
     meta:hasOperation """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         DELETE {
             meta:TestSecurityConcept rdfs:comment ?oldComment
@@ -665,7 +665,7 @@ meta:ComponentDependencyTest a meta:TestQuery ;
     rdfs:comment "Query to analyze component dependencies" ;
     meta:hasQuery """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         SELECT ?component ?dependsOn ?implements
         WHERE {
@@ -715,7 +715,7 @@ meta:ListModelingRulesTest a meta:TestQuery ;
     rdfs:comment "Query to list all modeling discipline rules with their severity and governed aspects" ;
     meta:hasQuery """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         SELECT ?rule ?label ?severity ?governs
         WHERE {
@@ -738,7 +738,7 @@ meta:RulePitfallsTest a meta:TestQuery ;
     rdfs:comment "Query to match rules with their addressed pitfalls" ;
     meta:hasQuery """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         SELECT ?rule ?label ?pitfall ?motivation
         WHERE {
@@ -762,8 +762,8 @@ meta:CreateNewRuleTest a meta:TestOperation ;
     rdfs:comment "Test creating a new modeling discipline rule" ;
     meta:hasOperation """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http:/www.w3.org/2002/07/owl#>
         
         INSERT DATA {
             meta:TestModelingRule a meta:ModelingDisciplineRule ;
@@ -782,7 +782,7 @@ meta:UpdateRuleTest a meta:TestOperation ;
     rdfs:comment "Test updating a modeling discipline rule" ;
     meta:hasOperation """
         PREFIX meta: <./meta#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
         
         DELETE {
             meta:TestModelingRule meta:severity ?oldSeverity
@@ -1007,7 +1007,7 @@ meta:TestCoverageValidation a meta:ValidationCriteria ;
     rdfs:label "Test Coverage Validation" ;
     rdfs:comment "Validates comprehensive test coverage across framework" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <./guidance#>
     PREFIX validation: <./guidance/modules/validation#>
     
@@ -1037,9 +1037,9 @@ meta:PatternValidation a meta:ValidationCriteria ;
     rdfs:label "Pattern Validation" ;
     rdfs:comment "Validates completeness of validation patterns" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
+    PREFIX owl: <http:/www.w3.org/2002/07/owl#>
     PREFIX validation: <./guidance/modules/validation#>
     
     SELECT ?pattern ?label ?comment ?version ?target
@@ -1057,7 +1057,7 @@ meta:ProtocolValidation a meta:ValidationCriteria ;
     rdfs:label "Protocol Validation" ;
     rdfs:comment "Validates test protocol structure and compliance" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <./guidance#>
     PREFIX validation: <./guidance/modules/validation#>
     
@@ -1080,7 +1080,7 @@ meta:SecurityValidation a meta:ValidationCriteria ;
     rdfs:label "Security Validation" ;
     rdfs:comment "Validates security-related pattern constraints" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX security: <./guidance/modules/security#>
     PREFIX validation: <./guidance/modules/validation#>
     
@@ -1099,7 +1099,7 @@ meta:CollaborationValidation a meta:ValidationCriteria ;
     rdfs:label "Collaboration Validation" ;
     rdfs:comment "Validates collaboration-related pattern constraints" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX collaboration: <./guidance/modules/collaboration#>
     PREFIX validation: <./guidance/modules/validation#>
     
@@ -1118,7 +1118,7 @@ meta:ModelConformanceValidation a meta:ValidationCriteria ;
     rdfs:label "Model Conformance Validation" ;
     rdfs:comment "Validates model-related pattern constraints" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX model: <./guidance/modules/model#>
     PREFIX validation: <./guidance/modules/validation#>
     
@@ -1297,7 +1297,7 @@ meta:AuditTrailValidation a meta:ValidationCriteria ;
     rdfs:label "Audit Trail Validation" ;
     rdfs:comment "Validates audit trail completeness and compliance" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX meta: <./meta#>
     
     SELECT ?event ?timestamp ?actor ?action ?resource ?outcome
@@ -1473,7 +1473,7 @@ meta:BackupRestoreValidation a meta:ValidationCriteria ;
     rdfs:label "Backup and Restore Validation" ;
     rdfs:comment "Validates backup and restore operations compliance" ;
     meta:hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX meta: <./meta#>
     
     SELECT ?operation ?timestamp ?location ?type ?status

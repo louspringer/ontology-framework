@@ -3,137 +3,180 @@
 
 import logging
 import os
-from pathlib import Path
-from ontology_framework.jena_client import JenaFusekiClient
+from typing import Dict, List, Optional, Union
+import requests
+from rdflib import Graph, URIRef
+from rdflib.namespace import RDFS, OWL
+from urllib.parse import urljoin
 
-logging.basicConfig(level=logging.INFO)
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
-def load_ontologies(client: JenaFusekiClient, ontology_dir: str) -> None:
-    """Load all ontology files from a directory.
-
-    Args:
-        client: Jena Fuseki client
-        ontology_dir: Directory containing ontology files
-    """
-    for file in Path(ontology_dir).glob("*.ttl"):
-        logger.info(f"Loading ontology: {file}")
-        client.load_ontology(str(file))
-
-def add_test_error_handling(client: JenaFusekiClient) -> None:
-    """Add test error handling components.
-
-    Args:
-        client: Jena Fuseki client
-    """
-    # Add test error handling steps
-    query1 = """
-    PREFIX ns1: <http://example.org/guidance#>
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-    INSERT DATA {
-        ns1:TestErrorIdentification a ns1:TestErrorHandlingStep ;
-            ns1:hasStepOrder "1"^^xsd:integer ;
-            ns1:hasStepAction "Identify failing tests and error patterns" ;
-            rdfs:label "Test Error Identification" ;
-            rdfs:comment "First step in test error handling process" .
-
-        ns1:TestErrorAnalysis a ns1:TestErrorHandlingStep ;
-            ns1:hasStepOrder "2"^^xsd:integer ;
-            ns1:hasStepAction "Analyze root cause of test failures" ;
-            rdfs:label "Test Error Analysis" ;
-            rdfs:comment "Second step in test error handling process" .
-
-        ns1:TestErrorRecovery a ns1:TestErrorHandlingStep ;
-            ns1:hasStepOrder "3"^^xsd:integer ;
-            ns1:hasStepAction "Implement fixes for failing tests" ;
-            rdfs:label "Test Error Recovery" ;
-            rdfs:comment "Third step in test error handling process" .
-
-        ns1:TestErrorPrevention a ns1:TestErrorHandlingStep ;
-            ns1:hasStepOrder "4"^^xsd:integer ;
-            ns1:hasStepAction "Add validation to prevent similar failures" ;
-            rdfs:label "Test Error Prevention" ;
-            rdfs:comment "Fourth step in test error handling process" .
-    }
-    """
-    client.update_sparql(query1)
-
-    # Add SHACL validation for test error handling steps
-    query2 = """
-    PREFIX ns1: <http://example.org/guidance#>
-    PREFIX sh: <http://www.w3.org/ns/shacl#>
-    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-    INSERT DATA {
-        ns1:TestErrorHandlingStepShape a sh:NodeShape ;
-            sh:targetClass ns1:TestErrorHandlingStep ;
-            sh:property [
-                sh:path ns1:hasStepOrder ;
-                sh:datatype xsd:integer ;
-                sh:minCount 1 ;
-                sh:maxCount 1 ;
-            ] ;
-            sh:property [
-                sh:path ns1:hasStepAction ;
-                sh:datatype xsd:string ;
-                sh:minCount 1 ;
-                sh:maxCount 1 ;
-            ] .
-    }
-    """
-    client.update_sparql(query2)
-
-    # Add test error handling process
-    query3 = """
-    PREFIX ns1: <http://example.org/guidance#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-    INSERT DATA {
-        ns1:standardTestErrorHandling a ns1:TestErrorHandlingProcess ;
-            rdfs:label "Standard Test Error Handling" ;
-            rdfs:comment "Standard process for handling test errors" ;
-            ns1:hasProcessStep ns1:TestErrorIdentification ;
-            ns1:hasProcessStep ns1:TestErrorAnalysis ;
-            ns1:hasProcessStep ns1:TestErrorRecovery ;
-            ns1:hasProcessStep ns1:TestErrorPrevention ;
-            ns1:hasProcessName "Standard Test Error Handling" ;
-            ns1:hasProcessDescription "Standard process for identifying, analyzing, fixing and preventing test errors" .
-    }
-    """
-    client.update_sparql(query3)
-
-    # Add SHACL validation for test error handling process
-    query4 = """
-    PREFIX ns1: <http://example.org/guidance#>
-    PREFIX sh: <http://www.w3.org/ns/shacl#>
-
-    INSERT DATA {
-        ns1:TestErrorHandlingProcessShape a sh:NodeShape ;
-            sh:targetClass ns1:TestErrorHandlingProcess ;
-            sh:property [
-                sh:path ns1:hasProcessStep ;
-                sh:minCount 4 ;
-                sh:maxCount 4
-            ] .
-    }
-    """
-    client.update_sparql(query4)
+class OntologyLoader:
+    def __init__(self, base_url: str = "http://localhost:7200", repo_id: str = "test-ontology-framework") -> None:
+        """Initialize the OntologyLoader.
+        
+        Args:
+            base_url: Base URL for GraphDB
+            repo_id: Repository ID in GraphDB
+        """
+        self.base_url = base_url
+        self.repo_id = repo_id
+        self.repo_url = f"{base_url}/repositories/{repo_id}"
+        self.statements_url = f"{self.repo_url}/statements"
+        self.base_iri = "https://raw.githubusercontent.com/louspringer/ontology-framework/main/"
+        
+    def _get_absolute_path(self, relative_path: str) -> str:
+        """Convert relative path to absolute path.
+        
+        Args:
+            relative_path: Relative path to convert
+            
+        Returns:
+            Absolute path in the filesystem
+        """
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        workspace_root = os.path.dirname(base_dir)
+        return os.path.join(workspace_root, relative_path)
+        
+    def load_ontology(self, file_path: str) -> bool:
+        """Load an ontology file into GraphDB.
+        
+        Args:
+            file_path: Path to the ontology file
+            
+        Returns:
+            True if loading was successful, False otherwise
+        """
+        try:
+            # Convert relative path to absolute
+            abs_path = self._get_absolute_path(file_path)
+            
+            # Parse the ontology and set base IRI
+            g = Graph()
+            g.parse(abs_path, format="turtle")
+            
+            # Update IRIs to use GitHub URLs
+            new_g = Graph()
+            for s, p, o in g:
+                if isinstance(s, URIRef) and s.startswith('file:///'):
+                    s = URIRef(s.replace('file:///', self.base_iri))
+                if isinstance(p, URIRef) and p.startswith('file:///'):
+                    p = URIRef(p.replace('file:///', self.base_iri))
+                if isinstance(o, URIRef) and o.startswith('file:///'):
+                    o = URIRef(o.replace('file:///', self.base_iri))
+                new_g.add((s, p, o))
+            
+            # Convert to N-Triples format
+            nt_data = new_g.serialize(format="nt")
+            
+            # Load into GraphDB
+            headers = {
+                "Content-Type": "application/n-triples",
+                "Accept": "application/json"
+            }
+            
+            response = requests.post(
+                self.statements_url,
+                headers=headers,
+                data=nt_data
+            )
+            
+            if response.status_code == 204:
+                logger.info(f"Successfully loaded {file_path}")
+                return True
+            else:
+                logger.error(f"Failed to load {file_path}: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error loading {file_path}: {str(e)}")
+            return False
+            
+    def update_tracking_status(self, module_uri: str, status: str = "LOADED") -> bool:
+        """Update the tracking status of a module.
+        
+        Args:
+            module_uri: URI of the module to update
+            status: Status to set
+            
+        Returns:
+            True if update was successful, False otherwise
+        """
+        try:
+            query = f"""
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX : <{self.base_iri}guidance#>
+            
+            INSERT DATA {{
+                <{module_uri}> :hasStatus "{status}" .
+            }}
+            """
+            
+            response = requests.post(
+                f"{self.repo_url}/statements",
+                headers={"Content-Type": "application/sparql-update"},
+                data=query
+            )
+            
+            if response.status_code == 204:
+                logger.info(f"Updated status for {module_uri} to {status}")
+                return True
+            else:
+                logger.error(f"Failed to update status for {module_uri}: {response.status_code} - {response.text}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error updating status for {module_uri}: {str(e)}")
+            return False
+            
+    def load_all_modules(self) -> bool:
+        """Load all core modules defined in guidance.ttl.
+        
+        Returns:
+            True if all modules were loaded successfully, False otherwise
+        """
+        # First load the guidance ontology
+        if not self.load_ontology("guidance.ttl"):
+            logger.error("Failed to load guidance ontology, aborting")
+            return False
+            
+        # Load core modules
+        modules = [
+            "guidance/modules/core.ttl",
+            "guidance/modules/model.ttl",
+            "guidance/modules/security.ttl",
+            "guidance/modules/validation.ttl",
+            "guidance/modules/collaboration.ttl",
+            "guidance/modules/sparql_service.ttl",
+            "guidance/modules/environment.ttl",
+            "guidance/modules/deployment_validation.ttl"
+        ]
+        
+        success = True
+        for module in modules:
+            if self.load_ontology(module):
+                # Update tracking status using GitHub URL
+                module_uri = f"{self.base_iri}{module}"
+                self.update_tracking_status(module_uri)
+            else:
+                success = False
+                
+        return success
 
 def main() -> None:
-    """Main function."""
-    client = JenaFusekiClient()
-    
-    # Load existing ontologies
-    ontology_dir = os.path.join(os.path.dirname(__file__), "..", "guidance", "modules")
-    load_ontologies(client, ontology_dir)
-    
-    # Add test error handling components
-    add_test_error_handling(client)
-    
-    logger.info("Ontologies loaded and updated successfully")
+    """Main entry point for the script."""
+    loader = OntologyLoader()
+    if loader.load_all_modules():
+        logger.info("Successfully loaded all modules")
+    else:
+        logger.error("Failed to load some modules")
 
 if __name__ == "__main__":
     main() 

@@ -1,154 +1,249 @@
-@prefix : <http://example.org/guidance#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics_risks#> .
+
+@prefix : <./#> .
+@prefix metric: <./metrics_risks#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix meta: <./meta#> .
-@prefix metameta: <./metameta#> .
-@prefix problem: <./problem#> .
-@prefix solution: <./solution#> .
-@prefix conversation: <./conversation#> .
-@prefix guidance: <./guidance#> .
-@prefix metric: <./metrics_risks#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Metrics
-metric:Metric rdf:type owl:Class ;
-    rdfs:label "Metric" ;
-    rdfs:comment "Base class for all metrics" ;
-    owl:versionInfo "1.0.0" .
+:exampleConstraint1 a metric:Constraint  ;
+    rdfs:label "Example Constraint 1" ;
+    rdfs:comment "This is example instance 1 of class Constraint" ;
+    metric:hasLimit :exampledecimal1 .
 
-metric:hasThreshold rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Threshold" ;
-    rdfs:domain metric:Metric ;
-    rdfs:range xsd:decimal ;
-    owl:versionInfo "1.0.0" .
+:exampleConstraint2 a metric:Constraint  ;
+    rdfs:label "Example Constraint 2" ;
+    rdfs:comment "This is example instance 2 of class Constraint" ;
+    metric:hasLimit :exampledecimal2 .
 
-metric:ResolutionTime rdf:type owl:Class ;
-    rdfs:subClassOf metric:Metric ;
-    rdfs:label "Resolution Time" ;
-    rdfs:comment "Time taken to resolve errors" ;
-    owl:versionInfo "1.0.0" .
+:exampleDataLossRisk1 a metric:DataLossRisk  ;
+    rdfs:label "Example DataLossRisk 1" ;
+    rdfs:comment "This is example instance 1 of class DataLossRisk" .
 
-metric:ErrorCount rdf:type owl:Class ;
-    rdfs:subClassOf metric:Metric ;
-    rdfs:label "Error Count" ;
-    rdfs:comment "Number of errors encountered" ;
-    owl:versionInfo "1.0.0" .
+:exampleDataLossRisk2 a metric:DataLossRisk  ;
+    rdfs:label "Example DataLossRisk 2" ;
+    rdfs:comment "This is example instance 2 of class DataLossRisk" .
 
-metric:LoggingLatency rdf:type owl:Class ;
-    rdfs:subClassOf metric:Metric ;
-    rdfs:label "Logging Latency" ;
-    rdfs:comment "Time taken to log errors" ;
-    owl:versionInfo "1.0.0" .
+:exampleErrorCount1 a metric:ErrorCount  ;
+    rdfs:label "Example ErrorCount 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorCount" .
 
-metric:RecoveryTime rdf:type owl:Class ;
-    rdfs:subClassOf metric:Metric ;
-    rdfs:label "Recovery Time" ;
-    rdfs:comment "Time taken to recover from errors" ;
-    owl:versionInfo "1.0.0" .
+:exampleErrorCount2 a metric:ErrorCount  ;
+    rdfs:label "Example ErrorCount 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorCount" .
 
-# Metric Instances
-metric:ResolutionTimeInstance rdf:type metric:ResolutionTime ;
-    metric:hasThreshold "5000"^^xsd:decimal .
+:exampleLoggingLatency1 a metric:LoggingLatency  ;
+    rdfs:label "Example LoggingLatency 1" ;
+    rdfs:comment "This is example instance 1 of class LoggingLatency" .
 
-metric:ErrorCountInstance rdf:type metric:ErrorCount ;
-    metric:hasThreshold "100"^^xsd:decimal .
+:exampleLoggingLatency2 a metric:LoggingLatency  ;
+    rdfs:label "Example LoggingLatency 2" ;
+    rdfs:comment "This is example instance 2 of class LoggingLatency" .
 
-metric:LoggingLatencyInstance rdf:type metric:LoggingLatency ;
-    metric:hasThreshold "100"^^xsd:decimal .
+:exampleMetric1 a metric:Metric  ;
+    rdfs:label "Example Metric 1" ;
+    rdfs:comment "This is example instance 1 of class Metric" ;
+    metric:hasThreshold :exampledecimal1 .
 
-metric:RecoveryTimeInstance rdf:type metric:RecoveryTime ;
-    metric:hasThreshold "5000"^^xsd:decimal .
+:exampleMetric2 a metric:Metric  ;
+    rdfs:label "Example Metric 2" ;
+    rdfs:comment "This is example instance 2 of class Metric" ;
+    metric:hasThreshold :exampledecimal2 .
 
-# Risks
-metric:Risk rdf:type owl:Class ;
-    rdfs:label "Risk" ;
-    rdfs:comment "Base class for all risks" ;
-    owl:versionInfo "1.0.0" .
+:exampleRecoveryTime1 a metric:RecoveryTime  ;
+    rdfs:label "Example RecoveryTime 1" ;
+    rdfs:comment "This is example instance 1 of class RecoveryTime" .
 
-metric:hasSeverity rdf:type owl:DatatypeProperty ;
-    rdfs:label "Has Severity" ;
-    rdfs:domain metric:Risk ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+:exampleRecoveryTime2 a metric:RecoveryTime  ;
+    rdfs:label "Example RecoveryTime 2" ;
+    rdfs:comment "This is example instance 2 of class RecoveryTime" .
 
-metric:DataLossRisk rdf:type owl:Class ;
-    rdfs:subClassOf metric:Risk ;
-    rdfs:label "Data Loss Risk" ;
-    rdfs:comment "Risk of data loss during error handling" ;
-    owl:versionInfo "1.0.0" .
+:exampleResolutionTime1 a metric:ResolutionTime  ;
+    rdfs:label "Example ResolutionTime 1" ;
+    rdfs:comment "This is example instance 1 of class ResolutionTime" .
 
-metric:SecurityRisk rdf:type owl:Class ;
-    rdfs:subClassOf metric:Risk ;
-    rdfs:label "Security Risk" ;
-    rdfs:comment "Risk of security breaches during error handling" ;
-    owl:versionInfo "1.0.0" .
+:exampleResolutionTime2 a metric:ResolutionTime  ;
+    rdfs:label "Example ResolutionTime 2" ;
+    rdfs:comment "This is example instance 2 of class ResolutionTime" .
 
-# Risk Instances
-metric:DataLossRiskInstance rdf:type metric:DataLossRisk ;
+:exampleResourceConstraint1 a metric:ResourceConstraint  ;
+    rdfs:label "Example ResourceConstraint 1" ;
+    rdfs:comment "This is example instance 1 of class ResourceConstraint" .
+
+:exampleResourceConstraint2 a metric:ResourceConstraint  ;
+    rdfs:label "Example ResourceConstraint 2" ;
+    rdfs:comment "This is example instance 2 of class ResourceConstraint" .
+
+:exampleRisk1 a metric:Risk  ;
+    rdfs:label "Example Risk 1" ;
+    rdfs:comment "This is example instance 1 of class Risk" ;
+    metric:hasSeverity "Example value 1" .
+
+:exampleRisk2 a metric:Risk  ;
+    rdfs:label "Example Risk 2" ;
+    rdfs:comment "This is example instance 2 of class Risk" ;
+    metric:hasSeverity "Example value 2" .
+
+:exampleSecurityRisk1 a metric:SecurityRisk  ;
+    rdfs:label "Example SecurityRisk 1" ;
+    rdfs:comment "This is example instance 1 of class SecurityRisk" .
+
+:exampleSecurityRisk2 a metric:SecurityRisk  ;
+    rdfs:label "Example SecurityRisk 2" ;
+    rdfs:comment "This is example instance 2 of class SecurityRisk" .
+
+:exampleTimeConstraint1 a metric:TimeConstraint  ;
+    rdfs:label "Example TimeConstraint 1" ;
+    rdfs:comment "This is example instance 1 of class TimeConstraint" .
+
+:exampleTimeConstraint2 a metric:TimeConstraint  ;
+    rdfs:label "Example TimeConstraint 2" ;
+    rdfs:comment "This is example instance 2 of class TimeConstraint" .
+
+metric:ConstraintShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path metric:hasLimit ;
+    sh:targetClass metric:Constraint .
+
+metric:DataLossRiskInstance a metric:DataLossRisk ;
     metric:hasSeverity "HIGH" .
 
-metric:SecurityRiskInstance rdf:type metric:SecurityRisk ;
+metric:ErrorCountInstance a metric:ErrorCount ;
+    metric:hasThreshold 100.0 .
+
+metric:LoggingLatencyInstance a metric:LoggingLatency ;
+    metric:hasThreshold 100.0 .
+
+metric:MetricShape a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path metric:hasThreshold ;
+    sh:targetClass metric:Metric .
+
+metric:RecoveryTimeInstance a metric:RecoveryTime ;
+    metric:hasThreshold 5000.0 .
+
+metric:ResolutionTimeInstance a metric:ResolutionTime ;
+    metric:hasThreshold 5000.0 .
+
+metric:ResourceConstraintInstance a metric:ResourceConstraint ;
+    metric:hasLimit 80.0 .
+
+metric:RiskShape a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path metric:hasSeverity ;
+    sh:targetClass metric:Risk .
+
+metric:SecurityRiskInstance a metric:SecurityRisk ;
     metric:hasSeverity "HIGH" .
 
-# Constraints
-metric:Constraint rdf:type owl:Class ;
-    rdfs:label "Constraint" ;
-    rdfs:comment "Base class for all constraints" ;
-    owl:versionInfo "1.0.0" .
+metric:TimeConstraintInstance a metric:TimeConstraint ;
+    metric:hasLimit 5000.0 .
 
-metric:hasLimit rdf:type owl:DatatypeProperty ;
+metric:hasLimit a owl:DatatypeProperty ;
     rdfs:label "Has Limit" ;
     rdfs:domain metric:Constraint ;
     rdfs:range xsd:decimal ;
     owl:versionInfo "1.0.0" .
 
-metric:ResourceConstraint rdf:type owl:Class ;
-    rdfs:subClassOf metric:Constraint ;
+metric:hasSeverity a owl:DatatypeProperty ;
+    rdfs:label "Has Severity" ;
+    rdfs:domain metric:Risk ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+metric:hasThreshold a owl:DatatypeProperty ;
+    rdfs:label "Has Threshold" ;
+    rdfs:domain metric:Metric ;
+    rdfs:range xsd:decimal ;
+    owl:versionInfo "1.0.0" .
+
+metric:DataLossRisk a owl:Class ;
+    rdfs:label "Data Loss Risk" ;
+    rdfs:comment "Risk of data loss during error handling" ;
+    rdfs:subClassOf metric:Risk ;
+    owl:versionInfo "1.0.0" .
+
+metric:ErrorCount a owl:Class ;
+    rdfs:label "Error Count" ;
+    rdfs:comment "Number of errors encountered" ;
+    rdfs:subClassOf metric:Metric ;
+    owl:versionInfo "1.0.0" .
+
+metric:LoggingLatency a owl:Class ;
+    rdfs:label "Logging Latency" ;
+    rdfs:comment "Time taken to log errors" ;
+    rdfs:subClassOf metric:Metric ;
+    owl:versionInfo "1.0.0" .
+
+metric:RecoveryTime a owl:Class ;
+    rdfs:label "Recovery Time" ;
+    rdfs:comment "Time taken to recover from errors" ;
+    rdfs:subClassOf metric:Metric ;
+    owl:versionInfo "1.0.0" .
+
+metric:ResolutionTime a owl:Class ;
+    rdfs:label "Resolution Time" ;
+    rdfs:comment "Time taken to resolve errors" ;
+    rdfs:subClassOf metric:Metric ;
+    owl:versionInfo "1.0.0" .
+
+metric:ResourceConstraint a owl:Class ;
     rdfs:label "Resource Constraint" ;
     rdfs:comment "Limits on resource usage" ;
+    rdfs:subClassOf metric:Constraint ;
     owl:versionInfo "1.0.0" .
 
-metric:TimeConstraint rdf:type owl:Class ;
-    rdfs:subClassOf metric:Constraint ;
+metric:SecurityRisk a owl:Class ;
+    rdfs:label "Security Risk" ;
+    rdfs:comment "Risk of security breaches during error handling" ;
+    rdfs:subClassOf metric:Risk ;
+    owl:versionInfo "1.0.0" .
+
+metric:TimeConstraint a owl:Class ;
     rdfs:label "Time Constraint" ;
     rdfs:comment "Limits on processing time" ;
+    rdfs:subClassOf metric:Constraint ;
     owl:versionInfo "1.0.0" .
 
-# Constraint Instances
-metric:ResourceConstraintInstance rdf:type metric:ResourceConstraint ;
-    metric:hasLimit "80"^^xsd:decimal .
+metric:Constraint a owl:Class ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "Base class for all constraints" ;
+    owl:versionInfo "1.0.0" .
 
-metric:TimeConstraintInstance rdf:type metric:TimeConstraint ;
-    metric:hasLimit "5000"^^xsd:decimal .
+metric:Risk a owl:Class ;
+    rdfs:label "Risk" ;
+    rdfs:comment "Base class for all risks" ;
+    owl:versionInfo "1.0.0" .
 
-# SHACL Validation Rules
-metric:MetricShape rdf:type sh:NodeShape ;
-    sh:targetClass metric:Metric ;
-    sh:property [
-        sh:path metric:hasThreshold ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:decimal ;
-    ] .
+metric:Metric a owl:Class ;
+    rdfs:label "Metric" ;
+    rdfs:comment "Base class for all metrics" ;
+    owl:versionInfo "1.0.0" .
 
-metric:RiskShape rdf:type sh:NodeShape ;
-    sh:targetClass metric:Risk ;
-    sh:property [
-        sh:path metric:hasSeverity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] .
+[] a sh:NodeShape ;
+    sh:property :shape4sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
 
-metric:ConstraintShape rdf:type sh:NodeShape ;
-    sh:targetClass metric:Constraint ;
-    sh:property [
-        sh:path metric:hasLimit ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:decimal ;
-    ] . 
+[] a sh:NodeShape ;
+    sh:property :shape5sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+

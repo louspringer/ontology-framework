@@ -3,13 +3,13 @@
 @prefix problem: <./problem#> .
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.wfabled-smoothly-terminal3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.wfabled-smoothly-terminal3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
 @prefix sop: <./secure-ontologist-prompt#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
 @prefix guidance: <./guidance#> .
 
 sop:SecureOntologistPrompt rdf:type owl:Ontology ;
@@ -255,9 +255,9 @@ The following SPARQL query generates this documentation from the ontology:
 
 ```sparql
 PREFIX sop: <./secure-ontologist-prompt#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http:/www.w3.org/2000/01/rdf-schema#>
+PREFIX dc: <http:/purl.org/dc/elements/1.1/>
 
 SELECT ?markdown
 WHERE {

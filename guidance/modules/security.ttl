@@ -1,231 +1,82 @@
-@prefix : <./security#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> .
+
+@prefix : <./#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix core: <../core#> .
-@prefix model: <../model#> .
-@prefix guidance: <../../guidance#> .
 
-# Security Module Definition
-:SecurityGuidanceModule rdf:type owl:Ontology ;
-    rdfs:label "Security Guidance Module" ;
-    rdfs:comment "Security patterns and best practices for guidance ontology" ;
-    dc:title "Security Guidance Module" ;
-    dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
-    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    owl:imports <core.ttl> ;
-    owl:imports <model.ttl> ;
-    owl:imports <validation.ttl> ;
-    owl:imports <collaboration.ttl> .
+:exampleAuthenticationPattern1 a :AuthenticationPattern  ;
+    rdfs:label "Example AuthenticationPattern 1" ;
+    rdfs:comment "This is example instance 1 of class AuthenticationPattern" .
 
-# Security Pattern Classes
-:SecurityPattern rdf:type owl:Class ;
-    rdfs:label "SecurityPattern" ;
-    rdfs:comment "A pattern for implementing security features and best practices" ;
-    rdfs:subClassOf core:BestPractice ;
-    owl:versionInfo "1.0.0" .
+:exampleAuthenticationPattern2 a :AuthenticationPattern  ;
+    rdfs:label "Example AuthenticationPattern 2" ;
+    rdfs:comment "This is example instance 2 of class AuthenticationPattern" .
 
-:CIAPattern rdf:type owl:Class ;
-    rdfs:label "CIA Security Pattern" ;
-    rdfs:comment """Base pattern ensuring all three pillars of security:
-    - Confidentiality: Protect sensitive data from unauthorized access
-    - Integrity: Ensure data remains accurate and unaltered
-    - Availability: Guarantee authorized users can access data when needed""" ;
-    rdfs:subClassOf :SecurityPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleCIAPattern1 a :CIAPattern  ;
+    rdfs:label "Example CIAPattern 1" ;
+    rdfs:comment "This is example instance 1 of class CIAPattern" .
 
-:AuthenticationPattern rdf:type owl:Class ;
-    rdfs:label "AuthenticationPattern" ;
-    rdfs:comment "A pattern for implementing authentication mechanisms" ;
-    rdfs:subClassOf :SecurityPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleCIAPattern2 a :CIAPattern  ;
+    rdfs:label "Example CIAPattern 2" ;
+    rdfs:comment "This is example instance 2 of class CIAPattern" .
 
-:KeyManagementPattern rdf:type owl:Class ;
-    rdfs:label "Key Management Pattern" ;
-    rdfs:comment "A pattern for managing cryptographic keys" ;
-    rdfs:subClassOf :SecurityPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleEmergencyAccessPattern1 a :EmergencyAccessPattern  ;
+    rdfs:label "Example EmergencyAccessPattern 1" ;
+    rdfs:comment "This is example instance 1 of class EmergencyAccessPattern" .
 
-:KeyDeletionPattern rdf:type owl:Class ;
-    rdfs:label "Key Deletion Pattern" ;
-    rdfs:comment "A pattern for safely handling deletion of keys and credentials" ;
-    rdfs:subClassOf :SecurityPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleEmergencyAccessPattern2 a :EmergencyAccessPattern  ;
+    rdfs:label "Example EmergencyAccessPattern 2" ;
+    rdfs:comment "This is example instance 2 of class EmergencyAccessPattern" .
 
-:SLACompliancePattern rdf:type owl:Class ;
-    rdfs:label "SLA Compliance Pattern" ;
-    rdfs:comment """Pattern ensuring security measures meet operational SLAs:
-    - Access time requirements
-    - Availability percentages
-    - Recovery time objectives
-    - Security measure performance impact""" ;
-    rdfs:subClassOf :CIAPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleIncidentResponsePattern1 a :IncidentResponsePattern  ;
+    rdfs:label "Example IncidentResponsePattern 1" ;
+    rdfs:comment "This is example instance 1 of class IncidentResponsePattern" .
 
-:EmergencyAccessPattern rdf:type owl:Class ;
-    rdfs:label "Emergency Access Pattern" ;
-    rdfs:comment """Pattern for ensuring access during incidents:
-    - Must work when primary auth is down
-    - Must work when network is degraded
-    - Must work when key personnel are unavailable
-    - Must work when documentation is inaccessible
-    - Must not depend on external services""" ;
-    rdfs:subClassOf :CIAPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleIncidentResponsePattern2 a :IncidentResponsePattern  ;
+    rdfs:label "Example IncidentResponsePattern 2" ;
+    rdfs:comment "This is example instance 2 of class IncidentResponsePattern" .
 
-:IncidentResponsePattern rdf:type owl:Class ;
-    rdfs:label "Incident Response Pattern" ;
-    rdfs:comment """Pattern for maintaining security during incidents:
-    - Emergency access procedures
-    - Offline authentication methods
-    - Local credential caching
-    - Break-glass procedures
-    - Recovery from auth failures""" ;
-    rdfs:subClassOf :SecurityPattern ;
-    owl:versionInfo "1.0.0" .
+:exampleKeyDeletionPattern1 a :KeyDeletionPattern  ;
+    rdfs:label "Example KeyDeletionPattern 1" ;
+    rdfs:comment "This is example instance 1 of class KeyDeletionPattern" .
 
-# Security Properties
-:implements rdf:type owl:ObjectProperty ;
-    rdfs:label "Implements" ;
-    rdfs:comment "Links pattern to implemented solution" ;
-    rdfs:domain :SecurityPattern ;
-    rdfs:range owl:Thing .
+:exampleKeyDeletionPattern2 a :KeyDeletionPattern  ;
+    rdfs:label "Example KeyDeletionPattern 2" ;
+    rdfs:comment "This is example instance 2 of class KeyDeletionPattern" .
 
-:requires rdf:type owl:ObjectProperty ;
-    rdfs:label "Requires" ;
-    rdfs:comment "Links pattern to required dependencies" ;
-    rdfs:domain :SecurityPattern ;
-    rdfs:range :SecurityPattern .
+:exampleKeyManagementPattern1 a :KeyManagementPattern  ;
+    rdfs:label "Example KeyManagementPattern 1" ;
+    rdfs:comment "This is example instance 1 of class KeyManagementPattern" .
 
-:recommends rdf:type owl:ObjectProperty ;
-    rdfs:label "Recommends" ;
-    rdfs:comment "Links pattern to recommended practices" ;
-    rdfs:domain :SecurityPattern ;
-    rdfs:range :SecurityPattern .
+:exampleKeyManagementPattern2 a :KeyManagementPattern  ;
+    rdfs:label "Example KeyManagementPattern 2" ;
+    rdfs:comment "This is example instance 2 of class KeyManagementPattern" .
 
-:hasSLA rdf:type owl:ObjectProperty ;
-    rdfs:label "Has SLA" ;
-    rdfs:comment "Links security pattern to its SLA requirements" ;
-    rdfs:domain :SecurityPattern ;
-    rdfs:range :SLARequirement .
+:exampleSLACompliancePattern1 a :SLACompliancePattern  ;
+    rdfs:label "Example SLACompliancePattern 1" ;
+    rdfs:comment "This is example instance 1 of class SLACompliancePattern" .
 
-:SLARequirement rdf:type owl:Class ;
-    rdfs:label "SLA Requirement" ;
-    rdfs:comment "Specific SLA requirements for security measures" .
+:exampleSLACompliancePattern2 a :SLACompliancePattern  ;
+    rdfs:label "Example SLACompliancePattern 2" ;
+    rdfs:comment "This is example instance 2 of class SLACompliancePattern" .
 
-:SLAViolation rdf:type owl:Class ;
-    rdfs:label "SLA Violation" ;
-    rdfs:comment "Represents a security incident where SLA requirements were not met" ;
-    rdfs:subClassOf :SecurityPattern .
+:exampleSLAViolation1 a :SLAViolation  ;
+    rdfs:label "Example SLAViolation 1" ;
+    rdfs:comment "This is example instance 1 of class SLAViolation" .
 
-# Security Pattern Instances
-:RSAKeyPairAuth rdf:type owl:NamedIndividual ;
-    rdf:type :AuthenticationPattern ;
-    rdfs:label "RSA Key Pair Authentication" ;
-    rdfs:comment "Authentication using RSA key pairs" ;
-    :requires :SecureKeyStorage ;
-    :recommends :KeyRotation .
+:exampleSLAViolation2 a :SLAViolation  ;
+    rdfs:label "Example SLAViolation 2" ;
+    rdfs:comment "This is example instance 2 of class SLAViolation" .
 
-:SecureKeyStorage rdf:type owl:NamedIndividual ;
-    rdf:type :KeyManagementPattern ;
-    rdfs:label "Secure Key Storage" ;
-    rdfs:comment "Pattern for securely storing cryptographic keys" ;
-    :recommends :KeyEncryption .
-
-:KeyRotation rdf:type owl:NamedIndividual ;
-    rdf:type :KeyManagementPattern ;
-    rdfs:label "Key Rotation" ;
-    rdfs:comment "Pattern for regularly rotating cryptographic keys" ;
-    :requires :SecureKeyStorage .
-
-:KeyEncryption rdf:type owl:NamedIndividual ;
-    rdf:type :KeyManagementPattern ;
-    rdfs:label "Key Encryption" ;
-    rdfs:comment "Pattern for encrypting stored keys" .
-
-:CIATriadEnforcement rdf:type owl:NamedIndividual ;
-    rdf:type :CIAPattern ;
-    rdfs:label "CIA Triad Enforcement" ;
-    rdfs:comment """Fundamental security requirements:
-    1. Confidentiality: Protect secrets and keys from unauthorized access
-    2. Integrity: Ensure keys and configs remain accurate and unmodified
-    3. Availability: CRITICAL - Never compromise access to necessary keys and configs
-       - Maintain working copies of all essential credentials
-       - Verify backup accessibility before any changes
-       - Consider operational impact before security changes
-       - Security must not break functionality
-       - TRACK AND REPORT SLA VIOLATIONS AS SECURITY INCIDENTS
-       - Monitor access time compliance
-       - Regular availability testing required
-       - Emergency access is a SECURITY requirement
-       - Forcing shadow systems is a security FAILURE
-       - Must provide and secure offline auth methods
-       - Must support incident response scenarios
-       - Must work when external services are down""" ;
-    :requires :SecureKeyStorage ;
-    :requires :OperationalSLAEnforcement ;
-    :requires :EmergencyAccess ;
-    :recommends :KeyBackupVerification .
-
-:SecureKeyDeletion rdf:type owl:NamedIndividual ;
-    rdf:type :KeyDeletionPattern ;
-    rdfs:label "Secure Key Deletion" ;
-    rdfs:comment """Critical rules for key deletion:
-    1. NEVER delete any .env files without verified backup
-    2. ALWAYS confirm backup location before deletion
-    3. ALWAYS get explicit user confirmation before deletion
-    4. Treat .gitignore'd files with extra caution - they likely contain untracked sensitive data
-    5. Maintain backup verification logs
-    6. AVAILABILITY FIRST - Never delete unique copies of credentials
-    7. Security procedures must not impair authorized access""" ;
-    :requires :SecureKeyStorage ;
-    :requires :CIATriadEnforcement ;
-    :recommends :KeyBackupVerification .
-
-:KeyBackupVerification rdf:type owl:NamedIndividual ;
-    rdf:type :KeyManagementPattern ;
-    rdfs:label "Key Backup Verification" ;
-    rdfs:comment "Pattern for verifying key backups before any deletion operations" ;
-    :requires :SecureKeyStorage .
-
-:OperationalSLAEnforcement rdf:type owl:NamedIndividual ;
-    rdf:type :SLACompliancePattern ;
-    rdfs:label "Operational SLA Enforcement" ;
-    rdfs:comment """Critical operational security requirements:
-    1. Access time SLAs are SECURITY requirements
-    2. ANY failure to meet access time SLAs is a SECURITY INCIDENT
-    3. Security measures MUST be tested against SLA requirements
-    4. SLA violations must be tracked and remediated as security issues
-    5. Security changes require SLA impact analysis
-    6. Performance degradation beyond SLA is a security failure
-    7. Regular SLA compliance auditing required""" ;
-    :requires :CIATriadEnforcement ;
-    :requires :SecureKeyStorage .
-
-:EmergencyAccess rdf:type owl:NamedIndividual ;
-    rdf:type :EmergencyAccessPattern ;
-    rdfs:label "Emergency Access Controls" ;
-    rdfs:comment """Critical emergency access requirements:
-    1. MUST work offline/disconnected
-    2. MUST have multiple independent auth paths
-    3. MUST NOT depend on unavailable personnel
-    4. MUST have documented recovery procedures
-    5. MUST be tested regularly in realistic conditions
-    6. MUST be accessible during network outages
-    7. MUST support local credential caching
-    8. MUST have multiple backup authentication methods
-    9. MUST NOT force choices between uptime and security
-    10. MUST acknowledge and secure 'unofficial' backup methods""" ;
-    :requires :CIATriadEnforcement ;
-    :requires :OperationalSLAEnforcement .
-
-:IncidentResponse rdf:type owl:NamedIndividual ;
-    rdf:type :IncidentResponsePattern ;
+:IncidentResponse a owl:NamedIndividual,
+        :IncidentResponsePattern  ;
     rdfs:label "Incident Response Procedures" ;
     rdfs:comment """Incident response requirements:
     1. Emergency auth MUST work when everything else is down
@@ -238,12 +89,33 @@
     8. MUST track and audit emergency access
     9. MUST provide secure ways to cache credentials
     10. MUST NOT force admins to create shadow systems""" ;
-    :requires :EmergencyAccess ;
+    :requires :EmergencyAccess,
+        :SecureKeyStorage .
+
+:RSAKeyPairAuth a owl:NamedIndividual,
+        :AuthenticationPattern  ;
+    rdfs:label "RSA Key Pair Authentication" ;
+    rdfs:comment "Authentication using RSA key pairs" ;
+    :recommends :KeyRotation  ;
     :requires :SecureKeyStorage .
 
-# Security Best Practices
-:SecurityBestPractices rdf:type owl:NamedIndividual ;
-    rdf:type core:BestPractice ;
+:SecureKeyDeletion a owl:NamedIndividual,
+        :KeyDeletionPattern  ;
+    rdfs:label "Secure Key Deletion" ;
+    rdfs:comment """Critical rules for key deletion:
+    1. NEVER delete any .env files without verified backup
+    2. ALWAYS confirm backup location before deletion
+    3. ALWAYS get explicit user confirmation before deletion
+    4. Treat .gitignore'd files with extra caution - they likely contain untracked sensitive data
+    5. Maintain backup verification logs
+    6. AVAILABILITY FIRST - Never delete unique copies of credentials
+    7. Security procedures must not impair authorized access""" ;
+    :recommends :KeyBackupVerification  ;
+    :requires :CIATriadEnforcement,
+        :SecureKeyStorage .
+
+:SecurityBestPractices a owl:NamedIndividual,
+        core:BestPractice  ;
     rdfs:label "Security Best Practices" ;
     rdfs:comment """Collection of security best practices:
     1. Store private keys with 600 permissions
@@ -266,9 +138,318 @@
     18. Plan for degraded/disconnected operation
     19. Maintain local authentication capability""" .
 
-# Legacy Support
-:hasLegacySecurityConcept rdf:type owl:ObjectProperty ;
+:SecurityGuidanceModule a owl:Ontology  ;
+    rdfs:label "Security Guidance Module" ;
+    dc:title "Security Guidance Module" ;
+    dc:version "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Security patterns and best practices for guidance ontology" ;
+    owl:imports <./collaboration.ttl>,
+        <./core.ttl>,
+        <./model.ttl>,
+        <./validation.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+<./security#SecurityGuidanceModule#ModuleShape> a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./security#SecurityGuidanceModule#description>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./security#SecurityGuidanceModule#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./security#SecurityGuidanceModule#version> ;
+    sh:targetClass <./security#SecurityGuidanceModule#Module> .
+
+:hasLegacySecurityConcept a owl:ObjectProperty  ;
     rdfs:label "Has Legacy Security Concept" ;
     rdfs:comment "Links modular security concept to legacy guidance" ;
     rdfs:domain :SecurityPattern ;
-    rdfs:range guidance:LLMGuidanceOntology . 
+    rdfs:range guidance:LLMGuidanceOntology .
+
+:hasSLA a owl:ObjectProperty  ;
+    rdfs:label "Has SLA" ;
+    rdfs:comment "Links security pattern to its SLA requirements" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range :SLARequirement .
+
+:implements a owl:ObjectProperty  ;
+    rdfs:label "Implements" ;
+    rdfs:comment "Links pattern to implemented solution" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range owl:Thing .
+
+:recommends a owl:ObjectProperty  ;
+    rdfs:label "Recommends" ;
+    rdfs:comment "Links pattern to recommended practices" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range :SecurityPattern .
+
+:requires a owl:ObjectProperty  ;
+    rdfs:label "Requires" ;
+    rdfs:comment "Links pattern to required dependencies" ;
+    rdfs:domain :SecurityPattern ;
+    rdfs:range :SecurityPattern .
+
+:exampleSLARequirement1 a :SLARequirement  ;
+    rdfs:label "Example SLARequirement 1" ;
+    rdfs:comment "This is example instance 1 of class SLARequirement" .
+
+:exampleSLARequirement2 a :SLARequirement  ;
+    rdfs:label "Example SLARequirement 2" ;
+    rdfs:comment "This is example instance 2 of class SLARequirement" .
+
+:KeyEncryption a owl:NamedIndividual,
+        :KeyManagementPattern  ;
+    rdfs:label "Key Encryption" ;
+    rdfs:comment "Pattern for encrypting stored keys" .
+
+:KeyRotation a owl:NamedIndividual,
+        :KeyManagementPattern  ;
+    rdfs:label "Key Rotation" ;
+    rdfs:comment "Pattern for regularly rotating cryptographic keys" ;
+    :requires :SecureKeyStorage .
+
+:exampleSecurityPattern1 a :SecurityPattern  ;
+    rdfs:label "Example SecurityPattern 1" ;
+    rdfs:comment "This is example instance 1 of class SecurityPattern" ;
+    :hasLegacySecurityConcept :exampleLLMGuidanceOntology1  ;
+    :hasSLA :exampleSLARequirement1  ;
+    :implements :exampleThing1  ;
+    :recommends :exampleSecurityPattern1  ;
+    :requires :exampleSecurityPattern1 .
+
+:exampleSecurityPattern2 a :SecurityPattern  ;
+    rdfs:label "Example SecurityPattern 2" ;
+    rdfs:comment "This is example instance 2 of class SecurityPattern" ;
+    :hasLegacySecurityConcept :exampleLLMGuidanceOntology2  ;
+    :hasSLA :exampleSLARequirement2  ;
+    :implements :exampleThing2  ;
+    :recommends :exampleSecurityPattern2  ;
+    :requires :exampleSecurityPattern2 .
+
+:EmergencyAccess a owl:NamedIndividual,
+        :EmergencyAccessPattern  ;
+    rdfs:label "Emergency Access Controls" ;
+    rdfs:comment """Critical emergency access requirements:
+    1. MUST work offline/disconnected
+    2. MUST have multiple independent auth paths
+    3. MUST NOT depend on unavailable personnel
+    4. MUST have documented recovery procedures
+    5. MUST be tested regularly in realistic conditions
+    6. MUST be accessible during network outages
+    7. MUST support local credential caching
+    8. MUST have multiple backup authentication methods
+    9. MUST NOT force choices between uptime and security
+    10. MUST acknowledge and secure 'unofficial' backup methods""" ;
+    :requires :CIATriadEnforcement,
+        :OperationalSLAEnforcement .
+
+:KeyBackupVerification a owl:NamedIndividual,
+        :KeyManagementPattern  ;
+    rdfs:label "Key Backup Verification" ;
+    rdfs:comment "Pattern for verifying key backups before any deletion operations" ;
+    :requires :SecureKeyStorage .
+
+:OperationalSLAEnforcement a owl:NamedIndividual,
+        :SLACompliancePattern  ;
+    rdfs:label "Operational SLA Enforcement" ;
+    rdfs:comment """Critical operational security requirements:
+    1. Access time SLAs are SECURITY requirements
+    2. ANY failure to meet access time SLAs is a SECURITY INCIDENT
+    3. Security measures MUST be tested against SLA requirements
+    4. SLA violations must be tracked and remediated as security issues
+    5. Security changes require SLA impact analysis
+    6. Performance degradation beyond SLA is a security failure
+    7. Regular SLA compliance auditing required""" ;
+    :requires :CIATriadEnforcement,
+        :SecureKeyStorage .
+
+:SLAViolation a owl:Class  ;
+    rdfs:label "SLA Violation" ;
+    rdfs:comment "Represents a security incident where SLA requirements were not met" ;
+    rdfs:subClassOf :SecurityPattern .
+
+:AuthenticationPattern a owl:Class  ;
+    rdfs:label "AuthenticationPattern" ;
+    rdfs:comment "A pattern for implementing authentication mechanisms" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:CIATriadEnforcement a owl:NamedIndividual,
+        :CIAPattern  ;
+    rdfs:label "CIA Triad Enforcement" ;
+    rdfs:comment """Fundamental security requirements:
+    1. Confidentiality: Protect secrets and keys from unauthorized access
+    2. Integrity: Ensure keys and configs remain accurate and unmodified
+    3. Availability: CRITICAL - Never compromise access to necessary keys and configs
+       - Maintain working copies of all essential credentials
+       - Verify backup accessibility before any changes
+       - Consider operational impact before security changes
+       - Security must not break functionality
+       - TRACK AND REPORT SLA VIOLATIONS AS SECURITY INCIDENTS
+       - Monitor access time compliance
+       - Regular availability testing required
+       - Emergency access is a SECURITY requirement
+       - Forcing shadow systems is a security FAILURE
+       - Must provide and secure offline auth methods
+       - Must support incident response scenarios
+       - Must work when external services are down""" ;
+    :recommends :KeyBackupVerification  ;
+    :requires :EmergencyAccess,
+        :OperationalSLAEnforcement,
+        :SecureKeyStorage .
+
+:EmergencyAccessPattern a owl:Class  ;
+    rdfs:label "Emergency Access Pattern" ;
+    rdfs:comment """Pattern for ensuring access during incidents:
+    - Must work when primary auth is down
+    - Must work when network is degraded
+    - Must work when key personnel are unavailable
+    - Must work when documentation is inaccessible
+    - Must not depend on external services""" ;
+    rdfs:subClassOf :CIAPattern ;
+    owl:versionInfo "1.0.0" .
+
+:IncidentResponsePattern a owl:Class  ;
+    rdfs:label "Incident Response Pattern" ;
+    rdfs:comment """Pattern for maintaining security during incidents:
+    - Emergency access procedures
+    - Offline authentication methods
+    - Local credential caching
+    - Break-glass procedures
+    - Recovery from auth failures""" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:KeyDeletionPattern a owl:Class  ;
+    rdfs:label "Key Deletion Pattern" ;
+    rdfs:comment "A pattern for safely handling deletion of keys and credentials" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:SLACompliancePattern a owl:Class  ;
+    rdfs:label "SLA Compliance Pattern" ;
+    rdfs:comment """Pattern ensuring security measures meet operational SLAs:
+    - Access time requirements
+    - Availability percentages
+    - Recovery time objectives
+    - Security measure performance impact""" ;
+    rdfs:subClassOf :CIAPattern ;
+    owl:versionInfo "1.0.0" .
+
+:SLARequirement a owl:Class  ;
+    rdfs:label "SLA Requirement" ;
+    rdfs:comment "Specific SLA requirements for security measures" .
+
+:CIAPattern a owl:Class  ;
+    rdfs:label "CIA Security Pattern" ;
+    rdfs:comment """Base pattern ensuring all three pillars of security:
+    - Confidentiality: Protect sensitive data from unauthorized access
+    - Integrity: Ensure data remains accurate and unaltered
+    - Availability: Guarantee authorized users can access data when needed""" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:KeyManagementPattern a owl:Class  ;
+    rdfs:label "Key Management Pattern" ;
+    rdfs:comment "A pattern for managing cryptographic keys" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:SecureKeyStorage a owl:NamedIndividual,
+        :KeyManagementPattern  ;
+    rdfs:label "Secure Key Storage" ;
+    rdfs:comment "Pattern for securely storing cryptographic keys" ;
+    :recommends :KeyEncryption .
+
+:SecurityPattern a owl:Class  ;
+    rdfs:label "SecurityPattern" ;
+    rdfs:comment "A pattern for implementing security features and best practices" ;
+    rdfs:subClassOf core:BestPractice ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+
+:PythonSecurityPattern a owl:Class ;
+    rdfs:label "Python Security Pattern" ;
+    rdfs:comment "Security patterns specific to Python development" ;
+    rdfs:subClassOf :SecurityPattern ;
+    owl:versionInfo "1.0.0" .
+
+:VersionSecurityPattern a :PythonSecurityPattern ;
+    rdfs:label "Version Security Pattern" ;
+    rdfs:comment """Security requirements for Python version management:
+    1. MUST specify both minimum and maximum Python versions
+    2. MUST use explicit version numbers (e.g., '3.9.0' not '3.9')
+    3. MUST prevent use of end-of-life Python versions
+    4. MUST validate Python version at runtime
+    5. MUST document version requirements in README
+    6. MUST include version checks in CI/CD pipeline
+    7. SHOULD specify compatible version ranges for all dependencies
+    8. MUST NOT use wildcard version specifiers
+    9. MUST validate version compatibility during tests
+    10. MUST maintain version compatibility matrix""" ;
+    :requires :SecurityBestPractices ;
+    :priority "HIGH" ;
+    :status "TODO" ;
+    :assignedTo "DevSecOps" ;
+    :dueDate "2024-Q1" .
+
+:ConfigSecurityPattern a :PythonSecurityPattern ;
+    rdfs:label "Configuration Security Pattern" ;
+    rdfs:comment """Security requirements for configuration management:
+    1. MUST validate configuration values at runtime
+    2. MUST use secure defaults for all settings
+    3. MUST encrypt sensitive configuration values
+    4. MUST support environment variable overrides
+    5. MUST validate configuration file permissions
+    6. MUST maintain configuration backup strategy
+    7. MUST implement configuration versioning
+    8. MUST audit configuration changes
+    9. MUST validate configuration schema
+    10. MUST prevent exposure of sensitive values in logs""" ;
+    :requires :SecurityBestPractices ;
+    :priority "HIGH" ;
+    :status "TODO" ;
+    :assignedTo "DevSecOps" ;
+    :dueDate "2024-Q1" .
+
+:RuntimeValidationPattern a :PythonSecurityPattern ;
+    rdfs:label "Runtime Validation Pattern" ;
+    rdfs:comment """Security requirements for runtime validation:
+    1. MUST validate Python version at startup
+    2. MUST validate configuration integrity
+    3. MUST validate environment variables
+    4. MUST validate file permissions
+    5. MUST validate dependency versions
+    6. MUST validate SSL/TLS configurations
+    7. MUST validate authentication settings
+    8. MUST validate backup locations
+    9. MUST validate logging configuration
+    10. MUST provide health check endpoints""" ;
+    :requires :SecurityBestPractices ;
+    :priority "HIGH" ;
+    :status "TODO" ;
+    :assignedTo "DevSecOps" ;
+    :dueDate "2024-Q1" .
+

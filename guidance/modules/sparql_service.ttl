@@ -1,187 +1,232 @@
-@prefix : <./sparql_service#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/sparql_service#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix env: <./environment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix env: <./environment#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# SPARQL Service Module
-:SparqlServiceModule rdf:type owl:Ontology ;
+:exampleServiceRequirement1 a :ServiceRequirement  ;
+    rdfs:label "Example ServiceRequirement 1" ;
+    rdfs:comment "This is example instance 1 of class ServiceRequirement" ;
+    :hasRequirementType "Example value 1"  ;
+    :hasRequirementValue "Example value 1" .
+
+:exampleServiceRequirement2 a :ServiceRequirement  ;
+    rdfs:label "Example ServiceRequirement 2" ;
+    rdfs:comment "This is example instance 2 of class ServiceRequirement" ;
+    :hasRequirementType "Example value 2"  ;
+    :hasRequirementValue "Example value 2" .
+
+:exampleSparqlService1 a :SparqlService  ;
+    rdfs:label "Example SparqlService 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlService" ;
+    :hasAuthentication :exampleboolean1  ;
+    :hasDefaultDataset "Example value 1"  ;
+    :hasServiceType "Example value 1"  ;
+    :hasServiceUrl :exampleanyURI1 .
+
+:exampleSparqlService2 a :SparqlService  ;
+    rdfs:label "Example SparqlService 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlService" ;
+    :hasAuthentication :exampleboolean2  ;
+    :hasDefaultDataset "Example value 2"  ;
+    :hasServiceType "Example value 2"  ;
+    :hasServiceUrl :exampleanyURI2 .
+
+env:developmentEnvironment :hasEnvironmentService :developmentSparqlService .
+
+env:productionEnvironment :hasEnvironmentService :productionSparqlService .
+
+env:testingEnvironment :hasEnvironmentService :testingSparqlService .
+
+:EnvironmentServiceShape a sh:NodeShape  ;
+    sh:property :shape1sh:class :SparqlService ;
+            sh:maxCount 1 ;
+            sh:message "Environment must have exactly one SPARQL service" ;
+            sh:minCount 1 ;
+            sh:path :hasEnvironmentService ;
+    sh:targetClass env:Environment .
+
+:ServiceRequirementShape a sh:NodeShape  ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Service requirement must have exactly one type" ;
+            sh:minCount 1 ;
+            sh:path :hasRequirementType .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "Service requirement must have exactly one value" ;
+            sh:minCount 1 ;
+            sh:path :hasRequirementValue ;
+    sh:targetClass :ServiceRequirement .
+
+:SparqlServiceModule a owl:Ontology  ;
     rdfs:label "SPARQL Service Module" ;
-    rdfs:comment "Module defining SPARQL service integration and requirements" ;
     dc:title "SPARQL Service Module" ;
     dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:description "Defines SPARQL service requirements and integration patterns" ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:publisher "Ontology Framework Project" ;
-    dct:description "Defines SPARQL service requirements and integration patterns" .
-
-# SPARQL Service Class
-:SparqlService rdf:type owl:Class ;
-    rdfs:label "SPARQL Service" ;
-    rdfs:comment "A SPARQL service endpoint" ;
+    rdfs:comment "Module defining SPARQL service integration and requirements" ;
     owl:versionInfo "1.0.0" .
 
-# Service Properties
-:hasServiceUrl rdf:type owl:DatatypeProperty ;
-    rdfs:label "Service URL" ;
-    rdfs:comment "URL of the SPARQL service endpoint" ;
-    rdfs:domain :SparqlService ;
-    rdfs:range xsd:anyURI ;
-    owl:versionInfo "1.0.0" .
+<./sparql_service#SparqlServiceModule#ModuleShape> a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./sparql_service#SparqlServiceModule#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./sparql_service#SparqlServiceModule#description>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./sparql_service#SparqlServiceModule#version> ;
+    sh:targetClass <./sparql_service#SparqlServiceModule#Module> .
 
-:hasServiceType rdf:type owl:DatatypeProperty ;
-    rdfs:label "Service Type" ;
-    rdfs:comment "Type of SPARQL service (e.g., Fuseki, Virtuoso)" ;
-    rdfs:domain :SparqlService ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+:SparqlServiceShape a sh:NodeShape  ;
+    sh:property :shape4sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "SPARQL service must have exactly one type" ;
+            sh:minCount 1 ;
+            sh:path :hasServiceType .
+        :shape1 sh:datatype xsd:boolean  ;
+            sh:maxCount 1 ;
+            sh:message "SPARQL service must specify authentication requirement" ;
+            sh:minCount 1 ;
+            sh:path :hasAuthentication .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:message "SPARQL service must have exactly one default dataset" ;
+            sh:minCount 1 ;
+            sh:path :hasDefaultDataset .
+        :shape1 sh:datatype xsd:anyURI  ;
+            sh:maxCount 1 ;
+            sh:message "SPARQL service must have exactly one URL" ;
+            sh:minCount 1 ;
+            sh:path :hasServiceUrl ;
+    sh:targetClass :SparqlService .
 
-:hasAuthentication rdf:type owl:DatatypeProperty ;
+:authenticationRequirement a owl:NamedIndividual,
+        :ServiceRequirement  ;
+    rdfs:label "Authentication Requirement" ;
+    rdfs:comment "Requirement for service authentication" ;
+    :hasRequirementType "Authentication"  ;
+    :hasRequirementValue "Required" .
+
+:datasetRequirement a owl:NamedIndividual,
+        :ServiceRequirement  ;
+    rdfs:label "Dataset Requirement" ;
+    rdfs:comment "Requirement for dataset configuration" ;
+    :hasRequirementType "Dataset"  ;
+    :hasRequirementValue "Required" .
+
+:developmentSparqlService a owl:NamedIndividual,
+        :SparqlService  ;
+    rdfs:label "Development SPARQL Service" ;
+    rdfs:comment "SPARQL service for development environment" ;
+    :hasAuthentication true  ;
+    :hasDefaultDataset "guidance"  ;
+    :hasServiceType "Fuseki"  ;
+    :hasServiceUrl "http://localhost:3030" .
+
+:hasAuthentication a owl:DatatypeProperty  ;
     rdfs:label "Authentication Required" ;
     rdfs:comment "Whether authentication is required" ;
     rdfs:domain :SparqlService ;
     rdfs:range xsd:boolean ;
     owl:versionInfo "1.0.0" .
 
-:hasDefaultDataset rdf:type owl:DatatypeProperty ;
+:hasDefaultDataset a owl:DatatypeProperty  ;
     rdfs:label "Default Dataset" ;
     rdfs:comment "Default dataset name for the service" ;
     rdfs:domain :SparqlService ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-# Environment Integration
-:hasEnvironmentService rdf:type owl:ObjectProperty ;
+:hasEnvironmentService a owl:ObjectProperty  ;
     rdfs:label "Has Environment Service" ;
     rdfs:comment "Links an environment to its SPARQL service" ;
     rdfs:domain env:Environment ;
     rdfs:range :SparqlService ;
     owl:versionInfo "1.0.0" .
 
-# Service Requirements
-:ServiceRequirement rdf:type owl:Class ;
-    rdfs:label "Service Requirement" ;
-    rdfs:comment "Requirements for SPARQL service configuration" ;
-    owl:versionInfo "1.0.0" .
-
-:hasRequirementType rdf:type owl:DatatypeProperty ;
+:hasRequirementType a owl:DatatypeProperty  ;
     rdfs:label "Requirement Type" ;
     rdfs:comment "Type of service requirement" ;
     rdfs:domain :ServiceRequirement ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-:hasRequirementValue rdf:type owl:DatatypeProperty ;
+:hasRequirementValue a owl:DatatypeProperty  ;
     rdfs:label "Requirement Value" ;
     rdfs:comment "Value of the service requirement" ;
     rdfs:domain :ServiceRequirement ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-# SHACL Shapes
-:SparqlServiceShape a sh:NodeShape ;
-    sh:targetClass :SparqlService ;
-    sh:property [
-        sh:path :hasServiceUrl ;
-        sh:datatype xsd:anyURI ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "SPARQL service must have exactly one URL" ;
-    ] ,
-    [
-        sh:path :hasServiceType ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "SPARQL service must have exactly one type" ;
-    ] ,
-    [
-        sh:path :hasAuthentication ;
-        sh:datatype xsd:boolean ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "SPARQL service must specify authentication requirement" ;
-    ] ,
-    [
-        sh:path :hasDefaultDataset ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "SPARQL service must have exactly one default dataset" ;
-    ] .
+:hasServiceType a owl:DatatypeProperty  ;
+    rdfs:label "Service Type" ;
+    rdfs:comment "Type of SPARQL service (e.g., Fuseki, Virtuoso)" ;
+    rdfs:domain :SparqlService ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
-:ServiceRequirementShape a sh:NodeShape ;
-    sh:targetClass :ServiceRequirement ;
-    sh:property [
-        sh:path :hasRequirementType ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Service requirement must have exactly one type" ;
-    ] ,
-    [
-        sh:path :hasRequirementValue ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Service requirement must have exactly one value" ;
-    ] .
+:hasServiceUrl a owl:DatatypeProperty  ;
+    rdfs:label "Service URL" ;
+    rdfs:comment "URL of the SPARQL service endpoint" ;
+    rdfs:domain :SparqlService ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
 
-# Environment Service Shape
-:EnvironmentServiceShape a sh:NodeShape ;
-    sh:targetClass env:Environment ;
-    sh:property [
-        sh:path :hasEnvironmentService ;
-        sh:class :SparqlService ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:message "Environment must have exactly one SPARQL service" ;
-    ] .
-
-# Environment-Specific Service Instances
-:developmentSparqlService rdf:type owl:NamedIndividual, :SparqlService ;
-    rdfs:label "Development SPARQL Service" ;
-    rdfs:comment "SPARQL service for development environment" ;
-    :hasServiceUrl "http://localhost:3030" ;
-    :hasServiceType "Fuseki" ;
-    :hasAuthentication true ;
-    :hasDefaultDataset "guidance" .
-
-:testingSparqlService rdf:type owl:NamedIndividual, :SparqlService ;
-    rdfs:label "Testing SPARQL Service" ;
-    rdfs:comment "SPARQL service for testing environment" ;
-    :hasServiceUrl "http://test:3030" ;
-    :hasServiceType "Fuseki" ;
-    :hasAuthentication true ;
-    :hasDefaultDataset "guidance" .
-
-:productionSparqlService rdf:type owl:NamedIndividual, :SparqlService ;
+:productionSparqlService a owl:NamedIndividual,
+        :SparqlService  ;
     rdfs:label "Production SPARQL Service" ;
     rdfs:comment "SPARQL service for production environment" ;
-    :hasServiceUrl "http://prod:3030" ;
-    :hasServiceType "Fuseki" ;
-    :hasAuthentication true ;
-    :hasDefaultDataset "guidance" .
+    :hasAuthentication true  ;
+    :hasDefaultDataset "guidance"  ;
+    :hasServiceType "Fuseki"  ;
+    :hasServiceUrl "http://prod:3030" .
 
-# Link Services to Environments
-env:developmentEnvironment :hasEnvironmentService :developmentSparqlService .
-env:testingEnvironment :hasEnvironmentService :testingSparqlService .
-env:productionEnvironment :hasEnvironmentService :productionSparqlService .
+:testingSparqlService a owl:NamedIndividual,
+        :SparqlService  ;
+    rdfs:label "Testing SPARQL Service" ;
+    rdfs:comment "SPARQL service for testing environment" ;
+    :hasAuthentication true  ;
+    :hasDefaultDataset "guidance"  ;
+    :hasServiceType "Fuseki"  ;
+    :hasServiceUrl "http://test:3030" .
 
-# Service Requirements
-:authenticationRequirement rdf:type owl:NamedIndividual, :ServiceRequirement ;
-    rdfs:label "Authentication Requirement" ;
-    rdfs:comment "Requirement for service authentication" ;
-    :hasRequirementType "Authentication" ;
-    :hasRequirementValue "Required" .
+:ServiceRequirement a owl:Class  ;
+    rdfs:label "Service Requirement" ;
+    rdfs:comment "Requirements for SPARQL service configuration" ;
+    owl:versionInfo "1.0.0" .
 
-:datasetRequirement rdf:type owl:NamedIndividual, :ServiceRequirement ;
-    rdfs:label "Dataset Requirement" ;
-    rdfs:comment "Requirement for dataset configuration" ;
-    :hasRequirementType "Dataset" ;
-    :hasRequirementValue "Required" . 
+:SparqlService a owl:Class  ;
+    rdfs:label "SPARQL Service" ;
+    rdfs:comment "A SPARQL service endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape5sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape6sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
+

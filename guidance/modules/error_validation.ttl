@@ -1,57 +1,89 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_validation#> .
+
+@prefix : <./#> .
 @prefix ns1: <./runtime_error_handling#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Validation Rules
-ns1:ValidationRule a owl:Class ;
-    rdfs:label "Validation Rule" ;
-    rdfs:comment "Rules for error validation" .
+:exampleResourceConstraint1 a ns1:ResourceConstraint  ;
+    rdfs:label "Example ResourceConstraint 1" ;
+    rdfs:comment "This is example instance 1 of class ResourceConstraint" .
 
-ns1:RiskValidation a ns1:ValidationRule ;
-    rdfs:label "Risk Validation" ;
-    rdfs:comment "Validation of error risks" .
+:exampleResourceConstraint2 a ns1:ResourceConstraint  ;
+    rdfs:label "Example ResourceConstraint 2" ;
+    rdfs:comment "This is example instance 2 of class ResourceConstraint" .
+
+:exampleValidationRule1 a ns1:ValidationRule  ;
+    rdfs:label "Example ValidationRule 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationRule" .
+
+:exampleValidationRule2 a ns1:ValidationRule  ;
+    rdfs:label "Example ValidationRule 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationRule" .
 
 ns1:ConstraintValidation a ns1:ValidationRule ;
     rdfs:label "Constraint Validation" ;
     rdfs:comment "Validation of error constraints" .
 
-# Resource Constraints
-ns1:ResourceConstraint a owl:Class ;
-    rdfs:label "Resource Constraint" ;
-    rdfs:comment "Constraints on resource usage" .
+ns1:ErrorValidationShape a sh:NodeShape ;
+    sh:property :shape1sh:class ns1:ValidationRule ;
+            sh:minCount 1 ;
+            sh:path ns1:hasValidationRule ;
+    sh:targetClass ns1:RuntimeError .
 
 ns1:MemoryLimit a ns1:ResourceConstraint ;
     rdfs:label "Memory Limit" ;
     rdfs:comment "Maximum memory usage allowed" .
 
+ns1:ResourceConstraintShape a sh:NodeShape ;
+    sh:property :shape2sh:class ns1:ResourceConstraint ;
+            sh:minCount 1 ;
+            sh:path ns1:hasResourceConstraint ;
+    sh:targetClass ns1:RuntimeError .
+
+ns1:RiskValidation a ns1:ValidationRule ;
+    rdfs:label "Risk Validation" ;
+    rdfs:comment "Validation of error risks" .
+
 ns1:TimeLimit a ns1:ResourceConstraint ;
     rdfs:label "Time Limit" ;
     rdfs:comment "Maximum time allowed for operation" .
-
-# Validation Properties
-ns1:hasValidationRule a owl:ObjectProperty ;
-    rdfs:domain ns1:RuntimeError ;
-    rdfs:range ns1:ValidationRule .
 
 ns1:hasResourceConstraint a owl:ObjectProperty ;
     rdfs:domain ns1:RuntimeError ;
     rdfs:range ns1:ResourceConstraint .
 
-# Validation Shapes
-ns1:ErrorValidationShape a sh:NodeShape ;
-    sh:targetClass ns1:RuntimeError ;
-    sh:property [
-        sh:path ns1:hasValidationRule ;
-        sh:minCount 1 ;
-        sh:class ns1:ValidationRule
-    ] .
+ns1:hasValidationRule a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:ValidationRule .
 
-ns1:ResourceConstraintShape a sh:NodeShape ;
-    sh:targetClass ns1:RuntimeError ;
-    sh:property [
-        sh:path ns1:hasResourceConstraint ;
-        sh:minCount 1 ;
-        sh:class ns1:ResourceConstraint
-    ] . 
+ns1:ResourceConstraint a owl:Class ;
+    rdfs:label "Resource Constraint" ;
+    rdfs:comment "Constraints on resource usage" .
+
+ns1:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule" ;
+    rdfs:comment "Rules for error validation" .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape4sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+

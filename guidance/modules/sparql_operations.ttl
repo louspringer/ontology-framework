@@ -1,71 +1,83 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/sparql_operations#> .
+
+@prefix : <./#> .
 @prefix ns1: <http://example.org/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# SPARQL Operation Classes
-ns1:SparqlOperation rdf:type owl:Class ;
-    rdfs:label "SPARQL Operation" ;
-    rdfs:comment "Base class for SPARQL operations" ;
-    owl:versionInfo "1.0.0" .
-
-ns1:TemporaryOntology rdf:type owl:Class ;
-    rdfs:label "Temporary Ontology" ;
-    rdfs:comment "Temporary ontology for CRUD operations" ;
-    rdfs:subClassOf ns1:SparqlOperation ;
-    owl:versionInfo "1.0.0" .
-
-ns1:SparqlQuery rdf:type owl:Class ;
-    rdfs:label "SPARQL Query" ;
-    rdfs:comment "SPARQL query for operations" ;
-    rdfs:subClassOf ns1:SparqlOperation ;
-    owl:versionInfo "1.0.0" .
-
-# SPARQL Operation Properties
-ns1:hasQueryString rdf:type owl:DatatypeProperty ;
-    rdfs:label "Query String" ;
-    rdfs:comment "The SPARQL query string" ;
-    rdfs:domain ns1:SparqlQuery ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-ns1:hasOperationType rdf:type owl:DatatypeProperty ;
+ns1:hasOperationType a owl:DatatypeProperty ;
     rdfs:label "Operation Type" ;
     rdfs:comment "Type of SPARQL operation (SELECT, INSERT, DELETE, etc.)" ;
     rdfs:domain ns1:SparqlOperation ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-ns1:hasTemporaryDataset rdf:type owl:DatatypeProperty ;
+ns1:hasQueryString a owl:DatatypeProperty ;
+    rdfs:label "Query String" ;
+    rdfs:comment "The SPARQL query string" ;
+    rdfs:domain ns1:SparqlQuery ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTemporaryDataset a owl:DatatypeProperty ;
     rdfs:label "Temporary Dataset" ;
     rdfs:comment "Name of the temporary dataset" ;
     rdfs:domain ns1:TemporaryOntology ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-ns1:hasValidationQuery rdf:type owl:ObjectProperty ;
+ns1:hasValidationQuery a owl:ObjectProperty ;
     rdfs:label "Validation Query" ;
     rdfs:comment "SPARQL query for validation" ;
     rdfs:domain ns1:TemporaryOntology ;
     rdfs:range ns1:SparqlQuery ;
     owl:versionInfo "1.0.0" .
 
-# Example SPARQL Queries
-ns1:selectAllTriples rdf:type ns1:SparqlQuery ;
+ns1:selectAllTriples a ns1:SparqlQuery ;
     rdfs:label "Select All Triples" ;
-    rdfs:comment "Query to select all triples in the dataset" ;
+    ns1:hasOperationType "SELECT" ;
     ns1:hasQueryString """
         SELECT ?s ?p ?o
         WHERE {
             ?s ?p ?o
         }
     """ ;
-    ns1:hasOperationType "SELECT" .
+    rdfs:comment "Query to select all triples in the dataset" .
 
-ns1:validateOntology rdf:type ns1:SparqlQuery ;
+ns1:tempOntology a ns1:TemporaryOntology ;
+    rdfs:label "Temporary Ontology" ;
+    ns1:hasTemporaryDataset "temp_ontology" ;
+    ns1:hasValidationQuery ns1:validateOntology ;
+    rdfs:comment "Temporary ontology for CRUD operations" .
+
+:exampleSparqlOperation1 a ns1:SparqlOperation  ;
+    rdfs:label "Example SparqlOperation 1" ;
+    ns1:hasOperationType "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlOperation" .
+
+:exampleSparqlOperation2 a ns1:SparqlOperation  ;
+    rdfs:label "Example SparqlOperation 2" ;
+    ns1:hasOperationType "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlOperation" .
+
+:exampleTemporaryOntology1 a ns1:TemporaryOntology  ;
+    rdfs:label "Example TemporaryOntology 1" ;
+    ns1:hasTemporaryDataset "Example value 1" ;
+    ns1:hasValidationQuery :exampleSparqlQuery1 ;
+    rdfs:comment "This is example instance 1 of class TemporaryOntology" .
+
+:exampleTemporaryOntology2 a ns1:TemporaryOntology  ;
+    rdfs:label "Example TemporaryOntology 2" ;
+    ns1:hasTemporaryDataset "Example value 2" ;
+    ns1:hasValidationQuery :exampleSparqlQuery2 ;
+    rdfs:comment "This is example instance 2 of class TemporaryOntology" .
+
+ns1:validateOntology a ns1:SparqlQuery ;
     rdfs:label "Validate Ontology" ;
-    rdfs:comment "Query to validate ontology structure" ;
+    ns1:hasOperationType "SELECT" ;
     ns1:hasQueryString """
         SELECT ?class ?property
         WHERE {
@@ -73,11 +85,51 @@ ns1:validateOntology rdf:type ns1:SparqlQuery ;
             ?property a owl:ObjectProperty .
         }
     """ ;
-    ns1:hasOperationType "SELECT" .
+    rdfs:comment "Query to validate ontology structure" .
 
-# Temporary Ontology Instance
-ns1:tempOntology rdf:type ns1:TemporaryOntology ;
+:exampleSparqlQuery1 a ns1:SparqlQuery  ;
+    rdfs:label "Example SparqlQuery 1" ;
+    ns1:hasQueryString "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlQuery" .
+
+:exampleSparqlQuery2 a ns1:SparqlQuery  ;
+    rdfs:label "Example SparqlQuery 2" ;
+    ns1:hasQueryString "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlQuery" .
+
+ns1:SparqlOperation a owl:Class ;
+    rdfs:label "SPARQL Operation" ;
+    rdfs:comment "Base class for SPARQL operations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TemporaryOntology a owl:Class ;
     rdfs:label "Temporary Ontology" ;
     rdfs:comment "Temporary ontology for CRUD operations" ;
-    ns1:hasTemporaryDataset "temp_ontology" ;
-    ns1:hasValidationQuery ns1:validateOntology . 
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+
+ns1:SparqlQuery a owl:Class ;
+    rdfs:label "SPARQL Query" ;
+    rdfs:comment "SPARQL query for operations" ;
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape1sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+

@@ -1,73 +1,116 @@
-@prefix : <http://example.org/guidance#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/compliance#> .
+
+@prefix : <./#> .
+@prefix comp: <./compliance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix meta: <./meta#> .
-@prefix metameta: <./metameta#> .
-@prefix problem: <./problem#> .
-@prefix solution: <./solution#> .
-@prefix conversation: <./conversation#> .
-@prefix guidance: <./guidance#> .
-@prefix comp: <./compliance#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Compliance Standards
-comp:ComplianceStandard rdf:type owl:Class ;
-    rdfs:label "Compliance Standard" ;
-    rdfs:comment "Base class for compliance standards" ;
-    owl:versionInfo "1.0.0" .
+:exampleComplianceStandard1 a comp:ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 1" ;
+    rdfs:comment "This is example instance 1 of class ComplianceStandard" ;
+    comp:hasRequirement "Example value 1" .
 
-comp:hasRequirement rdf:type owl:DatatypeProperty ;
+:exampleComplianceStandard2 a comp:ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 2" ;
+    rdfs:comment "This is example instance 2 of class ComplianceStandard" ;
+    comp:hasRequirement "Example value 2" .
+
+:exampleGDPR1 a comp:GDPR  ;
+    rdfs:label "Example GDPR 1" ;
+    rdfs:comment "This is example instance 1 of class GDPR" .
+
+:exampleGDPR2 a comp:GDPR  ;
+    rdfs:label "Example GDPR 2" ;
+    rdfs:comment "This is example instance 2 of class GDPR" .
+
+:exampleISO270011 a comp:ISO27001  ;
+    rdfs:label "Example ISO27001 1" ;
+    rdfs:comment "This is example instance 1 of class ISO27001" .
+
+:exampleISO270012 a comp:ISO27001  ;
+    rdfs:label "Example ISO27001 2" ;
+    rdfs:comment "This is example instance 2 of class ISO27001" .
+
+:examplePCI_DSS1 a comp:PCI_DSS  ;
+    rdfs:label "Example PCI_DSS 1" ;
+    rdfs:comment "This is example instance 1 of class PCI_DSS" .
+
+:examplePCI_DSS2 a comp:PCI_DSS  ;
+    rdfs:label "Example PCI_DSS 2" ;
+    rdfs:comment "This is example instance 2 of class PCI_DSS" .
+
+comp:ComplianceStandardShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path comp:hasRequirement ;
+    sh:targetClass comp:ComplianceStandard .
+
+comp:GDPRInstance a comp:GDPR ;
+    comp:hasRequirement "Data breaches must be reported",
+        "Data processing must be documented",
+        "Data subjects must be notified",
+        "Personal data must be protected" .
+
+comp:ISO27001Instance a comp:ISO27001 ;
+    comp:hasRequirement "Access to error logs must be controlled",
+        "Error handling processes must be documented",
+        "Error logs must be encrypted",
+        "Security incidents must be reported" .
+
+comp:PCI_DSSInstance a comp:PCI_DSS ;
+    comp:hasRequirement "Access to cardholder data must be restricted",
+        "Cardholder data must be protected",
+        "Security monitoring must be implemented",
+        "Security policies must be maintained" .
+
+comp:hasRequirement a owl:DatatypeProperty ;
     rdfs:label "Has Requirement" ;
     rdfs:domain comp:ComplianceStandard ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-comp:ISO27001 rdf:type owl:Class ;
-    rdfs:subClassOf comp:ComplianceStandard ;
-    rdfs:label "ISO 27001" ;
-    rdfs:comment "Information security management standard" ;
-    owl:versionInfo "1.0.0" .
-
-comp:GDPR rdf:type owl:Class ;
-    rdfs:subClassOf comp:ComplianceStandard ;
+comp:GDPR a owl:Class ;
     rdfs:label "GDPR" ;
     rdfs:comment "General Data Protection Regulation" ;
+    rdfs:subClassOf comp:ComplianceStandard ;
     owl:versionInfo "1.0.0" .
 
-comp:PCI_DSS rdf:type owl:Class ;
+comp:ISO27001 a owl:Class ;
+    rdfs:label "ISO 27001" ;
+    rdfs:comment "Information security management standard" ;
     rdfs:subClassOf comp:ComplianceStandard ;
+    owl:versionInfo "1.0.0" .
+
+comp:PCI_DSS a owl:Class ;
     rdfs:label "PCI DSS" ;
     rdfs:comment "Payment Card Industry Data Security Standard" ;
+    rdfs:subClassOf comp:ComplianceStandard ;
     owl:versionInfo "1.0.0" .
 
-# Compliance Standard Instances
-comp:ISO27001Instance rdf:type comp:ISO27001 ;
-    comp:hasRequirement "Error logs must be encrypted" ;
-    comp:hasRequirement "Access to error logs must be controlled" ;
-    comp:hasRequirement "Error handling processes must be documented" ;
-    comp:hasRequirement "Security incidents must be reported" .
+comp:ComplianceStandard a owl:Class ;
+    rdfs:label "Compliance Standard" ;
+    rdfs:comment "Base class for compliance standards" ;
+    owl:versionInfo "1.0.0" .
 
-comp:GDPRInstance rdf:type comp:GDPR ;
-    comp:hasRequirement "Personal data must be protected" ;
-    comp:hasRequirement "Data breaches must be reported" ;
-    comp:hasRequirement "Data subjects must be notified" ;
-    comp:hasRequirement "Data processing must be documented" .
+[] a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
 
-comp:PCI_DSSInstance rdf:type comp:PCI_DSS ;
-    comp:hasRequirement "Cardholder data must be protected" ;
-    comp:hasRequirement "Access to cardholder data must be restricted" ;
-    comp:hasRequirement "Security monitoring must be implemented" ;
-    comp:hasRequirement "Security policies must be maintained" .
+[] a sh:NodeShape ;
+    sh:property :shape3sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
 
-# SHACL Validation Rules
-comp:ComplianceStandardShape rdf:type sh:NodeShape ;
-    sh:targetClass comp:ComplianceStandard ;
-    sh:property [
-        sh:path comp:hasRequirement ;
-        sh:minCount 1 ;
-        sh:datatype xsd:string ;
-    ] . 

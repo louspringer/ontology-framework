@@ -11,7 +11,7 @@ import shutil
 from pathlib import Path
 from rdflib import Graph, Namespace, Literal
 from rdflib.namespace import RDF, RDFS, OWL
-from src.ontology_framework.sparql_client import SparqlClient, SparqlClientError
+from ontology_framework.sparql_client import SparqlClient, SparqlClientError
 
 # Configure logging
 logging.basicConfig(
@@ -31,11 +31,9 @@ class TestSparqlClient(unittest.TestCase):
         """Set up test environment."""
         logger.info("Setting up test environment")
         
-        # Set up Fuseki server if not running
-        cls.fuseki_dir = Path.home() / "apache-jena-fuseki"
-        if not cls.fuseki_dir.exists():
-            cls._setup_fuseki()
-            
+        # Set up Fuseki server
+        cls._setup_fuseki()
+        
         # Create test client
         cls.client = SparqlClient(
             base_url="http://localhost:3030",
@@ -67,29 +65,57 @@ class TestSparqlClient(unittest.TestCase):
         
     @classmethod
     def _setup_fuseki(cls):
-        """Download and set up Apache Jena Fuseki server."""
-        logger.info("Setting up Fuseki server")
+        """Set up Apache Jena Fuseki server using Docker."""
+        logger.info("Setting up Fuseki server via Docker")
         
-        # Check if Fuseki is already installed via package manager
+        # Check if Docker is running
         try:
-            subprocess.run(["fuseki-server", "--version"], capture_output=True)
-            logger.info("Fuseki server already installed")
-            return
-        except FileNotFoundError:
-            pass
-            
-        # Try to install via package manager
-        try:
-            subprocess.run(["brew", "install", "apache-jena-fuseki"], check=True)
-            logger.info("Installed Fuseki via Homebrew")
-            return
+            subprocess.run(["docker", "info"], capture_output=True, check=True)
         except (FileNotFoundError, subprocess.CalledProcessError):
+            logger.error("Docker is not running or not installed")
+            raise RuntimeError("Docker is required for running tests")
+            
+        # Check if Fuseki container is already running
+        try:
+            result = subprocess.run(
+                ["docker", "ps", "--filter", "name=fuseki", "--format", "{{.Names}}"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            if "fuseki" in result.stdout:
+                logger.info("Fuseki container is already running")
+                return
+        except subprocess.CalledProcessError:
             pass
             
-        # If all else fails, use a mock server for testing
-        logger.warning("Could not install Fuseki server. Using mock server for testing.")
-        cls._setup_mock_server()
-        
+        # Start Fuseki container
+        try:
+            subprocess.run([
+                "docker", "run", "-d",
+                "--name", "fuseki",
+                "-p", "3030:3030",
+                "stain/jena-fuseki"
+            ], check=True)
+            logger.info("Started Fuseki container")
+            
+            # Wait for Fuseki to be ready
+            time.sleep(5)
+            
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to start Fuseki container: {e}")
+            raise RuntimeError("Failed to start Fuseki container")
+            
+    @classmethod
+    def _teardown_fuseki(cls):
+        """Clean up Fuseki Docker container."""
+        try:
+            subprocess.run(["docker", "stop", "fuseki"], capture_output=True)
+            subprocess.run(["docker", "rm", "fuseki"], capture_output=True)
+            logger.info("Cleaned up Fuseki container")
+        except subprocess.CalledProcessError as e:
+            logger.warning(f"Failed to clean up Fuseki container: {e}")
+
     @classmethod
     def _setup_mock_server(cls):
         """Set up a mock SPARQL server for testing."""
@@ -144,53 +170,56 @@ class TestSparqlClient(unittest.TestCase):
 
     def setUp(self):
         """Set up before each test."""
-        try:
-            # Create a temporary dataset for testing
+        # Create test dataset if it doesn't exist
+        if not self.client.dataset_exists(self.test_dataset):
             self.assertTrue(self.client.create_dataset(self.test_dataset))
-            time.sleep(1)  # Wait for dataset to be created
-        except SparqlClientError as e:
-            if "already exists" not in str(e):
-                raise
             
     def tearDown(self):
         """Clean up after each test."""
-        try:
-            # Delete the test dataset
+        # Delete test dataset
+        if self.client.dataset_exists(self.test_dataset):
             self.assertTrue(self.client.delete_dataset(self.test_dataset))
-            time.sleep(1)  # Wait for dataset to be deleted
-        except SparqlClientError as e:
-            if "not found" not in str(e):
-                raise
-
+            
     def test_create_dataset(self):
         """Test dataset creation."""
-        # Delete existing dataset if it exists
-        try:
-            self.client.delete_dataset(self.test_dataset)
-        except:
-            pass
+        # Delete dataset if it exists
+        if self.client.dataset_exists(self.test_dataset):
+            self.assertTrue(self.client.delete_dataset(self.test_dataset))
             
+        # Create new dataset
         self.assertTrue(self.client.create_dataset(self.test_dataset))
         
     def test_delete_dataset(self):
         """Test dataset deletion."""
-        # Create dataset if it doesn't exist
-        try:
-            self.client.create_dataset(self.test_dataset)
-        except:
-            pass
+        # Ensure dataset exists
+        if not self.client.dataset_exists(self.test_dataset):
+            self.assertTrue(self.client.create_dataset(self.test_dataset))
             
+        # Delete dataset
         self.assertTrue(self.client.delete_dataset(self.test_dataset))
         
     def test_load_ontology(self):
         """Test ontology loading."""
-        # Create a temporary file with test ontology
+        # Create temporary file with test ontology
         with tempfile.NamedTemporaryFile(mode='w', suffix='.ttl', delete=False) as f:
             f.write(self.test_ontology)
             temp_path = f.name
             
         try:
-            self.assertTrue(self.client.load_ontology(temp_path))
+            # Load ontology
+            self.assertTrue(self.client.load_ontology(temp_path, self.test_dataset))
+            
+            # Verify data was loaded
+            query = """
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            ASK {
+                ?class a rdfs:Class ;
+                       rdfs:label "Person" .
+            }
+            """
+            results = self.client.execute_query(query, self.test_dataset)
+            self.assertTrue(results)
+            
         finally:
             os.unlink(temp_path)
             
@@ -202,7 +231,7 @@ class TestSparqlClient(unittest.TestCase):
             temp_path = f.name
             
         try:
-            self.client.load_ontology(temp_path)
+            self.client.load_ontology(temp_path, self.test_dataset)
             
             # Test SELECT query
             query = """
@@ -213,9 +242,23 @@ class TestSparqlClient(unittest.TestCase):
                 ?class rdfs:label ?label .
             }
             """
-            results = self.client.execute_query(query)
+            results = self.client.execute_query(query, self.test_dataset)
             self.assertTrue(len(results) > 0)
             self.assertEqual(results[0]['label']['value'], 'Person')
+            
+            # Test CONSTRUCT query
+            construct_query = """
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            CONSTRUCT {
+                ?class rdfs:label ?label
+            }
+            WHERE {
+                ?class a rdfs:Class .
+                ?class rdfs:label ?label .
+            }
+            """
+            graph = self.client.execute_query(construct_query, self.test_dataset)
+            self.assertTrue(len(graph) > 0)
             
         finally:
             os.unlink(temp_path)
@@ -228,13 +271,35 @@ class TestSparqlClient(unittest.TestCase):
             temp_path = f.name
             
         try:
-            self.client.load_ontology(temp_path)
+            self.client.load_ontology(temp_path, self.test_dataset)
             
             # Test validation
-            validation_results = self.client.validate_ontology()
+            validation_results = self.client.validate_ontology(self.test_dataset)
             self.assertTrue(isinstance(validation_results, list))
             self.assertEqual(len(validation_results), 0)  # No validation errors
             
+            # Test validation with invalid data
+            invalid_ontology = """
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix sh: <http://www.w3.org/ns/shacl#> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            
+            <http://example.org/InvalidPerson>
+                a rdfs:Class ;
+                rdfs:label "Invalid Person" .
+            """
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.ttl', delete=False) as f:
+                f.write(invalid_ontology)
+                invalid_path = f.name
+                
+            try:
+                self.client.load_ontology(invalid_path, self.test_dataset)
+                validation_results = self.client.validate_ontology(self.test_dataset)
+                self.assertTrue(len(validation_results) > 0)  # Should have validation errors
+            finally:
+                os.unlink(invalid_path)
+                
         finally:
             os.unlink(temp_path)
 
@@ -242,15 +307,14 @@ class TestSparqlClient(unittest.TestCase):
     def tearDownClass(cls):
         """Clean up test environment."""
         logger.info("Cleaning up test environment")
+        
+        # Clean up test files
         if hasattr(cls, 'test_ontology_file'):
             os.unlink(cls.test_ontology_file.name)
             
-        # Stop server
-        if hasattr(cls, 'server_thread'):
-            cls.mock_server.shutdown()
-            cls.server_thread.join()
-        else:
-            subprocess.run(["pkill", "-f", "fuseki-server"])
+        # Clean up Fuseki container
+        cls._teardown_fuseki()
+        
         logger.info("Test environment cleaned up")
 
 if __name__ == "__main__":
