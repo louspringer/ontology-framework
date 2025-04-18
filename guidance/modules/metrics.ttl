@@ -1,106 +1,171 @@
-@prefix : <http://example.org/guidance#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#> .
+
+@prefix : <./#> .
+@prefix metric: <./metrics#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix meta: <./meta#> .
-@prefix metameta: <./metameta#> .
-@prefix problem: <./problem#> .
-@prefix solution: <./solution#> .
-@prefix conversation: <./conversation#> .
-@prefix guidance: <./guidance#> .
-@prefix metric: <./metrics#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Performance Metrics
-metric:PerformanceMetric rdf:type owl:Class ;
-    rdfs:label "Performance Metric" ;
-    rdfs:comment "Base class for performance metrics" ;
-    owl:versionInfo "1.0.0" .
+:exampleCPUUsage1 a metric:CPUUsage  ;
+    rdfs:label "Example CPUUsage 1" ;
+    rdfs:comment "This is example instance 1 of class CPUUsage" .
 
-metric:hasThreshold rdf:type owl:DatatypeProperty ;
+:exampleCPUUsage2 a metric:CPUUsage  ;
+    rdfs:label "Example CPUUsage 2" ;
+    rdfs:comment "This is example instance 2 of class CPUUsage" .
+
+:exampleLoggingLatency1 a metric:LoggingLatency  ;
+    rdfs:label "Example LoggingLatency 1" ;
+    rdfs:comment "This is example instance 1 of class LoggingLatency" .
+
+:exampleLoggingLatency2 a metric:LoggingLatency  ;
+    rdfs:label "Example LoggingLatency 2" ;
+    rdfs:comment "This is example instance 2 of class LoggingLatency" .
+
+:exampleMemoryUsage1 a metric:MemoryUsage  ;
+    rdfs:label "Example MemoryUsage 1" ;
+    rdfs:comment "This is example instance 1 of class MemoryUsage" .
+
+:exampleMemoryUsage2 a metric:MemoryUsage  ;
+    rdfs:label "Example MemoryUsage 2" ;
+    rdfs:comment "This is example instance 2 of class MemoryUsage" .
+
+:examplePerformanceMetric1 a metric:PerformanceMetric  ;
+    rdfs:label "Example PerformanceMetric 1" ;
+    rdfs:comment "This is example instance 1 of class PerformanceMetric" ;
+    metric:hasThreshold 1 ;
+    metric:hasUnit "Example value 1" .
+
+:examplePerformanceMetric2 a metric:PerformanceMetric  ;
+    rdfs:label "Example PerformanceMetric 2" ;
+    rdfs:comment "This is example instance 2 of class PerformanceMetric" ;
+    metric:hasThreshold 2 ;
+    metric:hasUnit "Example value 2" .
+
+:exampleResolutionTime1 a metric:ResolutionTime  ;
+    rdfs:label "Example ResolutionTime 1" ;
+    rdfs:comment "This is example instance 1 of class ResolutionTime" .
+
+:exampleResolutionTime2 a metric:ResolutionTime  ;
+    rdfs:label "Example ResolutionTime 2" ;
+    rdfs:comment "This is example instance 2 of class ResolutionTime" .
+
+:exampleResourceMetric1 a metric:ResourceMetric  ;
+    rdfs:label "Example ResourceMetric 1" ;
+    rdfs:comment "This is example instance 1 of class ResourceMetric" .
+
+:exampleResourceMetric2 a metric:ResourceMetric  ;
+    rdfs:label "Example ResourceMetric 2" ;
+    rdfs:comment "This is example instance 2 of class ResourceMetric" .
+
+:exampleResponseTime1 a metric:ResponseTime  ;
+    rdfs:label "Example ResponseTime 1" ;
+    rdfs:comment "This is example instance 1 of class ResponseTime" .
+
+:exampleResponseTime2 a metric:ResponseTime  ;
+    rdfs:label "Example ResponseTime 2" ;
+    rdfs:comment "This is example instance 2 of class ResponseTime" .
+
+metric:CPUUsageInstance a metric:CPUUsage ;
+    metric:hasThreshold "70" ;
+    metric:hasUnit "percent" .
+
+metric:LoggingLatencyInstance a metric:LoggingLatency ;
+    metric:hasThreshold "100" ;
+    metric:hasUnit "milliseconds" .
+
+metric:MemoryUsageInstance a metric:MemoryUsage ;
+    metric:hasThreshold "80" ;
+    metric:hasUnit "percent" .
+
+metric:PerformanceMetricShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:integer ;
+            sh:minCount 1 ;
+            sh:path metric:hasThreshold  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path metric:hasUnit ;
+    sh:targetClass metric:PerformanceMetric .
+
+metric:ResolutionTimeInstance a metric:ResolutionTime ;
+    metric:hasThreshold "5000" ;
+    metric:hasUnit "milliseconds" .
+
+metric:ResponseTimeInstance a metric:ResponseTime ;
+    metric:hasThreshold "1000" ;
+    metric:hasUnit "milliseconds" .
+
+metric:hasThreshold a owl:DatatypeProperty ;
     rdfs:label "Has Threshold" ;
     rdfs:domain metric:PerformanceMetric ;
     rdfs:range xsd:integer ;
     owl:versionInfo "1.0.0" .
 
-metric:hasUnit rdf:type owl:DatatypeProperty ;
+metric:hasUnit a owl:DatatypeProperty ;
     rdfs:label "Has Unit" ;
     rdfs:domain metric:PerformanceMetric ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-# Response Time Metrics
-metric:ResponseTime rdf:type owl:Class ;
-    rdfs:subClassOf metric:PerformanceMetric ;
-    rdfs:label "Response Time" ;
-    rdfs:comment "Measures system response time" ;
-    owl:versionInfo "1.0.0" .
-
-metric:ResolutionTime rdf:type owl:Class ;
-    rdfs:subClassOf metric:PerformanceMetric ;
-    rdfs:label "Resolution Time" ;
-    rdfs:comment "Measures error resolution time" ;
-    owl:versionInfo "1.0.0" .
-
-metric:LoggingLatency rdf:type owl:Class ;
-    rdfs:subClassOf metric:PerformanceMetric ;
-    rdfs:label "Logging Latency" ;
-    rdfs:comment "Measures logging system latency" ;
-    owl:versionInfo "1.0.0" .
-
-# Resource Metrics
-metric:ResourceMetric rdf:type owl:Class ;
-    rdfs:subClassOf metric:PerformanceMetric ;
-    rdfs:label "Resource Metric" ;
-    rdfs:comment "Measures system resource usage" ;
-    owl:versionInfo "1.0.0" .
-
-metric:MemoryUsage rdf:type owl:Class ;
-    rdfs:subClassOf metric:ResourceMetric ;
-    rdfs:label "Memory Usage" ;
-    rdfs:comment "Measures memory consumption" ;
-    owl:versionInfo "1.0.0" .
-
-metric:CPUUsage rdf:type owl:Class ;
-    rdfs:subClassOf metric:ResourceMetric ;
+metric:CPUUsage a owl:Class ;
     rdfs:label "CPU Usage" ;
     rdfs:comment "Measures CPU utilization" ;
+    rdfs:subClassOf metric:ResourceMetric ;
     owl:versionInfo "1.0.0" .
 
-# Metric Instances
-metric:ResponseTimeInstance rdf:type metric:ResponseTime ;
-    metric:hasThreshold "1000" ;
-    metric:hasUnit "milliseconds" .
+metric:LoggingLatency a owl:Class ;
+    rdfs:label "Logging Latency" ;
+    rdfs:comment "Measures logging system latency" ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    owl:versionInfo "1.0.0" .
 
-metric:ResolutionTimeInstance rdf:type metric:ResolutionTime ;
-    metric:hasThreshold "5000" ;
-    metric:hasUnit "milliseconds" .
+metric:MemoryUsage a owl:Class ;
+    rdfs:label "Memory Usage" ;
+    rdfs:comment "Measures memory consumption" ;
+    rdfs:subClassOf metric:ResourceMetric ;
+    owl:versionInfo "1.0.0" .
 
-metric:LoggingLatencyInstance rdf:type metric:LoggingLatency ;
-    metric:hasThreshold "100" ;
-    metric:hasUnit "milliseconds" .
+metric:ResolutionTime a owl:Class ;
+    rdfs:label "Resolution Time" ;
+    rdfs:comment "Measures error resolution time" ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    owl:versionInfo "1.0.0" .
 
-metric:MemoryUsageInstance rdf:type metric:MemoryUsage ;
-    metric:hasThreshold "80" ;
-    metric:hasUnit "percent" .
+metric:ResponseTime a owl:Class ;
+    rdfs:label "Response Time" ;
+    rdfs:comment "Measures system response time" ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    owl:versionInfo "1.0.0" .
 
-metric:CPUUsageInstance rdf:type metric:CPUUsage ;
-    metric:hasThreshold "70" ;
-    metric:hasUnit "percent" .
+metric:ResourceMetric a owl:Class ;
+    rdfs:label "Resource Metric" ;
+    rdfs:comment "Measures system resource usage" ;
+    rdfs:subClassOf metric:PerformanceMetric ;
+    owl:versionInfo "1.0.0" .
 
-# SHACL Validation Rules
-metric:PerformanceMetricShape rdf:type sh:NodeShape ;
-    sh:targetClass metric:PerformanceMetric ;
-    sh:property [
-        sh:path metric:hasThreshold ;
-        sh:minCount 1 ;
-        sh:datatype xsd:integer ;
-    ] ;
-    sh:property [
-        sh:path metric:hasUnit ;
-        sh:minCount 1 ;
-        sh:datatype xsd:string ;
-    ] . 
+metric:PerformanceMetric a owl:Class ;
+    rdfs:label "Performance Metric" ;
+    rdfs:comment "Base class for performance metrics" ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+

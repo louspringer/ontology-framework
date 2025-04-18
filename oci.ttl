@@ -1,11 +1,11 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix : <http://example.org/ontology#> .
-@prefix dialog: <http://example.org/dialog#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <http:/example.org/ontology#> .
+@prefix dialog: <http:/example.org/dialog#> .
+@prefix prov: <http:/www.w3.org/ns/prov#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
 
 ### Dialogue Chain Entities ###
 :SourceDialog_3 a dialog:SourceDialog ;
@@ -36,19 +36,19 @@
 
 ### Research Sources ###
 :Reference_8 a prov:Entity ;
-    prov:wasDerivedFrom <https://www.ralantech.com/oci-vs-aws-azure> ;
+    prov:wasDerivedFrom <https:/www.ralantech.com/oci-vs-aws-azure> ;
     dialog:referenceTitle "OCI vs AWS/Azure" .
 
 :Reference_9 a prov:Entity ;
-    prov:wasDerivedFrom <https://www.publicsectornetwork.com/aws-vs-oci> ;
+    prov:wasDerivedFrom <https:/www.publicsectornetwork.com/aws-vs-oci> ;
     dialog:referenceTitle "Public Sector Network Cloud Comparison" .
 
 :Reference_10 a prov:Entity ;
-    prov:wasDerivedFrom <https://www.oracle.com/cloud/service-comparison/> ;
+    prov:wasDerivedFrom <https:/www.oracle.com/cloud/service-comparison/> ;
     dialog:referenceTitle "Oracle Cloud vs AWS/Azure/GCP" .
 
 :Reference_11 a prov:Entity ;
-    prov:wasDerivedFrom <https://cloud.folio3.com/aws-vs-azure-vs-gcp-cost-comparison> ;
+    prov:wasDerivedFrom <https:/cloud.folio3.com/aws-vs-azure-vs-gcp-cost-comparison> ;
     dialog:referenceTitle "AWS vs Azure vs GCP Cost Comparison" .
 
 ### Stakeholder Types ###
@@ -177,7 +177,7 @@
     dc:version "..." ;
     dc:created "..."^^xsd:dateTime ;
     dc:modified "..."^^xsd:dateTime ;
-    owl:imports <http://example.org/meta-core#> .
+    owl:imports <http:/example.org/meta-core#> .
 
 # Add explicit class definitions
 :CloudService rdf:type owl:Class ;
@@ -190,10 +190,10 @@
     rdfs:range :CloudService .
 
 # Add meta-core import
-@prefix meta: <http://louspringer.com/ontology/meta#> .
+@prefix meta: <http:/louspringer.com/ontology/meta#> .
 
-[] owl:imports <http://louspringer.com/ontology/meta#> .
-<http://louspringer.com/ontology/meta#> rdfs:label "Meta Core Ontology" .
+[] owl:imports <http:/louspringer.com/ontology/meta#> .
+<http:/louspringer.com/ontology/meta#> rdfs:label "Meta Core Ontology" .
 
 # Update position property
 :position rdfs:subPropertyOf meta:hasPosition .

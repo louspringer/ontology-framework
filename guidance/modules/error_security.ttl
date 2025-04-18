@@ -1,53 +1,105 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#> .
+
+@prefix : <./#> .
 @prefix ns1: <./runtime_error_handling#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Compliance Standards
-ns1:ComplianceStandard a owl:Class ;
-    rdfs:label "Compliance Standard" ;
-    rdfs:comment "Security and compliance standards" .
+:exampleComplianceStandard1 a ns1:ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 1" ;
+    rdfs:comment "This is example instance 1 of class ComplianceStandard" .
 
-ns1:ISO27001 a ns1:ComplianceStandard ;
-    rdfs:label "ISO27001" ;
-    rdfs:comment "Information security management standard" .
+:exampleComplianceStandard2 a ns1:ComplianceStandard  ;
+    rdfs:label "Example ComplianceStandard 2" ;
+    rdfs:comment "This is example instance 2 of class ComplianceStandard" .
 
-ns1:compliesWith a owl:ObjectProperty ;
-    rdfs:domain ns1:RuntimeError ;
-    rdfs:range ns1:ComplianceStandard .
+:exampleSecurityConstraint1 a ns1:SecurityConstraint  ;
+    rdfs:label "Example SecurityConstraint 1" ;
+    rdfs:comment "This is example instance 1 of class SecurityConstraint" .
 
-# Security Validation
-ns1:SecurityValidation a owl:Class ;
-    rdfs:label "Security Validation" ;
-    rdfs:comment "Security validation rules" .
+:exampleSecurityConstraint2 a ns1:SecurityConstraint  ;
+    rdfs:label "Example SecurityConstraint 2" ;
+    rdfs:comment "This is example instance 2 of class SecurityConstraint" .
 
-ns1:SensitiveDataHandling a ns1:SecurityValidation ;
-    rdfs:label "Sensitive Data Handling" ;
-    rdfs:comment "Validation rules for handling sensitive data" .
+:exampleSecurityRisk1 a ns1:SecurityRisk  ;
+    rdfs:label "Example SecurityRisk 1" ;
+    rdfs:comment "This is example instance 1 of class SecurityRisk" .
 
-ns1:hasSecurityValidation a owl:ObjectProperty ;
-    rdfs:domain ns1:RuntimeError ;
-    rdfs:range ns1:SecurityValidation .
+:exampleSecurityRisk2 a ns1:SecurityRisk  ;
+    rdfs:label "Example SecurityRisk 2" ;
+    rdfs:comment "This is example instance 2 of class SecurityRisk" .
 
-# Security Constraints
-ns1:SecurityConstraint a owl:Class ;
-    rdfs:label "Security Constraint" ;
-    rdfs:comment "Security-related constraints" .
+:exampleSecurityValidation1 a ns1:SecurityValidation  ;
+    rdfs:label "Example SecurityValidation 1" ;
+    rdfs:comment "This is example instance 1 of class SecurityValidation" .
 
-ns1:DataEncryption a ns1:SecurityConstraint ;
-    rdfs:label "Data Encryption" ;
-    rdfs:comment "Requirements for data encryption" .
+:exampleSecurityValidation2 a ns1:SecurityValidation  ;
+    rdfs:label "Example SecurityValidation 2" ;
+    rdfs:comment "This is example instance 2 of class SecurityValidation" .
 
 ns1:AccessControl a ns1:SecurityConstraint ;
     rdfs:label "Access Control" ;
     rdfs:comment "Requirements for access control" .
 
-# Security Risks
+ns1:DataEncryption a ns1:SecurityConstraint ;
+    rdfs:label "Data Encryption" ;
+    rdfs:comment "Requirements for data encryption" .
+
+ns1:DataLossRisk a ns1:SecurityRisk ;
+    rdfs:label "Data Loss Risk" ;
+    rdfs:comment "Risk of data loss or exposure" .
+
+ns1:ISO27001 a ns1:ComplianceStandard ;
+    rdfs:label "ISO27001" ;
+    rdfs:comment "Information security management standard" .
+
+ns1:SensitiveDataHandling a ns1:SecurityValidation ;
+    rdfs:label "Sensitive Data Handling" ;
+    rdfs:comment "Validation rules for handling sensitive data" .
+
+ns1:compliesWith a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:ComplianceStandard .
+
+ns1:hasSecurityValidation a owl:ObjectProperty ;
+    rdfs:domain ns1:RuntimeError ;
+    rdfs:range ns1:SecurityValidation .
+
 ns1:SecurityRisk a owl:Class ;
     rdfs:label "Security Risk" ;
     rdfs:comment "Security-related risks" .
 
-ns1:DataLossRisk a ns1:SecurityRisk ;
-    rdfs:label "Data Loss Risk" ;
-    rdfs:comment "Risk of data loss or exposure" . 
+ns1:ComplianceStandard a owl:Class ;
+    rdfs:label "Compliance Standard" ;
+    rdfs:comment "Security and compliance standards" .
+
+ns1:SecurityConstraint a owl:Class ;
+    rdfs:label "Security Constraint" ;
+    rdfs:comment "Security-related constraints" .
+
+ns1:SecurityValidation a owl:Class ;
+    rdfs:label "Security Validation" ;
+    rdfs:comment "Security validation rules" .
+
+[] a sh:NodeShape ;
+    sh:property :shape1sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
+

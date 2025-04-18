@@ -114,9 +114,16 @@ test:TargetClass
         try:
             # Create spore with patch
             patch = URIRef("http://example.org/patches/test-patch")
+            
+            # Set up spore and patch data
             self.validator.graph.add((self.test_spore, RDF.type, META.TransformationPattern))
+            self.validator.graph.add((self.test_spore, META.targetModel, self.target_model))
             self.validator.graph.add((self.test_spore, META.distributesPatch, patch))
             self.validator.graph.add((patch, RDF.type, META.ConceptPatch))
+            
+            # Add patch data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
             
             result = self.integrator.apply_patch(self.test_spore, patch, self.target_model)
             self.assertTrue(result)
@@ -130,16 +137,31 @@ test:TargetClass
         """Test concurrent spore integration."""
         logger.info("Testing concurrent integration")
         try:
-            # Create multiple spores
+            # Create multiple spores with their patches
             spore1 = URIRef("http://example.org/spores/spore1")
             spore2 = URIRef("http://example.org/spores/spore2")
+            patch1 = URIRef("http://example.org/patches/patch1")
+            patch2 = URIRef("http://example.org/patches/patch2")
             
-            for spore in [spore1, spore2]:
+            # Set up spores and patches
+            for spore, patch in [(spore1, patch1), (spore2, patch2)]:
                 self.validator.graph.add((spore, RDF.type, META.TransformationPattern))
+                self.validator.graph.add((spore, META.targetModel, self.target_model))
+                self.validator.graph.add((spore, META.distributesPatch, patch))
+                self.validator.graph.add((patch, RDF.type, META.ConceptPatch))
             
-            # Attempt concurrent integration
+            # Test successful concurrent integration (non-conflicting patches)
+            result = self.integrator.integrate_concurrent([spore1], self.target_model)
+            self.assertTrue(result)
+            
+            # Add patch data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
+            
+            # Test concurrent modification error (conflicting patches)
             with self.assertRaises(ConcurrentModificationError):
                 self.integrator.integrate_concurrent([spore1, spore2], self.target_model)
+            
             logger.info("Concurrent integration test passed")
         except Exception as e:
             logger.error(f"Concurrent integration test failed: {str(e)}")

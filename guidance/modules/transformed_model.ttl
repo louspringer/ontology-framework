@@ -1,41 +1,59 @@
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/transformed_model#> .
+
+@prefix : <./#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dcterms: <http://purl.org/dc/terms/#> .
 @prefix guidance: <http://ontologies.louspringer.com/guidance#> .
-@prefix ns1: <http://ontologies.louspringer.com/guidance/core#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix ns2: <./model#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://ontologies.louspringer.com/guidance/modules/model#ModelGuidanceModule> a owl:Ontology ;
+ns2:ModelGuidanceModule a owl:Ontology ;
     rdfs:label "Model Guidance Module" ;
     dc:title "Model Guidance Module" ;
     dc:version "1.0.0" ;
-    dcterms:created "2024-03-21"^^xsd:dateTime ;
-    dcterms:modified "2024-03-21"^^xsd:dateTime ;
+    dcterms:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     rdfs:comment "Model-specific guidance concepts and principles" ;
     owl:imports <http://ontologies.louspringer.com/guidance/modules/core.ttl>,
         <http://ontologies.louspringer.com/guidance/modules/validation.ttl> ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/model#hasLegacyModelConcept> a owl:ObjectProperty ;
+:ModelGuidanceModule#ModuleShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path :ModelGuidanceModule#version  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path :ModelGuidanceModule#description  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path :ModelGuidanceModule#label ;
+    sh:targetClass :ModelGuidanceModule#Module .
+
+ns2:hasLegacyModelConcept a owl:ObjectProperty ;
     rdfs:label "Has Legacy Model Concept" ;
     rdfs:comment "Links modular model concept to legacy guidance" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> ;
+    rdfs:domain ns2:ModelFirstPrinciple ;
     rdfs:range guidance:LLMGuidanceOntology .
 
-<http://ontologies.louspringer.com/guidance/modules/model#hasModelingPrinciple> a owl:ObjectProperty ;
+ns2:hasModelingPrinciple a owl:ObjectProperty ;
     rdfs:label "Has Modeling Principle" ;
     rdfs:comment "Links guidance to specific modeling principles" ;
     rdfs:domain ns1:BestPractice ;
-    rdfs:range <http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> .
+    rdfs:range ns2:ModelFirstPrinciple .
 
-<http://ontologies.louspringer.com/guidance/modules/model#hasProjection> a owl:ObjectProperty ;
+ns2:hasProjection a owl:ObjectProperty ;
     rdfs:label "Has Projection" ;
     rdfs:comment "Links model to its projections (code, docs, etc.)" ;
-    rdfs:domain <http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> ;
-    rdfs:range <http://ontologies.louspringer.com/guidance/modules/model#ModelProjection> .
+    rdfs:domain ns2:ModelFirstPrinciple ;
+    rdfs:range ns2:ModelProjection .
 
-<http://ontologies.louspringer.com/guidance/modules/model#modelProjectionGuidance> a <http://ontologies.louspringer.com/guidance/modules/model#ModelProjectionAlignment>,
+ns2:modelProjectionGuidance a ns2:ModelProjectionAlignment,
         owl:NamedIndividual ;
     rdfs:label "Model Projection Guidance" ;
     ns1:complexity 2 ;
@@ -46,7 +64,7 @@
     2. Then check if code accurately projects the model
     3. Only then consider code-level improvements""" .
 
-<http://ontologies.louspringer.com/guidance/modules/model#modelQualityGuidance> a <http://ontologies.louspringer.com/guidance/modules/model#ModelQualityPrecedence>,
+ns2:modelQualityGuidance a ns2:ModelQualityPrecedence,
         owl:NamedIndividual ;
     rdfs:label "Model Quality Guidance" ;
     ns1:complexity 1 ;
@@ -59,21 +77,68 @@
     - Focus validation on model correctness
     - Model refinement leads to code refinement""" .
 
-<http://ontologies.louspringer.com/guidance/modules/model#ModelProjectionAlignment> a owl:Class ;
+:exampleModelFirstPrinciple1 a ns2:ModelFirstPrinciple  ;
+    rdfs:label "Example ModelFirstPrinciple 1" ;
+    ns2:hasLegacyModelConcept :exampleLLMGuidanceOntology1 ;
+    ns2:hasProjection :exampleModelProjection1 ;
+    rdfs:comment "This is example instance 1 of class ModelFirstPrinciple" .
+
+:exampleModelFirstPrinciple2 a ns2:ModelFirstPrinciple  ;
+    rdfs:label "Example ModelFirstPrinciple 2" ;
+    ns2:hasLegacyModelConcept :exampleLLMGuidanceOntology2 ;
+    ns2:hasProjection :exampleModelProjection2 ;
+    rdfs:comment "This is example instance 2 of class ModelFirstPrinciple" .
+
+:exampleModelProjectionAlignment1 a ns2:ModelProjectionAlignment  ;
+    rdfs:label "Example ModelProjectionAlignment 1" ;
+    rdfs:comment "This is example instance 1 of class ModelProjectionAlignment" .
+
+:exampleModelProjectionAlignment2 a ns2:ModelProjectionAlignment  ;
+    rdfs:label "Example ModelProjectionAlignment 2" ;
+    rdfs:comment "This is example instance 2 of class ModelProjectionAlignment" .
+
+:exampleModelQualityPrecedence1 a ns2:ModelQualityPrecedence  ;
+    rdfs:label "Example ModelQualityPrecedence 1" ;
+    rdfs:comment "This is example instance 1 of class ModelQualityPrecedence" .
+
+:exampleModelQualityPrecedence2 a ns2:ModelQualityPrecedence  ;
+    rdfs:label "Example ModelQualityPrecedence 2" ;
+    rdfs:comment "This is example instance 2 of class ModelQualityPrecedence" .
+
+ns2:ModelProjectionAlignment a owl:Class ;
     rdfs:label "Model-Projection Alignment" ;
     rdfs:comment "Principle for aligning code with model specifications" ;
-    rdfs:subClassOf <http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> ;
+    rdfs:subClassOf ns2:ModelFirstPrinciple ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/model#ModelQualityPrecedence> a owl:Class ;
+ns2:ModelQualityPrecedence a owl:Class ;
     rdfs:label "ModelQualityPrecedence" ;
     rdfs:comment "Principle establishing that model quality takes precedence over code quality" ;
-    rdfs:subClassOf <http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> ;
+    rdfs:subClassOf ns2:ModelFirstPrinciple ;
     owl:versionInfo "1.0.0" .
 
-<http://ontologies.louspringer.com/guidance/modules/model#ModelFirstPrinciple> a owl:Class ;
+ns2:ModelFirstPrinciple a owl:Class ;
     rdfs:label "ModelFirstPrinciple" ;
     rdfs:comment "Fundamental principle emphasizing model-driven development approach" ;
     rdfs:subClassOf ns1:BestPractice ;
     owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape2sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo ;
+    sh:targetClass owl:Class .
 

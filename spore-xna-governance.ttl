@@ -1,5 +1,5 @@
-@prefix meta: <http://example.org/guidance#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix meta: <http:/example.org/guidance#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
 
 meta:SporeGovernanceGuidance a meta:ModelingDisciplineRule ;
     rdfs:label "Spore Governance Discipline" ;

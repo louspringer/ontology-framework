@@ -1,13 +1,13 @@
-@prefix bt: <http://example.org/bow-tie-pattern#> .
-@prefix ex: <http://example.org/bow-tie-examples#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix time: <http://www.w3.org/2006/time#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix process: <http://www.w3.org/ns/prov#> .
-@prefix task: <http://www.w3.org/ns/adms#Task> .
+@prefix bt: <http:/example.org/bow-tie-pattern#> .
+@prefix ex: <http:/example.org/bow-tie-examples#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http:/www.w3.org/ns/prov#> .
+@prefix time: <http:/www.w3.org/2006/time#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix process: <http:/www.w3.org/ns/prov#> .
+@prefix task: <http:/www.w3.org/ns/adms#Task#> .
 
 # Session Information
 ex:CurrentSession a owl:NamedIndividual ;
@@ -170,7 +170,7 @@ task:OracleRDFImplementation
     rdfs:comment "Implementation of Oracle RDF store integration" ;
     process:startedAtTime "2024-03-21T10:00:00Z"^^xsd:dateTime ;
     process:endedAtTime "2024-03-21T11:00:00Z"^^xsd:dateTime ;
-    process:wasAssociatedWith <https://github.com/louspringer/ontology-framework> ;
+    process:wasAssociatedWith <https:/github.com/louspringer/ontology-framework> ;
     process:generated <src/ontology_framework/oracle_rdf.py> ;
     rdfs:seeAlso <tests/test_oracle_rdf.py> .
 

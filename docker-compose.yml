@@ -1,17 +1,39 @@
 version: '3.8'
 
 services:
-  fuseki:
-    image: stain/jena-fuseki:latest
-    environment:
-      - ADMIN_PASSWORD=admin
-      - JVM_ARGS=-Xmx2g
+  graphdb:
+    image: ontotext/graphdb:10.6.0
+    container_name: graphdb
     ports:
-      - "3030:3030"
+      - "7200:7200"
+    environment:
+      - GDB_HEAP_SIZE=1G
+      - GDB_MIN_MEM=512M
+      - GDB_MAX_MEM=1G
+      - GRAPHDB_HOME=/opt/graphdb/home
+      - GRAPHDB_JAVA_OPTS=-Xms512m -Xmx1g -XX:MaxDirectMemorySize=1g
     volumes:
-      - fuseki-data:/fuseki
-      - fuseki-config:/config
+      - graphdb-data:/opt/graphdb/home
+      - graphdb-import:/opt/graphdb/import
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    shm_size: '1gb'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
 
 volumes:
+  graphdb-data:
+    driver: local
+  graphdb-import:
+    driver: local
   fuseki-data:
   fuseki-config: 

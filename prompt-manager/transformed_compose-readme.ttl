@@ -1,9 +1,9 @@
-@prefix ns1: <http://ontologies.louspringer.com/prompt-manager/llm-failure#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns1: <http:/ontologies.louspringer.com/prompt-manager/llm-failure#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix skos: <http:/www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
 
 ns1:InteractionShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:integer ;

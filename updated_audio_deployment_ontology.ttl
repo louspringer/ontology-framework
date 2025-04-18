@@ -1,7 +1,7 @@
-@prefix : <http://example.org/audioOntology#> .
-@prefix default1: <http://example.org/audio#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http:/example.org/audioOntology#> .
+@prefix default1: <http:/example.org/audio#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
 
 default1:AudioRoutingSoftware a default1:Software ;
     default1:examples default1:Airfoil,

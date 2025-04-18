@@ -1,161 +1,208 @@
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/deployment_test#> .
+
+@prefix : <./#> .
 @prefix ns1: <http://example.org/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Test Configuration Classes
-ns1:DeploymentTest rdf:type owl:Class ;
-    rdfs:label "Deployment Test" ;
-    rdfs:comment "Test configuration for deployment" ;
-    owl:versionInfo "1.0.0" .
+ns1:JenaFusekiTestShape a sh:NodeShape ;
+    sh:property :shape1sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestName  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestDescription  .
+        :shape1 sh:datatype xsd:anyURI  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestEndpoint  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasExpectedResponse ;
+    sh:targetClass ns1:JenaFusekiTest .
 
-ns1:ServiceTest rdf:type owl:Class ;
-    rdfs:label "Service Test" ;
-    rdfs:comment "Test configuration for a service" ;
-    rdfs:subClassOf ns1:DeploymentTest ;
-    owl:versionInfo "1.0.0" .
+ns1:LoggingTestShape a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestName  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasTestDescription  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasLogLevel  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path ns1:hasLogPattern ;
+    sh:targetClass ns1:LoggingTest .
 
-ns1:JenaFusekiTest rdf:type owl:Class ;
-    rdfs:label "Jena Fuseki Test" ;
-    rdfs:comment "Test configuration for Jena Fuseki" ;
-    rdfs:subClassOf ns1:ServiceTest ;
-    owl:versionInfo "1.0.0" .
+ns1:fusekiDatasetCheck a ns1:JenaFusekiTest ;
+    rdfs:label "Fuseki Dataset Check" ;
+    ns1:hasExpectedResponse "200" ;
+    ns1:hasTestDescription "Check if guidance dataset exists" ;
+    ns1:hasTestEndpoint "http://localhost:3030/guidance" ;
+    ns1:hasTestName "dataset_check" ;
+    rdfs:comment "Test to check if dataset exists" .
 
-ns1:LoggingTest rdf:type owl:Class ;
-    rdfs:label "Logging Test" ;
-    rdfs:comment "Test configuration for logging" ;
-    rdfs:subClassOf ns1:DeploymentTest ;
-    owl:versionInfo "1.0.0" .
+ns1:fusekiErrorLogCheck a ns1:LoggingTest ;
+    rdfs:label "Fuseki Error Log Check" ;
+    ns1:hasLogLevel "ERROR" ;
+    ns1:hasLogPattern "" ;
+    ns1:hasTestDescription "Check if Fuseki error logs are empty" ;
+    ns1:hasTestName "error_log_check" ;
+    rdfs:comment "Test to check Fuseki error logs" .
 
-# Test Properties
-ns1:hasTestName rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test Name" ;
-    rdfs:comment "Name of the test" ;
-    rdfs:domain ns1:DeploymentTest ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+ns1:fusekiHealthCheck a ns1:JenaFusekiTest ;
+    rdfs:label "Fuseki Health Check" ;
+    ns1:hasExpectedResponse "pong" ;
+    ns1:hasTestDescription "Check if Fuseki service is running" ;
+    ns1:hasTestEndpoint "http://localhost:3030/$/ping" ;
+    ns1:hasTestName "health_check" ;
+    rdfs:comment "Test to check if Fuseki is running" .
 
-ns1:hasTestDescription rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test Description" ;
-    rdfs:comment "Description of the test" ;
-    rdfs:domain ns1:DeploymentTest ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+ns1:fusekiLogCheck a ns1:LoggingTest ;
+    rdfs:label "Fuseki Log Check" ;
+    ns1:hasLogLevel "INFO" ;
+    ns1:hasLogPattern "Server started" ;
+    ns1:hasTestDescription "Check if Fuseki logs contain expected patterns" ;
+    ns1:hasTestName "log_check" ;
+    rdfs:comment "Test to check Fuseki logs" .
 
-ns1:hasTestEndpoint rdf:type owl:DatatypeProperty ;
-    rdfs:label "Test Endpoint" ;
-    rdfs:comment "Endpoint to test" ;
-    rdfs:domain ns1:ServiceTest ;
-    rdfs:range xsd:anyURI ;
-    owl:versionInfo "1.0.0" .
+:exampleDeploymentTest1 a ns1:DeploymentTest  ;
+    rdfs:label "Example DeploymentTest 1" ;
+    ns1:hasTestDescription "Example value 1" ;
+    ns1:hasTestName "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class DeploymentTest" .
 
-ns1:hasExpectedResponse rdf:type owl:DatatypeProperty ;
+:exampleDeploymentTest2 a ns1:DeploymentTest  ;
+    rdfs:label "Example DeploymentTest 2" ;
+    ns1:hasTestDescription "Example value 2" ;
+    ns1:hasTestName "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class DeploymentTest" .
+
+:exampleJenaFusekiTest1 a ns1:JenaFusekiTest  ;
+    rdfs:label "Example JenaFusekiTest 1" ;
+    rdfs:comment "This is example instance 1 of class JenaFusekiTest" .
+
+:exampleJenaFusekiTest2 a ns1:JenaFusekiTest  ;
+    rdfs:label "Example JenaFusekiTest 2" ;
+    rdfs:comment "This is example instance 2 of class JenaFusekiTest" .
+
+:exampleLoggingTest1 a ns1:LoggingTest  ;
+    rdfs:label "Example LoggingTest 1" ;
+    ns1:hasLogLevel "Example value 1" ;
+    ns1:hasLogPattern "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class LoggingTest" .
+
+:exampleLoggingTest2 a ns1:LoggingTest  ;
+    rdfs:label "Example LoggingTest 2" ;
+    ns1:hasLogLevel "Example value 2" ;
+    ns1:hasLogPattern "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class LoggingTest" .
+
+:exampleServiceTest1 a ns1:ServiceTest  ;
+    rdfs:label "Example ServiceTest 1" ;
+    ns1:hasExpectedResponse "Example value 1" ;
+    ns1:hasTestEndpoint :exampleanyURI1 ;
+    rdfs:comment "This is example instance 1 of class ServiceTest" .
+
+:exampleServiceTest2 a ns1:ServiceTest  ;
+    rdfs:label "Example ServiceTest 2" ;
+    ns1:hasExpectedResponse "Example value 2" ;
+    ns1:hasTestEndpoint :exampleanyURI2 ;
+    rdfs:comment "This is example instance 2 of class ServiceTest" .
+
+ns1:hasExpectedResponse a owl:DatatypeProperty ;
     rdfs:label "Expected Response" ;
     rdfs:comment "Expected response from the test" ;
     rdfs:domain ns1:ServiceTest ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-ns1:hasLogLevel rdf:type owl:DatatypeProperty ;
+ns1:hasLogLevel a owl:DatatypeProperty ;
     rdfs:label "Log Level" ;
     rdfs:comment "Logging level for the test" ;
     rdfs:domain ns1:LoggingTest ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-ns1:hasLogPattern rdf:type owl:DatatypeProperty ;
+ns1:hasLogPattern a owl:DatatypeProperty ;
     rdfs:label "Log Pattern" ;
     rdfs:comment "Pattern to match in logs" ;
     rdfs:domain ns1:LoggingTest ;
     rdfs:range xsd:string ;
     owl:versionInfo "1.0.0" .
 
-# Test Instances
-ns1:fusekiHealthCheck rdf:type ns1:JenaFusekiTest ;
-    rdfs:label "Fuseki Health Check" ;
-    rdfs:comment "Test to check if Fuseki is running" ;
-    ns1:hasTestName "health_check" ;
-    ns1:hasTestDescription "Check if Fuseki service is running" ;
-    ns1:hasTestEndpoint "http://localhost:3030/$/ping" ;
-    ns1:hasExpectedResponse "pong" .
+ns1:hasTestEndpoint a owl:DatatypeProperty ;
+    rdfs:label "Test Endpoint" ;
+    rdfs:comment "Endpoint to test" ;
+    rdfs:domain ns1:ServiceTest ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
 
-ns1:fusekiDatasetCheck rdf:type ns1:JenaFusekiTest ;
-    rdfs:label "Fuseki Dataset Check" ;
-    rdfs:comment "Test to check if dataset exists" ;
-    ns1:hasTestName "dataset_check" ;
-    ns1:hasTestDescription "Check if guidance dataset exists" ;
-    ns1:hasTestEndpoint "http://localhost:3030/guidance" ;
-    ns1:hasExpectedResponse "200" .
+ns1:hasTestDescription a owl:DatatypeProperty ;
+    rdfs:label "Test Description" ;
+    rdfs:comment "Description of the test" ;
+    rdfs:domain ns1:DeploymentTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
-ns1:fusekiLogCheck rdf:type ns1:LoggingTest ;
-    rdfs:label "Fuseki Log Check" ;
-    rdfs:comment "Test to check Fuseki logs" ;
-    ns1:hasTestName "log_check" ;
-    ns1:hasTestDescription "Check if Fuseki logs contain expected patterns" ;
-    ns1:hasLogLevel "INFO" ;
-    ns1:hasLogPattern "Server started" .
+ns1:hasTestName a owl:DatatypeProperty ;
+    rdfs:label "Test Name" ;
+    rdfs:comment "Name of the test" ;
+    rdfs:domain ns1:DeploymentTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
 
-ns1:fusekiErrorLogCheck rdf:type ns1:LoggingTest ;
-    rdfs:label "Fuseki Error Log Check" ;
-    rdfs:comment "Test to check Fuseki error logs" ;
-    ns1:hasTestName "error_log_check" ;
-    ns1:hasTestDescription "Check if Fuseki error logs are empty" ;
-    ns1:hasLogLevel "ERROR" ;
-    ns1:hasLogPattern "" .
+ns1:JenaFusekiTest a owl:Class ;
+    rdfs:label "Jena Fuseki Test" ;
+    rdfs:comment "Test configuration for Jena Fuseki" ;
+    rdfs:subClassOf ns1:ServiceTest ;
+    owl:versionInfo "1.0.0" .
 
-# SHACL Validation
-ns1:JenaFusekiTestShape rdf:type sh:NodeShape ;
-    sh:targetClass ns1:JenaFusekiTest ;
-    sh:property [
-        sh:path ns1:hasTestName ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasTestDescription ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasTestEndpoint ;
-        sh:datatype xsd:anyURI ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasExpectedResponse ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] .
+ns1:ServiceTest a owl:Class ;
+    rdfs:label "Service Test" ;
+    rdfs:comment "Test configuration for a service" ;
+    rdfs:subClassOf ns1:DeploymentTest ;
+    owl:versionInfo "1.0.0" .
 
-ns1:LoggingTestShape rdf:type sh:NodeShape ;
-    sh:targetClass ns1:LoggingTest ;
-    sh:property [
-        sh:path ns1:hasTestName ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasTestDescription ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasLogLevel ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] ;
-    sh:property [
-        sh:path ns1:hasLogPattern ;
-        sh:datatype xsd:string ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-    ] . 
+ns1:DeploymentTest a owl:Class ;
+    rdfs:label "Deployment Test" ;
+    rdfs:comment "Test configuration for deployment" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:LoggingTest a owl:Class ;
+    rdfs:label "Logging Test" ;
+    rdfs:comment "Test configuration for logging" ;
+    rdfs:subClassOf ns1:DeploymentTest ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape3sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ;
+    sh:targetClass owl:Class .
+
+[] a sh:NodeShape ;
+    sh:property :shape4sh:minCount 1 ;
+            sh:path rdfs:domain  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:range ;
+    sh:targetClass rdf:Property .
+

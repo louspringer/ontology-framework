@@ -6,13 +6,13 @@ from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, SH
 from rdflib.plugins.sparql import prepareQuery
 from datetime import datetime
-from src.ontology_framework.error_handling import (
+from ontology_framework.error_handling import (
     ErrorHandler,
     ErrorType,
     ValidationRule,
     ErrorResult
 )
-from src.ontology_framework.meta import META
+from ontology_framework.meta import META
 
 # Configure logging
 logging.basicConfig(

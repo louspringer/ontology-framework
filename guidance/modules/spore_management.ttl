@@ -1,136 +1,173 @@
-@prefix : <./spore_management#> .
+@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/spore_management#> .
+
+@prefix : <./#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix meta: <http://example.org/guidance#> .
+@prefix model: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/model#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix core: <../core#> .
-@prefix guidance: <../../guidance#> .
-@prefix meta: <http://example.org/guidance#> .
-@prefix model: <../model#> .
 
-# Spore Management Module Definition
-:SporeManagementModule rdf:type owl:Ontology ;
+:exampleSporeIntegration1 a :SporeIntegration  ;
+    rdfs:label "Example SporeIntegration 1" ;
+    rdfs:comment "This is example instance 1 of class SporeIntegration" ;
+    :integratesSpore :exampleOntology1 .
+
+:exampleSporeIntegration2 a :SporeIntegration  ;
+    rdfs:label "Example SporeIntegration 2" ;
+    rdfs:comment "This is example instance 2 of class SporeIntegration" ;
+    :integratesSpore :exampleOntology2 .
+
+:exampleSporeManager1 a :SporeManager  ;
+    rdfs:label "Example SporeManager 1" ;
+    rdfs:comment "This is example instance 1 of class SporeManager" .
+
+:exampleSporeManager2 a :SporeManager  ;
+    rdfs:label "Example SporeManager 2" ;
+    rdfs:comment "This is example instance 2 of class SporeManager" .
+
+:exampleSporeValidator1 a :SporeValidator  ;
+    rdfs:label "Example SporeValidator 1" ;
+    rdfs:comment "This is example instance 1 of class SporeValidator" ;
+    :validatesSpore :exampleTransformationPattern1 .
+
+:exampleSporeValidator2 a :SporeValidator  ;
+    rdfs:label "Example SporeValidator 2" ;
+    rdfs:comment "This is example instance 2 of class SporeValidator" ;
+    :validatesSpore :exampleTransformationPattern2 .
+
+:SporeIntegrationShape a sh:NodeShape  ;
+    sh:property :shape1sh:minCount 1 ;
+            sh:path :integratesSpore .
+        :shape1 sh:datatype xsd:integer  ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 5 ;
+            sh:minCount 1 ;
+            sh:minInclusive 1 ;
+            sh:path core:complexity ;
+    sh:targetClass :SporeIntegration .
+
+:SporeManagementModule a owl:Ontology  ;
     rdfs:label "Spore Management Module" ;
-    rdfs:comment "Guidance for managing Semantic Spores in the ontology framework" ;
     dc:title "Spore Management Module" ;
     dc:version "1.0.0" ;
-    owl:versionInfo "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    owl:imports <core.ttl> ;
-    owl:imports <model.ttl> ;
-    owl:imports <validation.ttl> .
-
-# Spore Management Classes
-:SporeManager rdf:type owl:Class ;
-    rdfs:label "Spore Manager" ;
-    rdfs:comment "Manages Semantic Spores according to governance rules" ;
-    rdfs:subClassOf model:ModelFirstPrinciple ;
+    rdfs:comment "Guidance for managing Semantic Spores in the ontology framework" ;
+    owl:imports <./core.ttl>,
+        <./model.ttl>,
+        <./validation.ttl> ;
     owl:versionInfo "1.0.0" .
 
-:SporeValidator rdf:type owl:Class ;
-    rdfs:label "Spore Validator" ;
-    rdfs:comment "Validates spores against governance rules" ;
-    rdfs:subClassOf :SporeManager ;
-    owl:versionInfo "1.0.0" .
+<./spore_management#SporeManagementModule#ModuleShape> a sh:NodeShape ;
+    sh:property :shape2sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path <./spore_management#SporeManagementModule#version>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./spore_management#SporeManagementModule#label>  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path <./spore_management#SporeManagementModule#description> ;
+    sh:targetClass <./spore_management#SporeManagementModule#Module> .
 
-:SporeIntegration rdf:type owl:Class ;
-    rdfs:label "Spore Integration" ;
-    rdfs:comment "Handles integration of spores into target models" ;
-    rdfs:subClassOf :SporeManager ;
-    owl:versionInfo "1.0.0" .
+:SporeValidatorShape a sh:NodeShape  ;
+    sh:property :shape3sh:minCount 1 ;
+            sh:path :validatesSpore .
+        :shape1 sh:datatype xsd:integer  ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 5 ;
+            sh:minCount 1 ;
+            sh:minInclusive 1 ;
+            sh:path core:complexity ;
+    sh:targetClass :SporeValidator .
 
-# Spore Management Properties
-:validatesSpore rdf:type owl:ObjectProperty ;
-    rdfs:label "Validates Spore" ;
-    rdfs:comment "Links validator to spore validation process" ;
-    rdfs:domain :SporeValidator ;
-    rdfs:range meta:TransformationPattern .
-
-:integratesSpore rdf:type owl:ObjectProperty ;
-    rdfs:label "Integrates Spore" ;
-    rdfs:comment "Links integration process to target model" ;
-    rdfs:domain :SporeIntegration ;
-    rdfs:range owl:Ontology .
-
-:distributesPatch rdf:type owl:ObjectProperty ;
-    rdfs:label "Distributes Patch" ;
-    rdfs:comment "Links spore to its patches" ;
-    rdfs:domain meta:TransformationPattern ;
-    rdfs:range meta:ConceptPatch .
-
-:confirmedViolation rdf:type owl:ObjectProperty ;
+:confirmedViolation a owl:ObjectProperty  ;
     rdfs:label "Confirmed Violation" ;
     rdfs:comment "Links spore to conformance violations" ;
     rdfs:domain meta:TransformationPattern ;
     rdfs:range xsd:string .
 
-# Spore Management Instances
-:sporeValidationGuidance rdf:type owl:NamedIndividual ;
-    rdf:type :SporeValidator ;
-    rdfs:label "Spore Validation Guidance" ;
-    core:sourceContext "Spore Governance" ;
-    core:targetContext "Model Quality" ;
-    core:complexity "2"^^xsd:integer ;
-    rdfs:comment """Spore validation requirements:
-    1. Register patterns via meta:TransformationPattern
-    2. Support SHACL validation rules
-    3. Enable patch distribution via meta:distributesPatch
-    4. Track conformance violations via meta:confirmedViolation""" .
+:distributesPatch a owl:ObjectProperty  ;
+    rdfs:label "Distributes Patch" ;
+    rdfs:comment "Links spore to its patches" ;
+    rdfs:domain meta:TransformationPattern ;
+    rdfs:range meta:ConceptPatch .
 
-:sporeIntegrationGuidance rdf:type owl:NamedIndividual ;
-    rdf:type :SporeIntegration ;
+:sporeIntegrationGuidance a owl:NamedIndividual,
+        :SporeIntegration  ;
     rdfs:label "Spore Integration Guidance" ;
-    core:sourceContext "Model Integration" ;
-    core:targetContext "System Evolution" ;
-    core:complexity "3"^^xsd:integer ;
     rdfs:comment """Spore integration process:
     1. Validate spore against governance rules
     2. Check target model compatibility
     3. Apply patches and track changes
-    4. Validate integration results""" .
+    4. Validate integration results""" ;
+    core:complexity 3 ;
+    core:sourceContext "Model Integration" ;
+    core:targetContext "System Evolution" .
 
-# SHACL Validation Rules
-:SporeValidatorShape rdf:type sh:NodeShape ;
-    sh:targetClass :SporeValidator ;
-    sh:property [
-        sh:path :validatesSpore ;
-        sh:minCount 1 ;
-    ] ;
-    sh:property [
-        sh:path core:complexity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
-        sh:minInclusive 1 ;
-        sh:maxInclusive 5 ;
-    ] .
+:sporeValidationGuidance a owl:NamedIndividual,
+        :SporeValidator  ;
+    rdfs:label "Spore Validation Guidance" ;
+    rdfs:comment """Spore validation requirements:
+    1. Register patterns via meta:TransformationPattern
+    2. Support SHACL validation rules
+    3. Enable patch distribution via meta:distributesPatch
+    4. Track conformance violations via meta:confirmedViolation""" ;
+    core:complexity 2 ;
+    core:sourceContext "Spore Governance" ;
+    core:targetContext "Model Quality" .
 
-:SporeIntegrationShape rdf:type sh:NodeShape ;
-    sh:targetClass :SporeIntegration ;
-    sh:property [
-        sh:path :integratesSpore ;
-        sh:minCount 1 ;
-    ] ;
-    sh:property [
-        sh:path core:complexity ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:integer ;
-        sh:minInclusive 1 ;
-        sh:maxInclusive 5 ;
-    ] .
+:integratesSpore a owl:ObjectProperty  ;
+    rdfs:label "Integrates Spore" ;
+    rdfs:comment "Links integration process to target model" ;
+    rdfs:domain :SporeIntegration ;
+    rdfs:range owl:Ontology .
 
-# TODO Section
-# - Add specific spore validation patterns
-# - Document integration workflows
-# - Add patch management guidance
-# - Include conformance tracking examples
-# - Add versioning requirements
-# - Document provider-specific setup
-# - Include usage examples
-# - Add performance impact considerations
-# - Document API key management
-# - Add model-specific benchmarks 
+:validatesSpore a owl:ObjectProperty  ;
+    rdfs:label "Validates Spore" ;
+    rdfs:comment "Links validator to spore validation process" ;
+    rdfs:domain :SporeValidator ;
+    rdfs:range meta:TransformationPattern .
+
+:SporeManager a owl:Class  ;
+    rdfs:label "Spore Manager" ;
+    rdfs:comment "Manages Semantic Spores according to governance rules" ;
+    rdfs:subClassOf model:ModelFirstPrinciple ;
+    owl:versionInfo "1.0.0" .
+
+:SporeIntegration a owl:Class  ;
+    rdfs:label "Spore Integration" ;
+    rdfs:comment "Handles integration of spores into target models" ;
+    rdfs:subClassOf :SporeManager ;
+    owl:versionInfo "1.0.0" .
+
+:SporeValidator a owl:Class  ;
+    rdfs:label "Spore Validator" ;
+    rdfs:comment "Validates spores against governance rules" ;
+    rdfs:subClassOf :SporeManager ;
+    owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property :shape4sh:minCount 1 ;
+            sh:path rdfs:range  .
+        :shape1 sh:minCount 1  ;
+            sh:path rdfs:domain ;
+    sh:targetClass rdf:Property .
+
+[] a sh:NodeShape ;
+    sh:property :shape5sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path owl:versionInfo  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:label  .
+        :shape1 sh:datatype xsd:string  ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ;
+    sh:targetClass owl:Class .
+

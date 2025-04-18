@@ -1,12 +1,12 @@
-@prefix bt: <http://example.org/bow-tie-pattern#> .
-@prefix ex: <http://example.org/bow-tie-examples#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix bt: <http:/example.org/bow-tie-pattern#> .
+@prefix ex: <http:/example.org/bow-tie-examples#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http:/www.w3.org/ns/prov#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
+@prefix dct: <http:/purl.org/dc/terms/#> .
 
 # Ontology Declaration
 bt:BowTieOntology a owl:Ontology ;
@@ -137,9 +137,9 @@ ex:JPEGCompression a bt:LossyTransformation ;
     rdfs:comment "Standard lossy compression for digital images" ;
     bt:hasLossinessLevel "0.3"^^xsd:decimal ;
     owl:versionInfo "1.0.0" ;
-    owl:versionIRI <http://example.org/bow-tie-examples#JPEGCompression-1.0.0> ;
-    owl:priorVersion <http://example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
-    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
+    owl:versionIRI <http:/example.org/bow-tie-examples#JPEGCompression-1.0.0> ;
+    owl:priorVersion <http:/example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
+    owl:backwardCompatibleWith <http:/example.org/bow-tie-examples#JPEGCompression-0.9.0> ;
     owl:deprecated "false"^^xsd:boolean ;
     owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
     owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .
@@ -160,9 +160,9 @@ ex:NeuralNetworkPruning a bt:LossyTransformation ;
     rdfs:comment "Removes redundant weights from a neural network while preserving essential connections" ;
     bt:hasLossinessLevel "0.4"^^xsd:decimal ;
     owl:versionInfo "1.0.0" ;
-    owl:versionIRI <http://example.org/bow-tie-examples#NeuralNetworkPruning-1.0.0> ;
-    owl:priorVersion <http://example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
-    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
+    owl:versionIRI <http:/example.org/bow-tie-examples#NeuralNetworkPruning-1.0.0> ;
+    owl:priorVersion <http:/example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
+    owl:backwardCompatibleWith <http:/example.org/bow-tie-examples#NeuralNetworkPruning-0.9.0> ;
     owl:deprecated "false"^^xsd:boolean ;
     owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
     owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .
@@ -183,9 +183,9 @@ ex:TextSummarization a bt:LossyTransformation ;
     rdfs:comment "Extracts key information from text while discarding less important details" ;
     bt:hasLossinessLevel "0.6"^^xsd:decimal ;
     owl:versionInfo "1.0.0" ;
-    owl:versionIRI <http://example.org/bow-tie-examples#TextSummarization-1.0.0> ;
-    owl:priorVersion <http://example.org/bow-tie-examples#TextSummarization-0.9.0> ;
-    owl:backwardCompatibleWith <http://example.org/bow-tie-examples#TextSummarization-0.9.0> ;
+    owl:versionIRI <http:/example.org/bow-tie-examples#TextSummarization-1.0.0> ;
+    owl:priorVersion <http:/example.org/bow-tie-examples#TextSummarization-0.9.0> ;
+    owl:backwardCompatibleWith <http:/example.org/bow-tie-examples#TextSummarization-0.9.0> ;
     owl:deprecated "false"^^xsd:boolean ;
     owl:created "2024-03-20T10:00:00Z"^^xsd:dateTime ;
     owl:modified "2024-03-20T10:00:00Z"^^xsd:dateTime .

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Get list of staged files
+STAGED_FILES=$(git diff --cached --name-only)
+
+# Check if any files are staged
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+# Check only staged files for LFS tracking
+for file in $STAGED_FILES; do
+    if git check-attr filter "$file" | grep -q "lfs"; then
+        # Verify LFS pointer for this file only
+        if ! git lfs pointer --check "$file"; then
+            echo "Error: LFS pointer verification failed for $file"
+            exit 1
+        fi
+    fi
+done
+
+exit 0 

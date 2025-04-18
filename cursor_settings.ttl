@@ -5,13 +5,13 @@
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
+@prefix dct: <http:/purl.org/dc/terms/#> .
 
 # Ontology Definition
 :ClineExtensionOntology rdf:type owl:Ontology ;
@@ -23,11 +23,11 @@
     dct:created "2024-03-20"^^xsd:date ;
     dct:modified "2024-03-20"^^xsd:date ;
     dct:publisher "Ontology Framework Project" ;
-    dct:license <http://opensource.org/licenses/MIT> ;
+    dct:license <http:/opensource.org/licenses/MIT> ;
     dct:description "Ontology for managing Cline VS Code extension settings and language model configurations" ;
-    dct:isPartOf <http://louspringer.com/ontology-framework> ;
+    dct:isPartOf <http:/louspringer.com/ontology-framework> ;
     dct:type dct:Dataset ;
-    dct:conformsTo <http://www.w3.org/2002/07/owl> ;
+    dct:conformsTo <http:/www.w3.org/2002/07/owl> ;
     dct:requires <./metameta> ;
     dct:audience "VS Code users, AI developers, and ontology engineers" ;
     owl:imports <./metameta>, <./guidance> .
