@@ -26,6 +26,17 @@ class BaseOntology:
         self.graph.bind("owl", OWL)
         self.graph.bind("", self.base)
         
+    def _create_uri(self, name: str) -> URIRef:
+        """Create a URI reference for a name.
+        
+        Args:
+            name: Name to create URI for.
+            
+        Returns:
+            URIRef for the name.
+        """
+        return self.base[name]
+        
     def load(self, file_path: Union[str, Path]) -> None:
         """Load an ontology from a file.
         

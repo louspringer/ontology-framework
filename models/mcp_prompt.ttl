@@ -65,6 +65,24 @@ mcp:hasPriority a owl:DatatypeProperty ;
     rdfs:label "has priority" ;
     rdfs:comment "Indicates the priority of the prompt" .
 
+mcp:hasError a owl:DatatypeProperty ;
+    rdfs:domain mcp:PromptPhase ;
+    rdfs:range xsd:string ;
+    rdfs:label "has error" ;
+    rdfs:comment "Error message if phase execution failed" .
+
+mcp:hasErrorContext a owl:ObjectProperty ;
+    rdfs:domain mcp:PromptPhase ;
+    rdfs:range mcp:PromptContext ;
+    rdfs:label "has error context" ;
+    rdfs:comment "Contextual information about phase execution error" .
+
+mcp:hasServerConfig a owl:ObjectProperty ;
+    rdfs:domain mcp:PromptContext ;
+    rdfs:range owl:Thing ;
+    rdfs:label "has server configuration" ;
+    rdfs:comment "Server configuration for the prompt" .
+
 # SHACL Validation
 mcp:PromptShape a sh:NodeShape ;
     sh:targetClass mcp:Prompt ;
@@ -77,6 +95,22 @@ mcp:PromptShape a sh:NodeShape ;
         sh:path mcp:hasContext ;
         sh:minCount 1 ;
         sh:message "Prompt must have execution context"
+    ] .
+
+mcp:PhaseOrderShape a sh:NodeShape ;
+    sh:targetClass mcp:Prompt ;
+    sh:property [
+        sh:path mcp:hasPhase ;
+        sh:in (mcp:DiscoveryPhase mcp:PlanPhase mcp:DoPhase mcp:CheckPhase mcp:ActPhase) ;
+        sh:message "Phases must follow PDCA order with Discovery"
+    ] .
+
+mcp:ContextShape a sh:NodeShape ;
+    sh:targetClass mcp:PromptContext ;
+    sh:property [
+        sh:path mcp:hasServerConfig ;
+        sh:minCount 1 ;
+        sh:message "Context must have server configuration"
     ] .
 
 # Example Instance

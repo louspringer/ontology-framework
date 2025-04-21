@@ -1118,3 +1118,29 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Session Summary - 2025-04-21T12:30:54.327705
+
+- Total tests: 0
+- Passed: 0
+- Failed: 0
+- Exit status: 4
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-21T12:34:39.584176
+
+- Total tests: 15
+- Passed: 8
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
