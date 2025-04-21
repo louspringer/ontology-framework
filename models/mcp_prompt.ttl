@@ -1,0 +1,91 @@
+@prefix mcp: <./mcp#> .
+@prefix pdca: <./pdca#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Core Classes
+mcp:Prompt a owl:Class ;
+    rdfs:label "Model Context Prompt" ;
+    rdfs:comment "A prompt that follows the Model Context Protocol" .
+
+mcp:PromptPhase a owl:Class ;
+    rdfs:label "Prompt Phase" ;
+    rdfs:comment "A phase in the prompt execution process" .
+
+mcp:PromptContext a owl:Class ;
+    rdfs:label "Prompt Context" ;
+    rdfs:comment "Contextual information for prompt execution" .
+
+# PDCA Integration
+mcp:PlanPhase a owl:Class ;
+    rdfs:subClassOf mcp:PromptPhase, pdca:PlanPhase ;
+    rdfs:label "Plan Phase" ;
+    rdfs:comment "Planning phase of the prompt execution" .
+
+mcp:DoPhase a owl:Class ;
+    rdfs:subClassOf mcp:PromptPhase, pdca:DoPhase ;
+    rdfs:label "Do Phase" ;
+    rdfs:comment "Execution phase of the prompt" .
+
+mcp:CheckPhase a owl:Class ;
+    rdfs:subClassOf mcp:PromptPhase, pdca:CheckPhase ;
+    rdfs:label "Check Phase" ;
+    rdfs:comment "Validation phase of the prompt" .
+
+mcp:ActPhase a owl:Class ;
+    rdfs:subClassOf mcp:PromptPhase, pdca:ActPhase ;
+    rdfs:label "Act Phase" ;
+    rdfs:comment "Adjustment phase of the prompt" .
+
+# Properties
+mcp:hasPhase a owl:ObjectProperty ;
+    rdfs:domain mcp:Prompt ;
+    rdfs:range mcp:PromptPhase ;
+    rdfs:label "has phase" ;
+    rdfs:comment "Links a prompt to its execution phase" .
+
+mcp:hasContext a owl:ObjectProperty ;
+    rdfs:domain mcp:Prompt ;
+    rdfs:range mcp:PromptContext ;
+    rdfs:label "has context" ;
+    rdfs:comment "Links a prompt to its execution context" .
+
+mcp:requiresValidation a owl:ObjectProperty ;
+    rdfs:domain mcp:Prompt ;
+    rdfs:range sh:NodeShape ;
+    rdfs:label "requires validation" ;
+    rdfs:comment "Specifies validation rules for the prompt" .
+
+mcp:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain mcp:Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:label "has priority" ;
+    rdfs:comment "Indicates the priority of the prompt" .
+
+# SHACL Validation
+mcp:PromptShape a sh:NodeShape ;
+    sh:targetClass mcp:Prompt ;
+    sh:property [
+        sh:path mcp:hasPhase ;
+        sh:minCount 1 ;
+        sh:message "Prompt must have at least one phase"
+    ] ;
+    sh:property [
+        sh:path mcp:hasContext ;
+        sh:minCount 1 ;
+        sh:message "Prompt must have execution context"
+    ] .
+
+# Example Instance
+mcp:RefactoringPrompt a mcp:Prompt ;
+    rdfs:label "Ontology Refactoring Prompt" ;
+    rdfs:comment "Prompt for refactoring TTL/Python clusters" ;
+    mcp:hasPhase mcp:PlanPhase ;
+    mcp:hasPhase mcp:DoPhase ;
+    mcp:hasPhase mcp:CheckPhase ;
+    mcp:hasPhase mcp:ActPhase ;
+    mcp:hasPriority "HIGH" ;
+    mcp:requiresValidation mcp:PromptShape . 

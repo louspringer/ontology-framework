@@ -1,0 +1,240 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:GuidanceOntology a owl:Ontology ;
+    rdfs:label "Guidance Ontology"@en ;
+    rdfs:comment "Core guidance ontology for the ontology framework"@en ;
+    owl:versionInfo "0.1.0" .
+
+:IntegrationProcessShape a sh:NodeShape ;
+    rdfs:label "Integration Process Shape"@en ;
+    rdfs:comment "SHACL shape for validating integration processes"@en ;
+    sh:property [ sh:message "Integration process must have at least one instance"@en ;
+            sh:minCount 1 ;
+            sh:path [ sh:inversePath rdf:type ] ] ;
+    sh:targetClass :IntegrationProcess .
+
+:IntegrationStep1 a :IntegrationStep ;
+    rdfs:label "Step 1"@en ;
+    rdfs:comment "First integration step"@en ;
+    :stepDescription "First integration step" ;
+    :stepOrder "1" .
+
+:IntegrationStepShape a sh:NodeShape ;
+    rdfs:label "Integration Step Shape"@en ;
+    rdfs:comment "SHACL shape for validating integration steps"@en ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Integration step must have a valid step order"@en ;
+            sh:minCount 1 ;
+            sh:path :stepOrder ;
+            sh:pattern "^[0-9]+$" ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Integration step must have a description"@en ;
+            sh:minCount 1 ;
+            sh:path :stepDescription ] ;
+    sh:targetClass :IntegrationStep .
+
+:ModelConformanceShape a sh:NodeShape ;
+    rdfs:label "Model Conformance Shape"@en ;
+    rdfs:comment "SHACL shape for validating model conformance"@en ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:in ( "STRICT" "MODERATE" "RELAXED" ) ;
+            sh:maxCount 1 ;
+            sh:message "Model conformance must have a valid conformance level"@en ;
+            sh:minCount 1 ;
+            sh:path :conformanceLevel ] ;
+    sh:targetClass :ModelConformance .
+
+:Phase1 a :TestPhase ;
+    rdfs:label "Phase 1"@en ;
+    rdfs:comment "The first phase of testing"@en .
+
+:SHACLIntegrationRequirement a :IntegrationRequirement ;
+    rdfs:label "SHACL Integration Requirements"@en ;
+    rdfs:comment "Requirements for SHACL validation integration"@en ;
+    :hasValidationPattern :PropertyValidationPattern,
+        :ShapeValidationPattern ;
+    :requiresValidation :SHACLValidation .
+
+:SampleTestProtocol a :TestProtocol ;
+    rdfs:label "Sample Test Protocol"@en ;
+    rdfs:comment "A sample test protocol for unit testing"@en ;
+    :conformanceLevel "STRICT" ;
+    :requiresNamespaceValidation true ;
+    :requiresPrefixValidation true .
+
+:StandardCoverage a :TestCoverage ;
+    rdfs:label "Standard Coverage"@en ;
+    rdfs:comment "Standard test coverage requirements"@en .
+
+:StrictConformance a :ModelConformance ;
+    rdfs:label "Strict Conformance"@en ;
+    rdfs:comment "Strict model conformance rules"@en ;
+    :conformanceLevel "STRICT" .
+
+:TestImprovements a :TODO ;
+    rdfs:label "Test Suite Enhancements" ;
+    rdfs:comment "Improvements to the test suite for better maintainability and coverage" ;
+    :hasSubTask :ErrorHandling,
+        :PerformanceTesting,
+        :TestOrganization ;
+    :priority "MEDIUM" ;
+    :targetDate "2024-Q3" .
+
+:TestProtocolShape a sh:NodeShape ;
+    rdfs:label "Test Protocol Shape"@en ;
+    rdfs:comment "SHACL shape for validating test protocols"@en ;
+    sh:property [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether prefix validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresPrefixValidation ],
+        [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether namespace validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresNamespaceValidation ],
+        [ sh:class :TestPhase ;
+            sh:maxCount 5 ;
+            sh:message "Test protocol must have between 1 and 5 test phases"@en ;
+            sh:minCount 1 ;
+            sh:path :hasTestPhase ] ;
+    sh:targetClass :TestProtocol .
+
+:hasValidationPattern a owl:ObjectProperty ;
+    rdfs:label "Has Validation Pattern"@en ;
+    rdfs:comment "Links a validation requirement to its patterns"@en ;
+    rdfs:domain :IntegrationRequirement ;
+    rdfs:range :ValidationPattern .
+
+:patternDescription a owl:DatatypeProperty ;
+    rdfs:label "Pattern Description"@en ;
+    rdfs:comment "Description of the validation pattern"@en ;
+    rdfs:domain :ValidationPattern ;
+    rdfs:range xsd:string .
+
+:patternPriority a owl:DatatypeProperty ;
+    rdfs:label "Pattern Priority"@en ;
+    rdfs:comment "Priority level of the validation pattern"@en ;
+    rdfs:domain :ValidationPattern ;
+    rdfs:range xsd:string .
+
+:requiresValidation a owl:ObjectProperty ;
+    rdfs:label "Requires Validation"@en ;
+    rdfs:comment "Specifies required validation components"@en ;
+    rdfs:domain :IntegrationRequirement ;
+    rdfs:range :SHACLValidation .
+
+:ErrorHandling a :TODO ;
+    rdfs:label "Error Handling Tests" ;
+    rdfs:comment "Add tests for error recovery and partial validation scenarios" ;
+    :priority "MEDIUM" ;
+    :targetDate "2024-Q3" .
+
+:IntegrationProcess a owl:Class ;
+    rdfs:label "Integration Process"@en ;
+    rdfs:comment "Process for integrating model changes"@en .
+
+:PerformanceTesting a :TODO ;
+    rdfs:label "Performance Testing" ;
+    rdfs:comment "Add tests for large datasets and validation scalability" ;
+    :priority "LOW" ;
+    :targetDate "2024-Q4" .
+
+:PropertyValidationPattern a :ValidationPattern ;
+    rdfs:label "Property Validation Pattern"@en ;
+    rdfs:comment "Pattern for validating property constraints"@en ;
+    :patternDescription "Must validate property paths and constraints" ;
+    :patternPriority "HIGH" .
+
+:ShapeValidationPattern a :ValidationPattern ;
+    rdfs:label "Shape Validation Pattern"@en ;
+    rdfs:comment "Pattern for validating SHACL shapes"@en ;
+    :patternDescription "Must validate node shapes and property constraints" ;
+    :patternPriority "HIGH" .
+
+:TestCoverage a owl:Class ;
+    rdfs:label "Test Coverage"@en ;
+    rdfs:comment "Coverage metrics for testing"@en .
+
+:TestOrganization a :TODO ;
+    rdfs:label "Test Organization" ;
+    rdfs:comment "Group test cases into separate test classes and add common test fixtures" ;
+    :priority "LOW" ;
+    :targetDate "2024-Q3" .
+
+:conformanceLevel a owl:DatatypeProperty ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "The level of conformance required"@en ;
+    rdfs:domain :ModelConformance ;
+    rdfs:range xsd:string .
+
+:hasTestPhase a owl:ObjectProperty ;
+    rdfs:label "Has Test Phase"@en ;
+    rdfs:comment "Links a test protocol to its phases"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range :TestPhase .
+
+:requiresNamespaceValidation a owl:DatatypeProperty ;
+    rdfs:label "Requires Namespace Validation"@en ;
+    rdfs:comment "Whether namespace validation is required"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
+
+:requiresPrefixValidation a owl:DatatypeProperty ;
+    rdfs:label "Requires Prefix Validation"@en ;
+    rdfs:comment "Whether prefix validation is required"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
+
+:stepDescription a owl:DatatypeProperty ;
+    rdfs:label "Step Description"@en ;
+    rdfs:comment "Description of the integration step"@en ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:string .
+
+:stepOrder a owl:DatatypeProperty ;
+    rdfs:label "Step Order"@en ;
+    rdfs:comment "The order of the integration step"@en ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:string .
+
+:IntegrationRequirement a owl:Class ;
+    rdfs:label "Integration Requirement"@en ;
+    rdfs:comment "Requirements for integrating validation components"@en .
+
+:ModelConformance a owl:Class ;
+    rdfs:label "Model Conformance"@en ;
+    rdfs:comment "Rules for ensuring model consistency"@en .
+
+:SHACLValidation a owl:Class ;
+    rdfs:label "SHACL Validation"@en ;
+    rdfs:comment "Rules and patterns for SHACL validation"@en .
+
+:TestPhase a owl:Class ;
+    rdfs:label "Test Phase"@en ;
+    rdfs:comment "A phase in the testing process"@en .
+
+:IntegrationStep a owl:Class ;
+    rdfs:label "Integration Step"@en ;
+    rdfs:comment "A step in the integration process"@en .
+
+:TODO a owl:Class ;
+    rdfs:label "Future Improvements" ;
+    rdfs:comment "Items for future development and enhancement" .
+
+:TestProtocol a owl:Class ;
+    rdfs:label "Test Protocol"@en ;
+    rdfs:comment "A protocol for testing ontology components"@en .
+
+:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "Pattern for implementing validation rules"@en ;
+    rdfs:subClassOf :SHACLValidation .
+

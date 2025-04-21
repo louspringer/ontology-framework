@@ -4,7 +4,7 @@
 import pytest
 import logging
 from pathlib import Path
-from src.ontology_framework.validation import OntologyValidator, ValidationError
+from ontology_framework.validation import OntologyValidator, ValidationError
 
 @pytest.fixture
 def validator():

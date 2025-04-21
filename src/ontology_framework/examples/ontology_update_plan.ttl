@@ -1,0 +1,51 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix checkin: <http://example.org/checkin#> .
+@prefix update: <http://example.org/update#> .
+
+update:OntologyUpdatePlan a checkin:CheckinPlan ;
+    rdfs:label "Ontology Update Plan"@en ;
+    rdfs:comment "A plan for updating ontologies"@en ;
+    owl:versionInfo "1.0.0" ;
+    checkin:hasStep update:BackupStep,
+                   update:UpdateStep,
+                   update:ValidateStep,
+                   update:DocumentStep,
+                   update:ReviewStep .
+
+update:BackupStep a checkin:IntegrationStep ;
+    rdfs:label "Backup Step"@en ;
+    rdfs:comment "Backup current ontology version"@en ;
+    checkin:stepOrder "1" ;
+    checkin:stepDescription "Create backup of current ontology"@en ;
+    checkin:conformanceLevel "STRICT" .
+
+update:UpdateStep a checkin:IntegrationStep ;
+    rdfs:label "Update Step"@en ;
+    rdfs:comment "Apply ontology updates"@en ;
+    checkin:stepOrder "2" ;
+    checkin:stepDescription "Apply planned updates to ontology"@en ;
+    checkin:conformanceLevel "STRICT" .
+
+update:ValidateStep a checkin:IntegrationStep ;
+    rdfs:label "Validate Step"@en ;
+    rdfs:comment "Validate updated ontology"@en ;
+    checkin:stepOrder "3" ;
+    checkin:stepDescription "Validate the updated ontology"@en ;
+    checkin:conformanceLevel "STRICT" .
+
+update:DocumentStep a checkin:IntegrationStep ;
+    rdfs:label "Document Step"@en ;
+    rdfs:comment "Update documentation"@en ;
+    checkin:stepOrder "4" ;
+    checkin:stepDescription "Update documentation for changes"@en ;
+    checkin:conformanceLevel "MODERATE" .
+
+update:ReviewStep a checkin:IntegrationStep ;
+    rdfs:label "Review Step"@en ;
+    rdfs:comment "Review changes"@en ;
+    checkin:stepOrder "5" ;
+    checkin:stepDescription "Review all changes"@en ;
+    checkin:conformanceLevel "MODERATE" . 

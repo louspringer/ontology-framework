@@ -20,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-ns1 = Namespace("http://example.org/guidance#")
+ns1 = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#")
 
 class TestRuntimeErrorHandling(unittest.TestCase):
     """Test cases for runtime error handling model."""

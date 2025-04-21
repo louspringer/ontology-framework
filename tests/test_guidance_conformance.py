@@ -1,11 +1,12 @@
 import unittest
 import logging
 import traceback
+import shutil
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, SH
 from ontology_framework.spore_validation import SporeValidator
-from ontology_framework.spore_integration import SporeIntegrator
+from ontology_framework.spore_integration import SporeIntegrator, GUIDANCE
 from ontology_framework.exceptions import ConcurrentModificationError, ConformanceError
 
 # Configure logging
@@ -20,14 +21,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-GUIDANCE = Namespace("http://example.org/guidance#")
-META = Namespace("http://example.org/guidance#")
 TEST = Namespace("http://example.org/test#")
+SPORE = Namespace("http://example.org/spores/")
+STEP = Namespace("http://example.org/steps/")
+PROCESS = Namespace("http://example.org/processes/")
 
 class TestGuidanceConformance(unittest.TestCase):
     """Test cases for guidance conformance and conformance levels."""
     
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test environment."""
         logger.info("Setting up test environment")
         try:
@@ -35,10 +37,44 @@ class TestGuidanceConformance(unittest.TestCase):
             self.test_data_dir = Path("test_data")
             self.test_data_dir.mkdir(exist_ok=True)
             
-            self.validator = SporeValidator()
+            # Create test graph and initialize validator
+            self.test_graph = Graph()
+            self.validator = SporeValidator(ontology_graph=self.test_graph)
             self.integrator = SporeIntegrator(str(self.test_data_dir))
-            self.test_spore = URIRef("http://example.org/spores/test-spore")
-            self.target_model = URIRef("http://example.org/models/target-model")
+            
+            # Set up guidance ontology
+            self.guidance_graph = Graph()
+            self.guidance_graph.add((GUIDANCE.STRICT, RDF.type, GUIDANCE.ModelConformance))
+            self.guidance_graph.add((GUIDANCE.MODERATE, RDF.type, GUIDANCE.ModelConformance))
+            self.guidance_graph.add((GUIDANCE.RELAXED, RDF.type, GUIDANCE.ModelConformance))
+            
+            # Add required properties to conformance levels
+            for level in [GUIDANCE.STRICT, GUIDANCE.MODERATE, GUIDANCE.RELAXED]:
+                self.guidance_graph.add((level, GUIDANCE.conformanceLevel, Literal(str(level).split("#")[-1])))
+                self.guidance_graph.add((level, GUIDANCE.hasValidationRules, Literal(True)))
+                self.guidance_graph.add((level, GUIDANCE.hasMinimumRequirements, Literal(True)))
+                self.guidance_graph.add((level, GUIDANCE.hasComplianceMetrics, Literal(True)))
+            
+            # Register namespaces in both validator and guidance graphs
+            for prefix, ns in [
+                ('guidance', GUIDANCE),
+                ('test', TEST),
+                ('spore', SPORE),
+                ('step', STEP),
+                ('process', PROCESS),
+                ('rdf', RDF),
+                ('rdfs', RDFS),
+                ('owl', OWL),
+                ('sh', SH)
+            ]:
+                self.validator.graph.bind(prefix, ns)
+                self.guidance_graph.bind(prefix, ns)
+            
+            # Set the guidance graph in the integrator
+            self.integrator.guidance_graph = self.guidance_graph
+            
+            self.test_spore = SPORE['test-spore']
+            self.target_model = TEST['target-model']
             
             # Create test model with conformance rules
             self._create_test_model()
@@ -48,7 +84,7 @@ class TestGuidanceConformance(unittest.TestCase):
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def _create_test_model(self):
+    def _create_test_model(self) -> None:
         """Create a test model file with conformance rules."""
         logger.debug("Creating test model file with conformance rules")
         try:
@@ -58,7 +94,7 @@ class TestGuidanceConformance(unittest.TestCase):
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix test: <http://example.org/test#> .
-@prefix guidance: <http://example.org/guidance#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
 test:TargetModel
     a owl:Ontology ;
@@ -85,22 +121,22 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_conformance_level_validation(self):
+    def test_conformance_level_validation(self) -> None:
         """Test conformance level validation."""
         logger.info("Testing conformance level validation")
         try:
             # Test STRICT conformance
-            self.integrator.set_conformance_level("STRICT")
+            self.integrator.set_conformance_level(GUIDANCE.STRICT)
             result = self.integrator.validate_conformance(self.target_model)
             self.assertTrue(result)
             
             # Test MODERATE conformance
-            self.integrator.set_conformance_level("MODERATE")
+            self.integrator.set_conformance_level(GUIDANCE.MODERATE)
             result = self.integrator.validate_conformance(self.target_model)
             self.assertTrue(result)
             
             # Test RELAXED conformance
-            self.integrator.set_conformance_level("RELAXED")
+            self.integrator.set_conformance_level(GUIDANCE.RELAXED)
             result = self.integrator.validate_conformance(self.target_model)
             self.assertTrue(result)
             
@@ -114,13 +150,13 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_prefix_validation(self):
+    def test_prefix_validation(self) -> None:
         """Test prefix validation."""
         logger.info("Testing prefix validation")
         try:
             # Create spore with valid prefix
-            self.validator.graph.add((self.test_spore, RDF.type, META.TransformationPattern))
-            self.validator.graph.add((self.test_spore, META.targetModel, self.target_model))
+            self.validator.graph.add((self.test_spore, RDF.type, GUIDANCE.TransformationPattern))
+            self.validator.graph.add((self.test_spore, GUIDANCE.targetModel, self.target_model))
             
             # Test with prefix validation required
             self.integrator.set_conformance_level("STRICT")
@@ -129,7 +165,7 @@ test:TargetClass
             
             # Test with invalid prefix
             invalid_spore = URIRef("http://invalid.org/spores/invalid")
-            self.validator.graph.add((invalid_spore, RDF.type, META.TransformationPattern))
+            self.validator.graph.add((invalid_spore, RDF.type, GUIDANCE.TransformationPattern))
             with self.assertRaises(ConformanceError):
                 self.integrator.validate_prefixes(invalid_spore)
             
@@ -139,13 +175,13 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_namespace_validation(self):
+    def test_namespace_validation(self) -> None:
         """Test namespace validation."""
         logger.info("Testing namespace validation")
         try:
             # Create spore with valid namespace
-            self.validator.graph.add((self.test_spore, RDF.type, META.TransformationPattern))
-            self.validator.graph.add((self.test_spore, META.targetModel, self.target_model))
+            self.validator.graph.add((self.test_spore, RDF.type, GUIDANCE.TransformationPattern))
+            self.validator.graph.add((self.test_spore, GUIDANCE.targetModel, self.target_model))
             
             # Test with namespace validation required
             self.integrator.set_conformance_level("STRICT")
@@ -154,7 +190,7 @@ test:TargetClass
             
             # Test with invalid namespace
             invalid_spore = URIRef("http://invalid.org/spores/invalid")
-            self.validator.graph.add((invalid_spore, RDF.type, META.TransformationPattern))
+            self.validator.graph.add((invalid_spore, RDF.type, GUIDANCE.TransformationPattern))
             with self.assertRaises(ConformanceError):
                 self.integrator.validate_namespaces(invalid_spore)
             
@@ -164,23 +200,29 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_integration_step_validation(self):
+    def test_integration_step_validation(self) -> None:
         """Test integration step validation."""
         logger.info("Testing integration step validation")
         try:
             # Create integration process
-            process = URIRef("http://example.org/processes/test-process")
+            process = PROCESS['test-process']
             self.validator.graph.add((process, RDF.type, GUIDANCE.IntegrationProcess))
             
             # Add integration steps
-            step1 = URIRef("http://example.org/steps/step1")
-            step2 = URIRef("http://example.org/steps/step2")
+            step1 = STEP['step1']
+            step2 = STEP['step2']
             
+            # Add steps to process with proper ordering
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step1))
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step2))
+            
+            # Add step metadata
             for step, order in [(step1, 1), (step2, 2)]:
                 self.validator.graph.add((step, RDF.type, GUIDANCE.IntegrationStep))
                 self.validator.graph.add((step, GUIDANCE.stepOrder, Literal(order)))
                 self.validator.graph.add((step, GUIDANCE.stepDescription, Literal(f"Step {order}")))
-                self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step))
+                self.validator.graph.add((step, GUIDANCE.stepTarget, self.target_model))
+                self.validator.graph.add((step, GUIDANCE.stepType, GUIDANCE.TransformationStep))
             
             # Test step validation
             self.integrator.set_conformance_level("STRICT")
@@ -199,7 +241,7 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_ordered_step_execution(self):
+    def test_ordered_step_execution(self) -> None:
         """Test ordered step execution."""
         logger.info("Testing ordered step execution")
         try:
@@ -256,8 +298,8 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_step_type_validation(self):
-        """Test validation of step types."""
+    def test_step_type_validation(self) -> None:
+        """Test step type validation."""
         logger.info("Testing step type validation")
         try:
             # Create integration process
@@ -286,7 +328,7 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def test_step_target_validation(self):
+    def test_step_target_validation(self) -> None:
         """Test validation of step targets."""
         logger.info("Testing step target validation")
         try:
@@ -316,7 +358,127 @@ test:TargetClass
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def tearDown(self):
+    def test_step_metadata_validation(self) -> None:
+        """Test step metadata validation."""
+        logger.info("Testing step metadata validation")
+        try:
+            # Create integration process
+            process = URIRef("http://example.org/processes/test-process")
+            self.validator.graph.add((process, RDF.type, GUIDANCE.IntegrationProcess))
+            
+            # Add step with missing metadata
+            step = URIRef("http://example.org/steps/missing-metadata-step")
+            self.validator.graph.add((step, RDF.type, GUIDANCE.TransformationStep))
+            self.validator.graph.add((step, GUIDANCE.stepOrder, Literal(1)))
+            self.validator.graph.add((step, GUIDANCE.stepDescription, Literal("Missing metadata")))
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step))
+            
+            # Add step data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
+            
+            # Test step execution
+            self.integrator.set_conformance_level("STRICT")
+            with self.assertRaises(ConformanceError):
+                self.integrator.execute_integration_steps(process)
+            
+            logger.info("Step metadata validation test passed")
+        except Exception as e:
+            logger.error(f"Step metadata validation test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+    def test_step_dependency_validation(self) -> None:
+        """Test validation of step dependencies."""
+        logger.info("Testing step dependency validation")
+        try:
+            # Create integration process
+            process = URIRef("http://example.org/processes/test-process")
+            self.validator.graph.add((process, RDF.type, GUIDANCE.IntegrationProcess))
+            
+            # Add step with missing dependency
+            step = URIRef("http://example.org/steps/missing-dependency-step")
+            self.validator.graph.add((step, RDF.type, GUIDANCE.TransformationStep))
+            self.validator.graph.add((step, GUIDANCE.stepOrder, Literal(1)))
+            self.validator.graph.add((step, GUIDANCE.stepDescription, Literal("Missing dependency")))
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step))
+            
+            # Add step data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
+            
+            # Test step execution
+            self.integrator.set_conformance_level("STRICT")
+            with self.assertRaises(ConformanceError):
+                self.integrator.execute_integration_steps(process)
+            
+            logger.info("Step dependency validation test passed")
+        except Exception as e:
+            logger.error(f"Step dependency validation test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+    def test_step_execution_validation(self) -> None:
+        """Test validation of step execution."""
+        logger.info("Testing step execution validation")
+        try:
+            # Create integration process
+            process = URIRef("http://example.org/processes/test-process")
+            self.validator.graph.add((process, RDF.type, GUIDANCE.IntegrationProcess))
+            
+            # Add step with invalid execution
+            step = URIRef("http://example.org/steps/invalid-execution-step")
+            self.validator.graph.add((step, RDF.type, GUIDANCE.TransformationStep))
+            self.validator.graph.add((step, GUIDANCE.stepOrder, Literal(1)))
+            self.validator.graph.add((step, GUIDANCE.stepDescription, Literal("Invalid execution")))
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step))
+            
+            # Add step data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
+            
+            # Test step execution
+            self.integrator.set_conformance_level("STRICT")
+            with self.assertRaises(ConformanceError):
+                self.integrator.execute_integration_steps(process)
+            
+            logger.info("Step execution validation test passed")
+        except Exception as e:
+            logger.error(f"Step execution validation test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+    def test_type_validation(self) -> None:
+        """Test validation of type constraints."""
+        logger.info("Testing type validation")
+        try:
+            # Create integration process
+            process = URIRef("http://example.org/processes/test-process")
+            self.validator.graph.add((process, RDF.type, GUIDANCE.IntegrationProcess))
+            
+            # Add step with invalid type
+            step = URIRef("http://example.org/steps/invalid-type-step")
+            self.validator.graph.add((step, RDF.type, RDF.Property))  # Invalid type
+            self.validator.graph.add((step, GUIDANCE.stepOrder, Literal(1)))
+            self.validator.graph.add((step, GUIDANCE.stepDescription, Literal("Invalid type")))
+            self.validator.graph.add((process, GUIDANCE.hasIntegrationStep, step))
+            
+            # Add step data to integrator graph
+            for triple in self.validator.graph.triples((None, None, None)):
+                self.integrator.graph.add(triple)
+            
+            # Test step execution
+            self.integrator.set_conformance_level("STRICT")
+            with self.assertRaises(ConformanceError):
+                self.integrator.execute_integration_steps(process)
+            
+            logger.info("Type validation test passed")
+        except Exception as e:
+            logger.error(f"Type validation test failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+    def tearDown(self) -> None:
         """Clean up test environment."""
         logger.info("Cleaning up test environment")
         try:

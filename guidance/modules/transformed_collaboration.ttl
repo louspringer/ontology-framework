@@ -1,198 +1,22 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/transformed_collaboration#> .
-
-@prefix : <./#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/#> .
-@prefix dcterms: <http://purl.org/dc/terms/#> .
-@prefix guidance: <http://ontologies.louspringer.com/guidance#> .
-@prefix ns1: <./collaboration#> .
-@prefix ns2: <./core#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dcterms1: <http://purl.org/dc/terms/#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ns1:CollaborationGuidanceModule a owl:Ontology ;
     rdfs:label "Collaboration Guidance Module" ;
-    dc:title "Collaboration Guidance Module" ;
-    dc:version "1.0.0" ;
-    dcterms:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dcterms:description "Guidance for collaboration and PR management" ;
-    dcterms:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dcterms:publisher "Ontology Framework Project" ;
+    dc1:title "Collaboration Guidance Module" ;
+    dc1:version "1.0.0" ;
+    dcterms1:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms1:description "Guidance for collaboration and PR management" ;
+    dcterms1:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms1:publisher "Ontology Framework Project" ;
     rdfs:comment "Collaboration patterns and best practices for guidance ontology" ;
     owl:imports <http://ontologies.louspringer.com/guidance/modules/core.ttl>,
         <http://ontologies.louspringer.com/guidance/modules/model.ttl>,
         <http://ontologies.louspringer.com/guidance/modules/security.ttl>,
         <http://ontologies.louspringer.com/guidance/modules/validation.ttl> ;
     owl:versionInfo "1.0.0" .
-
-:CollaborationGuidanceModule#ModuleShape a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path :CollaborationGuidanceModule#description  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path :CollaborationGuidanceModule#label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path :CollaborationGuidanceModule#version ;
-    sh:targetClass :CollaborationGuidanceModule#Module .
-
-ns1:branchNameFormat a owl:DatatypeProperty ;
-    rdfs:label "Branch Name Format" ;
-    rdfs:comment "Specifies the format for branch names" ;
-    rdfs:domain ns1:BranchStrategy ;
-    rdfs:range xsd:string .
-
-ns1:hasBranchStrategy a owl:ObjectProperty ;
-    rdfs:label "Has Branch Strategy" ;
-    rdfs:comment "Links PR management pattern to its branch strategy" ;
-    rdfs:domain ns1:PRManagementPattern ;
-    rdfs:range ns1:BranchStrategy .
-
-ns1:hasLegacyCollaborationConcept a owl:ObjectProperty ;
-    rdfs:label "Has Legacy Collaboration Concept" ;
-    rdfs:comment "Links modular collaboration concept to legacy guidance" ;
-    rdfs:domain ns1:PRManagementPattern ;
-    rdfs:range guidance:LLMGuidanceOntology .
-
-ns1:hasReviewProcess a owl:ObjectProperty ;
-    rdfs:label "Has Review Process" ;
-    rdfs:comment "Links PR management pattern to its review process" ;
-    rdfs:domain ns1:PRManagementPattern ;
-    rdfs:range ns1:ReviewProcess .
-
-ns1:hasTemplate a owl:ObjectProperty ;
-    rdfs:label "Has Template" ;
-    rdfs:comment "Links PR management pattern to its template" ;
-    rdfs:domain ns1:PRManagementPattern ;
-    rdfs:range ns1:PRTemplate .
-
-ns1:prManagementGuidance a ns1:PRManagementPattern,
-        owl:NamedIndividual ;
-    rdfs:label "PR Management Guidance" ;
-    ns1:hasBranchStrategy [
-         a ns1:BranchStrategy ;
-            rdfs:label "Feature Branch Strategy" ;
-            ns1:branchNameFormat "feature/issue-{number}-{description}" ;
-    ns1:hasReviewProcess [ a ns1:ReviewProcess ;
-            rdfs:label "Standard Review Process" ;
-            rdfs:comment "Requires one approval and passing tests" ;
-    ns1:hasTemplate [ a ns1:PRTemplate ;
-            rdfs:label "Standard PR Template" ;
-            ns1:requiresOntologyHeader true ;
-            ns1:requiresTestCoverage true ;
-    ns2:complexity 2 ;
-    ns2:sourceContext "GitHub Integration" ;
-    ns2:targetContext "Project Management" ;
-    rdfs:comment """Best practices for PR management:
-    1. Use feature branches with format: feature/issue-{number}-{description}
-    2. Include ontology header updates in PR description
-    3. Maintain test coverage requirements
-    4. Follow review process guidelines
-    5. Update documentation as needed
-    6. Ensure ontology consistency""" .
-
-ns1:requiresOntologyHeader a owl:DatatypeProperty ;
-    rdfs:label "Requires Ontology Header" ;
-    rdfs:comment "Indicates if PR template requires ontology header information" ;
-    rdfs:domain ns1:PRTemplate ;
-    rdfs:range xsd:boolean .
-
-ns1:requiresTestCoverage a owl:DatatypeProperty ;
-    rdfs:label "Requires Test Coverage" ;
-    rdfs:comment "Indicates if PR template requires test coverage information" ;
-    rdfs:domain ns1:PRTemplate ;
-    rdfs:range xsd:boolean .
-
-:examplePRManagementPattern1 a ns1:PRManagementPattern  ;
-    rdfs:label "Example PRManagementPattern 1" ;
-    ns1:hasBranchStrategy :exampleBranchStrategy1 ;
-    ns1:hasLegacyCollaborationConcept :exampleLLMGuidanceOntology1 ;
-    ns1:hasReviewProcess :exampleReviewProcess1 ;
-    ns1:hasTemplate :examplePRTemplate1 ;
-    rdfs:comment "This is example instance 1 of class PRManagementPattern" .
-
-:examplePRManagementPattern2 a ns1:PRManagementPattern  ;
-    rdfs:label "Example PRManagementPattern 2" ;
-    ns1:hasBranchStrategy :exampleBranchStrategy2 ;
-    ns1:hasLegacyCollaborationConcept :exampleLLMGuidanceOntology2 ;
-    ns1:hasReviewProcess :exampleReviewProcess2 ;
-    ns1:hasTemplate :examplePRTemplate2 ;
-    rdfs:comment "This is example instance 2 of class PRManagementPattern" .
-
-:exampleBranchStrategy1 a ns1:BranchStrategy  ;
-    rdfs:label "Example BranchStrategy 1" ;
-    ns1:branchNameFormat "Example value 1" ;
-    rdfs:comment "This is example instance 1 of class BranchStrategy" .
-
-:exampleBranchStrategy2 a ns1:BranchStrategy  ;
-    rdfs:label "Example BranchStrategy 2" ;
-    ns1:branchNameFormat "Example value 2" ;
-    rdfs:comment "This is example instance 2 of class BranchStrategy" .
-
-:examplePRTemplate1 a ns1:PRTemplate  ;
-    rdfs:label "Example PRTemplate 1" ;
-    ns1:requiresOntologyHeader :exampleboolean1 ;
-    ns1:requiresTestCoverage :exampleboolean1 ;
-    rdfs:comment "This is example instance 1 of class PRTemplate" .
-
-:examplePRTemplate2 a ns1:PRTemplate  ;
-    rdfs:label "Example PRTemplate 2" ;
-    ns1:requiresOntologyHeader :exampleboolean2 ;
-    ns1:requiresTestCoverage :exampleboolean2 ;
-    rdfs:comment "This is example instance 2 of class PRTemplate" .
-
-:exampleReviewProcess1 a ns1:ReviewProcess  ;
-    rdfs:label "Example ReviewProcess 1" ;
-    rdfs:comment "This is example instance 1 of class ReviewProcess" .
-
-:exampleReviewProcess2 a ns1:ReviewProcess  ;
-    rdfs:label "Example ReviewProcess 2" ;
-    rdfs:comment "This is example instance 2 of class ReviewProcess" .
-
-ns1:ReviewProcess a owl:Class ;
-    rdfs:label "Review Process" ;
-    rdfs:comment "Process for reviewing and approving pull requests" ;
-    rdfs:subClassOf ns1:PRManagementPattern ;
-    owl:versionInfo "1.0.0" .
-
-ns1:BranchStrategy a owl:Class ;
-    rdfs:label "Branch Strategy" ;
-    rdfs:comment "Strategy for branch naming and management" ;
-    rdfs:subClassOf ns1:PRManagementPattern ;
-    owl:versionInfo "1.0.0" .
-
-ns1:PRTemplate a owl:Class ;
-    rdfs:label "PRTemplate" ;
-    rdfs:comment "A template for structuring pull requests" ;
-    rdfs:subClassOf ns1:PRManagementPattern ;
-    owl:versionInfo "1.0.0" .
-
-ns1:PRManagementPattern a owl:Class ;
-    rdfs:label "PRManagementPattern" ;
-    rdfs:comment "A pattern for managing pull requests and code reviews" ;
-    rdfs:subClassOf ns2:BestPractice ;
-    owl:versionInfo "1.0.0" .
-
-[
-    ] a sh:NodeShape ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo ;
-    sh:targetClass owl:Class .
-
-[] a sh:NodeShape ;
-    sh:property :shape3sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
 

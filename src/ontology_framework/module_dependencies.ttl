@@ -1,0 +1,70 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <./module_dependencies#> .
+
+# Module Classes
+:Module a owl:Class ;
+    rdfs:label "Module" ;
+    rdfs:comment "A module in the ontology framework" .
+
+:CoreModule a owl:Class ;
+    rdfs:subClassOf :Module ;
+    rdfs:label "Core Module" ;
+    rdfs:comment "A core module that provides fundamental functionality" .
+
+:ExtensionModule a owl:Class ;
+    rdfs:subClassOf :Module ;
+    rdfs:label "Extension Module" ;
+    rdfs:comment "A module that extends core functionality" .
+
+# Properties
+:dependsOn a owl:ObjectProperty ;
+    rdfs:label "depends on" ;
+    rdfs:comment "Indicates that one module depends on another" ;
+    rdfs:domain :Module ;
+    rdfs:range :Module .
+
+:provides a owl:ObjectProperty ;
+    rdfs:label "provides" ;
+    rdfs:comment "Indicates what functionality a module provides" ;
+    rdfs:domain :Module ;
+    rdfs:range :Functionality .
+
+# Functionality Class
+:Functionality a owl:Class ;
+    rdfs:label "Functionality" ;
+    rdfs:comment "A piece of functionality provided by a module" .
+
+# Module Instances
+:types a :CoreModule ;
+    rdfs:label "Types Module" ;
+    rdfs:comment "Provides core type definitions" .
+
+:meta a :CoreModule ;
+    rdfs:label "Meta Module" ;
+    rdfs:comment "Provides meta-level ontology information" ;
+    :dependsOn :types .
+
+:exceptions a :CoreModule ;
+    rdfs:label "Exceptions Module" ;
+    rdfs:comment "Provides exception definitions" ;
+    :dependsOn :types .
+
+:modules a :ExtensionModule ;
+    rdfs:label "Modules Package" ;
+    rdfs:comment "Provides extended functionality" ;
+    :dependsOn :types, :meta, :exceptions .
+
+# Functionality Instances
+:patchTypes a :Functionality ;
+    rdfs:label "Patch Types" ;
+    rdfs:comment "Patch type definitions" .
+
+:patchStatus a :Functionality ;
+    rdfs:label "Patch Status" ;
+    rdfs:comment "Patch status definitions" .
+
+# Functionality Assignments
+:types :provides :patchTypes, :patchStatus . 

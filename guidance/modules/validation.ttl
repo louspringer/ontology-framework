@@ -1,43 +1,12 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
-
-@prefix : <./#> .
-@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/#> .
-@prefix dct: <http://purl.org/dc/terms/#> .
-@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-:exampleTestCase1 a :TestCase  ;
-    rdfs:label "Example TestCase 1" ;
-    rdfs:comment "This is example instance 1 of class TestCase" ;
-    :hasExpectedResult "Example value 1"  ;
-    :hasTestQuery "Example value 1" .
-
-:exampleTestCase2 a :TestCase  ;
-    rdfs:label "Example TestCase 2" ;
-    rdfs:comment "This is example instance 2 of class TestCase" ;
-    :hasExpectedResult "Example value 2"  ;
-    :hasTestQuery "Example value 2" .
-
-:exampleValidationPattern1 a :ValidationPattern  ;
-    rdfs:label "Example ValidationPattern 1" ;
-    rdfs:comment "This is example instance 1 of class ValidationPattern" ;
-    :hasLegacyValidationConcept :exampleLLMGuidanceOntology1 .
-
-:exampleValidationPattern2 a :ValidationPattern  ;
-    rdfs:label "Example ValidationPattern 2" ;
-    rdfs:comment "This is example instance 2 of class ValidationPattern" ;
-    :hasLegacyValidationConcept :exampleLLMGuidanceOntology2 .
 
 :CollaborationValidationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Collaboration Validation Test" ;
     rdfs:comment "Tests collaboration-related validation patterns" ;
-    :hasExpectedResult "All collaboration-related validation patterns should have collaboration constraints"  ;
+    :hasExpectedResult "All collaboration-related validation patterns should have collaboration constraints" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX collaboration: <../collaboration#>
@@ -55,10 +24,10 @@
     """ .
 
 :ComponentIntegrationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Component Integration Test" ;
     rdfs:comment "Tests integration between ontology components" ;
-    :hasExpectedResult "All component relationships should be properly defined"  ;
+    :hasExpectedResult "All component relationships should be properly defined" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -74,10 +43,10 @@
     }""" .
 
 :EnforcementMechanismsTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Enforcement Mechanisms Test" ;
     rdfs:comment "Tests that enforcement mechanisms are properly defined" ;
-    :hasExpectedResult "Should find at least 3 enforcement mechanisms"  ;
+    :hasExpectedResult "Should find at least 3 enforcement mechanisms" ;
     :hasTestQuery """
     SELECT ?mech ?impl ?pattern WHERE {
         ?mech rdf:type pdi:EnforcementMechanism  ;
@@ -86,10 +55,10 @@
     }""" .
 
 :IntegrationProcessValidationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Integration Process Validation Test" ;
     rdfs:comment "Tests integration process steps and validation" ;
-    :hasExpectedResult "Integration processes should have properly ordered steps with descriptions"  ;
+    :hasExpectedResult "Integration processes should have properly ordered steps with descriptions" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -107,10 +76,10 @@
     }""" .
 
 :LegacySupportValidationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Legacy Support Validation Test" ;
     rdfs:comment "Tests legacy support mappings and compatibility" ;
-    :hasExpectedResult "All legacy support mappings should have valid module versions"  ;
+    :hasExpectedResult "All legacy support mappings should have valid module versions" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -127,10 +96,10 @@
     }""" .
 
 :ModelConformanceTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Model Conformance Test" ;
     rdfs:comment "Tests model conformance validation patterns" ;
-    :hasExpectedResult "All model-related validation patterns should have model constraints"  ;
+    :hasExpectedResult "All model-related validation patterns should have model constraints" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX model: <../model#>
@@ -148,10 +117,10 @@
     """ .
 
 :ModelStructureTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Model Structure Test" ;
     rdfs:comment "Tests ontology model structure and constraints" ;
-    :hasExpectedResult "All classes should have labels, comments, and version info"  ;
+    :hasExpectedResult "All classes should have labels, comments, and version info" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -166,10 +135,10 @@
     }""" .
 
 :PatternValidationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Pattern Validation Test" ;
     rdfs:comment "Tests consistency and completeness of validation patterns" ;
-    :hasExpectedResult "All validation patterns should have complete metadata and target classes"  ;
+    :hasExpectedResult "All validation patterns should have complete metadata and target classes" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -188,10 +157,10 @@
     """ .
 
 :PolicyStructureTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Policy Structure Test" ;
     rdfs:comment "Tests that policies drive requirements that influence decisions" ;
-    :hasExpectedResult "Should find OntologyAccessibilityPolicy and its requirements"  ;
+    :hasExpectedResult "Should find OntologyAccessibilityPolicy and its requirements" ;
     :hasTestQuery """
     SELECT ?policy ?req ?decision WHERE {
         ?policy rdf:type pdi:Policy  ;
@@ -200,10 +169,10 @@
     }""" .
 
 :ProtocolValidationTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Protocol Validation Test" ;
     rdfs:comment "Tests test protocol structure and compliance" ;
-    :hasExpectedResult "All test protocols should have proper phases, coverage, and test cases"  ;
+    :hasExpectedResult "All test protocols should have proper phases, coverage, and test cases" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -225,10 +194,10 @@
     """ .
 
 :RequirementComplianceTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Requirement Compliance Test" ;
     rdfs:comment "Tests compliance with requirement testing directive" ;
-    :hasExpectedResult "All requirements should meet the specified testing level"  ;
+    :hasExpectedResult "All requirements should meet the specified testing level" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -246,10 +215,10 @@
     }""" .
 
 :RequirementCoverageTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Comprehensive Coverage Test" ;
     rdfs:comment "Tests coverage of requirements, aspects, and components" ;
-    :hasExpectedResult "No requirements, aspects, or components should be without test coverage"  ;
+    :hasExpectedResult "No requirements, aspects, or components should be without test coverage" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -278,10 +247,10 @@
     """ .
 
 :RequirementTestingLevelTest a owl:NamedIndividual,
-        :TestCase  ;
+        :TestCase ;
     rdfs:label "Requirement Testing Level Test" ;
     rdfs:comment "Tests requirement testing level compliance" ;
-    :hasExpectedResult "All test cases should meet the required testing level"  ;
+    :hasExpectedResult "All test cases should meet the required testing level" ;
     :hasTestQuery """
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX guidance: <../../guidance#>
@@ -296,248 +265,25 @@
         }
     }""" .
 
-:RuleShape a sh:NodeShape  ;
-    rdfs:label "Rule Shape" ;
-    rdfs:comment "Validation shape for best practice rules" ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:message "Rule must have a label" ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:message "Rule must have a description" ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment ;
-    sh:targetClass core:BestPractice .
+:exampleTestCase1 a :TestCase ;
+    rdfs:label "Example TestCase 1" ;
+    rdfs:comment "This is example instance 1 of class TestCase" ;
+    :hasExpectedResult "Example value 1" ;
+    :hasTestQuery "Example value 1" .
 
-:SHACLValidationTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "SHACL Validation Test" ;
-    rdfs:comment "Tests SHACL validation rules and constraints" ;
-    :hasExpectedResult "All SHACL shapes should have valid target classes and property constraints"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX sh: <http://www.w3.org/ns/shacl#>
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    
-    SELECT ?shape ?target ?property ?constraint
-    WHERE {
-        ?shape a sh:NodeShape  ;
-               sh:targetClass ?target .
-        ?shape sh:property ?propertyShape .
-        ?propertyShape sh:path ?property ;
-                      sh:minCount ?constraint .
-        FILTER (?constraint > 0)
-    }""" .
+:exampleTestCase2 a :TestCase ;
+    rdfs:label "Example TestCase 2" ;
+    rdfs:comment "This is example instance 2 of class TestCase" ;
+    :hasExpectedResult "Example value 2" ;
+    :hasTestQuery "Example value 2" .
 
-:SecurityValidationTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Security Validation Test" ;
-    rdfs:comment "Tests security-related validation patterns" ;
-    :hasExpectedResult "All security-related validation patterns should have security constraints"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX security: <../security#>
-    PREFIX validation: <./validation#>
-    
-    SELECT ?pattern ?securityConcept
-    WHERE {
-        ?pattern rdf:type validation:ValidationPattern .
-        ?pattern validation:hasTargetClass ?securityConcept .
-        ?securityConcept rdf:type security:SecurityConcept .
-        FILTER NOT EXISTS {
-            ?pattern validation:hasSecurityConstraint ?constraint
-        }
-    }
-    """ .
+:exampleValidationPattern1 a :ValidationPattern ;
+    rdfs:label "Example ValidationPattern 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationPattern" ;
+    :hasLegacyValidationConcept :exampleLLMGuidanceOntology1 .
 
-:TestCaseShape a sh:NodeShape  ;
-    rdfs:label "Test Case Shape" ;
-    rdfs:comment "Validation shape for test cases" ;
-    sh:property sh:property [
-        
-        sh:message "Every test case must have a SPARQL query" ;
-        sh:minCount 1 ;
-        sh:path :hasTestQuery 
-    ]  .
-        :shape1 sh:message "Every test case must specify expected results"  ;
-            sh:minCount 1 ;
-            sh:path :hasExpectedResult ;
-    sh:targetClass :TestCase .
-
-:TestCoverageAnalysisTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Test Coverage Analysis Test" ;
-    rdfs:comment "Analyzes test case coverage across framework aspects" ;
-    :hasExpectedResult "No framework aspects should be without test coverage"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX guidance: <../../guidance#>
-    PREFIX validation: <./validation#>
-    
-    SELECT ?aspect (COUNT(?test) as ?testCount)
-    WHERE {
-        ?aspect rdf:type guidance:FrameworkAspect .
-        OPTIONAL {
-            ?test rdf:type validation:TestCase  ;
-                  validation:validates ?aspect
-        }
-    }
-    GROUP BY ?aspect
-    HAVING (?testCount = 0)
-    """ .
-
-:TestDependenciesTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Test Dependencies Test" ;
-    rdfs:comment "Tests proper definition of test case dependencies" ;
-    :hasExpectedResult "All test cases should have proper dependency ordering"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX guidance: <../../guidance#>
-    PREFIX validation: <./validation#>
-    
-    SELECT ?test ?dependsOn ?order
-    WHERE {
-        ?test rdf:type validation:TestCase .
-        OPTIONAL {
-            ?test validation:dependsOn ?dependsOn  ;
-                  validation:testOrder ?order
-        }
-        FILTER (!bound(?order))
-    }
-    """ .
-
-:TestPhaseValidationTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Test Phase Validation Test" ;
-    rdfs:comment "Tests test phase structure and validation" ;
-    :hasExpectedResult "All test phases should have valid test cases with queries and expected results"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX guidance: <../../guidance#>
-    PREFIX validation: <./validation#>
-    
-    SELECT ?phase ?order ?testCase
-    WHERE {
-        ?phase rdf:type guidance:TestPhase .
-        ?phase guidance:phaseOrder ?order .
-        ?phase validation:hasTestCase ?testCase .
-        FILTER NOT EXISTS {
-            ?testCase validation:hasTestQuery ?query  ;
-                      validation:hasExpectedResult ?result
-        }
-    }""" .
-
-:TestProtocolComplianceTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Test Protocol Compliance Test" ;
-    rdfs:comment "Tests compliance with test protocol requirements" ;
-    :hasExpectedResult "All test protocols should have required phases and meet coverage threshold"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX guidance: <../../guidance#>
-    
-    SELECT ?protocol ?phase ?coverage
-    WHERE {
-        ?protocol rdf:type guidance:TestProtocol .
-        ?protocol guidance:hasTestPhase ?phase .
-        ?protocol guidance:hasTestCoverage ?coverage .
-        ?coverage guidance:coverageThreshold ?threshold .
-        FILTER (?threshold < "0.95"^^xsd:decimal)
-    }""" .
-
-:ValidationGuidanceModule a owl:Ontology  ;
-    rdfs:label "Validation Guidance Module" ;
-    dc:title "Validation Guidance Module" ;
-    dc:version "1.0.0" ;
-    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:description "Module containing validation patterns and test cases" ;
-    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:publisher "Ontology Framework Project" ;
-    rdfs:comment "Validation rules and constraints for guidance ontology" ;
-    owl:imports <./collaboration.ttl>,
-        <./core.ttl>,
-        <./model.ttl>,
-        <./security.ttl> ;
-    owl:versionInfo "1.0.0" .
-
-<./validation#ValidationGuidanceModule#ModuleShape> a sh:NodeShape ;
-    sh:property :shape3sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path <./validation#ValidationGuidanceModule#label>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./validation#ValidationGuidanceModule#description>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./validation#ValidationGuidanceModule#version> ;
-    sh:targetClass <./validation#ValidationGuidanceModule#Module> .
-
-:ValidationPatternConsistencyTest a owl:NamedIndividual,
-        :TestCase  ;
-    rdfs:label "Validation Pattern Consistency Test" ;
-    rdfs:comment "Tests consistency of validation pattern definitions" ;
-    :hasExpectedResult "All validation patterns should have consistent labels and comments"  ;
-    :hasTestQuery """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX validation: <./validation#>
-    
-    SELECT ?pattern ?label ?comment
-    WHERE {
-        ?pattern rdf:type validation:ValidationPattern .
-        OPTIONAL { ?pattern rdfs:label ?label }
-        OPTIONAL { ?pattern rdfs:comment ?comment }
-        FILTER (!bound(?label) || !bound(?comment))
-    }
-    """ .
-
-:hasLegacyValidationConcept a owl:ObjectProperty  ;
-    rdfs:label "Has Legacy Validation Concept" ;
-    rdfs:comment "Links modular validation concept to legacy guidance" ;
-    rdfs:domain :ValidationPattern ;
-    rdfs:range guidance:LLMGuidanceOntology .
-
-:hasExpectedResult a owl:DatatypeProperty  ;
-    rdfs:label "Has Expected Result" ;
-    rdfs:comment "Expected result or assertion for the test case" ;
-    rdfs:domain :TestCase ;
-    rdfs:range xsd:string .
-
-:hasTestQuery a owl:DatatypeProperty  ;
-    rdfs:label "Has Test Query" ;
-    rdfs:comment "The SPARQL query used in the test case" ;
-    rdfs:domain :TestCase ;
-    rdfs:range xsd:string .
-
-:ValidationPattern a owl:Class  ;
-    rdfs:label "ValidationPattern" ;
-    rdfs:comment "A pattern for implementing validation rules and constraints" ;
-    rdfs:subClassOf core:BestPractice ;
-    owl:versionInfo "1.0.0" .
-
-:TestCase a owl:Class  ;
-    rdfs:label "TestCase" ;
-    rdfs:comment "A test case for validating ontology components" ;
-    rdfs:subClassOf :ValidationPattern ;
-    owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape4sh:minCount 1 ;
-            sh:path rdfs:domain  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:range ;
-    sh:targetClass rdf:Property .
-
-[] a sh:NodeShape ;
-    sh:property :shape5sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
+:exampleValidationPattern2 a :ValidationPattern ;
+    rdfs:label "Example ValidationPattern 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationPattern" ;
+    :hasLegacyValidationConcept :exampleLLMGuidanceOntology2 .
 

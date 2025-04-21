@@ -7,13 +7,12 @@ Following the standards defined in guidance.ttl.
 import os
 import sys
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Generator, Iterator
 from datetime import datetime
 
 # Add the src directory to the Python path
-src_path = str(Path(__file__).parent.parent / "src")
-if src_path not in sys.path:
-    sys.path.insert(0, src_path)
+src_dir = Path(__file__).parent.parent / "src"
+sys.path.append(str(src_dir))
 
 # Configure logging
 import logging
@@ -28,12 +27,12 @@ import pytest
 from rdflib import Graph, Namespace
 import tempfile
 import shutil
-from typing import Generator
 
 import pytest
-from ontology_framework.patch_management import PatchManager
+from ontology_framework.modules.patch_management import PatchManager
 from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus
 from tests.utils.test_monitoring import TestMonitor
+from tests.utils.mock_graphdb import MockGraphDBServer
 
 # Test Configuration
 TEST_CONFIG = {
@@ -110,30 +109,71 @@ def pytest_configure(config):
         "functional: mark test as validating functional requirements"
     )
 
-@pytest.fixture(scope="session", autouse=True)
-def test_environment():
-    """Setup test environment for the entire test session."""
-    # Setup phase
-    logger.info("Setting up test environment")
-    os.environ["TEST_ENV"] = TEST_CONFIG["environment"]
-    
-    # Create report directory if it doesn't exist
-    report_path = Path(TEST_CONFIG["report_file"]).parent
-    report_path.mkdir(parents=True, exist_ok=True)
-    
-    yield
-    
-    # Cleanup phase
-    logger.info("Cleaning up test environment")
-    cleanup_test_artifacts()
+@pytest.fixture(scope="session")
+def test_environment() -> dict[str, str]:
+    """Set up test environment variables."""
+    env = {
+        "GRAPHDB_URL": "http://localhost:7200",
+        "GRAPHDB_REPOSITORY": "test_repo",
+        "GRAPHDB_USERNAME": "test_user",
+        "GRAPHDB_PASSWORD": "test_pass",
+        "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN", "test_token")
+    }
+    for key, value in env.items():
+        os.environ[key] = value
+    return env
 
-def cleanup_test_artifacts():
-    """Clean up test artifacts and cache directories."""
-    cache_dirs = [".pytest_cache", "__pycache__", ".mypy_cache"]
-    for cache_dir in cache_dirs:
-        if Path(cache_dir).exists():
-            logger.info(f"Removing {cache_dir}")
-            os.system(f"rm -rf {cache_dir}")
+@pytest.fixture(scope="session")
+def mock_graphdb_server(test_environment: dict[str, str]) -> Generator[MockGraphDBServer, None, None]:
+    """Create and start a mock GraphDB server."""
+    server = MockGraphDBServer()
+    server.start()
+    yield server
+    server.stop()
+
+@pytest.fixture(scope="session")
+def test_monitor(mock_graphdb_server: MockGraphDBServer) -> Generator[TestMonitor, None, None]:
+    """Create a test monitor."""
+    monitor = TestMonitor(mock_graphdb_server.url)
+    yield monitor
+    monitor.print_summary()
+
+@pytest.fixture(autouse=True)
+def monitor_test(request, test_monitor):
+    """Monitor each test execution."""
+    with test_monitor.monitor_test(request.node.name):
+        yield 
+
+@pytest.fixture
+def ontology_dir():
+    """Return the path to the ontologies directory."""
+    return Path("src/ontology_framework/ontologies")
+
+@pytest.fixture
+def error_ontology(ontology_dir):
+    """Return the path to the error handling ontology."""
+    return ontology_dir / "error_handling.ttl"
+
+@pytest.fixture(scope="function")
+def temp_ttl_file() -> Generator[Path, None, None]:
+    """Create a temporary TTL file with test data."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        test_file = Path(temp_dir) / "test.ttl"
+        test_data = """
+        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+        @prefix ex: <http://example.org/> .
+
+        ex:TestClass a rdfs:Class ;
+            rdfs:label "Test Class" ;
+            rdfs:comment "A test class for testing" .
+
+        ex:TestInstance a ex:TestClass ;
+            rdfs:label "Test Instance" ;
+            rdfs:comment "A test instance for testing" .
+        """
+        test_file.write_text(test_data)
+        yield test_file
 
 @pytest.fixture
 def test_report():
@@ -173,22 +213,15 @@ def pytest_sessionfinish(session, exitstatus):
         f.write("\n")
 
 @pytest.fixture(scope="session")
-def test_monitor():
-    """Create a test monitor for the session."""
-    log_dir = Path("logs") / "tests"
-    monitor = TestMonitor(log_dir=log_dir)
-    yield monitor
-    # Print test summary at the end of the session
-    summary = monitor.get_test_summary()
-    print("\nTest Execution Summary:")
-    print(f"Total Tests: {summary['total_tests']}")
-    print(f"Failed Tests: {summary['failed_tests']}")
-    print(f"Slow Tests: {summary['slow_tests']}")
-    print(f"Success Rate: {summary['success_rate']:.2%}")
-    print(f"Average Duration: {summary['average_duration']:.2f}s")
+def empty_graph() -> Graph:
+    """Create an empty RDF graph."""
+    return Graph()
 
-@pytest.fixture(autouse=True)
-def monitor_test(request, test_monitor):
-    """Monitor each test execution."""
-    with test_monitor.monitor_test(request.node.name):
-        yield 
+@pytest.fixture(scope="session")
+def test_namespaces() -> dict[str, Namespace]:
+    """Create test namespaces."""
+    return {
+        "rdf": Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+        "rdfs": Namespace("http://www.w3.org/2000/01/rdf-schema#"),
+        "ex": Namespace("http://example.org/")
+    } 

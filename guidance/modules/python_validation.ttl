@@ -1,1 +1,102 @@
- 
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/python_validation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:comment rdfs:label "rdf-schema#comment" ;
+    rdfs:comment "Description of rdf-schema#comment" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:domain rdfs:label "rdf-schema#domain" ;
+    rdfs:comment "Description of rdf-schema#domain" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:label rdfs:label "rdf-schema#label" ;
+    rdfs:comment "Description of rdf-schema#label" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:range rdfs:label "rdf-schema#range" ;
+    rdfs:comment "Description of rdf-schema#range" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+owl:versionInfo rdfs:label "owl#versionInfo" ;
+    rdfs:comment "Description of owl#versionInfo" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/python_validation> a owl:Ontology ;
+    rdfs:label "Python Validation Ontology" ;
+    rdfs:comment "Ontology for defining Python code validation rules and patterns" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ImportValidationRule a ns1:PythonValidationRule ;
+    rdfs:label "Import Validation Rule" ;
+    rdfs:comment "Rule for validating Python import statements" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasDescription "Validates that imports follow project conventions" .
+
+ns1:TypeHintValidationRule a ns1:PythonValidationRule ;
+    rdfs:label "Type Hint Validation Rule" ;
+    rdfs:comment "Rule for validating Python type hints" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasDescription "Ensures proper use of type hints in function signatures" .
+
+ns1:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "Has Description" ;
+    rdfs:comment "Provides a description of the validation rule or pattern" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasPattern a owl:ObjectProperty ;
+    rdfs:label "Has Pattern" ;
+    rdfs:comment "Links a validation rule to its code pattern" ;
+    rdfs:domain ns1:PythonValidationRule ;
+    rdfs:range ns1:PythonCodePattern ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasResult a owl:ObjectProperty ;
+    rdfs:label "Has Result" ;
+    rdfs:comment "Links a validation rule to its result" ;
+    rdfs:domain ns1:PythonValidationRule ;
+    rdfs:range ns1:ValidationResult ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasSeverity a owl:DatatypeProperty ;
+    rdfs:label "Has Severity" ;
+    rdfs:comment "Indicates the severity level of a validation result" ;
+    rdfs:domain ns1:ValidationResult ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:PythonCodePattern a owl:Class ;
+    rdfs:label "Python Code Pattern" ;
+    rdfs:comment "A pattern found in Python code" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ValidationResult a owl:Class ;
+    rdfs:label "Validation Result" ;
+    rdfs:comment "Result of applying a validation rule" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:PythonValidationRule a owl:Class ;
+    rdfs:label "Python Validation Rule" ;
+    rdfs:comment "A rule for validating Python code" ;
+    owl:versionInfo "1.0.0" .
+

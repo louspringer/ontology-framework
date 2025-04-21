@@ -41,19 +41,22 @@
     rdfs:label "Example RemoveOperation 2" ;
     rdfs:comment "This is example instance 2 of class RemoveOperation" .
 
-:OperationShape a sh:NodeShape  ;
-    sh:property sh:property [
-        
+:OperationShape a sh:NodeShape ;
+    sh:property [
         sh:message "Operation must have a subject" ;
         sh:minCount 1 ;
-        sh:path :hasSubject 
-    ]  .
-        :shape1 sh:message "Operation must have a predicate"  ;
-            sh:minCount 1 ;
-            sh:path :hasPredicate .
-        :shape1 sh:message "Operation must have an object"  ;
-            sh:minCount 1 ;
-            sh:path :hasObject ;
+        sh:path :hasSubject
+    ] ;
+    sh:property [
+        sh:message "Operation must have a predicate" ;
+        sh:minCount 1 ;
+        sh:path :hasPredicate
+    ] ;
+    sh:property [
+        sh:message "Operation must have an object" ;
+        sh:minCount 1 ;
+        sh:path :hasObject
+    ] ;
     sh:targetClass :PatchOperation .
 
 :PatchGuidanceModule a owl:Ontology  ;
@@ -68,74 +71,85 @@
     owl:versionInfo "1.0.0" .
 
 <./patch#PatchGuidanceModule#ModuleShape> a sh:NodeShape ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path <./patch#PatchGuidanceModule#version>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./patch#PatchGuidanceModule#description>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./patch#PatchGuidanceModule#label> ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path <./patch#PatchGuidanceModule#version>
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path <./patch#PatchGuidanceModule#description>
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path <./patch#PatchGuidanceModule#label>
+    ] ;
     sh:targetClass <./patch#PatchGuidanceModule#Module> .
 
-:PatchShape a sh:NodeShape  ;
-    sh:property sh:property [
-        
+:PatchShape a sh:NodeShape ;
+    sh:property [
         sh:message "Patch must have a target SPORE" ;
         sh:minCount 1 ;
-        sh:path :hasTargetSpore 
-    ]  .
-        :shape1 sh:datatype xsd:dateTime  ;
-            sh:message "Patch must have a creation timestamp" ;
-            sh:minCount 1 ;
-            sh:path :createdAt .
-        :shape1 sh:message "Patch must have at least one operation"  ;
-            sh:minCount 1 ;
-            sh:path :hasOperation .
-        :shape1 sh:datatype xsd:string  ;
-            sh:message "Patch must have a label" ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:message "Patch must have a comment" ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:message "Patch must have a semantic version number" ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo ;
-            sh:pattern "^[
-        0-9
-    ]+\\.[
-        0-9
-    ]+\\.[
-        0-9
-    ]+$" ;
+        sh:path :hasTargetSpore
+    ] ;
+    sh:property [
+        sh:datatype xsd:dateTime ;
+        sh:message "Patch must have a creation timestamp" ;
+        sh:minCount 1 ;
+        sh:path :createdAt
+    ] ;
+    sh:property [
+        sh:message "Patch must have at least one operation" ;
+        sh:minCount 1 ;
+        sh:path :hasOperation
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:message "Patch must have a label" ;
+        sh:minCount 1 ;
+        sh:path rdfs:label
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:message "Patch must have a comment" ;
+        sh:minCount 1 ;
+        sh:path rdfs:comment
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:message "Patch must have a semantic version number" ;
+        sh:minCount 1 ;
+        sh:path owl:versionInfo ;
+        sh:pattern "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    ] ;
     sh:targetClass :PatchModel .
 
-:URIShape a sh:NodeShape  ;
-    sh:property :shape4sh:message "Target spore must use relative path (e.g. 'spore.ttl')" ;
-            sh:path :hasTargetSpore ;
-            sh:pattern "^[
-        ^/
-    ]+\\.ttl$"  .
-        :shape1 sh:path :hasOperation  ;
-            sh:property :shape5sh:message "Subject must use relative URI" ;
-                    sh:path :hasSubject ;
-                    sh:pattern "^[
-        ^/
-    ]+$"  .
-        :shape1 sh:message "Predicate must use relative URI"  ;
-                    sh:path :hasPredicate ;
-                    sh:pattern "^[
-        ^/
-    ]+$"  .
-        :shape1 sh:message "Object must use relative URI"  ;
-                    sh:path :hasObject ;
-                    sh:pattern "^[
-        ^/
-    ]+$" ;
+:URIShape a sh:NodeShape ;
+    sh:property [
+        sh:message "Target spore must use relative path (e.g. 'spore.ttl')" ;
+        sh:path :hasTargetSpore ;
+        sh:pattern "^[^/]+\\.ttl$"
+    ] ;
+    sh:property [
+        sh:path :hasOperation ;
+        sh:property [
+            sh:message "Subject must use relative URI" ;
+            sh:path :hasSubject ;
+            sh:pattern "^[^/]+$"
+        ]
+    ] ;
+    sh:property [
+        sh:message "Predicate must use relative URI" ;
+        sh:path :hasPredicate ;
+        sh:pattern "^[^/]+$"
+    ] ;
+    sh:property [
+        sh:message "Object must use relative URI" ;
+        sh:path :hasObject ;
+        sh:pattern "^[^/]+$"
+    ] ;
     sh:targetClass :PatchModel .
 
 :examplePatch a :PatchModel  ;

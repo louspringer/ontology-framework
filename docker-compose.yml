@@ -2,19 +2,15 @@ version: '3.8'
 
 services:
   graphdb:
-    image: ontotext/graphdb:10.6.0
+    image: ontotext/graphdb:10.4.0
     container_name: graphdb
     ports:
       - "7200:7200"
-    environment:
-      - GDB_HEAP_SIZE=1G
-      - GDB_MIN_MEM=512M
-      - GDB_MAX_MEM=1G
-      - GRAPHDB_HOME=/opt/graphdb/home
-      - GRAPHDB_JAVA_OPTS=-Xms512m -Xmx1g -XX:MaxDirectMemorySize=1g
     volumes:
-      - graphdb-data:/opt/graphdb/home
-      - graphdb-import:/opt/graphdb/import
+      - ./data/graphdb:/opt/graphdb/home
+    environment:
+      - GDB_HEAP_SIZE=1g
+      - GDB_JAVA_OPTS=-Dgraphdb.workbench.maxUploadSize=100000000 -Xms512m -Xmx512m
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
@@ -34,6 +30,4 @@ volumes:
   graphdb-data:
     driver: local
   graphdb-import:
-    driver: local
-  fuseki-data:
-  fuseki-config: 
+    driver: local 

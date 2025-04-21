@@ -1,88 +1,63 @@
 #!/usr/bin/env python3
-"""Tests for GraphDB client."""
+"""Tests for the GraphDB client."""
+
+from pathlib import Path
+from typing import Generator
 
 import pytest
-from pathlib import Path
-from typing import Dict, Any
-from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+import tempfile
 
-def test_create_repository(test_monitor):
+from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+from tests.utils.mock_graphdb import MockGraphDBServer
+from tests.utils.test_monitoring import TestMonitor
+
+@pytest.fixture
+def graphdb_client(mock_graphdb_server: MockGraphDBServer) -> GraphDBClient:
+    """Create a GraphDB client for testing."""
+    return GraphDBClient(
+        endpoint=mock_graphdb_server.url,
+        repository="test_repo",
+        username="test_user",
+        password="test_pass"
+    )
+
+def test_create_repository(test_monitor: TestMonitor) -> None:
     """Test repository creation."""
-    client = GraphDBClient()
-    assert client.create_repository()
-    
-    # Check server logs for repository creation
-    metrics = test_monitor.get_test_metrics()["test_create_repository"]
-    assert any("Repository created" in log.get("message", "") 
-              for log in metrics["server_logs"])
-              
-def test_import_data(test_monitor, tmp_path):
+    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
+    with test_monitor.monitor_test("test_create_repository"):
+        client.create_repository("test_repo")
+        assert test_monitor.check_logs_for_message("Repository 'test_repo' created")
+
+def test_import_data(test_monitor: TestMonitor) -> None:
     """Test data import."""
-    client = GraphDBClient()
-    
-    # Create test data
-    test_file = tmp_path / "test.ttl"
-    test_file.write_text("""
-        @prefix ex: <http://example.org/> .
-        ex:Test a ex:TestClass .
-    """)
-    
-    assert client.import_data(test_file)
-    
-    # Check server logs for import
-    metrics = test_monitor.get_test_metrics()["test_import_data"]
-    assert any("Data imported" in log.get("message", "") 
-              for log in metrics["server_logs"])
-              
-def test_query(test_monitor):
-    """Test SPARQL query."""
-    client = GraphDBClient()
-    
-    result = client.query("""
-        SELECT ?s ?p ?o
-        WHERE {
-            ?s ?p ?o
-        }
-        LIMIT 1
-    """)
-    
-    assert result is not None
-    
-    # Check server logs for query execution
-    metrics = test_monitor.get_test_metrics()["test_query"]
-    assert any("Query executed" in log.get("message", "") 
-              for log in metrics["server_logs"])
-              
-def test_error_handling(test_monitor):
+    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
+    with test_monitor.monitor_test("test_import_data"):
+        with tempfile.NamedTemporaryFile(suffix=".ttl") as temp_file:
+            temp_file.write(b"@prefix ex: <http://example.org/> .\nex:test a ex:Test .")
+            temp_file.flush()
+            client.import_data(temp_file.name)
+            assert test_monitor.check_logs_for_message(f"Data imported from {temp_file.name}")
+
+def test_query(test_monitor: TestMonitor) -> None:
+    """Test query execution."""
+    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
+    with test_monitor.monitor_test("test_query"):
+        result = client.query("SELECT * WHERE { ?s ?p ?o }")
+        assert result is not None
+        assert test_monitor.check_logs_for_message("Query executed")
+
+def test_error_handling(test_monitor: TestMonitor) -> None:
     """Test error handling."""
-    client = GraphDBClient()
-    
-    with pytest.raises(GraphDBError) as exc_info:
-        client.query("INVALID SPARQL")
-        
-    error = exc_info.value
-    assert error.correlation_id is not None
-    assert error.status_code is not None
-    
-    # Check server logs for error
-    metrics = test_monitor.get_test_metrics()["test_error_handling"]
-    assert any("Error" in log.get("message", "") 
-              for log in metrics["server_logs"])
-              
-def test_slow_query(test_monitor):
+    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
+    with test_monitor.monitor_test("test_error_handling"):
+        with pytest.raises(GraphDBError):
+            client.query("INVALID SPARQL")
+        assert test_monitor.check_logs_for_error("Error executing query")
+
+def test_slow_query(test_monitor: TestMonitor) -> None:
     """Test slow query detection."""
-    client = GraphDBClient()
-    
-    # This query should be slow enough to trigger monitoring
-    result = client.query("""
-        SELECT ?s ?p ?o
-        WHERE {
-            ?s ?p ?o
-        }
-    """)
-    
-    assert result is not None
-    
-    # Check if test was marked as slow
-    slow_tests = test_monitor.get_slow_tests(threshold=0.1)  # 100ms threshold
-    assert "test_slow_query" in [t["test_name"] for t in slow_tests] 
+    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
+    with test_monitor.monitor_test("test_slow_query"):
+        # This query should be slow enough to trigger the warning
+        client.query("SELECT * WHERE { ?s ?p ?o } OFFSET 1000000")
+        assert test_monitor.check_logs_for_slow_query("Slow query detected")

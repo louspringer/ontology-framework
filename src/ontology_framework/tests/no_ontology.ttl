@@ -1,0 +1,10 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.org/no_ontology> a owl:Ontology ;
+    rdfs:label "No_Ontology Ontology" ;
+    rdfs:comment "Ontology for No_Ontology" ;
+    owl:versionInfo "1.0.0" .
+
+<http://example.org/test#TestClass> a owl:Class .
+

@@ -3,7 +3,7 @@
 
 import pytest
 from pathlib import Path
-from src.ontology_framework.python_validator import PythonValidator
+from ontology_framework.python_validator import PythonValidator
 
 @pytest.fixture
 def validator():

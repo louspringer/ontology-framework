@@ -18,11 +18,11 @@ from typing import Dict, Any, List
 from unittest import mock
 
 import pytest
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import RDF, RDFS, OWL
-from ontology_framework.checkin_manager import CheckinManager, LLMClient, StepStatus
+from ontology_framework.modules.checkin_manager import CheckinManager, LLMClient, StepStatus
 from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus
-from ontology_framework.patch_management import PatchManager
+from ontology_framework.modules.patch_management import PatchManager
 
 # Define SHACL namespace
 SHACL = Namespace("http://www.w3.org/ns/shacl#")
@@ -708,4 +708,91 @@ def pytest_sessionfinish(session, exitstatus):
         f.write(f"- Total tests: {session.testscollected}\n")
         f.write(f"- Passed: {session.testscollected - session.testsfailed}\n")
         f.write(f"- Failed: {session.testsfailed}\n")
-        f.write(f"- Exit status: {exitstatus}\n\n") 
+        f.write(f"- Exit status: {exitstatus}\n\n")
+
+def test_create_checkin_plan():
+    """Test creating a new check-in plan."""
+    manager = CheckinManager()
+    plan_uri = manager.create_checkin_plan("test_plan")
+    
+    # Verify plan creation
+    assert plan_uri is not None
+    assert manager.graph.value(plan_uri, "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") is not None
+    
+    # Verify steps were created
+    steps = list(manager.graph.objects(plan_uri, "http://example.org/checkin#hasStep"))
+    assert len(steps) == 10  # We should have 10 steps
+    
+    # Verify first step (validation)
+    validation_step = next(step for step in steps if "validation" in str(step))
+    assert validation_step is not None
+    assert manager.graph.value(validation_step, "http://example.org/checkin#stepOrder") == 1
+    
+    # Verify substeps
+    substeps = list(manager.graph.objects(validation_step, "http://example.org/checkin#hasSubstep"))
+    assert len(substeps) == 4  # Validation step has 4 substeps
+
+def test_step_status():
+    """Test step status management."""
+    manager = CheckinManager()
+    plan_uri = manager.create_checkin_plan("test_plan")
+    step = next(manager.graph.objects(plan_uri, "http://example.org/checkin#hasStep"))
+    
+    # Test initial status
+    assert manager.get_step_status(step) == "PENDING"
+    
+    # Test status update
+    manager.update_step_status(step, "COMPLETED")
+    assert manager.get_step_status(step) == "COMPLETED"
+
+def test_save_and_load():
+    """Test saving and loading a check-in plan."""
+    manager = CheckinManager()
+    plan_uri = manager.create_checkin_plan("test_plan")
+    
+    # Save the plan
+    manager.save_plan("test_plan.ttl")
+    
+    # Create a new manager and load the plan
+    new_manager = CheckinManager()
+    new_manager.load_plan("test_plan.ttl")
+    
+    # Verify the loaded plan
+    loaded_plan = next(new_manager.graph.subjects(
+        predicate="http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        object="http://example.org/checkin#CheckinPlan"
+    ))
+    assert loaded_plan is not None
+    
+    # Verify steps were loaded
+    steps = list(new_manager.graph.objects(loaded_plan, "http://example.org/checkin#hasStep"))
+    assert len(steps) == 10
+
+def test_next_step():
+    """Test getting the next pending step."""
+    manager = CheckinManager()
+    plan_uri = manager.create_checkin_plan("test_plan")
+    
+    # Get first step
+    first_step = manager.get_next_step(plan_uri)
+    assert first_step is not None
+    
+    # Complete first step
+    manager.update_step_status(first_step, "COMPLETED")
+    
+    # Get next step
+    next_step = manager.get_next_step(plan_uri)
+    assert next_step is not None
+    assert next_step != first_step
+
+def test_execute_step():
+    """Test executing a step."""
+    manager = CheckinManager()
+    plan_uri = manager.create_checkin_plan("test_plan")
+    step = next(manager.graph.objects(plan_uri, "http://example.org/checkin#hasStep"))
+    
+    # Execute step
+    manager.execute_step(step)
+    
+    # Verify status was updated
+    assert manager.get_step_status(step) == "COMPLETED" 

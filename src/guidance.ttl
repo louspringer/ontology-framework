@@ -1,0 +1,179 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:ConformanceLevelShape a sh:NodeShape ;
+    rdfs:label "Conformance Level Shape"@en ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Conformance level must have a hasStringRepresentation"@en ;
+            sh:minCount 1 ;
+            sh:path :hasStringRepresentation ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Conformance level must have a hasMinimumRequirements"@en ;
+            sh:minCount 1 ;
+            sh:path :hasMinimumRequirements ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Conformance level must have a hasComplianceMetrics"@en ;
+            sh:minCount 1 ;
+            sh:path :hasComplianceMetrics ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Conformance level must have a hasValidationRules"@en ;
+            sh:minCount 1 ;
+            sh:path :hasValidationRules ] ;
+    sh:targetClass :ConformanceLevel .
+
+:GuidanceOntology a owl:Ontology ;
+    rdfs:label "Guidance Ontology"@en ;
+    rdfs:comment "Core guidance ontology for the ontology framework"@en ;
+    owl:versionInfo "0.1.0" .
+
+:IntegrationProcessShape a sh:NodeShape ;
+    rdfs:label "Integration Process Shape"@en ;
+    rdfs:comment "SHACL shape for validating integration processes"@en ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Integration step must have a description"@en ;
+            sh:minCount 1 ;
+            sh:path :stepDescription ],
+        [ sh:class :IntegrationStep ;
+            sh:message "Integration process must have at least one step"@en ;
+            sh:minCount 1 ;
+            sh:path :hasIntegrationStep ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Integration step must have a valid step order"@en ;
+            sh:minCount 1 ;
+            sh:path :stepOrder ;
+            sh:pattern "^[0-9]+$" ] ;
+    sh:targetClass :IntegrationProcess .
+
+:MODERATE a :ConformanceLevel ;
+    rdfs:label "MODERATE"@en ;
+    :hasStringRepresentation "MODERATE" .
+
+:RELAXED a :ConformanceLevel ;
+    rdfs:label "RELAXED"@en ;
+    :hasStringRepresentation "RELAXED" .
+
+:STRICT a :ConformanceLevel ;
+    rdfs:label "STRICT"@en ;
+    :hasStringRepresentation "STRICT" .
+
+:TestProtocolShape a sh:NodeShape ;
+    rdfs:label "Test Protocol Shape"@en ;
+    rdfs:comment "SHACL shape for validating test protocols"@en ;
+    sh:property [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether namespace validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresNamespaceValidation ],
+        [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether prefix validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresPrefixValidation ],
+        [ sh:class :TestPhase ;
+            sh:maxCount 5 ;
+            sh:message "Test protocol must have between 1 and 5 test phases"@en ;
+            sh:minCount 1 ;
+            sh:path :hasTestPhase ] ;
+    sh:targetClass :TestProtocol .
+
+:metricValue a owl:DatatypeProperty ;
+    rdfs:label "Metric Value"@en ;
+    rdfs:domain :Metric ;
+    rdfs:range xsd:float .
+
+:requirementText a owl:DatatypeProperty ;
+    rdfs:label "Requirement Text"@en ;
+    rdfs:domain :Requirement ;
+    rdfs:range xsd:string .
+
+:ruleText a owl:DatatypeProperty ;
+    rdfs:label "Rule Text"@en ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range xsd:string .
+
+:IntegrationProcess a owl:Class ;
+    rdfs:label "Integration Process"@en ;
+    rdfs:comment "Process for integrating ontologies"@en .
+
+:hasComplianceMetrics a owl:ObjectProperty ;
+    rdfs:label "Has Compliance Metrics"@en ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range :Metric .
+
+:hasMinimumRequirements a owl:ObjectProperty ;
+    rdfs:label "Has Minimum Requirements"@en ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range :Requirement .
+
+:hasStringRepresentation a owl:DatatypeProperty ;
+    rdfs:label "Has String Representation"@en ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range xsd:string .
+
+:hasTestPhase a owl:ObjectProperty ;
+    rdfs:label "Has Test Phase"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range :TestPhase .
+
+:hasValidationRules a owl:ObjectProperty ;
+    rdfs:label "Has Validation Rules"@en ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range :ValidationRule .
+
+:requiresNamespaceValidation a owl:DatatypeProperty ;
+    rdfs:label "Requires Namespace Validation"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
+
+:requiresPrefixValidation a owl:DatatypeProperty ;
+    rdfs:label "Requires Prefix Validation"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
+
+:stepDescription a owl:DatatypeProperty ;
+    rdfs:label "Step Description"@en ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:string .
+
+:stepOrder a owl:DatatypeProperty ;
+    rdfs:label "Step Order"@en ;
+    rdfs:domain :IntegrationStep ;
+    rdfs:range xsd:integer .
+
+:Metric a owl:Class ;
+    rdfs:label "Metric"@en ;
+    rdfs:comment "Compliance metric for conformance"@en .
+
+:Requirement a owl:Class ;
+    rdfs:label "Requirement"@en ;
+    rdfs:comment "Minimum requirement for conformance"@en .
+
+:TestPhase a owl:Class ;
+    rdfs:label "Test Phase"@en ;
+    rdfs:comment "Phase in the test protocol"@en .
+
+:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule"@en ;
+    rdfs:comment "Rule for validating ontologies"@en .
+
+:IntegrationStep a owl:Class ;
+    rdfs:label "Integration Step"@en ;
+    rdfs:comment "Step in the integration process"@en .
+
+:TestProtocol a owl:Class ;
+    rdfs:label "Test Protocol"@en ;
+    rdfs:comment "Protocol for testing ontologies"@en .
+
+:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "Level of conformance to guidance rules"@en .
+

@@ -1,227 +1,93 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#> .
-
-@prefix : <./#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix step: <./error_steps#> .
+@prefix step: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:exampleErrorAnalysis1 a step:ErrorAnalysis  ;
+:exampleErrorAnalysis1 a step:ErrorAnalysis ;
     rdfs:label "Example ErrorAnalysis 1" ;
     rdfs:comment "This is example instance 1 of class ErrorAnalysis" .
 
-:exampleErrorAnalysis2 a step:ErrorAnalysis  ;
+:exampleErrorAnalysis2 a step:ErrorAnalysis ;
     rdfs:label "Example ErrorAnalysis 2" ;
     rdfs:comment "This is example instance 2 of class ErrorAnalysis" .
 
-:exampleErrorHandlingStep1 a step:ErrorHandlingStep  ;
+:exampleErrorHandlingStep1 a step:ErrorHandlingStep ;
     rdfs:label "Example ErrorHandlingStep 1" ;
     rdfs:comment "This is example instance 1 of class ErrorHandlingStep" ;
     step:hasStepAction "Example value 1" ;
     step:hasStepOrder 1 .
 
-:exampleErrorHandlingStep2 a step:ErrorHandlingStep  ;
+:exampleErrorHandlingStep2 a step:ErrorHandlingStep ;
     rdfs:label "Example ErrorHandlingStep 2" ;
     rdfs:comment "This is example instance 2 of class ErrorHandlingStep" ;
     step:hasStepAction "Example value 2" ;
     step:hasStepOrder 2 .
 
-:exampleErrorIdentification1 a step:ErrorIdentification  ;
+:exampleErrorIdentification1 a step:ErrorIdentification ;
     rdfs:label "Example ErrorIdentification 1" ;
     rdfs:comment "This is example instance 1 of class ErrorIdentification" .
 
-:exampleErrorIdentification2 a step:ErrorIdentification  ;
+:exampleErrorIdentification2 a step:ErrorIdentification ;
     rdfs:label "Example ErrorIdentification 2" ;
     rdfs:comment "This is example instance 2 of class ErrorIdentification" .
 
-:exampleErrorPrevention1 a step:ErrorPrevention  ;
+:exampleErrorPrevention1 a step:ErrorPrevention ;
     rdfs:label "Example ErrorPrevention 1" ;
     rdfs:comment "This is example instance 1 of class ErrorPrevention" .
 
-:exampleErrorPrevention2 a step:ErrorPrevention  ;
+:exampleErrorPrevention2 a step:ErrorPrevention ;
     rdfs:label "Example ErrorPrevention 2" ;
     rdfs:comment "This is example instance 2 of class ErrorPrevention" .
 
-:exampleErrorRecovery1 a step:ErrorRecovery  ;
+:exampleErrorRecovery1 a step:ErrorRecovery ;
     rdfs:label "Example ErrorRecovery 1" ;
     rdfs:comment "This is example instance 1 of class ErrorRecovery" .
 
-:exampleErrorRecovery2 a step:ErrorRecovery  ;
+:exampleErrorRecovery2 a step:ErrorRecovery ;
     rdfs:label "Example ErrorRecovery 2" ;
     rdfs:comment "This is example instance 2 of class ErrorRecovery" .
 
-:exampleTestErrorAnalysis1 a step:TestErrorAnalysis  ;
+:exampleTestErrorAnalysis1 a step:TestErrorAnalysis ;
     rdfs:label "Example TestErrorAnalysis 1" ;
     rdfs:comment "This is example instance 1 of class TestErrorAnalysis" .
 
-:exampleTestErrorAnalysis2 a step:TestErrorAnalysis  ;
+:exampleTestErrorAnalysis2 a step:TestErrorAnalysis ;
     rdfs:label "Example TestErrorAnalysis 2" ;
     rdfs:comment "This is example instance 2 of class TestErrorAnalysis" .
 
-:exampleTestErrorHandlingStep1 a step:TestErrorHandlingStep  ;
+:exampleTestErrorHandlingStep1 a step:TestErrorHandlingStep ;
     rdfs:label "Example TestErrorHandlingStep 1" ;
     rdfs:comment "This is example instance 1 of class TestErrorHandlingStep" .
 
-:exampleTestErrorHandlingStep2 a step:TestErrorHandlingStep  ;
+:exampleTestErrorHandlingStep2 a step:TestErrorHandlingStep ;
     rdfs:label "Example TestErrorHandlingStep 2" ;
     rdfs:comment "This is example instance 2 of class TestErrorHandlingStep" .
 
-:exampleTestErrorIdentification1 a step:TestErrorIdentification  ;
+:exampleTestErrorIdentification1 a step:TestErrorIdentification ;
     rdfs:label "Example TestErrorIdentification 1" ;
     rdfs:comment "This is example instance 1 of class TestErrorIdentification" .
 
-:exampleTestErrorIdentification2 a step:TestErrorIdentification  ;
+:exampleTestErrorIdentification2 a step:TestErrorIdentification ;
     rdfs:label "Example TestErrorIdentification 2" ;
     rdfs:comment "This is example instance 2 of class TestErrorIdentification" .
 
-:exampleTestErrorPrevention1 a step:TestErrorPrevention  ;
+:exampleTestErrorPrevention1 a step:TestErrorPrevention ;
     rdfs:label "Example TestErrorPrevention 1" ;
     rdfs:comment "This is example instance 1 of class TestErrorPrevention" .
 
-:exampleTestErrorPrevention2 a step:TestErrorPrevention  ;
+:exampleTestErrorPrevention2 a step:TestErrorPrevention ;
     rdfs:label "Example TestErrorPrevention 2" ;
     rdfs:comment "This is example instance 2 of class TestErrorPrevention" .
 
-:exampleTestErrorRecovery1 a step:TestErrorRecovery  ;
+:exampleTestErrorRecovery1 a step:TestErrorRecovery ;
     rdfs:label "Example TestErrorRecovery 1" ;
     rdfs:comment "This is example instance 1 of class TestErrorRecovery" .
 
-:exampleTestErrorRecovery2 a step:TestErrorRecovery  ;
+:exampleTestErrorRecovery2 a step:TestErrorRecovery ;
     rdfs:label "Example TestErrorRecovery 2" ;
     rdfs:comment "This is example instance 2 of class TestErrorRecovery" .
 
 step:ErrorAnalysisInstance a step:ErrorAnalysis ;
     step:hasStepAction "Analyze error cause and impact" ;
     step:hasStepOrder 2 .
-
-step:ErrorHandlingStepShape a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path step:hasStepOrder  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path step:hasStepAction ;
-    sh:targetClass step:ErrorHandlingStep .
-
-step:ErrorIdentificationInstance a step:ErrorIdentification ;
-    step:hasStepAction "Identify error type and severity" ;
-    step:hasStepOrder 1 .
-
-step:ErrorPreventionInstance a step:ErrorPrevention ;
-    step:hasStepAction "Prevent future errors" ;
-    step:hasStepOrder 4 .
-
-step:ErrorRecoveryInstance a step:ErrorRecovery ;
-    step:hasStepAction "Recover from the error" ;
-    step:hasStepOrder 3 .
-
-step:TestErrorAnalysisInstance a step:TestErrorAnalysis ;
-    step:hasStepAction "Analyze test errors" ;
-    step:hasStepOrder 2 .
-
-step:TestErrorIdentificationInstance a step:TestErrorIdentification ;
-    step:hasStepAction "Identify test errors" ;
-    step:hasStepOrder 1 .
-
-step:TestErrorPreventionInstance a step:TestErrorPrevention ;
-    step:hasStepAction "Prevent future test errors" ;
-    step:hasStepOrder 4 .
-
-step:TestErrorRecoveryInstance a step:TestErrorRecovery ;
-    step:hasStepAction "Recover from test errors" ;
-    step:hasStepOrder 3 .
-
-step:hasStepAction a owl:DatatypeProperty ;
-    rdfs:label "Has Step Action" ;
-    rdfs:domain step:ErrorHandlingStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-step:hasStepOrder a owl:DatatypeProperty ;
-    rdfs:label "Has Step Order" ;
-    rdfs:domain step:ErrorHandlingStep ;
-    rdfs:range xsd:integer ;
-    owl:versionInfo "1.0.0" .
-
-step:ErrorAnalysis a owl:Class ;
-    rdfs:label "Error Analysis" ;
-    rdfs:comment "Step to analyze error causes and impacts" ;
-    rdfs:subClassOf step:ErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:ErrorIdentification a owl:Class ;
-    rdfs:label "Error Identification" ;
-    rdfs:comment "Step to identify and classify errors" ;
-    rdfs:subClassOf step:ErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:ErrorPrevention a owl:Class ;
-    rdfs:label "Error Prevention" ;
-    rdfs:comment "Step to prevent future errors" ;
-    rdfs:subClassOf step:ErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:ErrorRecovery a owl:Class ;
-    rdfs:label "Error Recovery" ;
-    rdfs:comment "Step to recover from errors" ;
-    rdfs:subClassOf step:ErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:TestErrorAnalysis a owl:Class ;
-    rdfs:label "Test Error Analysis" ;
-    rdfs:comment "Step to analyze test failures" ;
-    rdfs:subClassOf step:TestErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:TestErrorIdentification a owl:Class ;
-    rdfs:label "Test Error Identification" ;
-    rdfs:comment "Step to identify test failures" ;
-    rdfs:subClassOf step:TestErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:TestErrorPrevention a owl:Class ;
-    rdfs:label "Test Error Prevention" ;
-    rdfs:comment "Step to prevent future test failures" ;
-    rdfs:subClassOf step:TestErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:TestErrorRecovery a owl:Class ;
-    rdfs:label "Test Error Recovery" ;
-    rdfs:comment "Step to recover from test failures" ;
-    rdfs:subClassOf step:TestErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:TestErrorHandlingStep a owl:Class ;
-    rdfs:label "Test Error Handling Step" ;
-    rdfs:comment "A step in the test error handling process" ;
-    rdfs:subClassOf step:ErrorHandlingStep ;
-    owl:versionInfo "1.0.0" .
-
-step:ErrorHandlingStep a owl:Class ;
-    rdfs:label "Error Handling Step" ;
-    rdfs:comment "A step in the error handling process" ;
-    owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment ;
-    sh:targetClass owl:Class .
-
-[] a sh:NodeShape ;
-    sh:property :shape3sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
 

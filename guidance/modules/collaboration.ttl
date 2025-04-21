@@ -1,197 +1,79 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
-
-@prefix : <./#> .
-@prefix core: <./core#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/#> .
-@prefix dct: <http://purl.org/dc/terms/#> .
-@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:examplePRManagementPattern1 a :PRManagementPattern  ;
-    rdfs:label "Example PRManagementPattern 1" ;
-    rdfs:comment "This is example instance 1 of class PRManagementPattern" ;
-    :hasBranchStrategy :exampleBranchStrategy1  ;
-    :hasLegacyCollaborationConcept :exampleLLMGuidanceOntology1  ;
-    :hasReviewProcess :exampleReviewProcess1  ;
-    :hasTemplate :examplePRTemplate1 .
-
-:examplePRManagementPattern2 a :PRManagementPattern  ;
-    rdfs:label "Example PRManagementPattern 2" ;
-    rdfs:comment "This is example instance 2 of class PRManagementPattern" ;
-    :hasBranchStrategy :exampleBranchStrategy2  ;
-    :hasLegacyCollaborationConcept :exampleLLMGuidanceOntology2  ;
-    :hasReviewProcess :exampleReviewProcess2  ;
-    :hasTemplate :examplePRTemplate2 .
-
-:CollaborationGuidanceModule a owl:Ontology  ;
-    rdfs:label "Collaboration Guidance Module" ;
-    dc:title "Collaboration Guidance Module" ;
-    dc:version "1.0.0" ;
-    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:description "Guidance for collaboration and PR management" ;
-    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:publisher "Ontology Framework Project" ;
-    rdfs:comment "Collaboration patterns and best practices for guidance ontology" ;
-    owl:imports <./core.ttl>,
-        <./model.ttl>,
-        <./security.ttl>,
-        <./validation.ttl> ;
+dc:title rdfs:label "title" ;
+    rdfs:comment "Description of title" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
     owl:versionInfo "1.0.0" .
 
-<./collaboration#CollaborationGuidanceModule#ModuleShape> a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path <./collaboration#CollaborationGuidanceModule#description>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./collaboration#CollaborationGuidanceModule#version>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./collaboration#CollaborationGuidanceModule#label> ;
-    sh:targetClass <./collaboration#CollaborationGuidanceModule#Module> .
-
-:branchNameFormat a owl:DatatypeProperty  ;
-    rdfs:label "Branch Name Format" ;
-    rdfs:comment "Specifies the format for branch names" ;
-    rdfs:domain :BranchStrategy ;
-    rdfs:range xsd:string .
-
-:hasBranchStrategy a owl:ObjectProperty  ;
-    rdfs:label "Has Branch Strategy" ;
-    rdfs:comment "Links PR management pattern to its branch strategy" ;
-    rdfs:domain :PRManagementPattern ;
-    rdfs:range :BranchStrategy .
-
-:hasLegacyCollaborationConcept a owl:ObjectProperty  ;
-    rdfs:label "Has Legacy Collaboration Concept" ;
-    rdfs:comment "Links modular collaboration concept to legacy guidance" ;
-    rdfs:domain :PRManagementPattern ;
-    rdfs:range guidance:LLMGuidanceOntology .
-
-:hasReviewProcess a owl:ObjectProperty  ;
-    rdfs:label "Has Review Process" ;
-    rdfs:comment "Links PR management pattern to its review process" ;
-    rdfs:domain :PRManagementPattern ;
-    rdfs:range :ReviewProcess .
-
-:hasTemplate a owl:ObjectProperty  ;
-    rdfs:label "Has Template" ;
-    rdfs:comment "Links PR management pattern to its template" ;
-    rdfs:domain :PRManagementPattern ;
-    rdfs:range :PRTemplate .
-
-:prManagementGuidance a owl:NamedIndividual,
-        :PRManagementPattern  ;
-    rdfs:label "PR Management Guidance" ;
-    rdfs:comment """Best practices for PR management:
-    1. Use feature branches with format: feature/issue-{number}-{description}
-    2. Include ontology header updates in PR description
-    3. Maintain test coverage requirements
-    4. Follow review process guidelines
-    5. Update documentation as needed
-    6. Ensure ontology consistency""" ;
-    :hasBranchStrategy [
-         a :BranchStrategy  ;
-            rdfs:label "Feature Branch Strategy" ;
-            :branchNameFormat "feature/issue-{number}-{description}"  ;
-    :hasReviewProcess [ a :ReviewProcess  ;
-            rdfs:label "Standard Review Process" ;
-            rdfs:comment "Requires one approval and passing tests" ;
-    :hasTemplate [ a :PRTemplate  ;
-            rdfs:label "Standard PR Template" ;
-            :requiresOntologyHeader true  ;
-            :requiresTestCoverage true  ;
-    core:complexity 2 ;
-    core:sourceContext "GitHub Integration" ;
-    core:targetContext "Project Management" .
-
-:requiresOntologyHeader a owl:DatatypeProperty  ;
-    rdfs:label "Requires Ontology Header" ;
-    rdfs:comment "Indicates if PR template requires ontology header information" ;
-    rdfs:domain :PRTemplate ;
-    rdfs:range xsd:boolean .
-
-:requiresTestCoverage a owl:DatatypeProperty  ;
-    rdfs:label "Requires Test Coverage" ;
-    rdfs:comment "Indicates if PR template requires test coverage information" ;
-    rdfs:domain :PRTemplate ;
-    rdfs:range xsd:boolean .
-
-:exampleBranchStrategy1 a :BranchStrategy  ;
-    rdfs:label "Example BranchStrategy 1" ;
-    rdfs:comment "This is example instance 1 of class BranchStrategy" ;
-    :branchNameFormat "Example value 1" .
-
-:exampleBranchStrategy2 a :BranchStrategy  ;
-    rdfs:label "Example BranchStrategy 2" ;
-    rdfs:comment "This is example instance 2 of class BranchStrategy" ;
-    :branchNameFormat "Example value 2" .
-
-:examplePRTemplate1 a :PRTemplate  ;
-    rdfs:label "Example PRTemplate 1" ;
-    rdfs:comment "This is example instance 1 of class PRTemplate" ;
-    :requiresOntologyHeader :exampleboolean1  ;
-    :requiresTestCoverage :exampleboolean1 .
-
-:examplePRTemplate2 a :PRTemplate  ;
-    rdfs:label "Example PRTemplate 2" ;
-    rdfs:comment "This is example instance 2 of class PRTemplate" ;
-    :requiresOntologyHeader :exampleboolean2  ;
-    :requiresTestCoverage :exampleboolean2 .
-
-:exampleReviewProcess1 a :ReviewProcess  ;
-    rdfs:label "Example ReviewProcess 1" ;
-    rdfs:comment "This is example instance 1 of class ReviewProcess" .
-
-:exampleReviewProcess2 a :ReviewProcess  ;
-    rdfs:label "Example ReviewProcess 2" ;
-    rdfs:comment "This is example instance 2 of class ReviewProcess" .
-
-:ReviewProcess a owl:Class  ;
-    rdfs:label "Review Process" ;
-    rdfs:comment "Process for reviewing and approving pull requests" ;
-    rdfs:subClassOf :PRManagementPattern ;
+dcterms:created rdfs:label "created" ;
+    rdfs:comment "Description of created" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:dateTime ;
     owl:versionInfo "1.0.0" .
 
-:BranchStrategy a owl:Class  ;
-    rdfs:label "Branch Strategy" ;
-    rdfs:comment "Strategy for branch naming and management" ;
-    rdfs:subClassOf :PRManagementPattern ;
+dcterms:description rdfs:label "description" ;
+    rdfs:comment "Description of description" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
     owl:versionInfo "1.0.0" .
 
-:PRTemplate a owl:Class  ;
-    rdfs:label "PRTemplate" ;
-    rdfs:comment "A template for structuring pull requests" ;
-    rdfs:subClassOf :PRManagementPattern ;
+dcterms:hasVersion rdfs:label "hasVersion" ;
+    rdfs:comment "Description of hasVersion" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
     owl:versionInfo "1.0.0" .
 
-:PRManagementPattern a owl:Class  ;
-    rdfs:label "PRManagementPattern" ;
-    rdfs:comment "A pattern for managing pull requests and code reviews" ;
-    rdfs:subClassOf core:BestPractice ;
+dcterms:modified rdfs:label "modified" ;
+    rdfs:comment "Description of modified" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:dateTime ;
     owl:versionInfo "1.0.0" .
 
-[
-    ] a sh:NodeShape ;
-    sh:property :shape2sh:minCount 1 ;
-            sh:path rdfs:domain  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:range ;
-    sh:targetClass rdf:Property .
+dcterms:publisher rdfs:label "publisher" ;
+    rdfs:comment "Description of publisher" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
 
-[] a sh:NodeShape ;
-    sh:property :shape3sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:comment rdfs:label "rdf-schema#comment" ;
+    rdfs:comment "Description of rdf-schema#comment" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:domain rdfs:label "rdf-schema#domain" ;
+    rdfs:comment "Description of rdf-schema#domain" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:label rdfs:label "rdf-schema#label" ;
+    rdfs:comment "Description of rdf-schema#label" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:range rdfs:label "rdf-schema#range" ;
+    rdfs:comment "Description of rdf-schema#range" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+owl:versionInfo rdfs:label "owl#versionInfo" ;
+    rdfs:comment "Description of owl#versionInfo" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
 

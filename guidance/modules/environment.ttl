@@ -1,32 +1,14 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#> .
-
-@prefix : <./#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
 @prefix dct: <http://purl.org/dc/terms/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:exampleEnvironment1 a :Environment  ;
-    rdfs:label "Example Environment 1" ;
-    rdfs:comment "This is example instance 1 of class Environment" ;
-    :hasEnvironmentName "Example value 1"  ;
-    :hasEnvironmentType "Example value 1"  ;
-    :hasEnvironmentUrl :exampleanyURI1 .
-
-:exampleEnvironment2 a :Environment  ;
-    rdfs:label "Example Environment 2" ;
-    rdfs:comment "This is example instance 2 of class Environment" ;
-    :hasEnvironmentName "Example value 2"  ;
-    :hasEnvironmentType "Example value 2"  ;
-    :hasEnvironmentUrl :exampleanyURI2 .
-
-:EnvironmentModule a owl:Ontology  ;
+:EnvironmentModule a owl:Ontology ;
     rdfs:label "Environment Module" ;
-    dc:title "Environment Module" ;
-    dc:version "1.0.0" ;
+    dc1:title "Environment Module" ;
+    dc1:version "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:description "Defines environment types and their configurations" ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
@@ -34,103 +16,17 @@
     rdfs:comment "Module defining environment types and configurations" ;
     owl:versionInfo "1.0.0" .
 
-<./environment#EnvironmentModule#ModuleShape> a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path <./environment#EnvironmentModule#description>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./environment#EnvironmentModule#version>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./environment#EnvironmentModule#label> ;
-    sh:targetClass <./environment#EnvironmentModule#Module> .
+:exampleEnvironment1 a :Environment ;
+    rdfs:label "Example Environment 1" ;
+    rdfs:comment "This is example instance 1 of class Environment" ;
+    :hasEnvironmentName "Example value 1" ;
+    :hasEnvironmentType "Example value 1" ;
+    :hasEnvironmentUrl :exampleanyURI1 .
 
-:EnvironmentShape a sh:NodeShape  ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Environment must have exactly one name" ;
-            sh:minCount 1 ;
-            sh:path :hasEnvironmentName .
-        :shape1 sh:datatype xsd:anyURI  ;
-            sh:maxCount 1 ;
-            sh:message "Environment must have exactly one URL" ;
-            sh:minCount 1 ;
-            sh:path :hasEnvironmentUrl .
-        :shape1 sh:datatype xsd:string  ;
-            sh:in ( "Development" "Testing" "Staging" "Production" ) ;
-            sh:maxCount 1 ;
-            sh:message "Environment must have exactly one type from the allowed set" ;
-            sh:minCount 1 ;
-            sh:path :hasEnvironmentType ;
-    sh:targetClass :Environment .
-
-:developmentEnvironment a owl:NamedIndividual,
-        :Environment  ;
-    rdfs:label "Development Environment" ;
-    rdfs:comment "Development environment configuration" ;
-    :hasEnvironmentName "dev"  ;
-    :hasEnvironmentType "Development"  ;
-    :hasEnvironmentUrl "http://localhost:3030" .
-
-:productionEnvironment a owl:NamedIndividual,
-        :Environment  ;
-    rdfs:label "Production Environment" ;
-    rdfs:comment "Production environment configuration" ;
-    :hasEnvironmentName "prod"  ;
-    :hasEnvironmentType "Production"  ;
-    :hasEnvironmentUrl "http://prod:3030" .
-
-:testingEnvironment a owl:NamedIndividual,
-        :Environment  ;
-    rdfs:label "Testing Environment" ;
-    rdfs:comment "Testing environment configuration" ;
-    :hasEnvironmentName "test"  ;
-    :hasEnvironmentType "Testing"  ;
-    :hasEnvironmentUrl "http://test:3030" .
-
-:hasEnvironmentName a owl:DatatypeProperty  ;
-    rdfs:label "Environment Name" ;
-    rdfs:comment "Name of the environment" ;
-    rdfs:domain :Environment ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:hasEnvironmentType a owl:DatatypeProperty  ;
-    rdfs:label "Environment Type" ;
-    rdfs:comment "Type of environment (e.g., Development, Testing, Production)" ;
-    rdfs:domain :Environment ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:hasEnvironmentUrl a owl:DatatypeProperty  ;
-    rdfs:label "Environment URL" ;
-    rdfs:comment "Base URL of the environment" ;
-    rdfs:domain :Environment ;
-    rdfs:range xsd:anyURI ;
-    owl:versionInfo "1.0.0" .
-
-:Environment a owl:Class  ;
-    rdfs:label "Environment" ;
-    rdfs:comment "A deployment or development environment" ;
-    owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape3sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
-
-[] a sh:NodeShape ;
-    sh:property :shape4sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
+:exampleEnvironment2 a :Environment ;
+    rdfs:label "Example Environment 2" ;
+    rdfs:comment "This is example instance 2 of class Environment" ;
+    :hasEnvironmentName "Example value 2" ;
+    :hasEnvironmentType "Example value 2" ;
+    :hasEnvironmentUrl :exampleanyURI2 .
 

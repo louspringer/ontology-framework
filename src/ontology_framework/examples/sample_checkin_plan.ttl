@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix checkin: <http://example.org/checkin#> .
+@prefix plan: <http://example.org/plan#> .
+
+plan:SampleCheckinPlan a owl:Ontology, checkin:CheckinPlan ;
+    rdfs:label "Sample Check-in Plan" ;
+    rdfs:comment "A sample check-in plan for testing" ;
+    owl:versionInfo "1.0.0" .
+
+plan:Step1 a checkin:IntegrationStep ;
+    rdfs:label "Step 1" ;
+    rdfs:comment "First integration step" ;
+    checkin:stepOrder "1"^^xsd:integer .
+
+plan:Step2 a checkin:IntegrationStep ;
+    rdfs:label "Step 2" ;
+    rdfs:comment "Second integration step" ;
+    checkin:stepOrder "2"^^xsd:integer .
+
+plan:Step3 a checkin:IntegrationStep ;
+    rdfs:label "Step 3"@en ;
+    rdfs:comment "Third integration step"@en ;
+    checkin:stepOrder "3"^^xsd:integer ;
+    checkin:stepDescription "Final integration step"@en ;
+    checkin:conformanceLevel "RELAXED" . 

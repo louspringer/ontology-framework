@@ -1,11 +1,7 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/sparql_operations#> .
-
-@prefix : <./#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
 @prefix ns1: <http://example.org/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ns1:hasOperationType a owl:DatatypeProperty ;
@@ -53,23 +49,23 @@ ns1:tempOntology a ns1:TemporaryOntology ;
     ns1:hasValidationQuery ns1:validateOntology ;
     rdfs:comment "Temporary ontology for CRUD operations" .
 
-:exampleSparqlOperation1 a ns1:SparqlOperation  ;
+:exampleSparqlOperation1 a ns1:SparqlOperation ;
     rdfs:label "Example SparqlOperation 1" ;
     ns1:hasOperationType "Example value 1" ;
     rdfs:comment "This is example instance 1 of class SparqlOperation" .
 
-:exampleSparqlOperation2 a ns1:SparqlOperation  ;
+:exampleSparqlOperation2 a ns1:SparqlOperation ;
     rdfs:label "Example SparqlOperation 2" ;
     ns1:hasOperationType "Example value 2" ;
     rdfs:comment "This is example instance 2 of class SparqlOperation" .
 
-:exampleTemporaryOntology1 a ns1:TemporaryOntology  ;
+:exampleTemporaryOntology1 a ns1:TemporaryOntology ;
     rdfs:label "Example TemporaryOntology 1" ;
     ns1:hasTemporaryDataset "Example value 1" ;
     ns1:hasValidationQuery :exampleSparqlQuery1 ;
     rdfs:comment "This is example instance 1 of class TemporaryOntology" .
 
-:exampleTemporaryOntology2 a ns1:TemporaryOntology  ;
+:exampleTemporaryOntology2 a ns1:TemporaryOntology ;
     rdfs:label "Example TemporaryOntology 2" ;
     ns1:hasTemporaryDataset "Example value 2" ;
     ns1:hasValidationQuery :exampleSparqlQuery2 ;
@@ -87,12 +83,12 @@ ns1:validateOntology a ns1:SparqlQuery ;
     """ ;
     rdfs:comment "Query to validate ontology structure" .
 
-:exampleSparqlQuery1 a ns1:SparqlQuery  ;
+:exampleSparqlQuery1 a ns1:SparqlQuery ;
     rdfs:label "Example SparqlQuery 1" ;
     ns1:hasQueryString "Example value 1" ;
     rdfs:comment "This is example instance 1 of class SparqlQuery" .
 
-:exampleSparqlQuery2 a ns1:SparqlQuery  ;
+:exampleSparqlQuery2 a ns1:SparqlQuery ;
     rdfs:label "Example SparqlQuery 2" ;
     ns1:hasQueryString "Example value 2" ;
     rdfs:comment "This is example instance 2 of class SparqlQuery" .
@@ -113,23 +109,4 @@ ns1:SparqlQuery a owl:Class ;
     rdfs:comment "SPARQL query for operations" ;
     rdfs:subClassOf ns1:SparqlOperation ;
     owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape1sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
-
-[] a sh:NodeShape ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
 

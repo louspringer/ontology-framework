@@ -1,0 +1,133 @@
+@prefix : <./pdca#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# Classes
+:PDCALoop a owl:Class ;
+    rdfs:label "PDCA Loop" ;
+    rdfs:comment "A continuous improvement cycle consisting of Plan, Do, Check, and Act phases" .
+
+:PlanPhase a owl:Class ;
+    rdfs:label "Plan Phase" ;
+    rdfs:comment "The planning phase of the PDCA cycle" .
+
+:DoPhase a owl:Class ;
+    rdfs:label "Do Phase" ;
+    rdfs:comment "The implementation phase of the PDCA cycle" .
+
+:CheckPhase a owl:Class ;
+    rdfs:label "Check Phase" ;
+    rdfs:comment "The evaluation phase of the PDCA cycle" .
+
+:ActPhase a owl:Class ;
+    rdfs:label "Act Phase" ;
+    rdfs:comment "The adjustment phase of the PDCA cycle" .
+
+# Properties
+:hasPlanPhase a owl:ObjectProperty ;
+    rdfs:label "has plan phase" ;
+    rdfs:comment "Indicates the planning phase of a PDCA loop" ;
+    rdfs:domain :PDCALoop ;
+    rdfs:range :PlanPhase .
+
+:hasDoPhase a owl:ObjectProperty ;
+    rdfs:label "has do phase" ;
+    rdfs:comment "Indicates the implementation phase of a PDCA loop" ;
+    rdfs:domain :PDCALoop ;
+    rdfs:range :DoPhase .
+
+:hasCheckPhase a owl:ObjectProperty ;
+    rdfs:label "has check phase" ;
+    rdfs:comment "Indicates the evaluation phase of a PDCA loop" ;
+    rdfs:domain :PDCALoop ;
+    rdfs:range :CheckPhase .
+
+:hasActPhase a owl:ObjectProperty ;
+    rdfs:label "has act phase" ;
+    rdfs:comment "Indicates the adjustment phase of a PDCA loop" ;
+    rdfs:domain :PDCALoop ;
+    rdfs:range :ActPhase .
+
+:hasStartTime a owl:DatatypeProperty ;
+    rdfs:label "has start time" ;
+    rdfs:comment "Indicates when a PDCA loop phase begins" ;
+    rdfs:range xsd:dateTime .
+
+:hasEndTime a owl:DatatypeProperty ;
+    rdfs:label "has end time" ;
+    rdfs:comment "Indicates when a PDCA loop phase ends" ;
+    rdfs:range xsd:dateTime .
+
+:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status" ;
+    rdfs:comment "Indicates the current status of a PDCA loop phase" ;
+    rdfs:range xsd:string .
+
+:hasMetrics a owl:DatatypeProperty ;
+    rdfs:label "has metrics" ;
+    rdfs:comment "Indicates the performance metrics associated with a PDCA loop" ;
+    rdfs:range xsd:string .
+
+# SHACL Shapes
+:PDCALoopShape a sh:NodeShape ;
+    sh:targetClass :PDCALoop ;
+    sh:property [
+        sh:path :hasPlanPhase ;
+        sh:minCount 1 ;
+        sh:message "PDCA Loop must have a Plan phase"
+    ] ;
+    sh:property [
+        sh:path :hasDoPhase ;
+        sh:minCount 1 ;
+        sh:message "PDCA Loop must have a Do phase"
+    ] ;
+    sh:property [
+        sh:path :hasCheckPhase ;
+        sh:minCount 1 ;
+        sh:message "PDCA Loop must have a Check phase"
+    ] ;
+    sh:property [
+        sh:path :hasActPhase ;
+        sh:minCount 1 ;
+        sh:message "PDCA Loop must have an Act phase"
+    ] .
+
+# Example Instance
+:CurrentPDCALoop a :PDCALoop ;
+    rdfs:label "Current PDCA Loop" ;
+    rdfs:comment "The current PDCA loop for the project" ;
+    :hasStartTime "2024-04-11T14:00:00Z"^^xsd:dateTime ;
+    :hasStatus "ACTIVE" ;
+    :hasMetrics "Test Coverage: 30%, Error Rate: 5%, Velocity: 2x" .
+
+# TODO Section
+:TODO a owl:Class ;
+    rdfs:label "TODO Items" ;
+    rdfs:comment "Future improvements and tasks" .
+
+:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "has priority" ;
+    rdfs:range xsd:string .
+
+:hasTargetDate a owl:DatatypeProperty ;
+    rdfs:label "has target date" ;
+    rdfs:range xsd:date .
+
+:FuturePDCAImprovements a :TODO ;
+    rdfs:label "Future PDCA Improvements" ;
+    rdfs:comment "Planned improvements for the PDCA loop implementation" ;
+    :hasPriority "HIGH" ;
+    :hasTargetDate "2024-04-18"^^xsd:date ;
+    rdfs:seeAlso """
+    1. Implement automated metrics collection
+    2. Add visualization of PDCA cycles
+    3. Integrate with project management tools
+    4. Add support for nested PDCA loops
+    5. Implement automated phase transition triggers
+    """ . 

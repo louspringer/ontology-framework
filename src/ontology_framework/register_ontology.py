@@ -1,260 +1,162 @@
-import oracledb
-import os
-import re
+"""Ontology registration functionality for the ontology framework.
+
+This module provides functionality for registering and loading ontologies,
+including version tracking and dependency management.
+"""
+
+from typing import Dict, List, Optional, Set, Union
+import logging
 from pathlib import Path
-from rdflib import Graph, Namespace, URIRef, Literal, RDF, RDFS
-from rdflib.namespace import RDF, RDFS
-from typing import Optional, Dict, Any
-from .logging_config import OntologyFrameworkLogger
+from datetime import datetime
+from rdflib import Graph, URIRef, Literal, Namespace
+from rdflib.namespace import RDF, RDFS, OWL
+from .exceptions import RegistrationError
 
-# Initialize logger
-logger = OntologyFrameworkLogger.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
-# Define namespaces
-GUIDANCE = Namespace("http://ontologies.louspringer.com/guidance#")
-RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-OWL = Namespace("http://www.w3.org/2002/07/owl#")
-DEPLOYMENT = Namespace("./oracle_deployment#")
-
-def get_absolute_uri(relative_path):
-    """Convert a relative path to an absolute file:// URI"""
-    abs_path = os.path.abspath(relative_path)
-    return f"file://{os.path.dirname(abs_path)}"
-
-def sanitize_name(name, max_length=25):
+def register_ontology(ontology_file: Union[str, Path], 
+                     version: str,
+                     dependencies: Optional[List[str]] = None) -> None:
+    """Register an ontology with version and dependency information.
+    
+    Args:
+        ontology_file: Path to ontology TTL file
+        version: Version string (MAJOR.MINOR.PATCH)
+        dependencies: Optional list of dependency URIs
+        
+    Raises:
+        RegistrationError: If registration fails
     """
-    Sanitize a name to conform to Oracle naming conventions:
-    - Uppercase
-    - Start with letter
-    - Only letters, numbers, and underscores
-    - Max length (default 25 for model names)
-    """
-    # Convert to uppercase and replace non-alphanumeric with underscore
-    name = re.sub(r'[^a-zA-Z0-9]', '_', name.upper())
-    # Ensure starts with letter
-    if not name[0].isalpha():
-        name = 'O_' + name
-    # Truncate to max length
-    return name[:max_length]
-
-def load_ontology(file_path):
-    """Load an ontology file and return its graph"""
-    g = Graph()
-    g.parse(file_path, format="turtle")
-    return g
-
-def get_ontology_info(graph):
-    """Extract ontology information from the graph"""
-    # Try to find the ontology declaration
-    for s, p, o in graph.triples((None, RDF.type, OWL.Ontology)):
-        ontology_uri = str(s)
-        # Get label
-        label = None
-        for _, _, l in graph.triples((s, RDFS.label, None)):
-            label = str(l)
-            break
-        # Get version
-        version = None
-        for _, _, v in graph.triples((s, OWL.versionInfo, None)):
-            version = str(v)
-            break
-        return {
-            'uri': ontology_uri,
-            'label': label or Path(ontology_uri).stem,
-            'version': version or '1.0.0'
-        }
-    
-    # If no explicit ontology declaration found, infer from file and prefixes
-    prefixes = dict(graph.namespaces())
-    # Look for domain-specific prefix
-    domain_prefix = None
-    for prefix, uri in prefixes.items():
-        if 'louspringer.com' in str(uri):
-            domain_prefix = prefix
-            break
-    
-    if domain_prefix:
-        uri = str(prefixes[domain_prefix])
-        # Extract name from URI
-        name = uri.split('/')[-1].replace('#', '')
-        return {
-            'uri': uri,
-            'label': name,
-            'version': '1.0.0'
-        }
-    
-    # Fallback to file name
-    file_name = Path(graph.identifier).stem if graph.identifier else "unknown"
-    return {
-        'uri': f"http://ontologies.louspringer.com/{file_name}#",
-        'label': file_name.replace('transformed_', ''),
-        'version': '1.0.0'
-    }
-
-def register_ontology(ontology_path):
-    """Register an ontology with Oracle RDF"""
     try:
-        # Load and validate ontology
-        logger.info(f"Loading ontology from {ontology_path}")
-        graph = load_ontology(ontology_path)
-        ontology_info = get_ontology_info(graph)
+        ontology_path = Path(ontology_file)
+        graph = Graph()
+        graph.parse(str(ontology_path), format="turtle")
         
-        if not ontology_info:
-            logger.error("No ontology declaration found in the file")
-            raise ValueError("No ontology declaration found in the file")
+        # Add version info
+        ontology_uri = graph.value(None, RDF.type, OWL.Ontology)
+        if not ontology_uri:
+            raise RegistrationError("No ontology declaration found")
             
-        # Generate Oracle-compatible model name
-        model_name = sanitize_name(ontology_info['label'])
+        graph.remove((ontology_uri, OWL.versionInfo, None))
+        graph.add((ontology_uri, OWL.versionInfo, Literal(version)))
         
-        logger.info("Registering ontology with details:")
-        logger.info(f"  URI: {ontology_info['uri']}")
-        logger.info(f"  Label: {ontology_info['label']}")
-        logger.info(f"  Version: {ontology_info['version']}")
-        logger.info(f"  Model Name: {model_name}")
-        
-        # Connect to Oracle
-        connection = oracledb.connect(
-            user=os.environ.get('ORACLE_USER'),
-            password=os.environ.get('ORACLE_PASSWORD'),
-            dsn=os.environ.get('ORACLE_DSN')
-        )
-        logger.debug("Connected to Oracle Database")
-        
-        cursor = connection.cursor()
-        
-        # Get current schema for network owner
-        cursor.execute("SELECT SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') FROM DUAL")
-        current_schema = cursor.fetchone()[0]
-        
-        # Drop existing model if it exists
-        try:
-            cursor.execute("""
-                BEGIN
-                    SEM_APIS.DROP_SEM_MODEL(
-                        model_name => :model_name,
-                        network_owner => :network_owner,
-                        network_name => 'ONTOLOGY_FRAMEWORK'
-                    );
-                EXCEPTION
-                    WHEN OTHERS THEN
-                        IF SQLCODE != -55301 THEN
-                            RAISE;
-                        END IF;
-                END;
-            """, {'model_name': model_name, 'network_owner': current_schema})
-            
-            # Create RDF model in schema-private network
-            cursor.execute("""
-                BEGIN
-                    SEM_APIS.CREATE_SEM_MODEL(
-                        model_name => :model_name,
-                        table_name => NULL,
-                        column_name => NULL,
-                        network_owner => :network_owner,
-                        network_name => 'ONTOLOGY_FRAMEWORK'
-                    );
-                END;
-            """, {
-                'model_name': model_name,
-                'network_owner': current_schema
-            })
-            
-            connection.commit()
-            logger.info(f"Created RDF model {model_name}")
-            
-            # Update session.ttl with registration info
-            update_session_ttl(ontology_info, model_name)
-            
-        except oracledb.DatabaseError as e:
-            error_obj, = e.args
-            logger.error(f"Database error: {error_obj.message}")
-            if hasattr(error_obj, 'help'):
-                logger.error(f"Help: {error_obj.help}")
-            raise
-            
-        finally:
-            if 'connection' in locals():
-                connection.close()
-                logger.debug("Database connection closed")
+        # Add dependencies
+        if dependencies:
+            for dep in dependencies:
+                graph.add((ontology_uri, OWL.imports, URIRef(dep)))
                 
-    except Exception as e:
-        logger.error(f"Error registering ontology: {str(e)}")
-        raise
-
-def update_session_ttl(ontology_info, model_name, session_file=Path('session.ttl')):
-    """Update session.ttl with registration information"""
-    session_ttl = session_file
-    if not session_ttl.exists():
-        logger.info(f"Creating new session file at {session_ttl}")
-        # Create session.ttl if it doesn't exist
-        with open(session_ttl, 'w') as f:
-            f.write("""@prefix : <file:///Users/lou/Documents/ontology-framework/session#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix guidance: <./guidance#> .
-@prefix deployment: <./oracle_deployment#> .
-
-:SessionOntology rdf:type owl:Ontology ;
-    rdfs:label "Session Ontology" ;
-    rdfs:comment "Tracks current work and next steps" ;
-    owl:versionInfo "1.0.0" .
-
-:RegisteredOntology rdf:type owl:Class ;
-    rdfs:label "Registered Ontology" ;
-    rdfs:comment "An ontology registered with Oracle RDF" ;
-    rdfs:subClassOf deployment:DeployedModel .
-
-:hasModelName rdf:type owl:DatatypeProperty ;
-    rdfs:domain :RegisteredOntology ;
-    rdfs:range xsd:string .
-
-:hasVersion rdf:type owl:DatatypeProperty ;
-    rdfs:domain :RegisteredOntology ;
-    rdfs:range xsd:string .
-""")
-    
-    # Load existing session graph
-    session_graph = Graph()
-    if session_ttl.exists():
-        logger.debug(f"Loading existing session file from {session_ttl}")
-        session_graph.parse(session_ttl, format="turtle")
-    
-    # Add registration info using proper RDFLib terms with absolute URIs
-    base_uri = get_absolute_uri(session_ttl)
-    SESSION = Namespace(f"{base_uri}/session#")
-    registration_node = URIRef(f"{SESSION}{model_name}")
-    
-    logger.debug(f"Adding registration info for model {model_name}")
-    session_graph.add((registration_node, RDF.type, SESSION.RegisteredOntology))
-    session_graph.add((registration_node, SESSION.hasModelName, Literal(model_name)))
-    session_graph.add((registration_node, SESSION.hasVersion, Literal(ontology_info['version'])))
-    session_graph.add((registration_node, RDFS.label, Literal(ontology_info['label'])))
-    
-    # Save updated session.ttl
-    session_graph.serialize(session_ttl, format="turtle")
-    logger.info(f"Updated {session_ttl} with registration info for {model_name}")
-
-class OntologyRegistrar:
-    """Class for registering and managing ontologies."""
-    
-    def __init__(self, registry_path: str):
-        """Initialize the ontology registrar.
+        # Write updated ontology
+        graph.serialize(ontology_path, format="turtle")
+        logger.info(f"Registered ontology {ontology_file} with version {version}")
         
-        Args:
-            registry_path: Path to the ontology registry file
-        """
-        self.logger = OntologyFrameworkLogger.get_logger("ontology_registrar")
-        self.registry_path = registry_path
-        self.graph = Graph()
-        self.logger.info(f"Loading ontology registry from {registry_path}")
-        self.graph.parse(registry_path, format="turtle")
-
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 2:
-        print("Usage: python register_ontology.py <ontology_file>")
-        sys.exit(1)
-    register_ontology(sys.argv[1]) 
+        # Update session.ttl
+        update_session_ttl(ontology_file, version)
+        
+    except Exception as e:
+        raise RegistrationError(f"Failed to register ontology: {str(e)}")
+        
+def load_ontology(ontology_file: Union[str, Path], 
+                  load_imports: bool = True) -> Graph:
+    """Load an ontology and optionally its imports.
+    
+    Args:
+        ontology_file: Path to ontology TTL file
+        load_imports: Whether to load imported ontologies
+        
+    Returns:
+        Loaded RDFlib Graph
+        
+    Raises:
+        RegistrationError: If loading fails
+    """
+    try:
+        graph = Graph()
+        graph.parse(str(ontology_file), format="turtle")
+        
+        if load_imports:
+            # Load imported ontologies
+            for import_uri in graph.objects(None, OWL.imports):
+                try:
+                    import_graph = Graph()
+                    import_graph.parse(str(import_uri))
+                    graph += import_graph
+                    logger.info(f"Loaded imported ontology {import_uri}")
+                except Exception as e:
+                    logger.warning(f"Failed to load import {import_uri}: {str(e)}")
+                    
+        return graph
+        
+    except Exception as e:
+        raise RegistrationError(f"Failed to load ontology: {str(e)}")
+        
+def update_session_ttl(ontology_file: Union[str, Path], 
+                      version: str) -> None:
+    """Update session.ttl with ontology registration info.
+    
+    Args:
+        ontology_file: Path to registered ontology
+        version: Version string
+        
+    Raises:
+        RegistrationError: If update fails
+    """
+    try:
+        session_file = Path("session.ttl")
+        if not session_file.exists():
+            # Create new session.ttl
+            graph = Graph()
+            graph.bind("owl", OWL)
+            graph.bind("rdf", RDF)
+            graph.bind("rdfs", RDFS)
+        else:
+            graph = Graph()
+            graph.parse(str(session_file), format="turtle")
+            
+        # Add registration info
+        session_ns = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/session#")
+        graph.bind("session", session_ns)
+        
+        reg = URIRef(f"{session_ns}registration_{datetime.now().isoformat()}")
+        graph.add((reg, RDF.type, session_ns.Registration))
+        graph.add((reg, session_ns.ontologyFile, Literal(str(ontology_file))))
+        graph.add((reg, session_ns.version, Literal(version)))
+        graph.add((reg, session_ns.timestamp, Literal(datetime.now().isoformat())))
+        
+        graph.serialize(session_file, format="turtle")
+        logger.info(f"Updated session.ttl with registration of {ontology_file}")
+        
+    except Exception as e:
+        raise RegistrationError(f"Failed to update session.ttl: {str(e)}")
+        
+def get_registered_ontologies() -> List[Dict[str, str]]:
+    """Get list of registered ontologies from session.ttl.
+    
+    Returns:
+        List of dictionaries with ontology info
+        
+    Raises:
+        RegistrationError: If reading fails
+    """
+    try:
+        session_file = Path("session.ttl")
+        if not session_file.exists():
+            return []
+            
+        graph = Graph()
+        graph.parse(str(session_file), format="turtle")
+        
+        session_ns = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/session#")
+        registrations = []
+        
+        for reg in graph.subjects(RDF.type, session_ns.Registration):
+            info = {
+                "file": str(graph.value(reg, session_ns.ontologyFile)),
+                "version": str(graph.value(reg, session_ns.version)),
+                "timestamp": str(graph.value(reg, session_ns.timestamp))
+            }
+            registrations.append(info)
+            
+        return registrations
+        
+    except Exception as e:
+        raise RegistrationError(f"Failed to get registered ontologies: {str(e)}") 

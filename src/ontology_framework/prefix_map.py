@@ -1,113 +1,122 @@
-"""Prefix map module for managing ontology prefixes."""
+"""Prefix mapping functionality for the ontology framework.
 
-from enum import Enum, auto
-from rdflib import Graph, Namespace
-from typing import Dict, Optional
+This module provides functionality for managing ontology prefixes and namespaces,
+including standard prefix mappings and prefix categorization.
+"""
 
+from typing import Dict, List, Optional, Set
+from enum import Enum
+import logging
+from rdflib import Graph, Namespace, URIRef
 
-class PrefixCategory(str, Enum):
-    """Categories for prefixes."""
-    STANDARD = "standard"      # RDF, RDFS, OWL, etc.
-    DOMAIN = "domain"         # Domain-specific ontologies
-    EXTERNAL = "external"     # External ontologies
-    LOCAL = "local"          # Local project ontologies
-    CORE = "core"           # Core framework ontologies
+logger = logging.getLogger(__name__)
 
+class PrefixCategory(Enum):
+    """Categories for prefix mappings."""
+    CORE = "core"
+    DOMAIN = "domain"
+    EXTERNAL = "external"
+    CUSTOM = "custom"
 
 class PrefixMap:
-    """Manages ontology prefixes and their mappings."""
+    """Manages prefix mappings for ontologies."""
     
     def __init__(self):
-        self.prefixes: Dict[str, str] = {
-            'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-            'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-            'owl': 'http://www.w3.org/2002/07/owl#',
-            'xsd': 'http://www.w3.org/2001/XMLSchema#',
-            'dc': 'http://purl.org/dc/elements/1.1/',
-            'dct': 'http://purl.org/dc/terms/',
-            'meta': 'http://ontologies.louspringer.com/meta#',
-            'guidance': 'http://ontologies.louspringer.com/guidance#',
-            'problem': 'http://ontologies.louspringer.com/problem#',
-            'solution': 'http://ontologies.louspringer.com/solution#',
-            'conversation': 'http://ontologies.louspringer.com/conversation#',
-            'process': 'http://ontologies.louspringer.com/process#',
-            'agent': 'http://ontologies.louspringer.com/agent#',
-            'time': 'http://ontologies.louspringer.com/time#',
-            'sh': 'http://www.w3.org/ns/shacl#'
-        }
-        self.categories: Dict[str, PrefixCategory] = {
-            'rdf': PrefixCategory.EXTERNAL,
-            'rdfs': PrefixCategory.EXTERNAL,
-            'owl': PrefixCategory.EXTERNAL,
-            'xsd': PrefixCategory.EXTERNAL,
-            'dc': PrefixCategory.EXTERNAL,
-            'dct': PrefixCategory.EXTERNAL,
-            'meta': PrefixCategory.CORE,
-            'guidance': PrefixCategory.CORE,
-            'problem': PrefixCategory.CORE,
-            'solution': PrefixCategory.CORE,
-            'conversation': PrefixCategory.CORE,
-            'process': PrefixCategory.CORE,
-            'agent': PrefixCategory.CORE,
-            'time': PrefixCategory.CORE,
-            'sh': PrefixCategory.EXTERNAL
-        }
+        """Initialize prefix map."""
+        self.prefixes: Dict[str, URIRef] = {}
+        self.categories: Dict[str, PrefixCategory] = {}
         
-    def add_prefix(self, prefix: str, uri: str) -> None:
-        """Add a new prefix mapping."""
-        self.prefixes[prefix] = uri
+    def add_prefix(self, prefix: str, uri: str, category: PrefixCategory) -> None:
+        """Add a prefix mapping.
         
-    def get_uri(self, prefix: str) -> Optional[str]:
-        """Get the URI for a prefix."""
+        Args:
+            prefix: Prefix string
+            uri: URI string
+            category: Prefix category
+        """
+        self.prefixes[prefix] = URIRef(uri)
+        self.categories[prefix] = category
+        logger.info(f"Added prefix mapping: {prefix} -> {uri} ({category.value})")
+        
+    def remove_prefix(self, prefix: str) -> None:
+        """Remove a prefix mapping.
+        
+        Args:
+            prefix: Prefix to remove
+        """
+        if prefix in self.prefixes:
+            del self.prefixes[prefix]
+            del self.categories[prefix]
+            logger.info(f"Removed prefix mapping: {prefix}")
+            
+    def get_uri(self, prefix: str) -> Optional[URIRef]:
+        """Get URI for a prefix.
+        
+        Args:
+            prefix: Prefix to look up
+            
+        Returns:
+            URI if found, None otherwise
+        """
         return self.prefixes.get(prefix)
         
-    def get_namespace(self, prefix: str) -> Optional[Namespace]:
-        """Get the namespace URI for a prefix."""
-        uri = self.get_uri(prefix)
-        if uri:
-            return Namespace(uri)
-        return None
+    def get_category(self, prefix: str) -> Optional[PrefixCategory]:
+        """Get category for a prefix.
         
-    def bind_to_graph(self, graph: Graph) -> None:
-        """Bind all prefixes to a graph."""
+        Args:
+            prefix: Prefix to look up
+            
+        Returns:
+            Category if found, None otherwise
+        """
+        return self.categories.get(prefix)
+        
+    def get_prefixes_by_category(self, category: PrefixCategory) -> Set[str]:
+        """Get all prefixes in a category.
+        
+        Args:
+            category: Category to filter by
+            
+        Returns:
+            Set of prefixes in the category
+        """
+        return {prefix for prefix, cat in self.categories.items() if cat == category}
+        
+    def apply_to_graph(self, graph: Graph) -> None:
+        """Apply prefix mappings to a graph.
+        
+        Args:
+            graph: RDFlib Graph to apply mappings to
+        """
         for prefix, uri in self.prefixes.items():
             graph.bind(prefix, Namespace(uri))
             
-    def transform_uri(self, uri_str: str) -> str:
-        """Transform URIs to use ontologies.louspringer.com domain consistently."""
-        if uri_str.startswith('file:///'):
-            # Extract the last part of the path after ontology-framework/
-            parts = uri_str.split('ontology-framework/')
-            if len(parts) > 1:
-                return f'http://ontologies.louspringer.com/{parts[1]}'
-            return uri_str
-        elif uri_str.startswith('./'):
-            # Handle relative URIs
-            return f'http://ontologies.louspringer.com/{uri_str[2:]}'
-        elif uri_str.startswith('http://example.org/') or uri_str.startswith('http://louspringer.com/'):
-            # Replace example.org or louspringer.com with ontologies.louspringer.com
-            return uri_str.replace(
-                uri_str.split('/')[2], 
-                'ontologies.louspringer.com'
-            )
-        return uri_str
+    def merge(self, other: 'PrefixMap') -> None:
+        """Merge another prefix map into this one.
+        
+        Args:
+            other: PrefixMap to merge
+        """
+        self.prefixes.update(other.prefixes)
+        self.categories.update(other.categories)
+        logger.info("Merged prefix mappings")
 
-    def get_category(self, prefix: str) -> Optional[PrefixCategory]:
-        """Get the category of a prefix."""
-        return self.categories.get(prefix)
+# Default prefix mappings
+default_prefix_map = PrefixMap()
 
-    def is_valid_prefix(self, prefix: str) -> bool:
-        """Check if a prefix is valid."""
-        return prefix in self.prefixes
+# Core prefixes
+default_prefix_map.add_prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#", PrefixCategory.CORE)
+default_prefix_map.add_prefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#", PrefixCategory.CORE)
+default_prefix_map.add_prefix("owl", "http://www.w3.org/2002/07/owl#", PrefixCategory.CORE)
+default_prefix_map.add_prefix("xsd", "http://www.w3.org/2001/XMLSchema#", PrefixCategory.CORE)
 
-    def get_all_prefixes(self) -> Dict[str, Namespace]:
-        """Get all registered prefixes as a dictionary mapping prefix to Namespace."""
-        return {prefix: Namespace(uri) for prefix, uri in self.prefixes.items()}
+# Domain prefixes
+default_prefix_map.add_prefix("skos", "http://www.w3.org/2004/02/skos/core#", PrefixCategory.DOMAIN)
+default_prefix_map.add_prefix("dc", "http://purl.org/dc/elements/1.1/", PrefixCategory.DOMAIN)
+default_prefix_map.add_prefix("dct", "http://purl.org/dc/terms/", PrefixCategory.DOMAIN)
+default_prefix_map.add_prefix("foaf", "http://xmlns.com/foaf/0.1/", PrefixCategory.DOMAIN)
 
-    def register_prefix(self, prefix: str, uri: str, category: PrefixCategory) -> None:
-        """Register a new prefix with its category."""
-        self.prefixes[prefix] = uri
-        self.categories[prefix] = category
-
-# Create a default instance
-default_prefix_map = PrefixMap() 
+# External prefixes
+default_prefix_map.add_prefix("schema", "http://schema.org/", PrefixCategory.EXTERNAL)
+default_prefix_map.add_prefix("void", "http://rdfs.org/ns/void#", PrefixCategory.EXTERNAL)
+default_prefix_map.add_prefix("prov", "http://www.w3.org/ns/prov#", PrefixCategory.EXTERNAL) 

@@ -5,7 +5,7 @@ import pytest
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
-from ontology_framework.patch_management import GraphDBPatchManager
+from ontology_framework.modules.patch_management import GraphDBPatchManager
 
 # Test data
 TEST_PATCH = """
@@ -29,7 +29,10 @@ TEST_PATCH = """
 @pytest.fixture
 def patch_manager():
     """Create a test patch manager."""
-    manager = GraphDBPatchManager(repository="test-ontology-framework")
+    manager = GraphDBPatchManager(
+        repository="test-ontology-framework",
+        base_uri="http://example.org/patches/"
+    )
     yield manager
     # Cleanup after tests
     manager.client.session.close()

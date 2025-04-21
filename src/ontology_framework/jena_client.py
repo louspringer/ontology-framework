@@ -1,119 +1,241 @@
-"""Jena Fuseki client for SPARQL operations."""
+"""
+Module for interacting with Apache Jena Fuseki.
+"""
 
-import logging
-from typing import Any, Dict, List, Optional
 import requests
+from typing import Dict, List, Optional, Any
 from rdflib import Graph, URIRef, Literal, Namespace
-from rdflib.plugins.stores.sparqlstore import SPARQLStore
+from rdflib.namespace import RDF, RDFS, OWL
 
-logger = logging.getLogger(__name__)
+class JenaError(Exception):
+    """Base exception for Jena client errors."""
+    pass
+
+class JenaConnectionError(JenaError):
+    """Exception raised when connection to Jena fails."""
+    pass
+
+class JenaQueryError(JenaError):
+    """Exception raised when a SPARQL query fails."""
+    pass
+
+class JenaUpdateError(JenaError):
+    """Exception raised when a SPARQL update fails."""
+    pass
 
 class JenaFusekiClient:
-    """Client for interacting with Jena Fuseki SPARQL server."""
-
-    def __init__(self, endpoint: str = "http://localhost:3030/guidance"):
-        """Initialize Jena Fuseki client.
-
+    """Client for interacting with Apache Jena Fuseki."""
+    
+    def __init__(self, endpoint_url: str, dataset: str):
+        """Initialize the client.
+        
         Args:
-            endpoint: SPARQL endpoint URL
+            endpoint_url: Base URL of the Fuseki server
+            dataset: Name of the dataset to work with
         """
-        self.endpoint = endpoint
-        self.store = SPARQLStore(endpoint)
-        self.graph = Graph(store=self.store)
-        self._setup_namespaces()
-
-    def _setup_namespaces(self) -> None:
-        """Set up common namespaces."""
-        self.ns1 = Namespace("http://example.org/guidance#")
-        self.rdf = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-        self.rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-        self.owl = Namespace("http://www.w3.org/2002/07/owl#")
-        self.xsd = Namespace("http://www.w3.org/2001/XMLSchema#")
-        self.sh = Namespace("http://www.w3.org/ns/shacl#")
-
-    def execute_sparql(self, query: str) -> List[Dict[str, Any]]:
+        self.endpoint_url = endpoint_url.rstrip('/')
+        self.dataset = dataset
+        self.query_url = f"{self.endpoint_url}/{dataset}/query"
+        self.update_url = f"{self.endpoint_url}/{dataset}/update"
+        self.graph_store_url = f"{self.endpoint_url}/{dataset}/data"
+        
+    def query(self, sparql_query: str) -> List[Dict[str, Any]]:
         """Execute a SPARQL query.
-
+        
         Args:
-            query: SPARQL query string
-
+            sparql_query: The SPARQL query to execute
+            
         Returns:
-            List of query results
+            List of query results as dictionaries
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaQueryError: If query execution fails
         """
         try:
             response = requests.post(
-                f"{self.endpoint}/sparql",
-                data={"query": query},
-                headers={"Content-Type": "application/sparql-query"}
+                self.query_url,
+                headers={'Accept': 'application/sparql-results+json'},
+                params={'query': sparql_query}
             )
             response.raise_for_status()
-            return response.json()["results"]["bindings"]
+            
+            results = response.json()
+            bindings = results['results']['bindings']
+            
+            # Convert results to a more usable format
+            return [
+                {
+                    var: binding[var]['value']
+                    for var in binding
+                }
+                for binding in bindings
+            ]
+            
+        except requests.ConnectionError as e:
+            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
+        except requests.HTTPError as e:
+            raise JenaQueryError(f"Query failed: {str(e)}")
         except Exception as e:
-            logger.error(f"Failed to execute SPARQL query: {e}")
-            raise
-
-    def update_sparql(self, query: str) -> None:
-        """Execute a SPARQL UPDATE query.
-
+            raise JenaError(f"Unexpected error: {str(e)}")
+            
+    def update(self, sparql_update: str) -> None:
+        """Execute a SPARQL update.
+        
         Args:
-            query: SPARQL UPDATE query string
+            sparql_update: The SPARQL update to execute
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaUpdateError: If update execution fails
         """
         try:
             response = requests.post(
-                f"{self.endpoint}/update",
-                data={"update": query},
-                headers={"Content-Type": "application/sparql-update"}
+                self.update_url,
+                headers={'Content-Type': 'application/sparql-update'},
+                data=sparql_update
             )
             response.raise_for_status()
+            
+        except requests.ConnectionError as e:
+            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
+        except requests.HTTPError as e:
+            raise JenaUpdateError(f"Update failed: {str(e)}")
         except Exception as e:
-            logger.error(f"Failed to execute SPARQL UPDATE: {e}")
-            raise
-
-    def load_ontology(self, file_path: str) -> None:
-        """Load an ontology file into the store.
-
+            raise JenaError(f"Unexpected error: {str(e)}")
+            
+    def upload_graph(self, graph: Graph, graph_uri: Optional[str] = None) -> None:
+        """Upload an RDF graph.
+        
         Args:
-            file_path: Path to the ontology file
+            graph: The RDF graph to upload
+            graph_uri: Optional URI for the named graph
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaError: If upload fails
         """
         try:
-            with open(file_path, 'r') as f:
-                data = f.read()
+            # Serialize the graph to Turtle format
+            data = graph.serialize(format='turtle')
+            
+            headers = {'Content-Type': 'text/turtle'}
+            params = {}
+            if graph_uri:
+                params['graph'] = graph_uri
+                
             response = requests.post(
-                f"{self.endpoint}/data",
-                data=data,
-                headers={"Content-Type": "text/turtle"}
+                self.graph_store_url,
+                headers=headers,
+                params=params,
+                data=data
             )
             response.raise_for_status()
+            
+        except requests.ConnectionError as e:
+            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
         except Exception as e:
-            logger.error(f"Failed to load ontology: {e}")
-            raise
-
-    def add_triple(self, subject: URIRef, predicate: URIRef, object: Any) -> None:
-        """Add a triple to the store.
-
+            raise JenaError(f"Failed to upload graph: {str(e)}")
+            
+    def download_graph(self, graph_uri: Optional[str] = None) -> Graph:
+        """Download an RDF graph.
+        
         Args:
-            subject: Subject URI
-            predicate: Predicate URI
-            object: Object (URI or literal)
+            graph_uri: Optional URI of the named graph to download
+            
+        Returns:
+            The downloaded RDF graph
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaError: If download fails
         """
-        query = f"""
-        INSERT DATA {{
-            <{subject}> <{predicate}> {object} .
-        }}
-        """
-        self.update_sparql(query)
-
-    def remove_triple(self, subject: URIRef, predicate: URIRef, object: Any) -> None:
-        """Remove a triple from the store.
-
+        try:
+            params = {}
+            if graph_uri:
+                params['graph'] = graph_uri
+                
+            response = requests.get(
+                self.graph_store_url,
+                headers={'Accept': 'text/turtle'},
+                params=params
+            )
+            response.raise_for_status()
+            
+            # Parse the response into a new graph
+            graph = Graph()
+            graph.parse(data=response.text, format='turtle')
+            return graph
+            
+        except requests.ConnectionError as e:
+            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
+        except Exception as e:
+            raise JenaError(f"Failed to download graph: {str(e)}")
+            
+    def clear_graph(self, graph_uri: Optional[str] = None) -> None:
+        """Clear all triples from a graph.
+        
         Args:
-            subject: Subject URI
-            predicate: Predicate URI
-            object: Object (URI or literal)
+            graph_uri: Optional URI of the named graph to clear
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaUpdateError: If clear operation fails
         """
-        query = f"""
-        DELETE DATA {{
-            <{subject}> <{predicate}> {object} .
-        }}
+        if graph_uri:
+            update = f"CLEAR GRAPH <{graph_uri}>"
+        else:
+            update = "CLEAR DEFAULT"
+            
+        self.update(update)
+        
+    def list_graphs(self) -> List[str]:
+        """List all named graphs in the dataset.
+        
+        Returns:
+            List of graph URIs
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaQueryError: If query fails
         """
-        self.update_sparql(query) 
+        query = """
+        SELECT DISTINCT ?g
+        WHERE {
+            GRAPH ?g { ?s ?p ?o }
+        }
+        """
+        
+        results = self.query(query)
+        return [result['g'] for result in results]
+        
+    def count_triples(self, graph_uri: Optional[str] = None) -> int:
+        """Count triples in a graph.
+        
+        Args:
+            graph_uri: Optional URI of the named graph to count
+            
+        Returns:
+            Number of triples
+            
+        Raises:
+            JenaConnectionError: If connection fails
+            JenaQueryError: If query fails
+        """
+        if graph_uri:
+            query = f"""
+            SELECT (COUNT(*) as ?count)
+            WHERE {{
+                GRAPH <{graph_uri}> {{ ?s ?p ?o }}
+            }}
+            """
+        else:
+            query = """
+            SELECT (COUNT(*) as ?count)
+            WHERE {
+                ?s ?p ?o
+            }
+            """
+            
+        results = self.query(query)
+        return int(results[0]['count']) 

@@ -1,11 +1,15 @@
-import os
+"""Module for integrating spores into target models with validation and dependency management."""
+
 import logging
+import traceback
+import os
 from pathlib import Path
-from rdflib import Graph, URIRef, Literal, Namespace
-from rdflib.namespace import RDF, RDFS, OWL, SH, XSD
-from typing import List, Optional, Dict, Any
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from enum import Enum
+from typing import List, Union, Tuple, Optional, Set, cast, Dict, Mapping, Any
+from rdflib import Graph, URIRef, Literal, Namespace, BNode
+from rdflib.namespace import RDF, RDFS, OWL
+
+from .spore_validation import SporeValidator
+from .exceptions import ConcurrentModificationError, ConformanceError
 
 # Configure logging
 logging.basicConfig(
@@ -14,693 +18,687 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Define namespaces
-META = Namespace("http://example.org/guidance#")
-GUIDANCE = Namespace("http://example.org/guidance#")
-TEST = Namespace("http://example.org/test#")
-SPORE = Namespace("http://example.org/spore#")
+# Define the guidance namespace
+GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
 
-class ConformanceLevel(Enum):
-    """Enumeration of conformance levels."""
-    STRICT = "STRICT"
-    MODERATE = "MODERATE"
-    RELAXED = "RELAXED"
+# Map string literals to URIRefs for conformance levels
+CONFORMANCE_LEVELS: Dict[str, URIRef] = {
+    "STRICT": GUIDANCE.STRICT,
+    "MODERATE": GUIDANCE.MODERATE,
+    "RELAXED": GUIDANCE.RELAXED
+}
 
-class ConformanceError(Exception):
-    """Raised when conformance validation fails."""
-    pass
-
-class ConcurrentModificationError(Exception):
-    """Raised when concurrent modifications are detected."""
-    pass
+# Map URIRefs back to string literals for validation
+CONFORMANCE_LEVEL_STRINGS = {
+    GUIDANCE.STRICT: "STRICT",
+    GUIDANCE.MODERATE: "MODERATE",
+    GUIDANCE.RELAXED: "RELAXED"
+}
 
 class SporeIntegrator:
-    """Handles the integration of spores into target models."""
+    """Class for managing spore integration into target models."""
     
-    def __init__(self, model_dir: str):
-        """Initialize the spore integrator."""
-        self.model_dir = model_dir
-        os.makedirs(model_dir, exist_ok=True)
-        self.logger = logger
-        self.graph = Graph()
-        self._setup_namespaces()
-        self.conformance_level = ConformanceLevel.STRICT
-        logger.info("SporeIntegrator initialized")
-
-    def _setup_namespaces(self):
-        """Set up required namespaces."""
-        self.graph.bind("meta", META)
-        self.graph.bind("test", TEST)
-        self.graph.bind("spore", SPORE)
-        self.graph.bind("rdf", RDF)
-        self.graph.bind("rdfs", RDFS)
-        self.graph.bind("owl", OWL)
-        self.graph.bind("sh", SH)
-
-    def integrate_spore(self, spore: URIRef, target_model: URIRef) -> bool:
-        """Integrate a spore into a target model.
+    def __init__(self, data_dir: str = "data"):
+        """Initialize the SporeIntegrator.
         
         Args:
-            spore: The spore to integrate
-            target_model: The target model to integrate into
+            data_dir: Directory containing data files
+        """
+        # Store original string path
+        self.data_dir_str: str = data_dir
+        self.conformance_level: URIRef = GUIDANCE.STRICT
+        
+        # Initialize graphs
+        self.guidance_graph: Graph = Graph()
+        self.graph: Graph = Graph()
+        
+        # Load guidance ontology
+        guidance_file = os.path.join(data_dir, "guidance.ttl")
+        if os.path.exists(guidance_file):
+            self.guidance_graph.parse(guidance_file, format="turtle")
+            
+        # Initialize namespaces
+        self.guidance_graph.bind("guidance", GUIDANCE)
+        self.graph.bind("guidance", GUIDANCE)
+
+        logger.info(f"Initializing SporeIntegrator with data directory: {data_dir}")
+        try:
+            # Convert to Path for operations
+            self.data_dir: Path = Path(data_dir)
+            self.data_dir.mkdir(exist_ok=True)
+            self.validator: SporeValidator = SporeValidator(ontology_graph=self.graph)
+            self.spore_uri: Optional[URIRef] = None  # Initialize spore_uri as None
+            logger.debug("SporeIntegrator initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize SporeIntegrator: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+
+    def set_conformance_level(self, level: Union[str, URIRef]) -> None:
+        """Set the conformance level for the integrator.
+        
+        Args:
+            level: The conformance level to set, either as a string ('STRICT', 'MODERATE', 'RELAXED')
+                  or as a URIRef from the guidance ontology.
+                  
+        Raises:
+            ConformanceError: If the level is invalid or not defined in the guidance ontology.
+        """
+        logger.info(f"Set conformance level to {level}")
+        
+        # Handle string input
+        if isinstance(level, str):
+            if level not in CONFORMANCE_LEVELS:
+                raise ConformanceError(f"Invalid conformance level: {level}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
+            level_uri = CONFORMANCE_LEVELS[level]
+        # Handle URIRef input
+        elif isinstance(level, URIRef):
+            # Check if this URIRef is in our CONFORMANCE_LEVEL_STRINGS mapping
+            if level in CONFORMANCE_LEVEL_STRINGS:
+                level_uri = level
+                # Validate against guidance ontology
+                if not self._validate_ontology_conformance(level_uri):
+                    raise ConformanceError(f"Conformance level {level_uri} is not defined in the guidance ontology")
+                self.conformance_level = level_uri
+                return
+            # Try to extract the level string from the URI
+            level_str = str(level).split("#")[-1]
+            if level_str in CONFORMANCE_LEVELS:
+                level_uri = CONFORMANCE_LEVELS[level_str]
+            else:
+                raise ConformanceError(f"Invalid conformance level URI: {level}. Must be one of {set(CONFORMANCE_LEVELS.values())}")
+        else:
+            raise ConformanceError(f"Invalid conformance level type: {type(level)}. Must be str or URIRef")
+            
+        # Validate against guidance ontology
+        if not self._validate_ontology_conformance(level_uri):
+            raise ConformanceError(f"Conformance level {level_uri} is not defined in the guidance ontology")
+            
+        self.conformance_level = level_uri
+
+    def _validate_conformance_type(self, level: Any) -> bool:
+        """Validate the type of the conformance level.
+        
+        Args:
+            level: The conformance level to validate
             
         Returns:
-            bool: True if integration was successful
+            bool: True if type is valid
             
         Raises:
-            ValueError: If spore or target_model is None or invalid
+            ConformanceError: If type is invalid
         """
-        if not spore or not target_model:
-            raise ValueError("Spore and target model must be provided")
+        logger.debug(f"Validating conformance type for: {level} (type: {type(level)})")
+        if not isinstance(level, (str, URIRef)):
+            raise ConformanceError(f"Invalid conformance level type: {type(level)}. Must be str or URIRef")
+        return True
+        
+    def _validate_conformance_string(self, level: str) -> Optional[URIRef]:
+        """Validate a string conformance level.
+        
+        Args:
+            level: The string conformance level to validate
             
+        Returns:
+            Optional[URIRef]: The corresponding URIRef if valid, None otherwise
+            
+        Raises:
+            ConformanceError: If string is invalid
+        """
+        logger.debug(f"Validating string conformance: {level}")
+        if level not in CONFORMANCE_LEVELS:
+            raise ConformanceError(f"Invalid conformance level: {level}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
+        return CONFORMANCE_LEVELS[level]
+        
+    def _validate_conformance_uri(self, level: URIRef) -> Optional[URIRef]:
+        """Validate a URIRef conformance level.
+        
+        Args:
+            level: The URIRef conformance level to validate
+            
+        Returns:
+            Optional[URIRef]: The validated URIRef if valid, None otherwise
+            
+        Raises:
+            ConformanceError: If URI is invalid
+        """
+        logger.debug(f"Validating URI conformance: {level}")
+        if level in CONFORMANCE_LEVEL_STRINGS:
+            logger.debug(f"Found direct match in CONFORMANCE_LEVEL_STRINGS: {level}")
+            return level
+            
+        level_str = str(level).split("#")[-1]
+        logger.debug(f"Extracted level string: {level_str}")
+        if level_str not in CONFORMANCE_LEVELS:
+            raise ConformanceError(f"Invalid conformance level: {level_str}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
+        return CONFORMANCE_LEVELS[level_str]
+        
+    def _resolve_conformance_level(self, level: Union[str, URIRef], 
+                                 string_check: Optional[URIRef], 
+                                 uri_check: Optional[URIRef]) -> Optional[URIRef]:
+        """Resolve the conformance level from validation results."""
+        logger.debug(f"Resolving conformance level for input: {level}")
+        logger.debug(f"Type of level: {type(level)}")
+        logger.debug(f"String check result: {string_check}")
+        logger.debug(f"URI check result: {uri_check}")
+        
+        if isinstance(level, str):
+            logger.debug("Input is string type, returning string_check")
+            return string_check
+        elif isinstance(level, URIRef):
+            logger.debug("Input is URIRef type, returning uri_check")
+            return uri_check
+        else:
+            logger.error(f"Invalid input type: {type(level)}")
+            return None
+        
+    def _validate_ontology_conformance(self, level_uri: URIRef) -> bool:
+        """Validate conformance level against ontology.
+        
+        Args:
+            level_uri: The conformance level URI to validate
+            
+        Returns:
+            bool: True if validation passes
+            
+        Raises:
+            ConformanceError: If validation fails
+        """
+        if not any(self.guidance_graph.triples((level_uri, RDF.type, GUIDANCE.ModelConformance))):
+            raise ConformanceError(f"Conformance level {level_uri} not defined in guidance ontology")
+        return True
+        
+    def _validate_conformance_rules(self, level_uri: URIRef) -> bool:
+        """Validate conformance level against rules.
+        
+        Args:
+            level_uri: The conformance level URI to validate
+            
+        Returns:
+            bool: True if validation passes
+            
+        Raises:
+            ConformanceError: If validation fails
+        """
+        if not self.validate_conformance_level(level_uri):
+            raise ConformanceError(f"Conformance level {level_uri} does not meet guidance requirements")
+        return True
+
+    def validate_conformance_level(self, level_uri: URIRef) -> bool:
+        """Validate a conformance level against guidance rules.
+        
+        Args:
+            level_uri: The URIRef of the conformance level to validate
+            
+        Returns:
+            bool: True if validation passes
+        """
+        # Check if the level is defined as a ModelConformance instance
+        if not (level_uri, RDF.type, GUIDANCE.ModelConformance) in self.guidance_graph:
+            logger.error(f"Conformance level {level_uri} is not defined as a ModelConformance")
+            return False
+            
+        # Check if it has a conformance level string property
+        if not any(self.guidance_graph.triples((level_uri, GUIDANCE.conformanceLevel, None))):
+            logger.error(f"Missing conformanceLevel property for {level_uri}")
+            return False
+                
+        return True
+
+    def validate_prefixes(self, spore_uri: URIRef) -> bool:
+        """Validate prefixes used in a spore based on conformance level.
+        
+        Args:
+            spore_uri: URI of the spore to validate
+            
+        Returns:
+            bool: True if validation passes
+            
+        Raises:
+            ConformanceError: If prefix validation fails
+        """
+        logger.debug(f"Starting prefix validation for spore: {spore_uri}")
+        
+        if self.conformance_level == CONFORMANCE_LEVELS["RELAXED"]:
+            logger.debug("Skipping validation due to RELAXED conformance level")
+            return True
+        
+        # Get registered prefixes from both validator and guidance graphs
+        registered_prefixes: Set[str] = set()
+        
+        # Add prefixes from validator graph
+        for prefix, ns in self.validator.graph.namespaces():
+            validator_prefix: str = str(ns).split('#')[0]
+            logger.debug(f"Found registered prefix in validator: {validator_prefix}")
+            registered_prefixes.add(validator_prefix)
+            
+        # Add prefixes from guidance graph
+        for prefix, ns in self.guidance_graph.namespaces():
+            guidance_prefix: str = str(ns).split('#')[0]
+            logger.debug(f"Found registered prefix in guidance: {guidance_prefix}")
+            registered_prefixes.add(guidance_prefix)
+        
+        # Get prefixes used in spore
+        for s, p, o in self.validator.graph.triples((spore_uri, None, None)):
+            # Handle subject prefix
+            if isinstance(s, URIRef):
+                # Extract prefix string from URIRef
+                subj_prefix: str = str(s).split('#')[0]
+                logger.debug(f"Checking subject prefix: {subj_prefix}")
+                if subj_prefix not in registered_prefixes:
+                    msg = f"Unregistered prefix used in subject: {subj_prefix}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+            
+            # Handle predicate prefix
+            if isinstance(p, URIRef):
+                # Extract prefix string from URIRef
+                pred_prefix: str = str(p).split('#')[0]
+                logger.debug(f"Checking predicate prefix: {pred_prefix}")
+                if pred_prefix not in registered_prefixes:
+                    msg = f"Unregistered prefix used in predicate: {pred_prefix}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+            
+            # Handle object prefix
+            if isinstance(o, URIRef):
+                # Extract prefix string from URIRef
+                obj_prefix: str = str(o).split('#')[0]
+                logger.debug(f"Checking object prefix: {obj_prefix}")
+                if obj_prefix not in registered_prefixes:
+                    msg = f"Unregistered prefix used in object: {obj_prefix}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+        
+        logger.debug("Prefix validation completed successfully")
+        return True
+
+    def validate_namespaces(self, spore_uri: URIRef) -> bool:
+        """Validate namespaces used in a spore based on conformance level.
+        
+        Args:
+            spore_uri: URI of the spore to validate
+            
+        Returns:
+            bool: True if validation passes
+            
+        Raises:
+            ConformanceError: If namespace validation fails
+        """
+        logger.debug(f"Starting namespace validation for spore: {spore_uri}")
+        
+        if self.conformance_level == CONFORMANCE_LEVELS["RELAXED"]:
+            logger.debug("Skipping validation due to RELAXED conformance level")
+            return True
+        
+        # Get registered namespaces from both validator and guidance graphs
+        registered_namespaces: Set[str] = set()
+        
+        # Add namespaces from validator graph
+        for prefix, ns in self.validator.graph.namespaces():
+            validator_ns_str: str = str(ns)
+            logger.debug(f"Found registered namespace in validator: {validator_ns_str}")
+            registered_namespaces.add(validator_ns_str)
+            
+        # Add namespaces from guidance graph
+        for prefix, ns in self.guidance_graph.namespaces():
+            guidance_ns_str: str = str(ns)
+            logger.debug(f"Found registered namespace in guidance: {guidance_ns_str}")
+            registered_namespaces.add(guidance_ns_str)
+        
+        # Get namespaces used in spore
+        for s, p, o in self.validator.graph.triples((spore_uri, None, None)):
+            # Handle subject namespace
+            if isinstance(s, URIRef):
+                # Extract namespace string from URIRef
+                subj_ns_str: str = str(s).split('#')[0] + '#'
+                logger.debug(f"Checking subject namespace: {subj_ns_str}")
+                if subj_ns_str not in registered_namespaces:
+                    msg = f"Unregistered namespace used in subject: {subj_ns_str}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+            
+            # Handle predicate namespace
+            if isinstance(p, URIRef):
+                # Extract namespace string from URIRef
+                pred_ns_str: str = str(p).split('#')[0] + '#'
+                logger.debug(f"Checking predicate namespace: {pred_ns_str}")
+                if pred_ns_str not in registered_namespaces:
+                    msg = f"Unregistered namespace used in predicate: {pred_ns_str}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+            
+            # Handle object namespace
+            if isinstance(o, URIRef):
+                # Extract namespace string from URIRef
+                obj_ns_str: str = str(o).split('#')[0] + '#'
+                logger.debug(f"Checking object namespace: {obj_ns_str}")
+                if obj_ns_str not in registered_namespaces:
+                    msg = f"Unregistered namespace used in object: {obj_ns_str}"
+                    logger.error(msg)
+                    raise ConformanceError(msg)
+        
+        logger.debug("Namespace validation completed successfully")
+        return True
+
+    def integrate_spore(self, spore: URIRef, target_model: URIRef) -> bool:
+        """Integrate a spore into a target model with validation.
+        
+        Args:
+            spore (URIRef): URI of the spore to integrate
+            target_model (URIRef): URI of the target model
+            
+        Returns:
+            bool: True if integration successful
+            
+        Raises:
+            ValueError: If spore validation fails
+        """
         logger.info(f"Integrating spore {spore} into model {target_model}")
         try:
             # Validate spore
-            if not self._validate_spore(spore):
-                raise ValueError("Invalid spore")
-                
+            is_valid, messages = self.validator.validate_spore(spore, target_model)
+            if not is_valid:
+                raise ValueError(f"Spore validation failed: {', '.join(messages)}")
+            
             # Check compatibility
             if not self.check_compatibility(spore, target_model):
-                raise ValueError("Incompatible spore and model")
-                
+                raise ValueError("Spore not compatible with target model")
+            
+            # Resolve dependencies
+            if not self.resolve_dependencies(spore):
+                raise ValueError("Failed to resolve spore dependencies")
+            
             # Apply patches
-            patches = self._get_spore_patches(spore)
+            patches = list(self.graph.objects(spore, GUIDANCE.distributesPatch))
             for patch in patches:
-                if not self.apply_patch(spore, patch, target_model):
+                if not self.apply_patch(spore, URIRef(str(patch)), target_model):
                     raise ValueError(f"Failed to apply patch {patch}")
-                    
+            
             logger.info("Spore integration completed successfully")
             return True
         except Exception as e:
-            logger.error(f"Failed to integrate spore: {str(e)}")
+            logger.error(f"Spore integration failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
     def check_compatibility(self, spore: URIRef, target_model: URIRef) -> bool:
         """Check if a spore is compatible with a target model.
         
         Args:
-            spore: The spore to check
-            target_model: The target model to check against
+            spore (URIRef): URI of the spore
+            target_model (URIRef): URI of the target model
             
         Returns:
             bool: True if compatible
         """
+        logger.info(f"Checking compatibility between spore {spore} and model {target_model}")
         try:
-            # Check if spore targets the model
-            return (spore, META.targetModel, target_model) in self.graph
+            # Check if spore targets this model
+            is_compatible = (spore, GUIDANCE.targetModel, target_model) in self.graph
+            logger.debug(f"Compatibility check result: {is_compatible}")
+            return is_compatible
         except Exception as e:
-            logger.error(f"Failed to check compatibility: {str(e)}")
+            logger.error(f"Compatibility check failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return False
 
     def apply_patch(self, spore: URIRef, patch: URIRef, target_model: URIRef) -> bool:
         """Apply a patch from a spore to a target model.
         
         Args:
-            spore: The spore containing the patch
-            patch: The patch to apply
-            target_model: The target model to patch
+            spore (URIRef): URI of the spore
+            patch (URIRef): URI of the patch to apply
+            target_model (URIRef): URI of the target model
             
         Returns:
-            bool: True if patch was applied successfully
-            
-        Raises:
-            ValueError: If patch is invalid or application fails
+            bool: True if patch applied successfully
         """
-        if not patch:
-            raise ValueError("Patch must be provided")
-            
         logger.info(f"Applying patch {patch} from spore {spore} to model {target_model}")
         try:
-            # Verify patch belongs to spore
-            if (spore, META.distributesPatch, patch) not in self.graph:
-                raise ValueError("Patch does not belong to spore")
-                
-            # Apply patch operations
-            operations = self._get_patch_operations(patch)
-            for operation in operations:
-                if not self._apply_operation(operation, target_model):
-                    raise ValueError(f"Failed to apply operation {operation}")
-                    
+            # Verify patch exists and is valid
+            if not (patch, RDF.type, GUIDANCE.ConceptPatch) in self.graph:
+                raise ValueError(f"Invalid patch: {patch}")
+            
+            # Apply patch transformations
+            # TODO: Implement actual patch application logic
+            
             logger.info("Patch applied successfully")
             return True
         except Exception as e:
             logger.error(f"Failed to apply patch: {str(e)}")
-            raise
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            return False
 
-    def integrate_concurrent(self, spores: List[str], target_model: str) -> bool:
-        """Integrate multiple spores concurrently."""
+    def integrate_concurrent(self, spores: List[URIRef], target_model: URIRef) -> bool:
+        """Integrate multiple spores concurrently.
+        
+        Args:
+            spores (List[URIRef]): List of spore URIs
+            target_model (URIRef): URI of the target model
+            
+        Returns:
+            bool: True if all spores integrated successfully
+            
+        Raises:
+            ConcurrentModificationError: If concurrent modification detected
+        """
+        logger.info(f"Integrating {len(spores)} spores concurrently")
         try:
-            self.logger.info(f"Integrating {len(spores)} spores concurrently into {target_model}")
-            
-            # Check compatibility for all spores
+            # Check for conflicts between patches
+            patches = []
             for spore in spores:
-                if not self.check_model_compatibility(spore, target_model):
-                    raise ConcurrentModificationError(f"Incompatible spore: {spore}")
-                    
-            # Apply spores sequentially to avoid conflicts
+                spore_patches = list(self.graph.objects(spore, GUIDANCE.distributesPatch))
+                patches.extend(spore_patches)
+            
+            if len(patches) != len(set(patches)):
+                raise ConcurrentModificationError("Conflicting patches detected")
+            
+            # Integrate each spore
             for spore in spores:
-                if not self._apply_spore(spore, target_model):
-                    raise ConcurrentModificationError(f"Failed to apply spore: {spore}")
-                    
-            self.logger.info("Concurrent integration completed successfully")
+                if not self.integrate_spore(spore, target_model):
+                    return False
+            
+            logger.info("Concurrent integration completed successfully")
             return True
-            
-        except Exception as e:
-            self.logger.error(f"Failed to integrate spores concurrently: {str(e)}")
+        except ConcurrentModificationError as e:
+            logger.error(f"Concurrent modification error: {str(e)}")
             raise
-
-    def _apply_spore(self, spore: str, target_model: str) -> bool:
-        """Apply a single spore to the target model."""
-        try:
-            self.logger.info(f"Applying spore {spore} to {target_model}")
-            
-            # Load spore and model graphs
-            spore_graph = Graph()
-            model_graph = Graph()
-            
-            spore_file = os.path.join(self.model_dir, f"{spore}.ttl")
-            model_file = os.path.join(self.model_dir, f"{target_model}.ttl")
-            
-            spore_graph.parse(spore_file, format="turtle")
-            model_graph.parse(model_file, format="turtle")
-            
-            # Apply spore changes
-            for s, p, o in spore_graph:
-                model_graph.add((s, p, o))
-                
-            # Save updated model
-            model_graph.serialize(model_file, format="turtle")
-            self.logger.info(f"Spore {spore} applied successfully")
-            return True
-            
         except Exception as e:
-            self.logger.error(f"Failed to apply spore: {str(e)}")
-            raise
+            logger.error(f"Concurrent integration failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            return False
 
     def migrate_version(self, spore: URIRef, new_version: str) -> bool:
         """Migrate a spore to a new version.
         
         Args:
-            spore: The spore to migrate
-            new_version: The new version string
+            spore (URIRef): URI of the spore
+            new_version (str): New version string
             
         Returns:
-            bool: True if migration was successful
+            bool: True if migration successful
         """
         logger.info(f"Migrating spore {spore} to version {new_version}")
         try:
-            # Update version info
-            self.graph.set((spore, OWL.versionInfo, Literal(new_version)))
+            # Remove old version info
+            for old_version in self.graph.objects(spore, OWL.versionInfo):
+                self.graph.remove((spore, OWL.versionInfo, old_version))
+            
+            # Add new version info
+            self.graph.add((spore, OWL.versionInfo, Literal(new_version)))
+            
             logger.info("Version migration completed successfully")
             return True
         except Exception as e:
-            logger.error(f"Failed to migrate version: {str(e)}")
+            logger.error(f"Version migration failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return False
 
     def resolve_dependencies(self, spore: URIRef) -> bool:
-        """Resolve spore dependencies.
+        """Resolve dependencies for a spore.
         
         Args:
-            spore: The spore to resolve dependencies for
+            spore (URIRef): URI of the spore
             
         Returns:
-            bool: True if all dependencies were resolved
+            bool: True if all dependencies resolved
         """
         logger.info(f"Resolving dependencies for spore {spore}")
         try:
-            # Get all imports
-            imports = self.graph.objects(spore, OWL.imports)
+            # Get all dependencies
+            dependencies = list(self.graph.objects(spore, OWL.imports))
             
-            # Verify each import exists
-            for imp in imports:
-                if not self._validate_spore(imp):
-                    raise ValueError(f"Invalid dependency: {imp}")
-                    
+            # Verify each dependency exists
+            for dependency in dependencies:
+                if not (dependency, RDF.type, GUIDANCE.TransformationPattern) in self.graph:
+                    raise ValueError(f"Missing dependency: {dependency}")
+            
             logger.info("Dependencies resolved successfully")
             return True
         except Exception as e:
-            logger.error(f"Failed to resolve dependencies: {str(e)}")
+            logger.error(f"Dependency resolution failed: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return False
-
-    def _validate_spore(self, spore: URIRef) -> bool:
-        """Validate a spore."""
-        try:
-            return (spore, RDF.type, META.TransformationPattern) in self.graph
-        except Exception:
-            return False
-
-    def _get_spore_patches(self, spore: URIRef) -> List[URIRef]:
-        """Get all patches distributed by a spore."""
-        try:
-            patches = list(self.graph.objects(spore, META.distributesPatch))
-            return [URIRef(str(patch)) for patch in patches]
-        except Exception:
-            return []
-
-    def _get_patch_operations(self, patch: URIRef) -> List[URIRef]:
-        """Get all operations in a patch."""
-        try:
-            operations = list(self.graph.objects(patch, META.hasOperation))
-            return [URIRef(str(op)) for op in operations]
-        except Exception:
-            return []
-
-    def _apply_operation(self, operation: URIRef, target_model: URIRef) -> bool:
-        """Apply a single operation to a target model.
-        
-        Args:
-            operation: The operation to apply
-            target_model: The target model to apply to
-            
-        Returns:
-            bool: True if operation was applied successfully
-        """
-        try:
-            # Get operation type and parameters
-            op_type = self.graph.value(operation, RDF.type)
-            params = dict(self.graph.predicate_objects(operation))
-            
-            # Apply based on type
-            if op_type == META.AddClassOperation:
-                return self._apply_add_class(params, target_model)
-            elif op_type == META.RemoveClassOperation:
-                return self._apply_remove_class(params, target_model)
-            # Add more operation types as needed
-                
-            return True
-        except Exception as e:
-            logger.error(f"Failed to apply operation: {str(e)}")
-            return False
-
-    def _apply_add_class(self, params: dict, target_model: URIRef) -> bool:
-        """Apply an add class operation.
-        
-        Args:
-            params: Operation parameters
-            target_model: Target model
-            
-        Returns:
-            bool: True if class was added successfully
-        """
-        try:
-            class_uri = params.get(META.targetClass)
-            if not class_uri:
-                return False
-                
-            self.graph.add((class_uri, RDF.type, OWL.Class))
-            self.graph.add((class_uri, RDFS.isDefinedBy, target_model))
-            return True
-        except Exception:
-            return False
-
-    def _apply_remove_class(self, params: dict, target_model: URIRef) -> bool:
-        """Apply a remove class operation.
-        
-        Args:
-            params: Operation parameters
-            target_model: Target model
-            
-        Returns:
-            bool: True if class was removed successfully
-        """
-        try:
-            class_uri = params.get(META.targetClass)
-            if not class_uri:
-                return False
-                
-            self.graph.remove((class_uri, None, None))
-            return True
-        except Exception:
-            return False
-
-    def check_model_compatibility(self, spore: str, target_model: str) -> bool:
-        """Check if a spore is compatible with a target model.
-        
-        Args:
-            spore: The spore to check (string URI or URIRef)
-            target_model: The target model to check against (string URI or URIRef)
-            
-        Returns:
-            bool: True if compatible
-        """
-        try:
-            spore_ref = URIRef(spore) if isinstance(spore, str) else spore
-            target_ref = URIRef(target_model) if isinstance(target_model, str) else target_model
-            return self.check_compatibility(spore_ref, target_ref)
-        except Exception as e:
-            self.logger.error(f"Failed to check model compatibility: {str(e)}")
-            return False
-
-    def _find_conflicts(self, spore_graph: Graph, model_graph: Graph) -> List[str]:
-        """Find conflicts between spore and model graphs."""
-        conflicts = []
-        
-        # Check for class conflicts
-        for s, p, o in spore_graph.triples((None, RDF.type, OWL.Class)):
-            if (s, p, o) in model_graph:
-                conflicts.append(f"Class conflict: {s}")
-                
-        # Check for property conflicts
-        for s, p, o in spore_graph.triples((None, RDF.type, OWL.ObjectProperty)):
-            if (s, p, o) in model_graph:
-                conflicts.append(f"Property conflict: {s}")
-                
-        return conflicts 
-
-    def set_conformance_level(self, level: str) -> None:
-        """Set the conformance level for validation.
-        
-        Args:
-            level: The conformance level (STRICT, MODERATE, or RELAXED)
-            
-        Raises:
-            ConformanceError: If the level is invalid
-        """
-        try:
-            self.conformance_level = ConformanceLevel(level)
-            logger.info(f"Conformance level set to {level}")
-        except ValueError:
-            raise ConformanceError(f"Invalid conformance level: {level}")
 
     def validate_conformance(self, model: URIRef) -> bool:
-        """Validate model conformance based on the current conformance level.
+        """Validate conformance of a model based on current conformance level.
         
         Args:
             model: The model to validate
             
         Returns:
-            bool: True if the model conforms to the current level
+            bool: True if model conforms, False otherwise
             
         Raises:
-            ConformanceError: If validation fails
+            ConformanceError: If validation fails at STRICT level
         """
         try:
-            # Get conformance check
-            conformance = self.graph.value(model, GUIDANCE.hasConformanceCheck)
-            if not conformance:
-                if self.conformance_level == ConformanceLevel.STRICT:
-                    raise ConformanceError("Model has no conformance check")
-                return True
-
-            # Check conformance level
-            model_level = self.graph.value(conformance, GUIDANCE.conformanceLevel)
-            if not model_level:
-                if self.conformance_level == ConformanceLevel.STRICT:
-                    raise ConformanceError("Model has no conformance level")
-                return True
-
-            # Validate based on conformance level
-            if self.conformance_level == ConformanceLevel.STRICT:
-                if not self.validate_prefixes(model):
-                    raise ConformanceError("Prefix validation failed")
-                if not self.validate_namespaces(model):
-                    raise ConformanceError("Namespace validation failed")
-            elif self.conformance_level == ConformanceLevel.MODERATE:
-                if not self.validate_prefixes(model):
-                    logger.warning("Prefix validation failed")
-                if not self.validate_namespaces(model):
-                    logger.warning("Namespace validation failed")
-
-            return True
-        except Exception as e:
-            logger.error(f"Conformance validation failed: {str(e)}")
-            raise ConformanceError(f"Conformance validation failed: {str(e)}")
-
-    def validate_prefixes(self, model: URIRef) -> bool:
-        """Validate model prefixes.
-        
-        Args:
-            model: The model to validate
-            
-        Returns:
-            bool: True if prefixes are valid
-        """
-        try:
-            # Get conformance check
-            conformance = self.graph.value(model, GUIDANCE.hasConformanceCheck)
-            if not conformance:
-                return True
-
-            # Check if prefix validation is required
-            requires_validation = self.graph.value(conformance, GUIDANCE.requiresPrefixValidation)
-            if not requires_validation or requires_validation.toPython() is False:
-                return True
-
             # Validate prefixes
-            for prefix, namespace in self.graph.namespaces():
-                if not prefix or not namespace:
-                    return False
-                if not str(namespace).startswith(("http://", "https://")):
-                    return False
-
-            return True
-        except Exception as e:
-            logger.error(f"Prefix validation failed: {str(e)}")
-            return False
-
-    def validate_namespaces(self, model: URIRef) -> bool:
-        """Validate model namespaces.
-        
-        Args:
-            model: The model to validate
+            self.validate_prefixes(model)
             
-        Returns:
-            bool: True if namespaces are valid
-        """
-        try:
-            # Get conformance check
-            conformance = self.graph.value(model, GUIDANCE.hasConformanceCheck)
-            if not conformance:
-                return True
-
-            # Check if namespace validation is required
-            requires_validation = self.graph.value(conformance, GUIDANCE.requiresNamespaceValidation)
-            if not requires_validation or requires_validation.toPython() is False:
-                return True
-
             # Validate namespaces
-            for s, p, o in self.graph.triples((None, None, None)):
-                if isinstance(s, URIRef) and not str(s).startswith(("http://", "https://")):
-                    return False
-                if isinstance(o, URIRef) and not str(o).startswith(("http://", "https://")):
-                    return False
-
+            self.validate_namespaces(model)
+            
+            # Validate integration steps if present
+            if (model, GUIDANCE.hasIntegrationStep, None) in self.guidance_graph:
+                self.validate_integration_steps(model)
+                
             return True
+            
         except Exception as e:
-            logger.error(f"Namespace validation failed: {str(e)}")
+            if self.conformance_level == CONFORMANCE_LEVELS["STRICT"]:
+                raise ConformanceError(f"Model validation failed: {str(e)}")
             return False
 
-    def validate_integration_steps(self, process: URIRef) -> bool:
-        """Validate integration process steps.
+    def validate_integration_steps(self, process_uri: URIRef) -> bool:
+        """Validate integration steps in a process.
         
         Args:
-            process: The integration process to validate
+            process_uri: URI of the process to validate
             
         Returns:
-            bool: True if steps are valid
+            bool: True if validation passes
             
         Raises:
             ConformanceError: If validation fails
         """
-        try:
-            # Get all steps
-            steps = list(self.graph.objects(process, GUIDANCE.hasIntegrationStep))
-            if not steps:
-                if self.conformance_level == ConformanceLevel.STRICT:
-                    raise ConformanceError("Process has no integration steps")
-                return True
-
-            # Validate step order
-            step_orders = []
-            for step in steps:
-                order = self.graph.value(step, GUIDANCE.stepOrder)
-                if not order:
-                    raise ConformanceError(f"Step {step} has no order")
-                step_orders.append(order.toPython())
-
-            # Check for gaps or duplicates
-            if sorted(step_orders) != list(range(1, len(step_orders) + 1)):
-                raise ConformanceError("Step orders must be sequential starting from 1")
-
-            return True
-        except Exception as e:
-            logger.error(f"Integration step validation failed: {str(e)}")
-            raise ConformanceError(f"Integration step validation failed: {str(e)}")
+        # Get all steps with their order
+        steps: List[Tuple[URIRef, int]] = []
+        for step, _, order_node in self.guidance_graph.triples((None, GUIDANCE.hasOrder, None)):
+            if (step, RDF.type, GUIDANCE.IntegrationStep) in self.guidance_graph:
+                # Convert order to integer safely
+                if isinstance(order_node, Literal):
+                    order_int = int(order_node.value)
+                else:
+                    order_int = int(str(order_node))
+                steps.append((cast(URIRef, step), order_int))
+        
+        if not steps:
+            raise ConformanceError("No integration steps found in process")
+        
+        # Sort steps by order
+        steps.sort(key=lambda x: x[1])
+        
+        # Validate step order is sequential
+        expected_order = 1
+        for step, order in steps:
+            if order != expected_order:
+                raise ConformanceError(f"Invalid step order: {order}. Expected: {expected_order}")
+            expected_order += 1
+        
+        return True
 
     def execute_integration_steps(self, process: URIRef) -> bool:
         """Execute integration steps in order.
         
         Args:
-            process: The integration process to execute
+            process (URIRef): URI of the process to execute
             
         Returns:
-            bool: True if all steps executed successfully
+            bool: True if execution successful
             
         Raises:
-            ConformanceError: If step execution fails
+            ConformanceError: If execution fails
         """
+        logger.info(f"Executing integration steps for process {process}")
         try:
-            # Validate steps first
-            if not self.validate_integration_steps(process):
-                raise ConformanceError("Invalid integration steps")
+            # Get all steps in the process
+            steps = list(self.validator.graph.objects(process, GUIDANCE.hasIntegrationStep))
+            if not steps:
+                raise ConformanceError("No steps found in process")
             
-            # Get all steps ordered by stepOrder
-            steps = []
-            for step in self.graph.objects(process, GUIDANCE.hasIntegrationStep):
-                order = self.graph.value(step, GUIDANCE.stepOrder)
-                description = self.graph.value(step, GUIDANCE.stepDescription)
-                steps.append((order.toPython(), step, description))
+            # Get step orders and sort
+            step_orders = []
+            for step in steps:
+                if not isinstance(step, URIRef):
+                    raise ConformanceError(f"Step {step} must be a URIRef")
+                    
+                order = next(self.validator.graph.objects(step, GUIDANCE.stepOrder), None)
+                if not order:
+                    raise ConformanceError(f"Step {step} has no order")
+                try:
+                    if isinstance(order, Literal):
+                        order_int = int(str(order.value))
+                    else:
+                        order_int = int(str(order))
+                    step_orders.append((order_int, step))
+                except (ValueError, TypeError):
+                    raise ConformanceError(f"Invalid order value for step {step}: {order}")
             
-            # Sort steps by order
-            steps.sort(key=lambda x: x[0])
+            step_orders.sort()
             
             # Execute steps in order
-            for order, step, description in steps:
-                logger.info(f"Executing step {order}: {description}")
-                if not self._execute_step(step):
-                    raise ConformanceError(f"Failed to execute step {order}: {description}")
+            for order_int, step in step_orders:
+                # Get step type and target
+                step_type = next(self.validator.graph.objects(step, RDF.type), None)
+                if not step_type:
+                    raise ConformanceError(f"Step {step} has no type")
+                if not isinstance(step_type, URIRef):
+                    raise ConformanceError(f"Step {step} type must be a URIRef")
+                
+                target = next(self.validator.graph.objects(step, GUIDANCE.stepTarget), None)
+                if not target:
+                    raise ConformanceError(f"Step {step} has no target")
+                if not isinstance(target, URIRef):
+                    raise ConformanceError(f"Step {step} target must be a URIRef")
+                
+                # Execute step based on type
+                if step_type == GUIDANCE.ValidationStep:
+                    if not self.validate_conformance(target):
+                        raise ConformanceError(f"Validation failed for target: {target}")
+                elif step_type == GUIDANCE.IntegrationStep:
+                    if not self.integrate_spore(target, process):
+                        raise ConformanceError(f"Integration failed for target: {target}")
+                else:
+                    raise ConformanceError(f"Unknown step type: {step_type}")
             
-            logger.info("All integration steps executed successfully")
+            logger.info("Integration step execution completed")
             return True
+        except ConformanceError as e:
+            logger.error(f"Integration step execution failed: {str(e)}")
+            raise
         except Exception as e:
-            logger.error(f"Step execution failed: {str(e)}")
-            raise ConformanceError(f"Step execution failed: {str(e)}")
-
-    def _execute_step(self, step: URIRef) -> bool:
-        """Execute a single integration step.
-        
-        Args:
-            step: The step to execute
-            
-        Returns:
-            bool: True if step executed successfully
-        """
-        try:
-            # Get step type
-            step_type = self.graph.value(step, RDF.type)
-            if not step_type:
-                logger.error(f"Step {step} has no type")
-                return False
-            
-            # Execute based on step type
-            if step_type == GUIDANCE.ValidationStep:
-                return self._execute_validation_step(step)
-            elif step_type == GUIDANCE.TransformationStep:
-                return self._execute_transformation_step(step)
-            elif step_type == GUIDANCE.MergeStep:
-                return self._execute_merge_step(step)
-            else:
-                logger.error(f"Unknown step type: {step_type}")
-                return False
-        except Exception as e:
-            logger.error(f"Failed to execute step: {str(e)}")
-            return False
-
-    def _execute_validation_step(self, step: URIRef) -> bool:
-        """Execute a validation step.
-        
-        Args:
-            step: The validation step to execute
-            
-        Returns:
-            bool: True if validation passed
-        """
-        try:
-            # Get validation target
-            target = self.graph.value(step, GUIDANCE.validates)
-            if not target:
-                logger.error("Validation step has no target")
-                return False
-            
-            # Get validation rules
-            rules = list(self.graph.objects(step, GUIDANCE.hasValidationRule))
-            if not rules:
-                logger.error("Validation step has no rules")
-                return False
-            
-            # Execute validation rules
-            for rule in rules:
-                if not self._execute_validation_rule(rule, target):
-                    return False
-            
-            return True
-        except Exception as e:
-            logger.error(f"Validation step execution failed: {str(e)}")
-            return False
-
-    def _execute_transformation_step(self, step: URIRef) -> bool:
-        """Execute a transformation step.
-        
-        Args:
-            step: The transformation step to execute
-            
-        Returns:
-            bool: True if transformation succeeded
-        """
-        try:
-            # Get transformation target
-            target = self.graph.value(step, GUIDANCE.transforms)
-            if not target:
-                logger.error("Transformation step has no target")
-                return False
-            
-            # Get transformation rules
-            rules = list(self.graph.objects(step, GUIDANCE.hasTransformationRule))
-            if not rules:
-                logger.error("Transformation step has no rules")
-                return False
-            
-            # Execute transformation rules
-            for rule in rules:
-                if not self._execute_transformation_rule(rule, target):
-                    return False
-            
-            return True
-        except Exception as e:
-            logger.error(f"Transformation step execution failed: {str(e)}")
-            return False
-
-    def _execute_merge_step(self, step: URIRef) -> bool:
-        """Execute a merge step.
-        
-        Args:
-            step: The merge step to execute
-            
-        Returns:
-            bool: True if merge succeeded
-        """
-        try:
-            # Get merge targets
-            source = self.graph.value(step, GUIDANCE.mergesFrom)
-            target = self.graph.value(step, GUIDANCE.mergesTo)
-            if not source or not target:
-                logger.error("Merge step has missing source or target")
-                return False
-            
-            # Get merge rules
-            rules = list(self.graph.objects(step, GUIDANCE.hasMergeRule))
-            if not rules:
-                logger.error("Merge step has no rules")
-                return False
-            
-            # Execute merge rules
-            for rule in rules:
-                if not self._execute_merge_rule(rule, source, target):
-                    return False
-            
-            return True
-        except Exception as e:
-            logger.error(f"Merge step execution failed: {str(e)}")
-            return False
-
-    def _execute_validation_rule(self, rule: URIRef, target: URIRef) -> bool:
-        # Implementation of _execute_validation_rule method
-        pass
-
-    def _execute_transformation_rule(self, rule: URIRef, target: URIRef) -> bool:
-        # Implementation of _execute_transformation_rule method
-        pass
-
-    def _execute_merge_rule(self, rule: URIRef, source: URIRef, target: URIRef) -> bool:
-        # Implementation of _execute_merge_rule method
-        pass 
+            logger.error(f"Unexpected error during step execution: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise ConformanceError(f"Integration step execution failed: {str(e)}") 

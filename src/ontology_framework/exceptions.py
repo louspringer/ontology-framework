@@ -1,19 +1,93 @@
-class ConcurrentModificationError(Exception):
-    """Raised when a concurrent modification is detected."""
+"""
+Custom exceptions for the ontology framework.
+"""
+
+class OntologyFrameworkError(Exception):
+    """Base exception for all ontology framework errors."""
     pass
 
-class ModelQualityError(Exception):
-    """Raised when model quality checks fail."""
+class ValidationError(OntologyFrameworkError):
+    """Raised when validation fails."""
     pass
 
-class ModelProjectionError(Exception):
-    """Raised when model projection fails."""
+class ConformanceError(OntologyFrameworkError):
+    """Raised when conformance checks fail."""
     pass
 
-class BoldoAPIError(Exception):
-    """Raised when Boldo API operations fail."""
+class ConcurrentModificationError(OntologyFrameworkError):
+    """Raised when concurrent modifications are detected."""
     pass
 
-class ConformanceError(Exception):
-    """Raised when conformance validation fails."""
-    pass 
+class BoldoAPIError(OntologyFrameworkError):
+    """Base exception for Boldo API errors."""
+    pass
+
+class AuthenticationError(BoldoAPIError):
+    """Exception raised when authentication fails."""
+    pass
+
+class APIRequestError(BoldoAPIError):
+    """Exception raised when an API request fails."""
+    def __init__(self, message: str, status_code: int | None = None):
+        self.status_code = status_code
+        super().__init__(message)
+
+class PatchNotFoundError(OntologyFrameworkError):
+    """Raised when a patch cannot be found."""
+    pass
+
+class PatchApplicationError(OntologyFrameworkError):
+    """Raised when a patch cannot be applied."""
+    pass
+
+class ResourceNotFoundError(BoldoAPIError):
+    """Exception raised when a requested resource is not found."""
+    pass
+
+class SparqlClientError(OntologyFrameworkError):
+    """Exception raised when SPARQL operations fail."""
+    pass
+
+class ModelQualityError(OntologyFrameworkError):
+    """Exception raised when model quality checks fail."""
+    pass
+
+class ModelProjectionError(OntologyFrameworkError):
+    """Exception raised when model projection operations fail."""
+    pass
+
+class RegistrationError(OntologyFrameworkError):
+    """Exception raised when ontology registration fails."""
+    pass
+
+class GuidanceError(OntologyFrameworkError):
+    """Exception raised when guidance operations fail."""
+    pass
+
+class GraphDBError(OntologyFrameworkError):
+    """Exception raised when GraphDB operations fail."""
+    pass
+
+class GitHubError(OntologyFrameworkError):
+    """Exception raised when GitHub operations fail."""
+    pass
+
+__all__ = [
+    'OntologyFrameworkError',
+    'ValidationError',
+    'ConformanceError',
+    'ConcurrentModificationError',
+    'BoldoAPIError',
+    'AuthenticationError',
+    'APIRequestError',
+    'PatchNotFoundError',
+    'PatchApplicationError',
+    'ResourceNotFoundError',
+    'SparqlClientError',
+    'ModelQualityError',
+    'ModelProjectionError',
+    'RegistrationError',
+    'GuidanceError',
+    'GraphDBError',
+    'GitHubError'
+] 

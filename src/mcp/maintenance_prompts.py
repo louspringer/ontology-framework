@@ -1,71 +1,82 @@
-from mcp import Prompt
+"""
+Maintenance prompts for the MCP module.
+"""
+
+from typing import Dict, Any, List
+from datetime import datetime
 
 class MaintenancePrompts:
-    @Prompt
-    def validate_artifact_prompt(self):
-        return """
-        You are a maintenance model validator. Your task is to validate the given artifact.
-        
-        Available tools:
-        - validate_artifact: Validates a specific artifact
-        
-        Instructions:
-        1. Check if the artifact exists
-        2. Validate its structure
-        3. Check its relationships
-        4. Return validation results
-        
-        Use the validate_artifact tool to perform the validation.
-        """
+    """Class for managing maintenance prompts and responses."""
     
-    @Prompt
-    def track_change_prompt(self):
-        return """
-        You are a change tracker. Your task is to track changes to the maintenance model.
+    def __init__(self) -> None:
+        """Initialize the maintenance prompts."""
+        self.prompts: Dict[str, Dict[str, Any]] = {}
         
-        Available tools:
-        - track_change: Tracks a new change
+    def add_prompt(self, prompt_id: str, text: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Add a new maintenance prompt.
         
-        Instructions:
-        1. Generate a unique change ID
-        2. Describe the change
-        3. List affected components
-        4. Track the change
-        
-        Use the track_change tool to record the change.
+        Args:
+            prompt_id: Unique identifier for the prompt
+            text: The prompt text
+            context: Additional context for the prompt
+            
+        Returns:
+            The created prompt
         """
-    
-    @Prompt
-    def update_metrics_prompt(self):
-        return """
-        You are a metrics manager. Your task is to update maintenance metrics.
+        prompt = {
+            "id": prompt_id,
+            "text": text,
+            "context": context,
+            "created_at": datetime.now().isoformat(),
+            "status": "pending"
+        }
+        self.prompts[prompt_id] = prompt
+        return prompt
         
-        Available tools:
-        - update_metric: Updates a maintenance metric
+    def get_prompt(self, prompt_id: str) -> Dict[str, Any]:
+        """Get a prompt by ID.
         
-        Instructions:
-        1. Identify the metric to update
-        2. Calculate the new value
-        3. Update the metric
-        
-        Use the update_metric tool to update the metrics.
+        Args:
+            prompt_id: The ID of the prompt to retrieve
+            
+        Returns:
+            The requested prompt
+            
+        Raises:
+            KeyError: If the prompt doesn't exist
         """
-    
-    @Prompt
-    def maintenance_report_prompt(self):
-        return """
-        You are a maintenance reporter. Your task is to generate a maintenance report.
+        if prompt_id not in self.prompts:
+            raise KeyError(f"Prompt {prompt_id} not found")
+        return self.prompts[prompt_id]
         
-        Available resources:
-        - get_maintenance_model: Gets the complete model
-        - get_validation_rules: Gets validation rules
-        - get_maintenance_metrics: Gets current metrics
+    def list_prompts(self, status: str = None) -> List[Dict[str, Any]]:
+        """List all prompts, optionally filtered by status.
         
-        Instructions:
-        1. Get the current model state
-        2. Check validation rules
-        3. Review metrics
-        4. Generate a comprehensive report
+        Args:
+            status: Optional status to filter by
+            
+        Returns:
+            List of prompts
+        """
+        if status is None:
+            return list(self.prompts.values())
+        return [p for p in self.prompts.values() if p["status"] == status]
         
-        Use the available resources to gather information for the report.
-        """ 
+    def update_prompt(self, prompt_id: str, response: str) -> Dict[str, Any]:
+        """Update a prompt with a response.
+        
+        Args:
+            prompt_id: The ID of the prompt to update
+            response: The response text
+            
+        Returns:
+            The updated prompt
+            
+        Raises:
+            KeyError: If the prompt doesn't exist
+        """
+        prompt = self.get_prompt(prompt_id)
+        prompt["response"] = response
+        prompt["status"] = "completed"
+        prompt["updated_at"] = datetime.now().isoformat()
+        return prompt 

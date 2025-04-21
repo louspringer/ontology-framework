@@ -4,8 +4,8 @@ Tests for namespace recovery project.
 """
 
 import pytest
-from src.ontology_framework.namespace_recovery import create_namespace_recovery_project, get_project_status
-from src.ontology_framework.github_project_manager import TaskStatus
+from ontology_framework.namespace_recovery import create_namespace_recovery_project, get_project_status
+from ontology_framework.github_project_manager import TaskStatus
 
 def test_create_namespace_recovery_project():
     """Test creation of namespace recovery project."""

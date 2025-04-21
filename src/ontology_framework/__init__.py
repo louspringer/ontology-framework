@@ -1,50 +1,86 @@
 """
-Ontology Framework package initialization.
+Ontology Framework package.
 """
 
-from .patch_management import PatchManager
-from .spore_integration import SporeIntegrator
-from .conformance_tracking import ConformanceTracker
-from .spore_validation import SporeValidator
-from .bow_tie_transformation import BowTieTransformation
-from .manage_models import ModelManager, ModelQualityError, ModelProjectionError
-from .register_ontology import register_ontology, load_ontology
-from .oracle_rdf import OracleRDFStore
-from .meta import (
-    META, PatchModel, PatchOperation, AddOperation, RemoveOperation,
-    hasOperation, hasSubject, hasPredicate, hasObject, hasTargetSpore, createdAt,
-    OntologyPatch, PatchType, PatchStatus
-)
-from .config import load_environment, get_api_token
+__version__ = "0.1.0"
 
-# Load environment variables
-load_environment()
+from .meta import MetaOntology, OntologyPatch
+from .ontology_types import PatchType, PatchStatus
+from .metameta import MetaMetaOntology
+from .ontology_manager import OntologyManager
+from .exceptions import (
+    OntologyFrameworkError,
+    ValidationError,
+    ConformanceError,
+    ConcurrentModificationError,
+    BoldoAPIError,
+    AuthenticationError,
+    APIRequestError,
+    PatchNotFoundError,
+    PatchApplicationError,
+    ResourceNotFoundError
+)
+from .modules import (
+    ErrorHandler,
+    ValidationRule,
+    ErrorResult,
+    ErrorStep,
+    ErrorSeverity,
+    SecurityLevel,
+    ComplianceLevel,
+    RiskLevel,
+    ValidationHandler,
+    MetricsHandler,
+    ComplianceHandler,
+    RDFHandler,
+    PatchManager,
+    GraphDBPatchManager,
+    fix_turtle_syntax,
+    validate_turtle,
+    validate_shacl,
+    load_and_fix_turtle,
+    OntologyAnalyzer,
+    TestSetupManager,
+    PackageManager
+)
+from .deployment_modeler import DeploymentModeler
 
 __all__ = [
-    'PatchManager',
-    'SporeIntegrator',
-    'ConformanceTracker',
-    'SporeValidator',
-    'BowTieTransformation',
-    'ModelManager',
-    'ModelQualityError',
-    'ModelProjectionError',
-    'register_ontology',
-    'load_ontology',
-    'OracleRDFStore',
-    'META',
-    'PatchModel',
-    'PatchOperation',
-    'AddOperation',
-    'RemoveOperation',
-    'hasOperation',
-    'hasSubject',
-    'hasPredicate',
-    'hasObject',
-    'hasTargetSpore',
-    'createdAt',
-    'get_api_token',
+    'MetaOntology',
     'OntologyPatch',
     'PatchType',
-    'PatchStatus'
+    'PatchStatus',
+    'MetaMetaOntology',
+    'OntologyFrameworkError',
+    'ValidationError',
+    'ConformanceError',
+    'ConcurrentModificationError',
+    'BoldoAPIError',
+    'AuthenticationError',
+    'APIRequestError',
+    'PatchNotFoundError',
+    'PatchApplicationError',
+    'ResourceNotFoundError',
+    'ErrorHandler',
+    'ValidationRule',
+    'ErrorResult',
+    'ErrorStep',
+    'ErrorSeverity',
+    'SecurityLevel',
+    'ComplianceLevel',
+    'RiskLevel',
+    'ValidationHandler',
+    'MetricsHandler',
+    'ComplianceHandler',
+    'RDFHandler',
+    'PatchManager',
+    'GraphDBPatchManager',
+    'fix_turtle_syntax',
+    'validate_turtle',
+    'validate_shacl',
+    'load_and_fix_turtle',
+    'OntologyAnalyzer',
+    'TestSetupManager',
+    'PackageManager',
+    'DeploymentModeler'
 ] 

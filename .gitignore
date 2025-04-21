@@ -191,3 +191,4 @@ test_checkin.py
 # Config
 boldo_config.ttl
 
+test_logs/

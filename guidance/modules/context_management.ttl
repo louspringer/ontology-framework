@@ -1,0 +1,119 @@
+@prefix ns2: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:comment rdfs:label "rdf-schema#comment" ;
+    rdfs:comment "Description of rdf-schema#comment" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:domain rdfs:label "rdf-schema#domain" ;
+    rdfs:comment "Description of rdf-schema#domain" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:label rdfs:label "rdf-schema#label" ;
+    rdfs:comment "Description of rdf-schema#label" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:range rdfs:label "rdf-schema#range" ;
+    rdfs:comment "Description of rdf-schema#range" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+owl:versionInfo rdfs:label "owl#versionInfo" ;
+    rdfs:comment "Description of owl#versionInfo" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+ns2: a owl:Ontology ;
+    rdfs:label "Context Management Ontology" ;
+    rdfs:comment "Ontology defining context persistence and management" ;
+    owl:versionInfo "1.0.0" .
+
+ns2:exampleStack a ns2:ContextStack ;
+    rdfs:label "Example Context Stack" ;
+    rdfs:comment "An example context stack" ;
+    owl:versionInfo "1.0.0" ;
+    ns2:hasContext ns2:exampleContext1,
+        ns2:exampleContext2 .
+
+ns2:hasContent a owl:DatatypeProperty ;
+    rdfs:label "Context Content" ;
+    rdfs:comment "The TTL content of the context" ;
+    rdfs:domain ns2:Context ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns2:hasContext a owl:ObjectProperty ;
+    rdfs:label "Has Context" ;
+    rdfs:comment "Links a context stack to its contexts" ;
+    rdfs:domain ns2:ContextStack ;
+    rdfs:range ns2:Context ;
+    owl:versionInfo "1.0.0" .
+
+ns2:hasName a owl:DatatypeProperty ;
+    rdfs:label "Context Name" ;
+    rdfs:comment "The name of the context" ;
+    rdfs:domain ns2:Context ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns2:hasStackOrder a owl:DatatypeProperty ;
+    rdfs:label "Stack Order" ;
+    rdfs:comment "The position of the context in the stack" ;
+    rdfs:domain ns2:Context ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+ns2:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "Context Timestamp" ;
+    rdfs:comment "When the context was created" ;
+    rdfs:domain ns2:Context ;
+    rdfs:range xsd:dateTime ;
+    owl:versionInfo "1.0.0" .
+
+ns2:exampleContext1 a ns2:Context ;
+    rdfs:label "Example Context 1" ;
+    rdfs:comment "An example context instance" ;
+    owl:versionInfo "1.0.0" ;
+    ns2:hasContent """@prefix : <./#>.
+:Test a owl:Class.""" ;
+    ns2:hasName "test_context" ;
+    ns2:hasStackOrder 1 ;
+    ns2:hasTimestamp "2024-04-17T12:00:00"^^xsd:dateTime .
+
+ns2:exampleContext2 a ns2:Context ;
+    rdfs:label "Example Context 2" ;
+    rdfs:comment "Another example context instance" ;
+    owl:versionInfo "1.0.0" ;
+    ns2:hasContent """@prefix : <./#>.
+:Another a owl:Class.""" ;
+    ns2:hasName "another_context" ;
+    ns2:hasStackOrder 2 ;
+    ns2:hasTimestamp "2024-04-17T12:01:00"^^xsd:dateTime .
+
+ns2:ContextStack a owl:Class ;
+    rdfs:label "Context Stack" ;
+    rdfs:comment "A stack of contexts that can be managed" ;
+    owl:versionInfo "1.0.0" .
+
+ns2:Context a owl:Class ;
+    rdfs:label "Context" ;
+    rdfs:comment "A named context that can be pushed and popped" ;
+    owl:versionInfo "1.0.0" .
+

@@ -1,176 +1,62 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
-
-@prefix : <./#> .
-@prefix dc: <http://purl.org/dc/elements/1.1/#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
 @prefix dct: <http://purl.org/dc/terms/#> .
-@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
-@prefix meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:exampleBestPractice1 a :BestPractice  ;
-    rdfs:label "Example BestPractice 1" ;
-    rdfs:comment "This is example instance 1 of class BestPractice" .
-
-:exampleBestPractice2 a :BestPractice  ;
-    rdfs:label "Example BestPractice 2" ;
-    rdfs:comment "This is example instance 2 of class BestPractice" .
-
-:exampleDomainAnalogy1 a :DomainAnalogy  ;
-    rdfs:label "Example DomainAnalogy 1" ;
-    rdfs:comment "This is example instance 1 of class DomainAnalogy" ;
-    :analogySource "Example value 1"  ;
-    :analogyTarget "Example value 1" .
-
-:exampleDomainAnalogy2 a :DomainAnalogy  ;
-    rdfs:label "Example DomainAnalogy 2" ;
-    rdfs:comment "This is example instance 2 of class DomainAnalogy" ;
-    :analogySource "Example value 2"  ;
-    :analogyTarget "Example value 2" .
-
-:exampleInterpretation1 a :Interpretation  ;
-    rdfs:label "Example Interpretation 1" ;
-    rdfs:comment "This is example instance 1 of class Interpretation" ;
-    :complexity 1  ;
-    :hasAction :exampleAction1  ;
-    :sourceContext "Example value 1"  ;
-    :targetContext "Example value 1" .
-
-:exampleInterpretation2 a :Interpretation  ;
-    rdfs:label "Example Interpretation 2" ;
-    rdfs:comment "This is example instance 2 of class Interpretation" ;
-    :complexity 2  ;
-    :hasAction :exampleAction2  ;
-    :sourceContext "Example value 2"  ;
-    :targetContext "Example value 2" .
-
-:exampleLegacyMapping1 a :LegacyMapping  ;
-    rdfs:label "Example LegacyMapping 1" ;
-    rdfs:comment "This is example instance 1 of class LegacyMapping" .
-
-:exampleLegacyMapping2 a :LegacyMapping  ;
-    rdfs:label "Example LegacyMapping 2" ;
-    rdfs:comment "This is example instance 2 of class LegacyMapping" .
-
-:CoreGuidanceModule a owl:Ontology  ;
+:CoreGuidanceModule a owl:Ontology ;
     rdfs:label "Core Guidance Module" ;
-    dc:title "Core Guidance Module" ;
-    dc:version "1.0.0" ;
+    dc1:title "Core Guidance Module" ;
+    dc1:version "1.0.0" ;
     dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
     dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
     rdfs:comment "Core concepts and relationships for the guidance ontology" ;
-    owl:imports <./model.ttl>,
-        <./security.ttl> ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model.ttl>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security.ttl> ;
     owl:versionInfo "1.0.0" .
 
-<./core#CoreGuidanceModule#ModuleShape> a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path <./core#CoreGuidanceModule#version>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./core#CoreGuidanceModule#description>  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path <./core#CoreGuidanceModule#label> ;
-    sh:targetClass <./core#CoreGuidanceModule#Module> .
+:exampleBestPractice1 a :BestPractice ;
+    rdfs:label "Example BestPractice 1" ;
+    rdfs:comment "This is example instance 1 of class BestPractice" .
 
-:analogySource a owl:DatatypeProperty  ;
-    rdfs:label "Analogy Source" ;
-    rdfs:comment "Source domain for analogy" ;
-    rdfs:domain :DomainAnalogy ;
-    rdfs:range xsd:string .
+:exampleBestPractice2 a :BestPractice ;
+    rdfs:label "Example BestPractice 2" ;
+    rdfs:comment "This is example instance 2 of class BestPractice" .
 
-:analogyTarget a owl:DatatypeProperty  ;
-    rdfs:label "Analogy Target" ;
-    rdfs:comment "Target domain for analogy" ;
-    rdfs:domain :DomainAnalogy ;
-    rdfs:range xsd:string .
+:exampleDomainAnalogy1 a :DomainAnalogy ;
+    rdfs:label "Example DomainAnalogy 1" ;
+    rdfs:comment "This is example instance 1 of class DomainAnalogy" ;
+    :analogySource "Example value 1" ;
+    :analogyTarget "Example value 1" .
 
-:complexity a owl:DatatypeProperty  ;
-    rdfs:label "Complexity" ;
-    rdfs:comment "Complexity level of interpretation" ;
-    rdfs:domain :Interpretation ;
-    rdfs:range xsd:integer .
+:exampleDomainAnalogy2 a :DomainAnalogy ;
+    rdfs:label "Example DomainAnalogy 2" ;
+    rdfs:comment "This is example instance 2 of class DomainAnalogy" ;
+    :analogySource "Example value 2" ;
+    :analogyTarget "Example value 2" .
 
-:hasAction a owl:ObjectProperty  ;
-    rdfs:label "Has Action" ;
-    rdfs:comment "Links interpretation to action" ;
-    rdfs:domain :Interpretation ;
-    rdfs:range :Action .
+:exampleInterpretation1 a :Interpretation ;
+    rdfs:label "Example Interpretation 1" ;
+    rdfs:comment "This is example instance 1 of class Interpretation" ;
+    :complexity 1 ;
+    :hasAction :exampleAction1 ;
+    :sourceContext "Example value 1" ;
+    :targetContext "Example value 1" .
 
-:hasLegacyEquivalent a owl:ObjectProperty  ;
-    rdfs:label "Has Legacy Equivalent" ;
-    rdfs:comment "Links modular concept to its legacy equivalent" ;
-    rdfs:domain owl:Class ;
-    rdfs:range guidance:LLMGuidanceOntology .
+:exampleInterpretation2 a :Interpretation ;
+    rdfs:label "Example Interpretation 2" ;
+    rdfs:comment "This is example instance 2 of class Interpretation" ;
+    :complexity 2 ;
+    :hasAction :exampleAction2 ;
+    :sourceContext "Example value 2" ;
+    :targetContext "Example value 2" .
 
-:sourceContext a owl:DatatypeProperty  ;
-    rdfs:label "Source Context" ;
-    rdfs:comment "Context from which interpretation is derived" ;
-    rdfs:domain :Interpretation ;
-    rdfs:range xsd:string .
+:exampleLegacyMapping1 a :LegacyMapping ;
+    rdfs:label "Example LegacyMapping 1" ;
+    rdfs:comment "This is example instance 1 of class LegacyMapping" .
 
-:targetContext a owl:DatatypeProperty  ;
-    rdfs:label "Target Context" ;
-    rdfs:comment "Context to which interpretation is applied" ;
-    rdfs:domain :Interpretation ;
-    rdfs:range xsd:string .
-
-:exampleAction1 a :Action  ;
-    rdfs:label "Example Action 1" ;
-    rdfs:comment "This is example instance 1 of class Action" .
-
-:exampleAction2 a :Action  ;
-    rdfs:label "Example Action 2" ;
-    rdfs:comment "This is example instance 2 of class Action" .
-
-:BestPractice a owl:Class  ;
-    rdfs:label "BestPractice" ;
-    rdfs:comment "A recommended practice for ontology development and management" ;
-    owl:versionInfo "1.0.0" .
-
-:LegacyMapping a owl:Class  ;
-    rdfs:label "Legacy Mapping" ;
-    rdfs:comment "Maps legacy guidance concepts to modular equivalents" ;
-    owl:versionInfo "1.0.0" .
-
-:Action a owl:Class  ;
-    rdfs:label "Action" ;
-    rdfs:comment "An action that can be taken based on interpretation" ;
-    owl:versionInfo "1.0.0" .
-
-:DomainAnalogy a owl:Class  ;
-    rdfs:label "DomainAnalogy" ;
-    rdfs:comment "A pattern that draws parallels between domains to aid understanding and implementation" ;
-    rdfs:subClassOf :Interpretation ;
-    owl:versionInfo "1.0.0" .
-
-:Interpretation a owl:Class  ;
-    rdfs:label "Interpretation" ;
-    rdfs:comment "Guidance on how to interpret an ontology element" ;
-    rdfs:subClassOf meta:AbstractionDimension ;
-    owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape2sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
-
-[] a sh:NodeShape ;
-    sh:property :shape3sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
+:exampleLegacyMapping2 a :LegacyMapping ;
+    rdfs:label "Example LegacyMapping 2" ;
+    rdfs:comment "This is example instance 2 of class LegacyMapping" .
 

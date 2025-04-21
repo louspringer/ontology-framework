@@ -37,6 +37,7 @@ class TestSparqlClient(unittest.TestCase):
         # Create test client
         cls.client = SparqlClient(
             base_url="http://localhost:3030",
+            server_type="fuseki",  # Specify server type as Fuseki
             auth=None  # Default Fuseki setup doesn't require auth
         )
         
@@ -95,12 +96,15 @@ class TestSparqlClient(unittest.TestCase):
                 "docker", "run", "-d",
                 "--name", "fuseki",
                 "-p", "3030:3030",
-                "stain/jena-fuseki"
+                "-e", "ADMIN_PASSWORD=admin",
+                "-e", "ENABLE_DATA_WRITE=true",
+                "-e", "ENABLE_UPDATE=true",
+                "stain/jena-fuseki:latest"
             ], check=True)
             logger.info("Started Fuseki container")
             
             # Wait for Fuseki to be ready
-            time.sleep(5)
+            time.sleep(15)  # Increased wait time to ensure Fuseki is ready
             
         except subprocess.CalledProcessError as e:
             logger.error(f"Failed to start Fuseki container: {e}")

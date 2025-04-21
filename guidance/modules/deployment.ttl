@@ -1,11 +1,7 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/deployment#> .
-
-@prefix : <./#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
 @prefix ns1: <http://example.org/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ns1:colimaRuntime a ns1:ColimaRuntime ;
@@ -143,71 +139,71 @@ ns1:serverLogTest a ns1:LoggingTest ;
     ns1:hasTestName "log_check" ;
     rdfs:comment "Test for server log patterns" .
 
-:exampleColimaRuntime1 a ns1:ColimaRuntime  ;
+:exampleColimaRuntime1 a ns1:ColimaRuntime ;
     rdfs:label "Example ColimaRuntime 1" ;
     rdfs:comment "This is example instance 1 of class ColimaRuntime" .
 
-:exampleColimaRuntime2 a ns1:ColimaRuntime  ;
+:exampleColimaRuntime2 a ns1:ColimaRuntime ;
     rdfs:label "Example ColimaRuntime 2" ;
     rdfs:comment "This is example instance 2 of class ColimaRuntime" .
 
-:exampleContainerRuntime1 a ns1:ContainerRuntime  ;
+:exampleContainerRuntime1 a ns1:ContainerRuntime ;
     rdfs:label "Example ContainerRuntime 1" ;
     ns1:hasRuntimeName "Example value 1" ;
     ns1:hasRuntimeStatus "Example value 1" ;
     ns1:hasRuntimeVersion "Example value 1" ;
     rdfs:comment "This is example instance 1 of class ContainerRuntime" .
 
-:exampleContainerRuntime2 a ns1:ContainerRuntime  ;
+:exampleContainerRuntime2 a ns1:ContainerRuntime ;
     rdfs:label "Example ContainerRuntime 2" ;
     ns1:hasRuntimeName "Example value 2" ;
     ns1:hasRuntimeStatus "Example value 2" ;
     ns1:hasRuntimeVersion "Example value 2" ;
     rdfs:comment "This is example instance 2 of class ContainerRuntime" .
 
-:exampleDeployment1 a ns1:Deployment  ;
+:exampleDeployment1 a ns1:Deployment ;
     rdfs:label "Example Deployment 1" ;
     rdfs:comment "This is example instance 1 of class Deployment" .
 
-:exampleDeployment2 a ns1:Deployment  ;
+:exampleDeployment2 a ns1:Deployment ;
     rdfs:label "Example Deployment 2" ;
     rdfs:comment "This is example instance 2 of class Deployment" .
 
-:exampleJenaFusekiDeployment1 a ns1:JenaFusekiDeployment  ;
+:exampleJenaFusekiDeployment1 a ns1:JenaFusekiDeployment ;
     rdfs:label "Example JenaFusekiDeployment 1" ;
     ns1:hasDatasetName "Example value 1" ;
     rdfs:comment "This is example instance 1 of class JenaFusekiDeployment" .
 
-:exampleJenaFusekiDeployment2 a ns1:JenaFusekiDeployment  ;
+:exampleJenaFusekiDeployment2 a ns1:JenaFusekiDeployment ;
     rdfs:label "Example JenaFusekiDeployment 2" ;
     ns1:hasDatasetName "Example value 2" ;
     rdfs:comment "This is example instance 2 of class JenaFusekiDeployment" .
 
-:exampleJenaFusekiTest1 a ns1:JenaFusekiTest  ;
+:exampleJenaFusekiTest1 a ns1:JenaFusekiTest ;
     rdfs:label "Example JenaFusekiTest 1" ;
     ns1:hasExpectedResponse "Example value 1" ;
     ns1:hasTestEndpoint :exampleanyURI1 ;
     rdfs:comment "This is example instance 1 of class JenaFusekiTest" .
 
-:exampleJenaFusekiTest2 a ns1:JenaFusekiTest  ;
+:exampleJenaFusekiTest2 a ns1:JenaFusekiTest ;
     rdfs:label "Example JenaFusekiTest 2" ;
     ns1:hasExpectedResponse "Example value 2" ;
     ns1:hasTestEndpoint :exampleanyURI2 ;
     rdfs:comment "This is example instance 2 of class JenaFusekiTest" .
 
-:exampleLoggingTest1 a ns1:LoggingTest  ;
+:exampleLoggingTest1 a ns1:LoggingTest ;
     rdfs:label "Example LoggingTest 1" ;
     ns1:hasLogLevel "Example value 1" ;
     ns1:hasLogPattern "Example value 1" ;
     rdfs:comment "This is example instance 1 of class LoggingTest" .
 
-:exampleLoggingTest2 a ns1:LoggingTest  ;
+:exampleLoggingTest2 a ns1:LoggingTest ;
     rdfs:label "Example LoggingTest 2" ;
     ns1:hasLogLevel "Example value 2" ;
     ns1:hasLogPattern "Example value 2" ;
     rdfs:comment "This is example instance 2 of class LoggingTest" .
 
-:exampleServiceDeployment1 a ns1:ServiceDeployment  ;
+:exampleServiceDeployment1 a ns1:ServiceDeployment ;
     rdfs:label "Example ServiceDeployment 1" ;
     ns1:hasServiceEndpoint :exampleanyURI1 ;
     ns1:hasServiceName "Example value 1" ;
@@ -215,7 +211,7 @@ ns1:serverLogTest a ns1:LoggingTest ;
     ns1:hasServiceVersion "Example value 1" ;
     rdfs:comment "This is example instance 1 of class ServiceDeployment" .
 
-:exampleServiceDeployment2 a ns1:ServiceDeployment  ;
+:exampleServiceDeployment2 a ns1:ServiceDeployment ;
     rdfs:label "Example ServiceDeployment 2" ;
     ns1:hasServiceEndpoint :exampleanyURI2 ;
     ns1:hasServiceName "Example value 2" ;
@@ -223,12 +219,12 @@ ns1:serverLogTest a ns1:LoggingTest ;
     ns1:hasServiceVersion "Example value 2" ;
     rdfs:comment "This is example instance 2 of class ServiceDeployment" .
 
-:exampleTestConfiguration1 a ns1:TestConfiguration  ;
+:exampleTestConfiguration1 a ns1:TestConfiguration ;
     rdfs:label "Example TestConfiguration 1" ;
     ns1:hasTestName "Example value 1" ;
     rdfs:comment "This is example instance 1 of class TestConfiguration" .
 
-:exampleTestConfiguration2 a ns1:TestConfiguration  ;
+:exampleTestConfiguration2 a ns1:TestConfiguration ;
     rdfs:label "Example TestConfiguration 2" ;
     ns1:hasTestName "Example value 2" ;
     rdfs:comment "This is example instance 2 of class TestConfiguration" .
@@ -278,23 +274,4 @@ ns1:ServiceDeployment a owl:Class ;
     rdfs:comment "Configuration for service deployment" ;
     rdfs:subClassOf ns1:Deployment ;
     owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ;
-    sh:targetClass owl:Class .
-
-[] a sh:NodeShape ;
-    sh:property :shape2sh:minCount 1 ;
-            sh:path rdfs:domain  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:range ;
-    sh:targetClass rdf:Property .
 

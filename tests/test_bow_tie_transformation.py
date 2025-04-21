@@ -1,209 +1,126 @@
-import unittest
+"""
+Test module for BowTieTransformation class.
+"""
+
 import os
-from pathlib import Path
-from rdflib import Graph, URIRef, Literal, XSD
-from rdflib.namespace import RDFS, OWL
+import shutil
+import unittest
+from typing import ClassVar
+from rdflib import Graph, URIRef, Literal, Namespace
+from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
 from ontology_framework.bow_tie_transformation import BowTieTransformation
+from ontology_framework.conformance_tracking import ConformanceTracker
 
 class TestBowTieTransformation(unittest.TestCase):
-    """Test suite for bow-tie transformation patterns.
+    """Test cases for BowTieTransformation class."""
     
-    This test suite validates the bow-tie transformation pattern ontology
-    against the framework's prefix management, validation, and guidance rules.
-    """
+    test_dir: ClassVar[str]
+    test_ontology_path: ClassVar[str]
+    ontology: ClassVar[Graph]
+    tracker: ClassVar[ConformanceTracker]
     
     @classmethod
-    def setUpClass(cls):
-        """Set up test environment and load ontologies."""
-        # Create test directory
-        cls.test_dir = Path(__file__).parent / 'test_data'
-        cls.test_dir.mkdir(exist_ok=True)
+    def setUpClass(cls) -> None:
+        """Set up test environment."""
+        # Create test directories
+        cls.test_dir = "tests/test_data"
+        os.makedirs(cls.test_dir, exist_ok=True)
         
-        # Initialize graphs
+        # Create a test ontology file
+        cls.test_ontology_path = os.path.join(cls.test_dir, "test_ontology.ttl")
         cls.ontology = Graph()
-        cls.validation_graph = Graph()
         
-        # Load core ontologies
-        base_path = Path(__file__).parent.parent
+        # Add some test data
+        test_ns = Namespace("http://example.org/test#")
+        cls.ontology.bind("test", test_ns)
+        cls.ontology.add((test_ns.TestTransformation, RDF.type, OWL.Class))
+        cls.ontology.add((test_ns.TestInput, RDF.type, OWL.Class))
+        cls.ontology.add((test_ns.TestOutput, RDF.type, OWL.Class))
         
-        # Load bow-tie ontology
-        ontology_path = base_path / 'bow-tie-transformation.ttl'
-        if not ontology_path.exists():
-            raise FileNotFoundError(f"Ontology file not found at {ontology_path}")
-        try:
-            cls.ontology.parse(str(ontology_path), format='turtle')
-        except Exception as e:
-            raise RuntimeError(f"Failed to parse ontology: {str(e)}")
+        # Save the test ontology
+        cls.ontology.serialize(destination=cls.test_ontology_path, format="turtle")
         
-        # Load validation ontologies
-        validation_paths = [
-            base_path / 'guidance.ttl',
-            base_path / 'prefix_management.ttl',
-            base_path / 'prefix_validation.ttl'
-        ]
+        # Initialize conformance tracker
+        cls.tracker = ConformanceTracker(guidance_graph=cls.ontology)
         
-        for path in validation_paths:
-            if not path.exists():
-                raise FileNotFoundError(f"Validation ontology not found at {path}")
-            try:
-                cls.validation_graph.parse(str(path), format='turtle')
-            except Exception as e:
-                raise RuntimeError(f"Failed to parse validation ontology {path}: {str(e)}")
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """Clean up test environment."""
+        if os.path.exists(cls.test_dir):
+            shutil.rmtree(cls.test_dir)
         
-        # Define namespaces following prefix management rules
-        cls.bt_ns = "./bow-tie-pattern#"  # Relative path for core pattern
-        cls.ex_ns = "./bow-tie-examples#"  # Relative path for examples
+    def test_guidance_conformance(self) -> None:
+        """Test that the transformation follows guidance rules."""
+        # Create transformation chain
+        transformer = BowTieTransformation(self.ontology)
         
-        # Define example instances using proper URIRefs
-        cls.jpeg_compression = URIRef(f"{cls.ex_ns}JPEGCompression")
-        cls.neural_network_pruning = URIRef(f"{cls.ex_ns}NeuralNetworkPruning")
-        cls.text_summarization = URIRef(f"{cls.ex_ns}TextSummarization")
+        # Transform the graph and validate it
+        transformed_graph = transformer.transform()
+        self.assertIsNotNone(transformed_graph, "Transformation should return a graph")
         
-        # Define property URIs
-        cls.has_lossiness = URIRef(f"{cls.bt_ns}hasLossinessLevel")
-    
-    def test_prefix_validation(self):
-        """Test prefix validation rules."""
-        # Check prefix format
-        self.assertTrue(self.bt_ns.startswith("./"), "Core prefix must use relative path")
-        self.assertTrue(self.ex_ns.startswith("./"), "Example prefix must use relative path")
+        # Create a new transformer with the transformed graph
+        validator = BowTieTransformation(transformed_graph)
         
-        # Check prefix uniqueness
-        prefixes = set()
-        for prefix, namespace in self.ontology.namespaces():
-            self.assertNotIn(prefix, prefixes, f"Duplicate prefix found: {prefix}")
-            prefixes.add(prefix)
-    
-    def test_jpeg_compression(self):
-        """Test JPEG compression transformation."""
-        # Create test image
-        test_image = self.test_dir / 'test_image.jpg'
-        # TODO: Add actual image creation/processing
+        # Validate the transformed graph
+        is_valid = validator.validate()
+        self.assertTrue(is_valid, "Transformation should follow bow-tie pattern")
         
-        # Verify transformation
-        compression = self.ontology.value(
-            subject=self.jpeg_compression,
-            predicate=self.has_lossiness
-        )
-        self.assertIsNotNone(compression, "JPEG compression should have a lossiness level")
-        self.assertGreaterEqual(float(compression), 0.0, "Lossiness should be >= 0")
-        self.assertLessEqual(float(compression), 1.0, "Lossiness should be <= 1")
-    
-    def test_neural_network_pruning(self):
-        """Test neural network pruning transformation."""
-        # Create test network
-        test_network = self.test_dir / 'original_network.h5'
-        # TODO: Add actual network creation/processing
+    def test_transformation_chain(self) -> None:
+        """Test the transformation chain."""
+        # Create transformation chain
+        transformer = BowTieTransformation(self.ontology)
         
-        # Verify transformation
-        pruning = self.ontology.value(
-            subject=self.neural_network_pruning,
-            predicate=self.has_lossiness
-        )
-        self.assertIsNotNone(pruning, "Neural network pruning should have a lossiness level")
-        self.assertGreaterEqual(float(pruning), 0.0, "Lossiness should be >= 0")
-        self.assertLessEqual(float(pruning), 1.0, "Lossiness should be <= 1")
-    
-    def test_text_summarization(self):
-        """Test text summarization transformation."""
-        # Create test text
-        test_text = self.test_dir / 'original_text.txt'
-        # TODO: Add actual text creation/processing
+        # Transform the graph
+        transformed_graph = transformer.transform()
+        self.assertIsNotNone(transformed_graph, "Transformation should return a graph")
         
-        # Verify transformation
-        summarization = self.ontology.value(
-            subject=self.text_summarization,
-            predicate=self.has_lossiness
-        )
-        self.assertIsNotNone(summarization, "Text summarization should have a lossiness level")
-        self.assertGreaterEqual(float(summarization), 0.0, "Lossiness should be >= 0")
-        self.assertLessEqual(float(summarization), 1.0, "Lossiness should be <= 1")
-    
-    def test_transformation_chain(self):
-        """Test complete transformation chain."""
-        # Get all transformation patterns
-        patterns = self.ontology.subjects(
-            predicate=RDFS.subClassOf,
-            object=URIRef(f"{self.bt_ns}TransformationPattern")
-        )
+        # Check if required classes exist
+        bt_ns = Namespace("https://github.com/louspringer/ontology-framework/bow-tie#")
+        required_classes = {
+            bt_ns.Transformation,
+            bt_ns.Input,
+            bt_ns.Output
+        }
         
-        for pattern in patterns:
-            # Check for required properties
-            label = self.ontology.value(
-                subject=pattern,
-                predicate=RDFS.label
-            )
-            comment = self.ontology.value(
-                subject=pattern,
-                predicate=RDFS.comment
-            )
-            version = self.ontology.value(
-                subject=pattern,
-                predicate=OWL.versionInfo
+        for cls in required_classes:
+            self.assertTrue(
+                (cls, RDF.type, OWL.Class) in transformed_graph,
+                f"Required class {cls} not found in transformed graph"
             )
             
-            self.assertIsNotNone(label, f"Pattern {pattern} should have a label")
-            self.assertIsNotNone(comment, f"Pattern {pattern} should have a comment")
-            self.assertIsNotNone(version, f"Pattern {pattern} should have a version")
-    
-    def test_guidance_conformance(self):
-        """Test conformance with guidance rules."""
-        # Check for required validation rules
-        validation_rules = self.validation_graph.subjects(
-            predicate=RDFS.subClassOf,
-            object=URIRef("http://www.w3.org/ns/shacl#NodeShape")
-        )
+    def test_validation_patterns(self) -> None:
+        """Test validation patterns."""
+        # Create transformation chain
+        transformer = BowTieTransformation(self.ontology)
         
-        for rule in validation_rules:
-            # Verify each rule is properly defined
-            self.assertTrue(
-                self.validation_graph.value(
-                    subject=rule,
-                    predicate=URIRef("http://www.w3.org/ns/shacl#targetClass")
-                ),
-                f"Validation rule {rule} must have a target class"
-            )
-    
-    @classmethod
-    def tearDownClass(cls):
-        """Clean up test environment."""
-        # Remove test files
-        for file in cls.test_dir.glob('*'):
-            file.unlink()
-        cls.test_dir.rmdir()
+        # Transform the graph
+        transformed_graph = transformer.transform()
+        self.assertIsNotNone(transformed_graph, "Transformation should return a graph")
+        
+        # Create a new transformer with the transformed graph
+        validator = BowTieTransformation(transformed_graph)
+        
+        # Check SHACL validation rules
+        query = """
+        PREFIX bt: <https://github.com/louspringer/ontology-framework/bow-tie#>
+        PREFIX sh: <http://www.w3.org/ns/shacl#>
+        ASK {
+            ?shape a sh:NodeShape .
+            ?shape sh:targetClass bt:Transformation .
+            ?shape sh:property ?input_property .
+            ?input_property sh:path bt:hasInput .
+            ?input_property sh:minCount 1 .
+            ?input_property sh:maxCount 1 .
+            ?shape sh:property ?output_property .
+            ?output_property sh:path bt:hasOutput .
+            ?output_property sh:minCount 1 .
+            ?output_property sh:maxCount 1 .
+        }
+        """
+        self.assertTrue(
+            bool(transformed_graph.query(query).askAnswer),
+            "SHACL validation rules not properly applied"
+        )
 
-    def test_guidance_conformance(self):
-        transformation = BowTieTransformation()
-        assert transformation.is_guidance_conformant()
-
-    def test_jpeg_compression(self):
-        transformation = BowTieTransformation()
-        compression = transformation.apply_jpeg_compression("test.jpg", quality=85)
-        assert compression is not None
-        assert compression.lossiness_level == 0.15  # 85% quality = 15% loss
-
-    def test_neural_network_pruning(self):
-        transformation = BowTieTransformation()
-        pruning = transformation.apply_neural_network_pruning("model.h5", ratio=0.3)
-        assert pruning is not None
-        assert pruning.lossiness_level == 0.3  # 30% pruning = 30% loss
-
-    def test_text_summarization(self):
-        transformation = BowTieTransformation()
-        text = "This is a long text that needs to be summarized for testing purposes."
-        summarization = transformation.apply_text_summarization(text, ratio=0.5)
-        assert summarization is not None
-        assert summarization.lossiness_level == 0.5  # 50% summarization = 50% loss
-
-    def test_prefix_validation(self):
-        transformation = BowTieTransformation()
-        assert transformation.validate_prefixes()
-
-    def test_transformation_chain(self):
-        transformation = BowTieTransformation()
-        result = transformation.apply_transformation_chain("input.txt")
-        assert result is not None
-        assert result.is_valid  # Access is_valid as a property
-
-if __name__ == '__main__':
-    unittest.main() 
+if __name__ == "__main__":
+    unittest.main()

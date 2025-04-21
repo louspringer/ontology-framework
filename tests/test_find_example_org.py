@@ -3,7 +3,7 @@
 
 import pytest
 from pathlib import Path
-from src.ontology_framework.namespace_recovery.find_example_org import ExampleOrgFinder
+from ontology_framework.namespace_recovery.find_example_org import ExampleOrgFinder
 
 @pytest.fixture
 def test_files(tmp_path):

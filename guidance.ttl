@@ -1,1027 +1,333 @@
-@prefix : <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
-@prefix collaboration: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
-@prefix core: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
-@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
-@prefix dct: <http:/purl.org/dc/terms/#> .
-@prefix deploy: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/deployment_validation#> .
-@prefix env: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#> .
-@prefix model: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> .
-@prefix owl: <http:/www.w3.org/2002/07/owl#> .
-@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
-@prefix security: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> .
-@prefix sh: <http:/www.w3.org/ns/shacl#> .
-@prefix sparql: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/sparql_service#> .
-@prefix validation: <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
-@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:GuidanceOntology a owl:Ontology ;
+    rdfs:label "Guidance Ontology"@en ;
+    rdfs:comment "Core guidance ontology for the ontology framework"@en ;
+    owl:versionInfo "0.1.0" .
+
+# Core Classes
+:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "A level of conformance for validation"@en .
+
+# Properties
+:hasStringRepresentation a owl:DatatypeProperty ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range xsd:string ;
+    rdfs:label "has string representation"@en ;
+    rdfs:comment "The string representation of a conformance level"@en .
+
+:hasValidationRules a owl:DatatypeProperty ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range xsd:string ;
+    rdfs:label "has validation rules"@en ;
+    rdfs:comment "The validation rules for this conformance level"@en .
+
+:hasMinimumRequirements a owl:DatatypeProperty ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range xsd:string ;
+    rdfs:label "has minimum requirements"@en ;
+    rdfs:comment "The minimum requirements for this conformance level"@en .
+
+:hasComplianceMetrics a owl:DatatypeProperty ;
+    rdfs:domain :ConformanceLevel ;
+    rdfs:range xsd:string ;
+    rdfs:label "has compliance metrics"@en ;
+    rdfs:comment "The compliance metrics for this conformance level"@en .
+
+# Individuals
+:STRICT a :ConformanceLevel ;
+    :hasStringRepresentation "STRICT" ;
+    :hasValidationRules "All validation rules must pass" ;
+    :hasMinimumRequirements "All required properties must be present" ;
+    :hasComplianceMetrics "100% compliance required" ;
+    rdfs:label "Strict Conformance"@en ;
+    rdfs:comment "Strict validation rules requiring full compliance"@en .
+
+:MODERATE a :ConformanceLevel ;
+    :hasStringRepresentation "MODERATE" ;
+    :hasValidationRules "Most validation rules must pass" ;
+    :hasMinimumRequirements "Core properties must be present" ;
+    :hasComplianceMetrics "80% compliance required" ;
+    rdfs:label "Moderate Conformance"@en ;
+    rdfs:comment "Moderate validation rules allowing some flexibility"@en .
+
+:RELAXED a :ConformanceLevel ;
+    :hasStringRepresentation "RELAXED" ;
+    :hasValidationRules "Basic validation rules must pass" ;
+    :hasMinimumRequirements "Essential properties must be present" ;
+    :hasComplianceMetrics "60% compliance required" ;
+    rdfs:label "Relaxed Conformance"@en ;
+    rdfs:comment "Relaxed validation rules with significant flexibility"@en .
+
+# SHACL Validation Rules
+:ConformanceLevelShape a sh:NodeShape ;
+    sh:targetClass :ConformanceLevel ;
+    sh:property [
+        sh:path :hasStringRepresentation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path :hasValidationRules ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path :hasMinimumRequirements ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path :hasComplianceMetrics ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
 
 :IntegrationProcessShape a sh:NodeShape ;
-    sh:property [ sh:class :IntegrationStep ;
-            sh:message "Integration process must have at least one step" ;
-            sh:minCount 1 ;
-            sh:path :hasIntegrationStep ] ;
-    sh:targetClass :IntegrationProcess .
+    rdfs:label "Integration Process Shape"@en ;
+    rdfs:comment "SHACL shape for validating integration processes"@en ;
+    sh:targetClass :IntegrationProcess ;
+    sh:property [
+        sh:path :hasIntegrationStep ;
+        sh:minCount 1 ;
+        sh:class :IntegrationStep ;
+        sh:message "Integration process must have at least one step"@en
+    ] ,
+    [
+        sh:path :stepOrder ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[0-9]+$" ;
+        sh:message "Integration step must have a valid step order"@en
+    ] ,
+    [
+        sh:path :stepDescription ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Integration step must have a description"@en
+    ] .
+
+:IntegrationStep1 a :IntegrationStep ;
+    rdfs:label "Step 1"@en ;
+    rdfs:comment "First integration step"@en ;
+    :stepDescription "First integration step" ;
+    :stepOrder "1" .
 
 :IntegrationStepShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:integer ;
+    rdfs:label "Integration Step Shape"@en ;
+    rdfs:comment "SHACL shape for validating integration steps"@en ;
+    sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:message "Step must have a positive integer order" ;
+            sh:message "Integration step must have a valid step order"@en ;
             sh:minCount 1 ;
-            sh:minInclusive 1 ;
-            sh:path :stepOrder ],
+            sh:path :stepOrder ;
+            sh:pattern "^[0-9]+$" ],
         [ sh:datatype xsd:string ;
-            sh:message "Step must have a description" ;
+            sh:maxCount 1 ;
+            sh:message "Integration step must have a description"@en ;
             sh:minCount 1 ;
             sh:path :stepDescription ] ;
     sh:targetClass :IntegrationStep .
 
-:LegacySupportShape a sh:NodeShape ;
-    sh:property [ sh:class owl:Thing ;
-            sh:message "Legacy support must have at least one mapping" ;
-            sh:minCount 1 ;
-            sh:path :hasLegacyMapping ] ;
-    sh:targetClass :LegacySupport .
-
 :ModelConformanceShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether prefix validation is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresPrefixValidation ],
-        [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether namespace validation is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresNamespaceValidation ],
-        [ sh:datatype xsd:string ;
+    rdfs:label "Model Conformance Shape"@en ;
+    rdfs:comment "SHACL shape for validating model conformance"@en ;
+    sh:property [ sh:datatype xsd:string ;
             sh:in ( "STRICT" "MODERATE" "RELAXED" ) ;
             sh:maxCount 1 ;
-            sh:message "Conformance level must be STRICT, MODERATE, or RELAXED" ;
+            sh:message "Model conformance must have a valid conformance level"@en ;
             sh:minCount 1 ;
             sh:path :conformanceLevel ] ;
     sh:targetClass :ModelConformance .
 
-:ModelRequirementsShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether version tracking is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresVersionTracking ],
-        [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether dependency management is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresDependencyManagement ],
-        [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether validation pipeline is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresValidationPipeline ],
-        [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Must specify whether documentation is required" ;
-            sh:minCount 1 ;
-            sh:path :requiresDocumentation ] ;
-    sh:targetClass :ModelRequirements .
+:Phase1 a :TestPhase ;
+    rdfs:label "Phase 1"@en ;
+    rdfs:comment "The first phase of testing"@en .
 
-:ModelStructureRuleShape a sh:NodeShape ;
-    sh:property [ sh:class :StructureRequirement ;
-            sh:message "Must have at least one structure requirement" ;
-            sh:minCount 1 ;
-            sh:path :hasStructureRequirement ] ;
-    sh:targetClass :ModelStructureRule .
-
-:ModuleRegistryShape a sh:NodeShape ;
-    sh:property [ sh:class owl:Ontology ;
-            sh:message "Module registry must have at least one registered module" ;
-            sh:minCount 1 ;
-            sh:path :registeredModule ] ;
-    sh:targetClass :ModuleRegistry .
-
-:ModuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Module must have exactly one version in semantic versioning format" ;
-            sh:minCount 1 ;
-            sh:path :moduleVersion ;
-            sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ],
-        [ sh:datatype xsd:string ;
-            sh:message "Module must have a description" ;
-            sh:minCount 1 ;
-            sh:path :moduleDescription ] ;
-    sh:targetClass owl:Ontology .
-
-:PatternRuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:message "Must have rule text" ;
-            sh:minCount 1 ;
-            sh:path :ruleText ],
-        [ sh:datatype xsd:string ;
-            sh:message "Must have an example" ;
-            sh:minCount 1 ;
-            sh:path :ruleExample ],
-        [ sh:datatype xsd:string ;
-            sh:message "Must have a counter example" ;
-            sh:minCount 1 ;
-            sh:path :ruleCounterExample ] ;
-    sh:targetClass :PatternRule .
-
-:RequirementTestingDirectiveShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:in ( "FULL" "PARTIAL" ) ;
-            sh:maxCount 1 ;
-            sh:message "Testing level must be either FULL or PARTIAL" ;
-            sh:minCount 1 ;
-            sh:path :requirementTestingLevel ] ;
-    sh:targetClass :RequirementTestingDirective .
-
-:ShaclPatternRuleShape a sh:NodeShape ;
-    sh:property [ sh:class :PatternRule ;
-            sh:message "Must have at least one pattern rule" ;
-            sh:minCount 1 ;
-            sh:path :hasPatternRule ] ;
-    sh:targetClass :ShaclPatternRule .
-
-:StructureRequirementShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:message "Must have requirement text" ;
-            sh:minCount 1 ;
-            sh:path :requirementText ],
-        [ sh:datatype xsd:string ;
-            sh:message "Must have a validation query" ;
-            sh:minCount 1 ;
-            sh:path :validationQuery ] ;
-    sh:targetClass :StructureRequirement .
-
-:TestConfigurationShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:message "Test configuration must specify a configuration file" ;
-            sh:minCount 1 ;
-            sh:path :testConfigFile ],
-        [ sh:datatype xsd:string ;
-            sh:in ( "development" "staging" "production" ) ;
-            sh:message "Test environment must be development, staging, or production" ;
-            sh:minCount 1 ;
-            sh:path :testEnvironment ],
-        [ sh:datatype xsd:integer ;
-            sh:message "Test timeout must be a positive integer" ;
-            sh:minCount 1 ;
-            sh:minInclusive 1 ;
-            sh:path :testTimeout ] ;
-    sh:targetClass :TestConfiguration .
-
-:TestCoverageShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:decimal ;
-            sh:maxCount 1 ;
-            sh:maxInclusive 1 ;
-            sh:message "Coverage threshold must be between 0 and 1" ;
-            sh:minCount 1 ;
-            sh:minInclusive 0 ;
-            sh:path :coverageThreshold ] ;
-    sh:targetClass :TestCoverage .
-
-:TestPhaseShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:message "Test phase must have a valid order" ;
-            sh:minCount 1 ;
-            sh:minInclusive 1 ;
-            sh:path :phaseOrder ],
-        [ sh:class validation:TestCase ;
-            sh:message "Test phase must have at least one test case" ;
-            sh:minCount 1 ;
-            sh:path validation:hasTestCase ] ;
-    sh:targetClass :TestPhase .
-
-:TestProcedureShape a sh:NodeShape ;
-    sh:property [ sh:class :TestStep ;
-            sh:message "Test procedure must have at least one step" ;
-            sh:minCount 1 ;
-            sh:path :testStep ] ;
-    sh:targetClass :TestProcedure .
-
-:TestProtocolShape a sh:NodeShape ;
-    sh:property [ sh:class :TestPhase ;
-            sh:message "Test protocol must have at least one phase" ;
-            sh:minCount 1 ;
-            sh:path :hasTestPhase ],
-        [ sh:class :TestCoverage ;
-            sh:maxCount 1 ;
-            sh:message "Test protocol must specify coverage requirements" ;
-            sh:minCount 1 ;
-            sh:path :hasTestCoverage ] ;
-    sh:targetClass :TestProtocol .
-
-:TestReportShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:message "Test report must specify a report file" ;
-            sh:minCount 1 ;
-            sh:path :reportFile ],
-        [ sh:datatype xsd:string ;
-            sh:in ( "markdown" "html" "json" ) ;
-            sh:message "Report format must be markdown, html, or json" ;
-            sh:minCount 1 ;
-            sh:path :reportFormat ] ;
-    sh:targetClass :TestReport .
-
-:TestStepShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:in ( "setup" "execution" "validation" "cleanup" ) ;
-            sh:message "Step type must be setup, execution, validation, or cleanup" ;
-            sh:minCount 1 ;
-            sh:path :stepType ],
-        [ sh:datatype xsd:string ;
-            sh:message "Step must have a command to execute" ;
-            sh:minCount 1 ;
-            sh:path :stepCommand ],
-        [ sh:datatype xsd:string ;
-            sh:message "Step must have an expected result" ;
-            sh:minCount 1 ;
-            sh:path :stepExpectedResult ] ;
-    sh:targetClass :TestStep .
-
-:comprehensiveTestingDirective a :RequirementTestingDirective ;
-    rdfs:label "Comprehensive Testing Directive" ;
-    rdfs:comment "Directive requiring comprehensive testing of all requirements" ;
-    :requirementTestingLevel "FULL" ;
-    validation:hasTestCase validation:RequirementComplianceTest .
-
-:guidanceModuleRegistry a owl:NamedIndividual,
-        :ModuleRegistry ;
-    rdfs:label "Guidance Module Registry" ;
-    rdfs:comment "Registry of all guidance modules" ;
-    :registeredModule collaboration:CollaborationGuidanceModule,
-        core:CoreGuidanceModule,
-        deploy:DeploymentValidationModule,
-        env:EnvironmentModule,
-        model:ModelGuidanceModule,
-        security:SecurityGuidanceModule,
-        sparql:SparqlServiceModule,
-        validation:ValidationGuidanceModule .
-
-:hasConformanceCheck a owl:ObjectProperty ;
-    rdfs:label "Has Conformance Check" ;
-    rdfs:comment "Links a model to its conformance validation rules" ;
-    rdfs:domain owl:Ontology ;
-    rdfs:range :ModelConformance ;
-    owl:versionInfo "1.0.0" .
-
-:legacyGuidanceSupport a owl:NamedIndividual,
-        :LegacySupport ;
-    rdfs:label "Legacy Guidance Support" ;
-    rdfs:comment "Maintains backward compatibility with legacy guidance" ;
-    :hasLegacyMapping collaboration:CollaborationGuidanceModule,
-        core:CoreGuidanceModule,
-        model:ModelGuidanceModule,
-        security:SecurityGuidanceModule,
-        validation:ValidationGuidanceModule .
-
-:ontologyFrameworkTestProtocol a :TestProtocol ;
-    rdfs:label "Ontology Framework Test Protocol" ;
-    rdfs:comment "Standard test protocol for ontology framework components" ;
-    :hasTestCoverage :standardCoverage ;
-    :hasTestPhase :integrationTestPhase,
-        :modelValidationPhase,
-        :requirementValidationPhase .
-
-:standardIntegrationProcess a owl:NamedIndividual,
-        :IntegrationProcess ;
-    rdfs:label "Standard Integration Process" ;
-    rdfs:comment "Standard process for model integration" ;
-    :hasIntegrationStep :modelConformanceStep,
-        :namespaceValidationStep,
-        :prefixValidationStep,
-        :versionAlignmentStep .
-
-:standardModelStructureRules a owl:NamedIndividual,
-        :ModelStructureRule ;
-    rdfs:label "Standard Model Structure Rules" ;
-    rdfs:comment "Standard requirements for model structure" ;
-    :hasStructureRequirement :classRequirement,
-        :propertyRequirement .
-
-:standardShaclPatternRules a owl:NamedIndividual,
-        :ShaclPatternRule ;
-    rdfs:label "Standard SHACL Pattern Rules" ;
-    rdfs:comment "Standard rules for SHACL pattern syntax" ;
-    :hasPatternRule :binaryStringRule,
-        :characterClassRule,
-        :literalDotRule .
-
-:standardTestConfig a owl:NamedIndividual,
-        :TestConfiguration ;
-    rdfs:label "Standard Test Configuration" ;
-    rdfs:comment "Standard configuration for ontology framework tests" ;
-    :testConfigFile "pytest.ini" ;
-    :testEnvironment "development" ;
-    :testTimeout 300 .
-
-:standardTestProcedure a owl:NamedIndividual,
-        :TestProcedure ;
-    rdfs:label "Standard Test Procedure" ;
-    rdfs:comment "Standard procedure for running ontology framework tests" ;
-    :testStep :cleanupStep,
-        :executionStep,
-        :setupStep,
-        :validationStep .
-
-:standardTestReport a owl:NamedIndividual,
-        :TestReport ;
-    rdfs:label "Standard Test Report" ;
-    rdfs:comment "Standard report format for test results" ;
-    :reportFile "tests/test_report.md" ;
-    :reportFormat "markdown" .
-
-:strictConformance a owl:NamedIndividual,
-        :ModelConformance ;
-    rdfs:label "Strict Conformance" ;
-    rdfs:comment "Strict conformance rules for model validation" ;
+:SampleTestProtocol a :TestProtocol ;
+    rdfs:label "Sample Test Protocol"@en ;
+    rdfs:comment "A sample test protocol for unit testing"@en ;
     :conformanceLevel "STRICT" ;
     :requiresNamespaceValidation true ;
     :requiresPrefixValidation true .
 
-:binaryStringRule a owl:NamedIndividual,
-        :PatternRule ;
-    rdfs:label "Binary String Rule" ;
-    rdfs:comment "Avoid binary string markers" ;
-    :ruleCounterExample "sh:pattern b'[0-9]+'" ;
-    :ruleExample "sh:pattern \"[0-9]+\"" ;
-    :ruleText "Avoid binary string markers (b'...')" .
+:StandardCoverage a :TestCoverage ;
+    rdfs:label "Standard Coverage"@en ;
+    rdfs:comment "Standard test coverage requirements"@en .
 
-:characterClassRule a owl:NamedIndividual,
-        :PatternRule ;
-    rdfs:label "Character Class Rule" ;
-    rdfs:comment "Use character classes instead of escape sequences" ;
-    :ruleCounterExample "[0-9]+[.][0-9]+[.][0-9]+" ;
-    :ruleExample "[0-9]+[.][0-9]+[.][0-9]+" ;
-    :ruleText "Use character classes [0-9] instead of \\d" .
+:TestProtocolShape a sh:NodeShape ;
+    rdfs:label "Test Protocol Shape"@en ;
+    rdfs:comment "SHACL shape for validating test protocols"@en ;
+    sh:property [ sh:class :TestPhase ;
+            sh:maxCount 5 ;
+            sh:message "Test protocol must have between 1 and 5 test phases"@en ;
+            sh:minCount 1 ;
+            sh:path :hasTestPhase ],
+        [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether prefix validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresPrefixValidation ],
+        [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:message "Test protocol must specify whether namespace validation is required"@en ;
+            sh:minCount 1 ;
+            sh:path :requiresNamespaceValidation ] ;
+    sh:targetClass :TestProtocol .
 
-:classRequirement a owl:NamedIndividual,
-        :StructureRequirement ;
-    rdfs:label "Class Requirement" ;
-    rdfs:comment "Models must contain at least one class" ;
-    :requirementText "Models must contain at least one owl:Class" ;
-    :validationQuery """
-        [] a owl:Class .
-    """ .
+:IntegrationProcess a owl:Class ;
+    rdfs:label "Integration Process"@en ;
+    rdfs:comment "Process for integrating model changes"@en .
 
-:cleanupStep a owl:NamedIndividual,
-        :TestStep ;
-    rdfs:label "Cleanup Step" ;
-    rdfs:comment "Clean up test environment" ;
-    :stepCommand "rm -rf .pytest_cache/ __pycache__/ .mypy_cache/" ;
-    :stepExpectedResult "Test artifacts cleaned up" ;
-    :stepType "cleanup" .
+:TestCoverage a owl:Class ;
+    rdfs:label "Test Coverage"@en ;
+    rdfs:comment "Coverage metrics for testing"@en .
 
 :conformanceLevel a owl:DatatypeProperty ;
-    rdfs:label "Conformance Level" ;
-    rdfs:comment "Level of conformance required (STRICT, MODERATE, RELAXED)" ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "The level of conformance required"@en ;
     rdfs:domain :ModelConformance ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:coverageThreshold a owl:DatatypeProperty ;
-    rdfs:label "Coverage Threshold" ;
-    rdfs:comment "Required percentage of coverage" ;
-    rdfs:domain :TestCoverage ;
-    rdfs:range xsd:decimal .
-
-:executionStep a owl:NamedIndividual,
-        :TestStep ;
-    rdfs:label "Execution Step" ;
-    rdfs:comment "Execute the test suite" ;
-    :stepCommand "python tests/run_tests.py" ;
-    :stepExpectedResult "All tests executed with results" ;
-    :stepType "execution" .
-
-:hasIntegrationStep a owl:ObjectProperty ;
-    rdfs:label "Has Integration Step" ;
-    rdfs:comment "Links to specific integration process steps" ;
-    rdfs:domain :IntegrationProcess ;
-    rdfs:range :IntegrationStep ;
-    owl:versionInfo "1.0.0" .
-
-:hasLegacyMapping a owl:ObjectProperty ;
-    rdfs:label "Has Legacy Mapping" ;
-    rdfs:comment "Maps legacy concepts to their modular equivalents" ;
-    rdfs:domain :LegacySupport ;
-    rdfs:range owl:Thing ;
-    owl:versionInfo "1.0.0" .
-
-:hasPatternRule a owl:ObjectProperty ;
-    rdfs:label "Has Pattern Rule" ;
-    rdfs:comment "Links to specific SHACL pattern rules" ;
-    rdfs:domain :ShaclPatternRule ;
-    rdfs:range :PatternRule ;
-    owl:versionInfo "1.0.0" .
-
-:hasStructureRequirement a owl:ObjectProperty ;
-    rdfs:label "Has Structure Requirement" ;
-    rdfs:comment "Links to specific model structure requirements" ;
-    rdfs:domain :ModelStructureRule ;
-    rdfs:range :StructureRequirement ;
-    owl:versionInfo "1.0.0" .
-
-:hasTestCoverage a owl:ObjectProperty ;
-    rdfs:label "Has Test Coverage" ;
-    rdfs:comment "Links test protocol to coverage requirements" ;
-    rdfs:domain :TestProtocol ;
-    rdfs:range :TestCoverage .
+    rdfs:range xsd:string .
 
 :hasTestPhase a owl:ObjectProperty ;
-    rdfs:label "Has Test Phase" ;
-    rdfs:comment "Links test protocol to its phases" ;
+    rdfs:label "Has Test Phase"@en ;
+    rdfs:comment "Links a test protocol to its phases"@en ;
     rdfs:domain :TestProtocol ;
     rdfs:range :TestPhase .
 
-:integrationTestPhase a :TestPhase ;
-    rdfs:label "Integration Test Phase" ;
-    rdfs:comment "Test integration between components" ;
-    :phaseOrder 3 ;
-    validation:hasTestCase validation:ComponentIntegrationTest .
-
-:literalDotRule a owl:NamedIndividual,
-        :PatternRule ;
-    rdfs:label "Literal Dot Rule" ;
-    rdfs:comment "Use [.] for literal dots" ;
-    :ruleCounterExample "[0-9]+\\.\\d+" ;
-    :ruleExample "[0-9]+[.][0-9]+" ;
-    :ruleText "Use [.] for literal dots instead of \\." .
-
-:modelConformanceStep a owl:NamedIndividual,
-        :IntegrationStep ;
-    rdfs:label "Model Conformance" ;
-    rdfs:comment "Check model against conformance rules" ;
-    :stepDescription "Validate model structure and relationships" ;
-    :stepOrder 3 .
-
-:modelValidationPhase a :TestPhase ;
-    rdfs:label "Model Validation Phase" ;
-    rdfs:comment "Validate ontology model structure and constraints" ;
-    :phaseOrder 1 ;
-    validation:hasTestCase validation:ModelStructureTest .
-
-:moduleDescription a owl:DatatypeProperty ;
-    rdfs:label "Module Description" ;
-    rdfs:comment "Description of a registered module" ;
-    rdfs:domain owl:Ontology ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:moduleVersion a owl:DatatypeProperty ;
-    rdfs:label "Module Version" ;
-    rdfs:comment "Version of a registered module" ;
-    rdfs:domain owl:Ontology ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:namespaceValidationStep a owl:NamedIndividual,
-        :IntegrationStep ;
-    rdfs:label "Namespace Validation" ;
-    rdfs:comment "Validate namespace usage and relationships" ;
-    :stepDescription "Verify namespace consistency and imports" ;
-    :stepOrder 2 .
-
-:phaseOrder a owl:DatatypeProperty ;
-    rdfs:label "Phase Order" ;
-    rdfs:comment "Order of execution for test phases" ;
-    rdfs:domain :TestPhase ;
-    rdfs:range xsd:integer .
-
-:prefixValidationStep a owl:NamedIndividual,
-        :IntegrationStep ;
-    rdfs:label "Prefix Validation" ;
-    rdfs:comment "Validate prefix usage against prefix management rules" ;
-    :stepDescription "Check prefix format, uniqueness, and URI patterns" ;
-    :stepOrder 1 .
-
-:propertyRequirement a owl:NamedIndividual,
-        :StructureRequirement ;
-    rdfs:label "Property Requirement" ;
-    rdfs:comment "Models must contain at least one object property" ;
-    :requirementText "Models must contain at least one owl:ObjectProperty" ;
-    :validationQuery """
-        [] a owl:ObjectProperty .
-    """ .
-
-:registeredModule a owl:ObjectProperty ;
-    rdfs:label "Registered Module" ;
-    rdfs:comment "Links the registry to registered modules" ;
-    rdfs:domain :ModuleRegistry ;
-    rdfs:range owl:Ontology ;
-    owl:versionInfo "1.0.0" .
-
-:reportFile a owl:DatatypeProperty ;
-    rdfs:label "Report File" ;
-    rdfs:comment "Path to the test report file" ;
-    rdfs:domain :TestReport ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:reportFormat a owl:DatatypeProperty ;
-    rdfs:label "Report Format" ;
-    rdfs:comment "Format of the test report (markdown, html, json)" ;
-    rdfs:domain :TestReport ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:requirementTestingLevel a owl:DatatypeProperty ;
-    rdfs:label "Requirement Testing Level" ;
-    rdfs:comment "Required level of testing for requirements (FULL, PARTIAL)" ;
-    rdfs:domain :RequirementTestingDirective ;
-    rdfs:range xsd:string .
-
-:requirementText a owl:DatatypeProperty ;
-    rdfs:label "Requirement Text" ;
-    rdfs:comment "Text description of the requirement" ;
-    rdfs:domain :StructureRequirement ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:requirementValidationPhase a :TestPhase ;
-    rdfs:label "Requirement Validation Phase" ;
-    rdfs:comment "Validate requirements and their test coverage" ;
-    :phaseOrder 2 ;
-    validation:hasTestCase validation:RequirementCoverageTest .
-
-:requiresDependencyManagement a owl:DatatypeProperty ;
-    rdfs:label "Requires Dependency Management" ;
-    rdfs:comment "Whether dependency management is required" ;
-    rdfs:domain :ModelRequirements ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
-:requiresDocumentation a owl:DatatypeProperty ;
-    rdfs:label "Requires Documentation" ;
-    rdfs:comment "Whether documentation is required" ;
-    rdfs:domain :ModelRequirements ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
 :requiresNamespaceValidation a owl:DatatypeProperty ;
-    rdfs:label "Requires Namespace Validation" ;
-    rdfs:comment "Whether namespace validation is required" ;
-    rdfs:domain :ModelConformance ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
+    rdfs:label "Requires Namespace Validation"@en ;
+    rdfs:comment "Whether namespace validation is required"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
 
 :requiresPrefixValidation a owl:DatatypeProperty ;
-    rdfs:label "Requires Prefix Validation" ;
-    rdfs:comment "Whether prefix validation is required" ;
-    rdfs:domain :ModelConformance ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
-:requiresValidationPipeline a owl:DatatypeProperty ;
-    rdfs:label "Requires Validation Pipeline" ;
-    rdfs:comment "Whether a validation pipeline is required" ;
-    rdfs:domain :ModelRequirements ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
-:requiresVersionTracking a owl:DatatypeProperty ;
-    rdfs:label "Requires Version Tracking" ;
-    rdfs:comment "Whether version tracking is required for models" ;
-    rdfs:domain :ModelRequirements ;
-    rdfs:range xsd:boolean ;
-    owl:versionInfo "1.0.0" .
-
-:ruleCounterExample a owl:DatatypeProperty ;
-    rdfs:label "Rule Counter Example" ;
-    rdfs:comment "Example of incorrect pattern usage" ;
-    rdfs:domain :PatternRule ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:ruleExample a owl:DatatypeProperty ;
-    rdfs:label "Rule Example" ;
-    rdfs:comment "Example of correct pattern usage" ;
-    rdfs:domain :PatternRule ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:ruleText a owl:DatatypeProperty ;
-    rdfs:label "Rule Text" ;
-    rdfs:comment "Text description of the rule" ;
-    rdfs:domain :PatternRule ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:setupStep a owl:NamedIndividual,
-        :TestStep ;
-    rdfs:label "Setup Step" ;
-    rdfs:comment "Setup test environment and dependencies" ;
-    :stepCommand "python -m pip install -e ." ;
-    :stepExpectedResult "Package installed in development mode" ;
-    :stepType "setup" .
-
-:standardCoverage a :TestCoverage ;
-    rdfs:label "Standard Coverage" ;
-    rdfs:comment "Standard coverage requirements for ontology framework" ;
-    :coverageThreshold 0.95 .
-
-:stepCommand a owl:DatatypeProperty ;
-    rdfs:label "Step Command" ;
-    rdfs:comment "Command to execute for this step" ;
-    rdfs:domain :TestStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+    rdfs:label "Requires Prefix Validation"@en ;
+    rdfs:comment "Whether prefix validation is required"@en ;
+    rdfs:domain :TestProtocol ;
+    rdfs:range xsd:boolean .
 
 :stepDescription a owl:DatatypeProperty ;
-    rdfs:label "Step Description" ;
-    rdfs:comment "Description of the integration step" ;
+    rdfs:label "Step Description"@en ;
+    rdfs:comment "Description of the integration step"@en ;
     rdfs:domain :IntegrationStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:stepExpectedResult a owl:DatatypeProperty ;
-    rdfs:label "Expected Result" ;
-    rdfs:comment "Expected outcome of the test step" ;
-    rdfs:domain :TestStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
+    rdfs:range xsd:string .
 
 :stepOrder a owl:DatatypeProperty ;
-    rdfs:label "Step Order" ;
-    rdfs:comment "Order of execution for integration steps" ;
+    rdfs:label "Step Order"@en ;
+    rdfs:comment "The order of the integration step"@en ;
     rdfs:domain :IntegrationStep ;
-    rdfs:range xsd:integer ;
-    owl:versionInfo "1.0.0" .
-
-:stepType a owl:DatatypeProperty ;
-    rdfs:label "Step Type" ;
-    rdfs:comment "Type of test step (setup, execution, validation, cleanup)" ;
-    rdfs:domain :TestStep ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:testConfigFile a owl:DatatypeProperty ;
-    rdfs:label "Test Configuration File" ;
-    rdfs:comment "Path to the test configuration file" ;
-    rdfs:domain :TestConfiguration ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:testEnvironment a owl:DatatypeProperty ;
-    rdfs:label "Test Environment" ;
-    rdfs:comment "Environment for test execution (development, staging, production)" ;
-    rdfs:domain :TestConfiguration ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:testStep a owl:ObjectProperty ;
-    rdfs:label "Test Step" ;
-    rdfs:comment "Individual step in the test procedure" ;
-    rdfs:domain :TestProcedure ;
-    rdfs:range :TestStep ;
-    owl:versionInfo "1.0.0" .
-
-:testTimeout a owl:DatatypeProperty ;
-    rdfs:label "Test Timeout" ;
-    rdfs:comment "Maximum time allowed for test execution in seconds" ;
-    rdfs:domain :TestConfiguration ;
-    rdfs:range xsd:integer ;
-    owl:versionInfo "1.0.0" .
-
-:validationQuery a owl:DatatypeProperty ;
-    rdfs:label "Validation Query" ;
-    rdfs:comment "Turtle pattern to validate the requirement" ;
-    rdfs:domain :StructureRequirement ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-:validationStep a owl:NamedIndividual,
-        :TestStep ;
-    rdfs:label "Validation Step" ;
-    rdfs:comment "Validate test results" ;
-    :stepCommand "python -m pytest tests/ --tb=short -v" ;
-    :stepExpectedResult "All tests passed" ;
-    :stepType "validation" .
-
-:versionAlignmentStep a owl:NamedIndividual,
-        :IntegrationStep ;
-    rdfs:label "Version Alignment" ;
-    rdfs:comment "Ensure version compatibility" ;
-    :stepDescription "Check version numbers and dependencies" ;
-    :stepOrder 4 .
-
-:IntegrationProcess a owl:Class ;
-    rdfs:label "Integration Process" ;
-    rdfs:comment "Rules for model integration and version management" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:LegacySupport a owl:Class ;
-    rdfs:label "Legacy Support" ;
-    rdfs:comment "Support for legacy guidance concepts" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    rdfs:seeAlso <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl> ;
-    owl:versionInfo "1.0.0" .
-
-:ModelStructureRule a owl:Class ;
-    rdfs:label "Model Structure Requirements" ;
-    rdfs:comment "Basic requirements for model structure validation" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:ModuleRegistry a owl:Class ;
-    rdfs:label "Module Registry" ;
-    rdfs:comment "Registry of all guidance modules" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    rdfs:seeAlso <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl> ;
-    owl:versionInfo "1.0.0" .
-
-:RequirementTestingDirective a owl:Class ;
-    rdfs:label "Requirement Testing Directive" ;
-    rdfs:comment "Directive specifying requirements testing coverage and validation" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:ShaclPatternRule a owl:Class ;
-    rdfs:label "SHACL Pattern Syntax Rules" ;
-    rdfs:comment "Rules for writing SHACL patterns in Turtle syntax" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:TestProcedure a owl:Class ;
-    rdfs:label "Test Procedure" ;
-    rdfs:comment "Standardized procedure for test execution" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:TestProtocol a owl:Class ;
-    rdfs:label "Test Protocol" ;
-    rdfs:comment "Formal definition of testing requirements and procedures" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:TestReport a owl:Class ;
-    rdfs:label "Test Report" ;
-    rdfs:comment "Report of test execution results" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:ModelRequirements a owl:Class ;
-    rdfs:label "Model Requirements" ;
-    rdfs:comment "Additional requirements for model management" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:TestConfiguration a owl:Class ;
-    rdfs:label "Test Configuration" ;
-    rdfs:comment "Configuration settings for test execution" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:TestCoverage a owl:Class ;
-    rdfs:label "Test Coverage" ;
-    rdfs:comment "Specification of required test coverage" ;
-    owl:versionInfo "1.0.0" .
+    rdfs:range xsd:string .
 
 :ModelConformance a owl:Class ;
-    rdfs:label "Model Conformance" ;
-    rdfs:comment "Rules for ensuring model consistency and integration" ;
-    rdfs:isDefinedBy :GuidanceOntology ;
-    owl:versionInfo "1.0.0" .
-
-:StructureRequirement a owl:Class ;
-    rdfs:label "Structure Requirement" ;
-    rdfs:comment "A specific requirement for model structure" ;
-    owl:versionInfo "1.0.0" .
+    rdfs:label "Model Conformance"@en ;
+    rdfs:comment "Rules for ensuring model consistency"@en .
 
 :TestPhase a owl:Class ;
-    rdfs:label "Test Phase" ;
-    rdfs:comment "A phase in the testing protocol" ;
-    owl:versionInfo "1.0.0" .
+    rdfs:label "Test Phase"@en ;
+    rdfs:comment "A phase in the testing process"@en .
 
 :IntegrationStep a owl:Class ;
-    rdfs:label "Integration Step" ;
-    rdfs:comment "A step in the model integration process" ;
-    owl:versionInfo "1.0.0" .
+    rdfs:label "Integration Step"@en ;
+    rdfs:comment "A step in the integration process"@en .
 
-:PatternRule a owl:Class ;
-    rdfs:label "Pattern Rule" ;
-    rdfs:comment "A specific rule for SHACL pattern syntax" ;
-    owl:versionInfo "1.0.0" .
+:TestProtocol a owl:Class ;
+    rdfs:label "Test Protocol"@en ;
+    rdfs:comment "A protocol for testing ontology components"@en .
 
-:TestStep a owl:Class ;
-    rdfs:label "Test Step" ;
-    rdfs:comment "A step in the test procedure" ;
-    owl:versionInfo "1.0.0" .
+:TODO a owl:Class ;
+    rdfs:label "Future Improvements" ;
+    rdfs:comment "Items for future development and enhancement" .
 
-:GuidanceOntology a owl:Ontology ;
-    rdfs:label "Guidance Ontology" ;
-    dc:title "Guidance Ontology" ;
-    dc:version "1.0.0" ;
-    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:description "Modular guidance system for ontology development and management" ;
-    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
-    dct:publisher "Ontology Framework Project" ;
-    rdfs:comment "Main guidance ontology that imports and coordinates all guidance modules" ;
-    owl:imports <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/deployment_validation.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/sparql_service.ttl>,
-        <https:/raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation.ttl> ;
-    owl:versionInfo "1.0.0" .
+:TestImprovements a :TODO ;
+    rdfs:label "Test Suite Enhancements" ;
+    rdfs:comment "Improvements to the test suite for better maintainability and coverage" ;
+    :priority "MEDIUM" ;
+    :targetDate "2024-Q3" ;
+    :hasSubTask :TestOrganization, :ErrorHandling, :PerformanceTesting .
 
-:TODO_2 a :TodoItem ;
-    rdfs:label "Implement comprehensive error logging" ;
-    rdfs:comment "Add detailed error logging before implementing fixes to ensure proper error trapping" ;
-    :priority "HIGH" ;
-    :targetDate "2024-Q2" ;
-    :requiresValidation true ;
-    :requiresTesting true .
+:TestOrganization a :TODO ;
+    rdfs:label "Test Organization" ;
+    rdfs:comment "Group test cases into separate test classes and add common test fixtures" ;
+    :priority "LOW" ;
+    :targetDate "2024-Q3" .
 
-:TODO_3 a :TodoItem ;
-    rdfs:label "Add test coverage for all code updates" ;
-    rdfs:comment "Ensure every code update is accompanied by corresponding test cases" ;
-    :priority "HIGH" ;
-    :targetDate "2024-Q2" ;
-    :requiresValidation true ;
-    :requiresTesting true .
+:ErrorHandling a :TODO ;
+    rdfs:label "Error Handling Tests" ;
+    rdfs:comment "Add tests for error recovery and partial validation scenarios" ;
+    :priority "MEDIUM" ;
+    :targetDate "2024-Q3" .
 
-# File Location Standards
-:FileLocationStandards a owl:Class ;
-    rdfs:label "File Location Standards" ;
-    rdfs:comment "Standards for file organization and location in the ontology framework" .
+:PerformanceTesting a :TODO ;
+    rdfs:label "Performance Testing" ;
+    rdfs:comment "Add tests for large datasets and validation scalability" ;
+    :priority "LOW" ;
+    :targetDate "2024-Q4" .
 
-:modelsDirectory a :FileLocationStandards ;
-    rdfs:label "Models Directory" ;
-    rdfs:comment "Directory for core model definitions" ;
-    :location "models/" ;
-    :fileExtension ".md" .
+:SHACLValidation a owl:Class ;
+    rdfs:label "SHACL Validation"@en ;
+    rdfs:comment "Rules and patterns for SHACL validation"@en .
 
-:docsDirectory a :FileLocationStandards ;
-    rdfs:label "Documentation Directory" ;
-    rdfs:comment "Directory for documentation files" ;
-    :location "docs/" ;
-    :fileExtension ".md" .
+:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "Pattern for implementing validation rules"@en ;
+    rdfs:subClassOf :SHACLValidation .
 
-:srcDirectory a :FileLocationStandards ;
-    rdfs:label "Source Code Directory" ;
-    rdfs:comment "Directory for source code files" ;
-    :location "src/ontology_framework/" ;
-    :fileExtension ".py" .
+:IntegrationRequirement a owl:Class ;
+    rdfs:label "Integration Requirement"@en ;
+    rdfs:comment "Requirements for integrating validation components"@en .
 
-:testsDirectory a :FileLocationStandards ;
-    rdfs:label "Tests Directory" ;
-    rdfs:comment "Directory for test files" ;
-    :location "tests/" ;
-    :fileExtension ".py" .
+:hasValidationPattern a owl:ObjectProperty ;
+    rdfs:label "Has Validation Pattern"@en ;
+    rdfs:comment "Links a validation requirement to its patterns"@en ;
+    rdfs:domain :IntegrationRequirement ;
+    rdfs:range :ValidationPattern .
 
-# File Naming Standards
-:FileNamingStandards a owl:Class ;
-    rdfs:label "File Naming Standards" ;
-    rdfs:comment "Standards for file naming in the ontology framework" .
+:requiresValidation a owl:ObjectProperty ;
+    rdfs:label "Requires Validation"@en ;
+    rdfs:comment "Specifies required validation components"@en ;
+    rdfs:domain :IntegrationRequirement ;
+    rdfs:range :SHACLValidation .
 
-:modelFileName a :FileNamingStandards ;
-    rdfs:label "Model File Name" ;
-    rdfs:comment "Naming convention for model files" ;
-    :pattern "descriptive_name.md" .
+:SHACLIntegrationRequirement a :IntegrationRequirement ;
+    rdfs:label "SHACL Integration Requirements"@en ;
+    rdfs:comment "Requirements for SHACL validation integration"@en ;
+    :hasValidationPattern :ShapeValidationPattern, :PropertyValidationPattern ;
+    :requiresValidation :SHACLValidation .
 
-:docFileName a :FileNamingStandards ;
-    rdfs:label "Documentation File Name" ;
-    rdfs:comment "Naming convention for documentation files" ;
-    :pattern "descriptive_name.md" .
+:ShapeValidationPattern a :ValidationPattern ;
+    rdfs:label "Shape Validation Pattern"@en ;
+    rdfs:comment "Pattern for validating SHACL shapes"@en ;
+    :patternDescription "Must validate node shapes and property constraints" ;
+    :patternPriority "HIGH" .
 
-:sourceFileName a :FileNamingStandards ;
-    rdfs:label "Source File Name" ;
-    rdfs:comment "Naming convention for source code files" ;
-    :pattern "snake_case.py" .
+:PropertyValidationPattern a :ValidationPattern ;
+    rdfs:label "Property Validation Pattern"@en ;
+    rdfs:comment "Pattern for validating property constraints"@en ;
+    :patternDescription "Must validate property paths and constraints" ;
+    :patternPriority "HIGH" .
 
-:testFileName a :FileNamingStandards ;
-    rdfs:label "Test File Name" ;
-    rdfs:comment "Naming convention for test files" ;
-    :pattern "test_snake_case.py" .
+:patternDescription a owl:DatatypeProperty ;
+    rdfs:label "Pattern Description"@en ;
+    rdfs:comment "Description of the validation pattern"@en ;
+    rdfs:domain :ValidationPattern ;
+    rdfs:range xsd:string .
 
-# Cross-Referencing Standards
-:CrossReferencingStandards a owl:Class ;
-    rdfs:label "Cross-Referencing Standards" ;
-    rdfs:comment "Standards for cross-referencing between files" .
-
-:requiredLinks a :CrossReferencingStandards ;
-    rdfs:label "Required Links" ;
-    rdfs:comment "Links that must be included in documentation" ;
-    :linkType :modelLink, :implementationLink, :testLink, :standardLink .
-
-# Implementation Status
-:CLIToolImplementation a :ImplementationStatus ;
-    rdfs:label "CLI Tool Implementation" ;
-    rdfs:comment "Command line interface tool for namespace management" ;
-    :implementationDate "2024-04-17"^^xsd:date ;
-    :implementationStatus "COMPLETED" ;
-    :hasImplementationArtifact <https://github.com/louspringer/ontology-framework/blob/main/src/ontology_framework/cli.py> ;
-    :hasTestArtifact <https://github.com/louspringer/ontology-framework/blob/main/tests/test_cli.py> .
-
-:ValidationPipelineImplementation a :ImplementationStatus ;
-    rdfs:label "Validation Pipeline Implementation" ;
-    rdfs:comment "Automated validation pipeline for namespace management" ;
-    :implementationDate "2024-04-17"^^xsd:date ;
-    :implementationStatus "COMPLETED" ;
-    :hasImplementationArtifact <https://github.com/louspringer/ontology-framework/blob/main/src/ontology_framework/validation.py> ;
-    :hasTestArtifact <https://github.com/louspringer/ontology-framework/blob/main/tests/test_validation.py> .
-
-:DocumentationImplementation a :ImplementationStatus ;
-    rdfs:label "Documentation Implementation" ;
-    rdfs:comment "Comprehensive documentation for namespace management" ;
-    :implementationDate "2024-04-17"^^xsd:date ;
-    :implementationStatus "COMPLETED" ;
-    :hasImplementationArtifact <https://github.com/louspringer/ontology-framework/blob/main/docs/namespace_standards.md> ;
-    :hasTestArtifact <https://github.com/louspringer/ontology-framework/blob/main/tests/test_documentation.py> .
-
-:VersionTrackingImplementation a :ImplementationStatus ;
-    rdfs:label "Version Tracking Implementation" ;
-    rdfs:comment "Version tracking system for namespace changes" ;
-    :implementationDate "2024-04-17"^^xsd:date ;
-    :implementationStatus "COMPLETED" ;
-    :hasImplementationArtifact <https://github.com/louspringer/ontology-framework/blob/main/src/ontology_framework/version_tracking.py> ;
-    :hasTestArtifact <https://github.com/louspringer/ontology-framework/blob/main/tests/test_version_tracking.py> .
-
-# Model Requirements Status
-:CurrentModelRequirements a :ModelRequirements ;
-    :requiresVersionTracking true ;
-    :requiresDependencyManagement true ;
-    :requiresValidationPipeline true ;
-    :requiresDocumentation true ;
-    :hasImplementationStatus :CLIToolImplementation, :ValidationPipelineImplementation, :DocumentationImplementation, :VersionTrackingImplementation .
-
-# Model Conformance Status
-:CurrentModelConformance a :ModelConformance ;
-    :requiresPrefixValidation true ;
-    :requiresNamespaceValidation true ;
-    :conformanceLevel "STRICT" ;
-    :hasImplementationStatus :CLIToolImplementation, :ValidationPipelineImplementation .
-
-# Namespace Usage Rules
-:NamespaceUsageShape a sh:NodeShape ;
-    rdfs:label "Namespace Usage Rules" ;
-    rdfs:comment "Rules for namespace usage in the ontology framework" ;
-    sh:targetClass :Namespace ;
-    sh:property [
-        sh:path :hasPrefix ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:pattern "^[a-z][a-z0-9]*$" ;  # Prefix must start with lowercase letter
-    ] ;
-    sh:property [
-        sh:path :hasURI ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:nodeKind sh:IRI ;
-        sh:not [
-            sh:pattern "^http://example\\.org/" ;  # Prevent example.org usage
-        ] ;
-    ] .
-
-# Namespace Migration Rules
-:NamespaceMigrationShape a sh:NodeShape ;
-    rdfs:label "Namespace Migration Rules" ;
-    rdfs:comment "Rules for migrating namespaces from example.org to production URIs" ;
-    sh:targetClass :NamespaceMigration ;
-    sh:property [
-        sh:path :hasSourceNamespace ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:nodeKind sh:IRI ;
-    ] ;
-    sh:property [
-        sh:path :hasTargetNamespace ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:nodeKind sh:IRI ;
-        sh:pattern "^https://ontologies\\.louspringer\\.com/" ;  # Production namespace pattern
-    ] ;
-    sh:property [
-        sh:path :hasMigrationStatus ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:in ( "PLANNED" "IN_PROGRESS" "COMPLETED" "VERIFIED" ) ;
-    ] .
-
-# Implementation Status Update
-:ImplementationStatus
-    rdfs:label "Implementation Status" ;
-    rdfs:comment "Current implementation status of namespace management" ;
-    :hasComponent [
-        rdfs:label "Namespace Inventory" ;
-        rdfs:comment "Inventory of example.org usage across codebase" ;
-        :hasImplementationDate "2024-04-17"^^xsd:date ;
-        :hasImplementationStatus "COMPLETED" ;
-        :hasImplementationDetails """
-            - 35 files identified using example.org
-            - 12 ontology files with prefix definitions
-            - 15 Python scripts with namespace definitions
-            - 8 documentation files with references
-            """ ;
-        :hasNextSteps """
-            1. Migrate ontology prefixes to production URIs
-            2. Update Python namespace definitions
-            3. Update documentation references
-            """ ;
-    ] .
+:patternPriority a owl:DatatypeProperty ;
+    rdfs:label "Pattern Priority"@en ;
+    rdfs:comment "Priority level of the validation pattern"@en ;
+    rdfs:domain :ValidationPattern ;
+    rdfs:range xsd:string .
 

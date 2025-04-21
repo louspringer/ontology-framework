@@ -1,78 +1,72 @@
-@base <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention_recovery#> .
-
-@prefix : <./#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix prev: <./prevention#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix prev: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:exampleAutoRetry1 a prev:AutoRetry  ;
+:exampleAutoRetry1 a prev:AutoRetry ;
     rdfs:label "Example AutoRetry 1" ;
     rdfs:comment "This is example instance 1 of class AutoRetry" .
 
-:exampleAutoRetry2 a prev:AutoRetry  ;
+:exampleAutoRetry2 a prev:AutoRetry ;
     rdfs:label "Example AutoRetry 2" ;
     rdfs:comment "This is example instance 2 of class AutoRetry" .
 
-:exampleErrorBoundary1 a prev:ErrorBoundary  ;
+:exampleErrorBoundary1 a prev:ErrorBoundary ;
     rdfs:label "Example ErrorBoundary 1" ;
     rdfs:comment "This is example instance 1 of class ErrorBoundary" .
 
-:exampleErrorBoundary2 a prev:ErrorBoundary  ;
+:exampleErrorBoundary2 a prev:ErrorBoundary ;
     rdfs:label "Example ErrorBoundary 2" ;
     rdfs:comment "This is example instance 2 of class ErrorBoundary" .
 
-:exampleFallback1 a prev:Fallback  ;
+:exampleFallback1 a prev:Fallback ;
     rdfs:label "Example Fallback 1" ;
     rdfs:comment "This is example instance 1 of class Fallback" .
 
-:exampleFallback2 a prev:Fallback  ;
+:exampleFallback2 a prev:Fallback ;
     rdfs:label "Example Fallback 2" ;
     rdfs:comment "This is example instance 2 of class Fallback" .
 
-:exampleInputValidation1 a prev:InputValidation  ;
+:exampleInputValidation1 a prev:InputValidation ;
     rdfs:label "Example InputValidation 1" ;
     rdfs:comment "This is example instance 1 of class InputValidation" .
 
-:exampleInputValidation2 a prev:InputValidation  ;
+:exampleInputValidation2 a prev:InputValidation ;
     rdfs:label "Example InputValidation 2" ;
     rdfs:comment "This is example instance 2 of class InputValidation" .
 
-:examplePreventionMeasure1 a prev:PreventionMeasure  ;
+:examplePreventionMeasure1 a prev:PreventionMeasure ;
     rdfs:label "Example PreventionMeasure 1" ;
     rdfs:comment "This is example instance 1 of class PreventionMeasure" ;
     prev:hasDescription "Example value 1" .
 
-:examplePreventionMeasure2 a prev:PreventionMeasure  ;
+:examplePreventionMeasure2 a prev:PreventionMeasure ;
     rdfs:label "Example PreventionMeasure 2" ;
     rdfs:comment "This is example instance 2 of class PreventionMeasure" ;
     prev:hasDescription "Example value 2" .
 
-:exampleRecoveryStrategy1 a prev:RecoveryStrategy  ;
+:exampleRecoveryStrategy1 a prev:RecoveryStrategy ;
     rdfs:label "Example RecoveryStrategy 1" ;
     rdfs:comment "This is example instance 1 of class RecoveryStrategy" ;
     prev:hasStrategy "Example value 1" .
 
-:exampleRecoveryStrategy2 a prev:RecoveryStrategy  ;
+:exampleRecoveryStrategy2 a prev:RecoveryStrategy ;
     rdfs:label "Example RecoveryStrategy 2" ;
     rdfs:comment "This is example instance 2 of class RecoveryStrategy" ;
     prev:hasStrategy "Example value 2" .
 
-:exampleResourceMonitoring1 a prev:ResourceMonitoring  ;
+:exampleResourceMonitoring1 a prev:ResourceMonitoring ;
     rdfs:label "Example ResourceMonitoring 1" ;
     rdfs:comment "This is example instance 1 of class ResourceMonitoring" .
 
-:exampleResourceMonitoring2 a prev:ResourceMonitoring  ;
+:exampleResourceMonitoring2 a prev:ResourceMonitoring ;
     rdfs:label "Example ResourceMonitoring 2" ;
     rdfs:comment "This is example instance 2 of class ResourceMonitoring" .
 
-:exampleRollback1 a prev:Rollback  ;
+:exampleRollback1 a prev:Rollback ;
     rdfs:label "Example Rollback 1" ;
     rdfs:comment "This is example instance 1 of class Rollback" .
 
-:exampleRollback2 a prev:Rollback  ;
+:exampleRollback2 a prev:Rollback ;
     rdfs:label "Example Rollback 2" ;
     rdfs:comment "This is example instance 2 of class Rollback" .
 
@@ -95,103 +89,4 @@ prev:InputValidationInstance a prev:InputValidation ;
     prev:hasDescription "Check for required fields",
         "Validate all input data against schema",
         "Validate data types and ranges" .
-
-prev:PreventionMeasureShape a sh:NodeShape ;
-    sh:property :shape1sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path prev:hasDescription ;
-    sh:targetClass prev:PreventionMeasure .
-
-prev:RecoveryStrategyShape a sh:NodeShape ;
-    sh:property :shape2sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path prev:hasStrategy ;
-    sh:targetClass prev:RecoveryStrategy .
-
-prev:ResourceMonitoringInstance a prev:ResourceMonitoring ;
-    prev:hasDescription "Monitor memory usage",
-        "Monitor network bandwidth",
-        "Track CPU utilization" .
-
-prev:RollbackInstance a prev:Rollback ;
-    prev:hasStrategy "Create restore points",
-        "Implement undo operations",
-        "Maintain transaction logs" .
-
-prev:hasDescription a owl:DatatypeProperty ;
-    rdfs:label "Has Description" ;
-    rdfs:domain prev:PreventionMeasure ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-prev:hasStrategy a owl:DatatypeProperty ;
-    rdfs:label "Has Strategy" ;
-    rdfs:domain prev:RecoveryStrategy ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-prev:AutoRetry a owl:Class ;
-    rdfs:label "Auto Retry" ;
-    rdfs:comment "Automatically retries failed operations" ;
-    rdfs:subClassOf prev:RecoveryStrategy ;
-    owl:versionInfo "1.0.0" .
-
-prev:ErrorBoundary a owl:Class ;
-    rdfs:label "Error Boundary" ;
-    rdfs:comment "Isolates error handling from main logic" ;
-    rdfs:subClassOf prev:PreventionMeasure ;
-    owl:versionInfo "1.0.0" .
-
-prev:Fallback a owl:Class ;
-    rdfs:label "Fallback" ;
-    rdfs:comment "Provides alternative functionality when primary fails" ;
-    rdfs:subClassOf prev:RecoveryStrategy ;
-    owl:versionInfo "1.0.0" .
-
-prev:InputValidation a owl:Class ;
-    rdfs:label "Input Validation" ;
-    rdfs:comment "Validates input data before processing" ;
-    rdfs:subClassOf prev:PreventionMeasure ;
-    owl:versionInfo "1.0.0" .
-
-prev:ResourceMonitoring a owl:Class ;
-    rdfs:label "Resource Monitoring" ;
-    rdfs:comment "Monitors system resources to prevent overload" ;
-    rdfs:subClassOf prev:PreventionMeasure ;
-    owl:versionInfo "1.0.0" .
-
-prev:Rollback a owl:Class ;
-    rdfs:label "Rollback" ;
-    rdfs:comment "Reverts system to previous stable state" ;
-    rdfs:subClassOf prev:RecoveryStrategy ;
-    owl:versionInfo "1.0.0" .
-
-prev:PreventionMeasure a owl:Class ;
-    rdfs:label "Prevention Measure" ;
-    rdfs:comment "Base class for error prevention measures" ;
-    owl:versionInfo "1.0.0" .
-
-prev:RecoveryStrategy a owl:Class ;
-    rdfs:label "Recovery Strategy" ;
-    rdfs:comment "Base class for error recovery strategies" ;
-    owl:versionInfo "1.0.0" .
-
-[] a sh:NodeShape ;
-    sh:property :shape3sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment ;
-    sh:targetClass owl:Class .
-
-[] a sh:NodeShape ;
-    sh:property :shape4sh:minCount 1 ;
-            sh:path rdfs:range  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:domain ;
-    sh:targetClass rdf:Property .
 

@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix checkin: <http://example.org/checkin#> .
+@prefix test: <http://example.org/test#> .
+
+test:TestProtocol a owl:Ontology ;
+    rdfs:label "Test Protocol"@en ;
+    rdfs:comment "A test protocol for validating check-in procedures"@en ;
+    owl:versionInfo "1.0.0" .
+
+test:Step1 a checkin:IntegrationStep ;
+    rdfs:label "Step 1"@en ;
+    rdfs:comment "First test step"@en ;
+    checkin:stepOrder "1" ;
+    checkin:stepDescription "Initial validation step"@en ;
+    checkin:conformanceLevel "STRICT" .
+
+test:Step2 a checkin:IntegrationStep ;
+    rdfs:label "Step 2"@en ;
+    rdfs:comment "Second test step"@en ;
+    checkin:stepOrder "2" ;
+    checkin:stepDescription "Secondary validation step"@en ;
+    checkin:conformanceLevel "MODERATE" .
+
+test:Step3 a checkin:IntegrationStep ;
+    rdfs:label "Step 3"@en ;
+    rdfs:comment "Third test step"@en ;
+    checkin:stepOrder "3" ;
+    checkin:stepDescription "Final validation step"@en ;
+    checkin:conformanceLevel "RELAXED" . 
