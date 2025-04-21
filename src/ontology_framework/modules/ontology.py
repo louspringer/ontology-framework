@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional, Union, Any, TypeVar, Generic
 from pathlib import Path
-from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD
+from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD, SH
 from rdflib.namespace import NamespaceManager
 from rdflib.query import Result, ResultRow
 import glob
@@ -32,6 +32,17 @@ class Ontology(BaseOntology):
         self.SHACLValidation = self.base.SHACLValidation
         self.TODO = self.base.TODO
         self.ValidationPattern = self.base.ValidationPattern
+        
+        # Define SHACL terms
+        self.SH = SH
+        self.SH_CLASS = SH['class']
+        self.SH_DATATYPE = SH['datatype']
+        self.SH_PATH = SH['path']
+        self.SH_PROPERTY = SH['property']
+        self.SH_MINCOUNT = SH['minCount']
+        self.SH_MAXCOUNT = SH['maxCount']
+        self.SH_TARGETCLASS = SH['targetClass']
+        self.SH_NODESHAPE = SH['NodeShape']
         
         # Add essential framework classes to the graph
         self._add_framework_classes()

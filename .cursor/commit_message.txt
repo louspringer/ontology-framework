@@ -1,0 +1,8 @@
+onto(guidance): enhance ontology structure and validation
+
+- Add example instances for TestPhase and ValidationPattern
+- Establish meaningful class hierarchy relationships
+- Enhance SHACL validation constraints
+- Complete validation tests with >80% coverage
+
+Ontology-Version: 1.0.0 
