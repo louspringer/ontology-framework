@@ -1,0 +1,146 @@
+@prefix bfg: <./build_process#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+bfg:ContainerRegistry a owl:Class ;
+    rdfs:label "Azure Container Registry"@en ;
+    rdfs:comment "Private Docker registry in Azure"@en .
+
+bfg:NetworkResource a owl:Class ;
+    rdfs:label "Azure Network Resource"@en ;
+    rdfs:comment "Networking components in Azure"@en .
+
+bfg:buildPushImageStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'cd /app && docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . && docker push $ACR_NAME.azurecr.io/pdf-processor:latest'" ;
+    bfg:hasStepOrder 13 .
+
+bfg:cleanupStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az group delete --name $RESOURCE_GROUP --yes" ;
+    bfg:hasStepOrder 1 .
+
+bfg:copyFilesStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "scp -i ~/.ssh/pdf-processor-vm_key -r ./* $ADMIN_USERNAME@$VM_IP:/app/" ;
+    bfg:hasStepOrder 11 .
+
+bfg:createACRStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic" ;
+    bfg:hasStepOrder 8 .
+
+bfg:createNSGStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az network nsg create --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG" ;
+    bfg:hasStepOrder 4 .
+
+bfg:createNetworkStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az network vnet create --resource-group $RESOURCE_GROUP --name ${VM_NAME}VNET --address-prefix 10.0.0.0/16 --subnet-name ${VM_NAME}Subnet --subnet-prefix 10.0.0.0/24" ;
+    bfg:hasStepOrder 3 .
+
+bfg:createPublicIPStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az network public-ip create --resource-group $RESOURCE_GROUP --name ${VM_NAME}PublicIP --sku Standard --version IPv4" ;
+    bfg:hasStepOrder 6 .
+
+bfg:createResourceGroupStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az group create --name $RESOURCE_GROUP --location $LOCATION" ;
+    bfg:hasStepOrder 2 .
+
+bfg:createSSHRuleStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az network nsg rule create --resource-group $RESOURCE_GROUP --nsg-name ${VM_NAME}NSG --name AllowSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow" ;
+    bfg:hasStepOrder 5 .
+
+bfg:createVMStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az vm create --resource-group $RESOURCE_GROUP --name $VM_NAME --image $VM_IMAGE --size $VM_SIZE --admin-username $ADMIN_USERNAME --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub --priority Spot --eviction-policy Deallocate --public-ip-address ${VM_NAME}PublicIP --vnet-name ${VM_NAME}VNET --subnet ${VM_NAME}Subnet --nsg ${VM_NAME}NSG" ;
+    bfg:hasStepOrder 7 .
+
+bfg:hasAutoConfirm a owl:DatatypeProperty ;
+    rdfs:label "Auto Confirm"@en ;
+    rdfs:comment "Whether the step requires auto-confirmation"@en ;
+    rdfs:domain bfg:BuildStep ;
+    rdfs:range xsd:boolean .
+
+bfg:hasCommand a owl:DatatypeProperty ;
+    rdfs:label "Command"@en ;
+    rdfs:comment "Command to execute for this step"@en ;
+    rdfs:domain bfg:BuildStep ;
+    rdfs:range xsd:string .
+
+bfg:hasEvictionPolicy a owl:DatatypeProperty ;
+    rdfs:label "Eviction Policy"@en ;
+    rdfs:comment "Policy for VM eviction"@en ;
+    rdfs:domain bfg:VirtualMachine ;
+    rdfs:range xsd:string .
+
+bfg:hasImage a owl:DatatypeProperty ;
+    rdfs:label "VM Image"@en ;
+    rdfs:comment "OS image for the VM"@en ;
+    rdfs:domain bfg:VirtualMachine ;
+    rdfs:range xsd:string .
+
+bfg:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "Azure region for the resource"@en ;
+    rdfs:domain bfg:ResourceGroup ;
+    rdfs:range xsd:string .
+
+bfg:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "VM Priority"@en ;
+    rdfs:comment "Priority setting for the VM"@en ;
+    rdfs:domain bfg:VirtualMachine ;
+    rdfs:range xsd:string .
+
+bfg:hasSize a owl:DatatypeProperty ;
+    rdfs:label "VM Size"@en ;
+    rdfs:comment "Size specification for the VM"@en ;
+    rdfs:domain bfg:VirtualMachine ;
+    rdfs:range xsd:string .
+
+bfg:hasStepOrder a owl:DatatypeProperty ;
+    rdfs:label "Step Order"@en ;
+    rdfs:comment "Order of execution for the build step"@en ;
+    rdfs:domain bfg:BuildStep ;
+    rdfs:range xsd:integer .
+
+bfg:installDockerStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'sudo apt-get update && sudo apt-get install -y docker.io'" ;
+    bfg:hasStepOrder 9 .
+
+bfg:loginACRStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'docker login $ACR_NAME.azurecr.io -u $ACR_USERNAME -p $ACR_PASSWORD'" ;
+    bfg:hasStepOrder 12 .
+
+bfg:pdfProcessorBuild a bfg:BuildProcess ;
+    rdfs:label "PDF Processor Build"@en ;
+    rdfs:comment "Build process for PDF processor application"@en .
+
+bfg:setupAppStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'mkdir -p /app'" ;
+    bfg:hasStepOrder 10 .
+
+bfg:BuildProcess a owl:Class ;
+    rdfs:label "Azure Build Process"@en ;
+    rdfs:comment "Process for building and deploying Azure resources"@en .
+
+bfg:ResourceGroup a owl:Class ;
+    rdfs:label "Azure Resource Group"@en ;
+    rdfs:comment "Container for Azure resources"@en .
+
+bfg:VirtualMachine a owl:Class ;
+    rdfs:label "Azure Virtual Machine"@en ;
+    rdfs:comment "Compute resource in Azure"@en .
+
+bfg:BuildStep a owl:Class ;
+    rdfs:label "Build Step"@en ;
+    rdfs:comment "Individual step in the build process"@en .
+
