@@ -1,30 +1,38 @@
 from typing import Dict, Any, List, Set, Optional, Union, Sequence, Tuple, cast
 from rdflib import Graph, URIRef, Literal, RDF, Namespace, Node, Variable, BNode
-from rdflib.namespace import RDF, RDFS, XSD, SH
+from rdflib.namespace import RDF, RDFS, XSD, SH, OWL
 from rdflib.query import ResultRow, Result
 import pyshacl
-from ontology_framework.validation.validation_rule_type import ValidationRuleType
-from ontology_framework.validation.error_severity import ErrorSeverity
-from ontology_framework.tools.validation_ontology_manager import ValidationOntologyManager
-from ontology_framework.tools.guidance_manager import GuidanceManager
-from ontology_framework.validation.pattern_manager import PatternManager
+from enum import Enum
 import uuid
 from datetime import datetime
 import re
 import os
 import logging
-from enum import Enum
+from ontology_framework.validation.validation_rule_type import ValidationRuleType
+from ontology_framework.validation.error_severity import ErrorSeverity
+from ontology_framework.tools.validation_ontology_manager import ValidationOntologyManager
+from ontology_framework.tools.guidance_manager import GuidanceManager
+from ontology_framework.validation.pattern_manager import PatternManager
 from pyshacl import validate
+from .validation_rule import ValidationRule
 
 # Define namespaces
 GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
 EX = Namespace('http://example.org/')
 
+class ValidationRuleType(Enum):
+    """Validation rule types from the guidance ontology."""
+    SHACL = GUIDANCE.SHACL
+    SEMANTIC = GUIDANCE.SEMANTIC
+    SYNTAX = GUIDANCE.SYNTAX
+    STRUCTURAL = GUIDANCE.STRUCTURAL
+
 class ConformanceLevel(Enum):
     """Validation conformance levels."""
-    STRICT = "strict"
-    MODERATE = "moderate"
-    BASIC = "basic"
+    STRICT = "strict"  # Apply all validation rules
+    BASIC = "basic"    # Apply only essential rules
+    NONE = "none"      # Skip validation
 
 class ValidationTarget(Enum):
     """Validation targets."""
@@ -33,58 +41,19 @@ class ValidationTarget(Enum):
     DATA_INTEGRITY = "data_integrity"
 
 class ValidationHandler:
-    # SHACL shape templates for common validations
-    SHACL_TEMPLATES = {
-        "identifier": """
-            sh:property [
-                sh:path {path} ;
-                sh:pattern "^[A-Za-z0-9_-]+$" ;
-                sh:minCount 1 ;
-                sh:maxCount 1 ;
-                sh:message "Invalid identifier format - must contain only letters, numbers, underscores, and hyphens" ;
-            ]
-        """,
-        "enum": """
-            sh:property [
-                sh:path {path} ;
-                sh:in ({values}) ;
-                sh:minCount 1 ;
-                sh:maxCount 1 ;
-                sh:message "Value must be one of: {values}" ;
-            ]
-        """,
-        "required_string": """
-            sh:property [
-                sh:path {path} ;
-                sh:datatype xsd:string ;
-                sh:minCount 1 ;
-                sh:maxCount 1 ;
-                sh:message "Required string field is missing or invalid" ;
-            ]
-        """,
-        "sensitive_data": """
-            sh:property [
-                sh:path {path} ;
-                sh:pattern {pattern} ;
-                sh:message "Sensitive data pattern detected: {message}" ;
-            ]
-        """,
-        "syntax": """
-            sh:property [
-                sh:path {path} ;
-                sh:nodeKind sh:Literal ;
-                sh:pattern {pattern} ;
-                sh:message "Syntax validation failed: {message}" ;
-            ]
+    """Handles validation of RDF graphs using various rule types."""
+    
+    def __init__(self, rules: Optional[List[ValidationRule]] = None):
+        """Initialize the validation handler with optional rules.
+        
+        Args:
+            rules: Optional list of validation rules to use
         """
-    }
-
-    def __init__(self, graphdb_connection=None):
-        self.rules: Dict[str, Dict[str, Any]] = {}
+        self.logger = logging.getLogger(__name__)
+        self.rules: Dict[ValidationRuleType, List[ValidationRule]] = {}
         self.validation_manager = ValidationOntologyManager()
         self.pattern_manager = PatternManager()
         self.guidance_manager = GuidanceManager()
-        self.graphdb_connection = graphdb_connection
         self.shacl_shapes = Graph()
         
         # Bind namespaces
@@ -96,6 +65,19 @@ class ValidationHandler:
         self._load_validation_rules()
         self._load_shacl_templates()
         
+        self._initialize_rules(rules or [])
+        
+    def _initialize_rules(self, rules: List[ValidationRule]) -> None:
+        """Initialize the rules dictionary with the provided rules.
+        
+        Args:
+            rules: List of validation rules to initialize
+        """
+        for rule in rules:
+            if rule.rule_type not in self.rules:
+                self.rules[rule.rule_type] = []
+            self.rules[rule.rule_type].append(rule)
+        
     def _load_validation_rules(self):
         """Load validation rules from the guidance ontology using GuidanceManager."""
         try:
@@ -103,11 +85,7 @@ class ValidationHandler:
             for rule in rules:
                 rule_id = str(rule['rule']).split('#')[-1]
                 try:
-                    self.rules[rule_id] = {
-                        'type': ValidationRuleType[rule.get('type', 'SEMANTIC')],
-                        'message': rule.get('message', f'Validation failed for rule {rule_id}'),
-                        'priority': int(rule.get('priority', 999))
-                    }
+                    self.rules[ValidationRuleType[rule.get('type', 'SEMANTIC')]] = [ValidationRule(rule_id, rule)]
                 except (KeyError, ValueError) as e:
                     logging.warning(f"Failed to load rule {rule_id}: {str(e)}")
         except Exception as e:
@@ -215,7 +193,7 @@ class ValidationHandler:
             priority=priority
         )
         
-        # Flatten the rule dict into self.rules[rule_id]
+        # Flatten the rule dict into self.rules[rule_type]
         flat_rule = dict(rule)  # copy
         flat_rule.update({
             "type": rule_type,
@@ -223,7 +201,7 @@ class ValidationHandler:
             "priority": priority,
             "dependencies": dependencies or []
         })
-        self.rules[rule_id] = flat_rule
+        self.rules[rule_type].append(ValidationRule(rule_id, flat_rule))
         
         return rule_id
 
@@ -253,7 +231,7 @@ class ValidationHandler:
             visited.add(rid)
             path.append(rid)
             
-            for dep in self.rules[rid].get("dependencies", []):
+            for dep in self.rules[rid]["dependencies"]:
                 if dep not in self.rules:
                     raise ValueError(f"Missing dependency: {dep}")
                 visit(dep)
@@ -414,26 +392,26 @@ class ValidationHandler:
         # Sort rules by priority
         sorted_rules = sorted(
             self.rules.items(),
-            key=lambda x: x[1].get("priority", 0)
+            key=lambda x: x[1][0].priority
         )
         
         # Execute rules in priority order
-        for rule_id, _ in sorted_rules:
+        for rule_type, rules in sorted_rules:
             try:
-                self._validate_dependencies(rule_id)
-                rule = self.rules[rule_id]
-                if conformance_level and ConformanceLevel(rule["conformance_level"]).value > conformance_level.value:
-                    continue
-                result = self.execute_rule(rule_id, graph)
-                if not result["is_valid"]:
-                    results.extend(result["results"])
+                self._validate_dependencies(rules[0].rule_id)
+                for rule in rules:
+                    if conformance_level and ConformanceLevel(rule.conformance_level).value > conformance_level.value:
+                        continue
+                    result = self.execute_rule(rule.rule_id, graph)
+                    if not result["is_valid"]:
+                        results.extend(result["results"])
             except ValueError as e:
-                logging.error(f"Error executing rule {rule_id}: {str(e)}")
+                logging.error(f"Error executing rule {rule.rule_id}: {str(e)}")
                 raise  # Re-raise so tests can catch
             except Exception as e:
-                logging.error(f"Error executing rule {rule_id}: {str(e)}")
+                logging.error(f"Error executing rule {rule.rule_id}: {str(e)}")
                 results.append({
-                    "rule_id": rule_id,
+                    "rule_id": rule.rule_id,
                     "message": f"Rule execution failed: {str(e)}",
                     "error": str(e)
                 })
@@ -640,185 +618,74 @@ class ValidationHandler:
         }
         return severity_map.get(str(severity), ErrorSeverity.HIGH)
 
-    def validate(self, rule_type: ValidationRuleType, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Validate data against a rule type using SHACL."""
-        if rule_type not in self.rules:
-            raise ValueError(f"Unsupported rule type: {rule_type}")
-
-        # Convert data to RDF graph
-        data_graph = self._data_to_graph(data)
-        
-        # Get shapes graph for rule type
-        shapes_graph = self.rules[rule_type]["shapes_graph"]
-        
-        # Validate using SHACL
-        conforms, results_graph, results_text = pyshacl.validate(
-            data_graph,
-            shacl_graph=shapes_graph,
-            inference='rdfs',
-            abort_on_first=False
-        )
-        
-        return {
-            "is_valid": conforms,
-            "results": self._process_shacl_results(results_graph) if not conforms else []
-        }
-
-    def validate_shacl(self, data_graph: Graph, shapes_graph: Graph) -> Dict[str, Any]:
-        """Validate data against SHACL shapes.
+    def validate(self, graph: Graph, rule_types: Optional[Set[ValidationRuleType]] = None) -> Dict[str, Union[bool, List[str]]]:
+        """Validate a graph using the specified rule types.
         
         Args:
-            data_graph: RDF graph containing data to validate
-            shapes_graph: RDF graph containing SHACL shapes
+            graph: The RDF graph to validate
+            rule_types: Optional set of rule types to use for validation
             
         Returns:
-            Dictionary containing validation results:
-                - conforms: bool indicating if validation passed
-                - results: list of validation messages
+            Dictionary containing validation results and messages
         """
-        try:
-            conforms, results_graph, results_text = pyshacl.validate(
-                data_graph,
-                shacl_graph=shapes_graph,
-                inference='rdfs',
-                abort_on_first=False,
-                allow_infos=True,
-                allow_warnings=True
-            )
-            
-            return {
-                'conforms': conforms,
-                'results': self._process_shacl_results(results_graph) if not conforms else []
-            }
-            
-        except Exception as e:
-            return {
-                'conforms': False,
-                'results': [{
-                    'severity': ErrorSeverity.ERROR,
-                    'message': f'SHACL validation failed: {str(e)}'
-                }]
-            }
-
-    def add_rule(
-        self,
-        rule_type: ValidationRuleType,
-        priority: int = 999,
-        depends_on: Optional[List[ValidationRuleType]] = None
-    ) -> None:
-        """Add a validation rule.
-        
-        Args:
-            rule_type: Type of validation rule
-            priority: Rule priority (lower is higher priority)
-            depends_on: Optional list of rule types this rule depends on. Defaults to None.
-        """
-        rule_id = f"{str(rule_type).lower()}_{str(uuid.uuid4())}"
-        rule = {
-            "type": rule_type,
-            "priority": priority
+        results = {
+            "valid": True,
+            "messages": []
         }
         
-        if depends_on is not None:
-            rule["dependencies"] = [f"{str(dep).lower()}" for dep in depends_on]
+        # If no rule types specified, use all available
+        if not rule_types:
+            rule_types = set(self.rules.keys())
             
-        self.register_rule(rule_id, rule)
-
-    def validate_all(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Validate data against all registered rules.
-        
-        Args:
-            data: Data to validate
-            
-        Returns:
-            Dictionary containing validation results with keys:
-                - is_valid: bool indicating if validation passed
-                - results: list of validation results per rule
-                - metadata: additional validation metadata
-        """
-        results = []
-        is_valid = True
-        
-        # Sort rules by priority
-        sorted_rules = sorted(self.rules.items(), key=lambda x: x[1].get("priority", 999))
-        
-        for rule_id, rule in sorted_rules:
-            try:
-                result = self.execute_rule(rule_id, self._data_to_graph(data))
-                results.append({
-                    "rule_id": rule_id,
-                    **result
-                })
-                if not result["is_valid"]:
-                    is_valid = False
-            except Exception as e:
-                results.append({
-                    "rule_id": rule_id,
-                    "is_valid": False,
-                    "results": [{
-                        "severity": ErrorSeverity.CRITICAL,
-                        "message": f"Error executing rule {rule_id}: {str(e)}"
-                    }]
-                })
-                is_valid = False
+        for rule_type in rule_types:
+            if rule_type not in self.rules:
+                self.logger.warning(f"No rules found for type {rule_type}")
+                continue
                 
-        return {
-            "is_valid": is_valid,
-            "results": results,
-            "metadata": {
-                "timestamp": str(datetime.now()),
-                "rule": "ALL",
-                "total_rules": len(sorted_rules)
-            }
-        }
+            for rule in self.rules[rule_type]:
+                try:
+                    rule_result = rule.validate(graph)
+                    if not rule_result["valid"]:
+                        results["valid"] = False
+                        results["messages"].extend(rule_result["messages"])
+                except Exception as e:
+                    self.logger.error(f"Error validating with rule {rule}: {str(e)}")
+                    results["valid"] = False
+                    results["messages"].append(f"Error validating with rule {rule}: {str(e)}")
+                    
+        return results
 
-    def _data_to_graph(self, data: Dict[str, Any]) -> Graph:
-        """Convert dictionary data to RDF graph with proper typing.
+    def add_rule(self, rule: ValidationRule) -> None:
+        """Add a new validation rule.
         
         Args:
-            data: Dictionary data to convert
+            rule: The validation rule to add
+        """
+        if rule.rule_type not in self.rules:
+            self.rules[rule.rule_type] = []
+        self.rules[rule.rule_type].append(rule)
+        
+    def remove_rule(self, rule: ValidationRule) -> None:
+        """Remove a validation rule.
+        
+        Args:
+            rule: The validation rule to remove
+        """
+        if rule.rule_type in self.rules:
+            self.rules[rule.rule_type] = [r for r in self.rules[rule.rule_type] if r != rule]
+            
+    def get_rules(self, rule_type: Optional[ValidationRuleType] = None) -> List[ValidationRule]:
+        """Get all rules or rules of a specific type.
+        
+        Args:
+            rule_type: Optional rule type to filter by
             
         Returns:
-            RDF graph containing the data
+            List of validation rules
         """
-        graph = Graph()
-        graph.bind('ex', EX)
-        graph.bind('xsd', XSD)
-        
-        # Create a blank node for the root object
-        root = URIRef(EX['data'])
-        graph.add((root, RDF.type, EX.ValidationTarget))
-        
-        for key, value in data.items():
-            if isinstance(value, list):
-                for item in value:
-                    self._add_typed_literal(graph, root, key, item)
-            else:
-                self._add_typed_literal(graph, root, key, value)
-        
-        return graph
-
-    def _add_typed_literal(self, graph: Graph, subject: Node, predicate: str, value: Any) -> None:
-        """Add a typed literal to the graph based on Python type.
-        
-        Args:
-            graph: Target RDF graph
-            subject: Subject node
-            predicate: Predicate string
-            value: Value to add
-        """
-        pred = URIRef(EX[predicate])
-        
-        if isinstance(value, bool):
-            graph.add((subject, pred, Literal(value, datatype=XSD.boolean)))
-        elif isinstance(value, int):
-            graph.add((subject, pred, Literal(value, datatype=XSD.integer)))
-        elif isinstance(value, float):
-            graph.add((subject, pred, Literal(value, datatype=XSD.decimal)))
-        elif isinstance(value, datetime):
-            graph.add((subject, pred, Literal(value, datatype=XSD.dateTime)))
-        else:
-            graph.add((subject, pred, Literal(str(value), datatype=XSD.string)))
+        if rule_type:
+            return self.rules.get(rule_type, [])
+        return [rule for rules in self.rules.values() for rule in rules]
 
     def validate_ontology(self, ontology_graph: Graph, conformance_level: ConformanceLevel = ConformanceLevel.STRICT) -> Tuple[bool, str, Graph]:
         """
@@ -867,31 +734,33 @@ class ValidationHandler:
         validation_results = []
         
         try:
-            for rule_id, rule in self.rules.items():
-                if rule['type'] == ValidationRuleType.SEMANTIC:
+            for rule_id, rules in self.rules.items():
+                if rule_id == ValidationRuleType.SEMANTIC:
                     # Apply semantic validation rules
-                    query = self.pattern_manager.get_validation_pattern(rule_id)
-                    if query:
-                        results = graph.query(query)
-                        if results and len(results) > 0:
-                            validation_results.append(f"Rule {rule_id}: {rule['message']}")
+                    for rule in rules:
+                        query = self.pattern_manager.get_validation_pattern(rule.rule_id)
+                        if query:
+                            results = graph.query(query)
+                            if results and len(results) > 0:
+                                validation_results.append(f"Rule {rule.rule_id}: {rule.message}")
                             
-                elif rule['type'] == ValidationRuleType.STRUCTURAL:
+                elif rule_id == ValidationRuleType.STRUCTURAL:
                     # Apply structural validation rules
-                    shape = self._create_rule_shape(rule_id, rule)
-                    if shape:
-                        temp_graph = Graph()
-                        temp_graph += graph
-                        temp_graph += shape
-                        
-                        is_valid, _, report = pyshacl.validate(
-                            temp_graph,
-                            shacl_graph=shape,
-                            inference='rdfs'
-                        )
-                        
-                        if not is_valid:
-                            validation_results.append(f"Rule {rule_id}: {rule['message']}")
+                    for rule in rules:
+                        shape = self._create_rule_shape(rule.rule_id, rule)
+                        if shape:
+                            temp_graph = Graph()
+                            temp_graph += graph
+                            temp_graph += shape
+                            
+                            is_valid, _, report = pyshacl.validate(
+                                temp_graph,
+                                shacl_graph=shape,
+                                inference='rdfs'
+                            )
+                            
+                            if not is_valid:
+                                validation_results.append(f"Rule {rule.rule_id}: {rule.message}")
                             
         except Exception as e:
             logging.error(f"Error applying custom rules: {str(e)}")

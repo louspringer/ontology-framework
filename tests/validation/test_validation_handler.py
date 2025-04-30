@@ -1,8 +1,7 @@
 import unittest
 from rdflib import Graph, URIRef, Literal, Namespace, XSD
 from rdflib.namespace import RDF, RDFS, OWL, SH
-from ontology_framework.validation.validation_handler import ValidationHandler
-from ontology_framework.validation.validation_rule_type import ValidationRuleType
+from ontology_framework.validation.validation_handler import ValidationHandler, ValidationRuleType
 from ontology_framework.validation.error_severity import ErrorSeverity
 import pytest
 import os
@@ -302,6 +301,105 @@ class TestValidationHandler(unittest.TestCase):
         self.handler.register_rule("invalid_datatype_rule", rule)
         result = self.handler.validate_graph(self.test_graph)
         self.assertEqual(len(result["results"]), 1)
+
+@pytest.fixture
+def sample_rules():
+    return {
+        "SHACL": {
+            "shapes_graph": Graph(),
+            "targets": ["http://example.org/Class1"],
+            "rules": [
+                {
+                    "id": "rule1",
+                    "message": "Test SHACL rule",
+                    "sparql": "SELECT ?s WHERE { ?s a <http://example.org/Class1> }"
+                }
+            ]
+        },
+        "SEMANTIC": {
+            "rules": [
+                {
+                    "id": "rule2",
+                    "message": "Test semantic rule",
+                    "sparql": "SELECT ?s WHERE { ?s a <http://example.org/Class2> }"
+                }
+            ]
+        },
+        "STRUCTURAL": {
+            "rules": [
+                {
+                    "id": "rule3",
+                    "message": "Test structural rule",
+                    "validator": lambda g: True
+                }
+            ]
+        }
+    }
+
+@pytest.fixture
+def sample_data_graph():
+    g = Graph()
+    g.add((URIRef("http://example.org/instance1"), RDF.type, URIRef("http://example.org/Class1")))
+    g.add((URIRef("http://example.org/instance2"), RDF.type, URIRef("http://example.org/Class2")))
+    return g
+
+def test_validation_handler_initialization(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    assert handler.rules == sample_rules
+
+def test_validate_with_invalid_rule_type(sample_rules, sample_data_graph):
+    handler = ValidationHandler(sample_rules)
+    with pytest.raises(ValueError):
+        handler.validate(sample_data_graph, "INVALID_TYPE")
+
+def test_validate_shacl(sample_rules, sample_data_graph):
+    handler = ValidationHandler(sample_rules)
+    result = handler.validate(sample_data_graph, ValidationRuleType.SHACL)
+    assert isinstance(result, bool)
+
+def test_validate_semantic(sample_rules, sample_data_graph):
+    handler = ValidationHandler(sample_rules)
+    result = handler.validate(sample_data_graph, ValidationRuleType.SEMANTIC)
+    assert isinstance(result, bool)
+
+def test_validate_structural(sample_rules, sample_data_graph):
+    handler = ValidationHandler(sample_rules)
+    result = handler.validate(sample_data_graph, ValidationRuleType.STRUCTURAL)
+    assert isinstance(result, bool)
+
+def test_get_validation_targets(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    targets = handler.get_validation_targets()
+    assert "SHACL" in targets
+    assert targets["SHACL"] == ["http://example.org/Class1"]
+
+def test_get_validation_messages(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    messages = handler.get_validation_messages()
+    assert "rule1" in messages
+    assert "rule2" in messages
+    assert "rule3" in messages
+    assert messages["rule1"] == "Test SHACL rule"
+    assert messages["rule2"] == "Test semantic rule"
+    assert messages["rule3"] == "Test structural rule"
+
+def test_validate_shacl_with_invalid_data(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    invalid_graph = Graph()
+    result = handler.validate(invalid_graph, ValidationRuleType.SHACL)
+    assert isinstance(result, bool)
+
+def test_validate_semantic_with_invalid_data(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    invalid_graph = Graph()
+    result = handler.validate(invalid_graph, ValidationRuleType.SEMANTIC)
+    assert isinstance(result, bool)
+
+def test_validate_structural_with_invalid_data(sample_rules):
+    handler = ValidationHandler(sample_rules)
+    invalid_graph = Graph()
+    result = handler.validate(invalid_graph, ValidationRuleType.STRUCTURAL)
+    assert isinstance(result, bool)
 
 if __name__ == '__main__':
     unittest.main() 

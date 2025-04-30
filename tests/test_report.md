@@ -1993,3 +1993,41 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Run - 2025-04-30T10:36:31.907445
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-04-30T10:36:31.995457
+
+
+## Test Session Summary - 2025-04-30T10:38:43.309196
+
+- Total tests: 619
+- Passed: 266
+- Failed: 353
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T10:40:14.885349
+
+- Total tests: 27
+- Passed: 7
+- Failed: 20
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
