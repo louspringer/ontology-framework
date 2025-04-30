@@ -22,7 +22,11 @@ class BuildExecutor:
 
     def _expand_command(self, command):
         """Expand environment variables in the command."""
-        return command.format(**self.env_vars)
+        # Replace $VAR and ${VAR} with their values
+        for var, value in self.env_vars.items():
+            command = command.replace(f"${var}", value)
+            command = command.replace(f"${{{var}}}", value)
+        return command
 
     def _execute_command(self, command, auto_confirm=True):
         """Execute a command with optional auto-confirmation."""
