@@ -1,102 +1,134 @@
 #!/bin/bash
 
-# Azure Resource Group and Location
+set -e  # Exit on any error
+
+# Configuration
 RESOURCE_GROUP="pdf-processor-rg"
-LOCATION="eastus"
+LOCATION="southeastasia"
 VM_NAME="pdf-processor-vm"
 VM_SIZE="Standard_D2s_v3"
 ADMIN_USERNAME="azureuser"
 VM_IMAGE="Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest"
 ACR_NAME="pdfprocessor1234"
 
-# Delete existing resource group if it exists
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Check for required commands
+for cmd in az ssh-keygen ssh-keyscan scp; do
+    if ! command_exists "$cmd"; then
+        echo "Error: $cmd is required but not installed."
+        exit 1
+    fi
+done
+
 echo "Cleaning up existing resources..."
-az group delete --name $RESOURCE_GROUP --yes --no-wait
+if az group exists --name "$RESOURCE_GROUP" --output tsv | grep -q "true"; then
+    echo "Deleting existing resource group..."
+    if ! az group delete --name "$RESOURCE_GROUP" --yes; then
+        echo "Error: Failed to delete resource group"
+        exit 1
+    fi
+    echo "Waiting for cleanup to complete..."
+    sleep 30
+fi
 
-# Wait for deletion to complete
-echo "Waiting for cleanup to complete..."
-az group wait --name $RESOURCE_GROUP --deleted
-
-# Create SSH key
-SSH_KEY_FILE="$HOME/.ssh/${VM_NAME}_key"
 echo "Generating SSH key..."
-rm -f "$SSH_KEY_FILE" "$SSH_KEY_FILE.pub"
-ssh-keygen -t rsa -b 4096 -f "$SSH_KEY_FILE" -N "" -C "azureuser@pdf-processor"
+if ! ssh-keygen -t rsa -b 4096 -f ~/.ssh/pdf-processor-vm_key -N ""; then
+    echo "Error: Failed to generate SSH key"
+    exit 1
+fi
 
-# Create Resource Group
 echo "Creating resource group..."
-az group create --name $RESOURCE_GROUP --location $LOCATION
+if ! az group create --name "$RESOURCE_GROUP" --location "$LOCATION"; then
+    echo "Error: Failed to create resource group"
+    exit 1
+fi
 
-# Create spot VM with SSH key
 echo "Creating spot VM..."
-az vm create \
-    --resource-group $RESOURCE_GROUP \
-    --name $VM_NAME \
-    --image $VM_IMAGE \
-    --size $VM_SIZE \
-    --admin-username $ADMIN_USERNAME \
-    --ssh-key-value "@$SSH_KEY_FILE.pub" \
-    --public-ip-sku Standard \
+if ! az vm create \
+    --resource-group "$RESOURCE_GROUP" \
+    --name "$VM_NAME" \
+    --image "$VM_IMAGE" \
+    --size "$VM_SIZE" \
+    --admin-username "$ADMIN_USERNAME" \
+    --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub \
     --priority Spot \
-    --eviction-policy Deallocate \
-    --spot-max-price -1
+    --eviction-policy Deallocate; then
+    echo "Error: Failed to create VM"
+    exit 1
+fi
 
-# Wait for VM to be ready
 echo "Waiting for VM to be ready..."
 sleep 30
 
-# Get VM IP
-VM_IP=$(az vm show -d -g $RESOURCE_GROUP -n $VM_NAME --query publicIps -o tsv)
-echo "VM IP: $VM_IP"
+echo "Getting VM IP..."
+VM_IP=$(az vm show -d -g "$RESOURCE_GROUP" -n "$VM_NAME" --query publicIps -o tsv)
+if [ -z "$VM_IP" ]; then
+    echo "Error: Failed to get VM IP"
+    exit 1
+fi
 
-# Add to known_hosts
-ssh-keyscan -H $VM_IP >> ~/.ssh/known_hosts 2>/dev/null
-
-# Create Container Registry if it doesn't exist
 echo "Creating Azure Container Registry..."
-az acr create \
-    --resource-group $RESOURCE_GROUP \
-    --name $ACR_NAME \
-    --sku Basic \
-    --admin-enabled true
+if ! az acr create --resource-group "$RESOURCE_GROUP" --name "$ACR_NAME" --sku Basic; then
+    echo "Error: Failed to create ACR"
+    exit 1
+fi
 
-# Get ACR credentials
-ACR_PASSWORD=$(az acr credential show --name $ACR_NAME --query "passwords[0].value" -o tsv)
+echo "Getting ACR credentials..."
+ACR_USERNAME=$(az acr credential show --name "$ACR_NAME" --query username -o tsv)
+ACR_PASSWORD=$(az acr credential show --name "$ACR_NAME" --query passwords[0].value -o tsv)
+if [ -z "$ACR_USERNAME" ] || [ -z "$ACR_PASSWORD" ]; then
+    echo "Error: Failed to get ACR credentials"
+    exit 1
+fi
 
-# Wait for VM to be fully ready
-echo "Waiting for VM to be fully initialized..."
-sleep 30
-
-# Install Docker on VM
 echo "Installing Docker on VM..."
-ssh -o StrictHostKeyChecking=no -i "$SSH_KEY_FILE" $ADMIN_USERNAME@$VM_IP "sudo apt-get update && sudo apt-get install -y docker.io docker-compose git && sudo usermod -aG docker $ADMIN_USERNAME"
+if ! ssh -i ~/.ssh/pdf-processor-vm_key "$ADMIN_USERNAME@$VM_IP" "sudo apt-get update && sudo apt-get install -y docker.io"; then
+    echo "Error: Failed to install Docker"
+    exit 1
+fi
 
-# Create app directory
-echo "Setting up application..."
-ssh -i "$SSH_KEY_FILE" $ADMIN_USERNAME@$VM_IP "mkdir -p /home/$ADMIN_USERNAME/app"
+echo "Creating app directory on VM..."
+if ! ssh -i ~/.ssh/pdf-processor-vm_key "$ADMIN_USERNAME@$VM_IP" "mkdir -p /app"; then
+    echo "Error: Failed to create app directory"
+    exit 1
+fi
 
-# Copy local files to VM
 echo "Copying files to VM..."
-scp -i "$SSH_KEY_FILE" -r ./* $ADMIN_USERNAME@$VM_IP:/home/$ADMIN_USERNAME/app/
+if ! scp -i ~/.ssh/pdf-processor-vm_key -r ./* "$ADMIN_USERNAME@$VM_IP:/app/"; then
+    echo "Error: Failed to copy files"
+    exit 1
+fi
 
-# Login to ACR on VM
 echo "Logging into ACR..."
-ssh -i "$SSH_KEY_FILE" $ADMIN_USERNAME@$VM_IP "docker login $ACR_NAME.azurecr.io -u $ACR_NAME -p $ACR_PASSWORD"
+if ! ssh -i ~/.ssh/pdf-processor-vm_key "$ADMIN_USERNAME@$VM_IP" "docker login $ACR_NAME.azurecr.io -u $ACR_USERNAME -p $ACR_PASSWORD"; then
+    echo "Error: Failed to login to ACR"
+    exit 1
+fi
 
-# Build and push Docker image on VM
 echo "Building and pushing Docker image..."
-ssh -i "$SSH_KEY_FILE" $ADMIN_USERNAME@$VM_IP "cd /home/$ADMIN_USERNAME/app && docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . && docker push $ACR_NAME.azurecr.io/pdf-processor:latest"
+if ! ssh -i ~/.ssh/pdf-processor-vm_key "$ADMIN_USERNAME@$VM_IP" "cd /app && docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . && docker push $ACR_NAME.azurecr.io/pdf-processor:latest"; then
+    echo "Error: Failed to build and push Docker image"
+    exit 1
+fi
+
+echo "Deployment completed successfully!"
+echo "VM IP: $VM_IP"
+echo "ACR Login Server: $ACR_NAME.azurecr.io"
 
 echo "
 Deployment complete!
 VM IP: $VM_IP
-SSH Command: ssh -i $SSH_KEY_FILE $ADMIN_USERNAME@$VM_IP
+SSH Command: ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP
 ACR Login Server: $ACR_NAME.azurecr.io
-ACR Username: $ACR_NAME
+ACR Username: $ACR_USERNAME
 ACR Password: $ACR_PASSWORD
 
 To connect to the VM:
-ssh -i $SSH_KEY_FILE $ADMIN_USERNAME@$VM_IP
+ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP
 
 To build and run the container:
 docker run -d --name pdf-processor -v /data:/app/data $ACR_NAME.azurecr.io/pdf-processor:latest
