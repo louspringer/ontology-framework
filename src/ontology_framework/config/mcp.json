@@ -1,25 +1,19 @@
 {
-    "mcpServers": {
-        "datapilot": {
-            "url": "http://localhost:8080/sse",
-            "type": "sse",
-            "timeout": 30,
-            "retryAttempts": 3,
-            "retryDelay": 5
-        }
-    },
-    "validation": {
-        "enabled": true,
-        "strict": false,
-        "rules": {
-            "phaseOrder": true,
-            "contextRequired": true,
-            "serverConfigRequired": true
-        }
-    },
-    "logging": {
-        "level": "INFO",
-        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        "file": "mcp.log"
+  "mcpServers": {
+    "datapilot": {}
+  },
+  "validation": {
+    "enabled": true,
+    "strict": false,
+    "rules": {
+      "phaseOrder": true,
+      "contextRequired": true,
+      "serverConfigRequired": true
     }
-} 
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "mcp.log"
+  }
+}

@@ -1,0 +1,129 @@
+@prefix : <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:CRITICAL a :ErrorSeverity ;
+    rdfs:label "Critical"@en ;
+    :description "Requires immediate attention" ;
+    :priority 1 ;
+    rdfs:comment "Critical severity level"@en .
+
+:FULL a :ComplianceLevel ;
+    rdfs:label "Full"@en ;
+    :description "All validation rules pass" ;
+    :priority 4 ;
+    rdfs:comment "Full compliance achieved"@en .
+
+:HIGH a :ErrorSeverity ;
+    rdfs:label "High"@en ;
+    :description "Requires prompt attention" ;
+    :priority 2 ;
+    rdfs:comment "High severity level"@en .
+
+:INFO a :ErrorSeverity ;
+    rdfs:label "Info"@en ;
+    :description "For information only" ;
+    :priority 5 ;
+    rdfs:comment "Informational severity level"@en .
+
+:LOW a :ErrorSeverity ;
+    rdfs:label "Low"@en ;
+    :description "Can be addressed later" ;
+    :priority 4 ;
+    rdfs:comment "Low severity level"@en .
+
+:MATRIX a :ValidationRuleType ;
+    rdfs:label "Matrix"@en ;
+    :description "Validates matrix-based relationships" ;
+    :priority 2 ;
+    rdfs:comment "Matrix-based validation rule"@en .
+
+:MEDIUM a :ErrorSeverity ;
+    rdfs:label "Medium"@en ;
+    :description "Should be addressed soon" ;
+    :priority 3 ;
+    rdfs:comment "Medium severity level"@en .
+
+:NOT_STARTED a :ComplianceLevel ;
+    rdfs:label "Not Started"@en ;
+    :description "Validation has not begun" ;
+    :priority 1 ;
+    rdfs:comment "Compliance check not started"@en .
+
+:PARTIAL a :ComplianceLevel ;
+    rdfs:label "Partial"@en ;
+    :description "Some validation rules pass" ;
+    :priority 2 ;
+    rdfs:comment "Partial compliance achieved"@en .
+
+:RISK a :ValidationRuleType ;
+    rdfs:label "Risk"@en ;
+    :description "Validates risk-related aspects of the ontology" ;
+    :priority 1 ;
+    rdfs:comment "Risk-based validation rule"@en .
+
+:SEMANTIC a :ValidationRuleType ;
+    rdfs:label "Semantic"@en ;
+    :description "Validates semantic aspects of the ontology" ;
+    :priority 3 ;
+    rdfs:comment "Semantic validation rule"@en .
+
+:SPORE a :ValidationRuleType ;
+    rdfs:label "SPORE"@en ;
+    :description "Validates SPORE-specific requirements" ;
+    :priority 5 ;
+    rdfs:comment "SPORE validation rule"@en .
+
+:SUBSTANTIAL a :ComplianceLevel ;
+    rdfs:label "Substantial"@en ;
+    :description "Most validation rules pass" ;
+    :priority 3 ;
+    rdfs:comment "Substantial compliance achieved"@en .
+
+:SYNTAX a :ValidationRuleType ;
+    rdfs:label "Syntax"@en ;
+    :description "Validates syntactic correctness" ;
+    :priority 4 ;
+    rdfs:comment "Syntax validation rule"@en .
+
+:description a owl:DatatypeProperty ;
+    rdfs:label "description"@en ;
+    rdfs:comment "Detailed description of the entity"@en ;
+    rdfs:range xsd:string .
+
+:hasComplianceLevel a owl:ObjectProperty ;
+    rdfs:label "has compliance level"@en ;
+    rdfs:comment "Links a validation result to its compliance level"@en ;
+    rdfs:domain :ValidationResult ;
+    rdfs:range :ComplianceLevel .
+
+:hasSeverity a owl:ObjectProperty ;
+    rdfs:label "has severity"@en ;
+    rdfs:comment "Links an error to its severity level"@en ;
+    rdfs:domain :Error ;
+    rdfs:range :ErrorSeverity .
+
+:hasValidationType a owl:ObjectProperty ;
+    rdfs:label "has validation type"@en ;
+    rdfs:comment "Links a validation rule to its type"@en ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range :ValidationRuleType .
+
+:priority a owl:DatatypeProperty ;
+    rdfs:label "priority"@en ;
+    rdfs:comment "Priority level of the entity"@en ;
+    rdfs:range xsd:integer .
+
+:ComplianceLevel a owl:Class ;
+    rdfs:label "Compliance Level"@en ;
+    rdfs:comment "Levels of compliance with validation rules"@en .
+
+:ErrorSeverity a owl:Class ;
+    rdfs:label "Error Severity"@en ;
+    rdfs:comment "Severity levels for validation errors"@en .
+
+:ValidationRuleType a owl:Class ;
+    rdfs:label "Validation Rule Type"@en ;
+    rdfs:comment "Types of validation rules in the ontology framework"@en .
+

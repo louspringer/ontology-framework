@@ -1,0 +1,131 @@
+@prefix inf: <http://example.org/infrastructure#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+inf:InfrastructureOntology a owl:Ontology ;
+    rdfs:label "Infrastructure Ontology" ;
+    rdfs:comment "Ontology for Azure infrastructure configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:hasIPAddress a owl:DatatypeProperty ;
+    rdfs:label "has IP address" ;
+    rdfs:comment "The IP address of the resource" ;
+    rdfs:range xsd:string .
+
+inf:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment "The Azure region location" ;
+    rdfs:range xsd:string .
+
+inf:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name" ;
+    rdfs:comment "The name of the resource" ;
+    rdfs:range xsd:string .
+
+inf:hasNotificationTime a owl:DatatypeProperty ;
+    rdfs:label "has notification time" ;
+    rdfs:comment "The notification time before shutdown" ;
+    rdfs:range xsd:integer .
+
+inf:hasPort a owl:DatatypeProperty ;
+    rdfs:label "has port" ;
+    rdfs:comment "The network port number" ;
+    rdfs:range xsd:integer .
+
+inf:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "has priority" ;
+    rdfs:comment "The priority of the rule" ;
+    rdfs:range xsd:integer .
+
+inf:hasProtocol a owl:DatatypeProperty ;
+    rdfs:label "has protocol" ;
+    rdfs:comment "The network protocol" ;
+    rdfs:range xsd:string .
+
+inf:hasShutdownTime a owl:DatatypeProperty ;
+    rdfs:label "has shutdown time" ;
+    rdfs:comment "The auto shutdown time" ;
+    rdfs:range xsd:time .
+
+inf:hasSize a owl:DatatypeProperty ;
+    rdfs:label "has size" ;
+    rdfs:comment "The VM size specification" ;
+    rdfs:range xsd:string .
+
+inf:vm-610a8715-fc60-4f4e-a30e-23ff8c3124fb a inf:VirtualMachine ;
+    inf:hasAutoShutdown inf:shutdown-4f0d6c52-9992-407a-895e-198927c6ce77 ;
+    inf:hasLocation "eastus" ;
+    inf:hasName "cursor-ide-vm" ;
+    inf:hasNetworkInterface inf:nic-1f3d0693-398b-4ede-80b6-28fbded776f1 ;
+    inf:hasSize "Standard_D8s_v3" ;
+    inf:hasSpotInstance inf:spot-27087b8d-e689-4cbe-aafd-32673b4e637e .
+
+inf:vnet-8d463ff5-b309-4e4e-a219-fb38b5dd6942 a inf:VirtualNetwork ;
+    inf:hasName "cursor-ide-vnet" .
+
+inf:AutoShutdown a owl:Class ;
+    rdfs:label "Auto Shutdown" ;
+    rdfs:comment "Azure auto shutdown configuration" .
+
+inf:NetworkInterface a owl:Class ;
+    rdfs:label "Network Interface" ;
+    rdfs:comment "Azure network interface" .
+
+inf:NetworkSecurityGroup a owl:Class ;
+    rdfs:label "Network Security Group" ;
+    rdfs:comment "Azure network security group" .
+
+inf:PublicIPAddress a owl:Class ;
+    rdfs:label "Public IP Address" ;
+    rdfs:comment "Azure public IP address" .
+
+inf:SecurityRule a owl:Class ;
+    rdfs:label "Security Rule" ;
+    rdfs:comment "Azure network security rule" .
+
+inf:SpotInstance a owl:Class ;
+    rdfs:label "Spot Instance" ;
+    rdfs:comment "Azure spot instance configuration" .
+
+inf:Subnet a owl:Class ;
+    rdfs:label "Subnet" ;
+    rdfs:comment "Azure virtual network subnet" .
+
+inf:VirtualMachine a owl:Class ;
+    rdfs:label "Virtual Machine" ;
+    rdfs:comment "Azure virtual machine instance" .
+
+inf:VirtualNetwork a owl:Class ;
+    rdfs:label "Virtual Network" ;
+    rdfs:comment "Azure virtual network" .
+
+inf:ip-76c62996-117d-402c-aefe-f367f2cc502e a inf:PublicIPAddress ;
+    inf:hasName "cursor-ide-ip" .
+
+inf:nic-1f3d0693-398b-4ede-80b6-28fbded776f1 a inf:NetworkInterface ;
+    inf:hasName "cursor-ide-nic" ;
+    inf:hasPublicIP inf:ip-76c62996-117d-402c-aefe-f367f2cc502e ;
+    inf:hasSubnet inf:subnet-8d14bb22-8799-4bc9-bb7c-29ffe4ad1608 .
+
+inf:nsg-6f28446b-745b-41bf-9bc4-bc2f8bafa24d a inf:NetworkSecurityGroup ;
+    inf:hasName "cursor-ide-nsg" ;
+    inf:hasSecurityRule inf:rule-6763872d-6988-4b57-9269-50d7ecc3c7ee .
+
+inf:rule-6763872d-6988-4b57-9269-50d7ecc3c7ee a inf:SecurityRule ;
+    inf:hasName "SSH-Custom" ;
+    inf:hasPort 22222 ;
+    inf:hasPriority 1000 ;
+    inf:hasProtocol "Tcp" .
+
+inf:shutdown-4f0d6c52-9992-407a-895e-198927c6ce77 a inf:AutoShutdown ;
+    inf:hasNotificationTime 30 ;
+    inf:hasShutdownTime "17:00:00" .
+
+inf:spot-27087b8d-e689-4cbe-aafd-32673b4e637e a inf:SpotInstance ;
+    inf:hasPriority "Spot" .
+
+inf:subnet-8d14bb22-8799-4bc9-bb7c-29ffe4ad1608 a inf:Subnet ;
+    inf:hasName "cursor-ide-subnet" ;
+    inf:hasNetworkSecurityGroup inf:nsg-6f28446b-745b-41bf-9bc4-bc2f8bafa24d .
+

@@ -1,0 +1,19 @@
+@prefix ont: <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ont:DefaultSaveTest a ont:ValidationRule ;
+    rdfs:label "DefaultSaveTest"@en ;
+    ont:hasValue "test default save" .
+
+ont:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value"@en ;
+    rdfs:comment "The value associated with a validation rule"@en ;
+    rdfs:domain ont:ValidationRule ;
+    rdfs:range xsd:string .
+
+ont:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule"@en ;
+    rdfs:comment "A class representing validation rules"@en .
+

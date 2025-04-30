@@ -1,179 +1,160 @@
-@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix : <http://example.org/guidance#> .
+@prefix default1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:ConformanceLevelShape a sh:NodeShape ;
-    rdfs:label "Conformance Level Shape"@en ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Conformance level must have a hasStringRepresentation"@en ;
-            sh:minCount 1 ;
-            sh:path :hasStringRepresentation ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Conformance level must have a hasMinimumRequirements"@en ;
-            sh:minCount 1 ;
-            sh:path :hasMinimumRequirements ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Conformance level must have a hasComplianceMetrics"@en ;
-            sh:minCount 1 ;
-            sh:path :hasComplianceMetrics ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Conformance level must have a hasValidationRules"@en ;
-            sh:minCount 1 ;
-            sh:path :hasValidationRules ] ;
-    sh:targetClass :ConformanceLevel .
-
-:GuidanceOntology a owl:Ontology ;
+: a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
-    rdfs:comment "Core guidance ontology for the ontology framework"@en ;
-    owl:versionInfo "0.1.0" .
+    rdfs:comment "Ontology for managing guidance and validation rules"@en ;
+    owl:versionInfo "1.0.0" .
 
-:IntegrationProcessShape a sh:NodeShape ;
-    rdfs:label "Integration Process Shape"@en ;
-    rdfs:comment "SHACL shape for validating integration processes"@en ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Integration step must have a description"@en ;
-            sh:minCount 1 ;
-            sh:path :stepDescription ],
-        [ sh:class :IntegrationStep ;
-            sh:message "Integration process must have at least one step"@en ;
-            sh:minCount 1 ;
-            sh:path :hasIntegrationStep ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Integration step must have a valid step order"@en ;
-            sh:minCount 1 ;
-            sh:path :stepOrder ;
-            sh:pattern "^[0-9]+$" ] ;
-    sh:targetClass :IntegrationProcess .
+:APIKeyPattern a :SensitiveDataPattern ;
+    rdfs:label "APIKeyPattern" ;
+    :hasRegexPattern "(?i)(api[_-]?key|access[_-]?token)[\\s]*[=:]\\s*[^\\s]+" ;
+    :hasTarget "http://example.org/guidance#SensitiveData"^^xsd:anyURI .
 
-:MODERATE a :ConformanceLevel ;
-    rdfs:label "MODERATE"@en ;
-    :hasStringRepresentation "MODERATE" .
+:ConsistencyRule a owl:Class ;
+    rdfs:label "Consistency Rule"@en ;
+    rdfs:subClassOf :ValidationRule .
 
-:RELAXED a :ConformanceLevel ;
-    rdfs:label "RELAXED"@en ;
-    :hasStringRepresentation "RELAXED" .
+:CreditCardPattern a :SensitiveDataPattern ;
+    rdfs:label "CreditCardPattern" ;
+    :hasRegexPattern "\\d{4}[- ]?\\d{4}[- ]?\\d{4}[- ]?\\d{4}" ;
+    :hasTarget "http://example.org/guidance#SensitiveData"^^xsd:anyURI .
 
-:STRICT a :ConformanceLevel ;
-    rdfs:label "STRICT"@en ;
-    :hasStringRepresentation "STRICT" .
+:IntegrationRequirement a owl:Class ;
+    rdfs:label "Integration Requirement"@en ;
+    rdfs:comment "Requirements for integrating validation components"@en .
 
-:TestProtocolShape a sh:NodeShape ;
-    rdfs:label "Test Protocol Shape"@en ;
-    rdfs:comment "SHACL shape for validating test protocols"@en ;
-    sh:property [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Test protocol must specify whether namespace validation is required"@en ;
-            sh:minCount 1 ;
-            sh:path :requiresNamespaceValidation ],
-        [ sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:message "Test protocol must specify whether prefix validation is required"@en ;
-            sh:minCount 1 ;
-            sh:path :requiresPrefixValidation ],
-        [ sh:class :TestPhase ;
-            sh:maxCount 5 ;
-            sh:message "Test protocol must have between 1 and 5 test phases"@en ;
-            sh:minCount 1 ;
-            sh:path :hasTestPhase ] ;
-    sh:targetClass :TestProtocol .
+:PasswordPattern a :SensitiveDataPattern ;
+    rdfs:label "PasswordPattern" ;
+    :hasRegexPattern "(?i)(password|pwd|secret)[\\s]*[=:]\\s*[^\\s]+" ;
+    :hasTarget "http://example.org/guidance#SensitiveData"^^xsd:anyURI .
 
-:metricValue a owl:DatatypeProperty ;
-    rdfs:label "Metric Value"@en ;
-    rdfs:domain :Metric ;
-    rdfs:range xsd:float .
+:SHACLValidation a owl:Class ;
+    rdfs:label "SHACL Validation"@en ;
+    rdfs:comment "Rules and patterns for SHACL validation"@en .
 
-:requirementText a owl:DatatypeProperty ;
-    rdfs:label "Requirement Text"@en ;
-    rdfs:domain :Requirement ;
+:SSNPattern a :SensitiveDataPattern ;
+    rdfs:label "SSNPattern" ;
+    :hasRegexPattern "\\d{3}-\\d{2}-\\d{4}" ;
+    :hasTarget "http://example.org/guidance#SensitiveData"^^xsd:anyURI .
+
+:SemanticRule a owl:Class ;
+    rdfs:label "Semantic Rule"@en ;
+    rdfs:subClassOf :ValidationRule .
+
+:SensitiveDataRuleShape a sh:NodeShape ;
+    sh:property :PatternConstraint ;
+    sh:targetClass :SensitiveDataRule .
+
+:SyntaxRule a owl:Class ;
+    rdfs:label "Syntax Rule"@en ;
+    rdfs:subClassOf :ValidationRule .
+
+:TODO a owl:Class ;
+    rdfs:label "Future Improvements" ;
+    rdfs:comment "Items for future development and enhancement" .
+
+:hasRegexPattern a owl:DatatypeProperty ;
+    rdfs:label "has regex pattern" ;
+    rdfs:domain :SensitiveDataPattern ;
     rdfs:range xsd:string .
 
-:ruleText a owl:DatatypeProperty ;
-    rdfs:label "Rule Text"@en ;
+:implements a owl:ObjectProperty ;
     rdfs:domain :ValidationRule ;
+    rdfs:range :ValidationPattern .
+
+:validates a owl:ObjectProperty ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range :ValidationPattern .
+
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
+    rdfs:comment "Description of rdf-schema#subClassOf" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+default1:APIKeyPattern a default1:SensitiveDataPattern ;
+    rdfs:label "APIKeyPattern"@en ;
+    default1:hasRegexPattern "(?i)(api[_-]?key|access[_-]?token)[\\s]*[=:]\\s*[^\\s]+" ;
+    default1:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveData"^^xsd:anyURI .
+
+default1:CreditCardPattern a default1:SensitiveDataPattern ;
+    rdfs:label "CreditCardPattern"@en ;
+    default1:hasRegexPattern "\\d{4}[- ]?\\d{4}[- ]?\\d{4}[- ]?\\d{4}" ;
+    default1:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveData"^^xsd:anyURI .
+
+default1:PasswordPattern a default1:SensitiveDataPattern ;
+    rdfs:label "PasswordPattern"@en ;
+    default1:hasRegexPattern "(?i)(password|pwd|secret)[\\s]*[=:]\\s*[^\\s]+" ;
+    default1:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveData"^^xsd:anyURI .
+
+default1:SSNPattern a default1:SensitiveDataPattern ;
+    rdfs:label "SSNPattern"@en ;
+    default1:hasRegexPattern "\\d{3}-\\d{2}-\\d{4}" ;
+    default1:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveData"^^xsd:anyURI .
+
+default1:SensitiveDataRuleShape a sh:NodeShape ;
+    sh:property [ sh:class default1:SensitiveDataPattern ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path default1:hasPattern ] ;
+    sh:targetClass default1:SensitiveDataRule .
+
+default1:hasRegexPattern a owl:DatatypeProperty ;
+    rdfs:label "has regex pattern"@en ;
+    rdfs:domain default1:SensitiveDataPattern ;
     rdfs:range xsd:string .
 
-:IntegrationProcess a owl:Class ;
-    rdfs:label "Integration Process"@en ;
-    rdfs:comment "Process for integrating ontologies"@en .
+:PatternConstraint sh:class :SensitiveDataPattern ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path :hasPattern .
 
-:hasComplianceMetrics a owl:ObjectProperty ;
-    rdfs:label "Has Compliance Metrics"@en ;
-    rdfs:domain :ConformanceLevel ;
-    rdfs:range :Metric .
+:hasPattern a owl:ObjectProperty ;
+    rdfs:label "has pattern" ;
+    rdfs:domain :SensitiveDataRule ;
+    rdfs:range :SensitiveDataPattern .
 
-:hasMinimumRequirements a owl:ObjectProperty ;
-    rdfs:label "Has Minimum Requirements"@en ;
-    rdfs:domain :ConformanceLevel ;
-    rdfs:range :Requirement .
+default1:hasPattern a owl:ObjectProperty ;
+    rdfs:label "has pattern"@en ;
+    rdfs:domain default1:SensitiveDataRule ;
+    rdfs:range default1:SensitiveDataPattern .
 
-:hasStringRepresentation a owl:DatatypeProperty ;
-    rdfs:label "Has String Representation"@en ;
-    rdfs:domain :ConformanceLevel ;
-    rdfs:range xsd:string .
+:SensitiveDataRule a owl:Class ;
+    rdfs:label "Sensitive Data Rule" ;
+    rdfs:comment "Rule for validating sensitive data patterns" ;
+    rdfs:subClassOf :ValidationRule .
 
-:hasTestPhase a owl:ObjectProperty ;
-    rdfs:label "Has Test Phase"@en ;
-    rdfs:domain :TestProtocol ;
-    rdfs:range :TestPhase .
+default1:SensitiveDataRule a owl:Class ;
+    rdfs:label "Sensitive Data Rule"@en ;
+    rdfs:comment "Rules for detecting and validating sensitive data patterns"@en ;
+    rdfs:subClassOf default1:ValidationRule .
 
-:hasValidationRules a owl:ObjectProperty ;
-    rdfs:label "Has Validation Rules"@en ;
-    rdfs:domain :ConformanceLevel ;
-    rdfs:range :ValidationRule .
-
-:requiresNamespaceValidation a owl:DatatypeProperty ;
-    rdfs:label "Requires Namespace Validation"@en ;
-    rdfs:domain :TestProtocol ;
-    rdfs:range xsd:boolean .
-
-:requiresPrefixValidation a owl:DatatypeProperty ;
-    rdfs:label "Requires Prefix Validation"@en ;
-    rdfs:domain :TestProtocol ;
-    rdfs:range xsd:boolean .
-
-:stepDescription a owl:DatatypeProperty ;
-    rdfs:label "Step Description"@en ;
-    rdfs:domain :IntegrationStep ;
-    rdfs:range xsd:string .
-
-:stepOrder a owl:DatatypeProperty ;
-    rdfs:label "Step Order"@en ;
-    rdfs:domain :IntegrationStep ;
-    rdfs:range xsd:integer .
-
-:Metric a owl:Class ;
-    rdfs:label "Metric"@en ;
-    rdfs:comment "Compliance metric for conformance"@en .
-
-:Requirement a owl:Class ;
-    rdfs:label "Requirement"@en ;
-    rdfs:comment "Minimum requirement for conformance"@en .
-
-:TestPhase a owl:Class ;
-    rdfs:label "Test Phase"@en ;
-    rdfs:comment "Phase in the test protocol"@en .
+:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "Pattern for implementing validation rules"@en .
 
 :ValidationRule a owl:Class ;
-    rdfs:label "Validation Rule"@en ;
-    rdfs:comment "Rule for validating ontologies"@en .
+    rdfs:label "Validation Rule"@en .
 
-:IntegrationStep a owl:Class ;
-    rdfs:label "Integration Step"@en ;
-    rdfs:comment "Step in the integration process"@en .
+:SensitiveDataPattern a owl:Class ;
+    rdfs:label "Sensitive Data Pattern" ;
+    rdfs:comment "Pattern for identifying sensitive data" ;
+    rdfs:subClassOf :ValidationPattern .
 
-:TestProtocol a owl:Class ;
-    rdfs:label "Test Protocol"@en ;
-    rdfs:comment "Protocol for testing ontologies"@en .
-
-:ConformanceLevel a owl:Class ;
-    rdfs:label "Conformance Level"@en ;
-    rdfs:comment "Level of conformance to guidance rules"@en .
+default1:SensitiveDataPattern a owl:Class ;
+    rdfs:label "Sensitive Data Pattern"@en ;
+    rdfs:comment "Patterns for identifying sensitive data in RDF graphs"@en ;
+    rdfs:subClassOf default1:ValidationPattern .
 

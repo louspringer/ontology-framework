@@ -1,0 +1,53 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix code: <http://example.org/code#> .
+@prefix model: <http://example.org/model#> .
+
+# Module Model Shape
+model:ModuleShape
+    a sh:NodeShape ;
+    sh:targetClass code:Module ;
+    sh:property [
+        sh:path code:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern "^[a-z][a-z0-9_]*$" ;
+        sh:message "Module name must be snake_case" ;
+    ] ;
+    sh:property [
+        sh:path code:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:pattern ".*\\.py$" ;
+        sh:message "Module path must end with .py" ;
+    ] ;
+    sh:property [
+        sh:path code:created ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Module must have creation timestamp" ;
+    ] .
+
+# Code Model Shape
+model:CodeModelShape
+    a sh:NodeShape ;
+    sh:targetClass model:CodeModel ;
+    sh:property [
+        sh:path model:implements ;
+        sh:class code:Module ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Code model must implement exactly one module" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Code model must have a label" ;
+    ] . 

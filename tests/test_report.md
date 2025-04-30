@@ -1,25 +1,50 @@
 # Ontology Framework Test Report
-Generated: 2025-04-21T03:31:49.770389
-Runtime: 4.89 seconds
+Generated: 2025-04-29T17:08:56.114581
+Runtime: 22.16 seconds
 
 ## Summary
-- Tests Run: 120
-- Failures: 41
-- Errors: 29
-- Skipped: 2
+- Tests Run: 219
+- Failures: 50
+- Errors: 77
+- Skipped: 7
 
 ## Details
 
 ### Failures
 
-#### tests.test_deployment_modeler.TestDeploymentModeler.test_load_core_ontologies_error
+#### tests.test_mcp_config.TestMCPValidator.test_validate_context
 ```
 Traceback (most recent call last):
-  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1379, in patched
-    return func(*newargs, **newkeywargs)
-  File "/Users/lou/ontology-framework/tests/test_deployment_modeler.py", line 107, in test_load_core_ontologies_error
-    self.assertIn("Failed to load core ontologies", log.output[0])
-AssertionError: 'Failed to load core ontologies' not found in 'ERROR:ontology_framework.error_handler:Invalid error severity: HIGH'
+  File "/Users/lou/ontology-framework/tests/test_mcp_config.py", line 73, in test_validate_context
+    self.assertTrue(self.validator.validate_context(valid_context))
+AssertionError: False is not true
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_risk_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 443, in test_risk_validation
+    self.assertTrue(result)
+AssertionError: False is not true
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_security_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 453, in test_security_validation
+    self.assertTrue(result)
+AssertionError: False is not true
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_semantic_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 472, in test_semantic_validation
+    self.assertTrue(result)
+AssertionError: False is not true
 
 ```
 
@@ -38,6 +63,42 @@ Traceback (most recent call last):
   File "/Users/lou/ontology-framework/tests/test_sparql_patterns.py", line 74, in test_pattern_recognition
     self.assertGreater(len(patterns), 0, "No test patterns found")
 AssertionError: 0 not greater than 0 : No test patterns found
+
+```
+
+#### tests.test_guidance_consistency.TestGuidanceConsistency.test_emit_reload_consistency
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_consistency.py", line 24, in test_emit_reload_consistency
+    self.assertTrue(
+AssertionError: False is not true : Emitted and reloaded graphs are not semantically equivalent
+
+```
+
+#### tests.test_guidance_consistency.TestGuidanceConsistency.test_guidance_structure
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_consistency.py", line 48, in test_guidance_structure
+    self.assertTrue(
+AssertionError: False is not true : Required class IntegrationStep not found in ontology
+
+```
+
+#### tests.test_guidance_consistency.TestGuidanceConsistency.test_round_trip_consistency
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_consistency.py", line 60, in test_round_trip_consistency
+    self.assertTrue(
+AssertionError: False is not true : Python-generated and Turtle ontologies are not semantically equivalent
+
+```
+
+#### tests.test_guidance_consistency.TestGuidanceConsistency.test_shacl_validation_patterns
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_consistency.py", line 69, in test_shacl_validation_patterns
+    self.assertTrue(any(self.python_guidance.graph.triples((conformance_shape, RDF.type, SH.NodeShape))))
+AssertionError: False is not true
 
 ```
 
@@ -244,30 +305,12 @@ AssertionError: False is not true : Missing validation rule: SensitiveDataValida
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_clear_errors
+#### tests.test_error_handler_root.TestErrorHandler.test_metrics_management
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 116, in test_clear_errors
-    self.assertTrue(self.error_handler.has_errors())
+  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 315, in test_metrics_management
+    self.assertTrue(self.error_handler.check_metrics_thresholds(metrics, thresholds))
 AssertionError: False is not true
-
-```
-
-#### tests.test_error_handler_root.TestErrorHandler.test_error_types
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 98, in test_error_types
-    self.assertIn(ErrorType.VALIDATION, error_types)
-AssertionError: <ErrorType.VALIDATION: 'validation'> not found in {<ErrorType.VALIDATION: 'validation'>: 'validation', <ErrorType.RUNTIME: 'runtime'>: 'runtime', <ErrorType.CONFIGURATION: 'configuration'>: 'configuration', <ErrorType.NETWORK: 'network'>: 'network', <ErrorType.DATABASE: 'database'>: 'database', <ErrorType.FILE_SYSTEM: 'file_system'>: 'file_system', <ErrorType.MEMORY: 'memory'>: 'memory', <ErrorType.CPU: 'cpu'>: 'cpu', <ErrorType.DISK: 'disk'>: 'disk', <ErrorType.API: 'api'>: 'api', <ErrorType.AUTHENTICATION: 'authentication'>: 'authentication', <ErrorType.AUTHORIZATION: 'authorization'>: 'authorization', <ErrorType.COMPLIANCE: 'compliance'>: 'compliance', <ErrorType.SECURITY: 'security'>: 'security', <ErrorType.PERFORMANCE: 'performance'>: 'performance', <ErrorType.SCALABILITY: 'scalability'>: 'scalability', <ErrorType.AVAILABILITY: 'availability'>: 'availability', <ErrorType.RELIABILITY: 'reliability'>: 'reliability', <ErrorType.MAINTAINABILITY: 'maintainability'>: 'maintainability', <ErrorType.DATA_LOSS: 'data_loss'>: 'data_loss', <ErrorType.IO: 'io'>: 'io', <ErrorType.TEST: 'test'>: 'test'}
-
-```
-
-#### tests.test_error_handler_root.TestErrorHandler.test_get_errors_by_severity
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 52, in test_get_errors_by_severity
-    self.assertEqual(len(high_severity_errors), 1)
-AssertionError: 0 != 1
 
 ```
 
@@ -307,37 +350,10 @@ AssertionError: 0 != 5 : Should have exactly 5 registered modules, found 0
 
 ```
 
-#### tests.test_guidance.TestGuidanceOntology.test_version_compatibility
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance.py", line 515, in test_version_compatibility
-    self.fail(f"Modules have incompatible major versions: {major_versions}")
-AssertionError: Modules have incompatible major versions: {'1', '0'}
-
-```
-
-#### tests.test_guidance_conformance.TestGuidanceConformance.test_integration_step_validation
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 195, in test_integration_step_validation
-    with self.assertRaises(ConformanceError):
-AssertionError: ConformanceError not raised
-
-```
-
 #### tests.test_guidance_conformance.TestGuidanceConformance.test_namespace_validation
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 160, in test_namespace_validation
-    with self.assertRaises(ConformanceError):
-AssertionError: ConformanceError not raised
-
-```
-
-#### tests.test_guidance_conformance.TestGuidanceConformance.test_ordered_step_execution
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 252, in test_ordered_step_execution
+  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 194, in test_namespace_validation
     with self.assertRaises(ConformanceError):
 AssertionError: ConformanceError not raised
 
@@ -346,52 +362,367 @@ AssertionError: ConformanceError not raised
 #### tests.test_guidance_conformance.TestGuidanceConformance.test_prefix_validation
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 135, in test_prefix_validation
+  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 169, in test_prefix_validation
     with self.assertRaises(ConformanceError):
 AssertionError: ConformanceError not raised
 
 ```
 
-#### tests.test_guidance_conformance.TestGuidanceConformance.test_step_target_validation
+#### tests.test_guidance_validation.TestGuidanceValidation.test_validate_guidance_ontology
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 312, in test_step_target_validation
-    with self.assertRaises(ConformanceError):
-AssertionError: ConformanceError not raised
+  File "/Users/lou/ontology-framework/tests/test_guidance_validation.py", line 40, in test_validate_guidance_ontology
+    self.assertEqual(len(results["errors"]), 0,
+AssertionError: 9 != 0 : Found validation errors: ['Missing label for ValidationRule', 'Missing comment for ValidationRule', 'Missing range for property: hasMessage', 'Missing range for property: hasPriority', 'Missing range for property: hasValidator', 'Missing range for property: hasTarget', 'Missing required SHACL shape: ValidationPatternShape', 'Missing target class for shape: ValidationPatternShape', 'Missing properties for shape: ValidationPatternShape']
 
 ```
 
-#### tests.test_guidance_conformance.TestGuidanceConformance.test_step_type_validation
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 282, in test_step_type_validation
-    with self.assertRaises(ConformanceError):
-AssertionError: ConformanceError not raised
-
-```
-
-#### tests.test_deployment.TestDeployment.test_dataset_existence
+#### tests.test_spore_integration.TestSporeIntegration.test_concurrent_integration
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_deployment.py", line 222, in test_dataset_existence
-    self.assertEqual(response.status_code, 200, "Dataset not found")
-AssertionError: 404 != 200 : Dataset not found
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 121, in test_concurrent_integration
+    self.assertTrue(result)
+AssertionError: False is not true
 
 ```
 
-#### tests.test_deployment.TestDeployment.test_dataset_exists
+#### tests.test_spore_integration.TestSporeIntegration.test_dependency_resolution
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_deployment.py", line 98, in test_dataset_exists
-    self.assertEqual(
-AssertionError: '404' != '200'
-- 404
-+ 200
- : Dataset check failed
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 150, in test_dependency_resolution
+    self.assertTrue(result)
+AssertionError: False is not true
+
+```
+
+#### tests.test_spore_integration.TestSporeIntegration.test_error_handling
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 169, in test_error_handling
+    with self.assertRaises(ConcurrentModificationError):
+AssertionError: ConcurrentModificationError not raised
+
+```
+
+#### tests.test_spore_integration.TestSporeIntegration.test_model_compatibility_check
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 80, in test_model_compatibility_check
+    self.assertTrue(result)
+AssertionError: False is not true
+
+```
+
+#### tests.test_spore_integration.TestSporeIntegration.test_patch_application
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 90, in test_patch_application
+    self.assertTrue(result)
+AssertionError: False is not true
+
+```
+
+#### tests.test_mcp_prompt.TestCheckPhase.test_failed_do_phase
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 148, in test_failed_do_phase
+    self.phase.execute(self.context, failed_do)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 437, in execute
+    g.add((check_phase, PDCA.hasStartTime, self.start_time.isoformat()))
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 581, in add
+    assert isinstance(o, Node), "Object %s must be an rdflib term" % (o,)
+AssertionError: Object 2025-04-29T17:08:55.079727 must be an rdflib term
+
+```
+
+#### tests.test_mcp_prompt.TestCheckPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 138, in test_successful_execution
+    results = self.phase.execute(self.context, self.do_results)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 437, in execute
+    g.add((check_phase, PDCA.hasStartTime, self.start_time.isoformat()))
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 581, in add
+    assert isinstance(o, Node), "Object %s must be an rdflib term" % (o,)
+AssertionError: Object 2025-04-29T17:08:55.081515 must be an rdflib term
+
+```
+
+#### tests.test_mcp_prompt.TestPlanPhase.test_invalid_context
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 86, in test_invalid_context
+    self.phase.execute(invalid_context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 307, in execute
+    g.add((plan_phase, PDCA.hasStartTime, self.start_time.isoformat()))
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 581, in add
+    assert isinstance(o, Node), "Object %s must be an rdflib term" % (o,)
+AssertionError: Object 2025-04-29T17:08:55.085146 must be an rdflib term
+
+```
+
+#### tests.test_mcp_prompt.TestPlanPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 72, in test_successful_execution
+    results = self.phase.execute(self.context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 307, in execute
+    g.add((plan_phase, PDCA.hasStartTime, self.start_time.isoformat()))
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 581, in add
+    assert isinstance(o, Node), "Object %s must be an rdflib term" % (o,)
+AssertionError: Object 2025-04-29T17:08:55.087806 must be an rdflib term
+
+```
+
+#### tests.test_mcp_prompt.TestPromptContext.test_invalid_target_file
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 57, in test_invalid_target_file
+    self.assertIn("Target file does not exist", str(cm.exception))
+AssertionError: 'Target file does not exist' not found in 'Ontology path does not exist: models/mcp_prompt.ttl'
 
 ```
 
 ### Errors
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_get_conformance_levels
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 16, in test_get_conformance_levels
+    levels = self.guidance.get_conformance_levels()
+AttributeError: 'GuidanceOntology' object has no attribute 'get_conformance_levels'
+
+```
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_get_integration_steps
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 32, in test_get_integration_steps
+    steps = self.guidance.get_integration_steps()
+AttributeError: 'GuidanceOntology' object has no attribute 'get_integration_steps'
+
+```
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_get_shacl_shapes
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 63, in test_get_shacl_shapes
+    shapes = self.guidance.get_shacl_shapes()
+AttributeError: 'GuidanceOntology' object has no attribute 'get_shacl_shapes'
+
+```
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_get_test_protocols
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 42, in test_get_test_protocols
+    protocols = self.guidance.get_test_protocols()
+AttributeError: 'GuidanceOntology' object has no attribute 'get_test_protocols'
+
+```
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_get_validation_patterns
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 53, in test_get_validation_patterns
+    patterns = self.guidance.get_validation_patterns()
+AttributeError: 'GuidanceOntology' object has no attribute 'get_validation_patterns'. Did you mean: 'ValidationPattern'?
+
+```
+
+#### tests.test_guidance_queries.TestGuidanceQueries.test_validate_conformance_level
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_queries.py", line 73, in test_validate_conformance_level
+    self.assertTrue(self.guidance.validate_conformance_level("STRICT"))
+AttributeError: 'GuidanceOntology' object has no attribute 'validate_conformance_level'
+
+```
+
+#### tests.test_mcp_config.TestMCPConfig.test_get_server_config
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_config.py", line 28, in test_get_server_config
+    self.assertEqual(server_config["url"], "http://localhost:8080/sse")
+KeyError: 'url'
+
+```
+
+#### tests.test_validation_handler.TestValidationHandler.test_load_validation_rules
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation_handler.py", line 37, in setUp
+    self.handler.register_rule(
+TypeError: ValidationHandler.register_rule() got an unexpected keyword argument 'pattern'
+
+```
+
+#### tests.test_validation_handler.TestValidationHandler.test_validate_graph
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation_handler.py", line 37, in setUp
+    self.handler.register_rule(
+TypeError: ValidationHandler.register_rule() got an unexpected keyword argument 'pattern'
+
+```
+
+#### tests.test_validation_handler.TestValidationHandler.test_validate_sensitive_data
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation_handler.py", line 37, in setUp
+    self.handler.register_rule(
+TypeError: ValidationHandler.register_rule() got an unexpected keyword argument 'pattern'
+
+```
+
+#### tests.test_validation_handler.TestValidationHandler.test_validate_syntax
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation_handler.py", line 37, in setUp
+    self.handler.register_rule(
+TypeError: ValidationHandler.register_rule() got an unexpected keyword argument 'pattern'
+
+```
+
+#### tests.test_validation.TestValidation.test_bfg9k_pattern_strict
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_individual_type_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_invalid_data
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_semantic_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_spore_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_syntax_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidation.test_validation_history
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 292, in setUp
+    self.handler = ValidationHandler(self.graph)
+TypeError: ValidationHandler.__init__() takes 1 positional argument but 2 were given
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_individual_type_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 489, in test_individual_type_validation
+    result = self.validator.validate(ValidationRule.INDIVIDUAL_TYPE, data)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/enum.py", line 437, in __getattr__
+    raise AttributeError(name) from None
+AttributeError: INDIVIDUAL_TYPE
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_invalid_rule
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 504, in test_invalid_rule
+    self.validator.validate('invalid_rule', data)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/error_handling/validation.py", line 103, in validate
+    raise ValueError(f"Rule {rule} not found in validation rules")
+ValueError: Rule invalid_rule not found in validation rules
+
+```
+
+#### tests.test_validation.TestValidationHandler.test_none_data
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_validation.py", line 498, in test_none_data
+    result = self.validator.validate(ValidationRule.RISK, None)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/error_handling/validation.py", line 100, in validate
+    raise TypeError("Data must be a dictionary")
+TypeError: Data must be a dictionary
+
+```
+
+#### tests.test_deployment_modeler.TestDeploymentModeler.test_load_core_ontologies_error
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/src/ontology_framework/deployment_modeler.py", line 24, in __init__
+    self._load_core_ontologies()
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1114, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1118, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1173, in _execute_mock_call
+    raise effect
+Exception: Failed to load ontologies
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1379, in patched
+    return func(*newargs, **newkeywargs)
+  File "/Users/lou/ontology-framework/tests/test_deployment_modeler.py", line 105, in test_load_core_ontologies_error
+    modeler = DeploymentModeler()  # This should not raise an exception
+  File "/Users/lou/ontology-framework/src/ontology_framework/deployment_modeler.py", line 26, in __init__
+    self.error_handler.add_error(
+TypeError: ErrorHandler.add_error() takes 2 positional arguments but 4 were given
+
+```
+
+#### tests.test_deployment_modeler.TestDeploymentModeler.test_validate_deployment_failure
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/src/ontology_framework/deployment_modeler.py", line 98, in validate_deployment
+    self.error_handler.add_error(
+TypeError: ErrorHandler.add_error() takes 2 positional arguments but 4 were given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_deployment_modeler.py", line 58, in test_validate_deployment_failure
+    result = self.modeler.validate_deployment(invalid_config)
+  File "/Users/lou/ontology-framework/src/ontology_framework/deployment_modeler.py", line 107, in validate_deployment
+    self.error_handler.add_error(
+TypeError: ErrorHandler.add_error() takes 2 positional arguments but 4 were given
+
+```
 
 #### tests.test_conformance_tracking.TestConformanceTracker.test_add_violation
 ```
@@ -438,6 +769,92 @@ AttributeError: 'ConformanceTracker' object has no attribute 'graph'
 
 ```
 
+#### tests.test_guidance_manager.TestGuidanceManager.test_add_validation_rule
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_manager.py", line 106, in test_add_validation_rule
+    rule_uri = self.manager.add_validation_rule(
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/guidance_manager.py", line 221, in add_validation_rule
+    self.graph.update(update_query)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1684, in update
+    return processor.update(update_object, initBindings, initNs, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/plugins/sparql/processor.py", line 104, in update
+    strOrQuery = translateUpdate(parseUpdate(strOrQuery), initNs=initNs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/plugins/sparql/parser.py", line 1564, in parseUpdate
+    return UpdateUnit.parseString(q, parseAll=True)[0]
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/pyparsing/util.py", line 417, in _inner
+    return fn(self, *args, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/pyparsing/core.py", line 1219, in parse_string
+    raise exc.with_traceback(None)
+pyparsing.exceptions.ParseException: Expected end of text, found 'INSERT'  (at char 242), (line:6, col:9)
+
+```
+
+#### tests.test_guidance_manager.TestGuidanceManager.test_save_and_reload
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_manager.py", line 141, in test_save_and_reload
+    self.manager.add_validation_rule(
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/guidance_manager.py", line 221, in add_validation_rule
+    self.graph.update(update_query)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1684, in update
+    return processor.update(update_object, initBindings, initNs, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/plugins/sparql/processor.py", line 104, in update
+    strOrQuery = translateUpdate(parseUpdate(strOrQuery), initNs=initNs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/plugins/sparql/parser.py", line 1564, in parseUpdate
+    return UpdateUnit.parseString(q, parseAll=True)[0]
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/pyparsing/util.py", line 417, in _inner
+    return fn(self, *args, **kwargs)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/pyparsing/core.py", line 1219, in parse_string
+    raise exc.with_traceback(None)
+pyparsing.exceptions.ParseException: Expected end of text, found 'INSERT'  (at char 242), (line:6, col:9)
+
+```
+
+#### tests.test_dependency_model.TestDependencyModelGenerator.test_analyze_ontology
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_dependency_model.py", line 85, in test_analyze_ontology
+    self.generator.analyze_ontology()
+  File "/Users/lou/ontology-framework/src/ontology_framework/dependency_model.py", line 128, in analyze_ontology
+    self.nodes[prop].dependencies.add(self.nodes[domain_uri])
+TypeError: unhashable type: 'DependencyNode'
+
+```
+
+#### tests.test_dependency_model.TestDependencyModelGenerator.test_generate_code_types
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_dependency_model.py", line 111, in test_generate_code_types
+    self.generator.analyze_ontology()
+  File "/Users/lou/ontology-framework/src/ontology_framework/dependency_model.py", line 128, in analyze_ontology
+    self.nodes[prop].dependencies.add(self.nodes[domain_uri])
+TypeError: unhashable type: 'DependencyNode'
+
+```
+
+#### tests.test_dependency_model.TestDependencyModelGenerator.test_save_dependency_model
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_dependency_model.py", line 143, in test_save_dependency_model
+    self.generator.analyze_ontology()
+  File "/Users/lou/ontology-framework/src/ontology_framework/dependency_model.py", line 128, in analyze_ontology
+    self.nodes[prop].dependencies.add(self.nodes[domain_uri])
+TypeError: unhashable type: 'DependencyNode'
+
+```
+
+#### tests.test_dependency_model.TestDependencyModelGenerator.test_visualize_dependencies
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_dependency_model.py", line 154, in test_visualize_dependencies
+    self.generator.analyze_ontology()
+  File "/Users/lou/ontology-framework/src/ontology_framework/dependency_model.py", line 128, in analyze_ontology
+    self.nodes[prop].dependencies.add(self.nodes[domain_uri])
+TypeError: unhashable type: 'DependencyNode'
+
+```
+
 #### tests.test_manage_models.TestModelManager.test_dependency_tracking
 ```
 Traceback (most recent call last):
@@ -474,7 +891,7 @@ Traceback (most recent call last):
     original, local = self.get_original()
   File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/unittest/mock.py", line 1420, in get_original
     raise AttributeError(
-AttributeError: <ontology_framework.manage_models.ModelManager object at 0x12133ebc0> does not have the attribute 'check_model_quality'
+AttributeError: <ontology_framework.manage_models.ModelManager object at 0x1116cfbe0> does not have the attribute 'check_model_quality'
 
 ```
 
@@ -560,72 +977,132 @@ AttributeError: 'ModelManager' object has no attribute 'versions'
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_add_error
+#### tests.test_python_validator.TestPythonValidator.test_validate_bad_naming
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 26, in test_add_error
-    ErrorStep.IDENTIFICATION,
-  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/enum.py", line 437, in __getattr__
-    raise AttributeError(name) from None
-AttributeError: IDENTIFICATION. Did you mean: 'NOTIFICATION'?
+  File "/Users/lou/ontology-framework/tests/test_python_validator.py", line 14, in setUp
+    self.validator = PythonValidator()
+  File "/Users/lou/ontology-framework/src/ontology_framework/validation/python_validator.py", line 20, in __init__
+    self.shapes_graph.parse(shapes_file, format="turtle")
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1518, in parse
+    source = create_input_source(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 735, in create_input_source
+    ) = _create_input_source_from_location(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 795, in _create_input_source_from_location
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/tests/test_data/python_shapes.ttl'
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_error_steps
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 91, in test_error_steps
-    self.assertEqual(self.error_handler.get_current_step(), ErrorStep.IDENTIFICATION)
-  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/enum.py", line 437, in __getattr__
-    raise AttributeError(name) from None
-AttributeError: IDENTIFICATION. Did you mean: 'NOTIFICATION'?
-
-```
-
-#### tests.test_error_handler_root.TestErrorHandler.test_validate_compliance
+#### tests.test_python_validator.TestPythonValidator.test_validate_good_class
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 83, in test_validate_compliance
-    "compliance_level": ComplianceLevel.FULL
-  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/enum.py", line 437, in __getattr__
-    raise AttributeError(name) from None
-AttributeError: FULL
+  File "/Users/lou/ontology-framework/tests/test_python_validator.py", line 14, in setUp
+    self.validator = PythonValidator()
+  File "/Users/lou/ontology-framework/src/ontology_framework/validation/python_validator.py", line 20, in __init__
+    self.shapes_graph.parse(shapes_file, format="turtle")
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1518, in parse
+    source = create_input_source(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 735, in create_input_source
+    ) = _create_input_source_from_location(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 795, in _create_input_source_from_location
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/tests/test_data/python_shapes.ttl'
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_validate_matrix
-```
-Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 59, in test_validate_matrix
-    self.assertTrue(self.error_handler.validate(ValidationRule.MATRIX, valid_data))
-AttributeError: type object 'ValidationRule' has no attribute 'MATRIX'
-
-```
-
-#### tests.test_error_handler_root.TestErrorHandler.test_validate_risk_assessment
+#### tests.test_python_validator.TestPythonValidator.test_validate_inheritance
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 66, in test_validate_risk_assessment
-    self.assertTrue(self.error_handler.validate(ValidationRule.RISK_ASSESSMENT, valid_data))
-AttributeError: type object 'ValidationRule' has no attribute 'RISK_ASSESSMENT'
+  File "/Users/lou/ontology-framework/tests/test_python_validator.py", line 14, in setUp
+    self.validator = PythonValidator()
+  File "/Users/lou/ontology-framework/src/ontology_framework/validation/python_validator.py", line 20, in __init__
+    self.shapes_graph.parse(shapes_file, format="turtle")
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1518, in parse
+    source = create_input_source(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 735, in create_input_source
+    ) = _create_input_source_from_location(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 795, in _create_input_source_from_location
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/tests/test_data/python_shapes.ttl'
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_validate_sensitive_data
+#### tests.test_python_validator.TestPythonValidator.test_validate_missing_docstring
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 76, in test_validate_sensitive_data
-    self.assertTrue(self.error_handler.validate(ValidationRule.SENSITIVE_DATA, valid_data))
-AttributeError: type object 'ValidationRule' has no attribute 'SENSITIVE_DATA'
+  File "/Users/lou/ontology-framework/tests/test_python_validator.py", line 14, in setUp
+    self.validator = PythonValidator()
+  File "/Users/lou/ontology-framework/src/ontology_framework/validation/python_validator.py", line 20, in __init__
+    self.shapes_graph.parse(shapes_file, format="turtle")
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1518, in parse
+    source = create_input_source(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 735, in create_input_source
+    ) = _create_input_source_from_location(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 795, in _create_input_source_from_location
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/tests/test_data/python_shapes.ttl'
 
 ```
 
-#### tests.test_error_handler_root.TestErrorHandler.test_validation_rules
+#### tests.test_python_validator.TestPythonValidator.test_validate_return_types
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 105, in test_validation_rules
-    self.assertIn(ValidationRule.MATRIX, rules)
-AttributeError: type object 'ValidationRule' has no attribute 'MATRIX'
+  File "/Users/lou/ontology-framework/tests/test_python_validator.py", line 14, in setUp
+    self.validator = PythonValidator()
+  File "/Users/lou/ontology-framework/src/ontology_framework/validation/python_validator.py", line 20, in __init__
+    self.shapes_graph.parse(shapes_file, format="turtle")
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/graph.py", line 1518, in parse
+    source = create_input_source(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 735, in create_input_source
+    ) = _create_input_source_from_location(
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/site-packages/rdflib/parser.py", line 795, in _create_input_source_from_location
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/tests/test_data/python_shapes.ttl'
+
+```
+
+#### tests.test_error_handler_root.TestErrorHandler.test_error_summary
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_error_handler_root.py", line 341, in test_error_summary
+    self.assertEqual(summary["error_types"]["validation"], 1)
+KeyError: 'validation'
+
+```
+
+#### tests.test_model_generator.TestModelGenerator.test_analyze_file
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_model_generator.py", line 18, in test_analyze_file
+    with open(self.test_file, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/ontology-framework/tests/test_data/test_module.py'
+
+```
+
+#### tests.test_model_generator.TestModelGenerator.test_generate_model
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_model_generator.py", line 33, in test_generate_model
+    model = self.generator.generate_model(self.test_file)
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/model_generator.py", line 84, in generate_model
+    info = self.analyze_file(file_path)
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/model_generator.py", line 43, in analyze_file
+    with open(file_path, 'r', encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/ontology-framework/tests/test_data/test_module.py'
+
+```
+
+#### tests.test_model_generator.TestModelGenerator.test_save_models
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_model_generator.py", line 46, in test_save_models
+    model = self.generator.generate_model(self.test_file)
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/model_generator.py", line 84, in generate_model
+    info = self.analyze_file(file_path)
+  File "/Users/lou/ontology-framework/src/ontology_framework/tools/model_generator.py", line 43, in analyze_file
+    with open(file_path, 'r', encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/lou/ontology-framework/tests/test_data/test_module.py'
 
 ```
 
@@ -718,20 +1195,80 @@ Exception: Unknown namespace prefix : meta
 #### setUpClass (tests.test_sparql_client.TestSparqlClient)
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_sparql_client.py", line 38, in setUpClass
-    cls.client = SparqlClient(
-TypeError: SparqlClient.__init__() got an unexpected keyword argument 'auth'
+  File "/Users/lou/ontology-framework/tests/test_sparql_client.py", line 74, in _setup_fuseki
+    subprocess.run(["docker", "info"], capture_output=True, check=True)
+  File "/Users/lou/miniconda3/envs/ontology-framework/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'info']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_sparql_client.py", line 35, in setUpClass
+    cls._setup_fuseki()
+  File "/Users/lou/ontology-framework/tests/test_sparql_client.py", line 77, in _setup_fuseki
+    raise RuntimeError("Docker is required for running tests")
+RuntimeError: Docker is required for running tests
 
 ```
 
 #### tests.test_guidance_conformance.TestGuidanceConformance.test_conformance_level_validation
 ```
 Traceback (most recent call last):
-  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 111, in test_conformance_level_validation
-    self.integrator.set_conformance_level("INVALID")
-  File "/Users/lou/ontology-framework/src/ontology_framework/spore_integration.py", line 70, in set_conformance_level
-    raise ValueError(f"Invalid conformance level: {level}. Must be one of {valid_levels}")
-ValueError: Invalid conformance level: INVALID. Must be one of {'MODERATE', 'STRICT', 'RELAXED'}
+  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 129, in test_conformance_level_validation
+    self.integrator.set_conformance_level(GUIDANCE.STRICT)
+  File "/Users/lou/ontology-framework/src/ontology_framework/spore_integration.py", line 92, in set_conformance_level
+    raise ConformanceError(f"Invalid conformance level: {level}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
+ontology_framework.exceptions.ConformanceError: Invalid conformance level: https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRICT. Must be one of {'STRICT', 'RELAXED', 'MODERATE'}
+
+```
+
+#### tests.test_guidance_conformance.TestGuidanceConformance.test_integration_step_validation
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 229, in test_integration_step_validation
+    result = self.integrator.validate_integration_steps(process)
+  File "/Users/lou/ontology-framework/src/ontology_framework/spore_integration.py", line 618, in validate_integration_steps
+    raise ConformanceError("No integration steps found in process")
+ontology_framework.exceptions.ConformanceError: No integration steps found in process
+
+```
+
+#### tests.test_guidance_conformance.TestGuidanceConformance.test_ordered_step_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_conformance.py", line 286, in test_ordered_step_execution
+    result = self.integrator.execute_integration_steps(process)
+  File "/Users/lou/ontology-framework/src/ontology_framework/spore_integration.py", line 682, in execute_integration_steps
+    raise ConformanceError(f"Step {step} has no target")
+ontology_framework.exceptions.ConformanceError: Step http://example.org/steps/step1 has no target
+
+```
+
+#### tests.test_guidance_validation.TestGuidanceValidation.test_validate_conformance_levels
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_validation.py", line 21, in test_validate_conformance_levels
+    results = self.validator.validate_conformance_levels()
+AttributeError: 'OntologyValidator' object has no attribute 'validate_conformance_levels'
+
+```
+
+#### tests.test_guidance_validation.TestGuidanceValidation.test_validate_integration_process
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_validation.py", line 27, in test_validate_integration_process
+    results = self.validator.validate_integration_process()
+AttributeError: 'OntologyValidator' object has no attribute 'validate_integration_process'
+
+```
+
+#### tests.test_guidance_validation.TestGuidanceValidation.test_validate_test_protocol
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_guidance_validation.py", line 33, in test_validate_test_protocol
+    results = self.validator.validate_test_protocol()
+AttributeError: 'OntologyValidator' object has no attribute 'validate_test_protocol'
 
 ```
 
@@ -744,23 +1281,155 @@ TypeError: update_session_ttl() got an unexpected keyword argument 'session_file
 
 ```
 
-## Test Run - 2025-04-21T03:33:29.173343
+#### tests.test_spore_integration.TestSporeIntegration.test_spore_validation_before_integration
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_spore_integration.py", line 69, in test_spore_validation_before_integration
+    result = self.integrator.integrate_spore(self.test_spore, self.test_model)
+  File "/Users/lou/ontology-framework/src/ontology_framework/spore_integration.py", line 406, in integrate_spore
+    raise ValueError("Spore not compatible with target model")
+ValueError: Spore not compatible with target model
 
-### model_structure_validation
-- Status: FAILED
-- Error: OntologyPatch must have patch_id
-assert False
- +  where False = hasattr(OntologyPatch, 'patch_id')
+```
 
+#### tests.test_mcp_prompt.TestActPhase.test_failed_check_phase
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 157, in setUp
+    self.phase = ActPhase()
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 507, in __init__
+    super().__init__()
+TypeError: PromptPhase.__init__() missing 1 required positional argument: 'name'
 
-## Test Run - 2025-04-21T03:33:29.201117
+```
 
+#### tests.test_mcp_prompt.TestActPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 157, in setUp
+    self.phase = ActPhase()
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 507, in __init__
+    super().__init__()
+TypeError: PromptPhase.__init__() missing 1 required positional argument: 'name'
 
-## Test Session Summary - 2025-04-21T03:33:50.439915
+```
 
-- Total tests: 327
-- Passed: 127
-- Failed: 200
+#### tests.test_mcp_prompt.TestAdjustPhase.test_no_adjustments_needed
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 364, in test_no_adjustments_needed
+    results = self.phase.execute(context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 590, in execute
+    self.validate(context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 179, in validate
+    raise PromptError(
+src.ontology_framework.modules.prompt_base.PromptError: Invalid context type: <class 'dict'>
+
+```
+
+#### tests.test_mcp_prompt.TestAdjustPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 348, in test_successful_execution
+    results = self.phase.execute(self.context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 590, in execute
+    self.validate(context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 179, in validate
+    raise PromptError(
+src.ontology_framework.modules.prompt_base.PromptError: Invalid context type: <class 'dict'>
+
+```
+
+#### tests.test_mcp_prompt.TestDiscoveryPhase.test_invalid_context
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 190, in setUp
+    self.phase = DiscoveryPhase()
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 191, in __init__
+    self.targeter = BFG9KTargeter()
+TypeError: BFG9KTargeter.__init__() missing 1 required positional argument: 'hypercube_analyzer'
+
+```
+
+#### tests.test_mcp_prompt.TestDiscoveryPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 190, in setUp
+    self.phase = DiscoveryPhase()
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 191, in __init__
+    self.targeter = BFG9KTargeter()
+TypeError: BFG9KTargeter.__init__() missing 1 required positional argument: 'hypercube_analyzer'
+
+```
+
+#### tests.test_mcp_prompt.TestDoPhase.test_error_handling
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 117, in test_error_handling
+    results = self.phase.execute(error_context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 355, in execute
+    self.validate(context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 179, in validate
+    raise PromptError(
+src.ontology_framework.modules.prompt_base.PromptError: Invalid context type: <class 'dict'>
+
+```
+
+#### tests.test_mcp_prompt.TestDoPhase.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 107, in test_successful_execution
+    results = self.phase.execute(self.context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 355, in execute
+    self.validate(context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 179, in validate
+    raise PromptError(
+src.ontology_framework.modules.prompt_base.PromptError: Invalid context type: <class 'dict'>
+
+```
+
+#### tests.test_mcp_prompt.TestMCPPrompt.test_error_handling
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 324, in test_error_handling
+    prompt = MCPPrompt(invalid_context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 650, in __init__
+    ActPhase(),
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 507, in __init__
+    super().__init__()
+TypeError: PromptPhase.__init__() missing 1 required positional argument: 'name'
+
+```
+
+#### tests.test_mcp_prompt.TestMCPPrompt.test_successful_execution
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 257, in test_successful_execution
+    prompt = MCPPrompt(self.context)
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 650, in __init__
+    ActPhase(),
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 507, in __init__
+    super().__init__()
+TypeError: PromptPhase.__init__() missing 1 required positional argument: 'name'
+
+```
+
+#### tests.test_mcp_prompt.TestPromptContext.test_valid_context
+```
+Traceback (most recent call last):
+  File "/Users/lou/ontology-framework/tests/test_mcp_prompt.py", line 37, in test_valid_context
+    context.validate()  # Should not raise
+  File "/Users/lou/ontology-framework/src/ontology_framework/modules/mcp_prompt.py", line 96, in validate
+    raise PromptError(
+src.ontology_framework.modules.prompt_base.PromptError: Ontology path does not exist: models/mcp_prompt.ttl
+
+```
+
+## Test Session Summary - 2025-04-29T17:15:51.146219
+
+- Total tests: 14
+- Passed: 2
+- Failed: 12
 - Exit status: 1
 
 ### Test Categories Summary
@@ -769,24 +1438,11 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T03:34:32.718170
+## Test Session Summary - 2025-04-29T17:17:46.506841
 
-- Total tests: 5
-- Passed: 5
-- Failed: 0
-- Exit status: 0
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T03:36:06.792512
-
-- Total tests: 7
-- Passed: 0
-- Failed: 7
+- Total tests: 14
+- Passed: 1
+- Failed: 13
 - Exit status: 1
 
 ### Test Categories Summary
@@ -795,11 +1451,63 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T03:36:45.847180
+## Test Session Summary - 2025-04-29T18:15:34.403408
 
-- Total tests: 7
+- Total tests: 14
+- Passed: 2
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T18:17:28.934895
+
+- Total tests: 14
+- Passed: 2
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T18:20:29.655728
+
+- Total tests: 14
+- Passed: 2
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T18:26:06.327796
+
+- Total tests: 17
+- Passed: 2
+- Failed: 15
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T18:28:26.291489
+
+- Total tests: 17
 - Passed: 3
-- Failed: 4
+- Failed: 14
 - Exit status: 1
 
 ### Test Categories Summary
@@ -808,11 +1516,24 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T03:40:54.242585
+## Test Session Summary - 2025-04-29T18:30:07.823994
 
-- Total tests: 7
+- Total tests: 17
+- Passed: 1
+- Failed: 16
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T18:31:24.134566
+
+- Total tests: 17
 - Passed: 3
-- Failed: 4
+- Failed: 14
 - Exit status: 1
 
 ### Test Categories Summary
@@ -821,279 +1542,7 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T03:41:59.222560
-
-- Total tests: 7
-- Passed: 3
-- Failed: 4
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T03:43:48.758389
-
-- Total tests: 7
-- Passed: 3
-- Failed: 4
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T07:15:36.965299
-
-- Total tests: 7
-- Passed: 0
-- Failed: 7
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T07:17:17.019365
-
-- Total tests: 7
-- Passed: 3
-- Failed: 4
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Run - 2025-04-21T07:38:29.324736
-
-### model_structure_validation
-- Status: FAILED
-- Error: OntologyPatch must have patch_id
-assert False
- +  where False = hasattr(OntologyPatch, 'patch_id')
-
-
-## Test Run - 2025-04-21T07:38:29.355542
-
-
-## Test Session Summary - 2025-04-21T07:39:09.052323
-
-- Total tests: 341
-- Passed: 128
-- Failed: 213
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:33.182347
-
-- Total tests: 0
-- Passed: -1
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:33.182577
-
-- Total tests: 0
-- Passed: -1
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:33.186054
-
-- Total tests: 0
-- Passed: -1
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:33.189133
-
-- Total tests: 0
-- Passed: -1
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:34.924040
-
-- Total tests: 0
-- Passed: -4
-- Failed: 4
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:56.736167
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:56.736167
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:56.739183
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:57.148600
-
-- Total tests: 7
-- Passed: 6
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:13:58.430779
-
-- Total tests: 7
-- Passed: 0
-- Failed: 7
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:15:07.229788
-
-- Total tests: 7
-- Passed: 6
-- Failed: 1
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:15:07.268535
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:15:07.280954
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:15:07.282265
-
-- Total tests: 7
-- Passed: 5
-- Failed: 2
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T08:15:08.569844
-
-- Total tests: 7
-- Passed: 0
-- Failed: 7
-- Exit status: 1
-
-### Test Categories Summary
-- Model Structure Tests: 0 tests
-- SHACL Validation Tests: 0 tests
-- Functional Tests: 0 tests
-
-
-## Test Session Summary - 2025-04-21T10:21:35.730331
+## Test Session Summary - 2025-04-29T18:46:31.419129
 
 - Total tests: 0
 - Passed: -1
@@ -1106,7 +1555,7 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T10:22:36.731485
+## Test Session Summary - 2025-04-29T19:23:43.466240
 
 - Total tests: 0
 - Passed: -1
@@ -1119,12 +1568,12 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T12:30:54.327705
+## Test Session Summary - 2025-04-29T19:26:21.082186
 
 - Total tests: 0
-- Passed: 0
-- Failed: 0
-- Exit status: 4
+- Passed: -1
+- Failed: 1
+- Exit status: 2
 
 ### Test Categories Summary
 - Model Structure Tests: 0 tests
@@ -1132,11 +1581,347 @@ assert False
 - Functional Tests: 0 tests
 
 
-## Test Session Summary - 2025-04-21T12:34:39.584176
+## Test Session Summary - 2025-04-29T19:27:27.494519
+
+- Total tests: 17
+- Passed: 1
+- Failed: 16
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T19:34:43.660759
+
+- Total tests: 17
+- Passed: 1
+- Failed: 16
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T19:36:27.934438
+
+- Total tests: 17
+- Passed: 1
+- Failed: 16
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T19:39:32.263459
+
+- Total tests: 17
+- Passed: 5
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T19:41:30.341739
+
+- Total tests: 17
+- Passed: 5
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-29T19:44:00.629266
+
+- Total tests: 17
+- Passed: 5
+- Failed: 12
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:32:08.136972
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:33:29.226932
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:36:07.955656
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:37:17.132570
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:39:39.333556
+
+- Total tests: 17
+- Passed: 0
+- Failed: 17
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:40:27.809982
+
+- Total tests: 17
+- Passed: 0
+- Failed: 17
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:41:16.033789
+
+- Total tests: 17
+- Passed: 0
+- Failed: 17
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:42:58.221690
+
+- Total tests: 17
+- Passed: 0
+- Failed: 17
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:44:46.195329
+
+- Total tests: 17
+- Passed: 0
+- Failed: 17
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:47:24.332627
+
+- Total tests: 17
+- Passed: 10
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T07:51:34.659983
+
+- Total tests: 17
+- Passed: 11
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Run - 2025-04-30T08:12:48.643824
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-04-30T08:12:48.732632
+
+
+## Test Session Summary - 2025-04-30T08:15:14.678807
+
+- Total tests: 619
+- Passed: 283
+- Failed: 336
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Run - 2025-04-30T08:38:23.106990
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-04-30T08:38:23.170184
+
+
+## Test Session Summary - 2025-04-30T08:40:29.781807
+
+- Total tests: 619
+- Passed: 281
+- Failed: 338
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T08:55:46.728235
+
+- Total tests: 4
+- Passed: 0
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T08:58:16.273578
+
+- Total tests: 4
+- Passed: 1
+- Failed: 3
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T08:59:02.658192
+
+- Total tests: 4
+- Passed: 1
+- Failed: 3
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T09:15:10.171718
 
 - Total tests: 15
-- Passed: 8
-- Failed: 7
+- Passed: 9
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T09:15:57.416449
+
+- Total tests: 15
+- Passed: 9
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T09:17:20.195792
+
+- Total tests: 15
+- Passed: 9
+- Failed: 6
 - Exit status: 1
 
 ### Test Categories Summary

@@ -1,0 +1,63 @@
+{
+  "live_bfg9k_test": {
+    "validation_targets": {
+      "num_targets": 10,
+      "validation_types": [
+        "shacl",
+        "semantic",
+        "pattern"
+      ],
+      "priority_distribution": {
+        "high": 0.3,
+        "medium": 0.5,
+        "low": 0.2
+      }
+    },
+    "validation_rules": {
+      "rule_sets": {
+        "basic": [
+          "shacl_constraints",
+          "semantic_patterns",
+          "validation_rules"
+        ],
+        "advanced": [
+          "bfg9k_patterns",
+          "hypercube_validation",
+          "trajectory_analysis"
+        ],
+        "expert": ["all"]
+      },
+      "priority_levels": ["high", "medium", "low"],
+      "validation_config": {
+        "high": {
+          "shacl_inference": "rdfs",
+          "abort_on_error": false,
+          "timeout": 5.0
+        },
+        "medium": {
+          "shacl_inference": "rdfs",
+          "abort_on_error": false,
+          "timeout": 10.0
+        },
+        "low": {
+          "shacl_inference": "none",
+          "abort_on_error": true,
+          "timeout": 15.0
+        }
+      }
+    },
+    "telemetry_collection": {
+      "metrics": [
+        "validation_time",
+        "rule_application_time",
+        "pattern_matching_time",
+        "shacl_validation_time",
+        "success_rate",
+        "precision",
+        "recall"
+      ],
+      "sampling_rate": 0.1,
+      "storage": "in_memory"
+    }
+  }
+} 

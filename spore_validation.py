@@ -1,0 +1,1 @@
+GUIDANCE_NS = "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#" 

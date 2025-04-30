@@ -1,88 +1,107 @@
 #!/usr/bin/env python3
 """Tests for Python code validator."""
 
-import pytest
+import unittest
 from pathlib import Path
-from ontology_framework.python_validator import PythonValidator
+from rdflib import Graph, URIRef, Literal
+from ontology_framework.validation.python_validator import PythonValidator
 
-@pytest.fixture
-def validator():
-    """Create a validator instance."""
-    return PythonValidator()
-
-@pytest.fixture
-def test_files(tmp_path):
-    """Create test Python files."""
-    # Valid Python file
-    valid_file = tmp_path / "valid.py"
-    valid_file.write_text('''#!/usr/bin/env python3
-"""Valid Python module."""
-
-from typing import List, Optional
-
-class ValidClass:
-    """A valid Python class."""
+class TestPythonValidator(unittest.TestCase):
+    """Test cases for PythonValidator class."""
     
-    def __init__(self, name: str):
-        """Initialize the class.
+    def setUp(self):
+        """Set up test fixtures."""
+        self.validator = PythonValidator()
+        self.test_data_dir = Path(__file__).parent / "test_data"
         
-        Args:
-            name: The name
-        """
-        self.name = name
-    
-    def get_name(self) -> str:
-        """Get the name.
+    def test_validate_good_class(self):
+        """Test validation of a well-formed class."""
+        sample_file = self.test_data_dir / "sample.py"
+        results = self.validator.validate_file(str(sample_file))
         
-        Returns:
-            The name
-        """
-        return self.name
+        # Check Person class validation
+        person_result = next(r for r in results if r["node_name"] == "Person")
+        self.assertTrue(person_result["conforms"], 
+                       f"Person class validation failed: {person_result['results_text']}")
+        
+        # Check Employee class validation
+        employee_result = next(r for r in results if r["node_name"] == "Employee")
+        self.assertTrue(employee_result["conforms"],
+                       f"Employee class validation failed: {employee_result['results_text']}")
+        
+    def test_validate_bad_naming(self):
+        """Test validation of incorrectly named classes and methods."""
+        with open(self.test_data_dir / "bad_naming.py", "w") as f:
+            f.write('''
+class badClass:  # Should start with uppercase
+    """A badly named class."""
+    
+    def BadMethod(self):  # Should be snake_case
+        """A badly named method."""
+        pass
 ''')
-    
-    # Invalid Python file (bad indentation)
-    invalid_indent = tmp_path / "invalid_indent.py"
-    invalid_indent.write_text('''#!/usr/bin/env python3
-"""Invalid Python module."""
-
-class InvalidClass:
-   """Bad indentation."""
-   
-   def __init__(self):
-       pass
+        
+        results = self.validator.validate_file(str(self.test_data_dir / "bad_naming.py"))
+        class_result = next(r for r in results if r["node_name"] == "badClass")
+        self.assertFalse(class_result["conforms"])
+        self.assertIn("^[A-Z]", class_result["results_text"])  # Check for uppercase pattern
+        
+        method_result = next(r for r in results if r["node_name"] == "BadMethod")
+        self.assertFalse(method_result["conforms"])
+        self.assertIn("^[a-z]", method_result["results_text"])  # Check for lowercase pattern
+        
+    def test_validate_missing_docstring(self):
+        """Test validation of missing docstrings."""
+        with open(self.test_data_dir / "missing_docs.py", "w") as f:
+            f.write('''
+class UndocumentedClass:  # Missing docstring
+    def undocumented_method(self):  # Missing docstring
+        pass
 ''')
+        
+        results = self.validator.validate_file(str(self.test_data_dir / "missing_docs.py"))
+        class_result = next(r for r in results if r["node_name"] == "UndocumentedClass")
+        self.assertFalse(class_result["conforms"])
+        self.assertIn("docstring", class_result["results_text"].lower())
+        
+    def test_validate_return_types(self):
+        """Test validation of return type annotations."""
+        with open(self.test_data_dir / "return_types.py", "w") as f:
+            f.write('''
+class TypedClass:
+    """A class with type annotations."""
     
-    # Invalid Python file (missing type hints)
-    invalid_types = tmp_path / "invalid_types.py"
-    invalid_types.write_text('''#!/usr/bin/env python3
-"""Invalid Python module."""
-
-class InvalidClass:
-    """Missing type hints."""
-    
-    def __init__(self, name):
-        self.name = name
-    
-    def get_name(self):
-        return self.name
+    def typed_method(self) -> str:
+        """A method with return type."""
+        return "test"
+        
+    def untyped_method(self):  # Missing return type
+        """A method without return type."""
+        return "test"
 ''')
-    
-    return tmp_path
+        
+        results = self.validator.validate_file(str(self.test_data_dir / "return_types.py"))
+        typed_method = next(r for r in results if r["node_name"] == "typed_method")
+        self.assertTrue(typed_method["conforms"])
+        
+        untyped_method = next(r for r in results if r["node_name"] == "untyped_method")
+        self.assertFalse(untyped_method["conforms"])
+        self.assertIn("returnType", untyped_method["results_text"])
+        
+    def test_validate_inheritance(self):
+        """Test validation of inherited classes."""
+        results = self.validator.validate_file(str(self.test_data_dir / "sample.py"))
+        employee_result = next(r for r in results if r["node_name"] == "Employee")
+        self.assertTrue(employee_result["conforms"],
+                       f"Employee class validation failed: {employee_result['results_text']}")
+        
+    def tearDown(self):
+        """Clean up test files."""
+        test_files = ["bad_naming.py", "missing_docs.py", "return_types.py"]
+        for file in test_files:
+            test_file = self.test_data_dir / file
+            if test_file.exists():
+                test_file.unlink()
 
-def test_validate_valid_file(validator, test_files):
-    """Test validation of a valid Python file."""
-    valid_file = test_files / "valid.py"
-    errors = validator.validate_file(valid_file)
-    assert not errors, f"Unexpected errors: {errors}"
-
-def test_validate_invalid_indentation(validator, test_files):
-    """Test validation of a file with incorrect indentation."""
-    invalid_file = test_files / "invalid_indent.py"
-    errors = validator.validate_file(invalid_file)
-    assert any("indentation" in error.lower() for error in errors)
-
-def test_validate_missing_type_hints(validator, test_files):
-    """Test validation of a file with missing type hints."""
-    invalid_file = test_files / "invalid_types.py"
-    errors = validator.validate_file(invalid_file)
-    assert any("type hints" in error.lower() for error in errors) 
+if __name__ == "__main__":
+    unittest.main() 

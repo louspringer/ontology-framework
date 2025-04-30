@@ -1,0 +1,236 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+# Shape for ValidationRuleType class
+:ValidationRuleTypeShape a sh:NodeShape ;
+    sh:targetClass :ValidationRuleType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path :priority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer
+    ] ;
+    sh:property [
+        sh:path :description ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+# Shape for ValidationRuleType instances
+:ValidationRuleTypeInstanceShape a sh:NodeShape ;
+    sh:targetClass :ValidationRuleType ;
+    sh:in (
+        :RISK
+        :MATRIX
+        :SEMANTIC
+        :SYNTAX
+        :SPORE
+    ) .
+
+# Shape for ErrorType
+:ErrorTypeShape a sh:NodeShape ;
+    sh:targetClass :ErrorType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Shape for ErrorSeverity class
+:ErrorSeverityShape a sh:NodeShape ;
+    sh:targetClass :ErrorSeverity ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path :priority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer
+    ] ;
+    sh:property [
+        sh:path :description ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+# Shape for ErrorSeverity instances
+:ErrorSeverityInstanceShape a sh:NodeShape ;
+    sh:targetClass :ErrorSeverity ;
+    sh:in (
+        :CRITICAL
+        :HIGH
+        :MEDIUM
+        :LOW
+        :INFO
+    ) .
+
+# Shape for RiskLevel
+:RiskLevelShape a sh:NodeShape ;
+    sh:targetClass :RiskLevel ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Shape for SecurityLevel
+:SecurityLevelShape a sh:NodeShape ;
+    sh:targetClass :SecurityLevel ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Shape for ComplianceLevel class
+:ComplianceLevelShape a sh:NodeShape ;
+    sh:targetClass :ComplianceLevel ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path :priority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer
+    ] ;
+    sh:property [
+        sh:path :description ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+# Shape for ComplianceLevel instances
+:ComplianceLevelInstanceShape a sh:NodeShape ;
+    sh:targetClass :ComplianceLevel ;
+    sh:in (
+        :NOT_STARTED
+        :PARTIAL
+        :SUBSTANTIAL
+        :FULL
+    ) .
+
+# Instance shapes for ValidationRuleType
+:ValidationRuleTypeInstancesShape a sh:NodeShape ;
+    sh:targetClass :ValidationRuleType ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue :ValidationRuleType ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] .
+
+# Instance shapes for ErrorSeverity
+:ErrorSeverityInstancesShape a sh:NodeShape ;
+    sh:targetClass :ErrorSeverity ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue :ErrorSeverity ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] .
+
+# Instance shapes for ComplianceLevel
+:ComplianceLevelInstancesShape a sh:NodeShape ;
+    sh:targetClass :ComplianceLevel ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue :ComplianceLevel ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:languageIn ("en") ;
+    ] . 

@@ -7,10 +7,13 @@ from typing import List, Dict, Any, Optional, Set, Union, Callable
 from datetime import datetime
 from .ontology_types import (
     ErrorType, ErrorSeverity, ErrorStep, ValidationRule, 
-    SecurityLevel, ComplianceLevel, RiskLevel, PerformanceMetric
+    SecurityLevel, ComplianceLevel, RiskLevel, PerformanceMetric,
+    ValidationRuleType, ErrorResult
 )
+from .error import Error
 import time
 from collections import Counter
+import re
 
 class ErrorHandler:
     """Class for handling and tracking errors in the ontology framework."""
@@ -26,10 +29,10 @@ class ErrorHandler:
         ErrorType.CPU: ErrorType.RUNTIME,
         ErrorType.DISK: ErrorType.RUNTIME,
         ErrorType.API: ErrorType.RUNTIME,
-        ErrorType.AUTHENTICATION: ErrorType.SECURITY,
-        ErrorType.AUTHORIZATION: ErrorType.SECURITY,
-        ErrorType.COMPLIANCE: ErrorType.SECURITY,
-        ErrorType.SECURITY: ErrorType.RUNTIME,
+        ErrorType.AUTHENTICATION: ErrorType.MATRIX,
+        ErrorType.AUTHORIZATION: ErrorType.MATRIX,
+        ErrorType.COMPLIANCE: ErrorType.MATRIX,
+        ErrorType.MATRIX: ErrorType.RUNTIME,
         ErrorType.PERFORMANCE: ErrorType.RUNTIME,
         ErrorType.SCALABILITY: ErrorType.RUNTIME,
         ErrorType.AVAILABILITY: ErrorType.RUNTIME,
@@ -42,30 +45,30 @@ class ErrorHandler:
     STEP_ORDER = {
         ErrorStep.IDENTIFICATION: 1,
         ErrorStep.ANALYSIS: 2,
-        ErrorStep.RECOVERY: 3,
+        ErrorStep.VALIDATION: 3,
         ErrorStep.PREVENTION: 4,
-        ErrorStep.MONITORING: 5,
-        ErrorStep.REPORTING: 6,
-        ErrorStep.DOCUMENTATION: 7,
-        ErrorStep.REVIEW: 8,
-        ErrorStep.CLOSURE: 9
+        ErrorStep.RECOVERY: 5,
+        ErrorStep.MONITORING: 6,
+        ErrorStep.REPORTING: 7,
+        ErrorStep.DOCUMENTATION: 8,
+        ErrorStep.REVIEW: 9,
+        ErrorStep.CLOSURE: 10
     }
 
     def __init__(self) -> None:
         """Initialize the error handler."""
-        self.errors: List[Dict[str, Any]] = []
+        self.errors: List[Error] = []
         self.logger = logging.getLogger(__name__)
         self.validation_rules: Dict[ValidationRule, Callable[[Any], bool]] = {
             ValidationRule.SENSITIVE_DATA: self._validate_sensitive_data,
-            ValidationRule.RISK: self._validate_risk,
-            ValidationRule.MATRIX: self._validate_matrix,
+            ValidationRule.RISK: self.validate_risk,
+            ValidationRule.MATRIX: self.validate_matrix,
             ValidationRule.COMPLIANCE: self._validate_compliance,
-            ValidationRule.SECURITY: self._validate_security,
-            ValidationRule.PERFORMANCE: self._validate_performance,
+            ValidationRule.PERFORMANCE: self.validate_performance,
             ValidationRule.RELIABILITY: self._validate_reliability,
             ValidationRule.AVAILABILITY: self._validate_availability,
-            ValidationRule.SCALABILITY: self._validate_scalability,
-            ValidationRule.MAINTAINABILITY: self._validate_maintainability,
+            ValidationRule.SCALABILITY: self.validate_scalability,
+            ValidationRule.MAINTAINABILITY: self.validate_maintainability,
             ValidationRule.SEVERITY: self._validate_severity,
             ValidationRule.STEP_ORDER: self._validate_step_order
         }
@@ -143,84 +146,12 @@ class ErrorHandler:
             "false_negative": 0
         }
 
-    def add_error(self, error_type: ErrorType, message: str, severity: ErrorSeverity, 
-                 step: Optional[ErrorStep] = None, risk_level: Optional[RiskLevel] = None,
-                 security_level: Optional[SecurityLevel] = None) -> bool:
-        """Add an error to the error handler."""
-        start_time = time.time()
-        
-        error: Dict[str, Any] = {
-            "type": error_type,
-            "parent_type": self.ERROR_HIERARCHY.get(error_type),
-            "message": message,
-            "severity": severity,
-            "timestamp": datetime.now().isoformat(),
-            "step": step or self.current_step,
-            "risk_level": risk_level or RiskLevel.HIGH if severity == ErrorSeverity.CRITICAL else RiskLevel.MEDIUM,
-            "security_level": security_level or SecurityLevel.MEDIUM,
-            "prevention_measures": [],
-            "recovery_strategies": [],
-        }
-        
-        # Validate error
-        if not self.validate(ValidationRule.SEVERITY, severity):
-            self.logger.error(f"Invalid error severity: {severity}")
-            return False
-            
-        if not self.validate(ValidationRule.STEP_ORDER, step):
-            self.logger.error(f"Invalid step order: {step}")
-            return False
-            
-        if not self.validate(ValidationRule.SECURITY, security_level):
-            self.logger.error(f"Invalid security level: {security_level}")
-            return False
-            
-        if not self.validate(ValidationRule.PERFORMANCE, error):
-            self.logger.error(f"Performance validation failed")
-            return False
-            
-        if not self.validate(ValidationRule.RELIABILITY, error):
-            self.logger.error(f"Reliability validation failed")
-            return False
-            
-        if not self.validate(ValidationRule.AVAILABILITY, error):
-            self.logger.error(f"Availability validation failed")
-            return False
-            
-        if not self.validate(ValidationRule.SCALABILITY, error):
-            self.logger.error(f"Scalability validation failed")
-            return False
-            
-        if not self.validate(ValidationRule.MAINTAINABILITY, error):
-            self.logger.error(f"Maintainability validation failed")
-            return False
-            
+    def add_error(self, error: Error) -> None:
+        """Add an error to the handler."""
+        if not isinstance(error, Error):
+            raise ValueError("Error must be an instance of Error class")
         self.errors.append(error)
-        
-        # Update metrics
-        self.metrics["ErrorCount"]["current"] += 1
-        detection_time = time.time() - start_time
-        self.metrics["ErrorDetectionTime"]["current"] = max(self.metrics["ErrorDetectionTime"]["current"], detection_time)
-        self.metrics["LoggingLatency"]["current"] = max(self.metrics["LoggingLatency"]["current"], detection_time)
-        
-        # Update error matrix
-        if error_type in [ErrorType.VALIDATION, ErrorType.RUNTIME]:
-            self.error_matrix["true_positive"] += 1
-        else:
-            self.error_matrix["false_positive"] += 1
-
-        # Calculate derived metrics
-        total_errors = self.error_matrix["true_positive"] + self.error_matrix["false_positive"]
-        if total_errors > 0:
-            self.metrics["DetectionRate"]["current"] = self.error_matrix["true_positive"] / total_errors
-            self.metrics["FalsePositiveRate"]["current"] = self.error_matrix["false_positive"] / total_errors
-            self.metrics["ClassificationAccuracy"]["current"] = (
-                self.error_matrix["true_positive"] + self.error_matrix["true_negative"]
-            ) / total_errors
-
-        # Log error
-        self.logger.info(f"Error added: {message} [Type: {error_type.value}, Severity: {severity.value}]")
-        return True
+        self.logger.debug(f"Added error: {error}")
 
     def add_prevention_measure(self, measure: str) -> None:
         """Add a prevention measure."""
@@ -238,19 +169,20 @@ class ErrorHandler:
         """Get all recovery strategies."""
         return {strategy for strategy, active in self.recovery_strategies.items() if active}
 
-    def get_errors(self) -> List[Dict[str, Any]]:
+    def get_errors(self) -> List[Error]:
         """Get all errors."""
         return self.errors
 
     def clear_errors(self) -> None:
-        """Clear all errors."""
-        self.errors = []
+        """Clear all errors from the handler."""
+        self.errors.clear()
+        self.logger.debug("Cleared all errors")
 
     def has_errors(self) -> bool:
         """Check if there are any errors."""
         return len(self.errors) > 0
 
-    def get_errors_by_severity(self, severity: ErrorSeverity) -> List[Dict[str, Any]]:
+    def get_errors_by_severity(self, severity: ErrorSeverity) -> List[Error]:
         """
         Get errors filtered by severity.
         
@@ -260,7 +192,7 @@ class ErrorHandler:
         Returns:
             List of errors with the specified severity
         """
-        return [error for error in self.errors if error["severity"] == severity]
+        return [error for error in self.errors if error.severity == severity]
 
     def validate(self, rule: ValidationRule, data: Any) -> bool:
         """
@@ -274,35 +206,245 @@ class ErrorHandler:
             True if validation passes, False otherwise
         """
         if rule not in self.validation_rules:
-            self.add_error(
-                ErrorType.VALIDATION,
-                f"Unknown validation rule: {rule}",
-                ErrorSeverity.CRITICAL
+            error = Error(
+                error_type=ErrorType.VALIDATION,
+                message=f"Unknown validation rule: {rule}",
+                severity=ErrorSeverity.CRITICAL,
+                step=ErrorStep.VALIDATION
             )
+            self.add_error(error)
             return False
         return bool(self.validation_rules[rule](data))
 
-    def _validate_matrix(self, data: Any) -> bool:
-        """Validate matrix data."""
-        return isinstance(data, dict) and "matrix" in data and isinstance(data["matrix"], list)
+    def validate_risk(self, data: Any) -> bool:
+        """
+        Validate risk data.
+        
+        Args:
+            data: Data to validate
+            
+        Returns:
+            True if validation passes, False otherwise
+        """
+        try:
+            if not isinstance(data, dict):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Risk data must be a dictionary",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
 
-    def _validate_risk(self, data: Any) -> bool:
-        """Validate risk data."""
-        return isinstance(data, dict) and "risk_level" in data and isinstance(data["risk_level"], RiskLevel)
+            if "risk_level" not in data:
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Risk data must contain 'risk_level' key",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            risk_level = data["risk_level"]
+            if not isinstance(risk_level, RiskLevel):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Risk level must be a RiskLevel enum value",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            return True
+        except Exception as e:
+            error = Error(
+                error_type=ErrorType.VALIDATION,
+                message=f"Risk validation failed: {str(e)}",
+                severity=ErrorSeverity.HIGH,
+                step=ErrorStep.VALIDATION
+            )
+            self.add_error(error)
+            return False
+
+    def validate_matrix(self, data: Any) -> bool:
+        """
+        Validate matrix data.
+        
+        Args:
+            data: Data to validate
+            
+        Returns:
+            True if validation passes, False otherwise
+        """
+        try:
+            if not isinstance(data, dict):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Matrix data must be a dictionary",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if "matrix" not in data:
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Matrix data must contain 'matrix' key",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            matrix = data["matrix"]
+            if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Matrix must be a list of lists",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            return True
+        except Exception as e:
+            error = Error(
+                error_type=ErrorType.VALIDATION,
+                message=f"Matrix validation failed: {str(e)}",
+                severity=ErrorSeverity.HIGH,
+                step=ErrorStep.VALIDATION
+            )
+            self.add_error(error)
+            return False
 
     def _validate_sensitive_data(self, data: Any) -> bool:
-        """Validate sensitive data."""
-        return isinstance(data, dict) and "sensitive" in data and isinstance(data["sensitive"], bool)
+        """
+        Validate sensitive data.
+        
+        Args:
+            data: Data to validate
+            
+        Returns:
+            True if validation passes, False otherwise
+        """
+        try:
+            if not isinstance(data, dict):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Sensitive data must be a dictionary",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if "encrypted" not in data or "access_control" not in data:
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Sensitive data must contain 'encrypted' and 'access_control' keys",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if not isinstance(data["encrypted"], bool):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="'encrypted' field must be a boolean",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if not isinstance(data["access_control"], SecurityLevel):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="'access_control' field must be a SecurityLevel enum value",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            return True
+        except Exception as e:
+            error = Error(
+                error_type=ErrorType.VALIDATION,
+                message=f"Sensitive data validation failed: {str(e)}",
+                severity=ErrorSeverity.HIGH,
+                step=ErrorStep.VALIDATION
+            )
+            self.add_error(error)
+            return False
 
     def _validate_compliance(self, data: Any) -> bool:
-        """Validate compliance data."""
-        if not isinstance(data, dict):
+        """
+        Validate compliance data.
+        
+        Args:
+            data: Data to validate
+            
+        Returns:
+            True if validation passes, False otherwise
+        """
+        try:
+            if not isinstance(data, dict):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Compliance data must be a dictionary",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if "standard" not in data or "compliance_level" not in data:
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="Compliance data must contain 'standard' and 'compliance_level' keys",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if not isinstance(data["standard"], str):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="'standard' field must be a string",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            if not isinstance(data["compliance_level"], ComplianceLevel):
+                error = Error(
+                    error_type=ErrorType.VALIDATION,
+                    message="'compliance_level' field must be a ComplianceLevel enum value",
+                    severity=ErrorSeverity.HIGH,
+                    step=ErrorStep.VALIDATION
+                )
+                self.add_error(error)
+                return False
+
+            return True
+        except Exception as e:
+            error = Error(
+                error_type=ErrorType.VALIDATION,
+                message=f"Compliance validation failed: {str(e)}",
+                severity=ErrorSeverity.HIGH,
+                step=ErrorStep.VALIDATION
+            )
+            self.add_error(error)
             return False
-        if "standard" not in data or "requirement" not in data or "status" not in data:
-            return False
-        return (data["standard"] in self.compliance and 
-                data["requirement"] in self.compliance[data["standard"]]["requirements"] and 
-                isinstance(data["status"], bool))
 
     def _validate_severity(self, severity: ErrorSeverity) -> bool:
         """Validate error severity."""
@@ -312,47 +454,193 @@ class ErrorHandler:
         """Validate step order."""
         return isinstance(step, ErrorStep)
 
-    def _validate_security(self, security_level: SecurityLevel) -> bool:
-        """Validate security level."""
-        return isinstance(security_level, SecurityLevel)
+    def validate_performance(self, data: Any) -> bool:
+        """Validate performance data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "metrics"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate metrics
+            metrics = data["metrics"]
+            if not isinstance(metrics, dict):
+                return False
+                
+            # Check for required metrics
+            required_metrics = ["response_time", "throughput", "error_rate"]
+            if not all(metric in metrics for metric in required_metrics):
+                return False
+                
+            # Validate metric values
+            for metric in required_metrics:
+                if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
+                    return False
+                    
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Performance validation failed: {str(e)}")
+            return False
 
-    def _validate_performance(self, error: Dict[str, Any]) -> bool:
-        """Validate performance metrics."""
-        return isinstance(error, dict) and "type" in error and isinstance(error["type"], ErrorType)
+    def _validate_reliability(self, data: Any) -> bool:
+        """Validate reliability data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "reliability_metrics"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate reliability metrics
+            metrics = data["reliability_metrics"]
+            if not isinstance(metrics, dict):
+                return False
+                
+            # Check for required metrics
+            required_metrics = ["mtbf", "mttr", "availability"]
+            if not all(metric in metrics for metric in required_metrics):
+                return False
+                
+            # Validate metric values
+            for metric in required_metrics:
+                if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
+                    return False
+                    
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Reliability validation failed: {str(e)}")
+            return False
 
-    def _validate_reliability(self, error: Dict[str, Any]) -> bool:
-        """Validate reliability metrics."""
-        return isinstance(error, dict) and "type" in error and isinstance(error["type"], ErrorType)
+    def _validate_availability(self, data: Any) -> bool:
+        """Validate availability data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "availability_metrics"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate availability metrics
+            metrics = data["availability_metrics"]
+            if not isinstance(metrics, dict):
+                return False
+                
+            # Check for required metrics
+            required_metrics = ["uptime", "downtime", "availability_percentage"]
+            if not all(metric in metrics for metric in required_metrics):
+                return False
+                
+            # Validate metric values
+            for metric in required_metrics:
+                if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
+                    return False
+                    
+            # Validate availability percentage
+            if not 0 <= metrics["availability_percentage"] <= 100:
+                return False
+                
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Availability validation failed: {str(e)}")
+            return False
 
-    def _validate_availability(self, error: Dict[str, Any]) -> bool:
-        """Validate availability metrics."""
-        return isinstance(error, dict) and "type" in error and isinstance(error["type"], ErrorType)
+    def validate_scalability(self, data: Any) -> bool:
+        """Validate scalability data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "scalability_metrics"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate scalability metrics
+            metrics = data["scalability_metrics"]
+            if not isinstance(metrics, dict):
+                return False
+                
+            # Check for required metrics
+            required_metrics = ["throughput", "latency", "resource_utilization"]
+            if not all(metric in metrics for metric in required_metrics):
+                return False
+                
+            # Validate metric values
+            for metric in required_metrics:
+                if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
+                    return False
+                    
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Scalability validation failed: {str(e)}")
+            return False
 
-    def _validate_scalability(self, error: Dict[str, Any]) -> bool:
-        """Validate scalability metrics."""
-        return isinstance(error, dict) and "type" in error and isinstance(error["type"], ErrorType)
-
-    def _validate_maintainability(self, error: Dict[str, Any]) -> bool:
-        """Validate maintainability metrics."""
-        return isinstance(error, dict) and "type" in error and isinstance(error["type"], ErrorType)
+    def validate_maintainability(self, data: Any) -> bool:
+        """Validate maintainability data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "maintainability_metrics"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate maintainability metrics
+            metrics = data["maintainability_metrics"]
+            if not isinstance(metrics, dict):
+                return False
+                
+            # Check for required metrics
+            required_metrics = ["complexity", "test_coverage", "documentation_score"]
+            if not all(metric in metrics for metric in required_metrics):
+                return False
+                
+            # Validate metric values
+            for metric in required_metrics:
+                if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
+                    return False
+                    
+            # Validate score ranges
+            if not 0 <= metrics["test_coverage"] <= 100:
+                return False
+            if not 0 <= metrics["documentation_score"] <= 100:
+                return False
+                
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Maintainability validation failed: {str(e)}")
+            return False
 
     def get_current_step(self) -> ErrorStep:
         """Get the current error handling step."""
         return self.current_step
 
     def set_current_step(self, step: ErrorStep) -> None:
-        """
-        Set the current error handling step.
+        """Set the current error handling step."""
+        if step not in self.STEP_ORDER:
+            raise ValueError(f"Invalid step: {step}")
         
-        Args:
-            step: New error handling step
-        """
-        if step in self.STEP_ORDER:
-            current_order = self.STEP_ORDER[self.current_step]
-            new_order = self.STEP_ORDER[step]
-            if new_order < current_order:
-                self.logger.warning(f"Moving back in error handling steps: {self.current_step} -> {step}")
+        current_order = self.STEP_ORDER[self.current_step]
+        new_order = self.STEP_ORDER[step]
+        
+        if new_order < current_order:
+            self.logger.warning(f"Moving back in error handling steps: {self.current_step} -> {step}")
+        
         self.current_step = step
+        self.logger.debug(f"Current step set to: {step}")
 
     def get_error_types(self) -> Dict[ErrorType, str]:
         """Get all error types."""
@@ -362,14 +650,10 @@ class ErrorHandler:
         """Get all validation rules."""
         return list(self.validation_rules.keys())
 
-    def update_compliance(self, standard: str, requirement: str, status: bool) -> None:
-        """Update compliance status for a specific requirement."""
-        if standard in self.compliance and requirement in self.compliance[standard]["requirements"]:
-            self.compliance[standard]["requirements"][requirement] = status
-            self._update_compliance_level(standard)
-            self.logger.info(f"Updated {standard} {requirement} compliance to {status}")
-        else:
-            self.logger.error(f"Unknown compliance standard or requirement: {standard}.{requirement}")
+    def update_compliance(self, standard: str, status: str) -> None:
+        """Update compliance status for a standard."""
+        self.compliance[standard] = status
+        self.logger.debug(f"Updated compliance for {standard} to {status}")
 
     def _update_compliance_level(self, standard: str) -> None:
         """Update overall compliance level based on requirements status."""
@@ -382,45 +666,98 @@ class ErrorHandler:
             else:
                 self.compliance[standard]["level"] = ComplianceLevel.NOT_STARTED
 
-    def get_compliance_report(self) -> Dict[str, Dict[str, Any]]:
-        """Get detailed compliance report."""
-        report: Dict[str, Dict[str, Any]] = {}
-        for standard, data in self.compliance.items():
-            report[standard] = {
-                "level": data["level"],
-                "requirements": data["requirements"],
-                "status": "COMPLIANT" if data["level"] == ComplianceLevel.FULL else "NON_COMPLIANT"
-            }
-        return report
+    def get_compliance_report(self) -> Dict[str, str]:
+        """Get a report of compliance status for each standard."""
+        return {standard: level for standard, level in self.compliance.items()}
 
-    def check_compliance(self, standard: str) -> bool:
-        """Check if a specific standard is fully compliant."""
-        return (standard in self.compliance and 
-                self.compliance[standard]["level"] == ComplianceLevel.FULL)
+    def check_compliance(self, standard: str, level: str) -> bool:
+        """
+        Check if a specific standard is at the specified compliance level.
+        
+        Args:
+            standard: The compliance standard to check
+            level: The expected compliance level
+            
+        Returns:
+            True if the standard is at the specified level, False otherwise
+        """
+        if standard not in self.compliance:
+            return False
+        return self.compliance[standard] == level
 
-    def get_metrics_report(self) -> Dict[str, Dict[str, Any]]:
-        """Get current metrics with thresholds."""
-        report = {}
-        for metric, data in self.metrics.items():
-            status = "OK" if data["current"] <= data["threshold"] else "WARNING"
-            report[metric] = {
-                "current": data["current"],
-                "threshold": data["threshold"],
-                "status": status
-            }
-        return report
-
-    def check_metrics_thresholds(self) -> bool:
-        """Check if all metrics are within thresholds."""
-        return all(data["current"] <= data["threshold"] for data in self.metrics.values())
-
-    def get_error_summary(self) -> Dict[str, Any]:
-        """Get summary of error handling state."""
+    def get_metrics_report(self) -> Dict[str, Dict[str, float]]:
+        """Get a report of current metrics and their thresholds."""
         return {
+            metric: {
+                "current": value,
+                "threshold": self.metrics[metric]
+            }
+            for metric, value in self.metrics.items()
+        }
+
+    def check_metrics_thresholds(self, metrics: Dict[str, float], thresholds: Dict[str, float]) -> bool:
+        """
+        Check if metrics are within specified thresholds.
+        
+        Args:
+            metrics: Dictionary of metric names and their values
+            thresholds: Dictionary of metric names and their threshold values
+            
+        Returns:
+            bool: True if all metrics are within thresholds, False otherwise
+        """
+        for metric_name, value in metrics.items():
+            if metric_name not in thresholds:
+                self.logger.warning(f"No threshold defined for metric: {metric_name}")
+                continue
+                
+            if value > thresholds[metric_name]:
+                return False
+                
+        return True
+
+    def get_error_summary(self) -> Dict[str, Union[int, Dict[str, int]]]:
+        """Get a summary of error counts by severity and type."""
+        error_types_count = {}
+        severity_levels = {
+            "high": len([e for e in self.errors if e.severity == ErrorSeverity.HIGH]),
+            "medium": len([e for e in self.errors if e.severity == ErrorSeverity.MEDIUM]),
+            "low": len([e for e in self.errors if e.severity == ErrorSeverity.LOW])
+        }
+        
+        for error in self.errors:
+            error_type = error.error_type.value.lower()
+            error_types_count[error_type] = error_types_count.get(error_type, 0) + 1
+
+        summary = {
             "total_errors": len(self.errors),
-            "errors_by_type": Counter(error["type"] for error in self.errors),
-            "errors_by_severity": Counter(error["severity"] for error in self.errors),
-            "current_step": self.current_step.value,
-            "metrics_report": self.get_metrics_report(),
-            "compliance_report": self.get_compliance_report()
-        } 
+            "error_types": error_types_count,
+            "severity_levels": severity_levels
+        }
+        return summary
+
+    def validate_security(self, data: Any) -> bool:
+        """Validate security data."""
+        try:
+            if not isinstance(data, dict):
+                return False
+                
+            # Check for required fields
+            required_fields = ["type", "severity", "message", "security_level"]
+            if not all(field in data for field in required_fields):
+                return False
+                
+            # Validate security level
+            if not isinstance(data["security_level"], str):
+                return False
+                
+            # Check for valid security levels
+            valid_levels = ["low", "medium", "high", "critical"]
+            if data["security_level"].lower() not in valid_levels:
+                return False
+                
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Security validation failed: {str(e)}")
+            return False 

@@ -1,0 +1,465 @@
+Validation Report
+Conforms: False
+Results (76):
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:targetClass
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:targetClass->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: dc:version
+	Result Path: rdfs:domain
+	Message: Less than 1 values on dc:version->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: rdfs:domain
+	Result Path: rdfs:domain
+	Message: Less than 1 values on rdfs:domain->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: core:sourceContext
+	Result Path: rdfs:domain
+	Message: Less than 1 values on core:sourceContext->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: core:complexity
+	Result Path: rdfs:domain
+	Message: Less than 1 values on core:complexity->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: core:targetContext
+	Result Path: rdfs:domain
+	Message: Less than 1 values on core:targetContext->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:pattern
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:pattern->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: dc:title
+	Result Path: rdfs:domain
+	Message: Less than 1 values on dc:title->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:path
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:path->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: owl:imports
+	Result Path: rdfs:domain
+	Message: Less than 1 values on owl:imports->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:datatype
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:datatype->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: rdf:type
+	Result Path: rdfs:domain
+	Message: Less than 1 values on rdf:type->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:property
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:property->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:minCount
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:minCount->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: dct:modified
+	Result Path: rdfs:domain
+	Message: Less than 1 values on dct:modified->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: sh:message
+	Result Path: rdfs:domain
+	Message: Less than 1 values on sh:message->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: rdfs:range
+	Result Path: rdfs:domain
+	Message: Less than 1 values on rdfs:range->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: rdfs:subClassOf
+	Result Path: rdfs:domain
+	Message: Less than 1 values on rdfs:subClassOf->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: dct:created
+	Result Path: rdfs:domain
+	Message: Less than 1 values on dct:created->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:domain ]
+	Focus Node: rdfs:subPropertyOf
+	Result Path: rdfs:domain
+	Message: Less than 1 values on rdfs:subPropertyOf->rdfs:domain
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:targetClass
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:targetClass->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: dc:version
+	Result Path: rdfs:range
+	Message: Less than 1 values on dc:version->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: rdfs:domain
+	Result Path: rdfs:range
+	Message: Less than 1 values on rdfs:domain->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: core:sourceContext
+	Result Path: rdfs:range
+	Message: Less than 1 values on core:sourceContext->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: core:complexity
+	Result Path: rdfs:range
+	Message: Less than 1 values on core:complexity->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: core:targetContext
+	Result Path: rdfs:range
+	Message: Less than 1 values on core:targetContext->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:pattern
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:pattern->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: dc:title
+	Result Path: rdfs:range
+	Message: Less than 1 values on dc:title->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:path
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:path->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: owl:imports
+	Result Path: rdfs:range
+	Message: Less than 1 values on owl:imports->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:datatype
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:datatype->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: rdf:type
+	Result Path: rdfs:range
+	Message: Less than 1 values on rdf:type->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:property
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:property->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:minCount
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:minCount->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: dct:modified
+	Result Path: rdfs:range
+	Message: Less than 1 values on dct:modified->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: sh:message
+	Result Path: rdfs:range
+	Message: Less than 1 values on sh:message->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: rdfs:range
+	Result Path: rdfs:range
+	Message: Less than 1 values on rdfs:range->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: rdfs:subClassOf
+	Result Path: rdfs:range
+	Message: Less than 1 values on rdfs:subClassOf->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: dct:created
+	Result Path: rdfs:range
+	Message: Less than 1 values on dct:created->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:range ]
+	Focus Node: rdfs:subPropertyOf
+	Result Path: rdfs:range
+	Message: Less than 1 values on rdfs:subPropertyOf->rdfs:range
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :exampleAddOperation2
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :examplePatchOperation2
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :exampleRemoveOperation2
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :examplePatchOperation1
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :exampleAddOperation1
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :exampleRemoveOperation1
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have a target SPORE") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasTargetSpore ]
+	Focus Node: :exampleOperation
+	Result Path: :hasTargetSpore
+	Message: Patch must have a target SPORE
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :exampleAddOperation2
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :examplePatchOperation2
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :exampleRemoveOperation2
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :examplePatchOperation1
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :exampleAddOperation1
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :exampleRemoveOperation1
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:dateTime ; sh:message Literal("Patch must have a creation timestamp") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :createdAt ]
+	Focus Node: :exampleOperation
+	Result Path: :createdAt
+	Message: Patch must have a creation timestamp
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :exampleAddOperation2
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :examplePatchOperation2
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :exampleRemoveOperation2
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :examplePatchOperation1
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :exampleAddOperation1
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :exampleRemoveOperation1
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Patch must have at least one operation") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path :hasOperation ]
+	Focus Node: :exampleOperation
+	Result Path: :hasOperation
+	Message: Patch must have at least one operation
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a label") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:label ]
+	Focus Node: :exampleOperation
+	Result Path: rdfs:label
+	Message: Patch must have a label
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a comment") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path rdfs:comment ]
+	Focus Node: :exampleOperation
+	Result Path: rdfs:comment
+	Message: Patch must have a comment
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :exampleAddOperation2
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :examplePatchOperation2
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :exampleRemoveOperation2
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :examplePatchOperation1
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :exampleAddOperation1
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :exampleRemoveOperation1
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:datatype xsd:string ; sh:message Literal("Patch must have a semantic version number") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path owl:versionInfo ; sh:pattern Literal("^[0-9]+\.[0-9]+\.[0-9]+$") ]
+	Focus Node: :exampleOperation
+	Result Path: owl:versionInfo
+	Message: Patch must have a semantic version number
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Subject must use relative URI") ; sh:path :hasSubject ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation1
+	Value Node: :exampleThing1
+	Result Path: :hasSubject
+	Message: Subject must use relative URI
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Subject must use relative URI") ; sh:path :hasSubject ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation2
+	Value Node: :exampleThing2
+	Result Path: :hasSubject
+	Message: Subject must use relative URI
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Predicate must use relative URI") ; sh:path :hasPredicate ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation2
+	Value Node: :exampleThing2
+	Result Path: :hasPredicate
+	Message: Predicate must use relative URI
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Predicate must use relative URI") ; sh:path :hasPredicate ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation1
+	Value Node: :exampleThing1
+	Result Path: :hasPredicate
+	Message: Predicate must use relative URI
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Object must use relative URI") ; sh:path :hasObject ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation2
+	Value Node: :exampleThing2
+	Result Path: :hasObject
+	Message: Object must use relative URI
+Constraint Violation in PatternConstraintComponent (http://www.w3.org/ns/shacl#PatternConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:message Literal("Object must use relative URI") ; sh:path :hasObject ; sh:pattern Literal("^[^/]+$") ]
+	Focus Node: :examplePatchOperation1
+	Value Node: :exampleThing1
+	Result Path: :hasObject
+	Message: Object must use relative URI

@@ -45,12 +45,16 @@ from .modules import (
 )
 from .deployment_modeler import DeploymentModeler
 
+# Expose the CLI main function
+from .cli import cli as main
+
 __all__ = [
     'MetaOntology',
     'OntologyPatch',
     'PatchType',
     'PatchStatus',
     'MetaMetaOntology',
+    'OntologyManager',
     'OntologyFrameworkError',
     'ValidationError',
     'ConformanceError',
@@ -82,5 +86,6 @@ __all__ = [
     'OntologyAnalyzer',
     'TestSetupManager',
     'PackageManager',
-    'DeploymentModeler'
+    'DeploymentModeler',
+    'main'
 ] 

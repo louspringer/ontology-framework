@@ -239,4 +239,119 @@ class MCPValidator:
             self.logger.warning(f"Invalid timeout value: {server_config['timeout']}")
             return False
             
+        return True
+    
+    def validate_bfg9k(self, context: Dict[str, Any]) -> bool:
+        """Validate using BFG9K pattern.
+        
+        Args:
+            context: Dictionary containing prompt context
+            
+        Returns:
+            True if validation passes, False otherwise
+        """
+        if "BFG9K" not in self.validation_rules.get("guidance", {}):
+            return True
+            
+        bfg9k_rules = self.validation_rules["guidance"]["BFG9K"]["rules"]
+        validation_results = []
+        
+        # Check semantic first approach
+        if bfg9k_rules["semanticFirst"]["enabled"]:
+            if not self._validate_semantic_first(context):
+                validation_results.append((
+                    "semanticFirst",
+                    bfg9k_rules["semanticFirst"]["message"]
+                ))
+        
+        # Check validation approach
+        if bfg9k_rules["validationApproach"]["enabled"]:
+            if not self._validate_shacl_approach(context):
+                validation_results.append((
+                    "validationApproach",
+                    bfg9k_rules["validationApproach"]["message"]
+                ))
+        
+        # Check ontology context
+        if bfg9k_rules["ontologyContext"]["enabled"]:
+            if not self._validate_ontology_context(context):
+                validation_results.append((
+                    "ontologyContext",
+                    bfg9k_rules["ontologyContext"]["message"]
+                ))
+        
+        if validation_results:
+            for rule, message in validation_results:
+                self.logger.warning(f"BFG9K validation failed for {rule}: {message}")
+            return False
+            
+        return True
+        
+    def _validate_semantic_first(self, context: Dict[str, Any]) -> bool:
+        """Validate semantic first approach."""
+        # Check if semantic tools are used before text operations
+        if "ontology_path" not in context:
+            return False
+            
+        ontology_path = Path(context["ontology_path"])
+        if not ontology_path.exists():
+            return False
+            
+        # Load ontology into graph
+        try:
+            graph = Graph()
+            graph.parse(str(ontology_path), format="turtle")
+            return True
+        except Exception as e:
+            self.logger.error(f"Failed to load ontology: {str(e)}")
+            return False
+            
+    def _validate_shacl_approach(self, context: Dict[str, Any]) -> bool:
+        """Validate SHACL validation approach."""
+        if "target_files" not in context:
+            return False
+            
+        for target_file in context["target_files"]:
+            if not Path(target_file).exists():
+                return False
+                
+            # Check for SHACL shapes
+            try:
+                graph = Graph()
+                graph.parse(str(target_file), format="turtle")
+                shapes = list(graph.triples((None, RDF.type, SH.NodeShape)))
+                if not shapes:
+                    return False
+            except Exception as e:
+                self.logger.error(f"Failed to validate SHACL: {str(e)}")
+                return False
+                
+        return True
+        
+    def _validate_ontology_context(self, context: Dict[str, Any]) -> bool:
+        """Validate ontology context coherence."""
+        if "ontology_path" not in context or "target_files" not in context:
+            return False
+            
+        try:
+            # Load main ontology
+            main_graph = Graph()
+            main_graph.parse(str(context["ontology_path"]), format="turtle")
+            
+            # Check imports and references
+            for target_file in context["target_files"]:
+                target_graph = Graph()
+                target_graph.parse(str(target_file), format="turtle")
+                
+                # Check for common namespaces and references
+                main_namespaces = set(main_graph.namespaces())
+                target_namespaces = set(target_graph.namespaces())
+                
+                if not main_namespaces.intersection(target_namespaces):
+                    return False
+                    
+        except Exception as e:
+            self.logger.error(f"Failed to validate ontology context: {str(e)}")
+            return False
+            
         return True 

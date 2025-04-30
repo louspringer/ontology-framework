@@ -4,12 +4,16 @@ This module provides functionality for validating Python code against ontology
 requirements, including type checking, naming conventions, and documentation.
 """
 
-from typing import Dict, List, Optional, Set, Union
+from typing import Dict, List, Optional, Set, Union, Tuple
 import ast
 import logging
 from pathlib import Path
 import re
 from .exceptions import ValidationError
+from rdflib import Graph, Namespace, Literal, URIRef
+from rdflib.namespace import RDF, RDFS, XSD
+import pyshacl
+from .validation.validation_report import ValidationReportManager, REPORT, VAL, CODE
 
 logger = logging.getLogger(__name__)
 
@@ -34,140 +38,94 @@ class PythonValidator:
         except Exception as e:
             raise ValidationError(f"Failed to load Python source: {str(e)}")
             
-    def validate_types(self) -> List[str]:
-        """Validate type hints and annotations.
+        self.shapes_graph = Graph()
+        shapes_file = Path(__file__).parent / "validation" / "validation_shapes.ttl"
+        self.shapes_graph.parse(str(shapes_file), format="turtle")
+        self.data_graph = Graph()
+        self.data_graph.bind("code", CODE)
         
-        Returns:
-            List of type validation issues
-        """
-        issues = []
+        # Initialize validation report manager
+        self.report_manager = ValidationReportManager()
+        self.current_report = None
+
+    def validate_node(self, node: ast.AST, report_uri: URIRef) -> bool:
+        """Validate a Python AST node using SHACL validation."""
+        self.data_graph = Graph()  # Reset for each validation
         
-        class TypeChecker(ast.NodeVisitor):
-            def __init__(self):
-                self.issues = []
-                
-            def visit_FunctionDef(self, node):
-                # Check return type annotation
-                if not node.returns:
-                    self.issues.append(f"Missing return type for function {node.name}")
-                    
-                # Check argument type annotations
-                for arg in node.args.args:
-                    if not arg.annotation:
-                        self.issues.append(f"Missing type annotation for argument {arg.arg} in function {node.name}")
-                        
-                self.generic_visit(node)
-                
-            def visit_AnnAssign(self, node):
-                if not node.annotation:
-                    if isinstance(node.target, ast.Name):
-                        self.issues.append(f"Missing type annotation for variable {node.target.id}")
-                self.generic_visit(node)
-                
-        checker = TypeChecker()
-        checker.visit(self.tree)
-        issues.extend(checker.issues)
+        node_type = None
+        node_name = None
+        shape_uri = None
         
-        return issues
+        if isinstance(node, ast.ClassDef):
+            node_type = "Class"
+            node_name = node.name
+            node_uri = URIRef(f"{CODE}class_{node.name}")
+            self.data_graph.add((node_uri, RDF.type, CODE.Class))
+            self.data_graph.add((node_uri, CODE.name, Literal(node.name)))
+            shape_uri = URIRef(f"{VAL}PythonClassShape")
+            
+        elif isinstance(node, ast.FunctionDef):
+            node_type = "Function"
+            node_name = node.name
+            node_uri = URIRef(f"{CODE}function_{node.name}")
+            self.data_graph.add((node_uri, RDF.type, CODE.Function))
+            self.data_graph.add((node_uri, CODE.name, Literal(node.name)))
+            shape_uri = URIRef(f"{VAL}PythonFunctionShape")
+            
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+            node_type = "Variable"
+            node_name = node.id
+            node_uri = URIRef(f"{CODE}variable_{node.id}")
+            self.data_graph.add((node_uri, RDF.type, CODE.Variable))
+            self.data_graph.add((node_uri, CODE.name, Literal(node.id)))
+            shape_uri = URIRef(f"{VAL}PythonVariableShape")
         
-    def validate_docstrings(self) -> List[str]:
-        """Validate docstring presence and format.
+        else:
+            return True  # Skip validation for other node types
         
-        Returns:
-            List of docstring validation issues
-        """
-        issues = []
+        conforms, _, results_graph = pyshacl.validate(
+            self.data_graph,
+            shacl_graph=self.shapes_graph,
+            inference='rdfs',
+            abort_on_first=True
+        )
         
-        class DocstringChecker(ast.NodeVisitor):
-            def __init__(self):
-                self.issues = []
-                
-            def visit_Module(self, node):
-                if not ast.get_docstring(node):
-                    self.issues.append("Missing module docstring")
-                self.generic_visit(node)
-                
-            def visit_ClassDef(self, node):
-                if not ast.get_docstring(node):
-                    self.issues.append(f"Missing docstring for class {node.name}")
-                self.generic_visit(node)
-                
-            def visit_FunctionDef(self, node):
-                docstring = ast.get_docstring(node)
-                if not docstring:
-                    self.issues.append(f"Missing docstring for function {node.name}")
-                elif "Args:" not in docstring or "Returns:" not in docstring:
-                    self.issues.append(f"Incomplete docstring for function {node.name}")
-                self.generic_visit(node)
-                
-        checker = DocstringChecker()
-        checker.visit(self.tree)
-        issues.extend(checker.issues)
+        # Add result to validation report
+        if node_type and node_name:
+            message = None
+            if not conforms:
+                message = f"Invalid {node_type.lower()} name: {node_name}"
+            self.report_manager.add_validation_result(
+                report_uri, node_name, node_type, conforms, 
+                message=message, shape_uri=shape_uri
+            )
         
-        return issues
+        return conforms
+
+    def validate_file(self, file_path: str = None) -> Tuple[bool, List[str]]:
+        """Validate a Python file using SHACL validation."""
+        if file_path is None:
+            file_path = str(self.source_file)
+            
+        with open(file_path, 'r') as f:
+            tree = ast.parse(f.read(), filename=file_path)
         
-    def validate_naming(self) -> List[str]:
-        """Validate naming conventions.
+        # Create new validation report
+        self.current_report = self.report_manager.create_validation_report(file_path)
         
-        Returns:
-            List of naming convention issues
-        """
-        issues = []
+        errors = []
+        for node in ast.walk(tree):
+            if not self.validate_node(node, self.current_report):
+                if isinstance(node, (ast.ClassDef, ast.FunctionDef)):
+                    errors.append(f"Invalid {node.__class__.__name__[:-3].lower()} name: {node.name}")
+                elif isinstance(node, ast.Name):
+                    errors.append(f"Invalid variable name: {node.id}")
         
-        class NamingChecker(ast.NodeVisitor):
-            def __init__(self):
-                self.issues = []
-                
-            def visit_ClassDef(self, node):
-                if not re.match(r"^[A-Z][a-zA-Z0-9]*$", node.name):
-                    self.issues.append(f"Invalid class name (should be CamelCase): {node.name}")
-                self.generic_visit(node)
-                
-            def visit_FunctionDef(self, node):
-                if not re.match(r"^[a-z][a-z0-9_]*$", node.name):
-                    self.issues.append(f"Invalid function name (should be snake_case): {node.name}")
-                self.generic_visit(node)
-                
-            def visit_Name(self, node):
-                if isinstance(node.ctx, ast.Store):
-                    if not re.match(r"^[a-z][a-z0-9_]*$", node.id):
-                        self.issues.append(f"Invalid variable name (should be snake_case): {node.id}")
-                self.generic_visit(node)
-                
-        checker = NamingChecker()
-        checker.visit(self.tree)
-        issues.extend(checker.issues)
-        
-        return issues
-        
-    def validate_imports(self) -> List[str]:
-        """Validate import statements.
-        
-        Returns:
-            List of import validation issues
-        """
-        issues = []
-        
-        class ImportChecker(ast.NodeVisitor):
-            def __init__(self):
-                self.issues = []
-                self.imports = set()
-                
-            def visit_Import(self, node):
-                for name in node.names:
-                    if name.name in self.imports:
-                        self.issues.append(f"Duplicate import: {name.name}")
-                    self.imports.add(name.name)
-                    
-            def visit_ImportFrom(self, node):
-                for name in node.names:
-                    full_name = f"{node.module}.{name.name}"
-                    if full_name in self.imports:
-                        self.issues.append(f"Duplicate import: {full_name}")
-                    self.imports.add(full_name)
-                    
-        checker = ImportChecker()
-        checker.visit(self.tree)
-        issues.extend(checker.issues)
-        
-        return issues 
+        return len(errors) == 0, errors
+    
+    def save_validation_report(self, file_path: str):
+        """Save the current validation report to a file."""
+        if self.current_report:
+            self.report_manager.save_report(file_path)
+        else:
+            logger.warning("No validation report available to save")

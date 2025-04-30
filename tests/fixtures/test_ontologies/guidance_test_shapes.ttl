@@ -1,0 +1,100 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Conformance Level Shape
+:ConformanceLevelShape a sh:NodeShape ;
+    sh:targetClass :ConformanceLevel ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] .
+
+# Validation Rule Shape
+:ValidationRuleShape a sh:NodeShape ;
+    sh:targetClass :ValidationRule ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path :hasMessage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] ;
+    sh:property [
+        sh:path :hasPriority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("HIGH" "MEDIUM" "LOW")
+    ] ;
+    sh:property [
+        sh:path :hasTarget ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class :ValidationTarget
+    ] ;
+    sh:property [
+        sh:path :hasValidator ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+# Validation Target Shape
+:ValidationTargetShape a sh:NodeShape ;
+    sh:targetClass :ValidationTarget ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:languageIn ("en")
+    ] .
+
+# Instance Shapes
+:ConformanceLevelInstanceShape a sh:NodeShape ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:class :ConformanceLevel ;
+    sh:in (:STRICT :RELAXED :MODERATE) .
+
+:ValidationRuleInstanceShape a sh:NodeShape ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:class :ValidationRule ;
+    sh:in (:SPORERule :SemanticRule :SyntaxRule :ConsistencyRule) .
+
+:ValidationTargetInstanceShape a sh:NodeShape ;
+    sh:targetSubjectsOf rdf:type ;
+    sh:class :ValidationTarget ;
+    sh:in (:SPOREValidation :SemanticValidation :SyntaxValidation :ConsistencyValidation) . 

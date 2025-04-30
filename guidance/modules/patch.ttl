@@ -13,33 +13,47 @@
 
 :exampleAddOperation1 a :AddOperation  ;
     rdfs:label "Example AddOperation 1" ;
-    rdfs:comment "This is example instance 1 of class AddOperation" .
+    rdfs:comment "This is example instance 1 of class AddOperation" ;
+    :hasSubject "subject1" ;
+    :hasPredicate "predicate1" ;
+    :hasObject "object1" .
 
 :exampleAddOperation2 a :AddOperation  ;
     rdfs:label "Example AddOperation 2" ;
-    rdfs:comment "This is example instance 2 of class AddOperation" .
+    rdfs:comment "This is example instance 2 of class AddOperation" ;
+    :hasSubject "subject2" ;
+    :hasPredicate "predicate2" ;
+    :hasObject "object2" .
 
 :examplePatchModel1 a :PatchModel  ;
     rdfs:label "Example PatchModel 1" ;
     rdfs:comment "This is example instance 1 of class PatchModel" ;
-    :createdAt "2024-03-21T12:00:01+00:00"^^xsd:dateTime  ;
-    :hasOperation :examplePatchOperation1  ;
-    :hasTargetSpore :exampleOntology1 .
+    :createdAt "2024-03-21T12:00:01+00:00"^^xsd:dateTime ;
+    :hasOperation :examplePatchOperation1 ;
+    :hasTargetSpore "example_spore1.ttl" ;
+    owl:versionInfo "1.0.0" .
 
 :examplePatchModel2 a :PatchModel  ;
     rdfs:label "Example PatchModel 2" ;
     rdfs:comment "This is example instance 2 of class PatchModel" ;
-    :createdAt "2024-03-21T12:00:02+00:00"^^xsd:dateTime  ;
-    :hasOperation :examplePatchOperation2  ;
-    :hasTargetSpore :exampleOntology2 .
+    :createdAt "2024-03-21T12:00:02+00:00"^^xsd:dateTime ;
+    :hasOperation :examplePatchOperation2 ;
+    :hasTargetSpore "example_spore2.ttl" ;
+    owl:versionInfo "1.0.0" .
 
 :exampleRemoveOperation1 a :RemoveOperation  ;
     rdfs:label "Example RemoveOperation 1" ;
-    rdfs:comment "This is example instance 1 of class RemoveOperation" .
+    rdfs:comment "This is example instance 1 of class RemoveOperation" ;
+    :hasSubject "subject3" ;
+    :hasPredicate "predicate3" ;
+    :hasObject "object3" .
 
 :exampleRemoveOperation2 a :RemoveOperation  ;
     rdfs:label "Example RemoveOperation 2" ;
-    rdfs:comment "This is example instance 2 of class RemoveOperation" .
+    rdfs:comment "This is example instance 2 of class RemoveOperation" ;
+    :hasSubject "subject4" ;
+    :hasPredicate "predicate4" ;
+    :hasObject "object4" .
 
 :OperationShape a sh:NodeShape ;
     sh:property [
@@ -251,21 +265,41 @@
     owl:versionInfo "1.0.0" .
 
 [] a sh:NodeShape ;
-    sh:property :shape6sh:datatype xsd:string ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path rdfs:label  .
-        :shape1 sh:datatype xsd:string  ;
-            sh:minCount 1 ;
-            sh:path owl:versionInfo ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path rdfs:label
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path rdfs:comment
+    ] ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:path owl:versionInfo
+    ] ;
     sh:targetClass owl:Class .
 
 [] a sh:NodeShape ;
-    sh:property :shape7sh:minCount 1 ;
-            sh:path rdfs:domain  .
-        :shape1 sh:minCount 1  ;
-            sh:path rdfs:range ;
+    sh:property [
+        sh:minCount 1 ;
+        sh:path rdfs:domain
+    ] ;
+    sh:property [
+        sh:minCount 1 ;
+        sh:path rdfs:range
+    ] ;
     sh:targetClass rdf:Property .
+
+:hasTargetSpore rdfs:domain :PatchModel ; rdfs:range xsd:string .
+:hasSubject rdfs:domain :PatchOperation ; rdfs:range xsd:string .
+:hasPredicate rdfs:domain :PatchOperation ; rdfs:range xsd:string .
+:hasObject rdfs:domain :PatchOperation ; rdfs:range xsd:string .
+:createdAt rdfs:domain :PatchModel ; rdfs:range xsd:dateTime .
+rdfs:label rdfs:domain owl:Thing ; rdfs:range xsd:string .
+rdfs:comment rdfs:domain owl:Thing ; rdfs:range xsd:string .
+owl:versionInfo rdfs:domain owl:Thing ; rdfs:range xsd:string .
+:hasOperation rdfs:domain :PatchModel ; rdfs:range :PatchOperation .
 

@@ -1,0 +1,93 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix val: <http://example.org/validation#> .
+@prefix code: <http://example.org/code#> .
+
+# Python Identifier Validation Shapes
+val:PythonClassShape
+    a sh:NodeShape ;
+    sh:targetClass code:Class ;
+    sh:property [
+        sh:path code:name ;
+        sh:pattern "^[A-Z][a-zA-Z0-9]*$" ;
+        sh:message "Class names must start with uppercase letter and contain only letters and numbers" ;
+    ] .
+
+val:PythonFunctionShape
+    a sh:NodeShape ;
+    sh:targetClass code:Function ;
+    sh:property [
+        sh:path code:name ;
+        sh:pattern "^[a-z][a-z0-9_]*$" ;
+        sh:message "Function names must start with lowercase letter and contain only lowercase letters, numbers, and underscores" ;
+    ] .
+
+val:PythonVariableShape
+    a sh:NodeShape ;
+    sh:targetClass code:Variable ;
+    sh:property [
+        sh:path code:name ;
+        sh:pattern "^[a-z][a-z0-9_]*$" ;
+        sh:message "Variable names must start with lowercase letter and contain only lowercase letters, numbers, and underscores" ;
+    ] .
+
+# Namespace Validation Shapes
+val:NamespaceShape
+    a sh:NodeShape ;
+    sh:targetClass code:Namespace ;
+    sh:property [
+        sh:path code:prefix ;
+        sh:pattern "^[a-zA-Z][a-zA-Z0-9_]*$" ;
+        sh:message "Namespace prefix must start with a letter and contain only letters, numbers, and underscores" ;
+    ] ;
+    sh:property [
+        sh:path code:uri ;
+        sh:nodeKind sh:IRI ;
+        sh:message "Namespace URI must be a valid IRI" ;
+    ] .
+
+# Code Pattern Validation Shapes
+val:CodePatternShape
+    a sh:NodeShape ;
+    sh:targetClass code:Pattern ;
+    sh:property [
+        sh:path code:pattern ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Pattern must be specified" ;
+    ] ;
+    sh:property [
+        sh:path code:language ;
+        sh:in ( "python" "turtle" "sparql" ) ;
+        sh:message "Language must be one of: python, turtle, sparql" ;
+    ] .
+
+# Example.org Detection Shape
+val:ExampleOrgShape
+    a sh:NodeShape ;
+    sh:targetClass code:URI ;
+    sh:property [
+        sh:path code:value ;
+        sh:pattern ".*example\\.org.*" ;
+        sh:flags "i" ;  # Case insensitive
+        sh:message "Contains example.org domain" ;
+    ] .
+
+# Sensitive Data Detection Shapes
+val:SensitiveDataShape
+    a sh:NodeShape ;
+    sh:targetClass code:Data ;
+    sh:property [
+        sh:path code:value ;
+        sh:or (
+            [ sh:pattern "password\\s*[=:]" ]
+            [ sh:pattern "api[_-]?key\\s*[=:]" ]
+            [ sh:pattern "secret\\s*[=:]" ]
+            [ sh:pattern "token\\s*[=:]" ]
+            [ sh:pattern "[0-9]{16}" ]  # Credit card numbers
+            [ sh:pattern "[0-9]{3}-[0-9]{2}-[0-9]{4}" ]  # SSN
+        ) ;
+        sh:message "Contains potential sensitive data" ;
+    ] . 

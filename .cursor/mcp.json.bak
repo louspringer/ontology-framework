@@ -1,0 +1,112 @@
+{
+  "core": {
+    "validation": {
+      "enabled": true,
+      "requirePhaseOrder": true,
+      "requireContext": true,
+      "requireServerConfig": true,
+      "dryRun": false,
+      "backupEnabled": true,
+      "rules": {
+        "phaseOrder": [
+          "discovery",
+          "plan",
+          "do",
+          "check",
+          "act",
+          "checkin"
+        ],
+        "requiredPhases": [
+          "discovery",
+          "plan",
+          "do",
+          "check"
+        ],
+        "optionalPhases": [
+          "act",
+          "checkin"
+        ]
+      }
+    },
+    "validationRules": {
+      "ontologyStructure": {
+        "requiredClasses": [
+          "ValidationProcess",
+          "ValidationRule",
+          "TestPhase",
+          "IntegrationProcess",
+          "ValidationPattern"
+        ],
+        "requiredProperties": [
+          "hasStringRepresentation",
+          "hasValidationRules",
+          "hasMinimumRequirements",
+          "hasComplianceMetrics"
+        ],
+        "requiredShapes": [
+          "ValidationRuleShape",
+          "ConformanceLevelShape",
+          "IntegrationProcessShape"
+        ]
+      },
+      "phaseExecution": {
+        "discoveryRequirements": {
+          "ontologyPath": "guidance.ttl",
+          "targetFiles": [
+            "src/ontology_framework/modules/guidance.py",
+            "src/ontology_framework/modules/ontology.py"
+          ]
+        },
+        "planRequirements": {
+          "discoveryResults": {
+            "classes": [
+              "ValidationPattern",
+              "TestPhase",
+              "IntegrationStep",
+              "ModelConformance",
+              "TestProtocol",
+              "ConformanceLevel"
+            ],
+            "individuals": [
+              "UnitTestPhase",
+              "IntegrationTestPhase",
+              "SHACLValidationPattern",
+              "OWLValidationPattern"
+            ],
+            "shapes": [
+              "ValidationRuleShape",
+              "ConformanceLevelShape",
+              "IntegrationProcessShape"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "adapters": {
+    "ide": {
+      "servers": {
+        "bfg9k": {
+          "url": "http://localhost:7700/sse",
+          "type": "sse"
+        },
+        "datapilot": {
+          "url": "http://localhost:7700/sse",
+          "type": "sse"
+        }
+      }
+    }
+  },
+  "metadata": {
+    "project": "ontology-framework",
+    "version": "1.0.0",
+    "description": "Unified MCP Configuration",
+    "timestamp": "2024-03-21T10:00:00Z",
+    "author": "ontology-framework-team"
+  },
+  "logging": {
+    "level": "DEBUG",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": ".cursor/mcp.log"
+  }
+}

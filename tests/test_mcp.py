@@ -5,10 +5,12 @@ from typing import Dict, List, Any
 import pytest
 from pathlib import Path
 from datetime import datetime, timedelta
-from src.mcp.maintenance_server import MaintenanceServer
-from src.mcp.maintenance_config import MaintenanceConfig
-from src.mcp.maintenance_prompts import MaintenancePrompts
+from src.ontology_framework.mcp.maintenance_server import MaintenanceServer
+from src.ontology_framework.mcp.maintenance_config import MaintenanceConfig
+from src.ontology_framework.mcp.maintenance_prompts import MaintenancePrompts
 from rdflib import Graph, URIRef
+from src.ontology_framework.modules.mcp_config import MCPConfig
+from src.ontology_framework.modules.ontology_dependency_analyzer import OntologyDependencyAnalyzer
 
 @pytest.fixture
 def maintenance_server() -> MaintenanceServer:
@@ -78,7 +80,17 @@ def test_prompts_initialization(maintenance_prompts: MaintenancePrompts) -> None
 
 def test_config_initialization(maintenance_config: MaintenanceConfig) -> None:
     """Test config initialization."""
-    assert maintenance_config.HOST == "localhost"
-    assert maintenance_config.PORT == 8000
-    assert maintenance_config.MODEL_PATH == "models/project_maintenance.ttl"
-    assert maintenance_config.MODEL_FORMAT == "turtle" 
+    # Test core settings
+    assert maintenance_config.conformance_level == "STRICT"
+    assert isinstance(maintenance_config.validation_rules, dict)
+    assert maintenance_config.ontology_path.name == "project_maintenance.ttl"
+    
+    # Test validation settings
+    assert maintenance_config.validation_strategy == "SimilarityMatch"
+    assert isinstance(maintenance_config.validation_path, dict)
+    assert maintenance_config.validation_path["start_node"] == "ValidationRule"
+    
+    # Test quality settings
+    assert maintenance_config.quality_threshold == 0.85
+    assert "hasMessage" in maintenance_config.required_metadata
+    assert "hasPriority" in maintenance_config.required_metadata 

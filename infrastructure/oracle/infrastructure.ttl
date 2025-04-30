@@ -1,0 +1,128 @@
+@prefix guidance: <http://example.org/guidance#> .
+@prefix inf: <http://example.org/infrastructure#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Core Classes
+inf:OracleDatabase a owl:Class ;
+    rdfs:label "Oracle Database" ;
+    rdfs:comment "An Oracle database instance" .
+
+inf:OracleInstance a owl:Class ;
+    rdfs:label "Oracle Instance" ;
+    rdfs:comment "An Oracle database instance configuration" .
+
+inf:OracleUser a owl:Class ;
+    rdfs:label "Oracle User" ;
+    rdfs:comment "An Oracle database user" .
+
+inf:OracleTablespace a owl:Class ;
+    rdfs:label "Oracle Tablespace" ;
+    rdfs:comment "An Oracle database tablespace" .
+
+# Properties
+inf:hasEndpoint a owl:DatatypeProperty ;
+    rdfs:label "has endpoint" ;
+    rdfs:comment "The database connection endpoint" ;
+    rdfs:domain inf:OracleDatabase ;
+    rdfs:range xsd:string .
+
+inf:hasPort a owl:DatatypeProperty ;
+    rdfs:label "has port" ;
+    rdfs:comment "The database connection port" ;
+    rdfs:domain inf:OracleDatabase ;
+    rdfs:range xsd:integer .
+
+inf:hasServiceName a owl:DatatypeProperty ;
+    rdfs:label "has service name" ;
+    rdfs:comment "The Oracle service name" ;
+    rdfs:domain inf:OracleDatabase ;
+    rdfs:range xsd:string .
+
+inf:hasUsername a owl:DatatypeProperty ;
+    rdfs:label "has username" ;
+    rdfs:comment "The database username" ;
+    rdfs:domain inf:OracleUser ;
+    rdfs:range xsd:string .
+
+inf:hasPassword a owl:DatatypeProperty ;
+    rdfs:label "has password" ;
+    rdfs:comment "The database password" ;
+    rdfs:domain inf:OracleUser ;
+    rdfs:range xsd:string .
+
+inf:hasTablespaceName a owl:DatatypeProperty ;
+    rdfs:label "has tablespace name" ;
+    rdfs:comment "The tablespace name" ;
+    rdfs:domain inf:OracleTablespace ;
+    rdfs:range xsd:string .
+
+inf:hasDatafileSize a owl:DatatypeProperty ;
+    rdfs:label "has datafile size" ;
+    rdfs:comment "The size of the datafile in MB" ;
+    rdfs:domain inf:OracleTablespace ;
+    rdfs:range xsd:integer .
+
+# SHACL Shapes
+inf:OracleDatabaseShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Oracle Database" ;
+    sh:targetClass inf:OracleDatabase ;
+    sh:property [
+        sh:path inf:hasEndpoint ;
+        sh:minCount 1 ;
+        sh:message "Oracle database must have an endpoint" ;
+    ] ;
+    sh:property [
+        sh:path inf:hasPort ;
+        sh:minCount 1 ;
+        sh:message "Oracle database must have a port" ;
+    ] ;
+    sh:property [
+        sh:path inf:hasServiceName ;
+        sh:minCount 1 ;
+        sh:message "Oracle database must have a service name" ;
+    ] .
+
+inf:OracleUserShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Oracle User" ;
+    sh:targetClass inf:OracleUser ;
+    sh:property [
+        sh:path inf:hasUsername ;
+        sh:minCount 1 ;
+        sh:message "Oracle user must have a username" ;
+    ] ;
+    sh:property [
+        sh:path inf:hasPassword ;
+        sh:minCount 1 ;
+        sh:message "Oracle user must have a password" ;
+    ] .
+
+inf:OracleTablespaceShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Oracle Tablespace" ;
+    sh:targetClass inf:OracleTablespace ;
+    sh:property [
+        sh:path inf:hasTablespaceName ;
+        sh:minCount 1 ;
+        sh:message "Oracle tablespace must have a name" ;
+    ] ;
+    sh:property [
+        sh:path inf:hasDatafileSize ;
+        sh:minCount 1 ;
+        sh:message "Oracle tablespace must have a datafile size" ;
+    ] .
+
+# Example Instances
+inf:test-db a inf:OracleDatabase ;
+    inf:hasEndpoint "localhost" ;
+    inf:hasPort 1521 ;
+    inf:hasServiceName "ORCLPDB" .
+
+inf:test-user a inf:OracleUser ;
+    inf:hasUsername "test_user" ;
+    inf:hasPassword "test_password" .
+
+inf:test-tablespace a inf:OracleTablespace ;
+    inf:hasTablespaceName "TEST_TS" ;
+    inf:hasDatafileSize 100 . 

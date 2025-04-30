@@ -1,0 +1,346 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix bfo: <http://purl.obolibrary.org/obo/bfo.owl#> .
+@prefix ro: <http://purl.obolibrary.org/obo/ro.owl#> .
+
+: a owl:Ontology ;
+    rdfs:label "DAG Validation Patterns"@en ;
+    rdfs:comment "Ontology for modeling DAG validation patterns and their relationships"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports bfo: .
+
+# DAG Types
+:DAG a owl:Class ;
+    rdfs:label "Directed Acyclic Graph"@en ;
+    rdfs:comment "Base class for all DAG types in the framework"@en .
+
+:OntologyDAG a owl:Class ;
+    rdfs:subClassOf :DAG ;
+    rdfs:label "Ontology DAG"@en ;
+    rdfs:comment "DAG representing ontology structure and dependencies"@en .
+
+:TestCoverageDAG a owl:Class ;
+    rdfs:subClassOf :DAG ;
+    rdfs:label "Test Coverage DAG"@en ;
+    rdfs:comment "DAG representing test-to-implementation relationships"@en .
+
+:ImplementationDAG a owl:Class ;
+    rdfs:subClassOf :DAG ;
+    rdfs:label "Implementation DAG"@en ;
+    rdfs:comment "DAG representing code implementation dependencies"@en .
+
+# DAG Components
+:DAGComponent a owl:Class ;
+    rdfs:label "DAG Component"@en ;
+    rdfs:comment "Component of a DAG that can be validated"@en .
+
+:Node a owl:Class ;
+    rdfs:subClassOf :DAGComponent ;
+    rdfs:label "Node"@en ;
+    rdfs:comment "Vertex in a DAG"@en .
+
+:Edge a owl:Class ;
+    rdfs:subClassOf :DAGComponent ;
+    rdfs:label "Edge"@en ;
+    rdfs:comment "Directed connection between nodes in a DAG"@en .
+
+# Validation Patterns
+:DAGValidationPattern a owl:Class ;
+    rdfs:label "DAG Validation Pattern"@en ;
+    rdfs:comment "Pattern for validating DAG structures"@en .
+
+:StructuralValidation a owl:Class ;
+    rdfs:subClassOf :DAGValidationPattern ;
+    rdfs:label "Structural Validation"@en ;
+    rdfs:comment "Validation of DAG structure and topology"@en .
+
+:SemanticValidation a owl:Class ;
+    rdfs:subClassOf :DAGValidationPattern ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validation of DAG semantics and meaning"@en .
+
+:ImplementationValidation a owl:Class ;
+    rdfs:subClassOf :DAGValidationPattern ;
+    rdfs:label "Implementation Validation"@en ;
+    rdfs:comment "Validation of DAG implementation correctness"@en .
+
+# Properties
+:hasValidationRule a owl:ObjectProperty ;
+    rdfs:domain :DAGValidationPattern ;
+    rdfs:range :ValidationRule ;
+    rdfs:label "has validation rule"@en ;
+    rdfs:comment "Links a validation pattern to its rules"@en .
+
+:validatesComponent a owl:ObjectProperty ;
+    rdfs:domain :DAGValidationPattern ;
+    rdfs:range :DAGComponent ;
+    rdfs:label "validates component"@en ;
+    rdfs:comment "Specifies which DAG components a pattern validates"@en .
+
+:hasConformanceLevel a owl:ObjectProperty ;
+    rdfs:domain :DAGValidationPattern ;
+    rdfs:range :ConformanceLevel ;
+    rdfs:label "has conformance level"@en ;
+    rdfs:comment "Specifies the required conformance level"@en .
+
+# Validation Rules
+:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule"@en ;
+    rdfs:comment "Base class for validation rules"@en .
+
+:NamespaceValidationRule a :ValidationRule ;
+    rdfs:label "Namespace Validation Rule"@en ;
+    rdfs:comment "Validates namespace consistency in ontology DAGs"@en .
+
+:ClassHierarchyValidationRule a :ValidationRule ;
+    rdfs:label "Class Hierarchy Validation Rule"@en ;
+    rdfs:comment "Validates class hierarchy structure in ontology DAGs"@en .
+
+:PropertyValidationRule a :ValidationRule ;
+    rdfs:label "Property Validation Rule"@en ;
+    rdfs:comment "Validates property definitions and usage in ontology DAGs"@en .
+
+:TestImportValidationRule a :ValidationRule ;
+    rdfs:label "Test Import Validation Rule"@en ;
+    rdfs:comment "Validates test import statements and dependencies"@en .
+
+:TestTargetValidationRule a :ValidationRule ;
+    rdfs:label "Test Target Validation Rule"@en ;
+    rdfs:comment "Validates test target specifications"@en .
+
+:TestAssertionValidationRule a :ValidationRule ;
+    rdfs:label "Test Assertion Validation Rule"@en ;
+    rdfs:comment "Validates test assertion completeness"@en .
+
+:ModuleDependencyValidationRule a :ValidationRule ;
+    rdfs:label "Module Dependency Validation Rule"@en ;
+    rdfs:comment "Validates module-level dependencies"@en .
+
+:ClassDependencyValidationRule a :ValidationRule ;
+    rdfs:label "Class Dependency Validation Rule"@en ;
+    rdfs:comment "Validates class-level dependencies"@en .
+
+:MethodDependencyValidationRule a :ValidationRule ;
+    rdfs:label "Method Dependency Validation Rule"@en ;
+    rdfs:comment "Validates method-level dependencies"@en .
+
+# Conformance Levels
+:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "Level of conformance required for validation"@en .
+
+:STRICT a :ConformanceLevel ;
+    rdfs:label "Strict"@en ;
+    rdfs:comment "Strict conformance level requiring full compliance"@en .
+
+:MODERATE a :ConformanceLevel ;
+    rdfs:label "Moderate"@en ;
+    rdfs:comment "Moderate conformance level allowing some flexibility"@en .
+
+:RELAXED a :ConformanceLevel ;
+    rdfs:label "Relaxed"@en ;
+    rdfs:comment "Relaxed conformance level with minimal requirements"@en .
+
+# Example Patterns
+:OntologyStructureValidation a :StructuralValidation ;
+    rdfs:label "Ontology Structure Validation"@en ;
+    rdfs:comment "Validates ontology DAG structure"@en ;
+    :validatesComponent :Node ;
+    :validatesComponent :Edge ;
+    :hasValidationRule :NamespaceValidationRule ;
+    :hasValidationRule :ClassHierarchyValidationRule ;
+    :hasValidationRule :PropertyValidationRule ;
+    :hasConformanceLevel :STRICT .
+
+:TestCoverageValidation a :ImplementationValidation ;
+    rdfs:label "Test Coverage Validation"@en ;
+    rdfs:comment "Validates test coverage DAG"@en ;
+    :validatesComponent :Node ;
+    :validatesComponent :Edge ;
+    :hasValidationRule :TestImportValidationRule ;
+    :hasValidationRule :TestTargetValidationRule ;
+    :hasValidationRule :TestAssertionValidationRule ;
+    :hasConformanceLevel :MODERATE .
+
+:ImplementationStructureValidation a :StructuralValidation ;
+    rdfs:label "Implementation Structure Validation"@en ;
+    rdfs:comment "Validates implementation DAG structure"@en ;
+    :validatesComponent :Node ;
+    :validatesComponent :Edge ;
+    :hasValidationRule :ModuleDependencyValidationRule ;
+    :hasValidationRule :ClassDependencyValidationRule ;
+    :hasValidationRule :MethodDependencyValidationRule ;
+    :hasConformanceLevel :STRICT .
+
+# SHACL Shapes
+:DAGValidationPatternShape a sh:NodeShape ;
+    sh:targetClass :DAGValidationPattern ;
+    sh:property [
+        sh:path :validatesComponent ;
+        sh:minCount 1 ;
+        sh:class :DAGComponent
+    ] ;
+    sh:property [
+        sh:path :hasValidationRule ;
+        sh:minCount 1 ;
+        sh:class :ValidationRule
+    ] ;
+    sh:property [
+        sh:path :hasConformanceLevel ;
+        sh:minCount 1 ;
+        sh:class :ConformanceLevel
+    ] .
+
+# TODO Section
+:TODO a owl:Class ;
+    rdfs:label "Future Improvements"@en ;
+    rdfs:comment "Items for future development and enhancement"@en .
+
+:AddMoreValidationRules a :TODO ;
+    rdfs:label "Add More Validation Rules"@en ;
+    rdfs:comment "Add additional validation rules for specific DAG patterns"@en ;
+    :priority "MEDIUM" ;
+    :targetDate "2024-Q2" .
+
+:EnhanceSHACLShapes a :TODO ;
+    rdfs:label "Enhance SHACL Shapes"@en ;
+    rdfs:comment "Add more detailed SHACL shapes for validation"@en ;
+    :priority "HIGH" ;
+    :targetDate "2024-Q2" .
+
+# Example DAG Instances
+:OntologyDependencyDAG a :OntologyDAG ;
+    rdfs:label "Ontology Dependency DAG"@en ;
+    rdfs:comment "DAG representing dependencies between ontologies"@en .
+
+:TestSuiteDAG a :TestCoverageDAG ;
+    rdfs:label "Test Suite DAG"@en ;
+    rdfs:comment "DAG representing test suite coverage"@en .
+
+:ModuleDAG a :ImplementationDAG ;
+    rdfs:label "Module DAG"@en ;
+    rdfs:comment "DAG representing module dependencies"@en .
+
+# Example Node Instances
+:OntologyNode a :Node ;
+    rdfs:label "Ontology Node"@en ;
+    rdfs:comment "Node representing an ontology"@en .
+
+:TestNode a :Node ;
+    rdfs:label "Test Node"@en ;
+    rdfs:comment "Node representing a test"@en .
+
+:ModuleNode a :Node ;
+    rdfs:label "Module Node"@en ;
+    rdfs:comment "Node representing a module"@en .
+
+# Example Edge Instances
+:DependencyEdge a :Edge ;
+    rdfs:label "Dependency Edge"@en ;
+    rdfs:comment "Edge representing a dependency relationship"@en .
+
+:CoverageEdge a :Edge ;
+    rdfs:label "Coverage Edge"@en ;
+    rdfs:comment "Edge representing a coverage relationship"@en .
+
+:ImportEdge a :Edge ;
+    rdfs:label "Import Edge"@en ;
+    rdfs:comment "Edge representing an import relationship"@en .
+
+# Example Validation Pattern Instances
+:OntologyDependencyValidation a :DAGValidationPattern ;
+    rdfs:label "Ontology Dependency Validation"@en ;
+    rdfs:comment "Validates ontology dependency structure"@en ;
+    :validatesComponent :OntologyNode ;
+    :validatesComponent :DependencyEdge ;
+    :hasValidationRule :NamespaceValidationRule ;
+    :hasValidationRule :ClassHierarchyValidationRule ;
+    :hasConformanceLevel :STRICT .
+
+:TestCoverageValidation a :DAGValidationPattern ;
+    rdfs:label "Test Coverage Validation"@en ;
+    rdfs:comment "Validates test coverage structure"@en ;
+    :validatesComponent :TestNode ;
+    :validatesComponent :CoverageEdge ;
+    :hasValidationRule :TestImportValidationRule ;
+    :hasValidationRule :TestAssertionValidationRule ;
+    :hasConformanceLevel :MODERATE .
+
+:ModuleDependencyValidation a :DAGValidationPattern ;
+    rdfs:label "Module Dependency Validation"@en ;
+    rdfs:comment "Validates module dependency structure"@en ;
+    :validatesComponent :ModuleNode ;
+    :validatesComponent :ImportEdge ;
+    :hasValidationRule :ModuleDependencyValidationRule ;
+    :hasValidationRule :ClassDependencyValidationRule ;
+    :hasConformanceLevel :STRICT .
+
+# Example Base DAG Instance
+:BaseDAG a :DAG ;
+    rdfs:label "Base DAG"@en ;
+    rdfs:comment "Base instance for DAG class"@en .
+
+# Example Base Component Instances
+:BaseNode a :DAGComponent ;
+    rdfs:label "Base Node"@en ;
+    rdfs:comment "Base instance for DAGComponent class"@en .
+
+:BaseEdge a :DAGComponent ;
+    rdfs:label "Base Edge"@en ;
+    rdfs:comment "Base instance for DAGComponent class"@en .
+
+# Example Base Validation Instance
+:BaseValidation a :SemanticValidation ;
+    rdfs:label "Base Validation"@en ;
+    rdfs:comment "Base instance for SemanticValidation class"@en ;
+    :validatesComponent :BaseNode ;
+    :validatesComponent :BaseEdge ;
+    :hasValidationRule :BaseValidationRule ;
+    :hasConformanceLevel :MODERATE .
+
+:BaseValidationRule a :ValidationRule ;
+    rdfs:label "Base Validation Rule"@en ;
+    rdfs:comment "Base instance for ValidationRule class"@en .
+
+# Example DAG Instances
+:ExampleOntologyDAG a :OntologyDAG ;
+    rdfs:label "Example Ontology DAG"@en ;
+    rdfs:comment "Example instance of OntologyDAG"@en .
+
+:ExampleTestDAG a :TestCoverageDAG ;
+    rdfs:label "Example Test DAG"@en ;
+    rdfs:comment "Example instance of TestCoverageDAG"@en .
+
+:ExampleImplementationDAG a :ImplementationDAG ;
+    rdfs:label "Example Implementation DAG"@en ;
+    rdfs:comment "Example instance of ImplementationDAG"@en .
+
+# Example Component Instances
+:ExampleNode a :Node ;
+    rdfs:label "Example Node"@en ;
+    rdfs:comment "Example instance of Node"@en .
+
+:ExampleEdge a :Edge ;
+    rdfs:label "Example Edge"@en ;
+    rdfs:comment "Example instance of Edge"@en .
+
+# Example Validation Pattern Instances
+:ExampleStructuralValidation a :StructuralValidation ;
+    rdfs:label "Example Structural Validation"@en ;
+    rdfs:comment "Example instance of StructuralValidation"@en ;
+    :validatesComponent :ExampleNode ;
+    :validatesComponent :ExampleEdge ;
+    :hasValidationRule :BaseValidationRule ;
+    :hasConformanceLevel :MODERATE .
+
+:ExampleImplementationValidation a :ImplementationValidation ;
+    rdfs:label "Example Implementation Validation"@en ;
+    rdfs:comment "Example instance of ImplementationValidation"@en ;
+    :validatesComponent :ExampleNode ;
+    :validatesComponent :ExampleEdge ;
+    :hasValidationRule :BaseValidationRule ;
+    :hasConformanceLevel :MODERATE . 

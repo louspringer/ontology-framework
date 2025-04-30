@@ -1,6 +1,12 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#rdfs:> .
+@prefix ns2: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#rdf:> .
+@prefix ns3: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#owl:> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
     rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
@@ -82,6 +88,19 @@ owl:versionInfo rdfs:label "owl#versionInfo" ;
     rdfs:range <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityValidation> ;
     owl:versionInfo "1.0.0" .
 
+:GDPR ns3:versionInfo "1.0.0" ;
+    ns2:type :ComplianceStandard ;
+    ns1:comment "General Data Protection Regulation" ;
+    ns1:label "GDPR" .
+
+:HIPAA ns3:versionInfo "1.0.0" ;
+    ns2:type :ComplianceStandard ;
+    ns1:comment "Health Insurance Portability and Accountability Act" ;
+    ns1:label "HIPAA" .
+
+:RuntimeError :compliesWith :GDPR,
+        :HIPAA .
+
 <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityRisk> a owl:Class ;
     rdfs:label "Security Risk" ;
     rdfs:comment "Security-related risks" ;
@@ -106,4 +125,10 @@ owl:versionInfo rdfs:label "owl#versionInfo" ;
     rdfs:label "Security Validation" ;
     rdfs:comment "Security validation rules" ;
     owl:versionInfo "1.0.0" .
+
+[] a sh:NodeShape ;
+    sh:property [ sh:message "Every RuntimeError must reference at least one ComplianceStandard via compliesWith." ;
+            sh:minCount 1 ;
+            sh:path :compliesWith ] ;
+    sh:targetClass :RuntimeError .
 

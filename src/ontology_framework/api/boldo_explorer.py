@@ -17,6 +17,7 @@ class BoldoAPIExplorer:
         self.session = requests.Session()
         if api_key:
             self.session.headers.update({'Authorization': f'Bearer {api_key}'})
+        self.session.headers["Content-Type"] = "application/json"
             
     def get_resource(self, resource_id: str) -> Dict[str, Any]:
         """Get a resource by ID.
@@ -153,3 +154,24 @@ class BoldoAPIExplorer:
                 raise APIRequestError(f"API request failed: {str(e)}", e.response.status_code)
         except Exception as e:
             raise BoldoAPIError(f"Unexpected error: {str(e)}")
+
+    def get_ontologies(self) -> list[dict]:
+        """Get all ontologies."""
+        url = f"{self.base_url}/ontologies"
+        response = self.session.request('GET', url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_ontology(self, ontology_id: str) -> dict:
+        """Get a single ontology by ID."""
+        url = f"{self.base_url}/ontologies/{ontology_id}"
+        response = self.session.request('GET', url)
+        response.raise_for_status()
+        return response.json()
+
+    def search_ontologies(self, query: str) -> list[dict]:
+        """Search ontologies by query string."""
+        url = f"{self.base_url}/ontologies/search"
+        response = self.session.request('GET', url, params={'q': query})
+        response.raise_for_status()
+        return response.json()

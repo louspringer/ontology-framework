@@ -1,21 +1,30 @@
 from dataclasses import dataclass
-from enum import Enum
-from typing import Dict, Any, List
+from enum import Enum, auto
+from typing import Dict, Any, List, Optional, Union
 
 class ValidationRuleType(Enum):
-    """Enum for validation rule types."""
+    """Validation rule types."""
+    MATRIX = "matrix"
+    ONTOLOGY = "ontology"
+    PATTERN = "pattern"
+    COMPLIANCE = "compliance"
+    PERFORMANCE = "performance"
     SENSITIVE_DATA = "sensitive_data"
     RISK = "risk"
-    MATRIX = "matrix"
-    COMPLIANCE = "compliance"
     SECURITY = "security"
-    PERFORMANCE = "performance"
     RELIABILITY = "reliability"
     AVAILABILITY = "availability"
     SCALABILITY = "scalability"
     MAINTAINABILITY = "maintainability"
     SEVERITY = "severity"
     STEP_ORDER = "step_order"
+    ACCESS_CONTROL = "access_control"
+    ENCRYPTION = "encryption"
+    SPORE = "spore"
+    SEMANTIC = "semantic"
+    SYNTAX = "syntax"
+    INDIVIDUAL_TYPE = "individual_type"
+    BFG9K = "bfg9k"
 
 @dataclass
 class ValidationRule:
@@ -25,6 +34,7 @@ class ValidationRule:
     message_template: str
     rule_type: ValidationRuleType
     version: str = "1.0.0"
+    conformance_level: str = "STRICT"
 
 @dataclass
 class ErrorResult:
@@ -33,19 +43,33 @@ class ErrorResult:
     message: str
     severity: str
     timestamp: str
+    validation_details: Optional[Dict[str, Any]] = None
 
 class ErrorType(Enum):
-    """Enum for error types."""
-    VALIDATION = "validation"
-    SYNTAX = "syntax"
-    SEMANTIC = "semantic"
+    """Error types."""
     RUNTIME = "runtime"
-    SECURITY = "security"
+    MATRIX = "matrix"
+    VALIDATION = "validation"
+    AUTHENTICATION = "authentication"
+    AUTHORIZATION = "authorization"
     COMPLIANCE = "compliance"
     PERFORMANCE = "performance"
+    SYNTAX = "syntax"
+    SEMANTIC = "semantic"
     INTEGRATION = "integration"
     CONFIGURATION = "configuration"
     DATA = "data"
+    NETWORK = "network"
+    DATABASE = "database"
+    FILE_SYSTEM = "file_system"
+    MEMORY = "memory"
+    CPU = "cpu"
+    DISK = "disk"
+    API = "api"
+    DATA_LOSS = "data_loss"
+    PATTERN_MISMATCH = "pattern_mismatch"
+    ONTOLOGY_ERROR = "ontology_error"
+    SHACL_VALIDATION = "shacl_validation"
 
 class ErrorStep(Enum):
     """Enum for error handling steps."""
@@ -63,44 +87,49 @@ class ErrorStep(Enum):
     MONITORING = "monitoring"
     ANALYSIS = "analysis"
     REPORTING = "reporting"
+    IDENTIFICATION = "identification"
+    PREVENTION = "prevention"
+    BFG9K_VALIDATION = "bfg9k_validation"
+    PATTERN_VALIDATION = "pattern_validation"
+    SEMANTIC_VALIDATION = "semantic_validation"
+    SYNTAX_VALIDATION = "syntax_validation"
 
 class ErrorSeverity(Enum):
-    """Enum for error severity levels."""
-    CRITICAL = "critical"  # System crash, data loss
-    SEVERE = "severe"     # Major functionality broken
-    HIGH = "high"         # Important feature broken
-    MEDIUM = "medium"     # Non-critical feature affected
-    LOW = "low"          # Minor issue, cosmetic
-    INFO = "info"        # Informational message
-    DEBUG = "debug"      # Debug level message
-    TRACE = "trace"      # Detailed tracing info
-
-class SecurityLevel(Enum):
-    """Enum for security levels."""
-    CRITICAL = "critical"      # Severe security breach
-    HIGH = "high"             # Potential data exposure
-    MEDIUM = "medium"         # Security policy violation
-    LOW = "low"              # Minor security concern
-    CONFIDENTIAL = "confidential"  # Sensitive data handling
-    RESTRICTED = "restricted"      # Limited access data
-    INTERNAL = "internal"          # Internal use only
-    PUBLIC = "public"              # Public information
-
-class ComplianceLevel(Enum):
-    """Enum for compliance levels."""
-    CRITICAL = "critical"          # Severe compliance violation
-    HIGH = "high"                 # Major compliance issue
-    MEDIUM = "medium"             # Moderate compliance concern
-    LOW = "low"                  # Minor compliance deviation
-    REGULATORY = "regulatory"      # Regulatory requirement
-    POLICY = "policy"             # Internal policy requirement
-    STANDARD = "standard"         # Industry standard requirement
-    GUIDELINE = "guideline"       # Best practice guideline
-    OPTIONAL = "optional"         # Optional compliance measure
-
-class RiskLevel(Enum):
-    """Enum for risk levels."""
+    """Error severity levels."""
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
-    CRITICAL = "critical" 
+    CRITICAL = "critical"
+    INFO = "info"
+    DEBUG = "debug"
+    TRACE = "trace"
+
+class SecurityLevel(Enum):
+    """Security levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+    CONFIDENTIAL = "confidential"
+    RESTRICTED = "restricted"
+    INTERNAL = "internal"
+    PUBLIC = "public"
+
+class ComplianceLevel(Enum):
+    """Compliance levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+    REGULATORY = "regulatory"
+    POLICY = "policy"
+    STANDARD = "standard"
+    OPTIONAL = "optional"
+
+class RiskLevel(Enum):
+    """Risk levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+    NONE = "none" 

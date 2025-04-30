@@ -10,6 +10,18 @@ class ValidationError(OntologyFrameworkError):
     """Raised when validation fails."""
     pass
 
+class ConfigurationError(OntologyFrameworkError):
+    """Raised when configuration is invalid."""
+    pass
+
+class DependencyError(OntologyFrameworkError):
+    """Raised when a dependency is missing or invalid."""
+    pass
+
+class ReasonerError(OntologyFrameworkError):
+    """Raised when reasoning fails."""
+    pass
+
 class ConformanceError(OntologyFrameworkError):
     """Raised when conformance checks fail."""
     pass
@@ -75,6 +87,9 @@ class GitHubError(OntologyFrameworkError):
 __all__ = [
     'OntologyFrameworkError',
     'ValidationError',
+    'ConfigurationError',
+    'DependencyError',
+    'ReasonerError',
     'ConformanceError',
     'ConcurrentModificationError',
     'BoldoAPIError',

@@ -1,0 +1,98 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vp: <http://example.org/validation-patterns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+vp:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "A pattern used for validation rules"@en ;
+    owl:versionInfo "1.0.0" .
+
+vp:pattern a owl:DatatypeProperty ;
+    rdfs:domain vp:ValidationPattern ;
+    rdfs:range xsd:string ;
+    rdfs:label "Pattern Value"@en ;
+    rdfs:comment "The actual pattern string used for validation"@en .
+
+vp:category a owl:ObjectProperty ;
+    rdfs:domain vp:ValidationPattern ;
+    rdfs:range vp:PatternCategory ;
+    rdfs:label "Pattern Category"@en ;
+    rdfs:comment "The category this pattern belongs to"@en .
+
+vp:version a owl:DatatypeProperty ;
+    rdfs:domain vp:ValidationPattern ;
+    rdfs:range xsd:string ;
+    rdfs:label "Pattern Version"@en ;
+    rdfs:comment "Version of the pattern in semver format"@en .
+
+vp:PatternCategory a owl:Class ;
+    rdfs:label "Pattern Category"@en ;
+    rdfs:comment "Categories for validation patterns"@en .
+
+# Pattern Categories
+vp:SensitiveData a vp:PatternCategory ;
+    rdfs:label "Sensitive Data"@en ;
+    rdfs:comment "Patterns for detecting sensitive data"@en .
+
+vp:SecurityRisk a vp:PatternCategory ;
+    rdfs:label "Security Risk"@en ;
+    rdfs:comment "Patterns for detecting security risks"@en .
+
+vp:DataQuality a vp:PatternCategory ;
+    rdfs:label "Data Quality"@en ;
+    rdfs:comment "Patterns for data quality checks"@en .
+
+# Default Sensitive Data Patterns
+vp:PasswordPattern a vp:ValidationPattern ;
+    vp:pattern "(?i)(password|pwd|secret|key|token|credential|api[_-]?key)" ;
+    vp:category vp:SensitiveData ;
+    vp:version "1.0.0" ;
+    rdfs:label "Password Pattern"@en ;
+    rdfs:comment "Pattern for detecting password-related fields"@en .
+
+vp:SSNPattern a vp:ValidationPattern ;
+    vp:pattern "\\d{3}-\\d{2}-\\d{4}" ;
+    vp:category vp:SensitiveData ;
+    vp:version "1.0.0" ;
+    rdfs:label "SSN Pattern"@en ;
+    rdfs:comment "Pattern for detecting Social Security Numbers"@en .
+
+vp:CreditCardPattern a vp:ValidationPattern ;
+    vp:pattern "\\d{4}[- ]?\\d{4}[- ]?\\d{4}[- ]?\\d{4}" ;
+    vp:category vp:SensitiveData ;
+    vp:version "1.0.0" ;
+    rdfs:label "Credit Card Pattern"@en ;
+    rdfs:comment "Pattern for detecting credit card numbers"@en .
+
+# Example Data Quality Patterns
+vp:EmailPattern a vp:ValidationPattern ;
+    vp:pattern "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" ;
+    vp:category vp:DataQuality ;
+    vp:version "1.0.0" ;
+    rdfs:label "Email Pattern"@en ;
+    rdfs:comment "Pattern for validating email addresses"@en .
+
+vp:URLPattern a vp:ValidationPattern ;
+    vp:pattern "^https?://(?:www\\.)?[\\w\\d\\-_]+\\.\\w{2,}(?:/[\\w\\d\\-._/?%&=]*)?$" ;
+    vp:category vp:DataQuality ;
+    vp:version "1.0.0" ;
+    rdfs:label "URL Pattern"@en ;
+    rdfs:comment "Pattern for validating URLs"@en .
+
+# Example Security Risk Patterns
+vp:SQLInjectionPattern a vp:ValidationPattern ;
+    vp:pattern "(?i)(\\b(select|insert|update|delete|drop|union|exec)\\b)" ;
+    vp:category vp:SecurityRisk ;
+    vp:version "1.0.0" ;
+    rdfs:label "SQL Injection Pattern"@en ;
+    rdfs:comment "Pattern for detecting potential SQL injection attempts"@en .
+
+vp:XSSPattern a vp:ValidationPattern ;
+    vp:pattern "(?i)(<script|javascript:|on\\w+\\s*=)" ;
+    vp:category vp:SecurityRisk ;
+    vp:version "1.0.0" ;
+    rdfs:label "XSS Pattern"@en ;
+    rdfs:comment "Pattern for detecting potential XSS attempts"@en . 

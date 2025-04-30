@@ -1,59 +1,66 @@
-from rdflib import Graph, RDF, OWL, RDFS, Namespace, SH
-from rdflib.namespace import XSD
-import pprint
+from rdflib import Graph, Namespace
+from rdflib.namespace import RDF, RDFS, OWL
 
 def analyze_guidance():
-    # Initialize graph
     g = Graph()
+    g.parse("guidance.ttl", format="turtle")
     
-    # Load the guidance ontology
-    g.parse('guidance.ttl', format='turtle')
+    # Define and bind namespaces
+    GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+    META = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#")
+    g.bind("guidance", GUIDANCE)
+    g.bind("meta", META)
     
-    # Define namespaces
-    GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
+    # Query 1: Check Module Registry
+    print("\nChecking Module Registry:")
+    q1 = """
+    PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     
-    # Initialize pretty printer
-    pp = pprint.PrettyPrinter(indent=2)
+    SELECT ?registry ?module
+    WHERE {
+        ?registry a ?registryClass .
+        ?registryClass rdfs:subClassOf* guidance:ModuleRegistry .
+        OPTIONAL { ?registry guidance:registeredModule ?module }
+    }
+    """
+    for row in g.query(q1):
+        print(f"Registry: {row.registry}, Module: {row.module}")
     
-    print("\n=== Classes ===")
-    for s, p, o in g.triples((None, RDF.type, OWL.Class)):
-        print(f"\nClass: {s}")
-        for _, label, value in g.triples((s, RDFS.label, None)):
-            print(f"  Label: {value}")
-        for _, comment, value in g.triples((s, RDFS.comment, None)):
-            print(f"  Comment: {value}")
+    # Query 2: Check Legacy Support
+    print("\nChecking Legacy Support:")
+    q2 = """
+    PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
     
-    print("\n=== Properties ===")
-    for s, p, o in g.triples((None, RDF.type, OWL.ObjectProperty)):
-        print(f"\nObject Property: {s}")
-        for _, label, value in g.triples((s, RDFS.label, None)):
-            print(f"  Label: {value}")
-        for _, comment, value in g.triples((s, RDFS.comment, None)):
-            print(f"  Comment: {value}")
-        for _, domain, value in g.triples((s, RDFS.domain, None)):
-            print(f"  Domain: {value}")
-        for _, range, value in g.triples((s, RDFS.range, None)):
-            print(f"  Range: {value}")
+    SELECT ?support ?mapping ?source ?target
+    WHERE {
+        ?support a guidance:LegacySupport .
+        OPTIONAL {
+            ?support guidance:hasLegacyMapping ?mapping .
+            ?mapping guidance:sourceModule ?source ;
+                     guidance:targetModule ?target .
+        }
+    }
+    """
+    for row in g.query(q2):
+        print(f"Support: {row.support}, Mapping: {row.mapping}")
+        if row.mapping:
+            print(f"  Source: {row.source}")
+            print(f"  Target: {row.target}")
     
-    print("\n=== SHACL Shapes ===")
-    for s, p, o in g.triples((None, RDF.type, SH.NodeShape)):
-        print(f"\nShape: {s}")
-        for _, label, value in g.triples((s, RDFS.label, None)):
-            print(f"  Label: {value}")
-        for _, comment, value in g.triples((s, RDFS.comment, None)):
-            print(f"  Comment: {value}")
-        for _, target, value in g.triples((s, SH.targetClass, None)):
-            print(f"  Target Class: {value}")
+    # Query 3: Check Meta Integration
+    print("\nChecking Meta Integration:")
+    q3 = """
+    PREFIX meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#>
     
-    print("\n=== Individuals ===")
-    for s, p, o in g.triples((None, RDF.type, None)):
-        if o != OWL.Class and o != OWL.ObjectProperty and o != SH.NodeShape:
-            print(f"\nIndividual: {s}")
-            print(f"  Type: {o}")
-            for _, label, value in g.triples((s, RDFS.label, None)):
-                print(f"  Label: {value}")
-            for _, comment, value in g.triples((s, RDFS.comment, None)):
-                print(f"  Comment: {value}")
+    SELECT ?subject ?metaProp ?object
+    WHERE {
+        ?subject ?metaProp ?object .
+        FILTER(STRSTARTS(STR(?metaProp), STR(meta:)))
+    }
+    """
+    for row in g.query(q3):
+        print(f"{row.subject} {row.metaProp} {row.object}")
 
 if __name__ == "__main__":
     analyze_guidance() 

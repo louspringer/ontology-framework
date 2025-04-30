@@ -6,6 +6,27 @@ from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 from enum import Enum, auto
 
+class ValidationRuleType(str, Enum):
+    """Validation rule types."""
+    SHACL = "shacl"
+    SEMANTIC = "semantic"
+    SYNTAX = "syntax"
+    SPORE = "spore"
+    RISK = "risk"
+    SECURITY = "security"
+    INDIVIDUAL_TYPE = "individual_type"
+    MATRIX = "matrix"
+    COMPLIANCE = "compliance"
+    PERFORMANCE = "performance"
+    RELIABILITY = "reliability"
+    AVAILABILITY = "availability"
+    SCALABILITY = "scalability"
+    MAINTAINABILITY = "maintainability"
+    SEVERITY = "severity"
+    STEP_ORDER = "step_order"
+    BFG9K = "bfg9k"
+    SENSITIVE_DATA = "sensitive_data"
+
 class PatchType(Enum):
     """Types of patches that can be applied."""
     MINOR = "minor"
@@ -58,11 +79,14 @@ class PatchStatus(Enum):
     RESTORED = "restored"
 
 class ErrorSeverity(Enum):
-    """Severity levels for errors."""
+    """Enum for error severity levels."""
+    CRITICAL = "critical"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
-    CRITICAL = "critical"
     FATAL = "fatal"
     DEBUG = "debug"
     TRACE = "trace"
@@ -72,7 +96,7 @@ class ErrorSeverity(Enum):
 
 class ErrorType(Enum):
     """Types of errors that can occur."""
-    VALIDATION = "validation"
+    VALIDATION = "Validation Error"
     RUNTIME = "runtime"
     CONFIGURATION = "configuration"
     NETWORK = "network"
@@ -85,7 +109,7 @@ class ErrorType(Enum):
     AUTHENTICATION = "authentication"
     AUTHORIZATION = "authorization"
     COMPLIANCE = "compliance"
-    SECURITY = "security"
+    MATRIX = "matrix"
     PERFORMANCE = "performance"
     SCALABILITY = "scalability"
     AVAILABILITY = "availability"
@@ -94,21 +118,6 @@ class ErrorType(Enum):
     DATA_LOSS = "data_loss"
     IO = "io"
     TEST = "test"
-
-class ValidationRule(Enum):
-    """Types of validation rules."""
-    SENSITIVE_DATA = "Sensitive Data"
-    RISK = "Risk"
-    MATRIX = "Matrix"
-    COMPLIANCE = "Compliance"
-    SECURITY = "Security"
-    PERFORMANCE = "Performance"
-    RELIABILITY = "Reliability"
-    AVAILABILITY = "Availability"
-    SCALABILITY = "Scalability"
-    MAINTAINABILITY = "Maintainability"
-    SEVERITY = "Error Severity"
-    STEP_ORDER = "Step Order"
 
 class ErrorStep(Enum):
     """Steps in the error handling process."""
@@ -131,18 +140,165 @@ class ErrorStep(Enum):
     VERIFICATION = "verification"
     CLOSURE = "closure"
 
+class ErrorResult:
+    """Class for representing error results."""
+    def __init__(
+        self,
+        error_type: ErrorType,
+        message: str,
+        severity: ErrorSeverity,
+        step: ErrorStep,
+        timestamp: datetime = datetime.now(),
+        details: Optional[Dict[str, Any]] = None,
+        validation_details: Optional[Dict[str, Any]] = None,
+        prevention_measures: Optional[Dict[str, bool]] = None,
+        recovery_strategies: Optional[Dict[str, bool]] = None
+    ):
+        self.error_type = error_type
+        self.message = message
+        self.severity = severity
+        self.step = step
+        self.timestamp = timestamp
+        self.details = details or {}
+        self.validation_details = validation_details or {}
+        self.prevention_measures = prevention_measures or {}
+        self.recovery_strategies = recovery_strategies or {}
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert the error result to a dictionary."""
+        return {
+            "error_type": self.error_type.value,
+            "message": self.message,
+            "severity": self.severity.value,
+            "step": self.step.value,
+            "timestamp": self.timestamp.isoformat(),
+            "details": self.details,
+            "validation_details": self.validation_details,
+            "prevention_measures": self.prevention_measures,
+            "recovery_strategies": self.recovery_strategies
+        }
+
+    def __str__(self) -> str:
+        """Return a string representation of the error result."""
+        return f"{self.error_type.value}: {self.message} (Severity: {self.severity.value}, Step: {self.step.value})"
+
+class ValidationRule(Enum):
+    """Types of validation rules."""
+    RISK = "risk"
+    SECURITY = "security"
+    COMPLIANCE = "compliance"
+    PERFORMANCE = "performance"
+    SENSITIVE_DATA = "sensitive_data"
+    RELIABILITY = "reliability"
+    AVAILABILITY = "availability"
+    SCALABILITY = "scalability"
+    MAINTAINABILITY = "maintainability"
+    SEVERITY = "severity"
+    STEP_ORDER = "step_order"
+    SPORE = "spore"
+    SEMANTIC = "semantic"
+    SYNTAX = "syntax"
+    MATRIX = "matrix"
+    BFG9K = "bfg9k"
+
+    @property
+    def message(self) -> str:
+        """Get the validation message for this rule."""
+        messages = {
+            ValidationRule.RISK: "Risk validation failed",
+            ValidationRule.SECURITY: "Security validation failed",
+            ValidationRule.COMPLIANCE: "Compliance validation failed",
+            ValidationRule.PERFORMANCE: "Performance validation failed",
+            ValidationRule.SENSITIVE_DATA: "Sensitive data validation failed",
+            ValidationRule.RELIABILITY: "Reliability validation failed",
+            ValidationRule.AVAILABILITY: "Availability validation failed",
+            ValidationRule.SCALABILITY: "Scalability validation failed",
+            ValidationRule.MAINTAINABILITY: "Maintainability validation failed",
+            ValidationRule.SEVERITY: "Severity validation failed",
+            ValidationRule.STEP_ORDER: "Step order validation failed",
+            ValidationRule.SPORE: "SPORE validation failed",
+            ValidationRule.SEMANTIC: "Semantic validation failed",
+            ValidationRule.SYNTAX: "Syntax validation failed",
+            ValidationRule.MATRIX: "Matrix validation failed",
+            ValidationRule.BFG9K: "BFG9K pattern validation failed"
+        }
+        return messages.get(self, "Validation failed")
+
+    @property
+    def priority(self) -> str:
+        """Get the priority level for this rule."""
+        priorities = {
+            ValidationRule.RISK: "HIGH",
+            ValidationRule.SECURITY: "HIGH",
+            ValidationRule.COMPLIANCE: "HIGH",
+            ValidationRule.PERFORMANCE: "MEDIUM",
+            ValidationRule.SENSITIVE_DATA: "HIGH",
+            ValidationRule.RELIABILITY: "HIGH",
+            ValidationRule.AVAILABILITY: "HIGH",
+            ValidationRule.SCALABILITY: "MEDIUM",
+            ValidationRule.MAINTAINABILITY: "MEDIUM",
+            ValidationRule.SEVERITY: "HIGH",
+            ValidationRule.STEP_ORDER: "HIGH",
+            ValidationRule.SPORE: "HIGH",
+            ValidationRule.SEMANTIC: "MEDIUM",
+            ValidationRule.SYNTAX: "LOW",
+            ValidationRule.MATRIX: "HIGH",
+            ValidationRule.BFG9K: "HIGH"
+        }
+        return priorities.get(self, "MEDIUM")
+
+    @property
+    def target(self) -> str:
+        """Get the target of this validation rule."""
+        targets = {
+            ValidationRule.RISK: "data",
+            ValidationRule.SECURITY: "data",
+            ValidationRule.COMPLIANCE: "data",
+            ValidationRule.PERFORMANCE: "data",
+            ValidationRule.SENSITIVE_DATA: "data",
+            ValidationRule.RELIABILITY: "data",
+            ValidationRule.AVAILABILITY: "data",
+            ValidationRule.SCALABILITY: "data",
+            ValidationRule.MAINTAINABILITY: "data",
+            ValidationRule.SEVERITY: "data",
+            ValidationRule.STEP_ORDER: "data",
+            ValidationRule.SPORE: "data",
+            ValidationRule.SEMANTIC: "data",
+            ValidationRule.SYNTAX: "data",
+            ValidationRule.MATRIX: "data",
+            ValidationRule.BFG9K: "pattern"
+        }
+        return targets.get(self, "data")
+
+    @property
+    def validator(self) -> str:
+        """Get the validator for this rule."""
+        validators = {
+            ValidationRule.RISK: "risk_validator",
+            ValidationRule.SECURITY: "security_validator",
+            ValidationRule.COMPLIANCE: "compliance_validator",
+            ValidationRule.PERFORMANCE: "performance_validator",
+            ValidationRule.SENSITIVE_DATA: "sensitive_data_validator",
+            ValidationRule.RELIABILITY: "reliability_validator",
+            ValidationRule.AVAILABILITY: "availability_validator",
+            ValidationRule.SCALABILITY: "scalability_validator",
+            ValidationRule.MAINTAINABILITY: "maintainability_validator",
+            ValidationRule.SEVERITY: "severity_validator",
+            ValidationRule.STEP_ORDER: "step_order_validator",
+            ValidationRule.SPORE: "spore_validator",
+            ValidationRule.SEMANTIC: "semantic_validator",
+            ValidationRule.SYNTAX: "syntax_validator",
+            ValidationRule.MATRIX: "matrix_validator",
+            ValidationRule.BFG9K: "bfg9k_validator"
+        }
+        return validators.get(self, "unknown_validator")
+
 class RiskLevel(Enum):
     """Levels of risk."""
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
-    UNKNOWN = "unknown"
-    NONE = "none"
-    MINIMAL = "minimal"
-    MODERATE = "moderate"
-    SEVERE = "severe"
-    EXTREME = "extreme"
+    LOW = auto()
+    MEDIUM = auto()
+    HIGH = auto()
+    CRITICAL = auto()
 
 class ComplianceLevel(Enum):
     """Levels of compliance."""
@@ -161,23 +317,15 @@ class ComplianceLevel(Enum):
     REVIEW = "review"
     APPROVED = "approved"
     REJECTED = "rejected"
+    CRITICAL = "critical"
 
 class SecurityLevel(Enum):
     """Levels of security."""
-    PUBLIC = "public"
-    INTERNAL = "internal"
-    CONFIDENTIAL = "confidential"
-    SECRET = "secret"
-    TOP_SECRET = "top_secret"
-    RESTRICTED = "restricted"
-    SENSITIVE = "sensitive"
-    PRIVATE = "private"
-    PROTECTED = "protected"
-    CLASSIFIED = "classified"
-    UNCLASSIFIED = "unclassified"
-    MEDIUM = "medium"
-    HIGH = "high"
-    LOW = "low"
+    LOW = auto()
+    MEDIUM = auto()
+    HIGH = auto()
+    RESTRICTED = auto()
+    CONFIDENTIAL = auto()
 
 class PerformanceMetric(Enum):
     """Types of performance metrics."""
@@ -213,3 +361,30 @@ class PerformanceMetric(Enum):
     ANALYZABILITY = "analyzability"
     STABILITY = "stability"
     CHANGEABILITY = "changeability" 
+
+class ValidationResult:
+    def __init__(
+        self,
+        rule: ValidationRule,
+        result: bool,
+        timestamp: str,
+        details: Optional[Dict[str, Any]] = None
+    ):
+        self.rule = rule
+        self.result = result
+        self.timestamp = timestamp
+        self.details = details or {}
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'rule': self.rule,
+            'result': self.result,
+            'timestamp': self.timestamp,
+            'details': self.details
+        }
+
+class ValidationError(Exception):
+    def __init__(self, message: str, rule: ValidationRule, details: Optional[Dict[str, Any]] = None):
+        super().__init__(message)
+        self.rule = rule
+        self.details = details or {}

@@ -60,4 +60,32 @@ __all__ = [
 
 """
 Ontology Framework Modules
-""" 
+"""
+
+"""Module registry for the ontology framework."""
+
+from typing import Dict, Type
+
+from ontology_framework.modules.base import BaseModule
+from ontology_framework.modules.validation import ValidationModule
+from ontology_framework.modules.consistency import ConsistencyModule
+from ontology_framework.modules.semantic import SemanticModule
+from ontology_framework.modules.syntax import SyntaxModule
+
+# Registry of available modules
+MODULE_REGISTRY: Dict[str, Type[BaseModule]] = {
+    "validation": ValidationModule,
+    "consistency": ConsistencyModule,
+    "semantic": SemanticModule,
+    "syntax": SyntaxModule,
+}
+
+def get_module(module_name: str) -> Type[BaseModule]:
+    """Get a module class by name."""
+    if module_name not in MODULE_REGISTRY:
+        raise ValueError(f"Module {module_name} not found in registry")
+    return MODULE_REGISTRY[module_name]
+
+def list_modules() -> list[str]:
+    """List all available modules."""
+    return list(MODULE_REGISTRY.keys()) 

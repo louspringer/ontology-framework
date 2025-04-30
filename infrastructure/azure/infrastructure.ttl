@@ -1,0 +1,412 @@
+@prefix guidance: <http://example.org/guidance#> .
+@prefix inf: <http://example.org/infrastructure#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+inf:hasAddressPrefix a owl:DatatypeProperty ;
+    rdfs:label "has address prefix" ;
+    rdfs:comment "The address prefix for the subnet" ;
+    rdfs:domain inf:Subnet ;
+    rdfs:range xsd:string .
+
+inf:hasAddressSpace a owl:DatatypeProperty ;
+    rdfs:label "has address space" ;
+    rdfs:comment "The address space for the virtual network" ;
+    rdfs:domain inf:VirtualNetwork ;
+    rdfs:range xsd:string .
+
+inf:hasAdminUsername a owl:DatatypeProperty ;
+    rdfs:label "has admin username" ;
+    rdfs:comment "The admin username for the VM" ;
+    rdfs:domain inf:OSProfile ;
+    rdfs:range xsd:string .
+
+inf:hasAutoShutdown a owl:ObjectProperty ;
+    rdfs:label "has auto shutdown" ;
+    rdfs:comment "The auto shutdown configuration of the VM" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range inf:AutoShutdown .
+
+inf:hasDNSSettings a owl:ObjectProperty ;
+    rdfs:label "has DNS settings" ;
+    rdfs:comment "The DNS settings of the public IP" ;
+    rdfs:domain inf:PublicIPAddress ;
+    rdfs:range inf:DNSSettings .
+
+inf:hasDomainNameLabel a owl:DatatypeProperty ;
+    rdfs:label "has domain name label" ;
+    rdfs:comment "The domain name label for DNS" ;
+    rdfs:domain inf:DNSSettings ;
+    rdfs:range xsd:string .
+
+inf:hasFQDN a owl:DatatypeProperty ;
+    rdfs:label "has FQDN" ;
+    rdfs:comment "The fully qualified domain name" ;
+    rdfs:domain inf:DNSSettings ;
+    rdfs:range xsd:string .
+
+inf:hasIPAddress a owl:DatatypeProperty ;
+    rdfs:label "has IP address" ;
+    rdfs:comment "The IP address of the resource" ;
+    rdfs:domain inf:NetworkInterface,
+        inf:PublicIPAddress ;
+    rdfs:range xsd:string .
+
+inf:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment "The Azure region location" ;
+    rdfs:range xsd:string .
+
+inf:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name" ;
+    rdfs:comment "The name of the resource" ;
+    rdfs:range xsd:string .
+
+inf:hasNetworkInterface a owl:ObjectProperty ;
+    rdfs:label "has network interface" ;
+    rdfs:comment "The network interface of the VM" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range inf:NetworkInterface .
+
+inf:hasNetworkSecurityGroup a owl:ObjectProperty ;
+    rdfs:label "has network security group" ;
+    rdfs:comment "The network security group of the subnet" ;
+    rdfs:domain inf:Subnet ;
+    rdfs:range inf:NetworkSecurityGroup .
+
+inf:hasNotificationTime a owl:DatatypeProperty ;
+    rdfs:label "has notification time" ;
+    rdfs:comment "The notification time before shutdown" ;
+    rdfs:domain inf:AutoShutdown ;
+    rdfs:range xsd:integer .
+
+inf:hasOSOffer a owl:DatatypeProperty ;
+    rdfs:label "has OS offer" ;
+    rdfs:comment "The offer of the OS image" ;
+    rdfs:domain inf:StorageProfile ;
+    rdfs:range xsd:string .
+
+inf:hasOSProfile a owl:ObjectProperty ;
+    rdfs:label "has OS profile" ;
+    rdfs:comment "The operating system profile of the VM" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range inf:OSProfile .
+
+inf:hasOSPublisher a owl:DatatypeProperty ;
+    rdfs:label "has OS publisher" ;
+    rdfs:comment "The publisher of the OS image" ;
+    rdfs:domain inf:StorageProfile ;
+    rdfs:range xsd:string .
+
+inf:hasOSSku a owl:DatatypeProperty ;
+    rdfs:label "has OS SKU" ;
+    rdfs:comment "The SKU of the OS image" ;
+    rdfs:domain inf:StorageProfile ;
+    rdfs:range xsd:string .
+
+inf:hasOSVersion a owl:DatatypeProperty ;
+    rdfs:label "has OS version" ;
+    rdfs:comment "The version of the OS image" ;
+    rdfs:domain inf:StorageProfile ;
+    rdfs:range xsd:string .
+
+inf:hasPort a owl:DatatypeProperty ;
+    rdfs:label "has port" ;
+    rdfs:comment "The network port number" ;
+    rdfs:domain inf:SecurityRule ;
+    rdfs:range xsd:integer .
+
+inf:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "has priority" ;
+    rdfs:comment "The priority of the rule" ;
+    rdfs:domain inf:SecurityRule ;
+    rdfs:range xsd:integer .
+
+inf:hasProtocol a owl:DatatypeProperty ;
+    rdfs:label "has protocol" ;
+    rdfs:comment "The network protocol" ;
+    rdfs:domain inf:SecurityRule ;
+    rdfs:range xsd:string .
+
+inf:hasPublicIP a owl:ObjectProperty ;
+    rdfs:label "has public IP" ;
+    rdfs:comment "The public IP address of the network interface" ;
+    rdfs:domain inf:NetworkInterface ;
+    rdfs:range inf:PublicIPAddress .
+
+inf:hasSSHConfiguration a owl:ObjectProperty ;
+    rdfs:label "has SSH configuration" ;
+    rdfs:comment "The SSH configuration of the VM" ;
+    rdfs:domain inf:OSProfile ;
+    rdfs:range inf:SSHConfiguration .
+
+inf:hasSSHPublicKey a owl:DatatypeProperty ;
+    rdfs:label "has SSH public key" ;
+    rdfs:comment "The SSH public key for the VM" ;
+    rdfs:domain inf:SSHConfiguration ;
+    rdfs:range xsd:string .
+
+inf:hasSecurityRule a owl:ObjectProperty ;
+    rdfs:label "has security rule" ;
+    rdfs:comment "The security rule of the network security group" ;
+    rdfs:domain inf:NetworkSecurityGroup ;
+    rdfs:range inf:SecurityRule .
+
+inf:hasShutdownTime a owl:DatatypeProperty ;
+    rdfs:label "has shutdown time" ;
+    rdfs:comment "The auto shutdown time" ;
+    rdfs:domain inf:AutoShutdown ;
+    rdfs:range xsd:time .
+
+inf:hasSize a owl:DatatypeProperty ;
+    rdfs:label "has size" ;
+    rdfs:comment "The VM size specification" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range xsd:string .
+
+inf:hasSpotInstance a owl:ObjectProperty ;
+    rdfs:label "has spot instance" ;
+    rdfs:comment "The spot instance configuration of the VM" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range inf:SpotInstance .
+
+inf:hasStorageProfile a owl:ObjectProperty ;
+    rdfs:label "has storage profile" ;
+    rdfs:comment "The storage profile of the VM" ;
+    rdfs:domain inf:VirtualMachine ;
+    rdfs:range inf:StorageProfile .
+
+inf:hasStorageType a owl:DatatypeProperty ;
+    rdfs:label "has storage type" ;
+    rdfs:comment "The type of storage" ;
+    rdfs:domain inf:StorageProfile ;
+    rdfs:range xsd:string .
+
+inf:hasSubnet a owl:ObjectProperty ;
+    rdfs:label "has subnet" ;
+    rdfs:comment "The subnet of the network interface" ;
+    rdfs:domain inf:NetworkInterface ;
+    rdfs:range inf:Subnet .
+
+inf:vm-38d51c2c-7b8a-421d-98d4-8213354e2d25 a inf:VirtualMachine ;
+    inf:hasAutoShutdown inf:shutdown-dea350cf-a5ce-4743-b5f1-cd3ac54e6329 ;
+    inf:hasLocation "eastus" ;
+    inf:hasName "cursor-ide-vm" ;
+    inf:hasNetworkInterface inf:nic-cd3e496a-b872-4b8b-8f66-b3def769aa56 ;
+    inf:hasOSProfile inf:osprofile-1b5788e0-6b45-48c3-97e2-cea39aa8b94b ;
+    inf:hasSize "Standard_D8s_v3" ;
+    inf:hasSpotInstance inf:spot-1c2e60e4-2f78-40bf-b018-c16111e98702 ;
+    inf:hasStorageProfile inf:storageprofile-cefac21f-2a74-4ac3-9396-e5250b73acbc .
+
+inf:vnet-df7d0370-123f-40b4-a846-aac83a77e8e1 a inf:VirtualNetwork ;
+    inf:hasAddressSpace "10.0.0.0/16" ;
+    inf:hasName "cursor-ide-vnet" .
+
+inf:AutoShutdownShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Auto Shutdown" ;
+    sh:property [ ],
+        [ ] ;
+    sh:targetClass inf:AutoShutdown .
+
+inf:DNSSettingsShape a sh:NodeShape ;
+    rdfs:label "Validation shape for DNS Settings" ;
+    sh:property [ ],
+        [ ] ;
+    sh:targetClass inf:DNSSettings .
+
+inf:NetworkInterfaceShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Network Interface" ;
+    sh:property [ ],
+        [ ] ;
+    sh:targetClass inf:NetworkInterface .
+
+inf:NetworkSecurityGroupShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Network Security Group" ;
+    sh:property [ ] ;
+    sh:targetClass inf:NetworkSecurityGroup .
+
+inf:OSProfileShape a sh:NodeShape ;
+    rdfs:label "Validation shape for OS Profile" ;
+    sh:property [ ],
+        [ ] ;
+    sh:targetClass inf:OSProfile .
+
+inf:PublicIPAddressShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Public IP Address" ;
+    sh:property [ ],
+        [ ] ;
+    sh:targetClass inf:PublicIPAddress .
+
+inf:SSHConfigurationShape a sh:NodeShape ;
+    rdfs:label "Validation shape for SSH Configuration" ;
+    sh:property [ ] ;
+    sh:targetClass inf:SSHConfiguration .
+
+inf:SecurityRuleShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Security Rule" ;
+    sh:property [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    sh:targetClass inf:SecurityRule .
+
+inf:SpotInstanceShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Spot Instance" ;
+    sh:property [ ] ;
+    sh:targetClass inf:SpotInstance .
+
+inf:StorageProfileShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Storage Profile" ;
+    sh:property [ ],
+        [ ],
+        [ ],
+        [ ] ;
+    sh:targetClass inf:StorageProfile .
+
+inf:SubnetShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Subnet" ;
+    sh:property [ ] ;
+    sh:targetClass inf:Subnet .
+
+inf:VirtualMachineShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Virtual Machine" ;
+    sh:property [ ],
+        [ ],
+        [ ] ;
+    sh:targetClass inf:VirtualMachine .
+
+inf:VirtualNetworkShape a sh:NodeShape ;
+    rdfs:label "Validation shape for Virtual Network" ;
+    sh:targetClass inf:VirtualNetwork .
+
+inf:dnssettings-1225d2d6-8829-464f-891d-450bff00f766 a inf:DNSSettings ;
+    inf:hasDomainNameLabel "cursor-ide" ;
+    inf:hasFQDN "cursor-ide.eastus.cloudapp.azure.com" .
+
+inf:ip-846f6cb9-c55d-4271-9b62-3862bc84f1d0 a inf:PublicIPAddress ;
+    inf:hasDNSSettings inf:dnssettings-1225d2d6-8829-464f-891d-450bff00f766 ;
+    inf:hasIPAddress "20.0.0.1" ;
+    inf:hasName "cursor-ide-ip" .
+
+inf:nic-cd3e496a-b872-4b8b-8f66-b3def769aa56 a inf:NetworkInterface ;
+    inf:hasIPAddress "10.0.0.4" ;
+    inf:hasName "cursor-ide-nic" ;
+    inf:hasPublicIP inf:ip-846f6cb9-c55d-4271-9b62-3862bc84f1d0 ;
+    inf:hasSubnet inf:subnet-77b91e53-105c-499b-a329-ccc368a63f11 .
+
+inf:nsg-07fb1b05-c375-433c-a00b-446b90bc2cec a inf:NetworkSecurityGroup ;
+    inf:hasName "cursor-ide-nsg" ;
+    inf:hasSecurityRule inf:rule-f89a0c11-b9e0-41cb-a42c-4fe8fb627b8d .
+
+inf:osprofile-1b5788e0-6b45-48c3-97e2-cea39aa8b94b a inf:OSProfile ;
+    inf:hasAdminUsername "lou" ;
+    inf:hasSSHConfiguration inf:sshconfig-c65ac109-f577-4404-8d61-d05778c3fa9f .
+
+inf:rule-f89a0c11-b9e0-41cb-a42c-4fe8fb627b8d a inf:SecurityRule ;
+    inf:hasName "SSH-Custom" ;
+    inf:hasPort 22222 ;
+    inf:hasPriority 1000 ;
+    inf:hasProtocol "Tcp" .
+
+inf:shutdown-dea350cf-a5ce-4743-b5f1-cd3ac54e6329 a inf:AutoShutdown ;
+    inf:hasNotificationTime 30 ;
+    inf:hasShutdownTime "17:00:00"^^xsd:time .
+
+inf:spot-1c2e60e4-2f78-40bf-b018-c16111e98702 a inf:SpotInstance ;
+    inf:hasName "cursor-ide-spot" .
+
+inf:sshconfig-c65ac109-f577-4404-8d61-d05778c3fa9f a inf:SSHConfiguration ;
+    inf:hasSSHPublicKey "REPLACE_WITH_GENERATED_SSH_PUBLIC_KEY" .
+
+inf:storageprofile-cefac21f-2a74-4ac3-9396-e5250b73acbc a inf:StorageProfile ;
+    inf:hasOSOffer "UbuntuServer" ;
+    inf:hasOSPublisher "Canonical" ;
+    inf:hasOSSku "18.04-LTS" ;
+    inf:hasOSVersion "latest" ;
+    inf:hasStorageType "Premium_LRS" .
+
+inf:subnet-77b91e53-105c-499b-a329-ccc368a63f11 a inf:Subnet ;
+    inf:hasAddressPrefix "10.0.0.0/24" ;
+    inf:hasName "cursor-ide-subnet" ;
+    inf:hasNetworkSecurityGroup inf:nsg-07fb1b05-c375-433c-a00b-446b90bc2cec .
+
+inf:SpotInstance a owl:Class ;
+    rdfs:label "Spot Instance" ;
+    guidance:hasValidationRule inf:SpotInstanceShape ;
+    rdfs:comment "Azure spot instance configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:VirtualNetwork a owl:Class ;
+    rdfs:label "Virtual Network" ;
+    guidance:hasValidationRule inf:VirtualNetworkShape ;
+    rdfs:comment "Azure virtual network" ;
+    owl:versionInfo "1.0.0" .
+
+inf:NetworkSecurityGroup a owl:Class ;
+    rdfs:label "Network Security Group" ;
+    guidance:hasValidationRule inf:NetworkSecurityGroupShape ;
+    rdfs:comment "Azure network security group" ;
+    owl:versionInfo "1.0.0" .
+
+inf:SSHConfiguration a owl:Class ;
+    rdfs:label "SSH Configuration" ;
+    guidance:hasValidationRule inf:SSHConfigurationShape ;
+    rdfs:comment "SSH access configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:AutoShutdown a owl:Class ;
+    rdfs:label "Auto Shutdown" ;
+    guidance:hasValidationRule inf:AutoShutdownShape ;
+    rdfs:comment "Azure auto shutdown configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:DNSSettings a owl:Class ;
+    rdfs:label "DNS Settings" ;
+    guidance:hasValidationRule inf:DNSSettingsShape ;
+    rdfs:comment "DNS configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:OSProfile a owl:Class ;
+    rdfs:label "OS Profile" ;
+    guidance:hasValidationRule inf:OSProfileShape ;
+    rdfs:comment "Operating system profile configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:PublicIPAddress a owl:Class ;
+    rdfs:label "Public IP Address" ;
+    guidance:hasValidationRule inf:PublicIPAddressShape ;
+    rdfs:comment "Azure public IP address" ;
+    owl:versionInfo "1.0.0" .
+
+inf:Subnet a owl:Class ;
+    rdfs:label "Subnet" ;
+    guidance:hasValidationRule inf:SubnetShape ;
+    rdfs:comment "Azure virtual network subnet" ;
+    owl:versionInfo "1.0.0" .
+
+inf:NetworkInterface a owl:Class ;
+    rdfs:label "Network Interface" ;
+    guidance:hasValidationRule inf:NetworkInterfaceShape ;
+    rdfs:comment "Azure network interface" ;
+    owl:versionInfo "1.0.0" .
+
+inf:SecurityRule a owl:Class ;
+    rdfs:label "Security Rule" ;
+    guidance:hasValidationRule inf:SecurityRuleShape ;
+    rdfs:comment "Azure network security rule" ;
+    owl:versionInfo "1.0.0" .
+
+inf:StorageProfile a owl:Class ;
+    rdfs:label "Storage Profile" ;
+    guidance:hasValidationRule inf:StorageProfileShape ;
+    rdfs:comment "Storage configuration" ;
+    owl:versionInfo "1.0.0" .
+
+inf:VirtualMachine a owl:Class ;
+    rdfs:label "Virtual Machine" ;
+    guidance:hasValidationRule inf:VirtualMachineShape ;
+    rdfs:comment "Azure virtual machine instance" ;
+    owl:versionInfo "1.0.0" .
+

@@ -1,0 +1,77 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Conformance Levels
+:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "Level of conformance to validation rules"@en .
+
+:STRICT a :ConformanceLevel ;
+    rdfs:label "Strict Conformance"@en ;
+    rdfs:comment "Requires full compliance with all validation rules"@en .
+
+:RELAXED a :ConformanceLevel ;
+    rdfs:label "Relaxed Conformance"@en ;
+    rdfs:comment "Allows some flexibility in validation rules"@en .
+
+:MODERATE a :ConformanceLevel ;
+    rdfs:label "Moderate Conformance"@en ;
+    rdfs:comment "Balanced approach to validation rules"@en .
+
+# Validation Rules
+:SPORERule a owl:Class ;
+    rdfs:subClassOf :ValidationRule ;
+    rdfs:label "SPORE Rule"@en ;
+    rdfs:comment "Rule for SPORE validation"@en ;
+    :hasMessage "SPORE validation rule" ;
+    :hasPriority "HIGH" ;
+    :hasTarget :SPOREValidation ;
+    :hasValidator "validate_spore" .
+
+:SemanticRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule ;
+    rdfs:label "Semantic Rule"@en ;
+    rdfs:comment "Rule for semantic validation"@en ;
+    :hasMessage "Semantic validation rule" ;
+    :hasPriority "HIGH" ;
+    :hasTarget :SemanticValidation ;
+    :hasValidator "validate_semantic" .
+
+:SyntaxRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule ;
+    rdfs:label "Syntax Rule"@en ;
+    rdfs:comment "Rule for syntax validation"@en ;
+    :hasMessage "Syntax validation rule" ;
+    :hasPriority "HIGH" ;
+    :hasTarget :SyntaxValidation ;
+    :hasValidator "validate_syntax" .
+
+:ConsistencyRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule ;
+    rdfs:label "Consistency Rule"@en ;
+    rdfs:comment "Rule for consistency validation"@en ;
+    :hasMessage "Consistency validation rule" ;
+    :hasPriority "HIGH" ;
+    :hasTarget :ConsistencyValidation ;
+    :hasValidator "validate_consistency" .
+
+# Validation Targets
+:SPOREValidation a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Target for SPORE validation"@en .
+
+:SemanticValidation a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Target for semantic validation"@en .
+
+:SyntaxValidation a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Target for syntax validation"@en .
+
+:ConsistencyValidation a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Target for consistency validation"@en . 

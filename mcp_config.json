@@ -1,0 +1,181 @@
+{
+    "metadata": {
+        "name": "DAG Validation Patterns",
+        "description": "Semantic validation of DAG validation patterns",
+        "version": "1.0.1",
+        "author": "MCP System",
+        "timestamp": "2025-04-22T07:22:27Z"
+    },
+    "ontologyPath": "models/dag_validation_patterns.ttl",
+    "targetFiles": ["models/dag_validation_patterns.ttl"],
+    "improvements": {
+        "objectProperties": {
+            "hasImplementation": {
+                "domain": "ValidationRule",
+                "range": "ValidationPattern",
+                "description": "Links a validation rule to its implementation pattern"
+            },
+            "dependsOn": {
+                "domain": "ValidationRule",
+                "range": "ValidationRule",
+                "description": "Specifies dependencies between validation rules"
+            },
+            "appliesTo": {
+                "domain": "ValidationPattern",
+                "range": "IntegrationRequirement",
+                "description": "Links a validation pattern to integration requirements"
+            }
+        },
+        "individuals": {
+            "ConsistencyRuleExample": {
+                "type": "ConsistencyRule",
+                "properties": {
+                    "hasMessage": "Validate class hierarchy consistency",
+                    "hasPriority": "HIGH",
+                    "hasValidator": "validateHierarchy"
+                }
+            },
+            "SemanticRuleExample": {
+                "type": "SemanticRule",
+                "properties": {
+                    "hasMessage": "Check semantic relationships",
+                    "hasPriority": "MEDIUM",
+                    "hasValidator": "validateSemantics"
+                }
+            }
+        },
+        "shapes": {
+            "ValidationPatternShape": {
+                "targetClass": "ValidationPattern",
+                "properties": [
+                    {
+                        "path": "hasImplementation",
+                        "minCount": 1,
+                        "maxCount": 1,
+                        "nodeKind": "IRI"
+                    },
+                    {
+                        "path": "appliesTo",
+                        "minCount": 0,
+                        "nodeKind": "IRI"
+                    }
+                ]
+            }
+        }
+    },
+    "mcpServers": {
+        "bfg9k": {
+            "url": "http://localhost:8080",
+            "type": "sparql",
+            "timeout": 30
+        }
+    },
+    "validationRules": {
+        "ClassHierarchyCheck": {
+            "type": "ConsistencyRule",
+            "message": "Check for cycles in class hierarchy",
+            "priority": "HIGH",
+            "target": "ClassHierarchy",
+            "validator": "validate_consistency",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?class ?superclass WHERE { ?class rdfs:subClassOf+ ?superclass . ?superclass rdfs:subClassOf+ ?class }"
+        },
+        "PropertyDomainCheck": {
+            "type": "SemanticRule",
+            "message": "Validate property domains",
+            "priority": "HIGH",
+            "target": "PropertyDefinition",
+            "validator": "validate_property_constraints",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?prop WHERE { ?prop rdf:type owl:ObjectProperty . FILTER NOT EXISTS { ?prop rdfs:domain ?domain } }"
+        },
+        "PropertyRangeCheck": {
+            "type": "SemanticRule",
+            "message": "Validate property ranges",
+            "priority": "HIGH",
+            "target": "PropertyDefinition",
+            "validator": "validate_property_constraints",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?prop WHERE { ?prop rdf:type owl:ObjectProperty . FILTER NOT EXISTS { ?prop rdfs:range ?range } }"
+        },
+        "SHACLShapeCheck": {
+            "type": "ValidationRule",
+            "message": "Validate SHACL shape definitions",
+            "priority": "HIGH",
+            "target": "SHACLShape",
+            "validator": "validate_shacl",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?shape WHERE { ?shape rdf:type sh:NodeShape . FILTER NOT EXISTS { ?shape sh:targetClass ?class } }"
+        },
+        "UnusedClassCheck": {
+            "type": "SemanticRule",
+            "message": "Check for unused classes",
+            "priority": "MEDIUM",
+            "target": "ClassUsage",
+            "validator": "validate_usage",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?class ?label WHERE { ?class rdf:type owl:Class . ?class rdfs:label ?label . FILTER NOT EXISTS { ?instance rdf:type ?class } }"
+        },
+        "PropertyUsageCheck": {
+            "type": "SemanticRule",
+            "message": "Check for unused properties",
+            "priority": "MEDIUM",
+            "target": "PropertyUsage",
+            "validator": "validate_usage",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?prop WHERE { ?prop rdf:type ?propType . FILTER(?propType IN (owl:ObjectProperty, owl:DatatypeProperty)) . FILTER NOT EXISTS { ?s ?prop ?o } }"
+        },
+        "DAGValidationCheck": {
+            "type": "ValidationRule",
+            "message": "Validate DAG structure",
+            "priority": "HIGH",
+            "target": "DAGStructure",
+            "validator": "validate_dag",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?node WHERE { ?node rdf:type :Node . FILTER NOT EXISTS { ?node :hasEdge ?edge } }"
+        },
+        "DAGComponentCheck": {
+            "type": "ValidationRule",
+            "message": "Validate DAG components",
+            "priority": "HIGH",
+            "target": "DAGComponent",
+            "validator": "validate_component",
+            "sparql": "PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/dag_validation_patterns#> SELECT ?component WHERE { ?component rdf:type :DAGComponent . FILTER NOT EXISTS { ?component :hasValidationRule ?rule } }"
+        }
+    },
+    "validation": {
+        "enabled": true,
+        "strict": true,
+        "rules": {
+            "phaseOrder": true,
+            "contextRequired": true,
+            "serverConfigRequired": true
+        },
+        "phaseExecution": {
+            "validate": {
+                "requiredFiles": ["models/dag_validation_patterns.ttl"],
+                "validationRules": [
+                    "ClassHierarchyCheck",
+                    "PropertyDomainCheck",
+                    "PropertyRangeCheck"
+                ],
+                "order": ["validate", "target", "verify"]
+            },
+            "target": {
+                "requiredFiles": ["models/dag_validation_patterns.ttl"],
+                "validationRules": [
+                    "DAGValidationCheck",
+                    "DAGComponentCheck",
+                    "SHACLShapeCheck"
+                ],
+                "order": ["validate", "target", "verify"]
+            },
+            "verify": {
+                "requiredFiles": ["models/dag_validation_patterns.ttl"],
+                "validationRules": [
+                    "UnusedClassCheck",
+                    "PropertyUsageCheck"
+                ],
+                "order": ["validate", "target", "verify"]
+            }
+        }
+    },
+    "logging": {
+        "level": "DEBUG",
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "file": "mcp.log"
+    }
+} 

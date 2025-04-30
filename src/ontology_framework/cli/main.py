@@ -4,6 +4,7 @@
 import click
 from pathlib import Path
 from typing import Optional
+import json
 
 @click.group()
 def cli() -> None:
@@ -32,14 +33,32 @@ def cli() -> None:
     is_flag=True,
     help="Enable verbose output"
 )
-def mcp(ontology: Path, targets: tuple[Path, ...], verbose: bool) -> None:
+@click.option(
+    "--config",
+    "-c",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=".cursor/mcp.json",
+    help="Path to MCP configuration file"
+)
+def mcp(ontology: Path, targets: tuple[Path, ...], verbose: bool, config: Path) -> None:
     """Model Context Protocol prompt pattern."""
     from ..modules.mcp_prompt import PromptContext, MCPPrompt
+    
+    # Load configuration
+    with open(config) as f:
+        config_data = json.load(f)
     
     # Set up the context
     context = PromptContext(
         ontology_path=ontology,
-        target_files=list(targets)
+        target_files=list(targets),
+        validation_rules=config_data.get("validationRules", {}),
+        metadata={
+            "ontologyPath": str(ontology),
+            "targetFiles": [str(t) for t in targets],
+            "validation": config_data.get("validation", {}),
+            "mcpServers": config_data.get("mcpServers", {})
+        }
     )
     
     # Create and execute the MCP prompt

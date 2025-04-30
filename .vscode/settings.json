@@ -19,5 +19,6 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#545052",
-    "peacock.remoteColor": "#5b8478"
+    "peacock.remoteColor": "#5b8478",
+    "dbt.dbtIntegration": "cloud"
 }

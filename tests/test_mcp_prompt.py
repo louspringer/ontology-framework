@@ -1,20 +1,23 @@
-"""Test suite for Model Context Protocol (MCP) prompt pattern."""
+#!/usr/bin/env python3
+"""Test suite for MCP prompt implementation."""
 
+from typing import Dict, List, Any
+import pytest
 import unittest
 from pathlib import Path
-from datetime import datetime
-from typing import Dict, Any
+from datetime import datetime, timedelta
 from src.ontology_framework.modules.mcp_prompt import (
-    PromptContext,
     MCPPrompt,
+    PromptContext,
     PromptError,
     DiscoveryPhase,
     PlanPhase,
     DoPhase,
     CheckPhase,
-    ActPhase
+    ActPhase,
+    AdjustPhase
 )
-from rdflib import URIRef
+from rdflib import Graph, URIRef
 
 class TestPromptContext(unittest.TestCase):
     """Test cases for PromptContext."""
@@ -89,31 +92,31 @@ class TestDoPhase(unittest.TestCase):
     def setUp(self) -> None:
         """Set up test environment."""
         self.phase = DoPhase()
-        self.context = PromptContext(
-            ontology_path=Path("models/mcp_prompt.ttl"),
-            target_files=[Path("src/ontology_framework/modules/ontology.py")]
-        )
-        self.plan_results = {
-            "classes": ["TestClass"],
-            "properties": ["testProperty"],
-            "status": "COMPLETED"
+        self.context = {
+            'plan': {
+                'validation_rules': {'rule1': 'value1'},
+                'file_changes': {
+                    'file1.ttl': {'action': 'create'},
+                    'file2.ttl': {'action': 'modify'}
+                }
+            }
         }
     
     def test_successful_execution(self) -> None:
         """Test successful do phase execution."""
-        results = self.phase.execute(self.context, self.plan_results)
-        self.assertEqual(self.phase.status, "COMPLETED")
-        self.assertIn("generated_files", results)
-        self.assertIn("modified_files", results)
-        self.assertIn("plan_results", results)
+        results = self.phase.execute(self.context)
+        self.assertEqual(results['status'], 'COMPLETED')
+        self.assertIn('file1.ttl', results['generated_files'])
+        self.assertIn('file2.ttl', results['modified_files'])
+        self.assertEqual(results['validation_rules'], {'rule1': 'value1'})
     
-    def test_failed_plan_phase(self) -> None:
-        """Test execution with failed plan phase."""
-        failed_plan = {"status": "ERROR"}
-        with self.assertRaises(PromptError) as cm:
-            self.phase.execute(self.context, failed_plan)
-        self.assertIn("Cannot execute Do phase with failed Plan phase", str(cm.exception))
-        self.assertEqual(self.phase.status, "ERROR")
+    def test_error_handling(self) -> None:
+        """Test error handling in do phase."""
+        # Create context that should cause an error
+        error_context = {'plan': {'file_changes': {'invalid': None}}}
+        results = self.phase.execute(error_context)
+        self.assertEqual(results['status'], 'ERROR')
+        self.assertIn('error', results)
 
 class TestCheckPhase(unittest.TestCase):
     """Test cases for CheckPhase."""
@@ -324,6 +327,43 @@ class TestMCPPrompt(unittest.TestCase):
         self.assertIn("error", results)
         self.assertIn("phases", results)
         self.assertEqual(results["phases"]["plan"], "ERROR")
+
+class TestAdjustPhase(unittest.TestCase):
+    """Test cases for AdjustPhase."""
+    
+    def setUp(self) -> None:
+        """Set up test environment."""
+        self.phase = AdjustPhase()
+        self.context = {
+            'check': {
+                'validation_results': [
+                    {'file': 'test.ttl', 'status': 'FAILED', 'rule': 'rule1', 'details': 'Error message'},
+                    {'file': 'test2.ttl', 'status': 'PASSED', 'rule': 'rule2', 'details': 'OK'}
+                ]
+            }
+        }
+    
+    def test_successful_execution(self) -> None:
+        """Test successful adjust phase execution."""
+        results = self.phase.execute(self.context)
+        self.assertIn('check_results', results)
+        self.assertEqual(len(results['adjustments']), 1)
+        self.assertEqual(results['adjustments'][0]['file'], 'test.ttl')
+        self.assertEqual(results['adjustments'][0]['rule'], 'rule1')
+        self.assertIn('Error message', results['adjustments'][0]['action'])
+    
+    def test_no_adjustments_needed(self) -> None:
+        """Test adjust phase with no adjustments needed."""
+        context = {
+            'check': {
+                'validation_results': [
+                    {'file': 'test.ttl', 'status': 'PASSED', 'rule': 'rule1', 'details': 'OK'}
+                ]
+            }
+        }
+        results = self.phase.execute(context)
+        self.assertEqual(len(results['adjustments']), 0)
+        self.assertEqual(len(results['recommendations']), 0)
 
 if __name__ == "__main__":
     unittest.main() 

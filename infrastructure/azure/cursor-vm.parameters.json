@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName": {
+            "value": "cursor-ide-vm"
+        },
+        "adminUsername": {
+            "value": "lou"
+        },
+        "sshPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEHvv6JP3vrwtLTojkMU92twI1pQyZkbOe+DrxuSqcZ0KEQabuHJgYG4qOpRA/XJNrFM5pTIrzBc24sobQI5rhf5fG7LzFUhXpLqqXZnkI+NlCUfGhJu2Z5yBQ6rm48PRXSIe87Xt3r7a1CngiQ1HrjuhJaY8TuM5l8R/hjYdMcW+bGgv0h+MIxGwv88KIXPyq1Vm/VtmLZVGVx6Mt1B/mAmHrDESaP2gG5JCDJEaG91YDvk+9aLq36G4xwn5dJHnGAkcnzJ5zk0F4pHGMJDIgAaaB6PHeRm36YxylOC3ZCkv0GOTwTtmmeOwwwoVaPZveJFmKWxVSKGuFraRPxHRMll752qY1i0tz8pk8TC5iCdUbxO674/jLebYK1/5EN6S2n6lv1tIMD/pJQmkY2ZuPTERk0il2Rh+PQ58vkOxlsh5ivJ5ZdWDkuWB5qDN7eRWWB3cgc7O7FY98lG1bXCFRthju+xko6z0Ml+8taiQDDO+8mBC+QsMgfCLLl9ghm1eJdTSnBHqdG3BESpHUKbLQiBic00RQLPKhfiN6+Qt4B1ug7pbDacpaMDEQwI5koK6BNf95v/TadSMXo/Xqp+6cMQ7qvf8wp6W2EyIW+aaHVSCNTaZYCxlxpbrk02PIG6iAq4MIJ62IULZPE2xP2pPH8Vn8cd+bumftufbTt86BgQ== lou@cursor-ide-vm"
+        },
+        "location": {
+            "value": "westus2"
+        },
+        "allowedIPAddresses": {
+            "value": [
+                "73.78.113.14/32"
+            ]
+        }
+    }
+} 

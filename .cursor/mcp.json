@@ -1,223 +1,54 @@
 {
-  "mcpServers": {
-    "datapilot": {
-      "url": "http://localhost:8000",
-      "type": "sse",
-      "timeout": 30,
-      "retryAttempts": 3,
-      "retryDelay": 1
+  "core": {
+    "validation": {
+      "enabled": true,
+      "requirePhaseOrder": true,
+      "requireContext": true,
+      "requireServerConfig": true,
+      "dryRun": false,
+      "backupEnabled": true,
+      "rules": {}
+    },
+    "validationRules": {
+      "ontologyStructure": {},
+      "SemanticEquivalenceCheck": {
+        "type": "BFG9KValidationPattern",
+        "script": "scripts/semantic_equivalence_check.py",
+        "description": "Checks semantic equivalence between two TTL files using RDFLib. Any failure is a likely BFG9K target.",
+        "appliesTo": "TurtleOntologyArtifact",
+        "failureAction": "MarkAsBFG9KTarget"
+      },
+      "phaseExecution": {
+        "discoveryRequirements": {
+          "validationRules": ["SemanticEquivalenceCheck"]
+        },
+        "planRequirements": {
+          "validationRules": ["SemanticEquivalenceCheck"]
+        }
+      }
     }
   },
-  "validation": {
-    "enabled": true,
-    "requirePhaseOrder": true,
-    "requireContext": true,
-    "requireServerConfig": true,
-    "dryRun": false,
-    "backupEnabled": true,
-    "rules": {
-      "phaseOrder": ["discovery", "plan", "do", "check", "act", "checkin"],
-      "requiredPhases": ["discovery", "plan", "do", "check"],
-      "optionalPhases": ["act", "checkin"]
-    }
-  },
-  "validationRules": {
-    "ontologyStructure": {
-      "requiredClasses": [
-        "ValidationProcess",
-        "ValidationRule",
-        "TestPhase",
-        "IntegrationProcess",
-        "ValidationPattern"
-      ],
-      "requiredProperties": [
-        "hasStringRepresentation",
-        "hasValidationRules",
-        "hasMinimumRequirements",
-        "hasComplianceMetrics"
-      ],
-      "requiredShapes": [
-        "ValidationRuleShape",
-        "ConformanceLevelShape",
-        "IntegrationProcessShape"
-      ]
-    },
-    "phaseExecution": {
-      "discoveryRequirements": {
-        "ontologyPath": "guidance.ttl",
-        "targetFiles": [
-          "src/ontology_framework/modules/guidance.py",
-          "src/ontology_framework/modules/ontology.py"
-        ],
-        "previousFindings": {
-          "missingElements": {
-            "individuals": "Need concrete examples for TestPhase and ValidationPattern",
-            "classHierarchy": "Enhance subclass relationships",
-            "shaclConstraints": "Add more detailed validation rules"
-          },
-          "recommendations": [
-            {
-              "type": "enhancement",
-              "target": "classHierarchy",
-              "description": "Add meaningful subclass relationships",
-              "priority": "high"
-            },
-            {
-              "type": "enhancement",
-              "target": "individuals",
-              "description": "Create concrete examples for key classes",
-              "priority": "high"
-            },
-            {
-              "type": "enhancement",
-              "target": "validation",
-              "description": "Enhance SHACL shapes with more constraints",
-              "priority": "medium"
-            }
-          ]
-        }
-      },
-      "planRequirements": {
-        "discoveryResults": {
-          "classes": [
-            "ValidationPattern",
-            "TestPhase",
-            "IntegrationStep",
-            "ModelConformance",
-            "TestProtocol",
-            "ConformanceLevel"
-          ],
-          "individuals": [
-            "UnitTestPhase",
-            "IntegrationTestPhase",
-            "SHACLValidationPattern",
-            "OWLValidationPattern"
-          ],
-          "shapes": [
-            "ValidationRuleShape",
-            "ConformanceLevelShape",
-            "IntegrationProcessShape"
-          ],
-          "recommendations": [
-            {
-              "type": "enhancement",
-              "target": "individuals",
-              "priority": "high",
-              "description": "Add example instances for key classes"
-            },
-            {
-              "type": "enhancement",
-              "target": "classHierarchy",
-              "priority": "high",
-              "description": "Enhance subclass relationships"
-            },
-            {
-              "type": "enhancement",
-              "target": "validation",
-              "priority": "medium",
-              "description": "Add more detailed SHACL constraints"
-            }
-          ]
-        }
-      },
-      "doRequirements": ["planResults"],
-      "checkRequirements": {
-        "testCoverage": {
-          "required": true,
-          "minimumCoverage": 80
-        },
-        "validationRules": {
-          "ontologyValidation": true,
-          "shapeValidation": true,
-          "individualValidation": true
-        },
-        "previousResults": {
-          "discovery": true,
-          "plan": true,
-          "do": true
-        }
-      },
-      "actRequirements": ["checkResults"]
-    },
-    "fileValidation": {
-      "allowedExtensions": [".py", ".ttl", ".json"],
-      "requiredFiles": ["guidance.ttl"]
-    },
-    "planActions": [
-      {
-        "type": "add_individuals",
-        "target": "TestPhase",
-        "items": ["UnitTestPhase", "IntegrationTestPhase"]
-      },
-      {
-        "type": "add_individuals",
-        "target": "ValidationPattern",
-        "items": ["SHACLValidationPattern", "OWLValidationPattern"]
-      },
-      {
-        "type": "enhance_hierarchy",
-        "relationships": [
-          {
-            "child": "TestPhase",
-            "parent": "ValidationPattern"
-          },
-          {
-            "child": "IntegrationStep",
-            "parent": "ValidationPattern"
-          },
-          {
-            "child": "ModelConformance",
-            "parent": "ValidationPattern"
-          }
-        ]
-      }
-    ],
-    "checkinRequirements": {
-      "checkResults": {
-        "status": "PASSED",
-        "coverage": ">= 80%",
-        "validations": "ALL_PASSED"
-      },
-      "commitMessage": {
-        "required": true,
-        "format": "type(scope): description\n\n[optional body]\n\nOntology-Version: X.Y.Z"
-      }
+  "adapters": {
+    "ide": {
+      "servers": {}
     }
   },
   "metadata": {
     "project": "ontology-framework",
     "version": "1.0.0",
-    "description": "Guidance Ontology Analysis - Check Phase",
-    "timestamp": "2024-03-21T10:00:00Z",
-    "author": "ontology-framework-team",
-    "previousResults": {
-      "act": {
-        "status": "COMPLETED",
-        "adjustments": [
-          {
-            "type": "add_individuals",
-            "target": "TestPhase",
-            "completed": true
-          },
-          {
-            "type": "enhance_hierarchy",
-            "target": "classHierarchy",
-            "completed": true
-          }
-        ]
-      }
-    }
+    "description": "Unified MCP Configuration",
+    "timestamp": "2025-04-26T17:36:23.097743",
+    "author": "ontology-framework-team"
   },
-  "ontologyPath": "guidance.ttl",
-  "targetFiles": [
-    "guidance.ttl",
-    "src/ontology_framework/modules/guidance.py",
-    "src/ontology_framework/modules/ontology.py"
-  ],
   "logging": {
     "level": "DEBUG",
     "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     "file": ".cursor/mcp.log"
   },
-  "logLevel": "DEBUG"
+  "mcpServers": {
+    "datapilot": {
+      "url": "http://localhost:7700/sse",
+      "type": "sse"
+    }
+  }
 }
