@@ -1,6 +1,6 @@
 from typing import Dict, Any, List, Set, Optional, Union, Sequence, Tuple, cast
-from rdflib import Graph, URIRef, Literal, RDF, Namespace, Node, Variable
-from rdflib.namespace import RDF, RDFS, XSD
+from rdflib import Graph, URIRef, Literal, RDF, Namespace, Node, Variable, BNode
+from rdflib.namespace import RDF, RDFS, XSD, SH
 from rdflib.query import ResultRow, Result
 import pyshacl
 from ontology_framework.validation.validation_rule_type import ValidationRuleType
@@ -17,9 +17,8 @@ from enum import Enum
 from pyshacl import validate
 
 # Define namespaces
-SH = Namespace('http://www.w3.org/ns/shacl#')
-EX = Namespace('http://example.org/')
 GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
+EX = Namespace('http://example.org/')
 
 class ConformanceLevel(Enum):
     """Validation conformance levels."""
@@ -88,21 +87,62 @@ class ValidationHandler:
         self.graphdb_connection = graphdb_connection
         self.shacl_shapes = Graph()
         
+        # Bind namespaces
+        self.shacl_shapes.bind('sh', SH)
+        self.shacl_shapes.bind('xsd', XSD)
+        self.shacl_shapes.bind('guidance', GUIDANCE)
+        
         # Load validation rules from guidance ontology
         self._load_validation_rules()
         self._load_shacl_templates()
         
     def _load_validation_rules(self):
         """Load validation rules from the guidance ontology using GuidanceManager."""
-        rules = self.guidance_manager.get_validation_rules()
-        for rule in rules:
-            rule_id = rule['rule'].split('#')[-1]
-            self.rules[rule_id] = {
-                'type': ValidationRuleType[rule['type']],
-                'message': rule['message'],
-                'priority': int(rule['priority'])
-            }
-            
+        try:
+            rules = self.guidance_manager.get_validation_rules()
+            for rule in rules:
+                rule_id = str(rule['rule']).split('#')[-1]
+                try:
+                    self.rules[rule_id] = {
+                        'type': ValidationRuleType[rule.get('type', 'SEMANTIC')],
+                        'message': rule.get('message', f'Validation failed for rule {rule_id}'),
+                        'priority': int(rule.get('priority', 999))
+                    }
+                except (KeyError, ValueError) as e:
+                    logging.warning(f"Failed to load rule {rule_id}: {str(e)}")
+        except Exception as e:
+            logging.error(f"Failed to load validation rules: {str(e)}")
+
+    def _create_shacl_shape(self, shape_id: str, target_class: URIRef) -> BNode:
+        """Create a new SHACL shape with basic structure."""
+        shape = BNode()
+        self.shacl_shapes.add((shape, RDF.type, SH.NodeShape))
+        self.shacl_shapes.add((shape, SH.targetClass, target_class))
+        return shape
+
+    def _add_property_constraint(self, shape: Node, path: URIRef, constraint_type: URIRef, value: Any):
+        """Add a property constraint to a SHACL shape."""
+        prop = BNode()
+        self.shacl_shapes.add((shape, SH.property, prop))
+        self.shacl_shapes.add((prop, SH.path, path))
+        self.shacl_shapes.add((prop, constraint_type, value))
+
+    def _load_shacl_templates(self):
+        """Load SHACL templates into the shapes graph."""
+        # Clear existing templates
+        self.shacl_shapes = Graph()
+        self.shacl_shapes.bind('sh', SH)
+        self.shacl_shapes.bind('xsd', XSD)
+        
+        # Create base validation shapes
+        class_shape = self._create_shacl_shape('ClassShape', RDFS.Class)
+        self._add_property_constraint(class_shape, RDFS.label, SH.minCount, Literal(1))
+        self._add_property_constraint(class_shape, RDFS.comment, SH.minCount, Literal(1))
+        
+        property_shape = self._create_shacl_shape('PropertyShape', RDF.Property)
+        self._add_property_constraint(property_shape, RDFS.domain, SH.minCount, Literal(1))
+        self._add_property_constraint(property_shape, RDFS.range, SH.minCount, Literal(1))
+
     def register_rule(
         self,
         rule_id: str,
@@ -780,13 +820,103 @@ class ValidationHandler:
         else:
             graph.add((subject, pred, Literal(str(value), datatype=XSD.string)))
 
-    def _load_shacl_templates(self):
-        """Load SHACL shape templates into the shacl_shapes graph."""
-        self.shacl_shapes.bind('sh', SH)
-        self.shacl_shapes.bind('ex', EX)
+    def validate_ontology(self, ontology_graph: Graph, conformance_level: ConformanceLevel = ConformanceLevel.STRICT) -> Tuple[bool, str, Graph]:
+        """
+        Validate an ontology graph using SHACL shapes and custom rules.
         
-        for template_name, template_text in self.SHACL_TEMPLATES.items():
-            shape_text = template_text.format(path="?p", values="", pattern="", message="")
+        Args:
+            ontology_graph: The RDF graph to validate
+            conformance_level: The validation conformance level
+            
+        Returns:
+            Tuple of (is_valid, validation_report_text, validation_report_graph)
+        """
+        try:
+            # Combine ontology with shapes graph
+            validation_graph = Graph()
+            validation_graph += ontology_graph
+            validation_graph += self.shacl_shapes
+            
+            # Run SHACL validation
+            is_valid, validation_graph, validation_text = pyshacl.validate(
+                validation_graph,
+                shacl_graph=self.shacl_shapes,
+                ont_graph=None,
+                inference='rdfs',
+                abort_on_first=False,
+                meta_shacl=True,
+                debug=False
+            )
+            
+            # Apply custom validation rules based on conformance level
+            if conformance_level == ConformanceLevel.STRICT:
+                custom_results = self._apply_custom_rules(ontology_graph)
+                if custom_results:
+                    is_valid = False
+                    validation_text += "\n\nCustom Validation Results:\n" + "\n".join(custom_results)
+            
+            return is_valid, validation_text, validation_graph
+            
+        except Exception as e:
+            error_msg = f"Validation failed with error: {str(e)}"
+            logging.error(error_msg)
+            return False, error_msg, Graph()
+    
+    def _apply_custom_rules(self, graph: Graph) -> List[str]:
+        """Apply custom validation rules to the graph."""
+        validation_results = []
+        
+        try:
+            for rule_id, rule in self.rules.items():
+                if rule['type'] == ValidationRuleType.SEMANTIC:
+                    # Apply semantic validation rules
+                    query = self.pattern_manager.get_validation_pattern(rule_id)
+                    if query:
+                        results = graph.query(query)
+                        if results and len(results) > 0:
+                            validation_results.append(f"Rule {rule_id}: {rule['message']}")
+                            
+                elif rule['type'] == ValidationRuleType.STRUCTURAL:
+                    # Apply structural validation rules
+                    shape = self._create_rule_shape(rule_id, rule)
+                    if shape:
+                        temp_graph = Graph()
+                        temp_graph += graph
+                        temp_graph += shape
+                        
+                        is_valid, _, report = pyshacl.validate(
+                            temp_graph,
+                            shacl_graph=shape,
+                            inference='rdfs'
+                        )
+                        
+                        if not is_valid:
+                            validation_results.append(f"Rule {rule_id}: {rule['message']}")
+                            
+        except Exception as e:
+            logging.error(f"Error applying custom rules: {str(e)}")
+            validation_results.append(f"Custom validation error: {str(e)}")
+            
+        return validation_results
+    
+    def _create_rule_shape(self, rule_id: str, rule: Dict[str, Any]) -> Optional[Graph]:
+        """Create a SHACL shape for a custom validation rule."""
+        try:
             shape = Graph()
-            shape.parse(data=shape_text, format='turtle')
-            self.shacl_shapes.add(shape) 
+            shape.bind('sh', SH)
+            
+            shape_node = BNode()
+            shape.add((shape_node, RDF.type, SH.NodeShape))
+            shape.add((shape_node, RDFS.label, Literal(f"Shape for rule {rule_id}")))
+            shape.add((shape_node, SH.message, Literal(rule['message'])))
+            
+            # Add rule-specific constraints
+            pattern = self.pattern_manager.get_validation_pattern(rule_id)
+            if pattern:
+                shape.add((shape_node, SH.sparql, Literal(pattern)))
+            
+            return shape
+            
+        except Exception as e:
+            logging.error(f"Error creating rule shape for {rule_id}: {str(e)}")
+            return None 
