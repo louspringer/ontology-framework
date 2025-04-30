@@ -47,6 +47,48 @@ if ! az group create --name "$RESOURCE_GROUP" --location "$LOCATION"; then
     exit 1
 fi
 
+echo "Creating virtual network..."
+if ! az network vnet create \
+    --resource-group "$RESOURCE_GROUP" \
+    --name "${VM_NAME}VNET" \
+    --address-prefix 10.0.0.0/16 \
+    --subnet-name "${VM_NAME}Subnet" \
+    --subnet-prefix 10.0.0.0/24; then
+    echo "Error: Failed to create virtual network"
+    exit 1
+fi
+
+echo "Creating network security group..."
+if ! az network nsg create \
+    --resource-group "$RESOURCE_GROUP" \
+    --name "${VM_NAME}NSG"; then
+    echo "Error: Failed to create network security group"
+    exit 1
+fi
+
+echo "Adding SSH rule to network security group..."
+if ! az network nsg rule create \
+    --resource-group "$RESOURCE_GROUP" \
+    --nsg-name "${VM_NAME}NSG" \
+    --name "AllowSSH" \
+    --protocol tcp \
+    --priority 1000 \
+    --destination-port-range 22 \
+    --access allow; then
+    echo "Error: Failed to create NSG rule"
+    exit 1
+fi
+
+echo "Creating public IP..."
+if ! az network public-ip create \
+    --resource-group "$RESOURCE_GROUP" \
+    --name "${VM_NAME}PublicIP" \
+    --sku Standard \
+    --version IPv4; then
+    echo "Error: Failed to create public IP"
+    exit 1
+fi
+
 echo "Creating spot VM..."
 if ! az vm create \
     --resource-group "$RESOURCE_GROUP" \
@@ -56,7 +98,11 @@ if ! az vm create \
     --admin-username "$ADMIN_USERNAME" \
     --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub \
     --priority Spot \
-    --eviction-policy Deallocate; then
+    --eviction-policy Deallocate \
+    --public-ip-address "${VM_NAME}PublicIP" \
+    --vnet-name "${VM_NAME}VNET" \
+    --subnet "${VM_NAME}Subnet" \
+    --nsg "${VM_NAME}NSG"; then
     echo "Error: Failed to create VM"
     exit 1
 fi
