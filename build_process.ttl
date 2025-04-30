@@ -1,0 +1,147 @@
+@prefix : <./build_process#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+:BuildProcess a owl:Class ;
+    rdfs:label "Azure Build Process"@en ;
+    rdfs:comment "Process for building and deploying Azure resources"@en .
+
+:ResourceGroup a owl:Class ;
+    rdfs:label "Azure Resource Group"@en ;
+    rdfs:comment "Container for Azure resources"@en .
+
+:VirtualMachine a owl:Class ;
+    rdfs:label "Azure Virtual Machine"@en ;
+    rdfs:comment "Compute resource in Azure"@en .
+
+:ContainerRegistry a owl:Class ;
+    rdfs:label "Azure Container Registry"@en ;
+    rdfs:comment "Private Docker registry in Azure"@en .
+
+:NetworkResource a owl:Class ;
+    rdfs:label "Azure Network Resource"@en ;
+    rdfs:comment "Networking components in Azure"@en .
+
+:BuildStep a owl:Class ;
+    rdfs:label "Build Step"@en ;
+    rdfs:comment "Individual step in the build process"@en .
+
+:hasLocation a owl:DatatypeProperty ;
+    rdfs:domain :ResourceGroup ;
+    rdfs:range xsd:string ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "Azure region for the resource"@en .
+
+:hasSize a owl:DatatypeProperty ;
+    rdfs:domain :VirtualMachine ;
+    rdfs:range xsd:string ;
+    rdfs:label "VM Size"@en ;
+    rdfs:comment "Size specification for the VM"@en .
+
+:hasImage a owl:DatatypeProperty ;
+    rdfs:domain :VirtualMachine ;
+    rdfs:range xsd:string ;
+    rdfs:label "VM Image"@en ;
+    rdfs:comment "OS image for the VM"@en .
+
+:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain :VirtualMachine ;
+    rdfs:range xsd:string ;
+    rdfs:label "VM Priority"@en ;
+    rdfs:comment "Priority setting for the VM"@en .
+
+:hasEvictionPolicy a owl:DatatypeProperty ;
+    rdfs:domain :VirtualMachine ;
+    rdfs:range xsd:string ;
+    rdfs:label "Eviction Policy"@en ;
+    rdfs:comment "Policy for VM eviction"@en .
+
+:hasStepOrder a owl:DatatypeProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Step Order"@en ;
+    rdfs:comment "Order of execution for the build step"@en .
+
+:hasCommand a owl:DatatypeProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range xsd:string ;
+    rdfs:label "Command"@en ;
+    rdfs:comment "Command to execute for this step"@en .
+
+:hasAutoConfirm a owl:DatatypeProperty ;
+    rdfs:domain :BuildStep ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Auto Confirm"@en ;
+    rdfs:comment "Whether the step requires auto-confirmation"@en .
+
+:pdfProcessorBuild a :BuildProcess ;
+    rdfs:label "PDF Processor Build"@en ;
+    rdfs:comment "Build process for PDF processor application"@en .
+
+:cleanupStep a :BuildStep ;
+    :hasStepOrder 1 ;
+    :hasCommand "az group delete --name $RESOURCE_GROUP --yes" ;
+    :hasAutoConfirm true .
+
+:createResourceGroupStep a :BuildStep ;
+    :hasStepOrder 2 ;
+    :hasCommand "az group create --name $RESOURCE_GROUP --location $LOCATION" ;
+    :hasAutoConfirm true .
+
+:createNetworkStep a :BuildStep ;
+    :hasStepOrder 3 ;
+    :hasCommand "az network vnet create --resource-group $RESOURCE_GROUP --name ${VM_NAME}VNET --address-prefix 10.0.0.0/16 --subnet-name ${VM_NAME}Subnet --subnet-prefix 10.0.0.0/24" ;
+    :hasAutoConfirm true .
+
+:createNSGStep a :BuildStep ;
+    :hasStepOrder 4 ;
+    :hasCommand "az network nsg create --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG" ;
+    :hasAutoConfirm true .
+
+:createSSHRuleStep a :BuildStep ;
+    :hasStepOrder 5 ;
+    :hasCommand "az network nsg rule create --resource-group $RESOURCE_GROUP --nsg-name ${VM_NAME}NSG --name AllowSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow" ;
+    :hasAutoConfirm true .
+
+:createPublicIPStep a :BuildStep ;
+    :hasStepOrder 6 ;
+    :hasCommand "az network public-ip create --resource-group $RESOURCE_GROUP --name ${VM_NAME}PublicIP --sku Standard --version IPv4" ;
+    :hasAutoConfirm true .
+
+:createVMStep a :BuildStep ;
+    :hasStepOrder 7 ;
+    :hasCommand "az vm create --resource-group $RESOURCE_GROUP --name $VM_NAME --image $VM_IMAGE --size $VM_SIZE --admin-username $ADMIN_USERNAME --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub --priority Spot --eviction-policy Deallocate --public-ip-address ${VM_NAME}PublicIP --vnet-name ${VM_NAME}VNET --subnet ${VM_NAME}Subnet --nsg ${VM_NAME}NSG" ;
+    :hasAutoConfirm true .
+
+:createACRStep a :BuildStep ;
+    :hasStepOrder 8 ;
+    :hasCommand "az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic" ;
+    :hasAutoConfirm true .
+
+:installDockerStep a :BuildStep ;
+    :hasStepOrder 9 ;
+    :hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'sudo apt-get update && sudo apt-get install -y docker.io'" ;
+    :hasAutoConfirm true .
+
+:setupAppStep a :BuildStep ;
+    :hasStepOrder 10 ;
+    :hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'mkdir -p /app'" ;
+    :hasAutoConfirm true .
+
+:copyFilesStep a :BuildStep ;
+    :hasStepOrder 11 ;
+    :hasCommand "scp -i ~/.ssh/pdf-processor-vm_key -r ./* $ADMIN_USERNAME@$VM_IP:/app/" ;
+    :hasAutoConfirm true .
+
+:loginACRStep a :BuildStep ;
+    :hasStepOrder 12 ;
+    :hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'docker login $ACR_NAME.azurecr.io -u $ACR_USERNAME -p $ACR_PASSWORD'" ;
+    :hasAutoConfirm true .
+
+:buildPushImageStep a :BuildStep ;
+    :hasStepOrder 13 ;
+    :hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'cd /app && docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . && docker push $ACR_NAME.azurecr.io/pdf-processor:latest'" ;
+    :hasAutoConfirm true . 
