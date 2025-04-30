@@ -25,6 +25,14 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+  pdf-processor:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+    command: python -m tests.test_pdf_processor
 
 volumes:
   graphdb-data:
