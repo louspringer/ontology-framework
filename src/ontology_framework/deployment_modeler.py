@@ -5,41 +5,96 @@ Module for modeling and generating deployment configurations.
 
 import logging
 from typing import Dict, Any, Optional, Union, List
+from pathlib import Path
 from rdflib import Graph
 from .error_handler import ErrorHandler
 from .validation import ValidationManager
 from .exceptions import ValidationError
+import requests
+import warnings
+from .sparql_client import SparqlClient
+from .graphdb_client import GraphDBClient, GraphDBError
 
 class DeploymentModeler:
-    """Class for modeling and generating deployment configurations."""
-
-    def __init__(self) -> None:
-        """Initialize the deployment modeler with error handling and core ontologies."""
-        self.graph = Graph()
-        self.error_handler = ErrorHandler()
-        self.validation_manager = ValidationManager()
+    """Manages ontology deployment to GraphDB."""
+    
+    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "test"):
+        """Initialize the deployment modeler.
+        
+        Args:
+            base_url: Base URL of the GraphDB server
+            repository: Repository name
+        """
+        self.graphdb_client = GraphDBClient(base_url, repository)
         self.logger = logging.getLogger(__name__)
         
+    def deploy_ontology(self, ontology_path: Union[str, Path], dataset_name: Optional[str] = None) -> bool:
+        """Deploy an ontology to GraphDB.
+        
+        Args:
+            ontology_path: Path to ontology file
+            dataset_name: Optional dataset name
+            
+        Returns:
+            True if successful
+        """
         try:
-            self._load_core_ontologies()
-        except Exception as e:
-            self.error_handler.add_error(
-                "RuntimeError",
-                "Failed to load core ontologies",
-                "HIGH"
-            )
-
-    def _load_core_ontologies(self) -> None:
-        """Load core ontologies required for deployment modeling."""
+            return self.graphdb_client.upload_graph(ontology_path, dataset_name)
+        except GraphDBError as e:
+            raise DeploymentError(f"Failed to deploy ontology: {str(e)}")
+            
+    def clear_dataset(self, dataset_name: str) -> bool:
+        """Clear a dataset in GraphDB.
+        
+        Args:
+            dataset_name: Name of dataset to clear
+            
+        Returns:
+            True if successful
+        """
         try:
-            # TODO: Implement actual ontology loading
-            pass
-        except Exception as e:
-            self.error_handler.add_error(
-                "OntologyLoadError",
-                f"Error loading ontologies: {str(e)}",
-                "HIGH"
-            )
+            return self.graphdb_client.clear_graph(dataset_name)
+        except GraphDBError as e:
+            raise DeploymentError(f"Failed to clear dataset: {str(e)}")
+            
+    def list_datasets(self) -> List[str]:
+        """List all datasets in GraphDB.
+        
+        Returns:
+            List of dataset names
+        """
+        try:
+            return self.graphdb_client.list_graphs()
+        except GraphDBError as e:
+            raise DeploymentError(f"Failed to list datasets: {str(e)}")
+            
+    def get_dataset_info(self, dataset_name: str) -> Dict:
+        """Get information about a dataset.
+        
+        Args:
+            dataset_name: Name of dataset
+            
+        Returns:
+            Dataset information
+        """
+        try:
+            return self.graphdb_client.get_graph_info(dataset_name)
+        except GraphDBError as e:
+            raise DeploymentError(f"Failed to get dataset info: {str(e)}")
+            
+    def count_triples(self, dataset_name: str) -> int:
+        """Count triples in a dataset.
+        
+        Args:
+            dataset_name: Name of dataset
+            
+        Returns:
+            Number of triples
+        """
+        try:
+            return self.graphdb_client.count_triples(dataset_name)
+        except GraphDBError as e:
+            raise DeploymentError(f"Failed to count triples: {str(e)}")
 
     def get_deployment_config(self, app_name: str, environment: str) -> Dict[str, Any]:
         """
@@ -201,4 +256,8 @@ kubectl apply -f deployment.yaml
 # Wait for deployment to be ready
 kubectl rollout status deployment/{config['name']}
 
-echo "Deployment of {config['name']} to {config['environment']} completed.""" 
+echo "Deployment of {config['name']} to {config['environment']} completed."""
+
+class DeploymentError(Exception):
+    """Exception raised for deployment-related errors."""
+    pass 

@@ -11,6 +11,11 @@ from typing import Dict, Optional
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
 from ontology_framework.jena_client import JenaFusekiClient
+from ontology_framework.deployment_modeler import DeploymentModeler, DeploymentError
+from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+import pytest
+from unittest.mock import Mock, patch
+from pathlib import Path
 
 # Configure logging
 logging.basicConfig(
@@ -222,6 +227,49 @@ class TestDeployment(unittest.TestCase):
             self.assertEqual(response.status_code, 200, "Dataset not found")
         except requests.exceptions.RequestException:
             self.skipTest("Failed to check dataset existence")
+
+@pytest.fixture
+def mock_graphdb_client():
+    """Create a mock GraphDB client."""
+    with patch('ontology_framework.graphdb_client.GraphDBClient') as mock:
+        client = mock.return_value
+        client.list_graphs.return_value = ["test-graph"]
+        client.count_triples.return_value = 100
+        yield client
+
+@pytest.fixture
+def deployment_modeler(mock_graphdb_client):
+    """Create a deployment modeler instance."""
+    return DeploymentModeler("http://localhost:7200", "test")
+
+def test_deploy_ontology(deployment_modeler, mock_graphdb_client):
+    """Test deploying an ontology."""
+    ontology_path = Path("test.ttl")
+    deployment_modeler.deploy_ontology(ontology_path)
+    mock_graphdb_client.load_ontology.assert_called_once_with(ontology_path)
+
+def test_clear_dataset(deployment_modeler, mock_graphdb_client):
+    """Test clearing a dataset."""
+    deployment_modeler.clear_dataset("test-graph")
+    mock_graphdb_client.clear_graph.assert_called_once_with("test-graph")
+
+def test_list_datasets(deployment_modeler, mock_graphdb_client):
+    """Test listing datasets."""
+    datasets = deployment_modeler.list_datasets()
+    assert datasets == ["test-graph"]
+    mock_graphdb_client.list_graphs.assert_called_once()
+
+def test_get_dataset_info(deployment_modeler, mock_graphdb_client):
+    """Test getting dataset information."""
+    info = deployment_modeler.get_dataset_info("test-graph")
+    assert info["triples"] == 100
+    mock_graphdb_client.count_triples.assert_called_once_with("test-graph")
+
+def test_deployment_error_handling(deployment_modeler, mock_graphdb_client):
+    """Test error handling during deployment."""
+    mock_graphdb_client.load_ontology.side_effect = GraphDBError("Test error")
+    with pytest.raises(DeploymentError):
+        deployment_modeler.deploy_ontology(Path("test.ttl"))
 
 if __name__ == "__main__":
     unittest.main() 

@@ -10,6 +10,7 @@ import requests
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, SH
 from rdflib.query import ResultRow
+import warnings
 
 class QueryType(Enum):
     """Types of SPARQL queries."""
@@ -82,6 +83,81 @@ class QueryExecutor(ABC):
         """
         pass
 
+class GraphDBExecutor(QueryExecutor):
+    """Query executor for GraphDB."""
+    
+    def __init__(self, endpoint: str = "http://localhost:7200/repositories/guidance"):
+        """Initialize GraphDB executor.
+        
+        Args:
+            endpoint: GraphDB SPARQL endpoint URL
+        """
+        self.endpoint = endpoint
+        
+    def execute_query(self, query: str, query_type: QueryType) -> QueryResult:
+        """Execute a SPARQL query on GraphDB.
+        
+        Args:
+            query: SPARQL query string
+            query_type: Type of query
+            
+        Returns:
+            Query result
+        """
+        start_time = datetime.now()
+        try:
+            if query_type in [QueryType.SELECT, QueryType.ASK]:
+                response = requests.post(
+                    self.endpoint,
+                    headers={'Accept': 'application/sparql-results+json'},
+                    params={'query': query}
+                )
+                response.raise_for_status()
+                json_data = response.json()
+                
+                if query_type == QueryType.ASK:
+                    data = json_data.get("boolean", False)
+                    empty = not data
+                else:
+                    bindings = json_data.get("results", {}).get("bindings", [])
+                    data = bindings
+                    empty = len(bindings) == 0
+                    
+            else:  # UPDATE queries
+                response = requests.post(
+                    f"{self.endpoint}/statements",
+                    headers={'Content-Type': 'application/sparql-update'},
+                    data=query
+                )
+                response.raise_for_status()
+                data = True
+                empty = False
+                
+            execution_time = (datetime.now() - start_time).total_seconds()
+            return QueryResult(
+                success=True,
+                data=data,
+                error=None,
+                execution_time=execution_time,
+                query_type=query_type,
+                timestamp=start_time,
+                query=query,
+                empty=empty
+            )
+            
+        except requests.exceptions.RequestException as e:
+            execution_time = (datetime.now() - start_time).total_seconds()
+            return QueryResult(
+                success=False,
+                data=None,
+                error=str(e),
+                execution_time=execution_time,
+                query_type=query_type,
+                timestamp=start_time,
+                query=query,
+                empty=True
+            )
+
 class JenaFusekiExecutor(QueryExecutor):
     """Query executor for Apache Jena Fuseki."""
     
@@ -90,7 +166,15 @@ class JenaFusekiExecutor(QueryExecutor):
         
         Args:
             endpoint: Fuseki SPARQL endpoint URL
+            
+        Note:
+            This class is deprecated. Use GraphDBExecutor instead.
         """
+        warnings.warn(
+            "JenaFusekiExecutor is deprecated. Use GraphDBExecutor instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         self.endpoint = endpoint
         
     def execute_query(self, query: str, query_type: QueryType) -> QueryResult:
@@ -102,7 +186,15 @@ class JenaFusekiExecutor(QueryExecutor):
             
         Returns:
             Query result
+            
+        Note:
+            This method is deprecated. Use GraphDBExecutor instead.
         """
+        warnings.warn(
+            "JenaFusekiExecutor is deprecated. Use GraphDBExecutor instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         start_time = datetime.now()
         try:
             if query_type in [QueryType.SELECT, QueryType.ASK]:
@@ -138,11 +230,11 @@ class JenaFusekiExecutor(QueryExecutor):
                 execution_time=execution_time,
                 query_type=query_type,
                 timestamp=start_time,
-                empty=empty,
-                query=query
+                query=query,
+                empty=empty
             )
             
-        except Exception as e:
+        except requests.exceptions.RequestException as e:
             execution_time = (datetime.now() - start_time).total_seconds()
             return QueryResult(
                 success=False,
@@ -151,8 +243,8 @@ class JenaFusekiExecutor(QueryExecutor):
                 execution_time=execution_time,
                 query_type=query_type,
                 timestamp=start_time,
-                empty=True,
-                query=query
+                query=query,
+                empty=True
             )
 
 class Neo4jExecutor(QueryExecutor):
@@ -175,40 +267,21 @@ class Neo4jExecutor(QueryExecutor):
 
 def execute_sparql(
     query: str,
-    query_type: Optional[QueryType] = None,
+    query_type: QueryType = QueryType.SELECT,
     executor: Optional[QueryExecutor] = None
 ) -> QueryResult:
     """Execute a SPARQL query.
     
     Args:
         query: SPARQL query string
-        query_type: Type of query (inferred if not provided)
-        executor: Query executor to use (defaults to JenaFuseki)
+        query_type: Type of query (default: SELECT)
+        executor: Query executor to use (defaults to GraphDB)
         
     Returns:
         Query result
     """
-    if query_type is None:
-        # Infer query type from query string
-        query_upper = query.upper()
-        if "SELECT" in query_upper:
-            query_type = QueryType.SELECT
-        elif "ASK" in query_upper:
-            query_type = QueryType.ASK
-        elif "CONSTRUCT" in query_upper:
-            query_type = QueryType.CONSTRUCT
-        elif "DESCRIBE" in query_upper:
-            query_type = QueryType.DESCRIBE
-        elif "INSERT" in query_upper:
-            query_type = QueryType.INSERT
-        elif "DELETE" in query_upper:
-            query_type = QueryType.DELETE
-        else:
-            query_type = QueryType.UPDATE
-            
     if executor is None:
-        executor = JenaFusekiExecutor()
-        
+        executor = GraphDBExecutor()
     return executor.execute_query(query, query_type)
 
 class SparqlOperations:

@@ -1,18 +1,24 @@
 from enum import Enum
+from rdflib import Namespace
+
+GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
 
 class ValidationRuleType(Enum):
     """Types of validation rules that can be applied to ontologies."""
     
-    SEMANTIC = "SEMANTIC"
+    SHACL = GUIDANCE.SHACL
+    """SHACL-based validation using shapes"""
+    
+    SEMANTIC = GUIDANCE.SEMANTIC
     """Semantic validation using SPARQL queries"""
     
-    STRUCTURAL = "STRUCTURAL"
-    """Structural validation using SHACL shapes"""
+    SYNTAX = GUIDANCE.SYNTAX
+    """Syntax validation using patterns"""
     
-    PATTERN = "PATTERN"
-    """Pattern-based validation using regular expressions"""
+    STRUCTURAL = GUIDANCE.STRUCTURAL
+    """Structural validation rules"""
     
-    SENSITIVE_DATA = "SENSITIVE_DATA"
+    SENSITIVE_DATA = GUIDANCE.SENSITIVE_DATA
     """Validation for sensitive data patterns"""
     
     @classmethod

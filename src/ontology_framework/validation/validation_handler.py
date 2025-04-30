@@ -16,6 +16,7 @@ from ontology_framework.tools.guidance_manager import GuidanceManager
 from ontology_framework.validation.pattern_manager import PatternManager
 from pyshacl import validate
 from .validation_rule import ValidationRule
+from .conformance_level import ConformanceLevel
 
 # Define namespaces
 GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
@@ -27,18 +28,6 @@ class ValidationRuleType(Enum):
     SEMANTIC = GUIDANCE.SEMANTIC
     SYNTAX = GUIDANCE.SYNTAX
     STRUCTURAL = GUIDANCE.STRUCTURAL
-
-class ConformanceLevel(Enum):
-    """Validation conformance levels."""
-    STRICT = "strict"  # Apply all validation rules
-    BASIC = "basic"    # Apply only essential rules
-    NONE = "none"      # Skip validation
-
-class ValidationTarget(Enum):
-    """Validation targets."""
-    CLASS_HIERARCHY = "class_hierarchy"
-    PROPERTY_CONSTRAINTS = "property_constraints"
-    DATA_INTEGRITY = "data_integrity"
 
 class ValidationHandler:
     """Handles validation of RDF graphs using various rule types."""
@@ -85,7 +74,10 @@ class ValidationHandler:
             for rule in rules:
                 rule_id = str(rule['rule']).split('#')[-1]
                 try:
-                    self.rules[ValidationRuleType[rule.get('type', 'SEMANTIC')]] = [ValidationRule(rule_id, rule)]
+                    rule_type = ValidationRuleType[rule.get('type', 'SEMANTIC')]
+                    if rule_type not in self.rules:
+                        self.rules[rule_type] = []
+                    self.rules[rule_type].append(ValidationRule(rule_id, rule))
                 except (KeyError, ValueError) as e:
                     logging.warning(f"Failed to load rule {rule_id}: {str(e)}")
         except Exception as e:
@@ -129,80 +121,39 @@ class ValidationHandler:
         message: Optional[str] = None,
         priority: int = 0,
         dependencies: Optional[List[str]] = None,
+        conformance_level: Optional[ConformanceLevel] = None,
         **kwargs
     ) -> str:
         """Register a validation rule.
         
         Args:
-            rule_id: Unique identifier for the rule.
-            rule: Rule configuration dictionary.
-            rule_type: Optional type of validation rule. If not provided, will be extracted from rule dict.
-            message: Optional message to display for violations.
-            priority: Rule execution priority (lower executes first).
-            dependencies: List of rule IDs this rule depends on.
-            **kwargs: Additional keyword arguments for backward compatibility.
+            rule_id: Unique identifier for the rule
+            rule: Rule definition dictionary
+            rule_type: Type of validation rule
+            message: Optional error message
+            priority: Priority of the rule (higher numbers = higher priority)
+            dependencies: Optional list of rule IDs this rule depends on
+            conformance_level: Optional conformance level for the rule
+            **kwargs: Additional rule parameters
             
         Returns:
-            The registered rule ID.
-            
-        Raises:
-            ValueError: If rule type is invalid or required parameters missing.
+            str: The rule ID
         """
-        # Handle rule type from different sources
-        if rule_type is None:
-            # Try to get from rule dict first
-            if "type" in rule:
-                rule_type = rule["type"]
-            # Then try kwargs for backward compatibility
-            elif "type" in kwargs:
-                rule_type = kwargs["type"]
-            else:
-                raise ValueError("Rule type must be provided either as argument or in rule dictionary")
-
-        # Ensure rule_type is ValidationRuleType
-        if not isinstance(rule_type, ValidationRuleType):
-            try:
-                rule_type = ValidationRuleType(rule_type)
-            except (ValueError, TypeError):
-                try:
-                    rule_type = ValidationRuleType.from_string(str(rule_type))
-                except ValueError:
-                    raise ValueError(f"Invalid rule type: {rule_type}")
-
-        # Get message from rule if not provided
-        if not message and "message" in rule:
-            message = rule["message"]
-
-        # Get priority from rule if not provided
-        if not priority and "priority" in rule:
-            priority = rule["priority"]
-
-        # Get dependencies from rule if not provided
-        if not dependencies and "dependencies" in rule:
-            dependencies = rule["dependencies"]
-
-        # For non-SHACL rules that require a message, generate a default if none provided
-        if not message and rule_type != ValidationRuleType.SHACL:
-            message = f"Validation failed for rule {rule_id}"
-
-        rule_uri = self.guidance_manager.add_validation_rule(
-            rule_id=rule_id,
-            rule=rule,
-            type=rule_type.value,
-            message=message,
-            priority=priority
-        )
+        if conformance_level is not None:
+            rule["conformance_level"] = conformance_level.value
+            
+        if rule_type is not None:
+            rule["type"] = rule_type.value
+            
+        if message is not None:
+            rule["message"] = message
+            
+        rule["priority"] = priority
         
-        # Flatten the rule dict into self.rules[rule_type]
-        flat_rule = dict(rule)  # copy
-        flat_rule.update({
-            "type": rule_type,
-            "message": message,
-            "priority": priority,
-            "dependencies": dependencies or []
-        })
-        self.rules[rule_type].append(ValidationRule(rule_id, flat_rule))
-        
+        if dependencies is not None:
+            rule["dependencies"] = dependencies
+            
+        self.rules[rule_id] = rule
         return rule_id
 
     def _validate_dependencies(self, rule_id: str) -> None:
@@ -325,22 +276,41 @@ class ValidationHandler:
             List of validation results
         """
         results = []
-        patterns = rule.get("patterns", [])
-        if isinstance(patterns, str):
-            patterns = [patterns]
-        elif not patterns:
-            raise ValueError("Sensitive data rule must specify pattern(s)")
+        patterns = []
+        
+        # Get patterns from rule configuration
+        if "patterns" in rule:
+            patterns.extend(rule["patterns"])
+        elif "pattern" in rule:
+            patterns.append(rule["pattern"])
+            
+        # Get patterns from guidance ontology if none specified
+        if not patterns:
+            guidance_patterns = self.guidance_manager.get_validation_patterns()
+            for pattern_info in guidance_patterns:
+                if pattern_info.get("type") == "SENSITIVE_DATA":
+                    patterns.append(pattern_info["pattern"])
+                    
+        if not patterns:
+            self.logger.warning(f"No patterns found for sensitive data rule {rule_id}")
+            return results
+            
         for pattern in patterns:
-            for s, p, o in graph:
-                if isinstance(o, Literal) and re.search(pattern, str(o)):
-                    results.append({
-                        "rule_id": rule_id,
-                        "message": rule.get("message", "Sensitive data found"),
-                        "subject": str(s),
-                        "predicate": str(p),
-                        "object": str(o),
-                        "severity": ErrorSeverity.ERROR.value
-                    })
+            try:
+                for s, p, o in graph:
+                    if isinstance(o, Literal) and re.search(pattern, str(o)):
+                        results.append({
+                            "rule_id": rule_id,
+                            "message": rule.get("message", "Sensitive data found"),
+                            "subject": str(s),
+                            "predicate": str(p),
+                            "object": str(o),
+                            "pattern": pattern,
+                            "severity": ErrorSeverity.ERROR.value
+                        })
+            except re.error as e:
+                self.logger.error(f"Invalid regex pattern in rule {rule_id}: {e}")
+                
         return results
 
     def _execute_individual_type_rule(self, rule_id: str, rule: Dict[str, Any], graph: Graph) -> List[Dict[str, Any]]:
@@ -417,7 +387,7 @@ class ValidationHandler:
                 })
                 
         return {
-            "is_valid": len(results) == 0,
+            "valid": len(results) == 0,
             "results": results
         }
 
@@ -788,4 +758,21 @@ class ValidationHandler:
             
         except Exception as e:
             logging.error(f"Error creating rule shape for {rule_id}: {str(e)}")
-            return None 
+            return None
+
+    def get_shacl_rules(self) -> Graph:
+        """Get SHACL validation rules.
+        
+        Returns:
+            Graph containing SHACL validation rules
+        """
+        shacl_graph = Graph()
+        shacl_graph.bind("sh", SH)
+        
+        for rule_id, rule in self.rules.items():
+            if rule.get("type") == ValidationRuleType.SHACL.value:
+                shape = self._create_rule_shape(rule_id, rule)
+                if shape:
+                    shacl_graph += shape
+                    
+        return shacl_graph 

@@ -192,3 +192,6 @@ test_checkin.py
 boldo_config.ttl
 
 test_logs/
+
+GraphDB.epub
+GraphDB.pdf

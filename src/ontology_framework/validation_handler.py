@@ -170,6 +170,7 @@ from pyshacl import validate as pyshacl_validate
 from pyshacl.rdfutil import load_from_source
 from .exceptions import ValidationError
 from .graphdb import GraphDBConnection
+from .validation.conformance_level import ConformanceLevel
 import json
 
 logger = logging.getLogger(__name__)

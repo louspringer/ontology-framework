@@ -12,6 +12,8 @@ from pathlib import Path
 from rdflib import Graph, Namespace, Literal
 from rdflib.namespace import RDF, RDFS, OWL
 from ontology_framework.sparql_client import SparqlClient, SparqlClientError
+import pytest
+from unittest.mock import Mock, patch
 
 # Configure logging
 logging.basicConfig(
@@ -31,14 +33,13 @@ class TestSparqlClient(unittest.TestCase):
         """Set up test environment."""
         logger.info("Setting up test environment")
         
-        # Set up Fuseki server
-        cls._setup_fuseki()
+        # Set up GraphDB server
+        cls._setup_graphdb()
         
         # Create test client
         cls.client = SparqlClient(
-            base_url="http://localhost:3030",
-            server_type="fuseki",  # Specify server type as Fuseki
-            auth=None  # Default Fuseki setup doesn't require auth
+            base_url="http://localhost:7200",
+            server_type="graphdb"
         )
         
         cls.test_dataset = "test_ontology"
@@ -65,9 +66,9 @@ class TestSparqlClient(unittest.TestCase):
         cls._create_test_ontology()
         
     @classmethod
-    def _setup_fuseki(cls):
-        """Set up Apache Jena Fuseki server using Docker."""
-        logger.info("Setting up Fuseki server via Docker")
+    def _setup_graphdb(cls):
+        """Set up GraphDB server using Docker."""
+        logger.info("Setting up GraphDB server via Docker")
         
         # Check if Docker is running
         try:
@@ -76,49 +77,42 @@ class TestSparqlClient(unittest.TestCase):
             logger.error("Docker is not running or not installed")
             raise RuntimeError("Docker is required for running tests")
             
-        # Check if Fuseki container is already running
+        # Check if GraphDB container is already running
         try:
             result = subprocess.run(
-                ["docker", "ps", "--filter", "name=fuseki", "--format", "{{.Names}}"],
+                ["docker", "ps", "--filter", "name=graphdb", "--format", "{{.Names}}"],
                 capture_output=True,
                 text=True,
                 check=True
             )
-            if "fuseki" in result.stdout:
-                logger.info("Fuseki container is already running")
+            if "graphdb" in result.stdout:
+                logger.info("GraphDB container is already running")
                 return
         except subprocess.CalledProcessError:
             pass
             
-        # Start Fuseki container
+        # Start GraphDB container
         try:
             subprocess.run([
-                "docker", "run", "-d",
-                "--name", "fuseki",
-                "-p", "3030:3030",
-                "-e", "ADMIN_PASSWORD=admin",
-                "-e", "ENABLE_DATA_WRITE=true",
-                "-e", "ENABLE_UPDATE=true",
-                "stain/jena-fuseki:latest"
+                "docker-compose", "up", "-d"
             ], check=True)
-            logger.info("Started Fuseki container")
+            logger.info("Started GraphDB container")
             
-            # Wait for Fuseki to be ready
-            time.sleep(15)  # Increased wait time to ensure Fuseki is ready
+            # Wait for GraphDB to be ready
+            time.sleep(15)  # Increased wait time to ensure GraphDB is ready
             
         except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to start Fuseki container: {e}")
-            raise RuntimeError("Failed to start Fuseki container")
+            logger.error(f"Failed to start GraphDB container: {e}")
+            raise RuntimeError("Failed to start GraphDB container")
             
     @classmethod
-    def _teardown_fuseki(cls):
-        """Clean up Fuseki Docker container."""
+    def _teardown_graphdb(cls):
+        """Clean up GraphDB Docker container."""
         try:
-            subprocess.run(["docker", "stop", "fuseki"], capture_output=True)
-            subprocess.run(["docker", "rm", "fuseki"], capture_output=True)
-            logger.info("Cleaned up Fuseki container")
+            subprocess.run(["docker-compose", "down"], capture_output=True)
+            logger.info("Cleaned up GraphDB container")
         except subprocess.CalledProcessError as e:
-            logger.warning(f"Failed to clean up Fuseki container: {e}")
+            logger.warning(f"Failed to clean up GraphDB container: {e}")
 
     @classmethod
     def _setup_mock_server(cls):
@@ -129,19 +123,19 @@ class TestSparqlClient(unittest.TestCase):
         app = Flask(__name__)
         cls.mock_server = app
         
-        @app.route('/$/datasets', methods=['POST'])
+        @app.route('/rest/repositories', methods=['POST'])
         def create_dataset():
             return jsonify({"status": "ok"}), 201
             
-        @app.route('/$/datasets/<dataset>', methods=['DELETE'])
+        @app.route('/rest/repositories/<dataset>', methods=['DELETE'])
         def delete_dataset(dataset):
             return jsonify({"status": "ok"}), 200
             
-        @app.route('/<dataset>/data', methods=['POST'])
+        @app.route('/repositories/<dataset>/statements', methods=['POST'])
         def load_data(dataset):
             return jsonify({"status": "ok"}), 200
             
-        @app.route('/<dataset>/sparql', methods=['POST'])
+        @app.route('/repositories/<dataset>', methods=['POST'])
         def execute_query(dataset):
             return jsonify({
                 "results": {
@@ -154,7 +148,7 @@ class TestSparqlClient(unittest.TestCase):
         # Start the server in a separate thread
         cls.server_thread = threading.Thread(
             target=app.run,
-            kwargs={'port': 3030, 'debug': False}
+            kwargs={'port': 7200, 'debug': False}
         )
         cls.server_thread.daemon = True
         cls.server_thread.start()
@@ -316,10 +310,81 @@ class TestSparqlClient(unittest.TestCase):
         if hasattr(cls, 'test_ontology_file'):
             os.unlink(cls.test_ontology_file.name)
             
-        # Clean up Fuseki container
-        cls._teardown_fuseki()
+        # Clean up GraphDB container
+        cls._teardown_graphdb()
         
         logger.info("Test environment cleaned up")
+
+@pytest.fixture
+def sparql_client():
+    return SparqlClient()
+
+def test_dataset_exists(sparql_client):
+    with patch('requests.Session.get') as mock_get:
+        mock_get.return_value.status_code = 200
+        assert sparql_client.dataset_exists("test") is True
+        
+        mock_get.return_value.status_code = 404
+        assert sparql_client.dataset_exists("test") is False
+
+def test_create_dataset(sparql_client):
+    with patch('requests.Session.put') as mock_put:
+        mock_put.return_value.status_code = 201
+        assert sparql_client.create_dataset("test") is True
+        
+        mock_put.return_value.status_code = 405
+        with pytest.raises(SparqlClientError):
+            sparql_client.create_dataset("test")
+
+def test_delete_dataset(sparql_client):
+    with patch('requests.Session.delete') as mock_delete:
+        mock_delete.return_value.status_code = 204
+        assert sparql_client.delete_dataset("test") is True
+        
+        mock_delete.return_value.status_code = 404
+        with pytest.raises(SparqlClientError):
+            sparql_client.delete_dataset("test")
+
+def test_execute_query(sparql_client):
+    with patch('requests.Session.post') as mock_post:
+        mock_post.return_value.json.return_value = {
+            'results': {
+                'bindings': [
+                    {'var1': {'value': 'value1'}},
+                    {'var2': {'value': 'value2'}}
+                ]
+            }
+        }
+        results = sparql_client.execute_query("SELECT * WHERE { ?s ?p ?o }", "test")
+        assert len(results) == 2
+        assert results[0]['var1'] == 'value1'
+        assert results[1]['var2'] == 'value2'
+
+def test_load_ontology(sparql_client):
+    with patch('builtins.open', Mock(return_value=Mock(read=Mock(return_value=b"test data")))):
+        with patch('requests.Session.post') as mock_post:
+            mock_post.return_value.status_code = 200
+            assert sparql_client.load_ontology("test.ttl", "test") is True
+            
+            mock_post.return_value.status_code = 400
+            with pytest.raises(SparqlClientError):
+                sparql_client.load_ontology("test.ttl", "test")
+
+def test_validate_ontology(sparql_client):
+    with patch('ontology_framework.sparql_client.SparqlClient.execute_query') as mock_execute:
+        mock_execute.return_value = [
+            {
+                'shape': 'shape1',
+                'targetClass': 'class1',
+                'property': 'prop1',
+                'minCount': '1',
+                'maxCount': '1',
+                'datatype': 'string'
+            }
+        ]
+        results = sparql_client.validate_ontology("test")
+        assert len(results) == 1
+        assert results[0]['shape'] == 'shape1'
 
 if __name__ == "__main__":
     unittest.main() 

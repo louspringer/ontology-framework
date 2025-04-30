@@ -175,3 +175,25 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
         sh:message "Validation target must have an English comment"
     ] .
 
+# Sensitive Data Validation
+:SensitiveDataValidation a owl:Class ;
+    rdfs:subClassOf :ValidationRule ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Rules for detecting sensitive data patterns"@en .
+
+:hasPattern a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule ;
+    rdfs:range xsd:string ;
+    rdfs:label "has pattern"@en ;
+    rdfs:comment "Specifies a validation pattern"@en .
+
+:SensitiveDataRule a :ValidationRule ;
+    rdfs:label "Sensitive Data Detection"@en ;
+    rdfs:comment "Rule for detecting sensitive data patterns"@en ;
+    :hasRuleType :SENSITIVE_DATA ;
+    :hasPriority "HIGH" ;
+    :hasPattern "\\b\\d{3}-\\d{2}-\\d{4}\\b" ;  # SSN pattern
+    :hasPattern "\\b\\d{4}-\\d{4}-\\d{4}-\\d{4}\\b" ;  # Credit card pattern
+    :hasPattern "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b" ;  # Email pattern
+    :hasMessage "Sensitive data detected in literal value" .
+

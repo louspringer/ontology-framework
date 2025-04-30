@@ -1,69 +1,61 @@
 """
-Module for interacting with Apache Jena Fuseki.
+Module for interacting with GraphDB.
 """
 
 import requests
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
+import os
+import logging
 
-class JenaError(Exception):
-    """Base exception for Jena client errors."""
+class GraphDBError(Exception):
+    """Base exception for GraphDB errors."""
     pass
 
-class JenaConnectionError(JenaError):
-    """Exception raised when connection to Jena fails."""
-    pass
-
-class JenaQueryError(JenaError):
-    """Exception raised when a SPARQL query fails."""
-    pass
-
-class JenaUpdateError(JenaError):
-    """Exception raised when a SPARQL update fails."""
-    pass
-
-class JenaFusekiClient:
-    """Client for interacting with Apache Jena Fuseki."""
+class GraphDBClient:
+    """Client for interacting with GraphDB."""
     
-    def __init__(self, endpoint_url: str, dataset: str):
+    def __init__(self, base_url: str = "http://localhost:7200", dataset: Optional[str] = None):
         """Initialize the client.
         
         Args:
-            endpoint_url: Base URL of the Fuseki server
-            dataset: Name of the dataset to work with
+            base_url: Base URL of the GraphDB server
+            dataset: Optional default dataset name
         """
-        self.endpoint_url = endpoint_url.rstrip('/')
+        self.base_url = base_url.rstrip('/')
         self.dataset = dataset
-        self.query_url = f"{self.endpoint_url}/{dataset}/query"
-        self.update_url = f"{self.endpoint_url}/{dataset}/update"
-        self.graph_store_url = f"{self.endpoint_url}/{dataset}/data"
+        self.session = requests.Session()
+        self.logger = logging.getLogger(__name__)
         
-    def query(self, sparql_query: str) -> List[Dict[str, Any]]:
+    def query(self, query: str, dataset: Optional[str] = None) -> List[Dict[str, Any]]:
         """Execute a SPARQL query.
         
         Args:
-            sparql_query: The SPARQL query to execute
+            query: The SPARQL query to execute
+            dataset: Optional dataset name (uses default if not specified)
             
         Returns:
             List of query results as dictionaries
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaQueryError: If query execution fails
+            GraphDBError: If query execution fails
         """
         try:
-            response = requests.post(
-                self.query_url,
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.post(
+                f"{self.base_url}/repositories/{dataset}",
                 headers={'Accept': 'application/sparql-results+json'},
-                params={'query': sparql_query}
+                params={'query': query}
             )
             response.raise_for_status()
             
             results = response.json()
             bindings = results['results']['bindings']
             
-            # Convert results to a more usable format
             return [
                 {
                     var: binding[var]['value']
@@ -71,171 +63,338 @@ class JenaFusekiClient:
                 }
                 for binding in bindings
             ]
-            
-        except requests.ConnectionError as e:
-            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
-        except requests.HTTPError as e:
-            raise JenaQueryError(f"Query failed: {str(e)}")
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to execute query: {str(e)}")
+            raise GraphDBError(f"Failed to execute query: {str(e)}")
         except Exception as e:
-            raise JenaError(f"Unexpected error: {str(e)}")
+            self.logger.error(f"Unexpected error executing query: {str(e)}")
+            raise GraphDBError(f"Unexpected error executing query: {str(e)}")
             
-    def update(self, sparql_update: str) -> None:
+    def update(self, update: str, dataset: Optional[str] = None) -> bool:
         """Execute a SPARQL update.
         
         Args:
-            sparql_update: The SPARQL update to execute
+            update: The SPARQL update to execute
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            True if update was successful
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaUpdateError: If update execution fails
+            GraphDBError: If update execution fails
         """
         try:
-            response = requests.post(
-                self.update_url,
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.post(
+                f"{self.base_url}/repositories/{dataset}/statements",
                 headers={'Content-Type': 'application/sparql-update'},
-                data=sparql_update
+                data=update
             )
             response.raise_for_status()
-            
-        except requests.ConnectionError as e:
-            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
-        except requests.HTTPError as e:
-            raise JenaUpdateError(f"Update failed: {str(e)}")
+            return True
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to execute update: {str(e)}")
+            raise GraphDBError(f"Failed to execute update: {str(e)}")
         except Exception as e:
-            raise JenaError(f"Unexpected error: {str(e)}")
+            self.logger.error(f"Unexpected error executing update: {str(e)}")
+            raise GraphDBError(f"Unexpected error executing update: {str(e)}")
             
-    def upload_graph(self, graph: Graph, graph_uri: Optional[str] = None) -> None:
+    def upload_graph(self, graph: Union[str, Graph], dataset: Optional[str] = None) -> bool:
         """Upload an RDF graph.
         
         Args:
-            graph: The RDF graph to upload
-            graph_uri: Optional URI for the named graph
+            graph: RDF graph as string or rdflib.Graph
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            True if upload was successful
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaError: If upload fails
+            GraphDBError: If upload fails
         """
         try:
-            # Serialize the graph to Turtle format
-            data = graph.serialize(format='turtle')
-            
-            headers = {'Content-Type': 'text/turtle'}
-            params = {}
-            if graph_uri:
-                params['graph'] = graph_uri
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
                 
-            response = requests.post(
-                self.graph_store_url,
-                headers=headers,
-                params=params,
+            if isinstance(graph, str):
+                data = graph
+                content_type = 'text/turtle'
+            else:
+                data = graph.serialize(format='turtle')
+                content_type = 'text/turtle'
+                
+            response = self.session.post(
+                f"{self.base_url}/rest/repositories/{dataset}/statements",
+                headers={'Content-Type': content_type},
                 data=data
             )
-            response.raise_for_status()
             
-        except requests.ConnectionError as e:
-            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
+            if response.status_code >= 400:
+                raise GraphDBError(f"Failed to upload graph: {response.text}")
+                
+            return True
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to upload graph: {str(e)}")
+            raise GraphDBError(f"Failed to upload graph: {str(e)}")
+        except GraphDBError:
+            raise
         except Exception as e:
-            raise JenaError(f"Failed to upload graph: {str(e)}")
+            self.logger.error(f"Unexpected error uploading graph: {str(e)}")
+            raise GraphDBError(f"Unexpected error uploading graph: {str(e)}")
             
-    def download_graph(self, graph_uri: Optional[str] = None) -> Graph:
+    def download_graph(self, dataset: Optional[str] = None) -> Graph:
         """Download an RDF graph.
         
         Args:
-            graph_uri: Optional URI of the named graph to download
+            dataset: Optional dataset name (uses default if not specified)
             
         Returns:
-            The downloaded RDF graph
+            RDF graph as rdflib.Graph
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaError: If download fails
+            GraphDBError: If download fails
         """
         try:
-            params = {}
-            if graph_uri:
-                params['graph'] = graph_uri
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
                 
-            response = requests.get(
-                self.graph_store_url,
-                headers={'Accept': 'text/turtle'},
-                params=params
+            response = self.session.get(
+                f"{self.base_url}/rest/repositories/{dataset}/statements",
+                headers={'Accept': 'text/turtle'}
             )
             response.raise_for_status()
             
-            # Parse the response into a new graph
             graph = Graph()
             graph.parse(data=response.text, format='turtle')
             return graph
-            
-        except requests.ConnectionError as e:
-            raise JenaConnectionError(f"Failed to connect to Jena: {str(e)}")
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to download graph: {str(e)}")
+            raise GraphDBError(f"Failed to download graph: {str(e)}")
         except Exception as e:
-            raise JenaError(f"Failed to download graph: {str(e)}")
+            self.logger.error(f"Unexpected error downloading graph: {str(e)}")
+            raise GraphDBError(f"Unexpected error downloading graph: {str(e)}")
             
-    def clear_graph(self, graph_uri: Optional[str] = None) -> None:
+    def clear_graph(self, dataset: Optional[str] = None) -> bool:
         """Clear all triples from a graph.
         
         Args:
-            graph_uri: Optional URI of the named graph to clear
+            dataset: Optional dataset name (uses default if not specified)
             
-        Raises:
-            JenaConnectionError: If connection fails
-            JenaUpdateError: If clear operation fails
-        """
-        if graph_uri:
-            update = f"CLEAR GRAPH <{graph_uri}>"
-        else:
-            update = "CLEAR DEFAULT"
-            
-        self.update(update)
-        
-    def list_graphs(self) -> List[str]:
-        """List all named graphs in the dataset.
-        
         Returns:
-            List of graph URIs
+            True if clear was successful
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaQueryError: If query fails
+            GraphDBError: If clear fails
         """
-        query = """
-        SELECT DISTINCT ?g
-        WHERE {
-            GRAPH ?g { ?s ?p ?o }
-        }
-        """
-        
-        results = self.query(query)
-        return [result['g'] for result in results]
-        
-    def count_triples(self, graph_uri: Optional[str] = None) -> int:
-        """Count triples in a graph.
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.delete(
+                f"{self.base_url}/rest/repositories/{dataset}/statements"
+            )
+            response.raise_for_status()
+            return True
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to clear graph: {str(e)}")
+            raise GraphDBError(f"Failed to clear graph: {str(e)}")
+        except Exception as e:
+            self.logger.error(f"Unexpected error clearing graph: {str(e)}")
+            raise GraphDBError(f"Unexpected error clearing graph: {str(e)}")
+            
+    def list_graphs(self, dataset: Optional[str] = None) -> List[str]:
+        """List available graphs in a dataset.
         
         Args:
-            graph_uri: Optional URI of the named graph to count
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            List of graph names
+            
+        Raises:
+            GraphDBError: If listing fails
+        """
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.get(
+                f"{self.base_url}/rest/repositories/{dataset}/contexts"
+            )
+            response.raise_for_status()
+            
+            return response.json()
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to list graphs: {str(e)}")
+            raise GraphDBError(f"Failed to list graphs: {str(e)}")
+        except Exception as e:
+            self.logger.error(f"Unexpected error listing graphs: {str(e)}")
+            raise GraphDBError(f"Unexpected error listing graphs: {str(e)}")
+            
+    def count_triples(self, dataset: Optional[str] = None) -> int:
+        """Count triples in a dataset.
+        
+        Args:
+            dataset: Optional dataset name (uses default if not specified)
             
         Returns:
             Number of triples
             
         Raises:
-            JenaConnectionError: If connection fails
-            JenaQueryError: If query fails
+            GraphDBError: If counting fails
         """
-        if graph_uri:
-            query = f"""
-            SELECT (COUNT(*) as ?count)
-            WHERE {{
-                GRAPH <{graph_uri}> {{ ?s ?p ?o }}
-            }}
-            """
-        else:
-            query = """
-            SELECT (COUNT(*) as ?count)
-            WHERE {
-                ?s ?p ?o
-            }
-            """
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.get(
+                f"{self.base_url}/rest/repositories/{dataset}/size"
+            )
+            response.raise_for_status()
             
-        results = self.query(query)
-        return int(results[0]['count']) 
+            return int(response.text)
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to count triples: {str(e)}")
+            raise GraphDBError(f"Failed to count triples: {str(e)}")
+        except Exception as e:
+            self.logger.error(f"Unexpected error counting triples: {str(e)}")
+            raise GraphDBError(f"Unexpected error counting triples: {str(e)}")
+            
+    def get_graph_info(self, dataset: Optional[str] = None) -> Dict[str, Any]:
+        """Get information about a graph.
+        
+        Args:
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            Dictionary containing graph information
+            
+        Raises:
+            GraphDBError: If getting info fails
+        """
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.get(
+                f"{self.base_url}/rest/repositories/{dataset}"
+            )
+            response.raise_for_status()
+            
+            return response.json()
+        except requests.RequestException as e:
+            self.logger.error(f"Failed to get graph info: {str(e)}")
+            raise GraphDBError(f"Failed to get graph info: {str(e)}")
+        except Exception as e:
+            self.logger.error(f"Unexpected error getting graph info: {str(e)}")
+            raise GraphDBError(f"Unexpected error getting graph info: {str(e)}")
+            
+    def backup_graph(self, backup_path: str, dataset: Optional[str] = None) -> bool:
+        """Backup a graph to a file.
+        
+        Args:
+            backup_path: Path to save the backup
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            True if backup was successful
+            
+        Raises:
+            GraphDBError: If backup fails
+        """
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            response = self.session.get(
+                f"{self.base_url}/rest/repositories/{dataset}/statements",
+                headers={'Accept': 'text/turtle'}
+            )
+            response.raise_for_status()
+            
+            with open(backup_path, 'w') as f:
+                f.write(response.text)
+            return True
+        except requests.RequestException as e:
+            raise GraphDBError(f"Failed to backup graph: {str(e)}")
+        except Exception as e:
+            raise GraphDBError(f"Unexpected error backing up graph: {str(e)}")
+            
+    def restore_graph(self, backup_path: str, dataset: Optional[str] = None) -> bool:
+        """Restore a graph from a backup file.
+        
+        Args:
+            backup_path: Path to the backup file
+            dataset: Optional dataset name (uses default if not specified)
+            
+        Returns:
+            True if restore was successful
+            
+        Raises:
+            GraphDBError: If restore fails
+        """
+        try:
+            dataset = dataset or self.dataset
+            if not dataset:
+                raise GraphDBError("No dataset specified")
+                
+            with open(backup_path, 'r') as f:
+                data = f.read()
+                
+            response = self.session.post(
+                f"{self.base_url}/rest/repositories/{dataset}/statements",
+                headers={'Content-Type': 'text/turtle'},
+                data=data
+            )
+            response.raise_for_status()
+            return True
+        except requests.RequestException as e:
+            raise GraphDBError(f"Failed to restore graph: {str(e)}")
+        except Exception as e:
+            raise GraphDBError(f"Unexpected error restoring graph: {str(e)}")
+            
+    def load_ontology(self, dataset: str, ontology_path: str) -> bool:
+        """Load an ontology into a dataset.
+        
+        Args:
+            dataset: Name of the dataset
+            ontology_path: Path to the ontology file
+            
+        Returns:
+            bool: True if successful, False otherwise
+            
+        Raises:
+            GraphDBError: If loading fails
+        """
+        if not os.path.exists(ontology_path):
+            raise GraphDBError(f"Ontology file not found: {ontology_path}")
+            
+        try:
+            # Clear existing data
+            self.clear_graph(dataset)
+            
+            # Upload the ontology
+            with open(ontology_path, 'rb') as f:
+                response = self.session.post(
+                    f"{self.base_url}/rest/repositories/{dataset}/statements",
+                    headers={"Content-Type": "application/rdf+xml"},
+                    data=f.read()
+                )
+                
+            response.raise_for_status()
+            return True
+            
+        except requests.RequestException as e:
+            raise GraphDBError(f"Failed to load ontology: {str(e)}")
+        except Exception as e:
+            raise GraphDBError(f"Error loading ontology: {str(e)}") 

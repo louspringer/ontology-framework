@@ -1,63 +1,290 @@
 #!/usr/bin/env python3
 """Tests for the GraphDB client."""
 
+import os
+import tempfile
 from pathlib import Path
 from typing import Generator
-
 import pytest
-import tempfile
+import requests
+from unittest.mock import patch, MagicMock, mock_open, Mock
+from rdflib import Graph, Namespace, RDF, RDFS, OWL, SH, Literal
+from rdflib.namespace import XSD
+from pyshacl import validate
 
 from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
-from tests.utils.mock_graphdb import MockGraphDBServer
-from tests.utils.test_monitoring import TestMonitor
+
+# Define test namespaces
+TEST = Namespace("http://example.org/test#")
+EX = Namespace("http://example.org/")
+
+# Define test shapes
+TEST_SHAPES = """
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix test: <http://example.org/test#> .
+
+test:TestShape a sh:NodeShape ;
+    sh:targetClass test:TestClass ;
+    sh:property [
+        sh:path test:hasValue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+"""
 
 @pytest.fixture
-def graphdb_client(mock_graphdb_server: MockGraphDBServer) -> GraphDBClient:
-    """Create a GraphDB client for testing."""
-    return GraphDBClient(
-        endpoint=mock_graphdb_server.url,
-        repository="test_repo",
-        username="test_user",
-        password="test_pass"
-    )
+def test_graph() -> Graph:
+    """Create a test graph with proper RDF structure."""
+    g = Graph()
+    g.bind('test', TEST)
+    g.bind('ex', EX)
+    g.bind('rdf', RDF)
+    g.bind('rdfs', RDFS)
+    g.bind('owl', OWL)
+    
+    # Add class definition
+    g.add((TEST.TestClass, RDF.type, OWL.Class))
+    g.add((TEST.TestClass, RDFS.label, Literal("Test Class")))
+    
+    # Add instance
+    g.add((TEST.TestInstance, RDF.type, TEST.TestClass))
+    g.add((TEST.TestInstance, TEST.hasValue, Literal("test value")))
+    
+    return g
 
-def test_create_repository(test_monitor: TestMonitor) -> None:
-    """Test repository creation."""
-    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
-    with test_monitor.monitor_test("test_create_repository"):
-        client.create_repository("test_repo")
-        assert test_monitor.check_logs_for_message("Repository 'test_repo' created")
+@pytest.fixture
+def test_shapes() -> Graph:
+    """Create a test shapes graph."""
+    g = Graph()
+    g.parse(data=TEST_SHAPES, format='turtle')
+    return g
 
-def test_import_data(test_monitor: TestMonitor) -> None:
-    """Test data import."""
-    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
-    with test_monitor.monitor_test("test_import_data"):
-        with tempfile.NamedTemporaryFile(suffix=".ttl") as temp_file:
-            temp_file.write(b"@prefix ex: <http://example.org/> .\nex:test a ex:Test .")
+@pytest.fixture
+def graphdb_client():
+    """Create a GraphDB client instance."""
+    return GraphDBClient("http://localhost:7200", "test")
+
+@pytest.fixture
+def mock_response():
+    """Create a mock response object."""
+    response = MagicMock()
+    response.status_code = 204
+    return response
+
+def validate_graph(g: Graph, shapes: Graph) -> bool:
+    """Validate a graph against SHACL shapes."""
+    conforms, _, _ = validate(g, shacl_graph=shapes)
+    return conforms
+
+def test_query(graphdb_client: GraphDBClient, test_graph: Graph):
+    """Test executing a SPARQL query."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "results": {
+            "bindings": [
+                {"s": {"value": str(TEST.TestInstance)}},
+                {"p": {"value": str(TEST.hasValue)}},
+                {"o": {"value": "test value", "type": "literal"}}
+            ]
+        }
+    }
+    with patch('requests.post', return_value=mock_response):
+        result = graphdb_client.query("SELECT * WHERE { ?s ?p ?o }")
+        assert result["results"]["bindings"][0]["s"]["value"] == str(TEST.TestInstance)
+
+def test_update(graphdb_client: GraphDBClient, mock_response):
+    """Test executing a SPARQL update."""
+    with patch('requests.post', return_value=mock_response):
+        result = graphdb_client.update("INSERT DATA { <s> <p> <o> }")
+        assert result is True
+
+def test_upload_graph(graphdb_client: GraphDBClient, mock_response, test_graph: Graph, test_shapes: Graph):
+    """Test uploading a graph."""
+    # Validate test graph before upload
+    assert validate_graph(test_graph, test_shapes)
+    
+    with patch('requests.post', return_value=mock_response):
+        result = graphdb_client.upload_graph(test_graph)
+        assert result is True
+
+def test_download_graph(graphdb_client: GraphDBClient, test_graph: Graph, test_shapes: Graph):
+    """Test downloading a graph."""
+    mock_response = MagicMock()
+    mock_response.text = test_graph.serialize(format='turtle')
+    
+    with patch('requests.get', return_value=mock_response):
+        result = graphdb_client.download_graph()
+        assert isinstance(result, Graph)
+        assert len(result) == len(test_graph)
+        assert validate_graph(result, test_shapes)
+
+def test_clear_graph(graphdb_client: GraphDBClient, mock_response):
+    """Test clearing a graph."""
+    with patch('requests.delete', return_value=mock_response):
+        result = graphdb_client.clear_graph()
+        assert result is True
+
+def test_list_graphs(graphdb_client: GraphDBClient):
+    """Test listing graphs."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"graphName": "graph1"}, {"graphName": "graph2"}]
+    with patch('requests.get', return_value=mock_response):
+        result = graphdb_client.list_graphs()
+        assert result == ["graph1", "graph2"]
+
+def test_count_triples(graphdb_client: GraphDBClient):
+    """Test counting triples."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "results": {
+            "bindings": [
+                {"count": {"value": "42"}}
+            ]
+        }
+    }
+    with patch('requests.post', return_value=mock_response):
+        result = graphdb_client.count_triples()
+        assert result == 42
+
+def test_get_graph_info(graphdb_client: GraphDBClient):
+    """Test getting graph info."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "results": {
+            "bindings": [
+                {"count": {"value": "42"}}
+            ]
+        }
+    }
+    with patch('requests.post', return_value=mock_response):
+        result = graphdb_client.get_graph_info()
+        assert result["triples"] == 42
+        assert result["uri"] == "default"
+
+def test_backup_graph(graphdb_client: GraphDBClient, mock_response, test_graph: Graph, test_shapes: Graph):
+    """Test backing up a graph."""
+    mock_response.text = test_graph.serialize(format='turtle')
+    
+    with patch('requests.get', return_value=mock_response):
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.ttl') as temp_file:
+            result = graphdb_client.backup_graph(temp_file.name)
+            assert result is True
+            assert os.path.exists(temp_file.name)
+            
+            # Verify the backed up graph
+            backup_graph = Graph()
+            backup_graph.parse(temp_file.name, format='turtle')
+            assert validate_graph(backup_graph, test_shapes)
+            assert len(backup_graph) == len(test_graph)
+            
+            os.unlink(temp_file.name)
+
+def test_restore_graph(graphdb_client: GraphDBClient, mock_response, test_graph: Graph, test_shapes: Graph):
+    """Test restoring a graph from backup."""
+    with patch('requests.post', return_value=mock_response), \
+         patch('requests.delete', return_value=mock_response):
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.ttl') as temp_file:
+            # Save graph to file using RDFlib
+            test_graph.serialize(destination=temp_file.name, format='turtle')
             temp_file.flush()
-            client.import_data(temp_file.name)
-            assert test_monitor.check_logs_for_message(f"Data imported from {temp_file.name}")
+            
+            result = graphdb_client.restore_graph(temp_file.name)
+            assert result is True
+            os.unlink(temp_file.name)
 
-def test_query(test_monitor: TestMonitor) -> None:
-    """Test query execution."""
-    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
-    with test_monitor.monitor_test("test_query"):
-        result = client.query("SELECT * WHERE { ?s ?p ?o }")
-        assert result is not None
-        assert test_monitor.check_logs_for_message("Query executed")
+def test_load_ontology(graphdb_client: GraphDBClient, mock_response, test_graph: Graph, test_shapes: Graph):
+    """Test loading an ontology."""
+    with patch('requests.post', return_value=mock_response), \
+         patch('requests.delete', return_value=mock_response), \
+         patch('requests.get', return_value=mock_response), \
+         tempfile.NamedTemporaryFile(delete=False, suffix='.ttl') as temp_file:
+        # Save ontology to file using RDFlib
+        test_graph.serialize(destination=temp_file.name, format='turtle')
+        temp_file.flush()
+        
+        result = graphdb_client.load_ontology(temp_file.name)
+        assert result is True
+        os.unlink(temp_file.name)
 
-def test_error_handling(test_monitor: TestMonitor) -> None:
+def test_error_handling(graphdb_client: GraphDBClient):
     """Test error handling."""
-    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
-    with test_monitor.monitor_test("test_error_handling"):
-        with pytest.raises(GraphDBError):
-            client.query("INVALID SPARQL")
-        assert test_monitor.check_logs_for_error("Error executing query")
+    # Test server error response
+    mock_response = MagicMock()
+    mock_response.status_code = 500
+    mock_response.text = "Internal Server Error"
+    
+    with patch('requests.post', return_value=mock_response):
+        with pytest.raises(GraphDBError, match="Upload failed"):
+            graphdb_client.upload_graph("test.ttl")
+            
+    # Test connection error
+    with patch('requests.get', side_effect=requests.exceptions.ConnectionError("Failed to connect")):
+        with pytest.raises(GraphDBError, match="List graphs failed"):
+            graphdb_client.list_graphs()
+            
+    # Test timeout error
+    with patch('requests.delete', side_effect=requests.exceptions.Timeout("Request timed out")):
+        with pytest.raises(GraphDBError, match="Clear failed"):
+            graphdb_client.clear_graph()
 
-def test_slow_query(test_monitor: TestMonitor) -> None:
-    """Test slow query detection."""
-    client = GraphDBClient(endpoint="http://localhost:7200", repository="test_repo")
-    with test_monitor.monitor_test("test_slow_query"):
-        # This query should be slow enough to trigger the warning
-        client.query("SELECT * WHERE { ?s ?p ?o } OFFSET 1000000")
-        assert test_monitor.check_logs_for_slow_query("Slow query detected")
+def test_check_server_status(graphdb_client):
+    """Test checking server status."""
+    with patch('requests.get') as mock_get:
+        mock_get.return_value.status_code = 200
+        assert graphdb_client.check_server_status() is True
+        mock_get.assert_called_once_with("http://localhost:7200/rest/repositories")
+
+def test_server_status_error(graphdb_client):
+    """Test server status check with error."""
+    with patch('requests.get') as mock_get:
+        mock_get.side_effect = requests.RequestException("Test error")
+        assert graphdb_client.check_server_status() is False
+
+def test_load_ontology_error(graphdb_client):
+    """Test loading an ontology with error."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 500
+        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
+        with pytest.raises(GraphDBError):
+            graphdb_client.load_ontology(Path("test.ttl"))
+
+def test_execute_sparql(graphdb_client):
+    """Test executing SPARQL query."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = {"results": {"bindings": []}}
+        results = graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")
+        assert results["results"]["bindings"] == []
+        mock_post.assert_called_once()
+
+def test_execute_sparql_error(graphdb_client):
+    """Test executing SPARQL query with error."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 500
+        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
+        with pytest.raises(GraphDBError):
+            graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")
+
+def test_check_server_status_error(graphdb_client):
+    """Test server status check with error."""
+    with patch('requests.get') as mock_get:
+        mock_get.side_effect = requests.RequestException("Test error")
+        assert graphdb_client.check_server_status() is False
+
+def test_load_ontology_error(graphdb_client):
+    """Test loading an ontology with error."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 500
+        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
+        with pytest.raises(GraphDBError):
+            graphdb_client.load_ontology(Path("test.ttl"))
+
+def test_execute_sparql_error(graphdb_client):
+    """Test executing SPARQL query with error."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 500
+        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
+        with pytest.raises(GraphDBError):
+            graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")

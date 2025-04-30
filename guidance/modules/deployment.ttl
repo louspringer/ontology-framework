@@ -25,6 +25,15 @@ ns1:errorLogTest a ns1:LoggingTest ;
     ns1:hasTestName "error_log_check" ;
     rdfs:comment "Test for error log patterns" .
 
+ns1:graphdbDeployment a ns1:GraphDBDeployment ;
+    rdfs:label "GraphDB Deployment" ;
+    ns1:hasDatasetName "guidance" ;
+    ns1:hasServiceEndpoint "http://localhost:7200" ;
+    ns1:hasServiceName "graphdb" ;
+    ns1:hasServicePort 7200 ;
+    ns1:hasServiceVersion "10.4.0" ;
+    rdfs:comment "Deployment configuration for GraphDB" .
+
 ns1:fusekiDeployment a ns1:JenaFusekiDeployment ;
     rdfs:label "Fuseki Deployment" ;
     ns1:hasDatasetName "guidance" ;
@@ -32,7 +41,8 @@ ns1:fusekiDeployment a ns1:JenaFusekiDeployment ;
     ns1:hasServiceName "fuseki" ;
     ns1:hasServicePort 3030 ;
     ns1:hasServiceVersion "4.10.0" ;
-    rdfs:comment "Deployment configuration for Jena Fuseki" .
+    owl:deprecated true ;
+    rdfs:comment "Deprecated: Use GraphDB instead" .
 
 ns1:hasDatasetName a owl:DatatypeProperty ;
     rdfs:label "Dataset Name" ;
@@ -273,5 +283,11 @@ ns1:ServiceDeployment a owl:Class ;
     rdfs:label "Service Deployment" ;
     rdfs:comment "Configuration for service deployment" ;
     rdfs:subClassOf ns1:Deployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:GraphDBDeployment a owl:Class ;
+    rdfs:label "GraphDB Deployment" ;
+    rdfs:comment "Configuration for GraphDB deployment" ;
+    rdfs:subClassOf ns1:ServiceDeployment ;
     owl:versionInfo "1.0.0" .
 

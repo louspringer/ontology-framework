@@ -1,0 +1,382 @@
+@prefix const: <http://example.org/constraint#> .
+@prefix gdb: <http://example.org/graphdb#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix req: <http://example.org/requirement#> .
+@prefix risk: <http://example.org/risk#> .
+@prefix test: <http://example.org/test#> .
+
+const:Authentication a const:Constraint ;
+    rdfs:label "Authentication" ;
+    rdfs:comment "Must have valid credentials" .
+
+const:GraphDBServer a const:Constraint ;
+    rdfs:label "GraphDB Server" ;
+    rdfs:comment "Must have access to GraphDB server" .
+
+const:Network a const:Constraint ;
+    rdfs:label "Network" ;
+    rdfs:comment "Must have network connectivity" .
+
+const:Storage a const:Constraint ;
+    rdfs:label "Storage" ;
+    rdfs:comment "Must have sufficient storage for graphs" .
+
+gdb:GraphDBClient a owl:Class ;
+    rdfs:label "GraphDBClient" ;
+    rdfs:comment "Client for interacting with GraphDB." .
+
+<http://example.org/graphdb#GraphDBClient/backup_graph> a owl:ObjectProperty ;
+    rdfs:label "backup_graph" ;
+    rdfs:comment """Backup a graph to a file.
+        
+        Args:
+            backup_path: Path to save backup
+            
+        Returns:
+            True if successful
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/backup_graph/backup_path> a owl:DatatypeProperty ;
+    rdfs:label "backup_path" ;
+    rdfs:range "typing.Union[str, pathlib.Path]" .
+
+<http://example.org/graphdb#GraphDBClient/backup_graph/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/check_server_status> a owl:ObjectProperty ;
+    rdfs:label "check_server_status" ;
+    rdfs:comment """Check if the GraphDB server is running.
+        
+        Returns:
+            True if server is running, False otherwise
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/check_server_status/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/clear_graph> a owl:ObjectProperty ;
+    rdfs:label "clear_graph" ;
+    rdfs:comment """Clear a graph in GraphDB.
+        
+        Args:
+            graph_uri: Optional graph URI
+            
+        Returns:
+            True if successful
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/clear_graph/graph_uri> a owl:DatatypeProperty ;
+    rdfs:label "graph_uri" ;
+    rdfs:range "typing.Optional[str]" ;
+    owl:hasValue "None" .
+
+<http://example.org/graphdb#GraphDBClient/clear_graph/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/count_triples> a owl:ObjectProperty ;
+    rdfs:label "count_triples" ;
+    rdfs:comment """Count triples in a graph.
+        
+        Args:
+            graph_uri: Optional graph URI
+            
+        Returns:
+            Number of triples
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/count_triples/graph_uri> a owl:DatatypeProperty ;
+    rdfs:label "graph_uri" ;
+    rdfs:range "typing.Optional[str]" ;
+    owl:hasValue "None" .
+
+<http://example.org/graphdb#GraphDBClient/count_triples/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/download_graph> a owl:ObjectProperty ;
+    rdfs:label "download_graph" ;
+    rdfs:comment """Download an RDF graph from GraphDB.
+        
+        Args:
+            graph_uri: Optional graph URI
+            
+        Returns:
+            RDF graph
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/download_graph/graph_uri> a owl:DatatypeProperty ;
+    rdfs:label "graph_uri" ;
+    rdfs:range "typing.Optional[str]" ;
+    owl:hasValue "None" .
+
+<http://example.org/graphdb#GraphDBClient/download_graph/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/execute_sparql> a owl:ObjectProperty ;
+    rdfs:label "execute_sparql" ;
+    rdfs:comment """Execute a SPARQL query.
+        
+        Args:
+            query: SPARQL query string
+            
+        Returns:
+            Query results as a list of dictionaries
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/execute_sparql/query> a owl:DatatypeProperty ;
+    rdfs:label "query" ;
+    rdfs:range "<class 'str'>" .
+
+<http://example.org/graphdb#GraphDBClient/execute_sparql/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/get_graph_info> a owl:ObjectProperty ;
+    rdfs:label "get_graph_info" ;
+    rdfs:comment """Get information about a graph.
+        
+        Args:
+            graph_uri: Optional graph URI
+            
+        Returns:
+            Graph information
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/get_graph_info/graph_uri> a owl:DatatypeProperty ;
+    rdfs:label "graph_uri" ;
+    rdfs:range "typing.Optional[str]" ;
+    owl:hasValue "None" .
+
+<http://example.org/graphdb#GraphDBClient/get_graph_info/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/list_graphs> a owl:ObjectProperty ;
+    rdfs:label "list_graphs" ;
+    rdfs:comment """List all graphs in the repository.
+        
+        Returns:
+            List of graph URIs
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/list_graphs/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/load_ontology> a owl:ObjectProperty ;
+    rdfs:label "load_ontology" ;
+    rdfs:comment """Load an ontology file into GraphDB.
+        
+        Args:
+            ontology_path: Path to ontology file
+            
+        Returns:
+            True if successful
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/load_ontology/ontology_path> a owl:DatatypeProperty ;
+    rdfs:label "ontology_path" ;
+    rdfs:range "typing.Union[str, pathlib.Path]" .
+
+<http://example.org/graphdb#GraphDBClient/load_ontology/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/query> a owl:ObjectProperty ;
+    rdfs:label "query" ;
+    rdfs:comment """Execute a SPARQL query.
+        
+        Args:
+            query: SPARQL query string
+            format: Response format (json, xml, csv, etc.)
+            
+        Returns:
+            Query results in specified format
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/query/format> a owl:DatatypeProperty ;
+    rdfs:label "format" ;
+    rdfs:range "<class 'str'>" ;
+    owl:hasValue "json" .
+
+<http://example.org/graphdb#GraphDBClient/query/query> a owl:DatatypeProperty ;
+    rdfs:label "query" ;
+    rdfs:range "<class 'str'>" .
+
+<http://example.org/graphdb#GraphDBClient/query/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/restore_graph> a owl:ObjectProperty ;
+    rdfs:label "restore_graph" ;
+    rdfs:comment """Restore a graph from a backup file.
+        
+        Args:
+            backup_path: Path to backup file
+            
+        Returns:
+            True if successful
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/restore_graph/backup_path> a owl:DatatypeProperty ;
+    rdfs:label "backup_path" ;
+    rdfs:range "typing.Union[str, pathlib.Path]" .
+
+<http://example.org/graphdb#GraphDBClient/restore_graph/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/update> a owl:ObjectProperty ;
+    rdfs:label "update" ;
+    rdfs:comment """Execute a SPARQL update.
+        
+        Args:
+            update: SPARQL update string
+            
+        Returns:
+            True if successful
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/update/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#GraphDBClient/update/update> a owl:DatatypeProperty ;
+    rdfs:label "update" ;
+    rdfs:range "<class 'str'>" .
+
+<http://example.org/graphdb#GraphDBClient/upload_graph> a owl:ObjectProperty ;
+    rdfs:label "upload_graph" ;
+    rdfs:comment """Upload an RDF graph to GraphDB.
+        
+        Args:
+            graph: RDF graph or path to RDF file
+            graph_uri: Optional graph URI
+            
+        Returns:
+            True if successful
+            
+        Raises:
+            GraphDBError: If upload fails
+        """ .
+
+<http://example.org/graphdb#GraphDBClient/upload_graph/graph> a owl:DatatypeProperty ;
+    rdfs:label "graph" ;
+    rdfs:range "typing.Union[rdflib.graph.Graph, str, pathlib.Path]" .
+
+<http://example.org/graphdb#GraphDBClient/upload_graph/graph_uri> a owl:DatatypeProperty ;
+    rdfs:label "graph_uri" ;
+    rdfs:range "typing.Optional[str]" ;
+    owl:hasValue "None" .
+
+<http://example.org/graphdb#GraphDBClient/upload_graph/self> a owl:DatatypeProperty ;
+    rdfs:label "self" .
+
+<http://example.org/graphdb#test/test_backup_graph> a test:TestCase ;
+    rdfs:label "test_backup_graph" ;
+    rdfs:comment "Test backing up a graph." .
+
+<http://example.org/graphdb#test/test_check_server_status> a test:TestCase ;
+    rdfs:label "test_check_server_status" ;
+    rdfs:comment "Test checking server status." .
+
+<http://example.org/graphdb#test/test_clear_graph> a test:TestCase ;
+    rdfs:label "test_clear_graph" ;
+    rdfs:comment "Test clearing a graph." .
+
+<http://example.org/graphdb#test/test_count_triples> a test:TestCase ;
+    rdfs:label "test_count_triples" ;
+    rdfs:comment "Test counting triples." .
+
+<http://example.org/graphdb#test/test_download_graph> a test:TestCase ;
+    rdfs:label "test_download_graph" ;
+    rdfs:comment "Test downloading a graph." .
+
+<http://example.org/graphdb#test/test_error_handling> a test:TestCase ;
+    rdfs:label "test_error_handling" ;
+    rdfs:comment "Test error handling." .
+
+<http://example.org/graphdb#test/test_execute_sparql> a test:TestCase ;
+    rdfs:label "test_execute_sparql" ;
+    rdfs:comment "Test executing SPARQL query." .
+
+<http://example.org/graphdb#test/test_execute_sparql_error> a test:TestCase ;
+    rdfs:label "test_execute_sparql_error" ;
+    rdfs:comment "Test executing SPARQL query with error." .
+
+<http://example.org/graphdb#test/test_get_graph_info> a test:TestCase ;
+    rdfs:label "test_get_graph_info" ;
+    rdfs:comment "Test getting graph info." .
+
+<http://example.org/graphdb#test/test_graph> a test:TestCase ;
+    rdfs:label "test_graph" ;
+    rdfs:comment "Create a test graph with proper RDF structure." .
+
+<http://example.org/graphdb#test/test_list_graphs> a test:TestCase ;
+    rdfs:label "test_list_graphs" ;
+    rdfs:comment "Test listing graphs." .
+
+<http://example.org/graphdb#test/test_load_ontology> a test:TestCase ;
+    rdfs:label "test_load_ontology" ;
+    rdfs:comment "Test loading an ontology." .
+
+<http://example.org/graphdb#test/test_load_ontology_error> a test:TestCase ;
+    rdfs:label "test_load_ontology_error" ;
+    rdfs:comment "Test loading an ontology with error." .
+
+<http://example.org/graphdb#test/test_query> a test:TestCase ;
+    rdfs:label "test_query" ;
+    rdfs:comment "Test executing a SPARQL query." .
+
+<http://example.org/graphdb#test/test_restore_graph> a test:TestCase ;
+    rdfs:label "test_restore_graph" ;
+    rdfs:comment "Test restoring a graph from backup." .
+
+<http://example.org/graphdb#test/test_server_status_error> a test:TestCase ;
+    rdfs:label "test_server_status_error" ;
+    rdfs:comment "Test server status check with error." .
+
+<http://example.org/graphdb#test/test_shapes> a test:TestCase ;
+    rdfs:label "test_shapes" ;
+    rdfs:comment "Create a test shapes graph." .
+
+<http://example.org/graphdb#test/test_update> a test:TestCase ;
+    rdfs:label "test_update" ;
+    rdfs:comment "Test executing a SPARQL update." .
+
+<http://example.org/graphdb#test/test_upload_graph> a test:TestCase ;
+    rdfs:label "test_upload_graph" ;
+    rdfs:comment "Test uploading a graph." .
+
+<http://example.org/graphdb#test/test_upload_graph/assertion> a test:Assertion ;
+    test:asserts "assert validate_graph(test_graph, test_shapes)" .
+
+req:Authentication a req:Requirement ;
+    rdfs:label "Authentication" ;
+    rdfs:comment "Must support authentication mechanisms" .
+
+req:ErrorHandling a req:Requirement ;
+    rdfs:label "Error Handling" ;
+    rdfs:comment "Must implement proper error handling" .
+
+req:GraphManagement a req:Requirement ;
+    rdfs:label "Graph Management" ;
+    rdfs:comment "Must support graph upload/download/clear operations" .
+
+req:SPARQLSupport a req:Requirement ;
+    rdfs:label "SPARQL Query Support" ;
+    rdfs:comment "Must support SPARQL query execution" .
+
+req:Validation a req:Requirement ;
+    rdfs:label "Validation" ;
+    rdfs:comment "Must support data validation" .
+
+risk:ConnectionFailure a risk:Risk ;
+    rdfs:label "Connection Failure" ;
+    rdfs:comment "Risk of connection to GraphDB server failing" .
+
+risk:DataLoss a risk:Risk ;
+    rdfs:label "Data Loss" ;
+    rdfs:comment "Risk of data loss during operations" .
+
+risk:Performance a risk:Risk ;
+    rdfs:label "Performance Risk" ;
+    rdfs:comment "Risk of performance degradation" .
+
+risk:Security a risk:Risk ;
+    rdfs:label "Security Risk" ;
+    rdfs:comment "Risk of unauthorized access" .
+

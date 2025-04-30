@@ -44,10 +44,20 @@ class GuidanceManager:
         
         SELECT ?pattern ?type ?label ?comment
         WHERE {
-            ?pattern a guidance:ValidationPattern ;
-                    rdfs:label ?label ;
-                    rdfs:comment ?comment ;
-                    guidance:hasType ?type .
+            {
+                ?rule a guidance:ValidationRule ;
+                      guidance:hasPattern ?pattern ;
+                      guidance:hasType ?type .
+                OPTIONAL { ?rule rdfs:label ?label }
+                OPTIONAL { ?rule rdfs:comment ?comment }
+            }
+            UNION
+            {
+                ?pattern a guidance:ValidationPattern ;
+                        rdfs:label ?label ;
+                        rdfs:comment ?comment ;
+                        guidance:hasType ?type .
+            }
         }
         """
         patterns = []
@@ -56,16 +66,16 @@ class GuidanceManager:
             if isinstance(row, ResultRow):
                 patterns.append({
                     'pattern': str(row.pattern),
-                    'type': str(row.type),
-                    'label': str(row.label),
-                    'comment': str(row.comment)
+                    'type': str(row.type).split('#')[-1],
+                    'label': str(row.label) if row.label else None,
+                    'comment': str(row.comment) if row.comment else None
                 })
             else:
                 patterns.append({
                     'pattern': str(row[0]),
-                    'type': str(row[1]),
-                    'label': str(row[2]),
-                    'comment': str(row[3])
+                    'type': str(row[1]).split('#')[-1],
+                    'label': str(row[2]) if row[2] else None,
+                    'comment': str(row[3]) if row[3] else None
                 })
         return patterns
         
@@ -81,22 +91,36 @@ class GuidanceManager:
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-        SELECT ?rule ?label ?type ?message ?priority
+        SELECT ?rule ?label ?type ?message ?priority ?pattern
         WHERE {
             ?rule a guidance:ValidationRule ;
                   rdfs:label ?label ;
                   guidance:hasType ?type .
             OPTIONAL { ?rule guidance:hasMessage ?message }
             OPTIONAL { ?rule guidance:hasPriority ?priority }
+            OPTIONAL { ?rule guidance:hasPattern ?pattern }
         }
         """
         
         for row in self.graph.query(query):
+            patterns = []
+            # Get all patterns for this rule
+            pattern_query = f"""
+            PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
+            SELECT ?pattern
+            WHERE {{
+                <{row.rule}> guidance:hasPattern ?pattern .
+            }}
+            """
+            for pattern_row in self.graph.query(pattern_query):
+                patterns.append(str(pattern_row[0]))
+                
             rule_dict = {
                 "id": str(row.label),
-                "type": str(row.type),
+                "type": str(row.type).split('#')[-1],
                 "message": str(row.message) if row.message else None,
                 "priority": int(row.priority) if row.priority else 0,
+                "patterns": patterns if patterns else None,
                 "rule": self._get_rule_details(row.rule)
             }
             rules.append(rule_dict)
