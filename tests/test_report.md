@@ -1942,3 +1942,29 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Session Summary - 2025-04-30T09:23:48.600798
+
+- Total tests: 15
+- Passed: 12
+- Failed: 3
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-04-30T09:25:40.328349
+
+- Total tests: 15
+- Passed: 10
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+

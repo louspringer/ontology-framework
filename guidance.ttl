@@ -1,11 +1,11 @@
-@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#> .
-@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
 
 rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
     rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
@@ -19,196 +19,243 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
-: a owl:Ontology ;
+guidance: a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
-    owl:versionInfo "1.0.0" ;
-    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> ,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
+        core:,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
+    owl:versionInfo "1.0.0" .
 
-:ModuleRegistry a owl:Class ;
-    rdfs:label "Module Registry"@en ;
-    rdfs:comment "Registry for tracking ontology modules"@en .
-
-:MainRegistry a :ModuleRegistry ;
-    :registeredModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> ,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
-
-:LegacySupport a owl:Class ;
-    rdfs:label "Legacy Support"@en ;
-    rdfs:comment "Support for legacy module mappings"@en .
-
-:MainLegacySupport a :LegacySupport ;
-    :hasLegacyMapping [
-        a :LegacyMapping ;
-        :sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> ;
-        :targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> ;
-        :mappingType "direct" ;
-        rdfs:label "Legacy mapping for core module"@en
-    ] , [
-        a :LegacyMapping ;
-        :sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ;
-        :targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ;
-        :mappingType "direct" ;
-        rdfs:label "Legacy mapping for model module"@en
-    ] , [
-        a :LegacyMapping ;
-        :sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ;
-        :targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ;
-        :mappingType "direct" ;
-        rdfs:label "Legacy mapping for security module"@en
-    ] , [
-        a :LegacyMapping ;
-        :sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
-        :targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
-        :mappingType "direct" ;
-        rdfs:label "Legacy mapping for validation module"@en
-    ] , [
-        a :LegacyMapping ;
-        :sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> ;
-        :targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> ;
-        :mappingType "direct" ;
-        rdfs:label "Legacy mapping for collaboration module"@en
-    ] .
-
-# Add modeling rules
-:ModelingRule a meta:ModelingDisciplineRule ;
-    rdfs:label "Ontology Structure Rule"@en ;
-    meta:addressesPitfall "Inconsistent ontology structure"@en ;
-    meta:motivates "Ensure consistent ontology structure"@en ;
-    meta:example "Example of proper ontology structure"@en ;
-    meta:severity "HIGH" ;
-    meta:governs :ValidationRule .
-
-# Add test requirements
-:TestRequirement a meta:Requirement ;
-    rdfs:label "Validation Test Requirement"@en ;
-    meta:hasValidation :ValidationRule ;
-    meta:hasTest :TestProtocol ;
-    meta:severity "HIGH" .
-
-:ClassHierarchyCheck a :ConsistencyRule ;
-    :hasMessage "Check for cycles in class hierarchy" ;
-    :hasPriority "HIGH" ;
-    :hasTarget :ClassHierarchy ;
-    :hasValidator "validate_consistency" .
-
-:IntegrationRequirement a owl:Class ;
-    rdfs:label "Integration Requirement"@en ;
-    rdfs:comment "Requirements for integrating validation components"@en .
-
-:SHACLValidation a owl:Class ;
-    rdfs:label "SHACL Validation"@en ;
-    rdfs:comment "Rules and patterns for SHACL validation"@en .
-
-:SPORERule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
-
-:SemanticRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
-
-:SyntaxRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
-
-:TODO a owl:Class ;
-    rdfs:label "Future Improvements" ;
-    rdfs:comment "Items for future development and enhancement" .
-
-:ValidationPattern a owl:Class ;
-    rdfs:label "Validation Pattern"@en ;
-    rdfs:comment "Pattern for implementing validation rules"@en .
-
-:ConformanceLevel a owl:Class ;
-    rdfs:label "Conformance Level"@en ;
-    rdfs:comment "Level of validation conformance required"@en .
-
-:StrictConformance a :ConformanceLevel ;
-    rdfs:label "Strict Conformance"@en ;
-    rdfs:comment "All validation rules must pass"@en .
-
-:ModerateConformance a :ConformanceLevel ;
-    rdfs:label "Moderate Conformance"@en ;
-    rdfs:comment "Critical validation rules must pass"@en .
-
-:BasicConformance a :ConformanceLevel ;
+guidance:BasicConformance a guidance:ConformanceLevel ;
     rdfs:label "Basic Conformance"@en ;
     rdfs:comment "Only essential validation rules must pass"@en .
 
-:ValidationTarget a owl:Class ;
-    rdfs:label "Validation Target"@en ;
-    rdfs:comment "Target of validation rules"@en .
+guidance:ClassHierarchyCheck a guidance:ConsistencyRule ;
+    guidance:hasMessage "Check for cycles in class hierarchy" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasTarget guidance:ClassHierarchy ;
+    guidance:hasValidator "validate_consistency" .
 
-:ClassHierarchy a :ValidationTarget ;
-    rdfs:label "Class Hierarchy"@en ;
-    rdfs:comment "Validation of class hierarchy relationships"@en .
-
-:PropertyConstraints a :ValidationTarget ;
-    rdfs:label "Property Constraints"@en ;
-    rdfs:comment "Validation of property constraints and relationships"@en .
-
-:DataIntegrity a :ValidationTarget ;
+guidance:DataIntegrity a guidance:ValidationTarget ;
     rdfs:label "Data Integrity"@en ;
     rdfs:comment "Validation of data integrity rules"@en .
 
-:hasConformanceLevel a owl:ObjectProperty ;
-    rdfs:domain :ValidationRule ;
-    rdfs:range :ConformanceLevel ;
-    rdfs:label "has conformance level"@en ;
-    rdfs:comment "Specifies the conformance level required for a validation rule"@en .
+guidance:IntegrationRequirement a owl:Class ;
+    rdfs:label "Integration Requirement"@en ;
+    rdfs:comment "Requirements for integrating validation components"@en .
 
-:hasValidationTarget a owl:ObjectProperty ;
-    rdfs:domain :ValidationRule ;
-    rdfs:range :ValidationTarget ;
-    rdfs:label "has validation target"@en ;
-    rdfs:comment "Specifies the target of a validation rule"@en .
+guidance:MainLegacySupport a guidance:LegacySupport ;
+    guidance:hasLegacyMapping [ a guidance:LegacyMapping ;
+            rdfs:label "Legacy mapping for core module"@en ;
+            guidance:mappingType "direct" ;
+            guidance:sourceModule core: ;
+            guidance:targetModule core: ],
+        [ a guidance:LegacyMapping ;
+            rdfs:label "Legacy mapping for model module"@en ;
+            guidance:mappingType "direct" ;
+            guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ;
+            guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ],
+        [ a guidance:LegacyMapping ;
+            rdfs:label "Legacy mapping for security module"@en ;
+            guidance:mappingType "direct" ;
+            guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ;
+            guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ],
+        [ a guidance:LegacyMapping ;
+            rdfs:label "Legacy mapping for validation module"@en ;
+            guidance:mappingType "direct" ;
+            guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
+            guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ],
+        [ a guidance:LegacyMapping ;
+            rdfs:label "Legacy mapping for collaboration module"@en ;
+            guidance:mappingType "direct" ;
+            guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> ;
+            guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> ],
+        guidance:LegacyMapping_collaboration,
+        guidance:LegacyMapping_core,
+        guidance:LegacyMapping_model,
+        guidance:LegacyMapping_security,
+        guidance:LegacyMapping_validation .
 
-:ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
+guidance:MainRegistry a guidance:ModuleRegistry ;
+    guidance:registeredModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
+        core:,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+
+guidance:ModelingRule a meta:ModelingDisciplineRule ;
+    rdfs:label "Ontology Structure Rule"@en ;
+    meta:addressesPitfall "Inconsistent ontology structure"@en ;
+    meta:example "Example of proper ontology structure"@en ;
+    meta:governs guidance:ValidationRule ;
+    meta:motivates "Ensure consistent ontology structure"@en ;
+    meta:severity "HIGH" .
+
+guidance:ModerateConformance a guidance:ConformanceLevel ;
+    rdfs:label "Moderate Conformance"@en ;
+    rdfs:comment "Critical validation rules must pass"@en .
+
+guidance:PropertyConstraints a guidance:ValidationTarget ;
+    rdfs:label "Property Constraints"@en ;
+    rdfs:comment "Validation of property constraints and relationships"@en .
+
+guidance:SHACLValidation a owl:Class ;
+    rdfs:label "SHACL Validation"@en ;
+    rdfs:comment "Rules and patterns for SHACL validation"@en .
+
+guidance:SPORERule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+guidance:SemanticRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+guidance:StrictConformance a guidance:ConformanceLevel ;
+    rdfs:label "Strict Conformance"@en ;
+    rdfs:comment "All validation rules must pass"@en .
+
+guidance:SyntaxRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+guidance:TODO a owl:Class ;
+    rdfs:label "Future Improvements" ;
+    rdfs:comment "Items for future development and enhancement" .
+
+guidance:TestRequirement a meta:Requirement ;
+    rdfs:label "Validation Test Requirement"@en ;
+    meta:hasTest guidance:TestProtocol ;
+    meta:hasValidation guidance:ValidationRule ;
+    meta:severity "HIGH" .
+
+guidance:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "Pattern for implementing validation rules"@en .
+
+guidance:ValidationRuleShape a sh:NodeShape ;
+    sh:property [ sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasValidator ],
+            sh:node guidance:ConformanceLevel ;
+            sh:path guidance:hasConformanceLevel ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:node guidance:ValidationTarget ;
+            sh:path guidance:hasValidationTarget ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasMessage ],
+            sh:path guidance:hasValidator ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasPriority ],
+            sh:path guidance:hasMessage ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path guidance:hasPriority ],
         [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasTarget ],
-        [ sh:node :ConformanceLevel ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasConformanceLevel ],
-        [ sh:node :ValidationTarget ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasValidationTarget ] ;
-    sh:targetClass :ValidationRule .
+            sh:path guidance:hasTarget ] ;
+    sh:targetClass guidance:ValidationRule .
 
-:ConsistencyRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
+core:Action a owl:Class ;
+    rdfs:label "Action"@en ;
+    rdfs:comment "Class for representing actions that can be taken"@en ;
+    owl:versionInfo "1.0.0" .
 
-:hasMessage a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+core:BestPractice a owl:Class ;
+    rdfs:label "BestPractice"@en ;
+    rdfs:comment "Class for representing best practices"@en ;
+    owl:versionInfo "1.0.0" .
 
-:hasPriority a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+core:DomainAnalogy a owl:Class ;
+    rdfs:label "DomainAnalogy"@en ;
+    rdfs:comment "Class for representing domain analogies"@en ;
+    owl:versionInfo "1.0.0" .
 
-:hasTarget a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+core:Interpretation a owl:Class ;
+    rdfs:label "Interpretation"@en ;
+    rdfs:comment "Class for representing interpretations of ontology elements"@en ;
+    owl:versionInfo "1.0.0" .
 
-:hasValidator a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+guidance:ClassHierarchy a guidance:ValidationTarget ;
+    rdfs:label "Class Hierarchy"@en ;
+    rdfs:comment "Validation of class hierarchy relationships"@en .
 
-:ValidationRule a owl:Class .
+guidance:ConsistencyRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+guidance:LegacyMapping_collaboration a guidance:LegacyMapping ;
+    rdfs:label "Legacy mapping for collaboration module"@en ;
+    guidance:mappingType "direct" ;
+    guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> ;
+    guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
+
+guidance:LegacyMapping_core a guidance:LegacyMapping ;
+    rdfs:label "Legacy mapping for core module"@en ;
+    guidance:mappingType "direct" ;
+    guidance:sourceModule core: ;
+    guidance:targetModule core: .
+
+guidance:LegacyMapping_model a guidance:LegacyMapping ;
+    rdfs:label "Legacy mapping for model module"@en ;
+    guidance:mappingType "direct" ;
+    guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> ;
+    guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> .
+
+guidance:LegacyMapping_security a guidance:LegacyMapping ;
+    rdfs:label "Legacy mapping for security module"@en ;
+    guidance:mappingType "direct" ;
+    guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> ;
+    guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> .
+
+guidance:LegacyMapping_validation a guidance:LegacyMapping ;
+    rdfs:label "Legacy mapping for validation module"@en ;
+    guidance:mappingType "direct" ;
+    guidance:sourceModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
+    guidance:targetModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+
+guidance:LegacySupport a owl:Class ;
+    rdfs:label "Legacy Support"@en ;
+    rdfs:comment "Support for legacy module mappings"@en .
+
+guidance:ModuleRegistry a owl:Class ;
+    rdfs:label "Module Registry"@en ;
+    rdfs:comment "Registry for tracking ontology modules"@en .
+
+guidance:hasConformanceLevel a owl:ObjectProperty ;
+    rdfs:label "has conformance level"@en ;
+    rdfs:comment "Specifies the conformance level required for a validation rule"@en ;
+    rdfs:domain guidance:ValidationRule ;
+    rdfs:range guidance:ConformanceLevel .
+
+guidance:hasMessage a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:hasTarget a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:hasValidationTarget a owl:ObjectProperty ;
+    rdfs:label "has validation target"@en ;
+    rdfs:comment "Specifies the target of a validation rule"@en ;
+    rdfs:domain guidance:ValidationRule ;
+    rdfs:range guidance:ValidationTarget .
+
+guidance:hasValidator a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "Level of validation conformance required"@en .
+
+guidance:ValidationTarget a owl:Class ;
+    rdfs:label "Validation Target"@en ;
+    rdfs:comment "Target of validation rules"@en .
+
+guidance:ValidationRule a owl:Class .
 
