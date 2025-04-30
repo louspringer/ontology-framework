@@ -1,0 +1,11 @@
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:ServerConfiguration a ns1:ServerConfiguration ;
+    rdfs:label "BFG9K Model Context Protocol Server" ;
+    ns1:host "localhost" ;
+    ns1:ontologyPath "guidance.ttl" ;
+    ns1:port 8080 ;
+    ns1:validationEnabled true .
+
