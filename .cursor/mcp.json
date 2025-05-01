@@ -6,38 +6,51 @@
       "requireContext": true,
       "requireServerConfig": true,
       "dryRun": false,
-      "backupEnabled": true,
-      "rules": {}
+      "backupEnabled": true
     },
     "validationRules": {
-      "ontologyStructure": {},
-      "SemanticEquivalenceCheck": {
-        "type": "BFG9KValidationPattern",
-        "script": "scripts/semantic_equivalence_check.py",
-        "description": "Checks semantic equivalence between two TTL files using RDFLib. Any failure is a likely BFG9K target.",
-        "appliesTo": "TurtleOntologyArtifact",
-        "failureAction": "MarkAsBFG9KTarget"
-      },
-      "phaseExecution": {
-        "discoveryRequirements": {
-          "validationRules": ["SemanticEquivalenceCheck"]
-        },
-        "planRequirements": {
-          "validationRules": ["SemanticEquivalenceCheck"]
-        }
+      "ontologyStructure": {
+        "requiredClasses": [
+          "ValidationRule",
+          "ValidationPattern",
+          "ConsistencyRule",
+          "SemanticRule",
+          "SyntaxRule",
+          "SecurityRule",
+          "ComplianceRule"
+        ],
+        "requiredProperties": [
+          "hasMessage",
+          "hasPriority",
+          "hasTarget",
+          "hasValidator",
+          "hasSecurityLevel",
+          "hasComplianceLevel"
+        ],
+        "requiredShapes": [
+          "ValidationPatternShape",
+          "ValidationRuleShape",
+          "SecurityRuleShape",
+          "ComplianceRuleShape"
+        ]
       }
     }
   },
   "adapters": {
     "ide": {
-      "servers": {}
+      "servers": {
+        "bfg9k": {
+          "url": "http://localhost:8080",
+          "type": "bfg9k"
+        }
+      }
     }
   },
   "metadata": {
     "project": "ontology-framework",
     "version": "1.0.0",
-    "description": "Unified MCP Configuration",
-    "timestamp": "2025-04-26T17:36:23.097743",
+    "description": "Unified MCP Configuration with BFG9K",
+    "timestamp": "2024-03-21T10:00:00Z",
     "author": "ontology-framework-team"
   },
   "logging": {
@@ -46,9 +59,9 @@
     "file": ".cursor/mcp.log"
   },
   "mcpServers": {
-    "datapilot": {
-      "url": "http://localhost:7700/sse",
-      "type": "sse"
+    "bfg9k": {
+      "url": "http://localhost:8080",
+      "type": "bfg9k"
     }
   }
 }

@@ -1,161 +1,47 @@
 {
-  "mcpServers": {
-    "datapilot": {
-      "url": "http://localhost:7700/sse",
-      "type": "sse"
-    }
-  },
-  "validation": {
-    "enabled": true,
-    "requirePhaseOrder": true,
-    "requireContext": true,
-    "requireServerConfig": true,
-    "dryRun": false,
-    "backupEnabled": true,
-    "rules": {
-      "phaseOrder": [
-        "discovery",
-        "plan",
-        "do",
-        "check",
-        "act"
-      ],
-      "requiredPhases": [
-        "discovery",
-        "plan",
-        "do",
-        "check"
-      ],
-      "optionalPhases": [
-        "act"
-      ]
-    }
-  },
-  "validationRules": {
-    "ontologyStructure": {
-      "requiredClasses": [
-        "ValidationRule",
-        "ValidationPattern",
-        "ConsistencyRule",
-        "SemanticRule",
-        "SyntaxRule",
-        "SecurityRule",
-        "ComplianceRule"
-      ],
-      "requiredProperties": [
-        "hasMessage",
-        "hasPriority",
-        "hasTarget",
-        "hasValidator",
-        "hasSecurityLevel",
-        "hasComplianceLevel"
-      ],
-      "requiredShapes": [
-        "ValidationPatternShape",
-        "ValidationRuleShape",
-        "SecurityRuleShape",
-        "ComplianceRuleShape"
-      ]
+  "core": {
+    "validation": {
+      "enabled": true,
+      "requirePhaseOrder": true,
+      "requireContext": true,
+      "requireServerConfig": true,
+      "dryRun": false,
+      "backupEnabled": true
     },
-    "guidance": {
-      "BFG9K": {
-        "type": "ValidationPattern",
-        "message": "Big Friendly Giant 9000 validation pattern",
-        "priority": "HIGH",
-        "validator": "validateBFG9K",
-        "strategy": {
-          "type": "ValidationStrategy",
-          "steps": [
-            {
-              "type": "ExactMatch",
-              "message": "Check for exact matches in validation rules",
-              "priority": "HIGH"
-            },
-            {
-              "type": "SimilarityMatch",
-              "message": "Check for similar patterns in validation rules",
-              "priority": "MEDIUM"
-            },
-            {
-              "type": "LLMSelect",
-              "message": "Use LLM for complex pattern matching",
-              "priority": "LOW"
-            }
-          ]
-        },
-        "path": {
-          "type": "ValidationPath",
-          "startNode": "ValidationRule",
-          "intermediateNodes": ["ValidationPattern", "ValidationStrategy"],
-          "endNode": "ValidationTarget",
-          "qualityThreshold": 0.85
-        },
-        "issues": [
-          {
-            "id": "MISSING_METADATA",
-            "message": "Missing required metadata",
-            "priority": "HIGH",
-            "target": "ValidationRule"
-          },
-          {
-            "id": "INVALID_PATTERN",
-            "message": "Invalid validation pattern",
-            "priority": "HIGH",
-            "target": "ValidationPattern"
-          },
-          {
-            "id": "INCOMPLETE_CHAIN",
-            "message": "Incomplete validation chain",
-            "priority": "MEDIUM",
-            "target": "ValidationChain"
-          },
-          {
-            "id": "SECURITY_VIOLATION",
-            "message": "Security validation failed",
-            "priority": "CRITICAL",
-            "target": "SecurityRule"
-          },
-          {
-            "id": "COMPLIANCE_VIOLATION",
-            "message": "Compliance validation failed",
-            "priority": "HIGH",
-            "target": "ComplianceRule"
-          }
+    "validationRules": {
+      "ontologyStructure": {
+        "requiredClasses": [
+          "ValidationRule",
+          "ValidationPattern",
+          "ConsistencyRule",
+          "SemanticRule",
+          "SyntaxRule",
+          "SecurityRule",
+          "ComplianceRule"
         ],
-        "security": {
-          "enabled": true,
-          "rules": [
-            {
-              "type": "SensitiveData",
-              "level": "CRITICAL",
-              "validator": "validate_sensitive_data"
-            },
-            {
-              "type": "AccessControl",
-              "level": "HIGH",
-              "validator": "validate_access_control"
-            },
-            {
-              "type": "Encryption",
-              "level": "HIGH",
-              "validator": "validate_encryption"
-            }
-          ]
-        },
-        "compliance": {
-          "enabled": true,
-          "standards": [
-            {
-              "name": "ISO27001",
-              "level": "FULL",
-              "validator": "validate_iso27001"
-            },
-            {
-              "name": "GDPR",
-              "level": "FULL",
-              "validator": "validate_gdpr"
-            }
-          ]
+        "requiredProperties": [
+          "hasMessage",
+          "hasPriority",
+          "hasTarget",
+          "hasValidator",
+          "hasSecurityLevel",
+          "hasComplianceLevel"
+        ],
+        "requiredShapes": [
+          "ValidationPatternShape",
+          "ValidationRuleShape",
+          "SecurityRuleShape",
+          "ComplianceRuleShape"
+        ]
+      }
+    }
+  },
+  "adapters": {
+    "ide": {
+      "servers": {
+        "bfg9k": {
+          "url": "http://localhost:8080",
+          "type": "bfg9k"
         }
       }
     }
@@ -163,14 +49,19 @@
   "metadata": {
     "project": "ontology-framework",
     "version": "1.0.0",
-    "description": "BFG9K Pattern Implementation",
+    "description": "Unified MCP Configuration with BFG9K",
     "timestamp": "2024-03-21T10:00:00Z",
     "author": "ontology-framework-team"
   },
-  "ontologyPath": "guidance.ttl",
-  "targetFiles": [
-    "guidance.ttl",
-    "src/ontology_framework/modules/mcp_prompt.py",
-    "src/ontology_framework/modules/mcp_config.py"
-  ]
-} 
+  "logging": {
+    "level": "DEBUG",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": ".cursor/mcp.log"
+  },
+  "mcpServers": {
+    "bfg9k": {
+      "url": "http://localhost:8080",
+      "type": "bfg9k"
+    }
+  }
+}

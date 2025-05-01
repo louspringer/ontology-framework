@@ -1,0 +1,81 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix mcp: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/mcp#> .
+
+# Model Context Protocol Classes
+mcp:ServerConfiguration a owl:Class ;
+    rdfs:label "Server Configuration"@en ;
+    rdfs:comment "Configuration for the Model Context Protocol server"@en .
+
+mcp:ModelContext a owl:Class ;
+    rdfs:label "Model Context"@en ;
+    rdfs:comment "Context for model-driven operations"@en .
+
+mcp:ValidationRule a owl:Class ;
+    rdfs:label "Validation Rule"@en ;
+    rdfs:comment "Rule for validating model context"@en .
+
+# Properties
+mcp:ontologyPath a owl:DatatypeProperty ;
+    rdfs:label "Ontology Path"@en ;
+    rdfs:comment "Path to the ontology file"@en ;
+    rdfs:domain mcp:ServerConfiguration ;
+    rdfs:range xsd:string .
+
+mcp:validationEnabled a owl:DatatypeProperty ;
+    rdfs:label "Validation Enabled"@en ;
+    rdfs:comment "Whether validation is enabled"@en ;
+    rdfs:domain mcp:ServerConfiguration ;
+    rdfs:range xsd:boolean .
+
+mcp:hasContext a owl:ObjectProperty ;
+    rdfs:label "Has Context"@en ;
+    rdfs:comment "Links to a model context"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range mcp:ModelContext .
+
+mcp:hasValidationRule a owl:ObjectProperty ;
+    rdfs:label "Has Validation Rule"@en ;
+    rdfs:comment "Links to a validation rule"@en ;
+    rdfs:domain mcp:ModelContext ;
+    rdfs:range mcp:ValidationRule .
+
+# SHACL Shapes
+mcp:ServerConfigurationShape a sh:NodeShape ;
+    sh:targetClass mcp:ServerConfiguration ;
+    sh:property [
+        sh:path mcp:ontologyPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Server configuration must have exactly one ontology path"@en
+    ] ;
+    sh:property [
+        sh:path mcp:validationEnabled ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Server configuration must have exactly one validation enabled flag"@en
+    ] .
+
+mcp:ModelContextShape a sh:NodeShape ;
+    sh:targetClass mcp:ModelContext ;
+    sh:property [
+        sh:path mcp:hasValidationRule ;
+        sh:class mcp:ValidationRule ;
+        sh:minCount 1 ;
+        sh:message "Model context must have at least one validation rule"@en
+    ] .
+
+# Example instances
+mcp:DefaultServerConfig a mcp:ServerConfiguration ;
+    rdfs:label "Default Server Configuration"@en ;
+    mcp:ontologyPath "guidance.ttl" ;
+    mcp:validationEnabled true .
+
+mcp:DefaultModelContext a mcp:ModelContext ;
+    rdfs:label "Default Model Context"@en ;
+    rdfs:comment "Default context for model-driven operations"@en . 

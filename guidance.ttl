@@ -17,6 +17,33 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
+<https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRuleShape> a sh:NodeShape ;
+    sh:property [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ] ;
+    sh:targetClass <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> .
+
+<https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
+    rdfs:label "Ontology Management" ;
+    rdfs:comment "Rules for managing ontologies" .
+
+<https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
+    rdfs:label "Semantic First Approach" ;
+    rdfs:comment "Always use semantic web tools before text-based operations" .
+
+<https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
+    rdfs:label "Validation Approach" ;
+    rdfs:comment "How to handle validation tasks" .
+
 : a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
@@ -83,16 +110,42 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     :hasValidator "validate_syntax" .
 
 :ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:class_ :ValidationTarget ;
+    sh:property [ sh:class :ValidationRuleType ;
             sh:maxCount 1 ;
-            sh:message "Validation rule must have a target" ;
+            sh:message "Validation rule must have a rule type" ;
             sh:minCount 1 ;
-            sh:path :hasTarget ],
+            sh:path :hasRuleType ],
+        [ sh:datatype xsd:string ;
+            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
+            sh:maxCount 1 ;
+            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
+            sh:minCount 1 ;
+            sh:path :hasPriority ],
         [ sh:class_ :ValidationRuleType ;
             sh:maxCount 1 ;
             sh:message "Validation rule must have a rule type" ;
             sh:minCount 1 ;
             sh:path :hasRuleType ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a message" ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a validator" ;
+            sh:minCount 1 ;
+            sh:path :hasValidator ],
+        [ sh:class_ :ValidationRuleType ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a rule type" ;
+            sh:minCount 1 ;
+            sh:path :hasRuleType ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a message" ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ],
         [ sh:datatype xsd:string ;
             sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
             sh:maxCount 1 ;
@@ -114,6 +167,11 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:message "Validation rule must have a target" ;
             sh:minCount 1 ;
             sh:path :hasTarget ],
+        [ sh:class_ :ValidationTarget ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a target" ;
+            sh:minCount 1 ;
+            sh:path :hasTarget ],
         [ sh:class :ValidationTarget ;
             sh:maxCount 1 ;
             sh:message "Validation rule must have a target" ;
@@ -129,38 +187,7 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:maxCount 1 ;
             sh:message "Validation rule must have a validator" ;
             sh:minCount 1 ;
-            sh:path :hasValidator ],
-        [ sh:class :ValidationRuleType ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
-            sh:minCount 1 ;
-            sh:path :hasRuleType ],
-        [ sh:datatype xsd:string ;
-            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
-            sh:maxCount 1 ;
-            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a message" ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a validator" ;
-            sh:minCount 1 ;
-            sh:path :hasValidator ],
-        [ sh:class_ :ValidationRuleType ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
-            sh:minCount 1 ;
-            sh:path :hasRuleType ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a message" ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ] ;
+            sh:path :hasValidator ] ;
     sh:targetClass :ValidationRule .
 
 :ValidationTargetShape a sh:NodeShape ;

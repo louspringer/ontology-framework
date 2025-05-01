@@ -1,0 +1,13 @@
+[Unit]
+Description=BFG9K Model Context Protocol Server
+After=network.target
+
+[Service]
+Type=simple
+User=bfg9k
+WorkingDirectory=/opt/bfg9k
+ExecStart=/usr/local/bin/bfg9k-server --config bfg9k_config.ttl
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
