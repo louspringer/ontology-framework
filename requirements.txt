@@ -1,6 +1,6 @@
-numpy==1.26.4
+numpy>=1.24.0,<1.25.0
 PyPDF2==3.0.1
-spacy==3.8.5
+spacy>=3.7.2,<3.8.0
 faiss-cpu==1.7.4
 rdflib>=6.3.2
 mkdocs>=1.5.0
@@ -19,10 +19,8 @@ pyshacl>=0.20.0
 mypy>=1.5.1
 graphviz==0.20.3
 plotly>=5.18.0
-networkx>=3.2.1
-azure-cli>=2.50.0 bfg9k>=0.1.0
+networkx>=3.1,<3.2
+azure-cli>=2.50.0
+bfg9k>=0.1.0
 bfg9k-mcp>=0.1.0
 bfg9k-ontology>=0.1.0
-bfg9k
-bfg9k-mcp
-bfg9k-ontology

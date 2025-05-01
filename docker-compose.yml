@@ -32,7 +32,11 @@ services:
       - ./data:/app/data
     environment:
       - PYTHONPATH=/app
-    command: python -m tests.test_pdf_processor
+      - CONDA_DEFAULT_ENV=ontology-framework
+    command: conda run -n ontology-framework python -m tests.test_pdf_processor
+    depends_on:
+      graphdb:
+        condition: service_healthy
 
 volumes:
   graphdb-data:
