@@ -31,10 +31,15 @@ bfg:createACRStep a bfg:BuildStep ;
     bfg:hasCommand "az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic" ;
     bfg:hasStepOrder 8 .
 
+bfg:deleteNSGStep a bfg:BuildStep ;
+    bfg:hasAutoConfirm true ;
+    bfg:hasCommand "az network nsg delete --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG --yes" ;
+    bfg:hasStepOrder 4 .
+
 bfg:createNSGStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
     bfg:hasCommand "az network nsg create --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG" ;
-    bfg:hasStepOrder 4 .
+    bfg:hasStepOrder 5 .
 
 bfg:createNetworkStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
@@ -44,7 +49,7 @@ bfg:createNetworkStep a bfg:BuildStep ;
 bfg:createPublicIPStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
     bfg:hasCommand "az network public-ip create --resource-group $RESOURCE_GROUP --name ${VM_NAME}PublicIP --sku Standard --version IPv4" ;
-    bfg:hasStepOrder 6 .
+    bfg:hasStepOrder 7 .
 
 bfg:createResourceGroupStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
@@ -54,12 +59,12 @@ bfg:createResourceGroupStep a bfg:BuildStep ;
 bfg:createSSHRuleStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
     bfg:hasCommand "az network nsg rule create --resource-group $RESOURCE_GROUP --nsg-name ${VM_NAME}NSG --name AllowSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow" ;
-    bfg:hasStepOrder 5 .
+    bfg:hasStepOrder 6 .
 
 bfg:createVMStep a bfg:BuildStep ;
     bfg:hasAutoConfirm true ;
-    bfg:hasCommand "az vm create --resource-group $RESOURCE_GROUP --name $VM_NAME --image $VM_IMAGE --size $VM_SIZE --admin-username $ADMIN_USERNAME --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub --priority Spot --eviction-policy Deallocate --public-ip-address ${VM_NAME}PublicIP --vnet-name ${VM_NAME}VNET --subnet ${VM_NAME}Subnet --nsg ${VM_NAME}NSG" ;
-    bfg:hasStepOrder 7 .
+    bfg:hasCommand "az vm create --resource-group $RESOURCE_GROUP --name $VM_NAME --image $VM_IMAGE --size Standard_D2_v2 --admin-username $ADMIN_USERNAME --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub --priority Spot --eviction-policy Deallocate --public-ip-address ${VM_NAME}PublicIP --vnet-name ${VM_NAME}VNET --subnet ${VM_NAME}Subnet --nsg ${VM_NAME}NSG" ;
+    bfg:hasStepOrder 8 .
 
 bfg:hasAutoConfirm a owl:DatatypeProperty ;
     rdfs:label "Auto Confirm"@en ;
@@ -143,4 +148,13 @@ bfg:VirtualMachine a owl:Class ;
 bfg:BuildStep a owl:Class ;
     rdfs:label "Build Step"@en ;
     rdfs:comment "Individual step in the build process"@en .
+
+bfg:buildProcess a bfg:BuildProcess ;
+    bfg:hasEnvironmentVariable "RESOURCE_GROUP=pdf-processor-rg" ;
+    bfg:hasEnvironmentVariable "LOCATION=eastasia" ;
+    bfg:hasEnvironmentVariable "VM_NAME=pdf-processor-vm" ;
+    bfg:hasEnvironmentVariable "VM_SIZE=Standard_D2_v2" ;
+    bfg:hasEnvironmentVariable "VM_IMAGE=Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest" ;
+    bfg:hasEnvironmentVariable "ADMIN_USERNAME=azureuser" ;
+    bfg:hasEnvironmentVariable "ACR_NAME=pdfprocessor1234" .
 

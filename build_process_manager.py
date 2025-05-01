@@ -1,6 +1,9 @@
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD, PROV
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Define custom namespace
 BFG = Namespace("./build_process#")
@@ -198,20 +201,36 @@ class BuildProcessManager:
     def load(self, filename="build_process.ttl"):
         if os.path.exists(filename):
             self.graph.parse(filename, format="turtle")
+            logger.debug("Successfully loaded build process from TTL file")
+        else:
+            logger.error("TTL file does not exist")
+            raise
 
     def get_steps(self):
+        """Get all build steps in order."""
+        steps = []
         query = """
-        SELECT ?step ?order ?command ?auto_confirm
-        WHERE {
-            ?step a bfg:BuildStep .
-            ?step bfg:hasStepOrder ?order .
-            ?step bfg:hasCommand ?command .
-            ?step bfg:hasAutoConfirm ?auto_confirm .
-        }
-        ORDER BY ?order
+            SELECT ?step ?order ?command ?autoConfirm
+            WHERE {
+                ?step a bfg:BuildStep ;
+                      bfg:hasStepOrder ?order ;
+                      bfg:hasCommand ?command ;
+                      bfg:hasAutoConfirm ?autoConfirm .
+            }
+            ORDER BY ?order
         """
-        results = self.graph.query(query, initNs={"bfg": BFG})
-        return [(str(row.step), int(row.order), str(row.command), bool(row.auto_confirm)) for row in results]
+        try:
+            for row in self.graph.query(query, initNs={"bfg": BFG}):
+                step_uri = str(row.step)
+                order = int(row.order)
+                command = str(row.command)
+                auto_confirm = bool(row.autoConfirm)
+                steps.append((step_uri, order, command, auto_confirm))
+                logger.debug(f"Found step {order}: {step_uri}")
+            return sorted(steps, key=lambda x: x[1])  # Sort by order
+        except Exception as e:
+            logger.error(f"Failed to get build steps: {e}")
+            raise
 
 if __name__ == "__main__":
     manager = BuildProcessManager()
