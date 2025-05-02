@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorReport">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorDocumentation"/>
+    <rdfs:label>Error Report</rdfs:label>
+    <rdfs:comment>Detailed report of error occurrence and resolution</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorCount">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#PerformanceMetric"/>
+    <rdfs:label>Error Count</rdfs:label>
+    <rdfs:comment>Number of errors occurred</rdfs:comment>
+    <ns1:metricUnit>count</ns1:metricUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#LoggingLatency">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#PerformanceMetric"/>
+    <rdfs:label>Logging Latency</rdfs:label>
+    <rdfs:comment>Time taken to log error information</rdfs:comment>
+    <ns1:metricUnit>milliseconds</ns1:metricUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MetricsReport">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorDocumentation"/>
+    <rdfs:label>Metrics Report</rdfs:label>
+    <rdfs:comment>Report of error handling metrics</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceMetric2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#PerformanceMetric"/>
+    <rdfs:label>Example PerformanceMetric 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PerformanceMetric</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceMetric1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#PerformanceMetric"/>
+    <rdfs:label>Example PerformanceMetric 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PerformanceMetric</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorLogger">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MonitoringComponent"/>
+    <rdfs:label>Error Logger</rdfs:label>
+    <rdfs:comment>Component for logging errors</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MetricsCollector">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MonitoringComponent"/>
+    <rdfs:label>Metrics Collector</rdfs:label>
+    <rdfs:comment>Component for collecting error metrics</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMonitoringComponent1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MonitoringComponent"/>
+    <rdfs:label>Example MonitoringComponent 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class MonitoringComponent</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorDocumentation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorDocumentation"/>
+    <rdfs:label>Example ErrorDocumentation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorDocumentation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMonitoringComponent2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#MonitoringComponent"/>
+    <rdfs:label>Example MonitoringComponent 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class MonitoringComponent</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorDocumentation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorDocumentation"/>
+    <rdfs:label>Example ErrorDocumentation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorDocumentation</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

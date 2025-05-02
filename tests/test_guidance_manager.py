@@ -1,7 +1,9 @@
+"""Test suite for guidance manager."""
+
 import unittest
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
-from src.ontology_framework.tools.guidance_manager import GuidanceManager
+from ontology_framework.tools.guidance_manager import GuidanceManager
 from pathlib import Path
 import tempfile
 import shutil
@@ -71,11 +73,12 @@ class TestGuidanceManager(unittest.TestCase):
         
     def test_validate_guidance(self):
         """Test guidance ontology validation using SHACL."""
-        # Add SHACL shape using SPARQL Update
+        # Add SHACL shapes using SPARQL Update
         update_query = """
         PREFIX sh: <http://www.w3.org/ns/shacl#>
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
         INSERT DATA {
             guidance:ValidationRuleShape 
@@ -86,19 +89,73 @@ class TestGuidanceManager(unittest.TestCase):
                     sh:datatype xsd:string ;
                     sh:minCount 1 ;
                     sh:maxCount 1
+                ] ;
+                sh:property [
+                    sh:path guidance:hasType ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
+                ] ;
+                sh:property [
+                    sh:path guidance:hasPriority ;
+                    sh:datatype xsd:integer ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
+                ] ;
+                sh:property [
+                    sh:path rdfs:label ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
+                ] .
+                
+            guidance:ValidationPatternShape
+                a sh:NodeShape ;
+                sh:targetClass guidance:ValidationPattern ;
+                sh:property [
+                    sh:path guidance:hasType ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
+                ] ;
+                sh:property [
+                    sh:path rdfs:label ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
+                ] ;
+                sh:property [
+                    sh:path rdfs:comment ;
+                    sh:datatype xsd:string ;
+                    sh:minCount 1 ;
+                    sh:maxCount 1
                 ] .
         }
         """
         self.manager.graph.update(update_query)
         
         results = self.manager.validate_guidance()
-        self.assertEqual(len(results['errors']), 0)
-        self.assertEqual(len(results['warnings']), 0)
+        self.assertEqual(len(results['errors']), 0, f"Validation errors found: {results['errors']}")
+        self.assertEqual(len(results['warnings']), 0, f"Validation warnings found: {results['warnings']}")
+        
+        # Test invalid data
+        invalid_query = """
+        PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
+        
+        INSERT DATA {
+            guidance:InvalidRule
+                a guidance:ValidationRule .
+        }
+        """
+        self.manager.graph.update(invalid_query)
+        
+        results = self.manager.validate_guidance()
+        self.assertGreater(len(results['errors']), 0, "No validation errors found for invalid data")
         
     def test_add_validation_rule(self):
         """Test adding a validation rule."""
         rule_id = "test_rule"
-        rule = "SELECT ?s WHERE { ?s a owl:Class }"
+        rule = {"query": "SELECT ?s WHERE { ?s a owl:Class }"}
         rule_type = "SPARQL"
         message = "Test message"
         priority = 2
@@ -113,10 +170,10 @@ class TestGuidanceManager(unittest.TestCase):
 
         # Verify rule was added
         query = """
-        SELECT ?type ?message ?priority
+        SELECT ?type ?message ?priority ?rule_text
         WHERE {
             ?rule a guidance:ValidationRule ;
-                guidance:hasRule ?rule_text ;
+                guidance:hasSPARQLQuery ?rule_text ;
                 guidance:hasType ?type ;
                 guidance:hasMessage ?message ;
                 guidance:hasPriority ?priority .
@@ -128,12 +185,13 @@ class TestGuidanceManager(unittest.TestCase):
         self.assertEqual(str(result.type), rule_type)
         self.assertEqual(str(result.message), message)
         self.assertEqual(int(result.priority), priority)
+        self.assertEqual(str(result.rule_text), rule["query"])
         
     def test_save_and_reload(self):
         """Test saving and reloading the guidance ontology."""
         # Add a test rule
         rule_id = "test_rule"
-        rule = "SELECT ?s WHERE { ?s a owl:Class }"
+        rule = {"query": "SELECT ?s WHERE { ?s a owl:Class }"}
         rule_type = "SPARQL"
         message = "Test message"
         priority = 2
@@ -156,10 +214,10 @@ class TestGuidanceManager(unittest.TestCase):
 
         # Verify rule exists in new manager
         query = """
-        SELECT ?type ?message ?priority
+        SELECT ?type ?message ?priority ?rule_text
         WHERE {
             ?rule a guidance:ValidationRule ;
-                guidance:hasRule ?rule_text ;
+                guidance:hasSPARQLQuery ?rule_text ;
                 guidance:hasType ?type ;
                 guidance:hasMessage ?message ;
                 guidance:hasPriority ?priority .
@@ -171,6 +229,7 @@ class TestGuidanceManager(unittest.TestCase):
         self.assertEqual(str(result.type), rule_type)
         self.assertEqual(str(result.message), message)
         self.assertEqual(int(result.priority), priority)
+        self.assertEqual(str(result.rule_text), rule["query"])
 
 if __name__ == '__main__':
     unittest.main() 

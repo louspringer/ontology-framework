@@ -1,8 +1,10 @@
-import pytest
+"""Test suite for error handler."""
+
+import unittest
 from typing import Dict, List, Optional
 from datetime import datetime
-from src.ontology_framework.error_handler import ErrorHandler
-from src.ontology_framework.ontology_types import (
+from ontology_framework.error_handler import ErrorHandler
+from ontology_framework.ontology_types import (
     ErrorType, ErrorSeverity, ErrorStep, ValidationRule,
     SecurityLevel, ComplianceLevel, RiskLevel, PerformanceMetric
 )

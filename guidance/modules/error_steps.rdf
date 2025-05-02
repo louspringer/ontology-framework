@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:step="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorPrevention2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorPrevention"/>
+    <rdfs:label>Example ErrorPrevention 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorPrevention</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorIdentification1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorIdentification"/>
+    <rdfs:label>Example ErrorIdentification 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorIdentification</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorHandlingStep1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorHandlingStep"/>
+    <rdfs:label>Example ErrorHandlingStep 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorHandlingStep</rdfs:comment>
+    <step:hasStepAction>Example value 1</step:hasStepAction>
+    <step:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</step:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorPrevention1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorPrevention"/>
+    <rdfs:label>Example TestErrorPrevention 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestErrorPrevention</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorPrevention1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorPrevention"/>
+    <rdfs:label>Example ErrorPrevention 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorPrevention</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorHandlingStep1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorHandlingStep"/>
+    <rdfs:label>Example TestErrorHandlingStep 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestErrorHandlingStep</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorHandlingStep2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorHandlingStep"/>
+    <rdfs:label>Example TestErrorHandlingStep 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestErrorHandlingStep</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorIdentification2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorIdentification"/>
+    <rdfs:label>Example ErrorIdentification 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorIdentification</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorHandlingStep2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorHandlingStep"/>
+    <rdfs:label>Example ErrorHandlingStep 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorHandlingStep</rdfs:comment>
+    <step:hasStepAction>Example value 2</step:hasStepAction>
+    <step:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</step:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorAnalysis1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorAnalysis"/>
+    <rdfs:label>Example ErrorAnalysis 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorAnalysis</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorAnalysis1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorAnalysis"/>
+    <rdfs:label>Example TestErrorAnalysis 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestErrorAnalysis</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorRecovery1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorRecovery"/>
+    <rdfs:label>Example TestErrorRecovery 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestErrorRecovery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorRecovery1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorRecovery"/>
+    <rdfs:label>Example ErrorRecovery 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorRecovery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorPrevention2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorPrevention"/>
+    <rdfs:label>Example TestErrorPrevention 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestErrorPrevention</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorIdentification1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorIdentification"/>
+    <rdfs:label>Example TestErrorIdentification 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestErrorIdentification</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorRecovery2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorRecovery"/>
+    <rdfs:label>Example TestErrorRecovery 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestErrorRecovery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorAnalysisInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorAnalysis"/>
+    <step:hasStepAction>Analyze error cause and impact</step:hasStepAction>
+    <step:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</step:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorAnalysis2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorAnalysis"/>
+    <rdfs:label>Example ErrorAnalysis 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorAnalysis</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorRecovery2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#ErrorRecovery"/>
+    <rdfs:label>Example ErrorRecovery 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorRecovery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorIdentification2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorIdentification"/>
+    <rdfs:label>Example TestErrorIdentification 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestErrorIdentification</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestErrorAnalysis2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_steps#TestErrorAnalysis"/>
+    <rdfs:label>Example TestErrorAnalysis 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestErrorAnalysis</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

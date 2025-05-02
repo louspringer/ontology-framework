@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ConstraintValidation">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ValidationRule"/>
+    <rdfs:label>Constraint Validation</rdfs:label>
+    <rdfs:comment>Validation of error constraints</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceConstraint1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ResourceConstraint"/>
+    <rdfs:label>Example ResourceConstraint 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ResourceConstraint</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationRule1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ValidationRule"/>
+    <rdfs:label>Example ValidationRule 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ValidationRule</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceConstraint2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ResourceConstraint"/>
+    <rdfs:label>Example ResourceConstraint 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ResourceConstraint</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationRule2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ValidationRule"/>
+    <rdfs:label>Example ValidationRule 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ValidationRule</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

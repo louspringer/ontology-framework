@@ -12,6 +12,7 @@ from typing import NoReturn, Dict, List, Tuple, Optional, TypedDict
 from pyshacl.consts import SH as SHACL
 from pyshacl import validate
 from ontology_framework.modules.ttl_fixer import TTLFixer, fix_ttl_file, SHACLShapeBuilder
+from ontology_framework.graphdb_client import GraphDBClient
 
 # Define SHACL namespace using the correct URI
 SHACL = SHACL
@@ -253,6 +254,86 @@ class TestTTLFixer(unittest.TestCase):
         """Clean up test environment."""
         if cls.test_dir.exists():
             shutil.rmtree(cls.test_dir)
+
+@pytest.fixture
+def graphdb_client():
+    """Create a GraphDB client instance."""
+    client = GraphDBClient("http://localhost:7200", "validation")
+    yield client
+    # Cleanup: Clear the validation repository
+    client.clear_graph()
+
+def test_fix_missing_label(graphdb_client):
+    """Test fixing a TTL file with missing labels."""
+    # Create a graph with missing labels
+    graph = Graph()
+    graph.add((URIRef("http://example.org/test"), RDF.type, RDFS.Class))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Fix the graph
+    graphdb_client.update("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        INSERT {
+            ?class rdfs:label ?label .
+        }
+        WHERE {
+            ?class a rdfs:Class .
+            BIND(STRAFTER(STR(?class), "#") AS ?label)
+        }
+    """)
+    
+    # Verify the fix
+    results = graphdb_client.query("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?label
+        WHERE {
+            ?class a rdfs:Class ;
+                   rdfs:label ?label .
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Label should be added"
+
+def test_fix_missing_comment(graphdb_client):
+    """Test fixing a TTL file with missing comments."""
+    # Create a graph with missing comments
+    graph = Graph()
+    graph.add((URIRef("http://example.org/test"), RDF.type, RDFS.Class))
+    graph.add((URIRef("http://example.org/test"), RDFS.label, Literal("Test Class")))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Fix the graph
+    graphdb_client.update("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        INSERT {
+            ?class rdfs:comment ?comment .
+        }
+        WHERE {
+            ?class a rdfs:Class ;
+                   rdfs:label ?label .
+            BIND(CONCAT("A class representing ", ?label) AS ?comment)
+        }
+    """)
+    
+    # Verify the fix
+    results = graphdb_client.query("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?comment
+        WHERE {
+            ?class a rdfs:Class ;
+                   rdfs:comment ?comment .
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Comment should be added"
 
 if __name__ == '__main__':
     unittest.main() 

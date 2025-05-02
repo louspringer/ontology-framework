@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD, SH
 from rdflib.namespace import RDF, RDFS, OWL, XSD
-from src.ontology_framework.modules.guidance import GuidanceOntology
+from ontology_framework.modules.guidance import GuidanceOntology
 
 class TestGuidanceConsistency(unittest.TestCase):
     """Test suite for guidance ontology consistency."""

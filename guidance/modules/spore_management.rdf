@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeIntegration1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeIntegration"/>
+    <rdfs:label>Example SporeIntegration 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SporeIntegration</rdfs:comment>
+    <integratesSpore rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleOntology1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeValidator1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeValidator"/>
+    <rdfs:label>Example SporeValidator 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SporeValidator</rdfs:comment>
+    <validatesSpore rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTransformationPattern1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeValidator2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeValidator"/>
+    <rdfs:label>Example SporeValidator 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SporeValidator</rdfs:comment>
+    <validatesSpore rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTransformationPattern2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeManager1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeManager"/>
+    <rdfs:label>Example SporeManager 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SporeManager</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeManager2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeManager"/>
+    <rdfs:label>Example SporeManager 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SporeManager</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSporeIntegration2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SporeIntegration"/>
+    <rdfs:label>Example SporeIntegration 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SporeIntegration</rdfs:comment>
+    <integratesSpore rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleOntology2"/>
+  </rdf:Description>
+</rdf:RDF>

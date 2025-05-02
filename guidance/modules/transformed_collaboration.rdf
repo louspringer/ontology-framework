@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:dc1="http://purl.org/dc/elements/1.1/#"
+   xmlns:dcterms1="http://purl.org/dc/terms/#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#CollaborationGuidanceModule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Collaboration Guidance Module</rdfs:label>
+    <dc1:title>Collaboration Guidance Module</dc1:title>
+    <dc1:version>1.0.0</dc1:version>
+    <dcterms1:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dcterms1:created>
+    <dcterms1:description>Guidance for collaboration and PR management</dcterms1:description>
+    <dcterms1:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dcterms1:modified>
+    <dcterms1:publisher>Ontology Framework Project</dcterms1:publisher>
+    <rdfs:comment>Collaboration patterns and best practices for guidance ontology</rdfs:comment>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/core.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/model.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/security.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/validation.ttl"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+</rdf:RDF>

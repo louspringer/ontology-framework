@@ -7,6 +7,11 @@ import json
 import time
 from typing import Dict, Any, List
 import concurrent.futures
+import os
+import tempfile
+from httpx import AsyncClient
+import asyncio
+from ontology_framework.graphdb_client import GraphDBClient
 
 class TestRepositoryManagement:
     """Test suite for repository management API endpoints."""
@@ -27,7 +32,7 @@ class TestRepositoryManagement:
             "title": "Test Repository",
             "type": "graphdb:SailRepository",
             "params": {
-                "ruleset": "owl-horst-optimized",  # Using a valid ruleset value
+                "ruleset": "owl-horst-optimized",
                 "storage-folder": "storage",
                 "base-URL": "http://example.org/owlim#",
                 "entity-index-size": "1000000",
@@ -41,6 +46,42 @@ class TestRepositoryManagement:
                 "throw-QueryEvaluationException-on-timeout": "false",
                 "read-only": "false"
             }
+        }
+
+    @pytest.fixture
+    async def client(self) -> AsyncClient:
+        """Create an async HTTP client for testing."""
+        async with AsyncClient(base_url="http://localhost:7200") as client:
+            yield client
+
+    @pytest.fixture
+    def test_repo(self) -> str:
+        """Provide a test repository name."""
+        return "test_repo"
+
+    @pytest.fixture
+    def test_data(self) -> Dict[str, str]:
+        """Provide test data in different formats."""
+        return {
+            "turtle": """
+                @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+                @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+                <http://example.org/test#TestClass> a owl:Class ;
+                    rdfs:label "Test Class"@en ;
+                    rdfs:comment "A test class for repository management tests"@en .
+            """,
+            "rdfxml": """
+                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                         xmlns:owl="http://www.w3.org/2002/07/owl#"
+                         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                    <owl:Class rdf:about="http://example.org/test#TestClass">
+                        <rdfs:label xml:lang="en">Test Class</rdfs:label>
+                        <rdfs:comment xml:lang="en">A test class for repository management tests</rdfs:comment>
+                    </owl:Class>
+                </rdf:RDF>
+            """
         }
 
     @pytest.fixture(autouse=True)
@@ -121,9 +162,87 @@ class TestRepositoryManagement:
         assert response.status_code == 200
         info = response.json()
         assert info["id"] == test_repository
+        assert "title" in info
+        assert "type" in info
+        assert "params" in info
 
-    def test_upload_data(self, base_url: str, test_repository: str) -> None:
-        """Test uploading data to a repository."""
+    async def test_upload_data(self, client: AsyncClient, test_repo: str, test_data: Dict[str, str]):
+        """Test uploading data in different formats."""
+        formats = {
+            "turtle": "text/turtle",
+            "rdfxml": "application/rdf+xml"
+        }
+
+        for format_name, content_type in formats.items():
+            response = await client.post(
+                f"/repositories/{test_repo}/statements",
+                content=test_data[format_name],
+                headers={"Content-Type": content_type}
+            )
+            assert response.status_code == 204, f"Failed to upload {format_name} data: {response.text}"
+
+    async def test_query_data(self, client: AsyncClient, test_repo: str, test_data: Dict[str, str]):
+        """Test querying data with different SPARQL query types."""
+        # Upload test data first
+        response = await client.post(
+            f"/repositories/{test_repo}/statements",
+            content=test_data["turtle"],
+            headers={"Content-Type": "text/turtle"}
+        )
+        assert response.status_code == 204
+
+        # Test SELECT query
+        select_query = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                SELECT ?s ?p ?o WHERE { ?s ?p ?o }
+        """
+        response = await client.get(
+            f"/repositories/{test_repo}",
+            params={"query": select_query},
+            headers={"Accept": "application/sparql-results+json"}
+        )
+        assert response.status_code == 200
+        results = response.json()
+        assert "results" in results
+        assert "bindings" in results["results"]
+
+        # Test CONSTRUCT query
+        construct_query = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }
+        """
+        response = await client.get(
+            f"/repositories/{test_repo}",
+            params={"query": construct_query},
+            headers={"Accept": "application/ld+json"}
+        )
+        assert response.status_code == 200
+        results = response.json()
+        assert isinstance(results, list)
+
+        # Test ASK query
+        ask_query = """
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                ASK { <http://example.org/test#TestClass> a owl:Class }
+        """
+        response = await client.get(
+            f"/repositories/{test_repo}",
+            params={"query": ask_query},
+            headers={"Accept": "application/sparql-results+json"}
+        )
+        assert response.status_code == 200
+        results = response.json()
+        assert "boolean" in results
+
+    def test_delete_data(self, base_url: str, test_repository: str) -> None:
+        """Test deleting data from a repository."""
+        # Test deleting all data
+        response = requests.delete(
+            f"{base_url}/repositories/{test_repository}/statements"
+        )
+        assert response.status_code == 204
+
+        # Test deleting specific data
         data = """
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -140,27 +259,11 @@ class TestRepositoryManagement:
         )
         assert response.status_code == 204
 
-    def test_query_data(self, base_url: str, test_repository: str) -> None:
-        """Test querying data from a repository."""
-        query = """
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 100
-"""
-        headers = {"Accept": "application/sparql-results+json"}
-        response = requests.get(
-            f"{base_url}/repositories/{test_repository}",
-            params={"query": query},
-            headers=headers
-        )
-        assert response.status_code == 200
-        results = response.json()
-        assert "results" in results
-
-    def test_delete_data(self, base_url: str, test_repository: str) -> None:
-        """Test deleting data from a repository."""
+        # Delete specific data
         response = requests.delete(
-            f"{base_url}/repositories/{test_repository}/statements"
+            f"{base_url}/repositories/{test_repository}/statements",
+            data=data,
+            headers=headers
         )
         assert response.status_code == 204
 
@@ -183,19 +286,141 @@ SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 100
         repositories = response.json()
         assert any(repo["id"] == test_repository for repo in repositories)
 
+        # Check using the specific repository endpoint
+        response = requests.get(f"{base_url}/rest/repositories/{test_repository}")
+        assert response.status_code == 200
+
     def test_list_repositories(self, base_url: str) -> None:
         """Test listing all repositories."""
         response = requests.get(f"{base_url}/rest/repositories")
         assert response.status_code == 200
         repositories = response.json()
         assert isinstance(repositories, list)
+        for repo in repositories:
+            assert "id" in repo
+            assert "title" in repo
+            assert "type" in repo
 
-    def test_clear_repository(self, base_url: str, test_repository: str) -> None:
-        """Test clearing all data from a repository."""
-        response = requests.delete(
-            f"{base_url}/repositories/{test_repository}/statements"
-        )
-        assert response.status_code == 204, f"Failed to clear repository: {response.text}"
+    def test_clear_repository(self, client):
+        """Test clearing repository."""
+        # Add some test data
+        client.add_data("""
+            @prefix ex: <http://example.org/> .
+            ex:test a ex:Test .
+        """)
+        
+        # Clear repository
+        client.clear_repository()
+        
+        # Wait for clear to complete
+        max_retries = 5
+        retry_count = 0
+        while retry_count < max_retries:
+            count = client.count_statements()
+            if count == 0:
+                break
+            time.sleep(1)
+            retry_count += 1
+            
+        assert count == 0, f"Expected 0 statements but found {count}"
+
+    def test_repository_backup_restore(self, client):
+        """Test repository backup and restore."""
+        # Add test data
+        client.add_data("""
+            @prefix ex: <http://example.org/> .
+            ex:test a ex:Test .
+        """)
+        
+        # Create backup
+        backup_path = client.backup_repository()
+        assert os.path.exists(backup_path)
+        
+        # Clear repository
+        client.clear_repository()
+        
+        # Wait for clear to complete
+        max_retries = 5
+        retry_count = 0
+        while retry_count < max_retries:
+            count = client.count_statements()
+            if count == 0:
+                break
+            time.sleep(1)
+            retry_count += 1
+            
+        assert count == 0, f"Expected 0 statements but found {count}"
+        
+        # Restore from backup
+        client.restore_repository(backup_path)
+        
+        # Verify data restored
+        count = client.count_statements()
+        assert count > 0, "Expected data to be restored"
+
+    def test_repository_security(self, client):
+        """Test repository security settings."""
+        # Set security settings
+        settings = {
+            "readOnly": True,
+            "accessControl": {
+                "enabled": True,
+                "rules": [
+                    {
+                        "principal": "admin",
+                        "permissions": ["read", "write"]
+                    }
+                ]
+            }
+        }
+        success = client.set_repository_settings(settings)
+        assert success, "Failed to set security settings"
+        
+        # Verify settings
+        current_settings = client.get_repository_settings()
+        assert current_settings["readOnly"] == True
+        assert current_settings["accessControl"]["enabled"] == True
+
+    def test_repository_transactions(self, client):
+        """Test repository transactions."""
+        # Start transaction
+        tx_id = client.start_transaction()
+        assert tx_id is not None
+        
+        # Add data to transaction
+        success = client.add_to_transaction(tx_id, """
+            @prefix ex: <http://example.org/> .
+            ex:test a ex:Test .
+        """)
+        assert success, "Failed to add data to transaction"
+        
+        # Commit transaction
+        success = client.commit_transaction(tx_id)
+        assert success, "Failed to commit transaction"
+        
+        # Verify data was added
+        count = client.count_statements()
+        assert count > 0, "Expected data to be added"
+
+    def test_repository_inference(self, client):
+        """Test repository inference settings."""
+        # Enable inference
+        settings = {
+            "inference": True,
+            "inferenceRules": [
+                {
+                    "name": "subClassOf",
+                    "enabled": True
+                }
+            ]
+        }
+        success = client.set_repository_settings(settings)
+        assert success, "Failed to enable inference"
+        
+        # Verify inference settings
+        current_settings = client.get_repository_settings()
+        assert current_settings["inference"] == True
+        assert current_settings["inferenceRules"][0]["enabled"] == True
 
     def test_error_handling(self, base_url: str):
         """Test error handling for invalid operations."""
@@ -207,6 +432,26 @@ SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 100
             headers={"Content-Type": "text/turtle"}
         )
         assert response.status_code in [400, 500], "Expected error for invalid repository creation"
+
+        # Test accessing non-existent repository
+        response = requests.get(f"{base_url}/rest/repositories/non_existent_repo")
+        assert response.status_code == 404
+
+        # Test invalid query
+        response = requests.get(
+            f"{base_url}/repositories/test_repo",
+            params={"query": "INVALID SPARQL QUERY"},
+            headers={"Accept": "application/sparql-results+json"}
+        )
+        assert response.status_code in [400, 500]
+
+        # Test invalid data format
+        response = requests.post(
+            f"{base_url}/repositories/test_repo/statements",
+            data="Invalid data",
+            headers={"Content-Type": "text/turtle"}
+        )
+        assert response.status_code in [400, 500]
 
     def test_concurrent_operations(self, base_url: str, test_repository: str, repository_config: Dict[str, Any]):
         """Test concurrent operations on the repository."""
@@ -222,11 +467,32 @@ ex:TestClass{i} a ex:Class .
                 headers=headers
             )
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            futures = [executor.submit(upload_data, i) for i in range(5)]
-            for future in concurrent.futures.as_completed(futures):
+        def query_data(i: int):
+            query = f"""
+PREFIX ex: <http://example.org/test#>
+ASK {{ ex:TestClass{i} a ex:Class }}
+"""
+            headers = {"Accept": "application/sparql-results+json"}
+            return requests.get(
+                f"{base_url}/repositories/{test_repository}",
+                params={"query": query},
+                headers=headers
+            )
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            # Upload data concurrently
+            upload_futures = [executor.submit(upload_data, i) for i in range(5)]
+            for future in concurrent.futures.as_completed(upload_futures):
                 response = future.result()
                 assert response.status_code == 204
+
+            # Query data concurrently
+            query_futures = [executor.submit(query_data, i) for i in range(5)]
+            for future in concurrent.futures.as_completed(query_futures):
+                response = future.result()
+                assert response.status_code == 200
+                results = response.json()
+                assert results["boolean"] is True
 
     def test_large_data_handling(self, base_url: str, test_repository: str):
         """Test handling large amounts of data."""
@@ -249,11 +515,25 @@ ex:TestClass{i} a ex:Class .
             )
             assert response.status_code == 204, f"Failed to upload chunk {i//chunk_size}: {response.text}"
 
+        # Verify all data was uploaded
+        query = """
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT (COUNT(*) as ?count) WHERE { ?s a ?o }
+"""
+        headers = {"Accept": "application/sparql-results+json"}
+        response = requests.get(
+            f"{base_url}/repositories/{test_repository}",
+            params={"query": query},
+            headers=headers
+        )
+        assert response.status_code == 200
+        results = response.json()
+        assert int(results["results"]["bindings"][0]["count"]["value"]) >= 1000
+
     def test_repository_size(self, base_url: str, test_repository: str):
         """Test getting repository size."""
         response = requests.get(f"{base_url}/repositories/{test_repository}/size")
         assert response.status_code == 200
-        # The response is a plain number, not JSON
         size = int(response.text)
         assert isinstance(size, int)
         assert size >= 0
@@ -279,8 +559,45 @@ ex:TestClass{i} a ex:Class .
         )
         assert response.status_code in [201, 204]
 
+        # Verify namespace was added
+        response = requests.get(
+            f"{base_url}/repositories/{test_repository}/namespaces",
+            headers={"Accept": "application/sparql-results+json"}
+        )
+        assert response.status_code == 200
+        namespaces = response.json()
+        assert any(ns["prefix"]["value"] == test_prefix and 
+                  ns["namespace"]["value"] == test_namespace 
+                  for ns in namespaces["results"]["bindings"])
+
         # Delete the namespace
         response = requests.delete(
             f"{base_url}/repositories/{test_repository}/namespaces/{test_prefix}"
         )
         assert response.status_code in [200, 204]
+
+    def test_repository_statistics(self, base_url: str, test_repository: str):
+        """Test repository statistics."""
+        # Get repository statistics
+        response = requests.get(
+            f"{base_url}/repositories/{test_repository}/size"
+        )
+        assert response.status_code == 200
+        size = int(response.text)
+        assert size >= 0
+
+        # Get statement count
+        query = """
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }
+"""
+        headers = {"Accept": "application/sparql-results+json"}
+        response = requests.get(
+            f"{base_url}/repositories/{test_repository}",
+            params={"query": query},
+            headers=headers
+        )
+        assert response.status_code == 200
+        results = response.json()
+        statement_count = int(results["results"]["bindings"][0]["count"]["value"])
+        assert statement_count >= 0

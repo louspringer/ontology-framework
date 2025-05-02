@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:dc1="http://purl.org/dc/elements/1.1/#"
+   xmlns:dcterms1="http://purl.org/dc/terms/#"
+   xmlns:ns1="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecurityBestPractices">
+    <rdf:type rdf:resource="http://ontologies.louspringer.com/guidance/core#BestPractice"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:label>Security Best Practices</rdfs:label>
+    <rdfs:comment>Collection of security best practices:
+    1. Store private keys with 600 permissions
+    2. Never commit secrets to VCS
+    3. Use PKCS#8 format for private keys
+    4. Use environment variables for sensitive data
+    5. Implement regular key rotation
+    6. NEVER delete .env or configuration files without verified backup
+    7. ALWAYS get explicit confirmation before key deletion
+    8. AVAILABILITY IS CRITICAL - Security must not break functionality
+    9. Maintain working access to all essential credentials
+    10. Balance security measures against operational needs
+    11. TRACK ALL SLA VIOLATIONS AS SECURITY INCIDENTS
+    12. Test security measures against SLA requirements
+    13. Regular SLA compliance auditing required
+    14. Emergency access MUST work offline
+    15. Provide secure ways to cache credentials
+    16. Test auth systems during simulated outages
+    17. Never force shadow security systems
+    18. Plan for degraded/disconnected operation
+    19. Maintain local authentication capability</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecurityGuidanceModule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Security Guidance Module</rdfs:label>
+    <dc1:title>Security Guidance Module</dc1:title>
+    <dc1:version>1.0.0</dc1:version>
+    <dcterms1:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dcterms1:created>
+    <dcterms1:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dcterms1:modified>
+    <rdfs:comment>Security patterns and best practices for guidance ontology</rdfs:comment>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/collaboration.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/core.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/model.ttl"/>
+    <owl:imports rdf:resource="http://ontologies.louspringer.com/guidance/modules/validation.ttl"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#RSAKeyPairAuth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#AuthenticationPattern"/>
+    <rdfs:label>RSA Key Pair Authentication</rdfs:label>
+    <rdfs:comment>Authentication using RSA key pairs</rdfs:comment>
+    <ns1:recommends rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#KeyRotation"/>
+    <ns1:requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecureKeyStorage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecureKeyDeletion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#KeyDeletionPattern"/>
+    <rdfs:label>Secure Key Deletion</rdfs:label>
+    <rdfs:comment>Critical rules for key deletion:
+    1. NEVER delete any .env files without verified backup
+    2. ALWAYS confirm backup location before deletion
+    3. ALWAYS get explicit user confirmation before deletion
+    4. Treat .gitignore'd files with extra caution - they likely contain untracked sensitive data
+    5. Maintain backup verification logs
+    6. AVAILABILITY FIRST - Never delete unique copies of credentials
+    7. Security procedures must not impair authorized access</rdfs:comment>
+    <ns1:recommends rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#KeyBackupVerification"/>
+    <ns1:requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#CIATriadEnforcement"/>
+    <ns1:requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecureKeyStorage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#IncidentResponse">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#IncidentResponsePattern"/>
+    <rdfs:label>Incident Response Procedures</rdfs:label>
+    <rdfs:comment>Incident response requirements:
+    1. Emergency auth MUST work when everything else is down
+    2. Break-glass procedures MUST be fully local
+    3. Recovery procedures MUST be cached offline
+    4. Backup credentials MUST be securely accessible
+    5. Auth failures MUST NOT escalate incidents
+    6. MUST have degraded operation modes
+    7. MUST support disconnected operation
+    8. MUST track and audit emergency access
+    9. MUST provide secure ways to cache credentials
+    10. MUST NOT force admins to create shadow systems</rdfs:comment>
+    <ns1:requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#EmergencyAccess"/>
+    <ns1:requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#SecureKeyStorage"/>
+  </rdf:Description>
+</rdf:RDF>

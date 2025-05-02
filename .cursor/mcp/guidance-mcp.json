@@ -1,0 +1,11 @@
+{
+  "name": "guidance-mcp",
+  "version": "1.0.0",
+  "description": "Guidance ontology MCP service for Cursor IDE",
+  "entrypoint": "ontology_framework.mcp.guidance_mcp_service:GuidanceMCPService",
+  "config": {
+    "ontology_path": "guidance.ttl",
+    "validation_enabled": true,
+    "sse_enabled": true
+  }
+}

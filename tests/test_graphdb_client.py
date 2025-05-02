@@ -11,8 +11,10 @@ from unittest.mock import patch, MagicMock, mock_open, Mock
 from rdflib import Graph, Namespace, RDF, RDFS, OWL, SH, Literal
 from rdflib.namespace import XSD
 from pyshacl import validate
+import logging
 
 from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+from ontology_framework.exceptions import GraphDBError as OntologyFrameworkError
 
 # Define test namespaces
 TEST = Namespace("http://example.org/test#")
@@ -33,6 +35,8 @@ test:TestShape a sh:NodeShape ;
         sh:datatype xsd:string ;
     ] .
 """
+
+logger = logging.getLogger(__name__)
 
 @pytest.fixture
 def test_graph() -> Graph:
@@ -288,3 +292,104 @@ def test_execute_sparql_error(graphdb_client):
         mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
         with pytest.raises(GraphDBError):
             graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")
+
+class TestGraphDBClient:
+    """Test suite for GraphDB client functionality."""
+    
+    def setup_method(self):
+        """Set up test environment."""
+        self.endpoint = "http://localhost:7200"
+        self.repository = "test-repo"
+        self.client = GraphDBClient(self.endpoint, self.repository)
+        
+    def test_connection(self):
+        """Test GraphDB connection"""
+        logger.info("Testing GraphDB connection")
+        try:
+            self.client.dataset_exists(self.repository)
+        except GraphDBError as e:
+            pytest.skip(f"Failed to connect to GraphDB: {str(e)}")
+            
+    def test_dataset_operations(self):
+        """Test dataset operations"""
+        # Create dataset
+        self.client.create_dataset(self.repository)
+        assert self.client.dataset_exists(self.repository)
+        
+        # Load test data
+        test_data = """
+        @prefix ex: <http://example.org/> .
+        ex:test a ex:TestClass ;
+            ex:property "test value" .
+        """
+        self.client.load_ontology(self.repository, test_data)
+        
+        # Query test data
+        query = """
+        PREFIX ex: <http://example.org/>
+        SELECT ?s ?p ?o
+        WHERE {
+            ?s ?p ?o .
+        }
+        """
+        results = self.client.execute_query(query, self.repository)
+        assert len(results) > 0
+        
+        # Clean up
+        self.client.delete_dataset(self.repository)
+        assert not self.client.dataset_exists(self.repository)
+        
+    def test_query_execution(self):
+        """Test SPARQL query execution"""
+        # Create test dataset
+        self.client.create_dataset(self.repository)
+        
+        # Load test data
+        test_data = """
+        @prefix ex: <http://example.org/> .
+        ex:test1 a ex:TestClass ;
+            ex:property "value1" .
+        ex:test2 a ex:TestClass ;
+            ex:property "value2" .
+        """
+        self.client.load_ontology(self.repository, test_data)
+        
+        # Test SELECT query
+        select_query = """
+        PREFIX ex: <http://example.org/>
+        SELECT ?s ?o
+        WHERE {
+            ?s ex:property ?o .
+        }
+        """
+        results = self.client.execute_query(select_query, self.repository)
+        assert len(results) == 2
+        
+        # Test CONSTRUCT query
+        construct_query = """
+        PREFIX ex: <http://example.org/>
+        CONSTRUCT {
+            ?s ex:newProperty ?o
+        }
+        WHERE {
+            ?s ex:property ?o
+        }
+        """
+        results = self.client.execute_query(construct_query, self.repository)
+        assert len(results) > 0
+        
+        # Clean up
+        self.client.delete_dataset(self.repository)
+        
+    def test_error_handling(self):
+        """Test error handling"""
+        # Test invalid endpoint
+        with pytest.raises(GraphDBError):
+            invalid_client = GraphDBClient("http://invalid:7200", "test")
+            invalid_client.dataset_exists("test")
+            
+        # Test invalid query
+        self.client.create_dataset(self.repository)
+        with pytest.raises(GraphDBError):
+            self.client.execute_query("INVALID SPARQL", self.repository)
+        self.client.delete_dataset(self.repository)

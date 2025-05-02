@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from rdflib import Graph, RDF, RDFS, OWL, SH
 from src.ontology_framework.modules.guidance import GuidanceOntology
+from ontology_framework.graphdb_client import GraphDBClient
 
 class TestGuidanceConsistency(unittest.TestCase):
     """Test consistency between Python-generated guidance ontology and Turtle file."""
@@ -150,6 +151,68 @@ class TestGuidanceConsistency(unittest.TestCase):
                 get_property_definitions(g1) == get_property_definitions(g2) and
                 get_individuals(g1) == get_individuals(g2) and
                 get_shapes(g1) == get_shapes(g2))
+
+@pytest.fixture
+def graphdb_client():
+    """Create a GraphDB client instance."""
+    client = GraphDBClient("http://localhost:7200", "guidance")
+    yield client
+    # Cleanup: Clear the guidance repository
+    client.clear_graph()
+
+def test_validate_guidance_consistency(graphdb_client):
+    """Test validating guidance consistency."""
+    # Create a test guidance graph
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#Rule1"), RDF.type, OWL.Class))
+    graph.add((URIRef("http://example.org/guidance#Rule1"), RDFS.label, Literal("Rule 1")))
+    graph.add((URIRef("http://example.org/guidance#Rule1"), RDFS.comment, Literal("First rule")))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Run consistency validation
+    results = graphdb_client.query("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?inconsistency
+        WHERE {
+            ?rule a owl:Class .
+            FILTER NOT EXISTS { ?rule rdfs:label ?label }
+            FILTER NOT EXISTS { ?rule rdfs:comment ?comment }
+            BIND(CONCAT("Inconsistent rule: ", STR(?rule)) AS ?inconsistency)
+        }
+    """)
+    
+    assert not results.get("results", {}).get("bindings"), "Guidance should be consistent"
+
+def test_validate_guidance_inconsistency(graphdb_client):
+    """Test validating guidance inconsistency."""
+    # Create an inconsistent guidance graph
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#Rule1"), RDF.type, OWL.Class))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Run consistency validation
+    results = graphdb_client.query("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?inconsistency
+        WHERE {
+            ?rule a owl:Class .
+            FILTER NOT EXISTS { ?rule rdfs:label ?label }
+            FILTER NOT EXISTS { ?rule rdfs:comment ?comment }
+            BIND(CONCAT("Inconsistent rule: ", STR(?rule)) AS ?inconsistency)
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Guidance should be inconsistent"
 
 if __name__ == "__main__":
     unittest.main() 

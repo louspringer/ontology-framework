@@ -17,3 +17,6 @@ spacy==3.7.2
 PyPDF2==3.0.1
 faiss-cpu==1.7.4
 -e .
+bfg9k
+bfg9k-mcp
+bfg9k-ontology

@@ -105,33 +105,34 @@ class GraphDBClient:
         except requests.RequestException as e:
             raise GraphDBError(f"Server status check failed: {str(e)}")
 
-    def query(self, query: str, format: str = "json") -> Union[QueryResult, str]:
+    def query(self, query: str) -> Dict[str, Any]:
         """Execute a SPARQL query.
         
         Args:
             query: SPARQL query string
-            format: Response format (json, xml, csv, etc.)
             
         Returns:
-            Query results in specified format
-            
-        Example:
-            >>> client.query("SELECT * WHERE { ?s ?p ?o }")
-            {'head': {'vars': ['s', 'p', 'o']}, 'results': {'bindings': [...]}}
+            Query results in JSON format
             
         Raises:
-            GraphDBError: If query execution fails
+            GraphDBError: If query fails
         """
         try:
-            response = requests.post(
-                self._get_endpoint("/sparql"),
-                data={"query": query},
-                headers={"Accept": f"application/sparql-results+{format}"}
+            response = requests.get(
+                f"{self.base_url}/repositories/{self.repository}",
+                params={"query": query},
+                headers={
+                    "Accept": "application/sparql-results+json"
+                }
             )
+            
             response.raise_for_status()
-            return cast(QueryResult, response.json()) if format == "json" else response.text
-        except requests.exceptions.RequestException as e:
+            return response.json()
+            
+        except requests.exceptions.HTTPError as e:
             raise GraphDBError(f"Query failed: {str(e)}")
+        except Exception as e:
+            raise GraphDBError(f"Unexpected error during query: {str(e)}")
             
     def update(self, update_query: str) -> bool:
         """Execute a SPARQL UPDATE query.
@@ -500,3 +501,154 @@ class GraphDBClient:
             return response.json()
         except Exception as e:
             raise GraphDBError(f"List repositories failed: {str(e)}")
+
+    def set_repository_settings(self, settings: Dict[str, Any]) -> bool:
+        """Set repository settings.
+        
+        Args:
+            settings: Dictionary of settings to apply
+            
+        Returns:
+            True if successful
+            
+        Example:
+            >>> client.set_repository_settings({"readOnly": True})
+            True
+        """
+        try:
+            response = requests.post(
+                f"{self.base_url}/rest/repositories/{self.repository}/settings",
+                json=settings,
+                headers={"Content-Type": "application/json"}
+            )
+            return response.status_code == 204
+        except Exception as e:
+            raise GraphDBError(f"Failed to set repository settings: {str(e)}")
+            
+    def get_repository_settings(self) -> Dict[str, Any]:
+        """Get current repository settings.
+        
+        Returns:
+            Dictionary of current settings
+            
+        Example:
+            >>> client.get_repository_settings()
+            {"readOnly": False, "inference": True}
+        """
+        try:
+            response = requests.get(
+                f"{self.base_url}/rest/repositories/{self.repository}/settings",
+                headers={"Accept": "application/json"}
+            )
+            return response.json()
+        except Exception as e:
+            raise GraphDBError(f"Failed to get repository settings: {str(e)}")
+            
+    def start_transaction(self) -> str:
+        """Start a new transaction.
+        
+        Returns:
+            Transaction ID
+            
+        Example:
+            >>> tx_id = client.start_transaction()
+            >>> client.add_to_transaction(tx_id, "INSERT DATA { ... }")
+        """
+        try:
+            response = requests.post(
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions"
+            )
+            if response.status_code == 201:
+                return response.headers["Location"].split("/")[-1]
+            raise GraphDBError("Failed to start transaction")
+        except Exception as e:
+            raise GraphDBError(f"Failed to start transaction: {str(e)}")
+            
+    def add_to_transaction(self, tx_id: str, data: str) -> bool:
+        """Add data to a transaction.
+        
+        Args:
+            tx_id: Transaction ID
+            data: Data to add (SPARQL update or RDF data)
+            
+        Returns:
+            True if successful
+        """
+        try:
+            response = requests.post(
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}/statements",
+                data=data,
+                headers={"Content-Type": "text/turtle"}
+            )
+            return response.status_code == 204
+        except Exception as e:
+            raise GraphDBError(f"Failed to add to transaction: {str(e)}")
+            
+    def commit_transaction(self, tx_id: str) -> bool:
+        """Commit a transaction.
+        
+        Args:
+            tx_id: Transaction ID
+            
+        Returns:
+            True if successful
+        """
+        try:
+            response = requests.put(
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}"
+            )
+            return response.status_code == 204
+        except Exception as e:
+            raise GraphDBError(f"Failed to commit transaction: {str(e)}")
+            
+    def rollback_transaction(self, tx_id: str) -> bool:
+        """Rollback a transaction.
+        
+        Args:
+            tx_id: Transaction ID
+            
+        Returns:
+            True if successful
+        """
+        try:
+            response = requests.delete(
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}"
+            )
+            return response.status_code == 204
+        except Exception as e:
+            raise GraphDBError(f"Failed to rollback transaction: {str(e)}")
+
+    def upload_binary_rdf(self, data: bytes, graph_uri: str | None = None) -> bool:
+        """Upload binary RDF data to the repository.
+        
+        Args:
+            data: Binary RDF data to upload
+            graph_uri: Optional URI for the named graph to upload to
+            
+        Returns:
+            True if successful
+            
+        Raises:
+            GraphDBError: If upload fails
+        """
+        try:
+            # Set up request parameters
+            params = {}
+            if graph_uri:
+                params["context"] = f"<{graph_uri}>"
+                
+            # Send request to upload binary data
+            response = requests.post(
+                f"{self.base_url}/repositories/{self.repository}/statements",
+                data=data,
+                params=params,
+                headers={"Content-Type": "application/x-binary-rdf"}
+            )
+            
+            response.raise_for_status()
+            return True
+            
+        except requests.exceptions.HTTPError as e:
+            raise GraphDBError(f"Binary RDF upload failed: {str(e)}")
+        except Exception as e:
+            raise GraphDBError(f"Unexpected error during binary RDF upload: {str(e)}")

@@ -1,11 +1,13 @@
-"""Tests for the phases module."""
+"""Test suite for phases."""
 
-import pytest
-from datetime import datetime
+import unittest
 from pathlib import Path
+import json
+from typing import Dict, Any
+from datetime import datetime
 from rdflib import Graph, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, XSD
-from src.ontology_framework.modules.phases import (
+from ontology_framework.modules.phases import (
     PhaseError,
     PhaseResult,
     PromptPhase,

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleServiceRequirement1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ServiceRequirement"/>
+    <rdfs:label>Example ServiceRequirement 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ServiceRequirement</rdfs:comment>
+    <hasRequirementType>Example value 1</hasRequirementType>
+    <hasRequirementValue>Example value 1</hasRequirementValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlService2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SparqlService"/>
+    <rdfs:label>Example SparqlService 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SparqlService</rdfs:comment>
+    <hasAuthentication rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean2"/>
+    <hasDefaultDataset>Example value 2</hasDefaultDataset>
+    <hasServiceType>Example value 2</hasServiceType>
+    <hasServiceUrl rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleServiceRequirement2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ServiceRequirement"/>
+    <rdfs:label>Example ServiceRequirement 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ServiceRequirement</rdfs:comment>
+    <hasRequirementType>Example value 2</hasRequirementType>
+    <hasRequirementValue>Example value 2</hasRequirementValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlService1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SparqlService"/>
+    <rdfs:label>Example SparqlService 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SparqlService</rdfs:comment>
+    <hasAuthentication rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean1"/>
+    <hasDefaultDataset>Example value 1</hasDefaultDataset>
+    <hasServiceType>Example value 1</hasServiceType>
+    <hasServiceUrl rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#productionEnvironment">
+    <hasEnvironmentService rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#productionSparqlService"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#testingEnvironment">
+    <hasEnvironmentService rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#testingSparqlService"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#developmentEnvironment">
+    <hasEnvironmentService rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#developmentSparqlService"/>
+  </rdf:Description>
+</rdf:RDF>

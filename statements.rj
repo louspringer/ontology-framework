@@ -1,0 +1,6161 @@
+{
+  "_:node47" : {
+    "http://www.w3.org/ns/shacl#maxCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must specify exactly one environment variable definition ontology",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasVariableDefinition",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node48" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must specify at least one ontology that uses environment variables",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasVariableUsage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node49" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Ontology must import at least one core ontology",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#imports",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node50" : {
+    "http://www.w3.org/ns/shacl#datatype" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Ontology must have a description",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://purl.org/dc/terms/description",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node51" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Ontology must have version information",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#versionInfo",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node52" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Documentation must have a specified type",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasDocumentationType",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node53" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Documentation must specify its source context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#sourceContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node54" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Documentation must specify its target context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#targetContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node55" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Documentation must have version information",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#versionInfo",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node56" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Pattern guidance must specify source context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#sourceContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node57" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Pattern guidance must specify target context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#targetContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node58" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Pattern guidance must specify complexity",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#complexity",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node59" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must specify biological source context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#sourceContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node60" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must specify ontological target context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#targetContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node61" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must provide management principles",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://www.w3.org/2000/01/rdf-schema#comment",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node62" : {
+    "http://ontologies.louspringer.com/guidance#stepNumber" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Create a .rq file with your SPARQL query",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Create Query File",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node63" : {
+    "http://ontologies.louspringer.com/guidance#stepNumber" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Add standard RDF/RDFS/OWL prefixes",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Include Prefixes",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node64" : {
+    "http://ontologies.louspringer.com/guidance#stepNumber" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Use Cursor to run the query against a TTL file",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Execute Query",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node65" : {
+    "http://ontologies.louspringer.com/guidance#stepNumber" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Open a .py file in Cursor",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Open Python File",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node66" : {
+    "http://ontologies.louspringer.com/guidance#stepNumber" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Use Black to format the code according to rules",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Format Code",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node67" : {
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Store private keys with 600 permissions and never commit to VCS",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Private Key Protection",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node68" : {
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Use PKCS#8 format for private keys and PEM format for storage",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Key Format Standards",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node69" : {
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Use environment variables for sensitive configuration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Environment Variables",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node70" : {
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Implement regular key rotation with proper procedures",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Key Rotation Schedule",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node71" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Every test case must have a SPARQL query",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasTestQuery",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node72" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Every test case must specify expected results",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasExpectedResult",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node73" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1" : [
+      {
+        "value" : "All listed files must exist",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2" : [
+      {
+        "value" : "All ontologies must be reachable from PROJECT_ONTOLOGY",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3" : [
+      {
+        "value" : "Core ontologies must be properly imported",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4" : [
+      {
+        "value" : "Project-specific ontologies must have clear relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node74" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must define PROJECT_ONTOLOGY, CORE_ONTOLOGIES, and PROJECT_SPECIFIC_ONTOLOGIES",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#configurationKey",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node75" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Must provide values for all configuration keys",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#configurationValue",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node76" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1" : [
+      {
+        "value" : "Verify PROJECT_ONTOLOGY exists",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2" : [
+      {
+        "value" : "Check all CORE_ONTOLOGIES are present",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3" : [
+      {
+        "value" : "Validate PROJECT_SPECIFIC_ONTOLOGIES relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4" : [
+      {
+        "value" : "Ensure no circular dependencies",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5" : [
+      {
+        "value" : "Verify imports in ontology files",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node77" : {
+    "http://ontologies.louspringer.com/guidance#implementationSteps" : [
+      {
+        "value" : "_:node78",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Implementation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Configuration Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node78" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1" : [
+      {
+        "value" : "Place .ontologies in project root",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2" : [
+      {
+        "value" : "Define PROJECT_ONTOLOGY first",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3" : [
+      {
+        "value" : "List CORE_ONTOLOGIES in dependency order",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4" : [
+      {
+        "value" : "Add PROJECT_SPECIFIC_ONTOLOGIES as needed",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5" : [
+      {
+        "value" : "Validate relationships after changes",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node79" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#unionOf" : [
+      {
+        "value" : "_:node80",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node80" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#first" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#HumanActor",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest" : [
+      {
+        "value" : "_:node81",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node81" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#first" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#AIActor",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest" : [
+      {
+        "value" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node82" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Log entry must specify who/what made the change",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasActor",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node83" : {
+    "http://www.w3.org/ns/shacl#datatype" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#dateTime",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Log entry must have ISO format timestamp",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasTimestamp",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node84" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Log entry must preserve prior state",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasPriorState",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node85" : {
+    "http://www.w3.org/ns/shacl#message" : [
+      {
+        "value" : "Log entry must document reason for change",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#minCount" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#path" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#hasChangeReason",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node86" : {
+    "http://ontologies.louspringer.com/guidance#implementationSteps" : [
+      {
+        "value" : "_:node87",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Implementation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Session Log Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "_:node87" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_1" : [
+      {
+        "value" : "Create session_log.ttl if not exists",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_2" : [
+      {
+        "value" : "Log current state before changes",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_3" : [
+      {
+        "value" : "Update session.ttl",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_4" : [
+      {
+        "value" : "Create log entry with complete metadata",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_5" : [
+      {
+        "value" : "Validate log entry",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#_6" : [
+      {
+        "value" : "Update relevant cross-references",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#AccessibilityTestingPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for testing ontology accessibility and cross-references",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Accessibility Testing Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#Action" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "An action that can be taken based on interpretation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Action",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ActiveTree" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TreeState",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Currently active and maintained virtual tree",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Active Tree",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#AuthenticationPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A pattern for implementing authentication",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Authentication Pattern",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SecurityPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#AuthenticationPatternGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Security Architecture",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Authentication Implementation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for authentication patterns:\n1. Always relate authentication to identity federation\n2. Define clear capability requirements\n3. Specify platform-specific implementations\n4. Document token management\n5. Include security characteristics\n6. Define validation rules\n7. Consider service account patterns",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Authentication Pattern Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#BestPractice" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A recommended practice for ontology development and management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Best Practice",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#BestPractices" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Collection of security best practices",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Best Practices",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#BlackFormatterUsage" : {
+    "http://ontologies.louspringer.com/guidance#hasStep" : [
+      {
+        "value" : "_:node65",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node66",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#RuleUsage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "How to use Black formatting with Cursor",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Black Formatter Usage",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#CognitivePatternsTest" : {
+    "http://ontologies.louspringer.com/guidance#hasExpectedResult" : [
+      {
+        "value" : "Should find at least 3 cognitive patterns",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasTestQuery" : [
+      {
+        "value" : "\n    SELECT ?pattern ?context ?complexity WHERE {\n        ?pattern rdf:type ?type .\n        ?type rdfs:subClassOf cog:Pattern .\n        ?pattern cog:hasContext ?context ;\n                cog:hasComplexity ?complexity .\n    }",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Tests cognitive pattern definitions and relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Cognitive Patterns Test",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ConceptualDocumentation" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationType",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Documentation of ontological concepts and relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Conceptual Documentation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ConfigurationManagementPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for managing project configuration files",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Configuration Management Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ContextSwitchingPattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Neural Circuit Activation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Ontology Context Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Context switching guidelines:\n1. Recognize energy cost of context switches\n2. Maintain minimal necessary active contexts\n3. Cache frequently used pathways\n4. Allow graceful context decay\n5. Document context boundaries\n6. Track context dependencies\n7. Monitor switching overhead",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Context Switching Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#CrossReferencePattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasDocumentationType" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ValidationDocumentation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Documentation Links",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Navigation Structure",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Cross-reference requirements:\n1. All references must be bidirectional\n2. References must use relative paths\n3. References must include version context\n4. Broken references must be detected\n5. References must map to ontology relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Cross Reference Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#CrossReferencesTest" : {
+    "http://ontologies.louspringer.com/guidance#hasExpectedResult" : [
+      {
+        "value" : "Should find CrossRefTrackerMechanism using EmergentPattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasTestQuery" : [
+      {
+        "value" : "\n    SELECT ?mech ?pattern WHERE {\n        ?mech rdf:type pdi:EnforcementMechanism ;\n              pdi:usesPattern ?pattern .\n        {\n            ?pattern rdf:type cog:EmergentPattern .\n        } UNION {\n            FILTER(?pattern = cog:EmergentPattern)\n        } UNION {\n            FILTER(CONTAINS(str(?pattern), \"EmergentPattern\"))\n        }\n        FILTER(CONTAINS(str(?mech), \"CrossRefTrackerMechanism\"))\n    }",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Tests cross-referencing between ontologies",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Cross References Test",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#CursorRule" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Rule for Cursor AI assistance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Cursor Rule",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DevelopmentEnvironment",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DataAccessPatternGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Data Architecture",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Data Access Implementation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for data access patterns:\n1. Separate public and private data patterns\n2. Link to authentication requirements\n3. Define clear access control boundaries\n4. Implement zero-copy patterns where appropriate\n5. Consider service account implications\n6. Document data characteristics\n7. Include validation rules",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Data Access Pattern Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DevelopmentEnvironment" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Configuration and tools for development",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Development Environment",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DocumentationPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for organizing and validating documentation based on ontological concepts",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Documentation Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DocumentationShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node52",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node53",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node54",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node55",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DocumentationStructurePattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasDocumentationType" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConceptualDocumentation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Ontology Structure",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Documentation Organization",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Documentation structure requirements:\n1. Root directory maps to core ontology\n2. Subdirectories map to sub-ontologies\n3. Cross-references use relative paths\n4. Version information in frontmatter\n5. Bidirectional navigation links\n6. Clear ontology mappings",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Documentation Structure Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DocumentationType" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Types of documentation in the system",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Documentation Type",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#DomainAnalogy" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Domain Analogy",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#EnforcementMechanismsTest" : {
+    "http://ontologies.louspringer.com/guidance#hasExpectedResult" : [
+      {
+        "value" : "Should find at least 3 enforcement mechanisms",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasTestQuery" : [
+      {
+        "value" : "\n    SELECT ?mech ?impl ?pattern WHERE {\n        ?mech rdf:type pdi:EnforcementMechanism ;\n              pdi:implementedIn ?impl ;\n              pdi:usesPattern ?pattern .\n    }",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Tests that enforcement mechanisms are properly defined",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Enforcement Mechanisms Test",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#EnvironmentVariablePattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for integrating environment variables across ontologies",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Environment Variable Integration Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#EnvironmentVariablePatternShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node47",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node48",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#EnvironmentVariablePattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ImplementationDocumentation" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationType",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Documentation of concrete implementations and patterns",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Implementation Documentation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#InterdisciplinaryCollaboration" : {
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Molecular Biology",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Computer Programming",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Guidance for facilitating collaboration between biologists and programmers.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Interdisciplinary Collaboration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#Interpretation" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Guidance on how to interpret an ontology element",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Interpretation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/metameta#AbstractionDimension",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#KeyEncryption" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#KeyManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for encrypting stored keys",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Key Encryption",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#KeyManagementPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A pattern for managing cryptographic keys",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Key Management Pattern",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SecurityPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#KeyRotation" : {
+    "http://ontologies.louspringer.com/guidance#requires" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SecureKeyStorage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#KeyManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for regularly rotating cryptographic keys",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Key Rotation",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#LLMGuidanceOntology" : {
+    "http://purl.org/dc/elements/1.1/title" : [
+      {
+        "value" : "LLM Guidance Meta-Ontology",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/elements/1.1/version" : [
+      {
+        "value" : "1.2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/audience" : [
+      {
+        "value" : "AI researchers, ontology engineers, and domain experts",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/conformsTo" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/created" : [
+      {
+        "value" : "2024-01-20",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#date",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/description" : [
+      {
+        "value" : "Ontology for managing LLM guidance and interdisciplinary collaboration patterns",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/isPartOf" : [
+      {
+        "value" : "http://louspringer.com/ontology-framework",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/license" : [
+      {
+        "value" : "http://opensource.org/licenses/MIT",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/modified" : [
+      {
+        "value" : "2024-02-09",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#date",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/publisher" : [
+      {
+        "value" : "Ontology Framework Project",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/requires" : [
+      {
+        "value" : "http://ontologies.louspringer.com/metameta",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://purl.org/dc/terms/type" : [
+      {
+        "value" : "http://purl.org/dc/terms/Dataset",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Ontology",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Updated to include guidance for Cursor rules and tool usage.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#imports" : [
+      {
+        "value" : "http://ontologies.louspringer.com/metameta",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#MetaPatternTest" : {
+    "http://ontologies.louspringer.com/guidance#hasExpectedResult" : [
+      {
+        "value" : "Should find at least 1 meta pattern relationship",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasTestQuery" : [
+      {
+        "value" : "\n    SELECT ?meta ?related WHERE {\n        ?meta rdf:type cog:MetaPattern ;\n              cog:relatesTo ?related .\n    }",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Tests that meta patterns properly relate to other patterns",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Meta Pattern Test",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#MuTree" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TreeState",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Contains lost or undiscovered elements that may need rediscovery",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Mu Tree",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#MycelialNetworkGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "4",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Mycorrhizal Networks",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Ontology Relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Network management principles:\n1. Not every node needs to connect to every network\n2. Maintain critical pathways actively\n3. Allow temporary connections for context switching\n4. Accept pruning of unused pathways\n5. Monitor energy cost of maintaining connections\n6. Keep enough connections to detect duplicates\n7. Intentionally isolate when beneficial",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Mycelial Network Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologiesFile" : {
+    "http://ontologies.louspringer.com/guidance#configurationKey" : [
+      {
+        "value" : "CORE_ONTOLOGIES",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "PROJECT_ONTOLOGY",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "PROJECT_SPECIFIC_ONTOLOGIES",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#configurationValue" : [
+      {
+        "value" : "Comma-separated list of core ontology files",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "Comma-separated list of project-specific ontology files",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "Root ontology file (e.g., chatbot.ttl)",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#requiredValidation" : [
+      {
+        "value" : "_:node73",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConfigurationFile",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : ".ontologies",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologiesFilePattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#implements" : [
+      {
+        "value" : "_:node77",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#recommends" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#requires" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#VersioningBestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Project Configuration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Ontology Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OntologyConfigurationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for .ontologies file:\n1. Must define PROJECT_ONTOLOGY as the root ontology\n2. CORE_ONTOLOGIES lists fundamental, reusable ontologies\n3. PROJECT_SPECIFIC_ONTOLOGIES lists project-specific ontologies\n4. All ontologies must be directly or transitively related to PROJECT_ONTOLOGY\n5. Update when adding or removing ontology files\n6. Keep in project root directory\n7. Use with version control\n8. Validate relationships before adding",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : ".ontologies Configuration Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologiesFileShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node74",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node75",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OntologiesFile",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologiesUsageExample" : {
+    "http://ontologies.louspringer.com/guidance#exampleContent" : [
+      {
+        "value" : "\n# Example .ontologies file\nPROJECT_ONTOLOGY=chatbot.ttl\n\n# Core ontologies that provide fundamental concepts and patterns\nCORE_ONTOLOGIES=guidance.ttl,meta.ttl,metameta.ttl,problem.ttl,solution.ttl,conversation.ttl,session.ttl\n\n# Project-specific ontologies\nPROJECT_SPECIFIC_ONTOLOGIES=cortexteams.ttl,deployment_validation.ttl,deployment_config.ttl\n",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#validationSteps" : [
+      {
+        "value" : "_:node76",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Example",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : ".ontologies Usage Example",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologyConfigurationPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for managing ontology configurations through .ontologies file",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Ontology Configuration Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConfigurationManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologyRelationshipPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for managing relationships between ontologies",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Ontology Relationship Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OntologyRelationshipShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node49",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node50",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node51",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Ontology",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Patterns based on biological network analogies for managing ontological relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Organic Network Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OrganicNetworkShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node59",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node60",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node61",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#OrphanedTree" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TreeState",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Intentionally isolated elements",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Orphaned Tree",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#Pattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A reusable design or implementation pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Pattern",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#PatternGuidanceShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node56",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node57",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node58",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#PatternIntegrationGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "4",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Pattern Architecture",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Implementation Integration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for pattern integration:\n1. Document pattern relationships explicitly\n2. Define valid and invalid combinations\n3. Include impact analysis\n4. Specify capability requirements\n5. Add validation rules\n6. Consider cross-pattern implications\n7. Document security implications",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Pattern Integration Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#PolicyStructureTest" : {
+    "http://ontologies.louspringer.com/guidance#hasExpectedResult" : [
+      {
+        "value" : "Should find OntologyAccessibilityPolicy and its requirements",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasTestQuery" : [
+      {
+        "value" : "\n    SELECT ?policy ?req ?decision WHERE {\n        ?policy rdf:type pdi:Policy ;\n                pdi:drivesRequirement ?req .\n        ?req pdi:influencesDecision ?decision .\n    }",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Tests that policies drive requirements that influence decisions",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Policy Structure Test",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#PrefixManagementPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for managing ontology prefixes consistently",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Prefix Management Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#RSAKeyPairAuth" : {
+    "http://ontologies.louspringer.com/guidance#recommends" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#KeyRotation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#requires" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SecureKeyStorage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#AuthenticationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Authentication using RSA key pairs",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "RSA Key Pair Authentication",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#RuleUsage" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Instructions for using Cursor rules",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Rule Usage",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SPARQLQueryUsage" : {
+    "http://ontologies.louspringer.com/guidance#hasStep" : [
+      {
+        "value" : "_:node62",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node63",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node64",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#RuleUsage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "How to use SPARQL queries with Cursor",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "SPARQL Query Usage",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SecureKeyStorage" : {
+    "http://ontologies.louspringer.com/guidance#recommends" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#KeyEncryption",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#KeyManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for securely storing cryptographic keys",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Secure Key Storage",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SecurityBestPractices" : {
+    "http://ontologies.louspringer.com/guidance#practice" : [
+      {
+        "value" : "_:node67",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node68",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node69",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node70",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractices",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Security Best Practices",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SecurityPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A pattern for implementing security features",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Security Pattern",
+        "type" : "literal",
+        "lang" : "en",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLogEntry" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "An entry in the session log recording a change to session.ttl",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Session Log Entry",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLogEntryShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node82",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node83",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node84",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node85",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLogManagementPattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Session State Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Session History Tracking",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLoggingPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for session log management:\n1. Every change to session.ttl must be logged in session_log.ttl\n2. Log entries must include who/what made the change\n3. Log entries must include timestamp in ISO format\n4. Log entries must preserve prior state\n5. Log entries must document reason for change\n6. Log entries must maintain context chain\n7. Use SPARQL for historical queries\n8. Maintain log entry order\n9. Never modify existing log entries\n10. Link log entries to relevant tasks/issues",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Session Log Management Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLogPattern" : {
+    "http://ontologies.louspringer.com/guidance#implements" : [
+      {
+        "value" : "_:node86",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#recommends" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#VersioningBestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#requires" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLogQueries" : {
+    "http://ontologies.louspringer.com/guidance#exampleContent" : [
+      {
+        "value" : "\n# Query for changes by specific actor\nSELECT ?entry ?timestamp ?reason\nWHERE {\n    ?entry a guidance:SessionLogEntry ;\n           guidance:hasActor ?actor ;\n           guidance:hasTimestamp ?timestamp ;\n           guidance:hasChangeReason ?reason .\n    FILTER(?actor = ex:SpecificActor)\n}\nORDER BY DESC(?timestamp)\n\n# Query for state at specific time\nSELECT ?state\nWHERE {\n    ?entry a guidance:SessionLogEntry ;\n           guidance:hasTimestamp ?timestamp ;\n           guidance:hasPriorState ?state .\n    FILTER(?timestamp <= \"2024-03-20T00:00:00Z\"^^xsd:dateTime)\n}\nORDER BY DESC(?timestamp)\nLIMIT 1\n",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Example",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Session Log Query Examples",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#SessionLoggingPattern" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Pattern for maintaining session history and context changes",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Session Logging Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#TestCase" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A specific test case for ontology validation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Test Case",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#TestCaseShape" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/ns/shacl#NodeShape",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#property" : [
+      {
+        "value" : "_:node71",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "_:node72",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/ns/shacl#targetClass" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#TreeState" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Possible states for elements in the virtual tree system",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Tree State",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ValidationDocumentation" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationType",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Documentation of validation rules and constraints",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Validation Documentation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#VersioningBestPractice" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "All ontologies should include owl:versionInfo to indicate their version for tracking and management purposes.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Versioning Best Practice",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#seeAlso" : [
+      {
+        "value" : "https://www.w3.org/TR/owl2-syntax/#Versioning_of_Ontologies",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#BestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#VirtualTreeManagement" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "4",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Neural Networks",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Ontology Organization",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Virtual tree principles:\n1. Each context is a virtual tree\n2. Elements can exist in multiple trees\n3. The mu tree holds lost/undiscovered elements\n4. Orphaned elements must be intentionally isolated\n5. Context switching has energy costs\n6. Pattern recognition works across trees\n7. Not everything needs to be wickered",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Virtual Tree Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#WickeringEfficiencyPattern" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "4",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Synaptic Pruning",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Ontology Connection Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Efficient wickering guidelines:\n1. Maintain critical pathways only\n2. Allow temporary connections\n3. Document connection rationale\n4. Monitor maintenance costs\n5. Prune unused connections\n6. Track connection usage\n7. Balance coverage vs. cost",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Wickering Efficiency Pattern",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#accessibilityTestingGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Ontology Testing",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Accessibility Validation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#AccessibilityTestingPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for ontology accessibility testing:\n1. Test policy structure and requirement chains\n2. Validate enforcement mechanism implementations\n3. Check cognitive pattern relationships\n4. Verify meta-pattern connections\n5. Ensure proper cross-references between ontologies\n6. Test pattern complexity constraints\n7. Validate SHACL shapes\n8. Use base URI resolution for file paths\n9. Include debug queries for troubleshooting\n10. Test both direct and indirect pattern relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Accessibility Testing Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#analogySource" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DomainAnalogy",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#analogyTarget" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DomainAnalogy",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#complexity" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#integer",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#configurationKey" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Key in the configuration file",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConfigurationFile",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Configuration Key",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#configurationValue" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Value for the configuration key",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConfigurationFile",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Configuration Value",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#contextSwitchCost" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Relative cost of switching between contexts",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "context switch cost",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#integer",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#documentationOrganizationGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Ontology Documentation",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Documentation Structure",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for documentation organization:\n1. All documentation must map to ontological concepts\n2. Documentation structure follows ontology relationships\n3. Cross-references must be bidirectional\n4. Version tracking aligns with ontology versions\n5. Validation rules derive from guidance patterns\n6. Directory structure reflects ontological hierarchy\n7. Each document must specify its source ontology\n8. Changes must maintain ontological consistency",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Documentation Organization Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#environmentVariableGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "3",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasVariableDefinition" : [
+      {
+        "value" : "http://ontologies.louspringer.com/environment_variables",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#hasVariableUsage" : [
+      {
+        "value" : "http://ontologies.louspringer.com/cortexteams",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Environment Variable Management",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Cross-Ontology Integration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#EnvironmentVariablePattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for environment variable integration:\n1. Define all environment variables in environment_variables.ttl\n2. Import environment_variables.ttl in consuming ontologies using env: prefix\n3. Use :usesEnvironmentVariable for general variable usage\n4. Use :hasEnvironmentRequirement for prerequisites\n5. Reference variables using ${VAR_NAME} format\n6. Add SHACL validation for variable requirements.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Environment Variable Integration Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#guidanceForVersioning" : {
+    "http://ontologies.louspringer.com/guidance#recommendVersioning" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#versionInfo",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#VersioningBestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "This best practice ensures that all ontologies include an owl:versionInfo property for clarity and management.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasAction" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Action",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasActor" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Who/what made the change",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Actor",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "_:node79",
+        "type" : "bnode",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasChangeContext" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "The context in which the change was made",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Change Context",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ChangeContext",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasChangeReason" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Why the change was made",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Change Reason",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasConfigurationFile" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links a pattern to its configuration file definition",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OntologyConfigurationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Configuration File",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#ConfigurationFile",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasDocumentationType" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links a documentation pattern to its type",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Documentation Type",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#DocumentationType",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasExpectedResult" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Expected result or assertion for the test case",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasPriorState" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "The previous state of the changed elements",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Prior State",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Thing",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasStep" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links usage instructions to steps",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#RuleUsage",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Step",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasTestQuery" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "The SPARQL query used in the test case",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TestCase",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasTimestamp" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "When the change was made",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#SessionLogEntry",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Timestamp",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#dateTime",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasTreeState" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links an element to its current tree state",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Class",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "has tree state",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#TreeState",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasVariableDefinition" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links to the ontology containing environment variable definitions",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#EnvironmentVariablePattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Variable Definition",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Ontology",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#hasVariableUsage" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Links to ontologies that use environment variables",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#EnvironmentVariablePattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Has Variable Usage",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Ontology",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#implements" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/solution#Solution",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#maintenanceCost" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Relative cost of maintaining connections",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OrganicNetworkPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "maintenance cost",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#integer",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#ontologyRelationshipGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "2",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Ontology Organization",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Cross-Ontology Integration",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#OntologyRelationshipPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for ontology relationships:\n1. Use relative paths for local ontologies: @prefix meta: <./meta#>\n2. Use full URIs only for external standards: @prefix owl: <http://www.w3.org/2002/07/owl#>\n3. Always include core ontologies:\n   - meta.ttl\n   - metameta.ttl\n   - conversation.ttl\n   - problem.ttl\n   - solution.ttl\n   - guidance.ttl\n4. Avoid circular dependencies\n5. Document ontology purpose and dependencies in metadata\n6. Use SHACL shapes to validate relationships",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Ontology Relationship Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#prefixManagementGuidance" : {
+    "http://ontologies.louspringer.com/guidance#complexity" : [
+      {
+        "value" : "1",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#integer",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#sourceContext" : [
+      {
+        "value" : "Ontology Organization",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://ontologies.louspringer.com/guidance#targetContext" : [
+      {
+        "value" : "Prefix Standardization",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#PrefixManagementPattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      },
+      {
+        "value" : "http://www.w3.org/2002/07/owl#NamedIndividual",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Best practices for prefix management:\n1. Use standard prefixes for external ontologies (rdf, rdfs, owl, xsd)\n2. Use relative paths for local ontologies\n3. Document prefix meanings and sources\n4. Maintain consistent prefix naming across ontologies\n5. Use prefix_management.ttl for centralized prefix definitions",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Prefix Management Guidance",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#recommendVersioning" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "A property indicating that versioning is recommended for ontologies.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#VersioningBestPractice",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Recommends Versioning",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#Ontology",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#recommends" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#requires" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#ObjectProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Pattern",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#sourceContext" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Context from which the interpretation is derived.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#stepNumber" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Order number of the step",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Step",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [
+      {
+        "value" : "Step Number",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#integer",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  },
+  "http://ontologies.louspringer.com/guidance#targetContext" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [
+      {
+        "value" : "http://www.w3.org/2002/07/owl#DatatypeProperty",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#comment" : [
+      {
+        "value" : "Context to which the interpretation is applied.",
+        "type" : "literal",
+        "datatype" : "http://www.w3.org/2001/XMLSchema#string",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain" : [
+      {
+        "value" : "http://ontologies.louspringer.com/guidance#Interpretation",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range" : [
+      {
+        "value" : "http://www.w3.org/2001/XMLSchema#string",
+        "type" : "uri",
+        "graphs" : [
+          "http://ontologies.louspringer.com"
+        ]
+      }
+    ]
+  }
+}

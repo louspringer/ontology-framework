@@ -1,15 +1,16 @@
-"""Tests for dependency model generator."""
+"""Test suite for dependency model."""
 
 import unittest
 from pathlib import Path
-from rdflib import Graph, URIRef, Namespace, Literal
+from typing import Dict, List, Set, Optional
+from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
 import tempfile
 import shutil
 import os
 import logging
 
-from src.ontology_framework.dependency_model import DependencyModelGenerator, DependencyType
+from ontology_framework.dependency_model import DependencyModelGenerator, DependencyType
 
 # Configure logging
 logging.basicConfig(

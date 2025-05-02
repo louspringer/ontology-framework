@@ -2707,3 +2707,1927 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Session Summary - 2025-05-01T19:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T20:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T22:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T00:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T01:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T02:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T03:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T04:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T05:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T06:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T07:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T08:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T09:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T10:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T11:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:06:16.086867
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:08:21.064205
+
+- Total tests: 0
+- Passed: -1
+- Failed: 1
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:28:05.579667
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:30:14.121683
+
+- Total tests: 19
+- Passed: 12
+- Failed: 7
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:31:33.743952
+
+- Total tests: 19
+- Passed: 13
+- Failed: 6
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:35:40.281523
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:38:41.699483
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T12:51:34.178852
+
+- Total tests: 19
+- Passed: 14
+- Failed: 5
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:33:51.516153
+
+- Total tests: 532
+- Passed: 510
+- Failed: 22
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:35:10.947809
+
+- Total tests: 592
+- Passed: 580
+- Failed: 12
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:41:22.604426
+
+- Total tests: 605
+- Passed: 597
+- Failed: 8
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:42:25.410643
+
+- Total tests: 15
+- Passed: 2
+- Failed: 13
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:48:30.571564
+
+- Total tests: 17
+- Passed: 8
+- Failed: 9
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:55:17.171783
+
+- Total tests: 14
+- Passed: 10
+- Failed: 4
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:56:51.928848
+
+- Total tests: 14
+- Passed: 13
+- Failed: 1
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-02T13:59:03.353330
+
+- Total tests: 14
+- Passed: 14
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T21:48:26.098518
+
+- Total tests: 613
+- Passed: 606
+- Failed: 7
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:03:54.932651
+
+- Total tests: 5
+- Passed: 2
+- Failed: 3
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-01T23:04:48.181808
+
+- Total tests: 5
+- Passed: 5
+- Failed: 0
+- Exit status: 0
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+

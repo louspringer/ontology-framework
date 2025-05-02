@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Test suite for MCP implementation."""
+"""Test suite for MCP."""
 
 from typing import Dict, List, Any
 import pytest
 from pathlib import Path
 from datetime import datetime, timedelta
-from src.ontology_framework.mcp.maintenance_server import MaintenanceServer
-from src.ontology_framework.mcp.maintenance_config import MaintenanceConfig
-from src.ontology_framework.mcp.maintenance_prompts import MaintenancePrompts
+from ontology_framework.mcp.maintenance_server import MaintenanceServer
+from ontology_framework.mcp.maintenance_config import MaintenanceConfig
+from ontology_framework.mcp.maintenance_prompts import MaintenancePrompts
 from rdflib import Graph, URIRef
-from src.ontology_framework.modules.mcp_config import MCPConfig
-from src.ontology_framework.modules.ontology_dependency_analyzer import OntologyDependencyAnalyzer
+from ontology_framework.modules.mcp_config import MCPConfig
+from ontology_framework.modules.ontology_dependency_analyzer import OntologyDependencyAnalyzer
 
 @pytest.fixture
 def maintenance_server() -> MaintenanceServer:

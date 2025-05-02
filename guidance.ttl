@@ -26,6 +26,18 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:path rdfs:comment ],
         [ sh:maxCount 1 ;
             sh:minCount 1 ;
+            sh:path rdfs:comment ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ],
+        [ sh:maxCount 1 ;
+            sh:minCount 1 ;
             sh:path rdfs:label ],
         [ sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -64,6 +76,35 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     :hasRuleType :SHACL ;
     :hasTarget :InstallationValidation ;
     :hasValidator "validate_installation.py" .
+
+:IntegrationPatternShape a sh:NodeShape ;
+    sh:property [ sh:class_ :CoreModule ;
+            sh:minCount 1 ;
+            sh:path :hasTargetModule ],
+        [ sh:class_ :CoreModule ;
+            sh:minCount 1 ;
+            sh:path :hasSourceModule ],
+        [ sh:datatype rdfs:Literal ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass :IntegrationPattern .
+
+:ModuleShape a sh:NodeShape ;
+    sh:property [ sh:class_ :IntegrationPattern ;
+            sh:minCount 0 ;
+            sh:path :hasIntegrationPattern ],
+        [ sh:datatype rdfs:Literal ;
+            sh:languageIn "en" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype rdfs:Literal ;
+            sh:languageIn "en" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:comment ] ;
+    sh:targetClass :CoreModule .
 
 :SPORERule a :ValidationRule ;
     rdfs:label "SPORE Rule"@en ;
@@ -110,18 +151,7 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     :hasValidator "validate_syntax" .
 
 :ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:class :ValidationRuleType ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
-            sh:minCount 1 ;
-            sh:path :hasRuleType ],
-        [ sh:datatype xsd:string ;
-            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
-            sh:maxCount 1 ;
-            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ],
-        [ sh:class_ :ValidationRuleType ;
+    sh:property [ sh:class_ :ValidationRuleType ;
             sh:maxCount 1 ;
             sh:message "Validation rule must have a rule type" ;
             sh:minCount 1 ;
@@ -187,7 +217,18 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:maxCount 1 ;
             sh:message "Validation rule must have a validator" ;
             sh:minCount 1 ;
-            sh:path :hasValidator ] ;
+            sh:path :hasValidator ],
+        [ sh:class :ValidationRuleType ;
+            sh:maxCount 1 ;
+            sh:message "Validation rule must have a rule type" ;
+            sh:minCount 1 ;
+            sh:path :hasRuleType ],
+        [ sh:datatype xsd:string ;
+            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
+            sh:maxCount 1 ;
+            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
+            sh:minCount 1 ;
+            sh:path :hasPriority ] ;
     sh:targetClass :ValidationRule .
 
 :ValidationTargetShape a sh:NodeShape ;

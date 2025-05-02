@@ -7,12 +7,12 @@ from pathlib import Path
 from ontology_framework.validation.validation import OntologyValidator, ValidationError
 import unittest
 from rdflib import Graph
-from src.ontology_framework.modules.error_handling.validation import ValidationHandler
-from src.ontology_framework.modules.error_handling.types import (
+from ontology_framework.modules.error_handling.validation import ValidationHandler
+from ontology_framework.modules.error_handling.types import (
     ValidationRuleType, ValidationRule, SecurityLevel, RiskLevel
 )
-from src.ontology_framework.modules.validation.bfg9k_pattern import BFG9KPattern
-from src.ontology_framework.ontology_types import (
+from ontology_framework.modules.validation.bfg9k_pattern import BFG9KPattern
+from ontology_framework.ontology_types import (
     ValidationRule, RiskLevel, SecurityLevel, ComplianceLevel
 )
 

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="http://example.org/guidance#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://example.org/guidance#errorLogTest">
+    <rdf:type rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:label>Error Log Test</rdfs:label>
+    <ns1:hasLogLevel>ERROR</ns1:hasLogLevel>
+    <ns1:hasLogPattern></ns1:hasLogPattern>
+    <ns1:hasTestName>error_log_check</ns1:hasTestName>
+    <rdfs:comment>Test for error log patterns</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleDeployment2">
+    <rdf:type rdf:resource="http://example.org/guidance#Deployment"/>
+    <rdfs:label>Example Deployment 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class Deployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#graphdbDeployment">
+    <rdf:type rdf:resource="http://example.org/guidance#GraphDBDeployment"/>
+    <rdfs:label>GraphDB Deployment</rdfs:label>
+    <ns1:hasDatasetName>guidance</ns1:hasDatasetName>
+    <ns1:hasServiceEndpoint>http://localhost:7200</ns1:hasServiceEndpoint>
+    <ns1:hasServiceName>graphdb</ns1:hasServiceName>
+    <ns1:hasServicePort rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7200</ns1:hasServicePort>
+    <ns1:hasServiceVersion>10.4.0</ns1:hasServiceVersion>
+    <rdfs:comment>Deployment configuration for GraphDB</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasRuntimeName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Runtime Name</rdfs:label>
+    <rdfs:comment>Name of the container runtime</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasServicePort">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Service Port</rdfs:label>
+    <rdfs:comment>Port number for the service</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleContainerRuntime1">
+    <rdf:type rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <rdfs:label>Example ContainerRuntime 1</rdfs:label>
+    <ns1:hasRuntimeName>Example value 1</ns1:hasRuntimeName>
+    <ns1:hasRuntimeStatus>Example value 1</ns1:hasRuntimeStatus>
+    <ns1:hasRuntimeVersion>Example value 1</ns1:hasRuntimeVersion>
+    <rdfs:comment>This is example instance 1 of class ContainerRuntime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#Deployment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Deployment</rdfs:label>
+    <rdfs:comment>Base class for deployment configurations</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasServiceEndpoint">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Service Endpoint</rdfs:label>
+    <rdfs:comment>Base URL for the service</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#JenaFusekiDeployment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Jena Fuseki Deployment</rdfs:label>
+    <rdfs:comment>Configuration for Jena Fuseki deployment</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestConfiguration1">
+    <rdf:type rdf:resource="http://example.org/guidance#TestConfiguration"/>
+    <rdfs:label>Example TestConfiguration 1</rdfs:label>
+    <ns1:hasTestName>Example value 1</ns1:hasTestName>
+    <rdfs:comment>This is example instance 1 of class TestConfiguration</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasServiceVersion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Service Version</rdfs:label>
+    <rdfs:comment>Version of the service</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasServiceName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Service Name</rdfs:label>
+    <rdfs:comment>Name of the service</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasRuntimeVersion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Runtime Version</rdfs:label>
+    <rdfs:comment>Version of the container runtime</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasLogLevel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Log Level</rdfs:label>
+    <rdfs:comment>Log level to check</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasRuntimeStatus">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Runtime Status</rdfs:label>
+    <rdfs:comment>Current status of the container runtime</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLoggingTest2">
+    <rdf:type rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:label>Example LoggingTest 2</rdfs:label>
+    <ns1:hasLogLevel>Example value 2</ns1:hasLogLevel>
+    <ns1:hasLogPattern>Example value 2</ns1:hasLogPattern>
+    <rdfs:comment>This is example instance 2 of class LoggingTest</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#ServiceDeployment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Service Deployment</rdfs:label>
+    <rdfs:comment>Configuration for service deployment</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#Deployment"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasDatasetName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Dataset Name</rdfs:label>
+    <rdfs:comment>Name of the dataset</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#JenaFusekiDeployment"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#serverLogTest">
+    <rdf:type rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:label>Server Log Test</rdfs:label>
+    <ns1:hasLogLevel>INFO</ns1:hasLogLevel>
+    <ns1:hasLogPattern>Server started</ns1:hasLogPattern>
+    <ns1:hasTestName>log_check</ns1:hasTestName>
+    <rdfs:comment>Test for server log patterns</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleContainerRuntime2">
+    <rdf:type rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <rdfs:label>Example ContainerRuntime 2</rdfs:label>
+    <ns1:hasRuntimeName>Example value 2</ns1:hasRuntimeName>
+    <ns1:hasRuntimeStatus>Example value 2</ns1:hasRuntimeStatus>
+    <ns1:hasRuntimeVersion>Example value 2</ns1:hasRuntimeVersion>
+    <rdfs:comment>This is example instance 2 of class ContainerRuntime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#ContainerRuntime">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Container Runtime</rdfs:label>
+    <rdfs:comment>Configuration for container runtime environment</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#Deployment"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#healthCheckTest">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:label>Health Check Test</rdfs:label>
+    <ns1:hasExpectedResponse>200</ns1:hasExpectedResponse>
+    <ns1:hasTestEndpoint>http://localhost:3030/</ns1:hasTestEndpoint>
+    <ns1:hasTestName>health_check</ns1:hasTestName>
+    <rdfs:comment>Test for Fuseki health check endpoint</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleJenaFusekiTest2">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:label>Example JenaFusekiTest 2</rdfs:label>
+    <ns1:hasExpectedResponse>Example value 2</ns1:hasExpectedResponse>
+    <ns1:hasTestEndpoint rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI2"/>
+    <rdfs:comment>This is example instance 2 of class JenaFusekiTest</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleJenaFusekiTest1">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:label>Example JenaFusekiTest 1</rdfs:label>
+    <ns1:hasExpectedResponse>Example value 1</ns1:hasExpectedResponse>
+    <ns1:hasTestEndpoint rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI1"/>
+    <rdfs:comment>This is example instance 1 of class JenaFusekiTest</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#ColimaRuntime">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Colima Runtime</rdfs:label>
+    <rdfs:comment>Configuration for Colima container runtime</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#ContainerRuntime"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleServiceDeployment1">
+    <rdf:type rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:label>Example ServiceDeployment 1</rdfs:label>
+    <ns1:hasServiceEndpoint rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI1"/>
+    <ns1:hasServiceName>Example value 1</ns1:hasServiceName>
+    <ns1:hasServicePort rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ns1:hasServicePort>
+    <ns1:hasServiceVersion>Example value 1</ns1:hasServiceVersion>
+    <rdfs:comment>This is example instance 1 of class ServiceDeployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasTestEndpoint">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Test Endpoint</rdfs:label>
+    <rdfs:comment>Endpoint to test</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleColimaRuntime2">
+    <rdf:type rdf:resource="http://example.org/guidance#ColimaRuntime"/>
+    <rdfs:label>Example ColimaRuntime 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ColimaRuntime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#GraphDBDeployment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>GraphDB Deployment</rdfs:label>
+    <rdfs:comment>Configuration for GraphDB deployment</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#colimaRuntime">
+    <rdf:type rdf:resource="http://example.org/guidance#ColimaRuntime"/>
+    <rdfs:label>Colima Runtime</rdfs:label>
+    <ns1:hasRuntimeName>colima</ns1:hasRuntimeName>
+    <ns1:hasRuntimeStatus>running</ns1:hasRuntimeStatus>
+    <ns1:hasRuntimeVersion>0.5.6</ns1:hasRuntimeVersion>
+    <rdfs:comment>Colima container runtime configuration</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLoggingTest1">
+    <rdf:type rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:label>Example LoggingTest 1</rdfs:label>
+    <ns1:hasLogLevel>Example value 1</ns1:hasLogLevel>
+    <ns1:hasLogPattern>Example value 1</ns1:hasLogPattern>
+    <rdfs:comment>This is example instance 1 of class LoggingTest</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestConfiguration2">
+    <rdf:type rdf:resource="http://example.org/guidance#TestConfiguration"/>
+    <rdfs:label>Example TestConfiguration 2</rdfs:label>
+    <ns1:hasTestName>Example value 2</ns1:hasTestName>
+    <rdfs:comment>This is example instance 2 of class TestConfiguration</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#JenaFusekiTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Jena Fuseki Test</rdfs:label>
+    <rdfs:comment>Configuration for Jena Fuseki tests</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#TestConfiguration"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#datasetCheckTest">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:label>Dataset Check Test</rdfs:label>
+    <ns1:hasExpectedResponse>200</ns1:hasExpectedResponse>
+    <ns1:hasTestEndpoint>http://localhost:3030/guidance</ns1:hasTestEndpoint>
+    <ns1:hasTestName>dataset_check</ns1:hasTestName>
+    <rdfs:comment>Test for dataset existence</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#TestConfiguration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Test Configuration</rdfs:label>
+    <rdfs:comment>Base class for test configurations</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasExpectedResponse">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Expected Response</rdfs:label>
+    <rdfs:comment>Expected response from the test</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#JenaFusekiTest"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleJenaFusekiDeployment2">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiDeployment"/>
+    <rdfs:label>Example JenaFusekiDeployment 2</rdfs:label>
+    <ns1:hasDatasetName>Example value 2</ns1:hasDatasetName>
+    <rdfs:comment>This is example instance 2 of class JenaFusekiDeployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasLogPattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Log Pattern</rdfs:label>
+    <rdfs:comment>Pattern to match in logs</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#LoggingTest"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasTestName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Test Name</rdfs:label>
+    <rdfs:comment>Name of the test</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#TestConfiguration"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleServiceDeployment2">
+    <rdf:type rdf:resource="http://example.org/guidance#ServiceDeployment"/>
+    <rdfs:label>Example ServiceDeployment 2</rdfs:label>
+    <ns1:hasServiceEndpoint rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleanyURI2"/>
+    <ns1:hasServiceName>Example value 2</ns1:hasServiceName>
+    <ns1:hasServicePort rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</ns1:hasServicePort>
+    <ns1:hasServiceVersion>Example value 2</ns1:hasServiceVersion>
+    <rdfs:comment>This is example instance 2 of class ServiceDeployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#fusekiDeployment">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiDeployment"/>
+    <rdfs:label>Fuseki Deployment</rdfs:label>
+    <ns1:hasDatasetName>guidance</ns1:hasDatasetName>
+    <ns1:hasServiceEndpoint>http://localhost:3030</ns1:hasServiceEndpoint>
+    <ns1:hasServiceName>fuseki</ns1:hasServiceName>
+    <ns1:hasServicePort rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3030</ns1:hasServicePort>
+    <ns1:hasServiceVersion>4.10.0</ns1:hasServiceVersion>
+    <owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+    <rdfs:comment>Deprecated: Use GraphDB instead</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#LoggingTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Logging Test</rdfs:label>
+    <rdfs:comment>Configuration for logging tests</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#TestConfiguration"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleColimaRuntime1">
+    <rdf:type rdf:resource="http://example.org/guidance#ColimaRuntime"/>
+    <rdfs:label>Example ColimaRuntime 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ColimaRuntime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleDeployment1">
+    <rdf:type rdf:resource="http://example.org/guidance#Deployment"/>
+    <rdfs:label>Example Deployment 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class Deployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleJenaFusekiDeployment1">
+    <rdf:type rdf:resource="http://example.org/guidance#JenaFusekiDeployment"/>
+    <rdfs:label>Example JenaFusekiDeployment 1</rdfs:label>
+    <ns1:hasDatasetName>Example value 1</ns1:hasDatasetName>
+    <rdfs:comment>This is example instance 1 of class JenaFusekiDeployment</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

@@ -1,9 +1,10 @@
-"""Tests for the PDCA model manager."""
+"""Test suite for PDCA model manager."""
 
 import unittest
-from rdflib import Graph, Namespace, URIRef, Literal
+from pathlib import Path
+from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
-from src.ontology_framework.model.pdca_model_manager import PDCAModelManager
+from ontology_framework.model.pdca_model_manager import PDCAModelManager
 
 # Define namespaces
 PDCA = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#")

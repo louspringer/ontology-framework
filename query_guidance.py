@@ -1,68 +1,159 @@
-from rdflib import Graph, Namespace
-from rdflib.namespace import RDF, RDFS, OWL
-import rdflib
+import requests
+from typing import List, Dict
+import logging
 
-# Create a graph and parse the guidance ontology
-g = Graph()
-g.parse("guidance.ttl", format="turtle")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Define namespaces
-GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+class GraphDBGuidanceManager:
+    def __init__(self, endpoint: str = "http://localhost:7200/repositories/guidance"):
+        self.endpoint = endpoint
+        self.test_connection()
 
-# SPARQL query to get validation rules and setup instructions
-query = """
-PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX sh: <http://www.w3.org/ns/shacl#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    def test_connection(self):
+        """Test the connection to GraphDB"""
+        try:
+            test_query = "ASK { ?s ?p ?o }"
+            self.query_sparql(test_query)
+            logger.info("Successfully connected to GraphDB")
+        except Exception as e:
+            logger.error(f"Failed to connect to GraphDB: {str(e)}")
+            raise
 
-SELECT DISTINCT ?subject ?label ?comment ?prop ?propValue
-WHERE {
-    {
-        ?subject a owl:Class .
-        ?subject rdfs:label ?label .
-        ?subject rdfs:comment ?comment .
-        OPTIONAL {
-            ?subject ?prop ?propValue .
-            FILTER (?prop != rdf:type && ?prop != rdfs:label && ?prop != rdfs:comment)
+    def query_sparql(self, query: str) -> Dict:
+        headers = {
+            "Accept": "application/sparql-results+json",
+            "Content-Type": "application/sparql-query"
         }
-    }
-    UNION
-    {
-        ?subject a :ValidationRule .
-        ?subject rdfs:label ?label .
-        ?subject rdfs:comment ?comment .
-        OPTIONAL {
-            ?subject ?prop ?propValue .
-            FILTER (?prop != rdf:type && ?prop != rdfs:label && ?prop != rdfs:comment)
+        try:
+            response = requests.post(self.endpoint, headers=headers, data=query)
+            response.raise_for_status()  # Raise an error for bad status codes
+            if response.status_code == 204:  # No content
+                return {"results": {"bindings": []}}
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.error(f"SPARQL query failed: {str(e)}")
+            if hasattr(e.response, 'text'):
+                logger.error(f"Response text: {e.response.text}")
+            raise
+
+    def get_validation_rules(self) -> List[Dict]:
+        query = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX guidance: <http://ontologies.louspringer.com/guidance#>
+        
+        SELECT ?id ?type ?message ?priority ?validator ?target
+        WHERE {
+            ?id a guidance:ValidationRule ;
+                guidance:hasRuleType ?type ;
+                guidance:hasMessage ?message ;
+                guidance:hasPriority ?priority ;
+                guidance:hasValidator ?validator ;
+                guidance:hasTarget ?target .
         }
-    }
-    FILTER (lang(?label) = "en" && lang(?comment) = "en")
-}
-ORDER BY ?subject ?prop
-"""
+        LIMIT 100
+        """
+        try:
+            results = self.query_sparql(query)
+            rules = []
+            seen_ids = set()
+            for binding in results["results"]["bindings"]:
+                rule_id = binding["id"]["value"]
+                if rule_id in seen_ids:
+                    continue
+                seen_ids.add(rule_id)
+                rule = {
+                    "id": rule_id,
+                    "type": binding["type"]["value"],
+                    "message": binding["message"]["value"],
+                    "priority": binding["priority"]["value"],
+                    "validator": binding["validator"]["value"],
+                    "target": binding["target"]["value"]
+                }
+                rules.append(rule)
+            return rules
+        except Exception as e:
+            logger.error(f"Error getting validation rules: {str(e)}")
+            raise
 
-# Execute the query
-results = g.query(query)
+    def get_validation_patterns(self) -> List[Dict]:
+        query = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX guidance: <http://ontologies.louspringer.com/guidance#>
+        
+        SELECT ?pattern ?label ?type ?comment
+        WHERE {
+            ?pattern a owl:Class ;
+                rdfs:subClassOf guidance:BestPractice ;
+                rdfs:label ?label .
+            OPTIONAL { ?pattern rdfs:comment ?comment }
+            OPTIONAL { ?pattern a ?type }
+        }
+        LIMIT 100
+        """
+        try:
+            results = self.query_sparql(query)
+            patterns = []
+            seen_patterns = set()
+            for binding in results["results"]["bindings"]:
+                pattern_uri = binding["pattern"]["value"]
+                if pattern_uri in seen_patterns:
+                    continue
+                seen_patterns.add(pattern_uri)
+                pattern = {
+                    "pattern": pattern_uri,
+                    "label": binding["label"]["value"],
+                    "type": binding.get("type", {}).get("value"),
+                    "comment": binding.get("comment", {}).get("value")
+                }
+                patterns.append(pattern)
+            return patterns
+        except Exception as e:
+            logger.error(f"Error getting validation patterns: {str(e)}")
+            raise
 
-# Print the results
-print("Project Setup and Validation Rules from Guidance Ontology:")
-print("-" * 60)
+def main():
+    try:
+        # Initialize GraphDB guidance manager
+        logger.info("Initializing GraphDB guidance manager...")
+        manager = GraphDBGuidanceManager()
+        
+        # Get validation rules and patterns
+        logger.info("Fetching validation rules...")
+        rules = manager.get_validation_rules()
+        
+        logger.info("Fetching validation patterns...")
+        patterns = manager.get_validation_patterns()
+        
+        # Print the results
+        print("\nProject Setup and Validation Rules from Guidance Ontology:")
+        print("-" * 60)
+        
+        for rule in rules:
+            print(f"\n{rule['id']}:")
+            print(f"  Type: {rule['type']}")
+            if rule['message']:
+                print(f"  Message: {rule['message']}")
+            if rule['priority']:
+                print(f"  Priority: {rule['priority']}")
+            if rule['validator']:
+                print(f"  Validator: {rule['validator']}")
+            if rule['target']:
+                print(f"  Target: {rule['target']}")
+        
+        print("\nValidation Patterns:")
+        print("-" * 60)
+        for pattern in patterns:
+            print(f"\n{pattern['label']}:")
+            print(f"  Type: {pattern['type']}")
+            if pattern['comment']:
+                print(f"  Description: {pattern['comment']}")
+        
+    except Exception as e:
+        logger.error(f"Error in main: {str(e)}")
+        raise
 
-current_subject = None
-for row in results:
-    subject_uri = str(row[0])
-    if current_subject != subject_uri:
-        if current_subject is not None:
-            print()
-        print(f"\n{row[1]}:")  # Label
-        print(f"  Description: {row[2]}")  # Comment
-        current_subject = subject_uri
-    
-    if row[3] and row[4]:  # Property and value
-        prop_name = str(row[3]).split('#')[-1]
-        prop_value = str(row[4])
-        if '#' in prop_value:
-            prop_value = prop_value.split('#')[-1]
-        print(f"  - {prop_name}: {prop_value}") 
+if __name__ == "__main__":
+    main() 

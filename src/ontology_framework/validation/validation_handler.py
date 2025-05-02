@@ -17,6 +17,7 @@ from ontology_framework.validation.pattern_manager import PatternManager
 from pyshacl import validate
 from .validation_rule import ValidationRule
 from .conformance_level import ConformanceLevel
+from ..ontology_types import ValidationRule as OntologyValidationRule, ErrorSeverity as OntologyErrorSeverity
 
 # Define namespaces
 GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
@@ -30,8 +31,40 @@ class ValidationRuleType(Enum):
     STRUCTURAL = GUIDANCE.STRUCTURAL
 
 class ValidationHandler:
-    """Handles validation of RDF graphs using various rule types."""
+    """Handles validation operations using the validation ontology."""
     
+    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "validation"):
+        self.manager = ValidationOntologyManager(base_url, repository)
+        self.logger = logging.getLogger(__name__)
+        
+    def add_validation_rule(self, rule: ValidationRule, description: str, severity: ErrorSeverity) -> URIRef:
+        """Add a validation rule to the ontology."""
+        try:
+            return self.manager.add_validation_rule(
+                rule.name,
+                description,
+                severity.name
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to add validation rule: {e}")
+            raise
+            
+    def get_validation_rules(self) -> List[Dict[str, Union[str, Optional[str]]]]:
+        """Get all validation rules from the ontology."""
+        try:
+            return self.manager.get_validation_rules()
+        except Exception as e:
+            self.logger.error(f"Failed to get validation rules: {e}")
+            return []
+            
+    def validate_rule_exists(self, rule: ValidationRule) -> bool:
+        """Check if a validation rule exists in the ontology."""
+        try:
+            return self.manager.validate_rule_exists(rule.name)
+        except Exception as e:
+            self.logger.error(f"Failed to validate rule existence: {e}")
+            return False
+
     def __init__(self, rules: Optional[List[ValidationRule]] = None):
         """Initialize the validation handler with optional rules.
         

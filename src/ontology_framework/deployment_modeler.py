@@ -9,25 +9,103 @@ from pathlib import Path
 from rdflib import Graph
 from .error_handler import ErrorHandler
 from .validation import ValidationManager
-from .exceptions import ValidationError
+from .exceptions import ValidationError, OntologyFrameworkError
 import requests
 import warnings
-from .sparql_client import SparqlClient
-from .graphdb_client import GraphDBClient, GraphDBError
+from .graphdb_client import GraphDBClient
+
+logger = logging.getLogger(__name__)
 
 class DeploymentModeler:
-    """Manages ontology deployment to GraphDB."""
+    """Modeler for deployment configurations."""
     
-    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "test"):
+    def __init__(self, base_url: str):
         """Initialize the deployment modeler.
         
         Args:
             base_url: Base URL of the GraphDB server
-            repository: Repository name
         """
-        self.graphdb_client = GraphDBClient(base_url, repository)
-        self.logger = logging.getLogger(__name__)
+        self.client = GraphDBClient(base_url)
         
+    def model_deployment(self, config: Dict[str, Any]) -> bool:
+        """Model a deployment configuration.
+        
+        Args:
+            config: Deployment configuration dictionary
+            
+        Returns:
+            True if successful
+        """
+        try:
+            # Create repository if it doesn't exist
+            if not any(repo["id"] == config["repository"] for repo in self.client.list_repositories()):
+                self.client.create_repository(config["repository"], config.get("title", "Deployment Repository"))
+            
+            # Set repository for client
+            self.client.repository = config["repository"]
+            
+            # Load ontologies if specified
+            if "ontologies" in config:
+                for ontology_path in config["ontologies"]:
+                    if Path(ontology_path).exists():
+                        self.client.load_ontology(ontology_path)
+                    else:
+                        logger.warning(f"Ontology file not found: {ontology_path}")
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to model deployment: {e}")
+            raise OntologyFrameworkError(f"Deployment modeling failed: {str(e)}")
+            
+    def validate_deployment(self, repository: str) -> bool:
+        """Validate a deployment configuration.
+        
+        Args:
+            repository: Repository name
+            
+        Returns:
+            True if validation passes
+        """
+        try:
+            # Set repository for client
+            self.client.repository = repository
+            
+            # Run validation query
+            result = self.client.query("""
+                PREFIX sh: <http://www.w3.org/ns/shacl#>
+                ASK {
+                    ?report a sh:ValidationReport ;
+                        sh:conforms true .
+                }
+            """)
+            
+            return result["boolean"]
+            
+        except Exception as e:
+            logger.error(f"Failed to validate deployment: {e}")
+            raise OntologyFrameworkError(f"Deployment validation failed: {str(e)}")
+            
+    def clear_deployment(self, repository: str) -> bool:
+        """Clear a deployment configuration.
+        
+        Args:
+            repository: Repository name
+            
+        Returns:
+            True if successful
+        """
+        try:
+            # Set repository for client
+            self.client.repository = repository
+            
+            # Clear the repository
+            return self.client.clear_graph()
+            
+        except Exception as e:
+            logger.error(f"Failed to clear deployment: {e}")
+            raise OntologyFrameworkError(f"Deployment clearing failed: {str(e)}")
+
     def deploy_ontology(self, ontology_path: Union[str, Path], dataset_name: Optional[str] = None) -> bool:
         """Deploy an ontology to GraphDB.
         
@@ -39,23 +117,10 @@ class DeploymentModeler:
             True if successful
         """
         try:
-            return self.graphdb_client.upload_graph(ontology_path, dataset_name)
-        except GraphDBError as e:
-            raise DeploymentError(f"Failed to deploy ontology: {str(e)}")
-            
-    def clear_dataset(self, dataset_name: str) -> bool:
-        """Clear a dataset in GraphDB.
-        
-        Args:
-            dataset_name: Name of dataset to clear
-            
-        Returns:
-            True if successful
-        """
-        try:
-            return self.graphdb_client.clear_graph(dataset_name)
-        except GraphDBError as e:
-            raise DeploymentError(f"Failed to clear dataset: {str(e)}")
+            return self.client.upload_graph(ontology_path, dataset_name)
+        except Exception as e:
+            logger.error(f"Failed to deploy ontology: {e}")
+            raise OntologyFrameworkError(f"Deployment error: {str(e)}")
             
     def list_datasets(self) -> List[str]:
         """List all datasets in GraphDB.
@@ -64,9 +129,10 @@ class DeploymentModeler:
             List of dataset names
         """
         try:
-            return self.graphdb_client.list_graphs()
-        except GraphDBError as e:
-            raise DeploymentError(f"Failed to list datasets: {str(e)}")
+            return self.client.list_graphs()
+        except Exception as e:
+            logger.error(f"Failed to list datasets: {e}")
+            raise OntologyFrameworkError(f"Failed to list datasets: {str(e)}")
             
     def get_dataset_info(self, dataset_name: str) -> Dict:
         """Get information about a dataset.
@@ -78,9 +144,10 @@ class DeploymentModeler:
             Dataset information
         """
         try:
-            return self.graphdb_client.get_graph_info(dataset_name)
-        except GraphDBError as e:
-            raise DeploymentError(f"Failed to get dataset info: {str(e)}")
+            return self.client.get_graph_info(dataset_name)
+        except Exception as e:
+            logger.error(f"Failed to get dataset info: {e}")
+            raise OntologyFrameworkError(f"Failed to get dataset info: {str(e)}")
             
     def count_triples(self, dataset_name: str) -> int:
         """Count triples in a dataset.
@@ -92,9 +159,10 @@ class DeploymentModeler:
             Number of triples
         """
         try:
-            return self.graphdb_client.count_triples(dataset_name)
-        except GraphDBError as e:
-            raise DeploymentError(f"Failed to count triples: {str(e)}")
+            return self.client.count_triples(dataset_name)
+        except Exception as e:
+            logger.error(f"Failed to count triples: {e}")
+            raise OntologyFrameworkError(f"Failed to count triples: {str(e)}")
 
     def get_deployment_config(self, app_name: str, environment: str) -> Dict[str, Any]:
         """
@@ -126,48 +194,8 @@ class DeploymentModeler:
             }
             return config
         except Exception as e:
-            self.error_handler.add_error(
-                "ConfigurationError",
-                f"Error getting deployment config: {str(e)}",
-                "HIGH"
-            )
-            return {}
-
-    def validate_deployment(self, config: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Validate deployment configuration.
-
-        Args:
-            config: Deployment configuration to validate
-
-        Returns:
-            Dict containing validation result and any issues found
-        """
-        try:
-            # Validate using all available rules
-            validation_rules = ["required_fields", "numeric_ranges", "string_format"]
-            result = self.validation_manager.validate(config, validation_rules)
-            
-            if isinstance(result, dict) and not result.get("is_valid", True):
-                for issue in result.get("issues", []):
-                    self.error_handler.add_error(
-                        "ValidationError",
-                        issue,
-                        "HIGH"
-                    )
-                    
-            return result
-            
-        except Exception as e:
-            self.error_handler.add_error(
-                "ValidationError",
-                f"Error during validation: {str(e)}",
-                "HIGH"
-            )
-            return {
-                "is_valid": False,
-                "issues": [f"Validation error: {str(e)}"]
-            }
+            logger.error(f"Error getting deployment config: {e}")
+            raise OntologyFrameworkError(f"Deployment configuration error: {str(e)}")
 
     def generate_deployment_artifacts(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -180,8 +208,8 @@ class DeploymentModeler:
             Dictionary containing generated artifacts
         """
         try:
-            validation_result = self.validate_deployment(config)
-            if not validation_result["is_valid"]:
+            validation_result = self.validate_deployment(config["repository"])
+            if not validation_result:
                 return {}
 
             artifacts = {
@@ -191,12 +219,8 @@ class DeploymentModeler:
             }
             return artifacts
         except Exception as e:
-            self.error_handler.add_error(
-                "ArtifactGenerationError",
-                f"Error generating deployment artifacts: {str(e)}",
-                "HIGH"
-            )
-            return {}
+            logger.error(f"Error generating deployment artifacts: {e}")
+            raise OntologyFrameworkError(f"Deployment artifact generation failed: {str(e)}")
 
     def _generate_k8s_deployment(self, config: Dict[str, Any]) -> str:
         """Generate Kubernetes deployment configuration."""

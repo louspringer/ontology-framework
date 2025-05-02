@@ -16,6 +16,7 @@ class GuidanceManager:
         self.guidance_path = guidance_path
         self.graph = Graph()
         self.graph.parse(guidance_path, format='turtle')
+        self.transaction_stack = []
         
         # Define namespaces
         self.GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
@@ -36,47 +37,109 @@ class GuidanceManager:
         
         self.logger = logging.getLogger(__name__)
         
+    def begin_transaction(self) -> str:
+        """Start a new transaction.
+        
+        Returns:
+            str: Transaction ID
+        """
+        transaction_id = str(uuid.uuid4())
+        self.transaction_stack.append({
+            'id': transaction_id,
+            'graph': Graph(),
+            'changes': []
+        })
+        return transaction_id
+
+    def commit_transaction(self, transaction_id: str) -> bool:
+        """Commit a transaction.
+        
+        Args:
+            transaction_id: ID of the transaction to commit
+            
+        Returns:
+            bool: True if successful
+            
+        Raises:
+            ValueError: If transaction ID is invalid
+        """
+        for i, tx in enumerate(self.transaction_stack):
+            if tx['id'] == transaction_id:
+                # Apply changes to main graph
+                self.graph += tx['graph']
+                # Remove transaction from stack
+                self.transaction_stack.pop(i)
+                return True
+        raise ValueError(f"Invalid transaction ID: {transaction_id}")
+
+    def rollback_transaction(self, transaction_id: str) -> bool:
+        """Rollback a transaction.
+        
+        Args:
+            transaction_id: ID of the transaction to rollback
+            
+        Returns:
+            bool: True if successful
+            
+        Raises:
+            ValueError: If transaction ID is invalid
+        """
+        for i, tx in enumerate(self.transaction_stack):
+            if tx['id'] == transaction_id:
+                # Remove transaction from stack without applying changes
+                self.transaction_stack.pop(i)
+                return True
+        raise ValueError(f"Invalid transaction ID: {transaction_id}")
+
+    def _get_current_transaction(self) -> Optional[Dict]:
+        """Get the current transaction if one exists.
+        
+        Returns:
+            Optional[Dict]: Current transaction or None
+        """
+        return self.transaction_stack[-1] if self.transaction_stack else None
+
     def get_validation_patterns(self) -> List[Dict[str, str]]:
-        """Get all validation patterns using SPARQL."""
+        """Get all validation patterns using SPARQL.
+        
+        Returns:
+            List of dictionaries containing pattern information
+        """
         query = """
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-        SELECT ?pattern ?type ?label ?comment
+        SELECT DISTINCT ?pattern ?type ?label ?comment
         WHERE {
             {
-                ?rule a guidance:ValidationRule ;
-                      guidance:hasPattern ?pattern ;
-                      guidance:hasType ?type .
-                OPTIONAL { ?rule rdfs:label ?label }
-                OPTIONAL { ?rule rdfs:comment ?comment }
+                # Direct patterns
+                ?pattern a guidance:ValidationPattern ;
+                        guidance:hasType ?type .
+                OPTIONAL { ?pattern rdfs:label ?label }
+                OPTIONAL { ?pattern rdfs:comment ?comment }
             }
             UNION
             {
-                ?pattern a guidance:ValidationPattern ;
-                        rdfs:label ?label ;
-                        rdfs:comment ?comment ;
-                        guidance:hasType ?type .
+                # Patterns from rules
+                ?rule a guidance:ValidationRule ;
+                      guidance:hasPattern ?pattern ;
+                      guidance:hasType ?type .
+                OPTIONAL { ?pattern rdfs:label ?label }
+                OPTIONAL { ?pattern rdfs:comment ?comment }
             }
         }
         """
         patterns = []
         results = self.graph.query(query)
         for row in results:
-            if isinstance(row, ResultRow):
-                patterns.append({
-                    'pattern': str(row.pattern),
-                    'type': str(row.type).split('#')[-1],
-                    'label': str(row.label) if row.label else None,
-                    'comment': str(row.comment) if row.comment else None
-                })
-            else:
-                patterns.append({
-                    'pattern': str(row[0]),
-                    'type': str(row[1]).split('#')[-1],
-                    'label': str(row[2]) if row[2] else None,
-                    'comment': str(row[3]) if row[3] else None
-                })
+            pattern_dict = {
+                'pattern': str(row.pattern),
+                'type': str(row.type).split('#')[-1] if '#' in str(row.type) else str(row.type),
+                'label': str(row.label) if row.label else None,
+                'comment': str(row.comment) if row.comment else None
+            }
+            if pattern_dict not in patterns:  # Avoid duplicates
+                patterns.append(pattern_dict)
         return patterns
         
     def get_validation_rules(self) -> List[Dict[str, Any]]:
@@ -119,7 +182,7 @@ class GuidanceManager:
                 "id": str(row.label),
                 "type": str(row.type).split('#')[-1],
                 "message": str(row.message) if row.message else None,
-                "priority": int(row.priority) if row.priority else 0,
+                "priority": str(row.priority) if row.priority else "0",
                 "patterns": patterns if patterns else None,
                 "rule": self._get_rule_details(row.rule)
             }
@@ -215,35 +278,41 @@ class GuidanceManager:
         """
         rule_uri = URIRef(f"{self.GUIDANCE}{rule_id}")
         
+        # Get the graph to modify (transaction or main)
+        target_graph = self._get_current_transaction()['graph'] if self._get_current_transaction() else self.graph
+        
         # Add basic rule properties
-        self.graph.add((rule_uri, RDF.type, self.GUIDANCE.ValidationRule))
-        self.graph.add((rule_uri, RDFS.label, Literal(rule_id)))
-        self.graph.add((rule_uri, self.GUIDANCE.hasType, Literal(type)))
+        target_graph.add((rule_uri, RDF.type, self.GUIDANCE.ValidationRule))
+        target_graph.add((rule_uri, RDFS.label, Literal(rule_id)))
+        target_graph.add((rule_uri, self.GUIDANCE.hasType, Literal(type)))
         
         if message:
-            self.graph.add((rule_uri, self.GUIDANCE.hasMessage, Literal(message)))
+            target_graph.add((rule_uri, self.GUIDANCE.hasMessage, Literal(message)))
             
-        self.graph.add((rule_uri, self.GUIDANCE.hasPriority, Literal(priority, datatype=XSD.integer)))
+        target_graph.add((rule_uri, self.GUIDANCE.hasPriority, Literal(priority, datatype=XSD.integer)))
         
         # Add rule-specific properties based on type
         if type == ValidationRuleType.SHACL.value:
             if "shapes_file" in rule:
-                self.graph.add((rule_uri, self.GUIDANCE.hasShapesFile, Literal(rule["shapes_file"])))
-        elif type == ValidationRuleType.SEMANTIC.value:
+                target_graph.add((rule_uri, self.GUIDANCE.hasShapesFile, Literal(rule["shapes_file"])))
+        elif type == ValidationRuleType.SEMANTIC.value or type == "SPARQL":  # Added SPARQL type support
             if "query" in rule:
-                self.graph.add((rule_uri, self.GUIDANCE.hasSPARQLQuery, Literal(rule["query"])))
+                target_graph.add((rule_uri, self.GUIDANCE.hasSPARQLQuery, Literal(rule["query"])))
         elif type == ValidationRuleType.SYNTAX.value:
             if "pattern" in rule:
-                self.graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(rule["pattern"])))
+                target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(rule["pattern"])))
         elif type == ValidationRuleType.SENSITIVE_DATA.value:
             if "patterns" in rule:
                 for pattern in rule["patterns"]:
-                    self.graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(pattern)))
+                    target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(pattern)))
         
         return rule_uri
         
     def save(self, path: Optional[str] = None) -> None:
         """Save changes back to the guidance ontology."""
+        if self.transaction_stack:
+            raise RuntimeError("Cannot save while transactions are active")
+            
         target_path = path if path else self.guidance_path
         self.graph.serialize(destination=target_path, format='turtle')
         
@@ -323,3 +392,22 @@ class GuidanceManager:
                     details["patterns"] = patterns
                     
         return details 
+
+    def add_imports(self, import_iris: list, base_iri: Optional[str] = None) -> None:
+        """
+        Add owl:imports triples to the ontology for the given IRIs.
+        Args:
+            import_iris: List of ontology IRIs to import.
+            base_iri: The base ontology IRI to which imports are added. If None, uses the loaded ontology's base.
+        """
+        if base_iri is None:
+            # Try to infer the base IRI from the ontology graph
+            for s in self.graph.subjects(RDF.type, OWL.Ontology):
+                base_iri = str(s)
+                break
+            if base_iri is None:
+                raise ValueError("Base ontology IRI could not be determined. Please specify base_iri explicitly.")
+        base_ref = URIRef(base_iri)
+        for import_iri in import_iris:
+            self.graph.add((base_ref, OWL.imports, URIRef(import_iri)))
+        self.logger.info(f"Added owl:imports for: {import_iris} to {base_iri}") 
