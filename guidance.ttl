@@ -1,18 +1,18 @@
-@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
-    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+rdf:type rdfs:label "22-rdf-syntax-ns#type"@en ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type"@en ;
     rdfs:domain owl:Thing ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
-rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
-    rdfs:comment "Description of rdf-schema#subClassOf" ;
+rdfs:subClassOf rdfs:label "rdf-schema#subClassOf"@en ;
+    rdfs:comment "Description of rdf-schema#subClassOf"@en ;
     rdfs:domain owl:Thing ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
@@ -45,55 +45,61 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     sh:targetClass <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> .
 
 <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
-    rdfs:label "Ontology Management" ;
-    rdfs:comment "Rules for managing ontologies" .
+    rdfs:label "Ontology Management"@en ;
+    rdfs:comment "Rules for managing ontologies"@en .
 
 <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
-    rdfs:label "Semantic First Approach" ;
-    rdfs:comment "Always use semantic web tools before text-based operations" .
+    rdfs:label "Semantic First Approach"@en ;
+    rdfs:comment "Always use semantic web tools before text-based operations"@en .
 
 <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach> a <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule> ;
-    rdfs:label "Validation Approach" ;
-    rdfs:comment "How to handle validation tasks" .
+    rdfs:label "Validation Approach"@en ;
+    rdfs:comment "How to handle validation tasks"@en .
 
-: a owl:Ontology ;
+guidance: a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
     owl:versionInfo "1.0.0" .
 
-:ConsistencyRule a :ValidationRule ;
-    rdfs:label "Consistency Rule"@en ;
-    rdfs:comment "Rule for consistency validation"@en ;
-    :hasMessage "Consistency validation failed" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SHACL ;
-    :hasTarget :ConsistencyValidation ;
-    :hasValidator "validate_consistency" .
+guidance:ConsistencyRule a guidance:ValidationRule ;
+    rdfs:label "ConsistencyRule" ;
+    guidance:hasMessage "Validates consistency rules" ;
+    guidance:hasPattern "consistency-pattern" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasTarget guidance:ConsistencyValidation ;
+    guidance:hasType "Consistency",
+        "STRUCTURAL" ;
+    guidance:hasValidator "validate_consistency" .
 
-:InstallationRule a :ValidationRule ;
-    :hasMessage "Installation command validation" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SHACL ;
-    :hasTarget :InstallationValidation ;
-    :hasValidator "validate_installation.py" .
+guidance:InstallationRule a guidance:ValidationRule ;
+    rdfs:label "InstallationRule" ;
+    guidance:hasMessage "Validates installation rules" ;
+    guidance:hasPattern "install-pattern" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasTarget guidance:InstallationValidation ;
+    guidance:hasType "Installation",
+        "STRUCTURAL" ;
+    guidance:hasValidator "validate_installation" .
 
-:IntegrationPatternShape a sh:NodeShape ;
-    sh:property [ sh:class_ :CoreModule ;
-            sh:minCount 1 ;
-            sh:path :hasTargetModule ],
-        [ sh:class_ :CoreModule ;
-            sh:minCount 1 ;
-            sh:path :hasSourceModule ],
-        [ sh:datatype rdfs:Literal ;
+guidance:IntegrationPatternShape a sh:NodeShape ;
+    sh:property [ sh:datatype rdfs:Literal ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path rdfs:label ] ;
-    sh:targetClass :IntegrationPattern .
+            sh:path rdfs:label ],
+        [ sh:class_ guidance:CoreModule ;
+            sh:minCount 1 ;
+            sh:path guidance:hasTargetModule ],
+        [ sh:class_ guidance:CoreModule ;
+            sh:minCount 1 ;
+            sh:path guidance:hasSourceModule ] ;
+    sh:targetClass guidance:IntegrationPattern .
 
-:ModuleShape a sh:NodeShape ;
-    sh:property [ sh:class_ :IntegrationPattern ;
+guidance:ModuleShape a sh:NodeShape ;
+    sh:property [ sh:class_ guidance:IntegrationPattern ;
             sh:minCount 0 ;
-            sh:path :hasIntegrationPattern ],
+            sh:path guidance:hasIntegrationPattern ],
         [ sh:datatype rdfs:Literal ;
             sh:languageIn "en" ;
             sh:maxCount 1 ;
@@ -104,134 +110,89 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path rdfs:comment ] ;
-    sh:targetClass :CoreModule .
+    sh:targetClass guidance:CoreModule .
 
-:SPORERule a :ValidationRule ;
-    rdfs:label "SPORE Rule"@en ;
-    rdfs:comment "Rule for SPORE validation"@en ;
-    :hasMessage "SPORE validation failed" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :STRUCTURAL ;
-    :hasTarget :SPOREValidation ;
-    :hasValidator "validate_spore" .
+guidance:SPORERule a guidance:ValidationRule ;
+    rdfs:label "SPORERule" ;
+    guidance:hasMessage "Validates SPORE-specific rules" ;
+    guidance:hasPattern "spore-pattern" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasTarget guidance:SPOREValidation ;
+    guidance:hasType "SPORE",
+        "STRUCTURAL" ;
+    guidance:hasValidator "validate_spore" .
 
-:SemanticRule a :ValidationRule ;
-    rdfs:label "Semantic Rule"@en ;
-    rdfs:comment "Rule for semantic validation"@en ;
-    :hasMessage "Semantic validation failed" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SEMANTIC ;
-    :hasTarget :SemanticValidation ;
-    :hasValidator "validate_semantic" .
+guidance:SecurityRule a guidance:ValidationRule ;
+    rdfs:label "SecurityRule" ;
+    guidance:hasMessage "Validates security rules" ;
+    guidance:hasPattern "no-secrets" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasTarget guidance:SecurityValidation ;
+    guidance:hasType "STRUCTURAL",
+        "Security" ;
+    guidance:hasValidator "validate_security" .
 
-:SensitiveDataRule a :ValidationRule ;
-    rdfs:label "Sensitive Data Detection"@en ;
-    rdfs:comment "Rule for detecting sensitive data patterns"@en ;
-    :hasMessage "Sensitive data detected in literal value" ;
-    :hasPattern "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b",
-        "\\b\\d{3}-\\d{2}-\\d{4}\\b",
-        "\\b\\d{4}-\\d{4}-\\d{4}-\\d{4}\\b" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SENSITIVE_DATA ;
-    :hasTarget :SecurityValidation ;
-    :hasValidator "validate_sensitive_data"^^xsd:string .
+guidance:SemanticRule a guidance:ValidationRule ;
+    rdfs:label "SemanticRule" ;
+    guidance:hasMessage "Validates semantic rules and relationships" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:SEMANTIC ;
+    guidance:hasTarget guidance:SemanticValidation ;
+    guidance:hasType "Semantic" ;
+    guidance:hasValidator "validate_semantic" .
 
-:SensitiveDataValidation a owl:Class ;
-    rdfs:label "Sensitive Data Validation"@en ;
-    rdfs:comment "Rules for detecting sensitive data patterns"@en ;
-    rdfs:subClassOf :ValidationRule .
+guidance:SensitiveDataRule a guidance:ValidationRule ;
+    rdfs:label "SensitiveDataRule" ;
+    guidance:hasMessage "Validates sensitive data patterns" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasTarget guidance:SensitiveDataValidation ;
+    guidance:hasType "STRUCTURAL",
+        "SensitiveData" ;
+    guidance:hasValidator "validate_sensitive_data" .
 
-:SyntaxRule a :ValidationRule ;
-    rdfs:label "Syntax Rule"@en ;
-    rdfs:comment "Rule for syntax validation"@en ;
-    :hasMessage "Syntax validation failed" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SYNTAX ;
-    :hasTarget :SyntaxValidation ;
-    :hasValidator "validate_syntax" .
+guidance:SyntaxRule a guidance:ValidationRule ;
+    rdfs:label "SyntaxRule" ;
+    guidance:hasMessage "Validates syntax rules and patterns" ;
+    guidance:hasPattern "^[a-zA-Z0-9_]+$" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:SYNTAX ;
+    guidance:hasTarget guidance:SyntaxValidation ;
+    guidance:hasType "Syntax" ;
+    guidance:hasValidator "validate_syntax" .
 
-:ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:class_ :ValidationRuleType ;
+guidance:ValidationRuleShape a sh:NodeShape ;
+    sh:property [ sh:class guidance:ValidationRuleType ;
             sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
+            sh:message "Validation rule must have a rule type"@en ;
             sh:minCount 1 ;
-            sh:path :hasRuleType ],
+            sh:path guidance:hasRuleType ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:message "Validation rule must have a message" ;
+            sh:message "Validation rule must have a message"@en ;
             sh:minCount 1 ;
-            sh:path :hasMessage ],
+            sh:path guidance:hasMessage ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:message "Validation rule must have a validator" ;
+            sh:message "Validation rule must have a validator"@en ;
             sh:minCount 1 ;
-            sh:path :hasValidator ],
-        [ sh:class_ :ValidationRuleType ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
-            sh:minCount 1 ;
-            sh:path :hasRuleType ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a message" ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ],
-        [ sh:datatype xsd:string ;
-            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
-            sh:maxCount 1 ;
-            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a message" ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a validator" ;
-            sh:minCount 1 ;
-            sh:path :hasValidator ],
-        [ sh:class_ :ValidationTarget ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a target" ;
-            sh:minCount 1 ;
-            sh:path :hasTarget ],
-        [ sh:class_ :ValidationTarget ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a target" ;
-            sh:minCount 1 ;
-            sh:path :hasTarget ],
-        [ sh:class :ValidationTarget ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a target" ;
-            sh:minCount 1 ;
-            sh:path :hasTarget ],
+            sh:path guidance:hasValidator ],
         [ sh:datatype xsd:string ;
             sh:in ( "HIGH" "MEDIUM" "LOW" ) ;
             sh:maxCount 1 ;
-            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
+            sh:message "Priority must be HIGH, MEDIUM, or LOW"@en ;
             sh:minCount 1 ;
-            sh:path :hasPriority ],
-        [ sh:datatype xsd:string ;
+            sh:path guidance:hasPriority ],
+        [ sh:class guidance:ValidationTarget ;
             sh:maxCount 1 ;
-            sh:message "Validation rule must have a validator" ;
+            sh:message "Validation rule must have a target"@en ;
             sh:minCount 1 ;
-            sh:path :hasValidator ],
-        [ sh:class :ValidationRuleType ;
-            sh:maxCount 1 ;
-            sh:message "Validation rule must have a rule type" ;
-            sh:minCount 1 ;
-            sh:path :hasRuleType ],
-        [ sh:datatype xsd:string ;
-            sh:in_ ( "HIGH" "MEDIUM" "LOW" ) ;
-            sh:maxCount 1 ;
-            sh:message "Priority must be HIGH, MEDIUM, or LOW" ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ] ;
-    sh:targetClass :ValidationRule .
+            sh:path guidance:hasTarget ] ;
+    sh:targetClass guidance:ValidationRule .
 
-:ValidationTargetShape a sh:NodeShape ;
+guidance:ValidationTargetShape a sh:NodeShape ;
     sh:property [ sh:maxCount 1 ;
             sh:message "Validation target must have a comment" ;
             sh:minCount 1 ;
@@ -260,104 +221,111 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
             sh:message "Validation target must have an English label" ;
             sh:minCount 1 ;
             sh:path rdfs:label ] ;
-    sh:targetClass :ValidationTarget .
+    sh:targetClass guidance:ValidationTarget .
 
-:hasPattern a owl:DatatypeProperty ;
+guidance:hasPattern a owl:DatatypeProperty ;
     rdfs:label "has pattern"@en ;
     rdfs:comment "Specifies a validation pattern"@en ;
-    rdfs:domain :ValidationRule ;
+    rdfs:domain guidance:ValidationRule ;
     rdfs:range xsd:string .
 
-<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationRule> :hasMessage "Installation command validation" ;
-    :hasPriority "HIGH" ;
-    :hasRuleType :SHACL ;
-    :hasTarget :InstallationValidation ;
-    :hasValidator "validate_installation.py" .
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationRule> guidance:hasMessage "Installation command validation" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasRuleType guidance:SHACL ;
+    guidance:hasValidator "validate_installation.py" .
 
 <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationValidation> rdfs:label "Installation Validation"^^xsd:string ;
     rdfs:comment "Target for installation validation"^^xsd:string .
 
-:ConsistencyValidation a :ValidationTarget ;
-    rdfs:label "Consistency Validation" ;
-    rdfs:comment "Target for consistency validation" .
+guidance:ConsistencyValidation a guidance:ValidationTarget ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Validates consistency rules"@en .
 
-:SEMANTIC a :ValidationRuleType ;
+guidance:InstallationValidation a guidance:ValidationTarget ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Validates installation rules"@en .
+
+guidance:SEMANTIC a guidance:ValidationRuleType ;
     rdfs:label "Semantic Validation"@en ;
     rdfs:comment "Semantic validation rules using SPARQL"@en .
 
-:SPOREValidation a :ValidationTarget ;
-    rdfs:label "SPORE Validation" ;
-    rdfs:comment "Target for SPORE validation" .
-
-:STRUCTURAL a :ValidationRuleType ;
-    rdfs:label "Structural Validation"@en ;
-    rdfs:comment "Structural validation rules"@en .
-
-:SYNTAX a :ValidationRuleType ;
-    rdfs:label "Syntax Validation"@en ;
-    rdfs:comment "Syntax validation rules"@en .
-
-:SecurityValidation rdfs:label "Security Validation" ;
-    rdfs:comment "Target for security validation" .
-
-:SemanticValidation a :ValidationTarget ;
-    rdfs:label "Semantic Validation" ;
-    rdfs:comment "Target for semantic validation" .
-
-:SyntaxValidation a :ValidationTarget ;
-    rdfs:label "Syntax Validation" ;
-    rdfs:comment "Target for syntax validation" .
-
-:InstallationValidation rdfs:label "Installation Validation" ;
-    rdfs:comment "Target for installation validation" .
-
-:SHACL a :ValidationRuleType ;
+guidance:SHACL a guidance:ValidationRuleType ;
     rdfs:label "SHACL Validation"@en ;
     rdfs:comment "SHACL-based validation rules"@en .
 
-:hasMessage a owl:DatatypeProperty ;
+guidance:SPOREValidation a guidance:ValidationTarget ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Validates SPORE-specific rules"@en .
+
+guidance:SYNTAX a guidance:ValidationRuleType ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Syntax validation rules"@en .
+
+guidance:SecurityValidation a guidance:ValidationTarget ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validates security rules"@en .
+
+guidance:SemanticValidation a guidance:ValidationTarget ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validates semantic rules and relationships"@en .
+
+guidance:SensitiveDataValidation a owl:Class,
+        guidance:ValidationTarget ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Validates sensitive data patterns"@en ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+guidance:SyntaxValidation a guidance:ValidationTarget ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Validates syntax rules and patterns"@en .
+
+guidance:hasMessage a owl:DatatypeProperty ;
     rdfs:label "has message"@en ;
     rdfs:comment "Specifies the validation message"@en ;
-    rdfs:domain :ValidationRule ;
+    rdfs:domain guidance:ValidationRule ;
     rdfs:range xsd:string .
 
-:hasPriority a owl:DatatypeProperty ;
+guidance:hasPriority a owl:DatatypeProperty ;
     rdfs:label "has priority"@en ;
     rdfs:comment "Specifies the validation priority"@en ;
-    rdfs:domain :ValidationRule ;
+    rdfs:domain guidance:ValidationRule ;
     rdfs:range xsd:string .
 
-:hasRuleType a owl:ObjectProperty ;
+guidance:hasRuleType a owl:ObjectProperty ;
     rdfs:label "has rule type"@en ;
     rdfs:comment "Specifies the type of validation rule"@en ;
-    rdfs:domain :ValidationRule ;
-    rdfs:range :ValidationRuleType .
+    rdfs:domain guidance:ValidationRule ;
+    rdfs:range guidance:ValidationRuleType .
 
-:hasTarget a owl:ObjectProperty ;
+guidance:hasTarget a owl:ObjectProperty ;
     rdfs:label "has target"@en ;
     rdfs:comment "Specifies the validation target"@en ;
-    rdfs:domain :ValidationRule ;
-    rdfs:range :ValidationTarget .
+    rdfs:domain guidance:ValidationRule ;
+    rdfs:range guidance:ValidationTarget .
 
-:hasValidator a owl:DatatypeProperty ;
+guidance:hasValidator a owl:DatatypeProperty ;
     rdfs:label "has validator"@en ;
     rdfs:comment "Specifies the validator function"@en ;
-    rdfs:domain :ValidationRule ;
+    rdfs:domain guidance:ValidationRule ;
     rdfs:range xsd:string .
 
 owl:Class rdfs:subClassOf rdfs:Class .
 
 owl:DatatypeProperty rdfs:subClassOf rdf:Property .
 
-:ValidationRuleType a owl:Class ;
+guidance:STRUCTURAL a guidance:ValidationRuleType ;
+    rdfs:label "Structural Validation"@en ;
+    rdfs:comment "Structural validation rules"@en .
+
+guidance:ValidationRuleType a owl:Class ;
     rdfs:label "Validation Rule Type"@en ;
     rdfs:comment "Types of validation rules supported by the framework"@en .
 
-:ValidationTarget a owl:Class ;
+guidance:ValidationTarget a owl:Class ;
     rdfs:label "Validation Target"@en ;
     rdfs:comment "Targets for validation rules"@en .
 
-:ValidationRule a owl:Class ;
+guidance:ValidationRule a owl:Class ;
     rdfs:label "Validation Rule"@en ;
     rdfs:comment "Base class for validation rules"@en .
 

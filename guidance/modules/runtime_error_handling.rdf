@@ -1,73 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
+   xml:base="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#runtime_error_handling#"
    xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:sh="http://www.w3.org/ns/shacl#"
 >
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>ErrorType</rdfs:label>
-    <rdfs:label xml:lang="en">Error Type</rdfs:label>
-    <rdfs:comment xml:lang="en">Classification of different error types</rdfs:comment>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasDocumentationType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Documentation Type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of documentation</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Assumption</rdfs:label>
-    <rdfs:comment xml:lang="en">Assumptions for error handling</rdfs:comment>
+    <rdfs:label xml:lang="en">Error Validation Rule</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for error handling</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidation">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-    <rdfs:label>InputValidation</rdfs:label>
-    <rdfs:label xml:lang="en">Input Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Measure to validate input data</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasPreventionEffectiveness>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidation">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <rdfs:label>ComplianceValidation</rdfs:label>
-    <rdfs:label xml:lang="en">Compliance Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Validation rule for compliance checking</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidationRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidation"/>
+    <rdfs:label>Compliance Validation Rule</rdfs:label>
+    <hasValidationSeverity>HIGH</hasValidationSeverity>
     <hasValidationType>Compliance</hasValidationType>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategyInstance">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategy"/>
-    <rdfs:label>Retry Strategy Instance</rdfs:label>
-    <hasRecoveryTime>PT5M</hasRecoveryTime>
+  <rdf:Description rdf:nodeID="n8072e9887a964ec5afb4f1e8fd5dd650b2">
+    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:maxCount>
+    <sh:message>Test error handling process must have exactly 4 steps</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidationMeasure">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidation"/>
-    <rdfs:label>Input Validation Measure</rdfs:label>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasPreventionEffectiveness>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorCount">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric"/>
+    <rdfs:label xml:lang="en">Error Count</rdfs:label>
+    <hasMetricValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</hasMetricValue>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#standardTestErrorHandling">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess"/>
-    <rdfs:label xml:lang="en">Standard Test Error Handling</rdfs:label>
-    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorAnalysis"/>
-    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorIdentification"/>
-    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorPrevention"/>
-    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorRecovery"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcessShape">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <rdfs:label xml:lang="en">Error Handling Process Shape</rdfs:label>
-    <sh:property rdf:nodeID="n4241c1ff71d94c99b99adf151e979365b1"/>
-    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategy">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>CompensationStrategy</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidationRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidation"/>
-    <rdfs:label>Sensitive Data Validation Rule</rdfs:label>
-    <hasValidationSeverity>HIGH</hasValidationSeverity>
-    <hasValidationType>Data protection</hasValidationType>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorIdentification">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <rdfs:label xml:lang="en">Test Error Identification</rdfs:label>
+    <rdfs:comment xml:lang="en">Test step to identify errors</rdfs:comment>
+    <hasStepAction>Test error identification process</hasStepAction>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasStepOrder>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasMatrixAccuracy">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
@@ -76,17 +49,71 @@
     <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConfusionMatrix"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasComplianceLevel">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasStepOrder">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Compliance Level</rdfs:label>
-    <rdfs:comment xml:lang="en">The level of compliance</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label xml:lang="en">Has Step Order</rdfs:label>
+    <rdfs:comment xml:lang="en">The order of a step in a process</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTypeTestCase">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability"/>
-    <rdfs:label xml:lang="en">Error Type Test Case</rdfs:label>
-    <hasTraceabilityLevel>HIGH</hasTraceabilityLevel>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorResolution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Resolution</rdfs:label>
+    <rdfs:comment xml:lang="en">Step to resolve identified errors</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#APIError">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
+    <rdfs:label>APIError</rdfs:label>
+    <rdfs:label xml:lang="en">API Error</rdfs:label>
+    <rdfs:comment xml:lang="en">Errors in API operations</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ServiceDisruptionRisk">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
+    <rdfs:label xml:lang="en">Service Disruption Risk</rdfs:label>
+    <rdfs:comment xml:lang="en">Risk of service disruption during error handling</rdfs:comment>
+    <hasRiskLevel>HIGH</hasRiskLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcessShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <rdfs:label xml:lang="en">Error Handling Process Shape</rdfs:label>
+    <sh:property rdf:nodeID="n8072e9887a964ec5afb4f1e8fd5dd650b1"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasMetricValue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Metric Value</rdfs:label>
+    <rdfs:comment xml:lang="en">The value of a metric</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityValidation">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <rdfs:label xml:lang="en">Security Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rule for security measures</rdfs:comment>
+    <hasValidationType>Security</hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataHandling">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure"/>
+    <rdfs:label xml:lang="en">Sensitive Data Handling</rdfs:label>
+    <hasSecurityLevel>HIGH</hasSecurityLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Has Process Step</rdfs:label>
+    <rdfs:comment xml:lang="en">Links a process to its steps</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasRecoveryTime">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Recovery Time</rdfs:label>
+    <rdfs:comment xml:lang="en">The time taken for recovery</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#duration"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IOError">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -96,81 +123,6 @@
     <rdfs:comment xml:lang="en">Errors in input/output operations</rdfs:comment>
     <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
     <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategy">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>FallbackStrategy</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorAnalysis">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:label xml:lang="en">Test Error Analysis</rdfs:label>
-    <rdfs:comment xml:lang="en">Test step to analyze errors</rdfs:comment>
-    <hasStepAction>Test error analysis process</hasStepAction>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasStepOrder>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Handling Process</rdfs:label>
-    <rdfs:comment xml:lang="en">Process for handling errors</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Metric</rdfs:label>
-    <rdfs:comment xml:lang="en">A metric for measuring error handling</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasValidationType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Validation Type</rdfs:label>
-    <rdfs:comment xml:lang="en">The type of validation</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasRiskLevel">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Risk Level</rdfs:label>
-    <rdfs:comment xml:lang="en">The level of risk</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasConstraintType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Constraint Type</rdfs:label>
-    <rdfs:comment xml:lang="en">The type of constraint</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPrevention">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:label>Error Prevention</rdfs:label>
-    <rdfs:label xml:lang="en">Error Prevention</rdfs:label>
-    <rdfs:comment xml:lang="en">Step to prevent future errors</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <hasStepAction>Implement preventive measures</hasStepAction>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasStepOrder>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityBreachRisk">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
-    <rdfs:label xml:lang="en">Security Breach Risk</rdfs:label>
-    <rdfs:comment xml:lang="en">Risk of security breach during error handling</rdfs:comment>
-    <hasRiskLevel>HIGH</hasRiskLevel>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidation">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <rdfs:label>SensitiveDataValidation</rdfs:label>
-    <rdfs:label xml:lang="en">Sensitive Data Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Validation rules for handling sensitive data</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <hasValidationType>Security</hasValidationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPreventionEffectiveness">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Prevention Effectiveness</rdfs:label>
-    <rdfs:comment xml:lang="en">The effectiveness of prevention</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorIdentification">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -182,57 +134,80 @@
     <hasStepAction>Identify and classify error</hasStepAction>
     <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasStepOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasAssumptionType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Assumption Type</rdfs:label>
-    <rdfs:comment xml:lang="en">The type of assumption</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Validation Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Validation rules for error handling</rdfs:comment>
+    <rdfs:label xml:lang="en">Error Risk</rdfs:label>
+    <rdfs:comment xml:lang="en">Risks associated with error handling</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPerformanceTarget">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Performance Target</rdfs:label>
-    <rdfs:comment xml:lang="en">The target performance value</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategy">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>RetryStrategy</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
+    <rdfs:label>ErrorType</rdfs:label>
+    <rdfs:label xml:lang="en">Error Type</rdfs:label>
+    <rdfs:comment xml:lang="en">Classification of different error types</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidation">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorPrevention">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <rdfs:label xml:lang="en">Test Error Prevention</rdfs:label>
+    <rdfs:comment xml:lang="en">Test step to prevent future errors</rdfs:comment>
+    <hasStepAction>Test error prevention process</hasStepAction>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <rdfs:label>RiskValidation</rdfs:label>
-    <rdfs:label xml:lang="en">Risk Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Validation rules for risk assessment</rdfs:comment>
+    <rdfs:label>MatrixValidation</rdfs:label>
+    <rdfs:label xml:lang="en">Matrix Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules using matrix-based analysis</rdfs:comment>
     <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <hasValidationType>Risk</hasValidationType>
+    <hasValidationType>Matrix</hasValidationType>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoring">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>ResourceMonitoring</rdfs:label>
+    <rdfs:label xml:lang="en">Installation Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for installation requirements</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>StateCheckpointing</rdfs:label>
     <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestFailure">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationError">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
-    <rdfs:label>TestFailure</rdfs:label>
-    <rdfs:label xml:lang="en">Test Failure</rdfs:label>
-    <rdfs:comment xml:lang="en">Errors in test execution</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError"/>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationError"/>
+    <rdfs:label>ValidationError</rdfs:label>
+    <rdfs:label xml:lang="en">Validation Error</rdfs:label>
+    <rdfs:comment xml:lang="en">Errors in data validation</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidationRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidation"/>
-    <rdfs:label>Compliance Validation Rule</rdfs:label>
-    <hasValidationSeverity>HIGH</hasValidationSeverity>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Semantic Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for semantic correctness</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPreventionEffectiveness">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Prevention Effectiveness</rdfs:label>
+    <rdfs:comment xml:lang="en">The effectiveness of prevention</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Performance Metric</rdfs:label>
+    <rdfs:comment xml:lang="en">Performance metrics for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n8072e9887a964ec5afb4f1e8fd5dd650b1">
+    <sh:message xml:lang="en">Error handling process must have at least 4 steps</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <rdfs:label>ComplianceValidation</rdfs:label>
+    <rdfs:label xml:lang="en">Compliance Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rule for compliance checking</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
     <hasValidationType>Compliance</hasValidationType>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#standardErrorHandling">
@@ -244,10 +219,17 @@
     <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPrevention"/>
     <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecovery"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasComplianceLevel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Compliance Level</rdfs:label>
+    <rdfs:comment xml:lang="en">The level of compliance</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategy">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Prevention Measure</rdfs:label>
-    <rdfs:comment xml:lang="en">Measures to prevent errors</rdfs:comment>
+    <rdfs:label>RetryStrategy</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -257,102 +239,67 @@
     <rdfs:comment xml:lang="en">General runtime errors</rdfs:comment>
     <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategyInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategy"/>
+    <rdfs:label>Rollback Strategy Instance</rdfs:label>
+    <hasRecoveryTime>PT30M</hasRecoveryTime>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointingMeasure">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointing"/>
+    <rdfs:label>State Checkpointing Measure</rdfs:label>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.80</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Traceability</rdfs:label>
-    <rdfs:comment xml:lang="en">Traceability for error handling</rdfs:comment>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <rdfs:label>RiskValidation</rdfs:label>
+    <rdfs:label xml:lang="en">Risk Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for risk assessment</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <hasValidationType>Risk</hasValidationType>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConfusionMatrix">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Confusion Matrix</rdfs:label>
-    <rdfs:comment xml:lang="en">Confusion matrix for error classification</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorReport">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
-    <rdfs:label xml:lang="en">Error Report</rdfs:label>
-    <hasDocumentationType>Detailed error report</hasDocumentationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLogging">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-    <rdfs:label>ErrorLogging</rdfs:label>
-    <rdfs:label xml:lang="en">Error Logging</rdfs:label>
-    <rdfs:comment xml:lang="en">Measure to log errors</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.90</hasPreventionEffectiveness>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Performance Metric</rdfs:label>
-    <rdfs:comment xml:lang="en">Performance metrics for error handling</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataHandling">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure"/>
-    <rdfs:label xml:lang="en">Sensitive Data Handling</rdfs:label>
-    <hasSecurityLevel>HIGH</hasSecurityLevel>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceConstraint">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint"/>
-    <rdfs:label xml:lang="en">Resource Constraint</rdfs:label>
-    <hasConstraintType>System resources</hasConstraintType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Handling Step</rdfs:label>
-    <rdfs:comment xml:lang="en">Steps in the error handling process</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcessShape">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <rdfs:label xml:lang="en">Test Error Handling Process Shape</rdfs:label>
-    <sh:property rdf:nodeID="n4241c1ff71d94c99b99adf151e979365b2"/>
-    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceViolationRisk">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
-    <rdfs:label xml:lang="en">Compliance Violation Risk</rdfs:label>
-    <rdfs:comment xml:lang="en">Risk of compliance violation during error handling</rdfs:comment>
-    <hasRiskLevel>MEDIUM</hasRiskLevel>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategyInstance">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategy"/>
-    <rdfs:label>Fallback Strategy Instance</rdfs:label>
-    <hasRecoveryTime>PT15M</hasRecoveryTime>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResolutionGuide">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
-    <rdfs:label xml:lang="en">Resolution Guide</rdfs:label>
-    <rdfs:comment xml:lang="en">Guide for resolving different types of errors</rdfs:comment>
-    <hasDocumentationType>Resolution documentation</hasDocumentationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategyInstance">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategy"/>
-    <rdfs:label>Compensation Strategy Instance</rdfs:label>
-    <hasRecoveryTime>PT1H</hasRecoveryTime>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorIdentification">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecovery">
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:label xml:lang="en">Test Error Identification</rdfs:label>
-    <rdfs:comment xml:lang="en">Test step to identify errors</rdfs:comment>
-    <hasStepAction>Test error identification process</hasStepAction>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasStepOrder>
+    <rdfs:label xml:lang="en">Error Recovery</rdfs:label>
+    <rdfs:comment xml:lang="en">Step to recover from errors</rdfs:comment>
+    <hasStepAction>Execute recovery procedures</hasStepAction>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasStepOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasSecurityLevel">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Security Level</rdfs:label>
-    <rdfs:comment xml:lang="en">The level of security</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategyInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RetryStrategy"/>
+    <rdfs:label>Retry Strategy Instance</rdfs:label>
+    <hasRecoveryTime>PT5M</hasRecoveryTime>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLoggingMeasure">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLogging"/>
-    <rdfs:label>Error Logging Measure</rdfs:label>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.85</hasPreventionEffectiveness>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Test Error Handling Process</rdfs:label>
+    <rdfs:comment xml:lang="en">A process for handling test errors</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ISO27001">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard"/>
-    <rdfs:label xml:lang="en">ISO 27001</rdfs:label>
-    <rdfs:comment xml:lang="en">ISO/IEC 27001 Information Security Standard</rdfs:comment>
-    <hasComplianceLevel>HIGH</hasComplianceLevel>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Security Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for security measures</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Consistency Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for consistency across the ontology</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorAnalysis">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <rdfs:label xml:lang="en">Test Error Analysis</rdfs:label>
+    <rdfs:comment xml:lang="en">Test step to analyze errors</rdfs:comment>
+    <hasStepAction>Test error analysis process</hasStepAction>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestFailure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
+    <rdfs:label>TestFailure</rdfs:label>
+    <rdfs:label xml:lang="en">Test Failure</rdfs:label>
+    <rdfs:comment xml:lang="en">Errors in test execution</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError"/>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationError"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResolutionTime">
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric"/>
@@ -360,95 +307,40 @@
     <rdfs:comment xml:lang="en">Time taken to resolve errors</rdfs:comment>
     <hasMetricValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</hasMetricValue>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StandardConfusionMatrix">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConfusionMatrix"/>
+    <rdfs:label xml:lang="en">Standard Confusion Matrix</rdfs:label>
+    <hasMatrixAccuracy rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasMatrixAccuracy>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Recovery Strategy</rdfs:label>
-    <rdfs:comment xml:lang="en">Strategy for recovering from errors</rdfs:comment>
+    <rdfs:label xml:lang="en">Installation Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for installation requirements</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasMetricValue">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Metric Value</rdfs:label>
-    <rdfs:comment xml:lang="en">The value of a metric</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTypeExclusivity">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption"/>
-    <rdfs:label xml:lang="en">Error Type Exclusivity</rdfs:label>
-    <rdfs:comment xml:lang="en">Assumption about mutually exclusive error types</rdfs:comment>
-    <hasAssumptionType>Type classification</hasAssumptionType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasTraceabilityLevel">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Traceability Level</rdfs:label>
-    <rdfs:comment xml:lang="en">The level of traceability</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label xml:lang="en">Has Process Step</rdfs:label>
-    <rdfs:comment xml:lang="en">Links a process to its steps</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess"/>
-    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#APIError">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
-    <rdfs:label>APIError</rdfs:label>
-    <rdfs:label xml:lang="en">API Error</rdfs:label>
-    <rdfs:comment xml:lang="en">Errors in API operations</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RuntimeError"/>
+    <rdfs:label xml:lang="en">Error Prevention Measure</rdfs:label>
+    <rdfs:comment xml:lang="en">Measures to prevent errors</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n4241c1ff71d94c99b99adf151e979365b2">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:maxCount>
-    <sh:message>Test error handling process must have exactly 4 steps</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityValidation">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-    <rdfs:label xml:lang="en">Security Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Validation rule for security measures</rdfs:comment>
-    <hasValidationType>Security</hasValidationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorPrevention">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPrevention">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:label xml:lang="en">Test Error Prevention</rdfs:label>
-    <rdfs:comment xml:lang="en">Test step to prevent future errors</rdfs:comment>
-    <hasStepAction>Test error prevention process</hasStepAction>
+    <rdfs:label>Error Prevention</rdfs:label>
+    <rdfs:label xml:lang="en">Error Prevention</rdfs:label>
+    <rdfs:comment xml:lang="en">Step to prevent future errors</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <hasStepAction>Implement preventive measures</hasStepAction>
     <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</hasStepOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingStep">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConfusionMatrix">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Test Error Handling Step</rdfs:label>
-    <rdfs:comment xml:lang="en">Step in test error handling process</rdfs:comment>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasStepOrder>
+    <rdfs:label xml:lang="en">Error Confusion Matrix</rdfs:label>
+    <rdfs:comment xml:lang="en">Confusion matrix for error classification</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasStepAction">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Step Action</rdfs:label>
-    <rdfs:comment xml:lang="en">The action performed in a step</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Test Error Handling Process</rdfs:label>
-    <rdfs:comment xml:lang="en">A process for handling test errors</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationError">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
-    <rdfs:label>ValidationError</rdfs:label>
-    <rdfs:label xml:lang="en">Validation Error</rdfs:label>
-    <rdfs:comment xml:lang="en">Errors in data validation</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorType"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoringMeasure">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoring"/>
-    <rdfs:label>Resource Monitoring Measure</rdfs:label>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.90</hasPreventionEffectiveness>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StandardRecovery">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
+    <rdfs:label xml:lang="en">Standard Recovery</rdfs:label>
+    <hasRecoveryTime>PT1H</hasRecoveryTime>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAnalysis">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -460,94 +352,10 @@
     <hasStepAction>Analyze error details and impact</hasStepAction>
     <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</hasStepOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategyInstance">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategy"/>
-    <rdfs:label>Rollback Strategy Instance</rdfs:label>
-    <hasRecoveryTime>PT30M</hasRecoveryTime>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidationRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidation"/>
-    <rdfs:label>Risk Validation Rule</rdfs:label>
-    <hasValidationSeverity>HIGH</hasValidationSeverity>
-    <hasValidationType>Risk assessment</hasValidationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidationRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidation"/>
-    <rdfs:label>Matrix Validation Rule</rdfs:label>
-    <hasValidationSeverity>MEDIUM</hasValidationSeverity>
-    <hasValidationType>Matrix analysis</hasValidationType>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorResolution">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Error Resolution</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasStepOrder>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasDocumentationType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Documentation Type</rdfs:label>
-    <rdfs:comment xml:lang="en">The type of documentation</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#LoggingLatency">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric"/>
-    <rdfs:label xml:lang="en">Logging Latency</rdfs:label>
-    <rdfs:comment xml:lang="en">Latency in error logging operations</rdfs:comment>
-    <hasPerformanceTarget rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1</hasPerformanceTarget>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StandardRecovery">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
-    <rdfs:label xml:lang="en">Standard Recovery</rdfs:label>
-    <hasRecoveryTime>PT1H</hasRecoveryTime>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Security Measure</rdfs:label>
-    <rdfs:comment xml:lang="en">Security measures for error handling</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ServiceDisruptionRisk">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
-    <rdfs:label xml:lang="en">Service Disruption Risk</rdfs:label>
-    <rdfs:comment xml:lang="en">Risk of service disruption during error handling</rdfs:comment>
-    <hasRiskLevel>HIGH</hasRiskLevel>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategy">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>RollbackStrategy</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointing">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>StateCheckpointing</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StandardConfusionMatrix">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConfusionMatrix"/>
-    <rdfs:label xml:lang="en">Standard Confusion Matrix</rdfs:label>
-    <hasMatrixAccuracy rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasMatrixAccuracy>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasRecoveryTime">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Recovery Time</rdfs:label>
-    <rdfs:comment xml:lang="en">The time taken for recovery</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#duration"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidation">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>MatrixValidation</rdfs:label>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n4241c1ff71d94c99b99adf151e979365b1">
-    <sh:message xml:lang="en">Error handling process must have at least 4 steps</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasProcessStep"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorCount">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric"/>
-    <rdfs:label xml:lang="en">Error Count</rdfs:label>
-    <hasMetricValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0</hasMetricValue>
+    <rdfs:label xml:lang="en">Error Traceability</rdfs:label>
+    <rdfs:comment xml:lang="en">Traceability for error handling</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#DataLossRisk">
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
@@ -555,10 +363,205 @@
     <rdfs:comment xml:lang="en">Risk of data loss during error handling</rdfs:comment>
     <hasRiskLevel>CRITICAL</hasRiskLevel>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoringMeasure">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoring"/>
+    <rdfs:label>Resource Monitoring Measure</rdfs:label>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.90</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidationRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RiskValidation"/>
+    <rdfs:label>Risk Validation Rule</rdfs:label>
+    <hasValidationSeverity>HIGH</hasValidationSeverity>
+    <hasValidationType>Risk assessment</hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ISO27001">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard"/>
+    <rdfs:label xml:lang="en">ISO 27001</rdfs:label>
+    <rdfs:comment xml:lang="en">ISO/IEC 27001 Information Security Standard</rdfs:comment>
+    <hasComplianceLevel>HIGH</hasComplianceLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasStepAction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Step Action</rdfs:label>
+    <rdfs:comment xml:lang="en">The action performed in a step</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Risk</rdfs:label>
-    <rdfs:comment xml:lang="en">Risks associated with error handling</rdfs:comment>
+    <rdfs:label xml:lang="en">Security Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for security measures</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPerformanceTarget">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Performance Target</rdfs:label>
+    <rdfs:comment xml:lang="en">The target performance value</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#standardTestErrorHandling">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess"/>
+    <rdfs:label xml:lang="en">Standard Test Error Handling</rdfs:label>
+    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorAnalysis"/>
+    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorIdentification"/>
+    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorPrevention"/>
+    <hasProcessStep rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorRecovery"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Assumption</rdfs:label>
+    <rdfs:comment xml:lang="en">Assumptions for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Handling Step</rdfs:label>
+    <rdfs:comment xml:lang="en">Steps in the error handling process</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Syntax Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for syntax correctness</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidationRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#MatrixValidation"/>
+    <rdfs:label>Matrix Validation Rule</rdfs:label>
+    <hasValidationSeverity>MEDIUM</hasValidationSeverity>
+    <hasValidationType>Matrix analysis</hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <rdfs:label>SensitiveDataValidation</rdfs:label>
+    <rdfs:label xml:lang="en">Sensitive Data Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for handling sensitive data</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <hasValidationType>Security</hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Syntax Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for syntax correctness</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLogging">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
+    <rdfs:label>ErrorLogging</rdfs:label>
+    <rdfs:label xml:lang="en">Error Logging</rdfs:label>
+    <rdfs:comment xml:lang="en">Measure to log errors</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.90</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategyInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategy"/>
+    <rdfs:label>Compensation Strategy Instance</rdfs:label>
+    <hasRecoveryTime>PT1H</hasRecoveryTime>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Compliance Standard</rdfs:label>
+    <rdfs:comment xml:lang="en">Compliance standards for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasSecurityLevel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Security Level</rdfs:label>
+    <rdfs:comment xml:lang="en">The level of security</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTypeExclusivity">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption"/>
+    <rdfs:label xml:lang="en">Error Type Exclusivity</rdfs:label>
+    <rdfs:comment xml:lang="en">Assumption about mutually exclusive error types</rdfs:comment>
+    <hasAssumptionType>Type classification</hasAssumptionType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Fallback Strategy</rdfs:label>
+    <rdfs:comment xml:lang="en">Strategy to handle errors by falling back to a safe state or alternative solution</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasValidationType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Validation Type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of validation</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorValidationRule"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Semantic Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for semantic correctness</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
+    <rdfs:label>InputValidation</rdfs:label>
+    <rdfs:label xml:lang="en">Input Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Measure to validate input data</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComplianceViolationRisk">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
+    <rdfs:label xml:lang="en">Compliance Violation Risk</rdfs:label>
+    <rdfs:comment xml:lang="en">Risk of compliance violation during error handling</rdfs:comment>
+    <hasRiskLevel>MEDIUM</hasRiskLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasConstraintType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Constraint Type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of constraint</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RollbackStrategy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>RollbackStrategy</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#FallbackStrategy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Fallback Strategy</rdfs:label>
+    <rdfs:comment xml:lang="en">Strategy to handle errors by falling back to a safe state or alternative solution</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Test Error Handling Step</rdfs:label>
+    <rdfs:comment xml:lang="en">Step in test error handling process</rdfs:comment>
+    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Sensitive Data Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for handling sensitive data</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasRiskLevel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Risk Level</rdfs:label>
+    <rdfs:comment xml:lang="en">The level of risk</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidationRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SensitiveDataValidation"/>
+    <rdfs:label>Sensitive Data Validation Rule</rdfs:label>
+    <hasValidationSeverity>HIGH</hasValidationSeverity>
+    <hasValidationType>Data protection</hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">SPORE Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for SPORE compliance</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Constraint</rdfs:label>
+    <rdfs:comment xml:lang="en">Constraints for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorMetric">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Metric</rdfs:label>
+    <rdfs:comment xml:lang="en">A metric for measuring error handling</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorRecovery">
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
@@ -567,38 +570,123 @@
     <hasStepAction>Test error recovery process</hasStepAction>
     <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasStepOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CompensationStrategy">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Constraint</rdfs:label>
-    <rdfs:comment xml:lang="en">Constraints for error handling</rdfs:comment>
+    <rdfs:label xml:lang="en">Compensation Strategy</rdfs:label>
+    <rdfs:comment xml:lang="en">Strategy to compensate for errors by taking alternative actions</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointingMeasure">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#StateCheckpointing"/>
-    <rdfs:label>State Checkpointing Measure</rdfs:label>
-    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.80</hasPreventionEffectiveness>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceConstraint">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorConstraint"/>
+    <rdfs:label xml:lang="en">Resource Constraint</rdfs:label>
+    <hasConstraintType>System resources</hasConstraintType>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorComplianceStandard">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorReport">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
+    <rdfs:label xml:lang="en">Error Report</rdfs:label>
+    <hasDocumentationType>Detailed error report</hasDocumentationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Error Compliance Standard</rdfs:label>
-    <rdfs:comment xml:lang="en">Compliance standards for error handling</rdfs:comment>
+    <rdfs:label xml:lang="en">Sensitive Data Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for handling sensitive data</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLoggingMeasure">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorLogging"/>
+    <rdfs:label>Error Logging Measure</rdfs:label>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.85</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTypeTestCase">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability"/>
+    <rdfs:label xml:lang="en">Error Type Test Case</rdfs:label>
+    <hasTraceabilityLevel>HIGH</hasTraceabilityLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategyInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#FallbackStrategy"/>
+    <rdfs:label>Fallback Strategy Instance</rdfs:label>
+    <hasRecoveryTime>PT15M</hasRecoveryTime>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasTraceabilityLevel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Traceability Level</rdfs:label>
+    <rdfs:comment xml:lang="en">The level of traceability</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorTraceability"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#LoggingLatency">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPerformanceMetric"/>
+    <rdfs:label xml:lang="en">Logging Latency</rdfs:label>
+    <rdfs:comment xml:lang="en">Latency in error logging operations</rdfs:comment>
+    <hasPerformanceTarget rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1</hasPerformanceTarget>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcessShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <rdfs:label xml:lang="en">Test Error Handling Process Shape</rdfs:label>
+    <sh:property rdf:nodeID="n8072e9887a964ec5afb4f1e8fd5dd650b2"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestErrorHandlingProcess"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorSecurityMeasure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Security Measure</rdfs:label>
+    <rdfs:comment xml:lang="en">Security measures for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingProcess">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Handling Process</rdfs:label>
+    <rdfs:comment xml:lang="en">Process for handling errors</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResolutionGuide">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation"/>
+    <rdfs:label xml:lang="en">Resolution Guide</rdfs:label>
+    <rdfs:comment xml:lang="en">Guide for resolving different types of errors</rdfs:comment>
+    <hasDocumentationType>Resolution documentation</hasDocumentationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidationMeasure">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#InputValidation"/>
+    <rdfs:label>Input Validation Measure</rdfs:label>
+    <hasPreventionEffectiveness rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.95</hasPreventionEffectiveness>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityBreachRisk">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRisk"/>
+    <rdfs:label xml:lang="en">Security Breach Risk</rdfs:label>
+    <rdfs:comment xml:lang="en">Risk of security breach during error handling</rdfs:comment>
+    <hasRiskLevel>HIGH</hasRiskLevel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecoveryStrategy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Error Recovery Strategy</rdfs:label>
+    <rdfs:comment xml:lang="en">Strategy for recovering from errors</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">SPORE Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for SPORE compliance</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Consistency Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules for consistency across the ontology</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#MatrixValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Matrix Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Validation rules using matrix-based analysis</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasAssumptionType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Has Assumption Type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of assumption</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorAssumption"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorDocumentation">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:label xml:lang="en">Error Documentation</rdfs:label>
     <rdfs:comment xml:lang="en">Documentation for error handling</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorRecovery">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:label xml:lang="en">Error Recovery</rdfs:label>
-    <rdfs:comment xml:lang="en">Step to recover from errors</rdfs:comment>
-    <hasStepAction>Execute recovery procedures</hasStepAction>
-    <hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</hasStepOrder>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasStepOrder">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">Has Step Order</rdfs:label>
-    <rdfs:comment xml:lang="en">The order of a step in a process</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorHandlingStep"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ResourceMonitoring">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>ResourceMonitoring</rdfs:label>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ErrorPreventionMeasure"/>
   </rdf:Description>
 </rdf:RDF>

@@ -6,6 +6,6 @@ ns1:ServerConfiguration a ns1:ServerConfiguration ;
     rdfs:label "BFG9K Model Context Protocol Server" ;
     ns1:host "localhost" ;
     ns1:ontologyPath "guidance.ttl" ;
-    ns1:port 8080 ;
+    ns1:port 7200 ;
     ns1:validationEnabled true .
 

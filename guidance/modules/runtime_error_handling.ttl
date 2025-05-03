@@ -4,6 +4,70 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation> a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Validation rules for consistency across the ontology"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#FallbackStrategy> a owl:Class ;
+    rdfs:label "Fallback Strategy"@en ;
+    rdfs:comment "Strategy to handle errors by falling back to a safe state or alternative solution"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation> a owl:Class ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Validation rules for installation requirements"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#MatrixValidation> a owl:Class ;
+    rdfs:label "Matrix Validation"@en ;
+    rdfs:comment "Validation rules using matrix-based analysis"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation> a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Validation rules for SPORE compliance"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation> a owl:Class ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validation rules for security measures"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation> a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validation rules for semantic correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation> a owl:Class ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Validation rules for handling sensitive data"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation> a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Validation rules for syntax correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation> a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Validation rules for consistency across the ontology"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation> a owl:Class ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Validation rules for installation requirements"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation> a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Validation rules for SPORE compliance"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation> a owl:Class ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validation rules for security measures"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation> a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validation rules for semantic correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation> a owl:Class ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Validation rules for handling sensitive data"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation> a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Validation rules for syntax correctness"@en .
+
 :APIError a owl:Class,
         :ErrorType ;
     rdfs:label "APIError",
@@ -50,7 +114,8 @@
     :hasDocumentationType "Detailed error report" .
 
 :ErrorResolution a owl:Class ;
-    rdfs:label "Error Resolution" ;
+    rdfs:label "Error Resolution"@en ;
+    rdfs:comment "Step to resolve identified errors"@en ;
     rdfs:subClassOf :ErrorHandlingStep ;
     :hasStepOrder 3 .
 
@@ -288,7 +353,8 @@
         :TestErrorRecovery .
 
 :CompensationStrategy a owl:Class ;
-    rdfs:label "CompensationStrategy" ;
+    rdfs:label "Compensation Strategy"@en ;
+    rdfs:comment "Strategy to compensate for errors by taking alternative actions"@en ;
     rdfs:subClassOf :ErrorRecoveryStrategy .
 
 :ComplianceValidation a owl:Class,
@@ -341,7 +407,8 @@
     :hasStepOrder 3 .
 
 :FallbackStrategy a owl:Class ;
-    rdfs:label "FallbackStrategy" ;
+    rdfs:label "Fallback Strategy"@en ;
+    rdfs:comment "Strategy to handle errors by falling back to a safe state or alternative solution"@en ;
     rdfs:subClassOf :ErrorRecoveryStrategy .
 
 :InputValidation a owl:Class,
@@ -352,9 +419,13 @@
     rdfs:subClassOf :ErrorPreventionMeasure ;
     :hasPreventionEffectiveness 0.95 .
 
-:MatrixValidation a owl:Class ;
-    rdfs:label "MatrixValidation" ;
-    rdfs:subClassOf :ErrorValidationRule .
+:MatrixValidation a owl:Class,
+        :ErrorValidationRule ;
+    rdfs:label "MatrixValidation",
+        "Matrix Validation"@en ;
+    rdfs:comment "Validation rules using matrix-based analysis"@en ;
+    rdfs:subClassOf :ErrorValidationRule ;
+    :hasValidationType "Matrix" .
 
 :ResourceMonitoring a owl:Class ;
     rdfs:label "ResourceMonitoring" ;
