@@ -124,14 +124,12 @@ def main():
         # Add new validation patterns
         manager.add_validation_pattern(
             "NewPattern1",
-            "A new validation pattern",
-            "Type1"
+            {"description": "A new validation pattern", "type": "Type1"}
         )
         
         manager.add_validation_pattern(
             "NewPattern2",
-            "Another validation pattern",
-            "Type2"
+            {"description": "Another validation pattern", "type": "Type2"}
         )
         
         # Commit the transaction

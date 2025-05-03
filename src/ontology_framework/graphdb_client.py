@@ -118,16 +118,18 @@ class GraphDBClient:
             GraphDBError: If query fails
         """
         try:
+            headers = {
+                "Accept": "application/n-triples" if query.strip().upper().startswith("CONSTRUCT") else "application/sparql-results+json"
+            }
+            
             response = requests.get(
                 f"{self.base_url}/repositories/{self.repository}",
                 params={"query": query},
-                headers={
-                    "Accept": "application/sparql-results+json"
-                }
+                headers=headers
             )
             
             response.raise_for_status()
-            return response.json()
+            return response.json() if not query.strip().upper().startswith("CONSTRUCT") else {"triples": response.text}
             
         except requests.exceptions.HTTPError as e:
             raise GraphDBError(f"Query failed: {str(e)}")

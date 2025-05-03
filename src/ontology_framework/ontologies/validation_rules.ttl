@@ -1,19 +1,31 @@
-@prefix ont: <http://example.org/ontology#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <./validation_rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ont:DefaultSaveTest a ont:ValidationRule ;
-    rdfs:label "DefaultSaveTest"@en ;
-    ont:hasValue "test default save" .
+:InstallationValidation a owl:Class ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Target for installation validation"@en .
 
-ont:hasValue a owl:DatatypeProperty ;
-    rdfs:label "has value"@en ;
-    rdfs:comment "The value associated with a validation rule"@en ;
-    rdfs:domain ont:ValidationRule ;
-    rdfs:range xsd:string .
+:ConsistencyValidation a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Target for consistency validation"@en .
 
-ont:ValidationRule a owl:Class ;
-    rdfs:label "Validation Rule"@en ;
-    rdfs:comment "A class representing validation rules"@en .
+:SecurityValidation a owl:Class ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Target for security validation"@en .
+
+:SPOREValidation a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Target for SPORE validation"@en .
+
+:SyntaxValidation a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Target for syntax validation"@en .
+
+:SemanticValidation a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Target for semantic validation"@en .
 

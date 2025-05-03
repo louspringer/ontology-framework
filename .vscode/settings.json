@@ -20,5 +20,6 @@
     },
     "peacock.color": "#545052",
     "peacock.remoteColor": "#f0bc08",
-    "dbt.dbtIntegration": "cloud"
+    "dbt.dbtIntegration": "cloud",
+    "svg.preview.background": "dark-transparent"
 }

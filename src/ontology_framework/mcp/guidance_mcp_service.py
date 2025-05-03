@@ -15,7 +15,7 @@ class GuidanceMCPService:
         """Validate the ontology using SHACL and guidance rules."""
         return self.manager.validate_guidance()
 
-    def add_validation_rule(self, rule_id: str, rule: Dict[str, Any], type: str, message: Optional[str] = None, priority: int = 0) -> None:
+    def add_validation_rule(self, rule_id: str, rule: Dict[str, Any], type: str, message: Optional[str] = None, priority: str = 'MEDIUM') -> None:
         """Add a validation rule to the ontology."""
         self.manager.add_validation_rule(rule_id, rule, type, message, priority)
         self.manager.save()

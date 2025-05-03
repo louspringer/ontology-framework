@@ -22,7 +22,7 @@ def main():
     add_rule_parser.add_argument('type', type=str, help='Rule type (SHACL, SEMANTIC, SYNTAX, etc.)')
     add_rule_parser.add_argument('--rule', type=str, required=True, help='Rule configuration as JSON string')
     add_rule_parser.add_argument('--message', type=str, default=None, help='Optional message for the rule')
-    add_rule_parser.add_argument('--priority', type=int, default=0, help='Rule priority')
+    add_rule_parser.add_argument('--priority', type=str, default='MEDIUM', help='Priority of the rule (HIGH, MEDIUM, LOW)')
 
     # Get validation rules
     get_rules_parser = subparsers.add_parser('get-rules', help='Get all validation rules')
@@ -50,7 +50,13 @@ def main():
         except Exception as e:
             print(f"Error parsing rule JSON: {e}", file=sys.stderr)
             sys.exit(1)
-        mcp.add_validation_rule(args.rule_id, rule_dict, args.type, args.message, args.priority)
+        mcp.add_validation_rule(
+            args.rule_id,
+            rule_dict,
+            args.type,
+            args.message,
+            args.priority
+        )
         print(f"Added rule {args.rule_id}")
     elif args.command == 'get-rules':
         rules = mcp.get_validation_rules()

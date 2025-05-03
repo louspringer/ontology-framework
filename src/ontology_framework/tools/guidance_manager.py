@@ -259,53 +259,44 @@ class GuidanceManager:
         rule: Dict[str, Any],
         type: str,
         message: Optional[str] = None,
-        priority: int = 0
+        priority: str = 'MEDIUM'
     ) -> URIRef:
         """Add a validation rule to the guidance ontology.
-        
         Args:
             rule_id: Unique identifier for the rule.
             rule: Rule configuration dictionary.
             type: Type of validation rule.
             message: Optional message to display for violations.
-            priority: Rule execution priority.
-            
+            priority: Rule execution priority (HIGH, MEDIUM, LOW).
         Returns:
             URIRef of the created rule.
-            
         Raises:
             ValueError: If required parameters are missing.
         """
         rule_uri = URIRef(f"{self.GUIDANCE}{rule_id}")
-        
-        # Get the graph to modify (transaction or main)
         target_graph = self._get_current_transaction()['graph'] if self._get_current_transaction() else self.graph
-        
         # Add basic rule properties
         target_graph.add((rule_uri, RDF.type, self.GUIDANCE.ValidationRule))
         target_graph.add((rule_uri, RDFS.label, Literal(rule_id)))
-        target_graph.add((rule_uri, self.GUIDANCE.hasType, Literal(type)))
-        
+        # Priority as string
+        priority_str = priority if priority in ("HIGH", "MEDIUM", "LOW") else "MEDIUM"
+        target_graph.add((rule_uri, self.GUIDANCE.hasPriority, Literal(priority_str)))
+        # Message
         if message:
             target_graph.add((rule_uri, self.GUIDANCE.hasMessage, Literal(message)))
-            
-        target_graph.add((rule_uri, self.GUIDANCE.hasPriority, Literal(priority, datatype=XSD.integer)))
-        
-        # Add rule-specific properties based on type
-        if type == ValidationRuleType.SHACL.value:
-            if "shapes_file" in rule:
-                target_graph.add((rule_uri, self.GUIDANCE.hasShapesFile, Literal(rule["shapes_file"])))
-        elif type == ValidationRuleType.SEMANTIC.value or type == "SPARQL":  # Added SPARQL type support
-            if "query" in rule:
-                target_graph.add((rule_uri, self.GUIDANCE.hasSPARQLQuery, Literal(rule["query"])))
-        elif type == ValidationRuleType.SYNTAX.value:
-            if "pattern" in rule:
-                target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(rule["pattern"])))
-        elif type == ValidationRuleType.SENSITIVE_DATA.value:
-            if "patterns" in rule:
-                for pattern in rule["patterns"]:
-                    target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(pattern)))
-        
+        # Map required properties from rule JSON
+        if 'validator' in rule:
+            target_graph.add((rule_uri, self.GUIDANCE.hasValidator, Literal(rule['validator'])))
+        if 'target' in rule:
+            # Try to resolve as URIRef in guidance namespace
+            target_graph.add((rule_uri, self.GUIDANCE.hasTarget, self.GUIDANCE[rule['target']]))
+        if 'type' in rule:
+            # Try to resolve as URIRef in guidance namespace for hasRuleType
+            target_graph.add((rule_uri, self.GUIDANCE.hasRuleType, self.GUIDANCE[rule['type'].upper()]))
+        if 'pattern' in rule:
+            target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(rule['pattern'])))
+        # Add type as string for compatibility
+        target_graph.add((rule_uri, self.GUIDANCE.hasType, Literal(type)))
         return rule_uri
         
     def save(self, path: Optional[str] = None) -> None:
@@ -411,3 +402,19 @@ class GuidanceManager:
         for import_iri in import_iris:
             self.graph.add((base_ref, OWL.imports, URIRef(import_iri)))
         self.logger.info(f"Added owl:imports for: {import_iris} to {base_iri}") 
+
+    def add_validation_pattern(self, pattern_id: str, pattern: Dict[str, str]) -> URIRef:
+        """Add a validation pattern to the guidance ontology.
+        
+        Args:
+            pattern_id (str): The ID of the validation pattern.
+            pattern (Dict[str, str]): The validation pattern details.
+            
+        Returns:
+            URIRef: The URI of the added validation pattern.
+        """
+        pattern_uri = self.GUIDANCE[pattern_id]
+        self.graph.add((pattern_uri, RDF.type, self.GUIDANCE.ValidationPattern))
+        for key, value in pattern.items():
+            self.graph.add((pattern_uri, self.GUIDANCE[key], Literal(value)))
+        return pattern_uri 
