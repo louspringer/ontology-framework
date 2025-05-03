@@ -3,7 +3,7 @@ import glob
 import sys
 
 files = sorted(glob.glob('guidance/modules/*.ttl'))
-url = 'http://localhost:8080/mcp'
+url = 'http://localhost:7200/mcp'
 
 for f in files:
     payload = {
