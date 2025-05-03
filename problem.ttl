@@ -4,17 +4,17 @@
 # Guidance: guidance:problem#Management
 # Description: Ontology for tracking and managing problems and issues
 
-@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http:/www.w3.org/2002/07/owl#> .
-@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix meta: <./meta#> .
 @prefix metameta: <./metameta#> .
 @prefix problem: <./problem#> .
 @prefix solution: <./solution#> .
 @prefix conversation: <./conversation#> .
 @prefix guidance: <./guidance#> .
-@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 
 # Core Classes with version info
 problem:Problem a owl:Class ;
