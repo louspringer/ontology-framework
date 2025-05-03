@@ -7,7 +7,10 @@ from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 import os
 
-app = FastAPI()
+app = FastAPI(
+    title="GuidanceMCP Server",
+    description="Exposes semantic web tools as MCP tools for ontology validation and management."
+)
 guidance_service = GuidanceMCPService()
 
 @app.get("/echo", operation_id="echo")
@@ -211,8 +214,8 @@ async def check_duplicates(directory: Optional[str] = None) -> dict:
 # Mount the MCP server to your FastAPI app with tool definitions
 mcp = FastApiMCP(
     app,
-    name="BFG9K MCP Server",
-    description="Exposes semantic web tools as MCP tools for Cursor integration."
+    name="GuidanceMCP Server",
+    description="Exposes semantic web tools as MCP tools for ontology validation and guidance enforcement."
 )
 
 # Register tools with MCP
