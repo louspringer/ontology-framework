@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:bfg="file:///home/lou/ontology-framework/build_process#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createResourceGroupStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az group create --name $RESOURCE_GROUP --location $LOCATION</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasImage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">VM Image</rdfs:label>
+    <rdfs:comment xml:lang="en">OS image for the VM</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#VirtualMachine"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasEvictionPolicy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Eviction Policy</rdfs:label>
+    <rdfs:comment xml:lang="en">Policy for VM eviction</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#VirtualMachine"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#setupAppStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'mkdir -p /app'</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasSize">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">VM Size</rdfs:label>
+    <rdfs:comment xml:lang="en">Size specification for the VM</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#VirtualMachine"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasStepOrder">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Step Order</rdfs:label>
+    <rdfs:comment xml:lang="en">Order of execution for the build step</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createSSHRuleStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az network nsg rule create --resource-group $RESOURCE_GROUP --nsg-name ${VM_NAME}NSG --name AllowSSH --protocol tcp --priority 1000 --destination-port-range 22 --access allow</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#ResourceGroup">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Azure Resource Group</rdfs:label>
+    <rdfs:comment xml:lang="en">Container for Azure resources</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasAutoConfirm">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Auto Confirm</rdfs:label>
+    <rdfs:comment xml:lang="en">Whether the step requires auto-confirmation</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#VirtualMachine">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Azure Virtual Machine</rdfs:label>
+    <rdfs:comment xml:lang="en">Compute resource in Azure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#ContainerRegistry">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Azure Container Registry</rdfs:label>
+    <rdfs:comment xml:lang="en">Private Docker registry in Azure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#cleanupStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az group delete --name $RESOURCE_GROUP --yes</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createPublicIPStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az network public-ip create --resource-group $RESOURCE_GROUP --name ${VM_NAME}PublicIP --sku Standard --version IPv4</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createNetworkStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az network vnet create --resource-group $RESOURCE_GROUP --name ${VM_NAME}VNET --address-prefix 10.0.0.0/16 --subnet-name ${VM_NAME}Subnet --subnet-prefix 10.0.0.0/24</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasPriority">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">VM Priority</rdfs:label>
+    <rdfs:comment xml:lang="en">Priority setting for the VM</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#VirtualMachine"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#deleteNSGStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az network nsg delete --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG --yes</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#buildPushImageStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'cd /app &amp;&amp; docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . &amp;&amp; docker push $ACR_NAME.azurecr.io/pdf-processor:latest'</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">13</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#NetworkResource">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Azure Network Resource</rdfs:label>
+    <rdfs:comment xml:lang="en">Networking components in Azure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#BuildProcess">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Azure Build Process</rdfs:label>
+    <rdfs:comment xml:lang="en">Process for building and deploying Azure resources</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#BuildStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Build Step</rdfs:label>
+    <rdfs:comment xml:lang="en">Individual step in the build process</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createVMStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az vm create --resource-group $RESOURCE_GROUP --name $VM_NAME --image $VM_IMAGE --size Standard_D2_v2 --admin-username $ADMIN_USERNAME --ssh-key-values ~/.ssh/pdf-processor-vm_key.pub --priority Spot --eviction-policy Deallocate --public-ip-address ${VM_NAME}PublicIP --vnet-name ${VM_NAME}VNET --subnet ${VM_NAME}Subnet --nsg ${VM_NAME}NSG</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#buildProcess">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildProcess"/>
+    <bfg:hasEnvironmentVariable>RESOURCE_GROUP=pdf-processor-rg</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>LOCATION=eastasia</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>VM_NAME=pdf-processor-vm</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>VM_SIZE=Standard_D2_v2</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>VM_IMAGE=Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>ADMIN_USERNAME=azureuser</bfg:hasEnvironmentVariable>
+    <bfg:hasEnvironmentVariable>ACR_NAME=pdfprocessor1234</bfg:hasEnvironmentVariable>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#loginACRStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'docker login $ACR_NAME.azurecr.io -u $ACR_USERNAME -p $ACR_PASSWORD'</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">12</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createACRStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#installDockerStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'sudo apt-get update &amp;&amp; sudo apt-get install -y docker.io'</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasCommand">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Command</rdfs:label>
+    <rdfs:comment xml:lang="en">Command to execute for this step</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#copyFilesStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>scp -i ~/.ssh/pdf-processor-vm_key -r ./* $ADMIN_USERNAME@$VM_IP:/app/</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#hasLocation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Location</rdfs:label>
+    <rdfs:comment xml:lang="en">Azure region for the resource</rdfs:comment>
+    <rdfs:domain rdf:resource="file:///home/lou/ontology-framework/build_process#ResourceGroup"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#createNSGStep">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildStep"/>
+    <bfg:hasAutoConfirm rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</bfg:hasAutoConfirm>
+    <bfg:hasCommand>az network nsg create --resource-group $RESOURCE_GROUP --name ${VM_NAME}NSG</bfg:hasCommand>
+    <bfg:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</bfg:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="file:///home/lou/ontology-framework/build_process#pdfProcessorBuild">
+    <rdf:type rdf:resource="file:///home/lou/ontology-framework/build_process#BuildProcess"/>
+    <rdfs:label xml:lang="en">PDF Processor Build</rdfs:label>
+    <rdfs:comment xml:lang="en">Build process for PDF processor application</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

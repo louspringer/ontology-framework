@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
+   xmlns:dc1="http://purl.org/dc/elements/1.1/#"
+   xmlns:dct="http://purl.org/dc/terms/#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleKeyManagementPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyManagementPattern"/>
+    <rdfs:label>Example KeyManagementPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class KeyManagementPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSLACompliancePattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SLACompliancePattern"/>
+    <rdfs:label>Example SLACompliancePattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SLACompliancePattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityGuidanceModule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Security Guidance Module</rdfs:label>
+    <dc1:title>Security Guidance Module</dc1:title>
+    <dc1:version>1.0.0</dc1:version>
+    <dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dct:created>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T00:00:00</dct:modified>
+    <rdfs:comment>Security patterns and best practices for guidance ontology</rdfs:comment>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration.ttl"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model.ttl"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation.ttl"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IncidentResponse">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IncidentResponsePattern"/>
+    <rdfs:label>Incident Response Procedures</rdfs:label>
+    <rdfs:comment>Incident response requirements:
+    1. Emergency auth MUST work when everything else is down
+    2. Break-glass procedures MUST be fully local
+    3. Recovery procedures MUST be cached offline
+    4. Backup credentials MUST be securely accessible
+    5. Auth failures MUST NOT escalate incidents
+    6. MUST have degraded operation modes
+    7. MUST support disconnected operation
+    8. MUST track and audit emergency access
+    9. MUST provide secure ways to cache credentials
+    10. MUST NOT force admins to create shadow systems</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#EmergencyAccess"/>
+    <requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecureKeyStorage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAuthenticationPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AuthenticationPattern"/>
+    <rdfs:label>Example AuthenticationPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class AuthenticationPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleIncidentResponsePattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IncidentResponsePattern"/>
+    <rdfs:label>Example IncidentResponsePattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class IncidentResponsePattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RSAKeyPairAuth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AuthenticationPattern"/>
+    <rdfs:label>RSA Key Pair Authentication</rdfs:label>
+    <rdfs:comment>Authentication using RSA key pairs</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <recommends rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyRotation"/>
+    <requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecureKeyStorage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleEmergencyAccessPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#EmergencyAccessPattern"/>
+    <rdfs:label>Example EmergencyAccessPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class EmergencyAccessPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSLAViolation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SLAViolation"/>
+    <rdfs:label>Example SLAViolation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SLAViolation</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSLAViolation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SLAViolation"/>
+    <rdfs:label>Example SLAViolation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SLAViolation</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleCIAPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CIAPattern"/>
+    <rdfs:label>Example CIAPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class CIAPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleKeyDeletionPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyDeletionPattern"/>
+    <rdfs:label>Example KeyDeletionPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class KeyDeletionPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecureKeyDeletion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyDeletionPattern"/>
+    <rdfs:label>Secure Key Deletion</rdfs:label>
+    <rdfs:comment>Critical rules for key deletion:
+    1. NEVER delete any .env files without verified backup
+    2. ALWAYS confirm backup location before deletion
+    3. ALWAYS get explicit user confirmation before deletion
+    4. Treat .gitignore'd files with extra caution - they likely contain untracked sensitive data
+    5. Maintain backup verification logs
+    6. AVAILABILITY FIRST - Never delete unique copies of credentials
+    7. Security procedures must not impair authorized access</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <recommends rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyBackupVerification"/>
+    <requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CIATriadEnforcement"/>
+    <requires rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecureKeyStorage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SecurityBestPractices">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#BestPractice"/>
+    <rdfs:label>Security Best Practices</rdfs:label>
+    <rdfs:comment>Collection of security best practices:
+    1. Store private keys with 600 permissions
+    2. Never commit secrets to VCS
+    3. Use PKCS#8 format for private keys
+    4. Use environment variables for sensitive data
+    5. Implement regular key rotation
+    6. NEVER delete .env or configuration files without verified backup
+    7. ALWAYS get explicit confirmation before key deletion
+    8. AVAILABILITY IS CRITICAL - Security must not break functionality
+    9. Maintain working access to all essential credentials
+    10. Balance security measures against operational needs
+    11. TRACK ALL SLA VIOLATIONS AS SECURITY INCIDENTS
+    12. Test security measures against SLA requirements
+    13. Regular SLA compliance auditing required
+    14. Emergency access MUST work offline
+    15. Provide secure ways to cache credentials
+    16. Test auth systems during simulated outages
+    17. Never force shadow security systems
+    18. Plan for degraded/disconnected operation
+    19. Maintain local authentication capability</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleKeyManagementPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyManagementPattern"/>
+    <rdfs:label>Example KeyManagementPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class KeyManagementPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleKeyDeletionPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#KeyDeletionPattern"/>
+    <rdfs:label>Example KeyDeletionPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class KeyDeletionPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSLACompliancePattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#SLACompliancePattern"/>
+    <rdfs:label>Example SLACompliancePattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SLACompliancePattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAuthenticationPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AuthenticationPattern"/>
+    <rdfs:label>Example AuthenticationPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class AuthenticationPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleIncidentResponsePattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IncidentResponsePattern"/>
+    <rdfs:label>Example IncidentResponsePattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class IncidentResponsePattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleCIAPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CIAPattern"/>
+    <rdfs:label>Example CIAPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class CIAPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleEmergencyAccessPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#EmergencyAccessPattern"/>
+    <rdfs:label>Example EmergencyAccessPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class EmergencyAccessPattern</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+</rdf:RDF>

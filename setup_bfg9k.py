@@ -1,81 +1,33 @@
 from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode
 from rdflib.namespace import Namespace
 from pyshacl import validate
-import subprocess
-import yaml
 import os
+import json
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
 BFG9K = Namespace("https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
-def update_dependencies():
-    # Load environment.yml
-    with open('environment.yml', 'r') as f:
-        env = yaml.safe_load(f)
+def setup_cursor_mcp():
+    """Set up BFG9K as a Cursor IDE MCP service."""
+    # Create Cursor MCP configuration
+    mcp_config = {
+        "name": "guidance-mcp",
+        "version": "1.0.0",
+        "description": "Guidance ontology MCP service for Cursor IDE",
+        "entrypoint": "ontology_framework.mcp.guidance_mcp_service:GuidanceMCPService",
+        "config": {
+            "ontology_path": "guidance.ttl",
+            "validation_enabled": True,
+            "sse_enabled": True
+        }
+    }
     
-    # Add BFG9K dependencies
-    if 'dependencies' not in env:
-        env['dependencies'] = []
-    
-    # Add BFG9K channel
-    if 'channels' not in env:
-        env['channels'] = []
-    if 'https://raw.githubusercontent.com/louspringer/bfg9k/main/channel' not in env['channels']:
-        env['channels'].append('https://raw.githubusercontent.com/louspringer/bfg9k/main/channel')
-    
-    bfg9k_deps = [
-        'bfg9k',
-        'bfg9k-mcp',
-        'bfg9k-ontology'
-    ]
-    
-    # Add to conda dependencies
-    env['dependencies'].extend(bfg9k_deps)
-    
-    # Save updated environment.yml
-    with open('environment.yml', 'w') as f:
-        yaml.dump(env, f, default_flow_style=False)
-    
-    # Update requirements.txt
-    with open('requirements.txt', 'a') as f:
-        f.write('\n'.join(bfg9k_deps) + '\n')
-
-def setup_bfg9k_server():
-    # Create BFG9K configuration
-    g = Graph()
-    
-    # BFG9K Server Configuration
-    server_config = BFG9K.ServerConfiguration
-    g.add((server_config, RDF.type, BFG9K.ServerConfiguration))
-    g.add((server_config, RDFS.label, Literal("BFG9K Model Context Protocol Server")))
-    g.add((server_config, BFG9K.port, Literal(8080, datatype=XSD.integer)))
-    g.add((server_config, BFG9K.host, Literal("localhost")))
-    g.add((server_config, BFG9K.ontologyPath, Literal("guidance.ttl")))
-    g.add((server_config, BFG9K.validationEnabled, Literal(True, datatype=XSD.boolean)))
-    
-    # Save configuration
-    g.serialize("bfg9k_config.ttl", format="turtle")
-    
-    # Create systemd service file
-    service_content = """[Unit]
-Description=BFG9K Model Context Protocol Server
-After=network.target
-
-[Service]
-Type=simple
-User=bfg9k
-WorkingDirectory=/opt/bfg9k
-ExecStart=/usr/local/bin/bfg9k-server --config bfg9k_config.ttl
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-"""
-    
-    with open('bfg9k.service', 'w') as f:
-        f.write(service_content)
+    # Write MCP configuration
+    os.makedirs(".cursor/mcp", exist_ok=True)
+    with open(".cursor/mcp/guidance-mcp.json", "w") as f:
+        json.dump(mcp_config, f, indent=2)
 
 def update_governing_models():
     # Load guidance ontology
@@ -139,20 +91,17 @@ def update_governing_models():
     g.serialize("guidance.ttl", format="turtle")
 
 def main():
-    print("Updating dependencies...")
-    update_dependencies()
-    
-    print("Setting up BFG9K server...")
-    setup_bfg9k_server()
+    print("Setting up Cursor IDE MCP service...")
+    setup_cursor_mcp()
     
     print("Updating governing models...")
     update_governing_models()
     
-    print("Installation complete. Please run:")
-    print("1. conda env update -f environment.yml")
-    print("2. pip install -r requirements.txt")
-    print("3. sudo systemctl enable bfg9k.service")
-    print("4. sudo systemctl start bfg9k.service")
+    print("Installation complete. The Guidance MCP service will be available in Cursor IDE.")
+    print("To verify the setup:")
+    print("1. Restart Cursor IDE")
+    print("2. Check the MCP services list in Cursor settings")
+    print("3. The guidance-mcp service should be listed and active")
 
 if __name__ == "__main__":
     main() 

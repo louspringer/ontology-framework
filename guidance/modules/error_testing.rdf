@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestErrorResolution">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Test Error Resolution</rdfs:label>
+    <rdfs:comment>Step to resolve test errors</rdfs:comment>
+    <ns1:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</ns1:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestStep2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Example TestStep 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestStep</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeTestCase">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase"/>
+    <rdfs:label>Error Type Test Case</rdfs:label>
+    <rdfs:comment>Test case for error type handling</rdfs:comment>
+    <ns1:hasTestImplementation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeTestImplementation"/>
+    <ns1:validatesRequirement rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeRequirement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestStep1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Example TestStep 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestStep</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRequirement1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#Requirement"/>
+    <rdfs:label>Example Requirement 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class Requirement</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeTestImplementation">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestImplementation"/>
+    <rdfs:label>Error Type Test Implementation</rdfs:label>
+    <rdfs:comment>Implementation of error type test case</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestCase2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase"/>
+    <rdfs:label>Example TestCase 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestCase</rdfs:comment>
+    <ns1:hasTestImplementation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestImplementation2"/>
+    <ns1:validatesRequirement rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRequirement2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestCase1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase"/>
+    <rdfs:label>Example TestCase 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestCase</rdfs:comment>
+    <ns1:hasTestImplementation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestImplementation1"/>
+    <ns1:validatesRequirement rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRequirement1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestAssumption2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestAssumption"/>
+    <rdfs:label>Example TestAssumption 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestAssumption</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestImplementation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Test Implementation</rdfs:label>
+    <rdfs:comment>Implementation of test cases</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestAssumption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Test Assumption</rdfs:label>
+    <rdfs:comment>Assumptions for error handling tests</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeExclusivity">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestAssumption"/>
+    <rdfs:label>Error Type Exclusivity</rdfs:label>
+    <rdfs:comment>Each error belongs to exactly one type</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRequirement2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#Requirement"/>
+    <rdfs:label>Example Requirement 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class Requirement</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestErrorIdentification">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Test Error Identification</rdfs:label>
+    <rdfs:comment>Step to identify test errors</rdfs:comment>
+    <ns1:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ns1:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#Requirement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Requirement</rdfs:label>
+    <rdfs:comment>Error handling requirements</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestErrorVerification">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Test Error Verification</rdfs:label>
+    <rdfs:comment>Step to verify test error resolution</rdfs:comment>
+    <ns1:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</ns1:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Test Case</rdfs:label>
+    <rdfs:comment>Test cases for error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestAssumption1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestAssumption"/>
+    <rdfs:label>Example TestAssumption 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestAssumption</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#validatesRequirement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#Requirement"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#ErrorTypeRequirement">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#Requirement"/>
+    <rdfs:label>Error Type Requirement</rdfs:label>
+    <rdfs:comment>Requirement for error type handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Test Step</rdfs:label>
+    <rdfs:comment>Steps in test execution</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestErrorAnalysis">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestStep"/>
+    <rdfs:label>Test Error Analysis</rdfs:label>
+    <rdfs:comment>Step to analyze test errors</rdfs:comment>
+    <ns1:hasStepOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</ns1:hasStepOrder>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestImplementation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestImplementation"/>
+    <rdfs:label>Example TestImplementation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestImplementation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestImplementation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestImplementation"/>
+    <rdfs:label>Example TestImplementation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestImplementation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#hasTestImplementation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestCase"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#TestImplementation"/>
+  </rdf:Description>
+</rdf:RDF>

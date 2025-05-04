@@ -5,7 +5,7 @@ from typing import Dict, List, Any
 import pytest
 from pathlib import Path
 from datetime import datetime, timedelta
-from src.ontology_framework.modules.phases import (
+from ontology_framework.modules.phases import (
     PromptPhase,
     PlanPhase,
     DoPhase,

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Installation Rule</rdfs:label>
+    <rdfs:comment xml:lang="en">Rules for installation validation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Installation Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Target for installation validation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationCommand">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Installation Command</rdfs:label>
+    <rdfs:comment xml:lang="en">Commands for installing dependencies and tools</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

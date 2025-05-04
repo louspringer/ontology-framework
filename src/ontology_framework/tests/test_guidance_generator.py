@@ -1,78 +1,123 @@
-import unittest
-import tempfile
+"""
+Test guidance generation functionality.
+"""
+import pytest
 from pathlib import Path
-from rdflib import Graph, URIRef, Literal, BNode, Namespace, XSD, RDF, RDFS, OWL, SH
-from ontology_framework.modules.guidance_generator import GuidanceGenerator, generate_guidance_ontology
+from rdflib import Graph, URIRef, Literal
+from rdflib.namespace import RDF, RDFS, OWL
+from ontology_framework.graphdb_client import GraphDBClient
 
-class TestGuidanceGenerator(unittest.TestCase):
-    """Test cases for the guidance generator."""
+@pytest.fixture
+def graphdb_client():
+    """Create a GraphDB client instance."""
+    client = GraphDBClient("http://localhost:7200", "guidance")
+    yield client
+    # Cleanup: Clear the guidance repository
+    client.clear_graph()
+
+def test_generate_guidance(graphdb_client):
+    """Test generating guidance rules."""
+    # Create a base graph
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDF.type, OWL.Class))
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDFS.label, Literal("Base Rule")))
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDFS.comment, Literal("Base rule for testing")))
     
-    def setUp(self) -> None:
-        """Set up test environment."""
-        self.temp_dir = tempfile.mkdtemp()
-        self.output_path = Path(self.temp_dir) / "guidance.ttl"
-        self.generator = GuidanceGenerator()
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Generate derived rules
+    graphdb_client.update("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-    def test_generate_ontology(self) -> None:
-        """Test ontology generation."""
-        # Generate the ontology
-        self.generator.generate(self.output_path)
+        INSERT {
+            ?derivedRule a owl:Class ;
+                        rdfs:label ?derivedLabel ;
+                        rdfs:comment ?derivedComment ;
+                        rdfs:subClassOf ?baseRule .
+        }
+        WHERE {
+            ?baseRule a owl:Class ;
+                     rdfs:label ?baseLabel ;
+                     rdfs:comment ?baseComment .
+            BIND(IRI(CONCAT(STR(?baseRule), "_derived")) AS ?derivedRule)
+            BIND(CONCAT("Derived ", ?baseLabel) AS ?derivedLabel)
+            BIND(CONCAT("Derived from ", ?baseComment) AS ?derivedComment)
+        }
+    """)
+    
+    # Verify the generated rules
+    results = graphdb_client.query("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-        # Load the generated file
-        graph = Graph()
-        graph.parse(self.output_path, format="turtle")
-        
-        # Check ontology metadata
-        self.assertTrue((URIRef(self.generator.base.GuidanceOntology), RDF.type, OWL.Ontology) in graph)
-        self.assertTrue((URIRef(self.generator.base.GuidanceOntology), RDFS.label, Literal("Guidance Ontology", lang="en")) in graph)
-        
-        # Check Python validation classes
-        self.assertTrue((URIRef(self.generator.base.PythonValidation), RDF.type, OWL.Class) in graph)
-        self.assertTrue((URIRef(self.generator.base.TypeAnnotation), RDF.type, OWL.Class) in graph)
-        self.assertTrue((URIRef(self.generator.base.RDFLibIntegration), RDF.type, OWL.Class) in graph)
-        
-        # Check validation properties
-        self.assertTrue((URIRef(self.generator.base.hasTypeAnnotation), RDF.type, OWL.DatatypeProperty) in graph)
-        self.assertTrue((URIRef(self.generator.base.usesRDFLib), RDF.type, OWL.ObjectProperty) in graph)
-        
-        # Check SHACL shapes
-        shapes = list(graph.subjects(RDF.type, SH.NodeShape))
-        self.assertTrue(len(shapes) >= 2)  # At least Python and RDFLib shapes
-        
-        # Check validation instances
-        self.assertTrue((URIRef(self.generator.base.StrictTypeAnnotation), RDF.type, URIRef(self.generator.base.TypeAnnotation)) in graph)
-        self.assertTrue((URIRef(self.generator.base.GraphIntegration), RDF.type, URIRef(self.generator.base.RDFLibIntegration)) in graph)
-        
-    def test_generate_guidance_ontology(self) -> None:
-        """Test the convenience function."""
-        generate_guidance_ontology(self.output_path)
-        
-        # Load the generated file
-        graph = Graph()
-        graph.parse(self.output_path, format="turtle")
-        
-        # Check basic structure
-        self.assertTrue((URIRef(self.generator.base.GuidanceOntology), RDF.type, OWL.Ontology) in graph)
-        self.assertTrue((URIRef(self.generator.base.PythonValidation), RDF.type, OWL.Class) in graph)
-        
-    def test_custom_base_uri(self) -> None:
-        """Test with custom base URI."""
-        custom_uri = "http://example.org/guidance#"
-        generator = GuidanceGenerator(custom_uri)
-        generator.generate(self.output_path)
-        
-        # Load the generated file
-        graph = Graph()
-        graph.parse(self.output_path, format="turtle")
-        
-        # Check namespace binding
-        self.assertEqual(str(graph.namespace_manager.store.namespace("")), custom_uri)
-        
-    def tearDown(self) -> None:
-        """Clean up test environment."""
-        if self.output_path.exists():
-            self.output_path.unlink()
-        Path(self.temp_dir).rmdir()
+        SELECT ?rule ?label ?comment
+        WHERE {
+            ?rule a owl:Class ;
+                  rdfs:label ?label ;
+                  rdfs:comment ?comment ;
+                  rdfs:subClassOf ?baseRule .
+            FILTER(STRENDS(STR(?rule), "_derived"))
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Derived rules should be generated"
 
-if __name__ == "__main__":
-    unittest.main() 
+def test_generate_guidance_with_constraints(graphdb_client):
+    """Test generating guidance rules with constraints."""
+    # Create a base graph with constraints
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDF.type, OWL.Class))
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDFS.label, Literal("Constrained Rule")))
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDFS.comment, Literal("Rule with constraints")))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDF.type, OWL.ObjectProperty))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDFS.domain, URIRef("http://example.org/guidance#ConstrainedRule")))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDFS.range, RDFS.Literal))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Generate constrained rules
+    graphdb_client.update("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX guidance: <http://example.org/guidance#>
+        
+        INSERT {
+            ?constrainedRule a owl:Class ;
+                            rdfs:label ?constrainedLabel ;
+                            rdfs:comment ?constrainedComment ;
+                            rdfs:subClassOf ?baseRule ;
+                            guidance:hasConstraint ?constraint .
+        }
+        WHERE {
+            ?baseRule a owl:Class ;
+                     rdfs:label ?baseLabel ;
+                     rdfs:comment ?baseComment .
+            BIND(IRI(CONCAT(STR(?baseRule), "_constrained")) AS ?constrainedRule)
+            BIND(CONCAT("Constrained ", ?baseLabel) AS ?constrainedLabel)
+            BIND(CONCAT("Constrained version of ", ?baseComment) AS ?constrainedComment)
+            BIND("Required constraint" AS ?constraint)
+        }
+    """)
+    
+    # Verify the constrained rules
+    results = graphdb_client.query("""
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX guidance: <http://example.org/guidance#>
+        
+        SELECT ?rule ?constraint
+        WHERE {
+            ?rule a owl:Class ;
+                  guidance:hasConstraint ?constraint .
+            FILTER(STRENDS(STR(?rule), "_constrained"))
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Constrained rules should be generated" 

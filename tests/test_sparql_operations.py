@@ -7,9 +7,12 @@ from ontology_framework.sparql_operations import (
     execute_sparql,
     QueryType,
     QueryResult,
-    JenaFusekiExecutor,
-    Neo4jExecutor
+    Neo4jExecutor,
+    GraphDBExecutor,
+    SparqlExecutor
 )
+import unittest
+from unittest.mock import MagicMock, patch
 
 class MockResponse:
     """Mock response for requests."""
@@ -142,8 +145,83 @@ def test_neo4j_executor():
 
 def test_custom_endpoint(mock_requests):
     """Test using a custom endpoint."""
-    executor = JenaFusekiExecutor(endpoint="http://custom-endpoint:3030/dataset")
+    executor = GraphDBExecutor(endpoint="http://custom-endpoint:7200", repository="test")
     result = execute_sparql("SELECT ?s WHERE { ?s ?p ?o }", executor=executor)
     
     assert result.success
     assert not result.empty 
+
+class TestGraphDBExecutor(unittest.TestCase):
+    """Test cases for GraphDBExecutor."""
+    
+    def setUp(self):
+        """Set up test environment."""
+        self.endpoint = "http://localhost:7200"
+        self.repository = "test_repo"
+        self.executor = GraphDBExecutor(self.endpoint, self.repository)
+        
+    def test_execute_query(self):
+        """Test query execution."""
+        test_query = "SELECT * WHERE { ?s ?p ?o }"
+        test_results = {
+            "results": {
+                "bindings": [
+                    {"s": {"value": "http://example.org/subject"},
+                     "p": {"value": "http://example.org/predicate"},
+                     "o": {"value": "http://example.org/object"}}
+                ]
+            }
+        }
+        
+        with patch('requests.post') as mock_post:
+            mock_post.return_value.json.return_value = test_results
+            results = self.executor.execute_query(test_query)
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0]["s"], "http://example.org/subject")
+            
+    def test_error_handling(self):
+        """Test error handling."""
+        test_query = "INVALID QUERY"
+        
+        with patch('requests.post') as mock_post:
+            mock_post.return_value.status_code = 400
+            mock_post.return_value.text = "Invalid query syntax"
+            with self.assertRaises(Exception):
+                self.executor.execute_query(test_query)
+                
+class TestNeo4jExecutor(unittest.TestCase):
+    """Test cases for Neo4jExecutor."""
+    
+    def setUp(self):
+        """Set up test environment."""
+        self.endpoint = "bolt://localhost:7687"
+        self.executor = Neo4jExecutor(self.endpoint)
+        
+    def test_execute_query(self):
+        """Test query execution."""
+        test_query = "MATCH (n) RETURN n"
+        test_results = [{"n": {"value": "test"}}]
+        
+        with patch('neo4j.GraphDatabase.driver') as mock_driver:
+            mock_session = MagicMock()
+            mock_session.run.return_value = test_results
+            mock_driver.return_value.session.return_value = mock_session
+            
+            results = self.executor.execute_query(test_query)
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0]["n"], {"value": "test"})
+            
+    def test_error_handling(self):
+        """Test error handling."""
+        test_query = "INVALID QUERY"
+        
+        with patch('neo4j.GraphDatabase.driver') as mock_driver:
+            mock_session = MagicMock()
+            mock_session.run.side_effect = Exception("Invalid query")
+            mock_driver.return_value.session.return_value = mock_session
+            
+            with self.assertRaises(Exception):
+                self.executor.execute_query(test_query)
+                
+if __name__ == '__main__':
+    unittest.main() 

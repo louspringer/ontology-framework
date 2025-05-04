@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
+   xmlns:core="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#"
+   xmlns:dc1="http://purl.org/dc/elements/1.1/#"
+   xmlns:dct="http://purl.org/dc/terms/#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:sh="http://www.w3.org/ns/shacl#"
+>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db15">
+    <sh:message>Subject must use relative URI</sh:message>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasSubject"/>
+    <sh:pattern>^[^/]+$</sh:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleOperation">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AddOperation"/>
+    <hasObject>example_object</hasObject>
+    <hasPredicate>example_predicate</hasPredicate>
+    <hasSubject>example_subject</hasSubject>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasObject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Object</rdfs:label>
+    <rdfs:comment>Object of the operation triple</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db19">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Patch Operation</rdfs:label>
+    <rdfs:comment>An operation within a patch</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchGuidanceModule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Patch Guidance Module</rdfs:label>
+    <dc1:title>Patch Guidance Module</dc1:title>
+    <dc1:version>1.0.0</dc1:version>
+    <dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-04-16T00:00:00</dct:created>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-04-16T00:00:00</dct:modified>
+    <rdfs:comment>Guidance for patch creation, validation, and management</rdfs:comment>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model.ttl"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRemoveOperation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RemoveOperation"/>
+    <rdfs:label>Example RemoveOperation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class RemoveOperation</rdfs:comment>
+    <hasSubject>subject4</hasSubject>
+    <hasPredicate>predicate4</hasPredicate>
+    <hasObject>object4</hasObject>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RemoveOperation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Remove Operation</rdfs:label>
+    <rdfs:comment>Operation to remove a triple</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchModel1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:label>Example PatchModel 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PatchModel</rdfs:comment>
+    <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T12:00:01+00:00</createdAt>
+    <hasOperation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchOperation1"/>
+    <hasTargetSpore>example_spore1.ttl</hasTargetSpore>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db11">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:message>Patch must have a comment</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db6">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#PatchGuidanceModule#label"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db12">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:message>Patch must have a semantic version number</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2002/07/owl#versionInfo"/>
+    <sh:pattern>^[0-9]+\.[0-9]+\.[0-9]+$</sh:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#OperationShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db1"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db2"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db3"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchModel2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:label>Example PatchModel 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PatchModel</rdfs:comment>
+    <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-03-21T12:00:02+00:00</createdAt>
+    <hasOperation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchOperation2"/>
+    <hasTargetSpore>example_spore2.ttl</hasTargetSpore>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPredicate">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Predicate</rdfs:label>
+    <rdfs:comment>Predicate of the operation triple</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#PatchGuidanceModule#ModuleShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db4"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db5"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db6"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#PatchGuidanceModule#Module"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db10">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:message>Patch must have a label</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasOperation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Operation</rdfs:label>
+    <rdfs:comment>Links a patch to its operations</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db21">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2002/07/owl#versionInfo"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchOperation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <rdfs:label>Example PatchOperation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PatchOperation</rdfs:comment>
+    <hasObject rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing1"/>
+    <hasPredicate rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing1"/>
+    <hasSubject rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing1"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db2">
+    <sh:message>Operation must have a predicate</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPredicate"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#versionInfo">
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRemoveOperation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RemoveOperation"/>
+    <rdfs:label>Example RemoveOperation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class RemoveOperation</rdfs:comment>
+    <hasSubject>subject3</hasSubject>
+    <hasPredicate>predicate3</hasPredicate>
+    <hasObject>object3</hasObject>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db1">
+    <sh:message>Operation must have a subject</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasSubject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#URIShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db13"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db14"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db16"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db17"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db7">
+    <sh:message>Patch must have a target SPORE</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasTargetSpore"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#patchGuidance">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ModelFirstPrinciple"/>
+    <rdfs:label>Patch Management Guidance</rdfs:label>
+    <rdfs:comment>Patch management follows model-first principles:
+    1. Patches must be model-valid before code changes
+    2. Patch validation ensures ontological consistency
+    3. Code changes must align with patch model</rdfs:comment>
+    <core:complexity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</core:complexity>
+    <core:sourceContext>Model-Driven Development</core:sourceContext>
+    <core:targetContext>Patch Management</core:targetContext>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db5">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#PatchGuidanceModule#description"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatch">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:label>Example Patch</rdfs:label>
+    <rdfs:comment>An example patch demonstrating model-first principles</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <createdAt rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2024-04-16T00:00:00</createdAt>
+    <hasOperation rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleOperation"/>
+    <hasTargetSpore>example_spore.ttl</hasTargetSpore>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePatchOperation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <rdfs:label>Example PatchOperation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PatchOperation</rdfs:comment>
+    <hasObject rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing2"/>
+    <hasPredicate rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing2"/>
+    <hasSubject rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleThing2"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db16">
+    <sh:message>Predicate must use relative URI</sh:message>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasPredicate"/>
+    <sh:pattern>^[^/]+$</sh:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#comment">
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db14">
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasOperation"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db15"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasTargetSpore">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Target SPORE</rdfs:label>
+    <rdfs:comment>The SPORE this patch targets</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#createdAt">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Created At</rdfs:label>
+    <rdfs:comment>Timestamp when patch was created</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasSubject">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Subject</rdfs:label>
+    <rdfs:comment>Subject of the operation triple</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAddOperation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AddOperation"/>
+    <rdfs:label>Example AddOperation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class AddOperation</rdfs:comment>
+    <hasSubject>subject1</hasSubject>
+    <hasPredicate>predicate1</hasPredicate>
+    <hasObject>object1</hasObject>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db18">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db19"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db20"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db21"/>
+    <sh:targetClass rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db8">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+    <sh:message>Patch must have a creation timestamp</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#createdAt"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Patch Model</rdfs:label>
+    <rdfs:comment>Model for semantic patches</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/model#ModelFirstPrinciple"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db3">
+    <sh:message>Operation must have an object</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db4">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/patch#PatchGuidanceModule#version"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db7"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db8"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db9"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db10"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db11"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db12"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchModel"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAddOperation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AddOperation"/>
+    <rdfs:label>Example AddOperation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class AddOperation</rdfs:comment>
+    <hasSubject>subject2</hasSubject>
+    <hasPredicate>predicate2</hasPredicate>
+    <hasObject>object2</hasObject>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db20">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db17">
+    <sh:message>Object must use relative URI</sh:message>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasObject"/>
+    <sh:pattern>^[^/]+$</sh:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db24">
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#range"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db22">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db23"/>
+    <sh:property rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db24"/>
+    <sh:targetClass rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#label">
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db9">
+    <sh:message>Patch must have at least one operation</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasOperation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db13">
+    <sh:message>Target spore must use relative path (e.g. 'spore.ttl')</sh:message>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#hasTargetSpore"/>
+    <sh:pattern>^[^/]+\.ttl$</sh:pattern>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#AddOperation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Add Operation</rdfs:label>
+    <rdfs:comment>Operation to add a triple</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatchOperation"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n400f5c4fbc2f447cb9a41b8086d45f6db23">
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#domain"/>
+  </rdf:Description>
+</rdf:RDF>

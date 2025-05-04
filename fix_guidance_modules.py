@@ -2,6 +2,10 @@ from rdflib import Graph, Namespace, RDF, RDFS, OWL, Literal, URIRef, SH, BNode
 from pathlib import Path
 import pyshacl
 from rdflib.namespace import XSD
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def fix_guidance_modules():
     # Load all ontologies
@@ -152,9 +156,77 @@ def fix_guidance_modules():
     
     return True
 
+def organize_modules():
+    g = Graph()
+    g.parse("guidance.ttl", format="turtle")
+    
+    # Define namespaces
+    GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+    META = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#")
+    
+    # Add core module definitions
+    core_module = GUIDANCE.CoreModule
+    g.add((core_module, RDF.type, OWL.Class))
+    g.add((core_module, RDFS.label, Literal("Core Module", lang="en")))
+    g.add((core_module, RDFS.comment, Literal("Essential framework modules that form the foundation", lang="en")))
+    
+    # Add validation module
+    validation_module = GUIDANCE.ValidationModule
+    g.add((validation_module, RDF.type, core_module))
+    g.add((validation_module, RDFS.label, Literal("Validation Module", lang="en")))
+    g.add((validation_module, RDFS.comment, Literal("Handles validation rules and constraints", lang="en")))
+    
+    # Add security module
+    security_module = GUIDANCE.SecurityModule
+    g.add((security_module, RDF.type, core_module))
+    g.add((security_module, RDFS.label, Literal("Security Module", lang="en")))
+    g.add((security_module, RDFS.comment, Literal("Manages security and sensitive data handling", lang="en")))
+    
+    # Integration patterns
+    g.add((GUIDANCE.hasIntegrationPattern, RDF.type, OWL.ObjectProperty))
+    g.add((GUIDANCE.hasIntegrationPattern, RDFS.domain, core_module))
+    g.add((GUIDANCE.hasIntegrationPattern, RDFS.range, GUIDANCE.IntegrationPattern))
+    
+    # Save updated ontology
+    g.serialize("guidance_updated.ttl", format="turtle")
+    logger.info("Updated guidance.ttl with module organization")
+
+def integrate_orphaned_modules():
+    g = Graph()
+    g.parse("guidance_updated.ttl", format="turtle")
+    
+    # Query for orphaned modules
+    q = """
+    PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    
+    SELECT ?module
+    WHERE {
+        ?module a ?type .
+        FILTER NOT EXISTS { ?other guidance:hasModule ?module }
+        FILTER(?type != owl:Ontology)
+    }
+    """
+    
+    orphaned = list(g.query(q))
+    logger.info(f"Found {len(orphaned)} orphaned modules")
+    
+    # Integrate orphaned modules
+    for module in orphaned:
+        # Add to appropriate core module based on naming/content
+        if "validation" in str(module).lower():
+            g.add((GUIDANCE.ValidationModule, GUIDANCE.hasModule, module))
+        elif "security" in str(module).lower():
+            g.add((GUIDANCE.SecurityModule, GUIDANCE.hasModule, module))
+    
+    g.serialize("guidance_updated.ttl", format="turtle")
+    logger.info("Integrated orphaned modules")
+
 if __name__ == "__main__":
     success = fix_guidance_modules()
     if success:
         print("Guidance modules fixed successfully")
     else:
-        print("Failed to fix guidance modules") 
+        print("Failed to fix guidance modules")
+    organize_modules()
+    integrate_orphaned_modules() 

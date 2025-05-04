@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="http://example.org/guidance#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlOperation1">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlOperation"/>
+    <rdfs:label>Example SparqlOperation 1</rdfs:label>
+    <ns1:hasOperationType>Example value 1</ns1:hasOperationType>
+    <rdfs:comment>This is example instance 1 of class SparqlOperation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlQuery2">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <rdfs:label>Example SparqlQuery 2</rdfs:label>
+    <ns1:hasQueryString>Example value 2</ns1:hasQueryString>
+    <rdfs:comment>This is example instance 2 of class SparqlQuery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTemporaryOntology1">
+    <rdf:type rdf:resource="http://example.org/guidance#TemporaryOntology"/>
+    <rdfs:label>Example TemporaryOntology 1</rdfs:label>
+    <ns1:hasTemporaryDataset>Example value 1</ns1:hasTemporaryDataset>
+    <ns1:hasValidationQuery rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlQuery1"/>
+    <rdfs:comment>This is example instance 1 of class TemporaryOntology</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasTemporaryDataset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Temporary Dataset</rdfs:label>
+    <rdfs:comment>Name of the temporary dataset</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#TemporaryOntology"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasValidationQuery">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Validation Query</rdfs:label>
+    <rdfs:comment>SPARQL query for validation</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#TemporaryOntology"/>
+    <rdfs:range rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#tempOntology">
+    <rdf:type rdf:resource="http://example.org/guidance#TemporaryOntology"/>
+    <rdfs:label>Temporary Ontology</rdfs:label>
+    <ns1:hasTemporaryDataset>temp_ontology</ns1:hasTemporaryDataset>
+    <ns1:hasValidationQuery rdf:resource="http://example.org/guidance#validateOntology"/>
+    <rdfs:comment>Temporary ontology for CRUD operations</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTemporaryOntology2">
+    <rdf:type rdf:resource="http://example.org/guidance#TemporaryOntology"/>
+    <rdfs:label>Example TemporaryOntology 2</rdfs:label>
+    <ns1:hasTemporaryDataset>Example value 2</ns1:hasTemporaryDataset>
+    <ns1:hasValidationQuery rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlQuery2"/>
+    <rdfs:comment>This is example instance 2 of class TemporaryOntology</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#TemporaryOntology">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Temporary Ontology</rdfs:label>
+    <rdfs:comment>Temporary ontology for CRUD operations</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#SparqlOperation"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasOperationType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Operation Type</rdfs:label>
+    <rdfs:comment>Type of SPARQL operation (SELECT, INSERT, DELETE, etc.)</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#SparqlOperation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#selectAllTriples">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <rdfs:label>Select All Triples</rdfs:label>
+    <ns1:hasOperationType>SELECT</ns1:hasOperationType>
+    <ns1:hasQueryString>
+        SELECT ?s ?p ?o
+        WHERE {
+            ?s ?p ?o
+        }
+    </ns1:hasQueryString>
+    <rdfs:comment>Query to select all triples in the dataset</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#hasQueryString">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Query String</rdfs:label>
+    <rdfs:comment>The SPARQL query string</rdfs:comment>
+    <rdfs:domain rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#SparqlQuery">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>SPARQL Query</rdfs:label>
+    <rdfs:comment>SPARQL query for operations</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://example.org/guidance#SparqlOperation"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#validateOntology">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <rdfs:label>Validate Ontology</rdfs:label>
+    <ns1:hasOperationType>SELECT</ns1:hasOperationType>
+    <ns1:hasQueryString>
+        SELECT ?class ?property
+        WHERE {
+            ?class a owl:Class .
+            ?property a owl:ObjectProperty .
+        }
+    </ns1:hasQueryString>
+    <rdfs:comment>Query to validate ontology structure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlOperation2">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlOperation"/>
+    <rdfs:label>Example SparqlOperation 2</rdfs:label>
+    <ns1:hasOperationType>Example value 2</ns1:hasOperationType>
+    <rdfs:comment>This is example instance 2 of class SparqlOperation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSparqlQuery1">
+    <rdf:type rdf:resource="http://example.org/guidance#SparqlQuery"/>
+    <rdfs:label>Example SparqlQuery 1</rdfs:label>
+    <ns1:hasQueryString>Example value 1</ns1:hasQueryString>
+    <rdfs:comment>This is example instance 1 of class SparqlQuery</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/guidance#SparqlOperation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>SPARQL Operation</rdfs:label>
+    <rdfs:comment>Base class for SPARQL operations</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+</rdf:RDF>

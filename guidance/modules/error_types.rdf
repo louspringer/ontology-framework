@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:error="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRuntimeError2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#RuntimeError"/>
+    <rdfs:label>Example RuntimeError 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class RuntimeError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorType2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#ErrorType"/>
+    <rdfs:label>Example ErrorType 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorType</rdfs:comment>
+    <error:hasAlertingIntegration rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean2"/>
+    <error:hasErrorCode>Example value 2</error:hasErrorCode>
+    <error:hasErrorSeverity>Example value 2</error:hasErrorSeverity>
+    <error:hasMonitoringIntegration rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean2"/>
+    <error:hasSensitiveData rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorType1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#ErrorType"/>
+    <rdfs:label>Example ErrorType 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorType</rdfs:comment>
+    <error:hasAlertingIntegration rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean1"/>
+    <error:hasErrorCode>Example value 1</error:hasErrorCode>
+    <error:hasErrorSeverity>Example value 1</error:hasErrorSeverity>
+    <error:hasMonitoringIntegration rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean1"/>
+    <error:hasSensitiveData rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleboolean1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationError1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#ValidationError"/>
+    <rdfs:label>Example ValidationError 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ValidationError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAPIError1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#APIError"/>
+    <rdfs:label>Example APIError 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class APIError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleIOError2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#IOError"/>
+    <rdfs:label>Example IOError 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class IOError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAPIError2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#APIError"/>
+    <rdfs:label>Example APIError 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class APIError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestFailure1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#TestFailure"/>
+    <rdfs:label>Example TestFailure 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestFailure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestFailure2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#TestFailure"/>
+    <rdfs:label>Example TestFailure 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestFailure</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationError2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#ValidationError"/>
+    <rdfs:label>Example ValidationError 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ValidationError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRuntimeError1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#RuntimeError"/>
+    <rdfs:label>Example RuntimeError 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class RuntimeError</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleIOError1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_types#IOError"/>
+    <rdfs:label>Example IOError 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class IOError</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

@@ -1,9 +1,10 @@
-"""Test consistency between Python-generated base ontology and Turtle file."""
+"""Test suite for ontology consistency."""
 
 import unittest
 from pathlib import Path
-from rdflib import Graph, RDF, RDFS, OWL, SH, URIRef, Literal
-from src.ontology_framework.modules.ontology import Ontology
+from rdflib import Graph, RDF, RDFS, OWL, SH, URIRef, Literal, BNode
+from rdflib.namespace import SH
+from ontology_framework.modules.ontology import Ontology
 
 class TestOntologyConsistency(unittest.TestCase):
     """Test consistency between Python-generated base ontology and Turtle file."""

@@ -56,10 +56,6 @@ class ResourceNotFoundError(BoldoAPIError):
     """Exception raised when a requested resource is not found."""
     pass
 
-class SparqlClientError(OntologyFrameworkError):
-    """Exception raised when SPARQL operations fail."""
-    pass
-
 class ModelQualityError(OntologyFrameworkError):
     """Exception raised when model quality checks fail."""
     pass
@@ -98,7 +94,6 @@ __all__ = [
     'PatchNotFoundError',
     'PatchApplicationError',
     'ResourceNotFoundError',
-    'SparqlClientError',
     'ModelQualityError',
     'ModelProjectionError',
     'RegistrationError',

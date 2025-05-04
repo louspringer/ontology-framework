@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#"
+   xmlns:ns1="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#rdfs:"
+   xmlns:ns2="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#rdf:"
+   xmlns:ns3="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#owl:"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:sh="http://www.w3.org/ns/shacl#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#GDPR">
+    <ns3:versionInfo>1.0.0</ns3:versionInfo>
+    <ns2:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ComplianceStandard"/>
+    <ns1:comment>General Data Protection Regulation</ns1:comment>
+    <ns1:label>GDPR</ns1:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#DataLossRisk">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityRisk"/>
+    <rdfs:label>Data Loss Risk</rdfs:label>
+    <rdfs:comment>Risk of data loss or exposure</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n8834c36e95fd402581b71ace9837e62ab1">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n8834c36e95fd402581b71ace9837e62ab2"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#RuntimeError"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#HIPAA">
+    <ns3:versionInfo>1.0.0</ns3:versionInfo>
+    <ns2:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ComplianceStandard"/>
+    <ns1:comment>Health Insurance Portability and Accountability Act</ns1:comment>
+    <ns1:label>HIPAA</ns1:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityRisk">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Security Risk</rdfs:label>
+    <rdfs:comment>Security-related risks</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#ISO27001">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#ComplianceStandard"/>
+    <rdfs:label>ISO27001</rdfs:label>
+    <rdfs:comment>Information security management standard</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SensitiveDataHandling">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityValidation"/>
+    <rdfs:label>Sensitive Data Handling</rdfs:label>
+    <rdfs:comment>Validation rules for handling sensitive data</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#label">
+    <rdfs:label>rdf-schema#label</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#label</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
+    <rdfs:label>22-rdf-syntax-ns#type</rdfs:label>
+    <rdfs:comment>Description of 22-rdf-syntax-ns#type</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#hasSecurityValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Security Validation</rdfs:label>
+    <rdfs:comment>Links an error to its security validations</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#RuntimeError"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityValidation"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#versionInfo">
+    <rdfs:label>owl#versionInfo</rdfs:label>
+    <rdfs:comment>Description of owl#versionInfo</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#AccessControl">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityConstraint"/>
+    <rdfs:label>Access Control</rdfs:label>
+    <rdfs:comment>Requirements for access control</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#comment">
+    <rdfs:label>rdf-schema#comment</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#comment</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#domain">
+    <rdfs:label>rdf-schema#domain</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#domain</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#range">
+    <rdfs:label>rdf-schema#range</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#range</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#RuntimeError">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Runtime Error</rdfs:label>
+    <rdfs:comment>Error that occurs during runtime execution</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Error Security Ontology</rdfs:label>
+    <rdfs:comment>Ontology for defining error handling security concepts</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#ComplianceStandard">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Compliance Standard</rdfs:label>
+    <rdfs:comment>Security and compliance standards</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityConstraint">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Security Constraint</rdfs:label>
+    <rdfs:comment>Security-related constraints</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#compliesWith">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Complies With</rdfs:label>
+    <rdfs:comment>Links an error to its compliance standards</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#RuntimeError"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#ComplianceStandard"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#RuntimeError">
+    <compliesWith rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#GDPR"/>
+    <compliesWith rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#HIPAA"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Security Validation</rdfs:label>
+    <rdfs:comment>Security validation rules</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#DataEncryption">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/error_security#SecurityConstraint"/>
+    <rdfs:label>Data Encryption</rdfs:label>
+    <rdfs:comment>Requirements for data encryption</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n8834c36e95fd402581b71ace9837e62ab2">
+    <sh:message>Every RuntimeError must reference at least one ComplianceStandard via compliesWith.</sh:message>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#compliesWith"/>
+  </rdf:Description>
+</rdf:RDF>

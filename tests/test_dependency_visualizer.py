@@ -1,9 +1,10 @@
-"""Tests for the dependency visualizer module."""
+"""Test suite for dependency visualizer."""
 
+import unittest
 import pytest
 import networkx as nx
 from pathlib import Path
-from src.ontology_framework.modules.dependency_visualizer import DependencyVisualizer
+from ontology_framework.modules.dependency_visualizer import DependencyVisualizer
 
 @pytest.fixture
 def sample_graph():

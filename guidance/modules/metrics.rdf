@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:metric="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#CPUUsageInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#CPUUsage"/>
+    <metric:hasThreshold>70</metric:hasThreshold>
+    <metric:hasUnit>percent</metric:hasUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResponseTime1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResponseTime"/>
+    <rdfs:label>Example ResponseTime 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ResponseTime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceMetric2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#PerformanceMetric"/>
+    <rdfs:label>Example PerformanceMetric 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PerformanceMetric</rdfs:comment>
+    <metric:hasThreshold rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</metric:hasThreshold>
+    <metric:hasUnit>Example value 2</metric:hasUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResolutionTime2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResolutionTime"/>
+    <rdfs:label>Example ResolutionTime 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ResolutionTime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#LoggingLatencyInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#LoggingLatency"/>
+    <metric:hasThreshold>100</metric:hasThreshold>
+    <metric:hasUnit>milliseconds</metric:hasUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLoggingLatency1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#LoggingLatency"/>
+    <rdfs:label>Example LoggingLatency 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class LoggingLatency</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMemoryUsage2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#MemoryUsage"/>
+    <rdfs:label>Example MemoryUsage 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class MemoryUsage</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#MemoryUsageInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#MemoryUsage"/>
+    <metric:hasThreshold>80</metric:hasThreshold>
+    <metric:hasUnit>percent</metric:hasUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceMetric2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResourceMetric"/>
+    <rdfs:label>Example ResourceMetric 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ResourceMetric</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceMetric1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#PerformanceMetric"/>
+    <rdfs:label>Example PerformanceMetric 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PerformanceMetric</rdfs:comment>
+    <metric:hasThreshold rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</metric:hasThreshold>
+    <metric:hasUnit>Example value 1</metric:hasUnit>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceMetric1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResourceMetric"/>
+    <rdfs:label>Example ResourceMetric 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ResourceMetric</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResponseTime2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResponseTime"/>
+    <rdfs:label>Example ResponseTime 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ResponseTime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLoggingLatency2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#LoggingLatency"/>
+    <rdfs:label>Example LoggingLatency 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class LoggingLatency</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMemoryUsage1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#MemoryUsage"/>
+    <rdfs:label>Example MemoryUsage 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class MemoryUsage</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleCPUUsage1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#CPUUsage"/>
+    <rdfs:label>Example CPUUsage 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class CPUUsage</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResolutionTime1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#ResolutionTime"/>
+    <rdfs:label>Example ResolutionTime 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ResolutionTime</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleCPUUsage2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#CPUUsage"/>
+    <rdfs:label>Example CPUUsage 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class CPUUsage</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>

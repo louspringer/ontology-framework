@@ -1,0 +1,271 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation", "label": "guidance:SensitiveDataValidation", "shape": "dot", "size": 18.0, "title": "Instance: guidance:SensitiveDataValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation"}, {"color": "#55efc4", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule", "label": "guidance:ValidationRule", "shape": "dot", "size": 50.0, "title": "Class: guidance:ValidationRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2002/07/owl#Class", "label": "owl:Class", "shape": "dot", "size": 23.333333333333332, "title": "Unknown: owl:Class\u003cbr\u003ehttp://www.w3.org/2002/07/owl#Class"}, {"color": "#55efc4", "id": "http://www.w3.org/2000/01/rdf-schema#Class", "label": "rdfs:Class", "shape": "dot", "size": 12.666666666666666, "title": "Class: rdfs:Class\u003cbr\u003ehttp://www.w3.org/2000/01/rdf-schema#Class"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2002/07/owl#DatatypeProperty", "label": "owl:DatatypeProperty", "shape": "dot", "size": 23.333333333333332, "title": "Unknown: owl:DatatypeProperty\u003cbr\u003ehttp://www.w3.org/2002/07/owl#DatatypeProperty"}, {"color": "#55efc4", "id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property", "label": "rdf:Property", "shape": "dot", "size": 12.666666666666666, "title": "Class: rdf:Property\u003cbr\u003ehttp://www.w3.org/1999/02/22-rdf-syntax-ns#Property"}, {"color": "#74b9ff", "id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "label": "rdf:type", "shape": "dot", "size": 12.666666666666666, "title": "Property: rdf:type\u003cbr\u003ehttp://www.w3.org/1999/02/22-rdf-syntax-ns#type"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2002/07/owl#Thing", "label": "owl:Thing", "shape": "dot", "size": 15.333333333333332, "title": "Unknown: owl:Thing\u003cbr\u003ehttp://www.w3.org/2002/07/owl#Thing"}, {"color": "#74b9ff", "id": "http://www.w3.org/2000/01/rdf-schema#subClassOf", "label": "rdfs:subClassOf", "shape": "dot", "size": 12.666666666666666, "title": "Property: rdfs:subClassOf\u003cbr\u003ehttp://www.w3.org/2000/01/rdf-schema#subClassOf"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern", "label": "guidance:hasPattern", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasPattern\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage", "label": "guidance:hasMessage", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasMessage\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority", "label": "guidance:hasPriority", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasPriority\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType", "label": "guidance:hasRuleType", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasRuleType\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget", "label": "guidance:hasTarget", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasTarget\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget"}, {"color": "#74b9ff", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator", "label": "guidance:hasValidator", "shape": "dot", "size": 18.0, "title": "Property: guidance:hasValidator\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2001/XMLSchema#string", "label": "xsd:string", "shape": "dot", "size": 20.666666666666664, "title": "Unknown: xsd:string\u003cbr\u003ehttp://www.w3.org/2001/XMLSchema#string"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType", "label": "guidance:ValidationRuleType", "shape": "dot", "size": 26.0, "title": "Instance: guidance:ValidationRuleType\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget", "label": "guidance:ValidationTarget", "shape": "dot", "size": 34.0, "title": "Instance: guidance:ValidationTarget\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRuleShape", "label": "GovernanceRuleShape", "shape": "dot", "size": 12.666666666666666, "title": "Instance: GovernanceRuleShape\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRuleShape"}, {"color": "#dfe6e9", "id": "http://www.w3.org/ns/shacl#NodeShape", "label": "sh:NodeShape", "shape": "dot", "size": 23.333333333333332, "title": "Unknown: sh:NodeShape\u003cbr\u003ehttp://www.w3.org/ns/shacl#NodeShape"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#IntegrationPatternShape", "label": "guidance:IntegrationPatternShape", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:IntegrationPatternShape\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#IntegrationPatternShape"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleShape", "label": "guidance:ModuleShape", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:ModuleShape\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleShape"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleShape", "label": "guidance:ValidationRuleShape", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:ValidationRuleShape\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleShape"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTargetShape", "label": "guidance:ValidationTargetShape", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:ValidationTargetShape\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTargetShape"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement", "label": "OntologyManagement", "shape": "dot", "size": 12.666666666666666, "title": "Instance: OntologyManagement\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement"}, {"color": "#dfe6e9", "id": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule", "label": "GovernanceRule", "shape": "dot", "size": 18.0, "title": "Unknown: GovernanceRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst", "label": "SemanticFirst", "shape": "dot", "size": 12.666666666666666, "title": "Instance: SemanticFirst\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach", "label": "ValidationApproach", "shape": "dot", "size": 12.666666666666666, "title": "Instance: ValidationApproach\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#", "label": "guidance:", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2002/07/owl#Ontology", "label": "owl:Ontology", "shape": "dot", "size": 12.666666666666666, "title": "Unknown: owl:Ontology\u003cbr\u003ehttp://www.w3.org/2002/07/owl#Ontology"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule", "label": "guidance:ConsistencyRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:ConsistencyRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationRule", "label": "guidance:InstallationRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:InstallationRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPORERule", "label": "guidance:SPORERule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SPORERule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPORERule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityRule", "label": "guidance:SecurityRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SecurityRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticRule", "label": "guidance:SemanticRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SemanticRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataRule", "label": "guidance:SensitiveDataRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SensitiveDataRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxRule", "label": "guidance:SyntaxRule", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SyntaxRule\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxRule"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation", "label": "guidance:ConsistencyValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:ConsistencyValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation", "label": "guidance:InstallationValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:InstallationValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation", "label": "guidance:SPOREValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SPOREValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation", "label": "guidance:SecurityValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SecurityValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation", "label": "guidance:SemanticValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SemanticValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation", "label": "guidance:SyntaxValidation", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SyntaxValidation\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SEMANTIC", "label": "guidance:SEMANTIC", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SEMANTIC\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SEMANTIC"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL", "label": "guidance:SHACL", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SHACL\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SYNTAX", "label": "guidance:SYNTAX", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:SYNTAX\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SYNTAX"}, {"color": "#ff7675", "id": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRUCTURAL", "label": "guidance:STRUCTURAL", "shape": "dot", "size": 12.666666666666666, "title": "Instance: guidance:STRUCTURAL\u003cbr\u003ehttps://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRUCTURAL"}, {"color": "#dfe6e9", "id": "http://www.w3.org/2002/07/owl#ObjectProperty", "label": "owl:ObjectProperty", "shape": "dot", "size": 15.333333333333332, "title": "Unknown: owl:ObjectProperty\u003cbr\u003ehttp://www.w3.org/2002/07/owl#ObjectProperty"}]);
+                  edges = new vis.DataSet([{"arrows": {"to": {"enabled": true}}, "color": "#3742fa", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation", "title": "subClassOf", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation", "title": "type", "to": "http://www.w3.org/2002/07/owl#Class"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule", "title": "type", "to": "http://www.w3.org/2002/07/owl#Class"}, {"arrows": {"to": {"enabled": true}}, "color": "#3742fa", "from": "http://www.w3.org/2002/07/owl#Class", "title": "subClassOf", "to": "http://www.w3.org/2000/01/rdf-schema#Class"}, {"arrows": {"to": {"enabled": true}}, "color": "#3742fa", "from": "http://www.w3.org/2002/07/owl#DatatypeProperty", "title": "subClassOf", "to": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "title": "range", "to": "http://www.w3.org/2002/07/owl#Thing"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "http://www.w3.org/2000/01/rdf-schema#subClassOf", "title": "range", "to": "http://www.w3.org/2002/07/owl#Thing"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern", "title": "range", "to": "http://www.w3.org/2001/XMLSchema#string"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern", "title": "type", "to": "http://www.w3.org/2002/07/owl#DatatypeProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage", "title": "range", "to": "http://www.w3.org/2001/XMLSchema#string"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage", "title": "type", "to": "http://www.w3.org/2002/07/owl#DatatypeProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority", "title": "range", "to": "http://www.w3.org/2001/XMLSchema#string"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority", "title": "type", "to": "http://www.w3.org/2002/07/owl#DatatypeProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType", "title": "range", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType", "title": "type", "to": "http://www.w3.org/2002/07/owl#ObjectProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget", "title": "range", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget", "title": "type", "to": "http://www.w3.org/2002/07/owl#ObjectProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#2ed573", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator", "title": "domain", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#9c88ff", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator", "title": "range", "to": "http://www.w3.org/2001/XMLSchema#string"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator", "title": "type", "to": "http://www.w3.org/2002/07/owl#DatatypeProperty"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType", "title": "type", "to": "http://www.w3.org/2002/07/owl#Class"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget", "title": "type", "to": "http://www.w3.org/2002/07/owl#Class"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRuleShape", "title": "type", "to": "http://www.w3.org/ns/shacl#NodeShape"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#IntegrationPatternShape", "title": "type", "to": "http://www.w3.org/ns/shacl#NodeShape"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleShape", "title": "type", "to": "http://www.w3.org/ns/shacl#NodeShape"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleShape", "title": "type", "to": "http://www.w3.org/ns/shacl#NodeShape"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTargetShape", "title": "type", "to": "http://www.w3.org/ns/shacl#NodeShape"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#", "title": "type", "to": "http://www.w3.org/2002/07/owl#Ontology"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPORERule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxRule", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SEMANTIC", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SYNTAX", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}, {"arrows": {"to": {"enabled": true}}, "color": "#ffa502", "from": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRUCTURAL", "title": "type", "to": "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"font": {"size": 12, "face": "Tahoma", "strokeWidth": 3, "strokeColor": "#ffffff"}, "borderWidth": 2, "shadow": {"enabled": true}}, "edges": {"color": {"inherit": false}, "smooth": {"type": "dynamic", "forceDirection": "none", "roundness": 0.5}, "font": {"size": 11, "face": "Arial", "strokeWidth": 2, "strokeColor": "#ffffff"}, "width": 2}, "interaction": {"navigationButtons": true, "keyboard": true, "hover": true, "multiselect": true, "tooltipDelay": 100}, "physics": {"enabled": true, "solver": "forceAtlas2Based", "forceAtlas2Based": {"gravitationalConstant": -50, "centralGravity": 0.01, "springLength": 100, "springConstant": 0.08, "damping": 0.4, "avoidOverlap": 0.5}, "minVelocity": 0.75, "maxVelocity": 50, "stabilization": {"enabled": true, "iterations": 1000, "updateInterval": 100, "onlyDynamicEdges": false, "fit": true}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+    <div style="position: absolute; top: 10px; right: 10px; padding: 10px; 
+                background-color: rgba(255, 255, 255, 0.8); border-radius: 5px; 
+                border: 1px solid #ccc; z-index: 1000;">
+        <h3 style="margin-top: 0;">Legend</h3>
+        <h4>Node Types</h4>
+        <ul style="padding-left: 20px; margin-bottom: 10px;">
+    <li><span style="display:inline-block; width:12px; height:12px; background:#55efc4; margin-right:5px;"></span>Class</li><li><span style="display:inline-block; width:12px; height:12px; background:#74b9ff; margin-right:5px;"></span>Property</li><li><span style="display:inline-block; width:12px; height:12px; background:#ffeaa7; margin-right:5px;"></span>Ontology</li><li><span style="display:inline-block; width:12px; height:12px; background:#ff7675; margin-right:5px;"></span>Instance</li><li><span style="display:inline-block; width:12px; height:12px; background:#dfe6e9; margin-right:5px;"></span>Unknown</li>
+        </ul>
+        <h4>Relationship Types</h4>
+        <ul style="padding-left: 20px; margin-bottom: 5px;">
+    <li><span style="display:inline-block; width:12px; height:12px; background:#3742fa; margin-right:5px;"></span>subClassOf</li><li><span style="display:inline-block; width:12px; height:12px; background:#2ed573; margin-right:5px;"></span>domain</li><li><span style="display:inline-block; width:12px; height:12px; background:#9c88ff; margin-right:5px;"></span>range</li><li><span style="display:inline-block; width:12px; height:12px; background:#ffa502; margin-right:5px;"></span>type</li>
+        </ul>
+    </div>
+    
+    <div style="position: absolute; top: 10px; left: 10px; padding: 10px; 
+                background-color: rgba(255, 255, 255, 0.8); border-radius: 5px; 
+                border: 1px solid #ccc; z-index: 1000; max-width: 300px;">
+        <h3 style="margin-top: 0;">Physics Controls</h3>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="physicsEnabled">Physics Enabled:</label>
+            <input type="checkbox" id="physicsEnabled" checked onchange="togglePhysics(this.checked)">
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="gravitationalConstant">Gravitational Constant:</label>
+            <input type="range" id="gravitationalConstant" min="-200" max="0" value="-50" 
+                  onchange="updatePhysics('forceAtlas2Based.gravitationalConstant', this.value)">
+            <span id="gravitationalConstantValue">-50</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="centralGravity">Central Gravity:</label>
+            <input type="range" id="centralGravity" min="0" max="1" step="0.01" value="0.01" 
+                  onchange="updatePhysics('forceAtlas2Based.centralGravity', this.value)">
+            <span id="centralGravityValue">0.01</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="springLength">Spring Length:</label>
+            <input type="range" id="springLength" min="10" max="500" value="100" 
+                  onchange="updatePhysics('forceAtlas2Based.springLength', this.value)">
+            <span id="springLengthValue">100</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="springConstant">Spring Constant:</label>
+            <input type="range" id="springConstant" min="0" max="1" step="0.01" value="0.08" 
+                  onchange="updatePhysics('forceAtlas2Based.springConstant', this.value)">
+            <span id="springConstantValue">0.08</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="damping">Damping:</label>
+            <input type="range" id="damping" min="0" max="1" step="0.01" value="0.4" 
+                  onchange="updatePhysics('forceAtlas2Based.damping', this.value)">
+            <span id="dampingValue">0.4</span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="avoidOverlap">Avoid Overlap:</label>
+            <input type="range" id="avoidOverlap" min="0" max="1" step="0.01" value="0.5" 
+                  onchange="updatePhysics('forceAtlas2Based.avoidOverlap', this.value)">
+            <span id="avoidOverlapValue">0.5</span>
+        </div>
+        
+        <div>
+            <button onclick="resetPhysics()">Reset Physics</button>
+            <button onclick="stabilize()">Stabilize</button>
+        </div>
+    </div>
+    
+    <script>
+        // Wait for the network to be created
+        setTimeout(function() {
+            // Function to update physics parameters
+            window.updatePhysics = function(param, value) {
+                // Update the displayed value
+                document.getElementById(param.split('.')[1] + 'Value').textContent = value;
+                
+                // Get current physics options
+                const physics = network.physics.options;
+                
+                // Update the specific parameter
+                const [category, property] = param.split('.');
+                physics[category][property] = parseFloat(value);
+                
+                // Apply the updated physics options
+                network.setOptions({ physics: physics });
+            };
+            
+            // Function to toggle physics
+            window.togglePhysics = function(enabled) {
+                network.setOptions({ physics: { enabled: enabled } });
+            };
+            
+            // Function to reset physics to default values
+            window.resetPhysics = function() {
+                const defaultPhysics = {
+                    enabled: true,
+                    solver: "forceAtlas2Based",
+                    forceAtlas2Based: {
+                        gravitationalConstant: -50,
+                        centralGravity: 0.01,
+                        springLength: 100,
+                        springConstant: 0.08,
+                        damping: 0.4,
+                        avoidOverlap: 0.5
+                    },
+                    stabilization: {
+                        enabled: true,
+                        iterations: 1000,
+                        updateInterval: 100,
+                        onlyDynamicEdges: false,
+                        fit: true
+                    }
+                };
+                
+                // Reset the sliders to default values
+                document.getElementById('gravitationalConstant').value = -50;
+                document.getElementById('gravitationalConstantValue').textContent = -50;
+                document.getElementById('centralGravity').value = 0.01;
+                document.getElementById('centralGravityValue').textContent = 0.01;
+                document.getElementById('springLength').value = 100;
+                document.getElementById('springLengthValue').textContent = 100;
+                document.getElementById('springConstant').value = 0.08;
+                document.getElementById('springConstantValue').textContent = 0.08;
+                document.getElementById('damping').value = 0.4;
+                document.getElementById('dampingValue').textContent = 0.4;
+                document.getElementById('avoidOverlap').value = 0.5;
+                document.getElementById('avoidOverlapValue').textContent = 0.5;
+                document.getElementById('physicsEnabled').checked = true;
+                
+                // Apply default physics
+                network.setOptions({ physics: defaultPhysics });
+            };
+            
+            // Function to stabilize the network
+            window.stabilize = function() {
+                network.stabilize();
+            };
+        }, 1000); // Wait 1 second for the network to initialize
+    </script>
+    </body>
+</html>

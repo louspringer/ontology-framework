@@ -9,6 +9,7 @@ from typing import ClassVar, Dict
 from rdflib import Graph, URIRef, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
 from ontology_framework.modules.ttl_fixer import TTLFixer
+from ontology_framework.graphdb_client import GraphDBClient
 
 # Define namespaces
 CHECKIN = Namespace("http://example.org/checkin#")
@@ -123,6 +124,63 @@ class TestTTLValidation(unittest.TestCase):
         self.assertTrue(prefix_results.get("rdf", False))
         self.assertTrue(prefix_results.get("rdfs", False))
         self.assertTrue(prefix_results.get("owl", False))
+
+@pytest.fixture
+def graphdb_client():
+    """Create a GraphDB client instance."""
+    client = GraphDBClient("http://localhost:7200", "validation")
+    yield client
+    # Cleanup: Clear the validation repository
+    client.clear_graph()
+
+def test_validate_ttl_file(graphdb_client):
+    """Test validating a TTL file."""
+    # Create a test graph
+    graph = Graph()
+    graph.add((URIRef("http://example.org/test"), RDF.type, RDFS.Class))
+    graph.add((URIRef("http://example.org/test"), RDFS.label, Literal("Test Class")))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Run validation
+    results = graphdb_client.query("""
+        PREFIX sh: <http://www.w3.org/ns/shacl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?result ?message
+        WHERE {
+            ?result a sh:ValidationResult ;
+                   sh:resultMessage ?message .
+        }
+    """)
+    
+    assert not results.get("results", {}).get("bindings"), "Validation should pass"
+
+def test_validate_invalid_ttl(graphdb_client):
+    """Test validating an invalid TTL file."""
+    # Create an invalid graph (missing required properties)
+    graph = Graph()
+    graph.add((URIRef("http://example.org/test"), RDF.type, RDFS.Class))
+    
+    # Upload the graph
+    graphdb_client.upload_graph(graph)
+    
+    # Run validation
+    results = graphdb_client.query("""
+        PREFIX sh: <http://www.w3.org/ns/shacl#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?result ?message
+        WHERE {
+            ?result a sh:ValidationResult ;
+                   sh:resultMessage ?message .
+        }
+    """)
+    
+    assert results.get("results", {}).get("bindings"), "Validation should fail"
 
 if __name__ == '__main__':
     unittest.main() 

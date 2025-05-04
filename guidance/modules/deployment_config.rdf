@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="http://example.org/deployment#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:nodeID="n26ba5b3fe7f44e14bb9b17151573147db1">
+    <rdf:type rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <ns1:cpuLimit>1000m</ns1:cpuLimit>
+    <ns1:cpuRequest>500m</ns1:cpuRequest>
+    <ns1:memoryLimit>256Mi</ns1:memoryLimit>
+    <ns1:memoryRequest>128Mi</ns1:memoryRequest>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#hasEnvironment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>has environment</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:range rdf:resource="http://example.org/deployment#Environment"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#development">
+    <rdf:type rdf:resource="http://example.org/deployment#Environment"/>
+    <rdfs:label>Development</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#prodConfig">
+    <rdf:type rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:label>Production Configuration</rdfs:label>
+    <ns1:hasEnvironment rdf:resource="http://example.org/deployment#production"/>
+    <ns1:hasResourceRequirements rdf:nodeID="n26ba5b3fe7f44e14bb9b17151573147db2"/>
+    <ns1:port rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</ns1:port>
+    <ns1:replicas rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</ns1:replicas>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#DeploymentConfig">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Deployment Configuration</rdfs:label>
+    <rdfs:comment>Configuration for application deployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#ResourceRequirements">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Resource Requirements</rdfs:label>
+    <rdfs:comment>CPU and memory requirements for deployment</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#hasResourceRequirements">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>has resource requirements</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:range rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#Environment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Environment</rdfs:label>
+    <rdfs:comment>Deployment environment (dev, staging, prod)</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#memoryRequest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>memory request</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#cpuRequest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>CPU request</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#port">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>port</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#devConfig">
+    <rdf:type rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:label>Development Configuration</rdfs:label>
+    <ns1:hasEnvironment rdf:resource="http://example.org/deployment#development"/>
+    <ns1:hasResourceRequirements rdf:nodeID="n26ba5b3fe7f44e14bb9b17151573147db1"/>
+    <ns1:port rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8080</ns1:port>
+    <ns1:replicas rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ns1:replicas>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#cpuLimit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>CPU limit</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#replicas">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>replicas</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#DeploymentConfig"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n26ba5b3fe7f44e14bb9b17151573147db2">
+    <rdf:type rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <ns1:cpuLimit>2000m</ns1:cpuLimit>
+    <ns1:cpuRequest>1000m</ns1:cpuRequest>
+    <ns1:memoryLimit>1Gi</ns1:memoryLimit>
+    <ns1:memoryRequest>512Mi</ns1:memoryRequest>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#memoryLimit">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>memory limit</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/deployment#ResourceRequirements"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Deployment Configuration Ontology</rdfs:label>
+    <rdfs:comment>Ontology for managing deployment configurations</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#staging">
+    <rdf:type rdf:resource="http://example.org/deployment#Environment"/>
+    <rdfs:label>Staging</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/deployment#production">
+    <rdf:type rdf:resource="http://example.org/deployment#Environment"/>
+    <rdfs:label>Production</rdfs:label>
+  </rdf:Description>
+</rdf:RDF>

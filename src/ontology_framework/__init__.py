@@ -1,13 +1,12 @@
 """
-Ontology Framework package.
+Ontology Framework for semantic web applications.
 """
 
 __version__ = "0.1.0"
 
 from .meta import MetaOntology, OntologyPatch
-from .ontology_types import PatchType, PatchStatus
+from .ontology_types import PatchType, PatchStatus, ValidationRuleType, ErrorSeverity, ErrorType, ErrorStep, ErrorResult, ValidationRule, RiskLevel, ComplianceLevel, SecurityLevel, PerformanceMetric, ValidationResult, ValidationError
 from .metameta import MetaMetaOntology
-from .ontology_manager import OntologyManager
 from .exceptions import (
     OntologyFrameworkError,
     ValidationError,
@@ -44,6 +43,8 @@ from .modules import (
     PackageManager
 )
 from .deployment_modeler import DeploymentModeler
+from .graphdb_client import GraphDBClient
+from .sparql_operations import QueryType, QueryResult, QueryExecutor, GraphDBExecutor, Neo4jExecutor, execute_sparql, SparqlOperations
 
 # Expose the CLI main function
 from .cli import cli as main
@@ -87,5 +88,16 @@ __all__ = [
     'TestSetupManager',
     'PackageManager',
     'DeploymentModeler',
+    'GraphDBClient',
+    'QueryType',
+    'QueryResult',
+    'QueryExecutor',
+    'GraphDBExecutor',
+    'Neo4jExecutor',
+    'execute_sparql',
+    'SparqlOperations',
+    'ValidationRuleType',
+    'ErrorType',
+    'PerformanceMetric',
     'main'
 ] 

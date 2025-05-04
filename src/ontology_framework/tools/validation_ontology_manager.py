@@ -1,66 +1,89 @@
 from pathlib import Path
 from typing import List, Dict, Optional, Union
-from rdflib import Literal, URIRef
+from rdflib import Literal, URIRef, Graph, Namespace
 from rdflib.namespace import RDF, RDFS
 import logging
 
-from .ontology_manager import OntologyManager
+from ..graphdb_client import GraphDBClient
 
-class ValidationOntologyManager(OntologyManager):
-    """Manages validation rules using RDFlib for safe ontology operations."""
+class ValidationOntologyManager:
+    """Manages validation rules using GraphDB for safe ontology operations."""
     
-    def __init__(self):
-        super().__init__(base_uri="http://example.org/validation#")
+    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "validation"):
+        self.client = GraphDBClient(base_url, repository)
+        self.ns = Namespace("http://example.org/validation#")
         self._setup_validation_structure()
         
     def _setup_validation_structure(self):
         """Initialize the core validation ontology structure."""
         # Create core validation classes
-        self.validation_rule_class = self.add_class(
-            "ValidationRule",
-            "Validation Rule",
-            "Base class for all validation rules"
-        )
-        
-        self.validation_level_class = self.add_class(
-            "ValidationLevel",
-            "Validation Level",
-            "Defines the severity level of validation rules"
-        )
+        self.validation_rule_class = URIRef(self.ns["ValidationRule"])
+        self.validation_level_class = URIRef(self.ns["ValidationLevel"])
         
         # Add validation properties
-        self.has_level = self.add_property(
-            "hasLevel",
-            self.validation_rule_class,
-            self.validation_level_class,
-            "has validation level"
-        )
+        self.has_level = URIRef(self.ns["hasLevel"])
+        self.has_description = URIRef(self.ns["hasDescription"])
         
-        self.has_description = self.add_property(
-            "hasDescription",
-            self.validation_rule_class,
-            RDFS.Literal,
-            "has description"
-        )
+        # Create the initial graph with validation structure
+        graph = Graph()
+        graph.bind("val", self.ns)
         
-    def add_validation_rule(self, rule_id: str, description: str, 
-                          level: str) -> URIRef:
+        # Add core classes
+        graph.add((self.validation_rule_class, RDF.type, RDFS.Class))
+        graph.add((self.validation_rule_class, RDFS.label, Literal("Validation Rule")))
+        graph.add((self.validation_rule_class, RDFS.comment, Literal("Base class for all validation rules")))
+        
+        graph.add((self.validation_level_class, RDF.type, RDFS.Class))
+        graph.add((self.validation_level_class, RDFS.label, Literal("Validation Level")))
+        graph.add((self.validation_level_class, RDFS.comment, Literal("Defines the severity level of validation rules")))
+        
+        # Add properties
+        graph.add((self.has_level, RDF.type, RDF.Property))
+        graph.add((self.has_level, RDFS.domain, self.validation_rule_class))
+        graph.add((self.has_level, RDFS.range, self.validation_level_class))
+        graph.add((self.has_level, RDFS.label, Literal("has validation level")))
+        
+        graph.add((self.has_description, RDF.type, RDF.Property))
+        graph.add((self.has_description, RDFS.domain, self.validation_rule_class))
+        graph.add((self.has_description, RDFS.range, RDFS.Literal))
+        graph.add((self.has_description, RDFS.label, Literal("has description")))
+        
+        # Upload the initial structure
+        self.client.upload_graph(graph)
+        
+    def add_validation_rule(self, rule_id: str, description: str, level: str) -> URIRef:
         """Add a new validation rule to the ontology or update if exists."""
-        rule_uri = self.ns[f"Rule_{rule_id}"]
+        rule_uri = URIRef(self.ns[f"Rule_{rule_id}"])
+        level_uri = URIRef(self.ns[f"Level_{level}"])
         
-        # Remove any existing triples for this rule
-        self.graph.remove((rule_uri, None, None))
+        # Create the update query
+        update = f"""
+        PREFIX val: <{str(self.ns)}>
+        PREFIX rdf: <{str(RDF)}>
+        PREFIX rdfs: <{str(RDFS)}>
         
-        # Add the rule as an instance of ValidationRule
-        self.graph.add((rule_uri, RDF.type, self.validation_rule_class))
-        self.graph.add((rule_uri, self.has_description, Literal(description)))
+        DELETE {{
+            <{str(rule_uri)}> ?p ?o .
+            <{str(level_uri)}> ?p2 ?o2 .
+        }}
+        INSERT {{
+            <{str(rule_uri)}> rdf:type val:ValidationRule ;
+                             val:hasDescription "{description}" ;
+                             val:hasLevel <{str(level_uri)}> .
+            <{str(level_uri)}> rdf:type val:ValidationLevel .
+        }}
+        WHERE {{
+            OPTIONAL {{ <{str(rule_uri)}> ?p ?o . }}
+            OPTIONAL {{ <{str(level_uri)}> ?p2 ?o2 . }}
+        }}
+        """
         
-        # Create and link the validation level
-        level_uri = self.ns[f"Level_{level}"]
-        self.graph.add((level_uri, RDF.type, self.validation_level_class))
-        self.graph.add((rule_uri, self.has_level, level_uri))
-        
-        return rule_uri
+        try:
+            self.client.update(update)
+            return rule_uri
+        except Exception as e:
+            logging.error(f"Failed to add validation rule: {e}")
+            raise
         
     def get_validation_rules(self) -> List[Dict[str, Union[str, Optional[str]]]]:
         """Retrieve all validation rules using SPARQL."""
@@ -81,53 +104,38 @@ class ValidationOntologyManager(OntologyManager):
         """
         
         try:
-            results = self.execute_sparql_query(query)
-            if isinstance(results, bool):
-                logging.error("Unexpected boolean result from SELECT query")
+            results = self.client.query(query)
+            if not isinstance(results, dict) or "results" not in results:
+                logging.error("Unexpected query result format")
                 return []
                 
+            bindings = results["results"]["bindings"]
             return [
                 {
-                    "rule": str(rule),
-                    "description": str(desc),
-                    "level": str(level) if level else None
+                    "rule": binding["rule"]["value"],
+                    "description": binding["description"]["value"],
+                    "level": binding.get("level", {}).get("value")
                 }
-                for rule, desc, level in results
+                for binding in bindings
             ]
         except Exception as e:
             logging.error(f"Failed to get validation rules: {e}")
             return []
         
     def validate_rule_exists(self, rule_id: str) -> bool:
-        """Check if a validation rule with the given ID exists in the ontology.
-        
-        Args:
-            rule_id (str): The unique identifier of the validation rule to check.
-            
-        Returns:
-            bool: True if the rule exists, False otherwise.
-            
-        Example:
-            >>> manager = ValidationOntologyManager()
-            >>> manager.validate_rule_exists("RULE_001")
-            True
-        """
-        # Debug: Print all validation rules in the graph
-        for s, p, o in self.graph.triples((None, RDF.type, self.validation_rule_class)):
-            logging.debug(f"Found validation rule: {s}")
-            
+        """Check if a validation rule with the given ID exists in the ontology."""
         query = f"""
         PREFIX rdf: <{str(RDF)}>
         PREFIX val: <{str(self.ns)}>
         
         ASK {{
-            ?rule rdf:type ?validationRule .
-            FILTER(?rule = val:Rule_{rule_id} && ?validationRule = ?validationRuleClass)
-            VALUES (?validationRuleClass) {{ (<{str(self.validation_rule_class)}>) }}
+            ?rule rdf:type val:ValidationRule .
+            FILTER(?rule = val:Rule_{rule_id})
         }}
         """
         try:
-            return bool(self.execute_sparql_query(query))
+            result = self.client.query(query)
+            return result.get("boolean", False)
         except Exception as e:
             logging.error(f"Failed to validate rule existence: {e}")
             return False 

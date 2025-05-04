@@ -11,6 +11,7 @@ from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, SH
 from rdflib.query import ResultRow
 import warnings
+from .graphdb_client import GraphDBClient
 
 class QueryType(Enum):
     """Types of SPARQL queries."""
@@ -58,14 +59,11 @@ class QueryResult:
         self.empty = empty
         
     def __str__(self) -> str:
-        """Get string representation of query result."""
+        """Get string representation of result."""
         status = "SUCCESS" if self.success else "FAILURE"
         if self.empty:
             status = "EMPTY"
-        return (
-            f"QueryResult[{status}] {self.query_type.value} "
-            f"({self.execution_time:.2f}s) - {self.timestamp}"
-        )
+        return f"{status} ({self.query_type.value}): {self.execution_time:.2f}s"
 
 class QueryExecutor(ABC):
     """Abstract base class for SPARQL query executors."""
@@ -84,18 +82,19 @@ class QueryExecutor(ABC):
         pass
 
 class GraphDBExecutor(QueryExecutor):
-    """Query executor for GraphDB."""
+    """Executor for GraphDB SPARQL queries."""
     
-    def __init__(self, endpoint: str = "http://localhost:7200/repositories/guidance"):
+    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "guidance"):
         """Initialize GraphDB executor.
         
         Args:
-            endpoint: GraphDB SPARQL endpoint URL
+            base_url: Base URL of GraphDB server
+            repository: Repository name
         """
-        self.endpoint = endpoint
+        self.client = GraphDBClient(base_url, repository)
         
     def execute_query(self, query: str, query_type: QueryType) -> QueryResult:
-        """Execute a SPARQL query on GraphDB.
+        """Execute a SPARQL query.
         
         Args:
             query: SPARQL query string
@@ -106,33 +105,18 @@ class GraphDBExecutor(QueryExecutor):
         """
         start_time = datetime.now()
         try:
-            if query_type in [QueryType.SELECT, QueryType.ASK]:
-                response = requests.post(
-                    self.endpoint,
-                    headers={'Accept': 'application/sparql-results+json'},
-                    params={'query': query}
-                )
-                response.raise_for_status()
-                json_data = response.json()
-                
+            if query_type in [QueryType.INSERT, QueryType.DELETE, QueryType.UPDATE]:
+                # Handle update queries
+                success = self.client.update(query)
+                data = success
+            else:
+                # Handle read queries
+                result = self.client.query(query)
                 if query_type == QueryType.ASK:
-                    data = json_data.get("boolean", False)
-                    empty = not data
+                    data = result.get("boolean", False)
                 else:
-                    bindings = json_data.get("results", {}).get("bindings", [])
-                    data = bindings
-                    empty = len(bindings) == 0
+                    data = result.get("results", {}).get("bindings", [])
                     
-            else:  # UPDATE queries
-                response = requests.post(
-                    f"{self.endpoint}/statements",
-                    headers={'Content-Type': 'application/sparql-update'},
-                    data=query
-                )
-                response.raise_for_status()
-                data = True
-                empty = False
-                
             execution_time = (datetime.now() - start_time).total_seconds()
             return QueryResult(
                 success=True,
@@ -142,103 +126,14 @@ class GraphDBExecutor(QueryExecutor):
                 query_type=query_type,
                 timestamp=start_time,
                 query=query,
-                empty=empty
+                empty=len(data) == 0 if isinstance(data, list) else False
             )
             
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             execution_time = (datetime.now() - start_time).total_seconds()
             return QueryResult(
                 success=False,
-                data=None,
-                error=str(e),
-                execution_time=execution_time,
-                query_type=query_type,
-                timestamp=start_time,
-                query=query,
-                empty=True
-            )
-
-class JenaFusekiExecutor(QueryExecutor):
-    """Query executor for Apache Jena Fuseki."""
-    
-    def __init__(self, endpoint: str = "http://localhost:3030/dataset"):
-        """Initialize Jena Fuseki executor.
-        
-        Args:
-            endpoint: Fuseki SPARQL endpoint URL
-            
-        Note:
-            This class is deprecated. Use GraphDBExecutor instead.
-        """
-        warnings.warn(
-            "JenaFusekiExecutor is deprecated. Use GraphDBExecutor instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
-        self.endpoint = endpoint
-        
-    def execute_query(self, query: str, query_type: QueryType) -> QueryResult:
-        """Execute a SPARQL query on Fuseki.
-        
-        Args:
-            query: SPARQL query string
-            query_type: Type of query
-            
-        Returns:
-            Query result
-            
-        Note:
-            This method is deprecated. Use GraphDBExecutor instead.
-        """
-        warnings.warn(
-            "JenaFusekiExecutor is deprecated. Use GraphDBExecutor instead.",
-            DeprecationWarning,
-            stacklevel=2
-        )
-        start_time = datetime.now()
-        try:
-            if query_type in [QueryType.SELECT, QueryType.ASK]:
-                response = requests.post(
-                    f"{self.endpoint}/sparql",
-                    data={"query": query}
-                )
-                response.raise_for_status()
-                json_data = response.json()
-                
-                if query_type == QueryType.ASK:
-                    data = json_data.get("boolean", False)
-                    empty = not data
-                else:
-                    bindings = json_data.get("results", {}).get("bindings", [])
-                    data = bindings
-                    empty = len(bindings) == 0
-                    
-            else:  # UPDATE queries
-                response = requests.post(
-                    f"{self.endpoint}/update",
-                    data={"update": query}
-                )
-                response.raise_for_status()
-                data = True
-                empty = False
-                
-            execution_time = (datetime.now() - start_time).total_seconds()
-            return QueryResult(
-                success=True,
-                data=data,
-                error=None,
-                execution_time=execution_time,
-                query_type=query_type,
-                timestamp=start_time,
-                query=query,
-                empty=empty
-            )
-            
-        except requests.exceptions.RequestException as e:
-            execution_time = (datetime.now() - start_time).total_seconds()
-            return QueryResult(
-                success=False,
-                data=None,
+                data=[],
                 error=str(e),
                 execution_time=execution_time,
                 query_type=query_type,

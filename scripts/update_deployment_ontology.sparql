@@ -1,0 +1,44 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX ns1: <http://example.org/guidance#>
+
+# Mark JenaFuseki classes as deprecated
+INSERT DATA {
+    ns1:JenaFusekiDeployment owl:deprecated true .
+    ns1:JenaFusekiTest owl:deprecated true .
+}
+
+# Update test configurations to use GraphDB
+DELETE {
+    ?test ns1:hasTestEndpoint ?oldEndpoint .
+    ?test ns1:hasExpectedResponse ?oldResponse .
+}
+INSERT {
+    ?test ns1:hasServiceName "graphdb" .
+    ?test ns1:hasServicePort "7200" .
+    ?test ns1:hasServiceEndpoint "/rest/repositories" .
+    ?test ns1:hasDatasetName "test_dataset" .
+}
+WHERE {
+    ?test a ns1:JenaFusekiTest .
+    OPTIONAL { ?test ns1:hasTestEndpoint ?oldEndpoint }
+    OPTIONAL { ?test ns1:hasExpectedResponse ?oldResponse }
+}
+
+# Update deployment configurations to use GraphDB
+DELETE {
+    ?deployment ns1:hasServiceEndpoint ?oldEndpoint .
+    ?deployment ns1:hasServicePort ?oldPort .
+}
+INSERT {
+    ?deployment ns1:hasServiceName "graphdb" .
+    ?deployment ns1:hasServicePort "7200" .
+    ?deployment ns1:hasServiceEndpoint "/rest/repositories" .
+    ?deployment ns1:hasDatasetName "test_dataset" .
+}
+WHERE {
+    ?deployment a ns1:JenaFusekiDeployment .
+    OPTIONAL { ?deployment ns1:hasServiceEndpoint ?oldEndpoint }
+    OPTIONAL { ?deployment ns1:hasServicePort ?oldPort }
+} 

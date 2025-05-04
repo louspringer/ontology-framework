@@ -2,6 +2,8 @@ from rdflib import Graph, Namespace, Literal, URIRef, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 from rdflib.namespace import PROV, TIME
 import datetime
+import rdflib
+from ontology_framework.tools.guidance_manager import GuidanceManager
 
 def create_guidance_update():
     # Create a new graph
@@ -97,10 +99,48 @@ def create_guidance_update():
     return g
 
 def main():
-    print("Updating guidance ontology with integrated planning concepts...")
-    g = create_guidance_update()
-    print("Guidance ontology updated successfully!")
-    print("\nNew guidance file saved as 'guidance_updated.ttl'")
+    # Initialize guidance manager
+    manager = GuidanceManager("guidance.ttl")
+    
+    # Start a transaction for our updates
+    tx_id = manager.begin_transaction()
+    
+    try:
+        # Add new validation rules
+        manager.add_validation_rule(
+            "NewRule1",
+            "A new validation rule",
+            "HIGH",
+            ["pattern1", "pattern2"]
+        )
+        
+        manager.add_validation_rule(
+            "NewRule2",
+            "Another validation rule",
+            "MEDIUM",
+            ["pattern3"]
+        )
+        
+        # Add new validation patterns
+        manager.add_validation_pattern(
+            "NewPattern1",
+            {"description": "A new validation pattern", "type": "Type1"}
+        )
+        
+        manager.add_validation_pattern(
+            "NewPattern2",
+            {"description": "Another validation pattern", "type": "Type2"}
+        )
+        
+        # Commit the transaction
+        manager.commit_transaction(tx_id)
+        print("Successfully updated guidance ontology")
+        
+    except Exception as e:
+        # Rollback on error
+        manager.rollback_transaction(tx_id)
+        print(f"Error updating guidance ontology: {str(e)}")
+        raise
 
 if __name__ == "__main__":
     main() 

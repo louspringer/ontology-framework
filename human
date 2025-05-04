@@ -1,2 +1,38 @@
 Validation Report
-Conforms: True
+Conforms: False
+Results (5):
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class guidance:ValidationRuleType ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("Validation rule must have a rule type") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path guidance:hasRuleType ]
+	Focus Node: guidance:ConsistencyRule
+	Value Node: guidance:CONSISTENCY
+	Result Path: guidance:hasRuleType
+	Message: Validation rule must have a rule type
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class guidance:ValidationRuleType ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("Validation rule must have a rule type") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path guidance:hasRuleType ]
+	Focus Node: guidance:SecurityRule
+	Value Node: guidance:SECURITY
+	Result Path: guidance:hasRuleType
+	Message: Validation rule must have a rule type
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class guidance:ValidationRuleType ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("Validation rule must have a rule type") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path guidance:hasRuleType ]
+	Focus Node: guidance:InstallationRule
+	Value Node: guidance:INSTALLATION
+	Result Path: guidance:hasRuleType
+	Message: Validation rule must have a rule type
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class guidance:ValidationRuleType ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("Validation rule must have a rule type") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path guidance:hasRuleType ]
+	Focus Node: guidance:SensitiveDataRule
+	Value Node: guidance:SENSITIVEDATA
+	Result Path: guidance:hasRuleType
+	Message: Validation rule must have a rule type
+Constraint Violation in ClassConstraintComponent (http://www.w3.org/ns/shacl#ClassConstraintComponent):
+	Severity: sh:Violation
+	Source Shape: [ sh:class guidance:ValidationRuleType ; sh:maxCount Literal("1", datatype=xsd:integer) ; sh:message Literal("Validation rule must have a rule type") ; sh:minCount Literal("1", datatype=xsd:integer) ; sh:path guidance:hasRuleType ]
+	Focus Node: guidance:SPORERule
+	Value Node: guidance:SPORE
+	Result Path: guidance:hasRuleType
+	Message: Validation rule must have a rule type

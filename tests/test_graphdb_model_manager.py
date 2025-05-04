@@ -1,9 +1,10 @@
-"""Tests for the GraphDB model manager."""
+"""Test suite for GraphDB model manager."""
 
 import unittest
+from pathlib import Path
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
-from src.ontology_framework.model.graphdb_model_manager import GraphDBModelManager
+from ontology_framework.model.graphdb_model_manager import GraphDBModelManager
 
 # Define namespaces
 GDB = Namespace("http://example.org/graphdb#")
