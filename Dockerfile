@@ -1,13 +1,15 @@
-FROM python:3.10-slim-bullseye
+FROM continuumio/miniconda3:latest
 
 # Set working directory
 WORKDIR /app
 
 # Copy the entire project
+COPY environment.yml .
 COPY . .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN conda env create -f environment.yml && conda clean -afy
+ENV PATH=/opt/conda/envs/ontology-framework/bin:$PATH
 
 # Download spaCy model
 RUN python -m spacy download en_core_web_md

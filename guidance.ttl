@@ -63,24 +63,26 @@ guidance: a owl:Ontology ;
 
 guidance:ConsistencyRule a guidance:ValidationRule ;
     rdfs:label "ConsistencyRule" ;
-    guidance:hasMessage "Validates consistency rules" ;
+    guidance:hasMessage "ConsistencyRule validation failed",
+        "Validates consistency rules" ;
     guidance:hasPattern "consistency-pattern" ;
     guidance:hasPriority "HIGH" ;
-    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasRuleType guidance:CONSISTENCY,
+        guidance:STRUCTURAL ;
     guidance:hasTarget guidance:ConsistencyValidation ;
-    guidance:hasType "Consistency",
-        "STRUCTURAL" ;
+    guidance:hasType "Consistency" ;
     guidance:hasValidator "validate_consistency" .
 
 guidance:InstallationRule a guidance:ValidationRule ;
     rdfs:label "InstallationRule" ;
-    guidance:hasMessage "Validates installation rules" ;
+    guidance:hasMessage "InstallationRule validation failed",
+        "Validates installation rules" ;
     guidance:hasPattern "install-pattern" ;
     guidance:hasPriority "HIGH" ;
-    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasRuleType guidance:INSTALLATION,
+        guidance:STRUCTURAL ;
     guidance:hasTarget guidance:InstallationValidation ;
-    guidance:hasType "Installation",
-        "STRUCTURAL" ;
+    guidance:hasType "Installation" ;
     guidance:hasValidator "validate_installation" .
 
 guidance:IntegrationPatternShape a sh:NodeShape ;
@@ -114,29 +116,32 @@ guidance:ModuleShape a sh:NodeShape ;
 
 guidance:SPORERule a guidance:ValidationRule ;
     rdfs:label "SPORERule" ;
-    guidance:hasMessage "Validates SPORE-specific rules" ;
+    guidance:hasMessage "SPORERule validation failed",
+        "Validates SPORE-specific rules" ;
     guidance:hasPattern "spore-pattern" ;
     guidance:hasPriority "HIGH" ;
-    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasRuleType guidance:SPORE,
+        guidance:STRUCTURAL ;
     guidance:hasTarget guidance:SPOREValidation ;
-    guidance:hasType "SPORE",
-        "STRUCTURAL" ;
+    guidance:hasType "SPORE" ;
     guidance:hasValidator "validate_spore" .
 
 guidance:SecurityRule a guidance:ValidationRule ;
     rdfs:label "SecurityRule" ;
-    guidance:hasMessage "Validates security rules" ;
+    guidance:hasMessage "SecurityRule validation failed",
+        "Validates security rules" ;
     guidance:hasPattern "no-secrets" ;
     guidance:hasPriority "HIGH" ;
-    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasRuleType guidance:SECURITY,
+        guidance:STRUCTURAL ;
     guidance:hasTarget guidance:SecurityValidation ;
-    guidance:hasType "STRUCTURAL",
-        "Security" ;
+    guidance:hasType "Security" ;
     guidance:hasValidator "validate_security" .
 
 guidance:SemanticRule a guidance:ValidationRule ;
     rdfs:label "SemanticRule" ;
-    guidance:hasMessage "Validates semantic rules and relationships" ;
+    guidance:hasMessage "SemanticRule validation failed",
+        "Validates semantic rules and relationships" ;
     guidance:hasPriority "HIGH" ;
     guidance:hasRuleType guidance:SEMANTIC ;
     guidance:hasTarget guidance:SemanticValidation ;
@@ -145,17 +150,20 @@ guidance:SemanticRule a guidance:ValidationRule ;
 
 guidance:SensitiveDataRule a guidance:ValidationRule ;
     rdfs:label "SensitiveDataRule" ;
-    guidance:hasMessage "Validates sensitive data patterns" ;
+    guidance:hasMessage "SensitiveDataRule validation failed",
+        "Validates sensitive data patterns" ;
     guidance:hasPriority "HIGH" ;
-    guidance:hasRuleType guidance:STRUCTURAL ;
+    guidance:hasRuleType guidance:SENSITIVEDATA,
+        guidance:STRUCTURAL ;
     guidance:hasTarget guidance:SensitiveDataValidation ;
-    guidance:hasType "STRUCTURAL",
-        "SensitiveData" ;
-    guidance:hasValidator "validate_sensitive_data" .
+    guidance:hasType "SensitiveData" ;
+    guidance:hasValidator "validate_sensitive_data",
+        "validate_sensitivedata" .
 
 guidance:SyntaxRule a guidance:ValidationRule ;
     rdfs:label "SyntaxRule" ;
-    guidance:hasMessage "Validates syntax rules and patterns" ;
+    guidance:hasMessage "SyntaxRule validation failed",
+        "Validates syntax rules and patterns" ;
     guidance:hasPattern "^[a-zA-Z0-9_]+$" ;
     guidance:hasPriority "HIGH" ;
     guidance:hasRuleType guidance:SYNTAX ;
@@ -193,23 +201,7 @@ guidance:ValidationRuleShape a sh:NodeShape ;
     sh:targetClass guidance:ValidationRule .
 
 guidance:ValidationTargetShape a sh:NodeShape ;
-    sh:property [ sh:maxCount 1 ;
-            sh:message "Validation target must have a comment" ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment ],
-        [ sh:maxCount 1 ;
-            sh:message "Validation target must have a label" ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ],
-        [ sh:maxCount 1 ;
-            sh:message "Validation target must have a comment" ;
-            sh:minCount 1 ;
-            sh:path rdfs:comment ],
-        [ sh:maxCount 1 ;
-            sh:message "Validation target must have a label" ;
-            sh:minCount 1 ;
-            sh:path rdfs:label ],
-        [ sh:datatype xsd:string ;
+    sh:property [ sh:datatype xsd:string ;
             sh:languageIn ( "en" ) ;
             sh:maxCount 1 ;
             sh:message "Validation target must have an English comment" ;
@@ -239,11 +231,17 @@ guidance:hasPattern a owl:DatatypeProperty ;
 
 guidance:ConsistencyValidation a guidance:ValidationTarget ;
     rdfs:label "Consistency Validation"@en ;
-    rdfs:comment "Validates consistency rules"@en .
+    rdfs:comment "Validates consistency rules"@en ;
+    guidance:hasMessage "Validation failed for Consistency Validation" ;
+    guidance:hasType "Consistency" ;
+    guidance:hasValidator "validate_consistency" .
 
 guidance:InstallationValidation a guidance:ValidationTarget ;
     rdfs:label "Installation Validation"@en ;
-    rdfs:comment "Validates installation rules"@en .
+    rdfs:comment "Validates installation rules"@en ;
+    guidance:hasMessage "Validation failed for Installation Validation" ;
+    guidance:hasType "Installation" ;
+    guidance:hasValidator "validate_installation" .
 
 guidance:SEMANTIC a guidance:ValidationRuleType ;
     rdfs:label "Semantic Validation"@en ;
@@ -255,7 +253,10 @@ guidance:SHACL a guidance:ValidationRuleType ;
 
 guidance:SPOREValidation a guidance:ValidationTarget ;
     rdfs:label "SPORE Validation"@en ;
-    rdfs:comment "Validates SPORE-specific rules"@en .
+    rdfs:comment "Validates SPORE-specific rules"@en ;
+    guidance:hasMessage "Validation failed for SPORE Validation" ;
+    guidance:hasType "SPORE" ;
+    guidance:hasValidator "validate_spore" .
 
 guidance:SYNTAX a guidance:ValidationRuleType ;
     rdfs:label "Syntax Validation"@en ;
@@ -263,11 +264,17 @@ guidance:SYNTAX a guidance:ValidationRuleType ;
 
 guidance:SecurityValidation a guidance:ValidationTarget ;
     rdfs:label "Security Validation"@en ;
-    rdfs:comment "Validates security rules"@en .
+    rdfs:comment "Validates security rules"@en ;
+    guidance:hasMessage "Validation failed for Security Validation" ;
+    guidance:hasType "Security" ;
+    guidance:hasValidator "validate_security" .
 
 guidance:SemanticValidation a guidance:ValidationTarget ;
     rdfs:label "Semantic Validation"@en ;
-    rdfs:comment "Validates semantic rules and relationships"@en .
+    rdfs:comment "Validates semantic rules and relationships"@en ;
+    guidance:hasMessage "Validation failed for Semantic Validation" ;
+    guidance:hasType "Semantic" ;
+    guidance:hasValidator "validate_semantic" .
 
 guidance:SensitiveDataValidation a owl:Class,
         guidance:ValidationTarget ;
@@ -277,7 +284,10 @@ guidance:SensitiveDataValidation a owl:Class,
 
 guidance:SyntaxValidation a guidance:ValidationTarget ;
     rdfs:label "Syntax Validation"@en ;
-    rdfs:comment "Validates syntax rules and patterns"@en .
+    rdfs:comment "Validates syntax rules and patterns"@en ;
+    guidance:hasMessage "Validation failed for Syntax Validation" ;
+    guidance:hasType "Syntax" ;
+    guidance:hasValidator "validate_syntax" .
 
 guidance:hasMessage a owl:DatatypeProperty ;
     rdfs:label "has message"@en ;

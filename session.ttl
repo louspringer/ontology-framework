@@ -1,168 +1,116 @@
-@prefix bt: <http://example.org/bow-tie-pattern#> .
-@prefix ex: <http://example.org/bow-tie-examples#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix task: <http://www.w3.org/ns/adms#Task#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix process: <./process#> .
+@prefix guidance: <./guidance#> .
+@prefix session: <./session#> .
 
-ex:ErrorHandlingImplementation a owl:NamedIndividual ;
-    rdfs:label "Error Handling Implementation" ;
-    rdfs:comment "Implementation of error handling and validation rules based on guidance" ;
-    prov:generatedAtTime "2024-04-11T14:00:00+00:00"^^xsd:dateTime ;
-    prov:used bt:ErrorHandlingOntology ;
-    prov:wasGeneratedBy ex:CurrentSession .
+session: a owl:Ontology ;
+    rdfs:label "Session Ontology"@en ;
+    rdfs:comment "Tracks the current work session and next steps"@en ;
+    owl:versionInfo "0.1.0" .
 
-ex:ImplementationTrace a owl:NamedIndividual ;
-    rdfs:label "Implementation Trace" ;
-    ex:hasRequirement [ rdfs:label "Error Type Hierarchy" ;
-            ex:source "guidance/modules/runtime_error_handling.ttl" ;
-            rdfs:comment "Must implement proper error type classification" ],
-        [ rdfs:label "Validation Rules" ;
-            ex:source "guidance/modules/validation_rules.ttl" ;
-            rdfs:comment "Must implement all required validation types" ],
-        [ rdfs:label "Metrics and Thresholds" ;
-            ex:source "guidance/modules/runtime_error_handling.ttl" ;
-            rdfs:comment "Must track and maintain defined metrics" ] ;
-    rdfs:comment "Traceability of implementation decisions" .
+session:Session a owl:Class ;
+    rdfs:label "Session"@en ;
+    rdfs:comment "A work session in the ontology framework"@en ;
+    owl:versionInfo "0.1.0" .
 
-ex:NextSteps a owl:NamedIndividual ;
-    rdfs:label "Implementation Next Steps",
-        "Next Steps for Bow Tie Pattern" ;
-    ex:hasNextStep [ rdfs:label "Add Compliance Validation" ;
-            ex:priority "HIGH" ;
-            ex:targetDate "2024-04-11T17:30:00+00:00"^^xsd:dateTime ;
-            rdfs:comment "Implement compliance validation for ISO27001, GDPR, and HIPAA" ],
-        [ rdfs:label "Enhance Test Coverage" ;
-            ex:priority "MEDIUM" ;
-            ex:targetDate "2024-04-11T18:00:00+00:00"^^xsd:dateTime ;
-            rdfs:comment "Add test cases for new validation rules and metrics" ] ;
-    ex:hasPriority "HIGH" ;
-    ex:requires [ rdfs:label "Implement validation pipeline" ;
-            rdfs:comment "Create automated validation pipeline using the SPARQL queries" ],
-        [ rdfs:label "Add more transformation scenarios" ;
-            rdfs:comment "Create examples for additional domains (e.g., audio, video, knowledge graphs)" ],
-        [ rdfs:label "Document best practices" ;
-            rdfs:comment "Create guidelines for implementing and using the transformation patterns" ] ;
-    ex:targetDate "2024-04-18"^^xsd:date ;
-    rdfs:comment "Next steps in the error handling implementation",
-        "Planned next steps for the bow tie transformation pattern" .
+session:Task a owl:Class ;
+    rdfs:label "Task"@en ;
+    rdfs:comment "A task to be completed in the session"@en ;
+    owl:versionInfo "0.1.0" .
 
-task:OracleRDFImplementation a task:Task ;
-    rdfs:label "Oracle RDF Implementation" ;
-    rdfs:comment "Implementation of Oracle RDF store integration" ;
-    rdfs:seeAlso <file:///Users/lou/ontology-framework/tests/test_oracle_rdf.py> ;
-    prov:endedAtTime "2024-03-21T11:00:00+00:00"^^xsd:dateTime ;
-    prov:generated <file:///Users/lou/ontology-framework/src/ontology_framework/oracle_rdf.py> ;
-    prov:startedAtTime "2024-03-21T10:00:00+00:00"^^xsd:dateTime ;
-    prov:wasAssociatedWith <https:/github.com/louspringer/ontology-framework> .
+session:hasTask a owl:ObjectProperty ;
+    rdfs:label "has task"@en ;
+    rdfs:comment "Links a session to its tasks"@en ;
+    rdfs:domain session:Session ;
+    rdfs:range session:Task ;
+    owl:versionInfo "0.1.0" .
 
-ex:BowTiePatternDevelopment a owl:NamedIndividual ;
-    rdfs:label "Bow Tie Pattern Development" ;
-    rdfs:comment "Development of the bow tie transformation pattern ontology" ;
-    prov:generatedAtTime "2024-04-11T14:00:00+00:00"^^xsd:dateTime ;
-    prov:used bt:BowTieOntology ;
-    prov:wasGeneratedBy ex:CurrentSession .
+session:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:comment "The status of a task or session"@en ;
+    rdfs:domain [ rdf:type owl:Class ;
+                  owl:unionOf ( session:Task session:Session )
+                ] ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "0.1.0" .
 
-ex:CompletedTasks a owl:NamedIndividual ;
-    rdfs:label "Completed Development Tasks",
-        "Completed Implementation Tasks" ;
-    ex:hasCompletedTask [ rdfs:label "Updated ValidationRule Enum" ;
-            rdfs:comment "Added missing validation rules SEVERITY and STEP_ORDER" ;
-            prov:generatedAtTime "2024-04-11T16:00:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Added Neural Network Example" ;
-            rdfs:comment "Created example instances for neural network pruning and fine-tuning" ;
-            prov:generatedAtTime "2024-04-11T14:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Added Text Summarization Example" ;
-            rdfs:comment "Created example instances for text summarization and expansion" ;
-            prov:generatedAtTime "2024-04-11T14:45:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Added SHACL Validation Rules" ;
-            rdfs:comment "Created additional SHACL shapes for transformation chains and restoration strategies" ;
-            prov:generatedAtTime "2024-04-11T15:00:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Added SPARQL Validation Queries" ;
-            rdfs:comment "Created SPARQL queries for validating ontology structure and completeness" ;
-            prov:generatedAtTime "2024-04-11T15:15:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Added Inferred Requirements" ;
-            rdfs:comment "Documented requirements inferred from the transformation patterns" ;
-            prov:generatedAtTime "2024-04-11T15:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Identified Correct API Documentation Endpoint" ;
-            rdfs:comment "Confirmed API documentation is available at https://app.boldo.io/api-doc" ;
-            prov:generatedAtTime "2024-04-11T16:35:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Documented Failed API Documentation Scraping Attempts" ;
-            rdfs:comment "Recorded failed attempts to access API documentation endpoints /api/alpha/docs and /api/alpha/swagger" ;
-            prov:generatedAtTime "2024-04-11T16:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Fixed Boldo API Tests" ;
-            rdfs:comment "Updated API endpoints from /api/alpha/ to /api/v1/ and improved error handling" ;
-            prov:generatedAtTime "2024-04-11T17:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Fixed Conformance Tracking Tests" ;
-            rdfs:comment "Added missing namespace definitions and updated violation URI generation" ;
-            prov:generatedAtTime "2024-04-11T18:00:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Fixed Patch Management Tests" ;
-            rdfs:comment "Added missing namespace definitions, operation methods, and error handling" ;
-            prov:generatedAtTime "2024-04-11T18:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Enhanced Error Handler" ;
-            rdfs:comment "Updated error handler with new validation rules and metrics tracking" ;
-            prov:generatedAtTime "2024-04-11T16:30:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Fixed Spore Integration Tests" ;
-            rdfs:comment "Created SporeIntegrator implementation with all required methods" ;
-            prov:generatedAtTime "2024-04-11T19:00:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Implemented Metrics Tracking" ;
-            rdfs:comment "Added comprehensive metrics tracking for error handling" ;
-            prov:generatedAtTime "2024-04-11T17:00:00+00:00"^^xsd:dateTime ],
-        [ rdfs:label "Refactored Namespace Structure" ;
-            rdfs:comment "Separated pattern definitions (bt:) from example instances (ex:)" ;
-            prov:generatedAtTime "2024-04-11T16:00:00+00:00"^^xsd:dateTime ],
-        ex:ComplianceValidationTests ;
-    rdfs:comment "Tasks completed during the development session",
-        "Tasks completed during the implementation session" .
+session:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "has priority"@en ;
+    rdfs:comment "The priority of a task"@en ;
+    rdfs:domain session:Task ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "0.1.0" .
 
-ex:ComplianceValidationTests a prov:Activity ;
-    rdfs:label "Compliance Validation Tests" ;
-    rdfs:comment "Implemented and ran tests for compliance validation rules" ;
-    prov:endedAtTime "2024-04-11T18:30:00+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2024-04-11T18:00:00+00:00"^^xsd:dateTime .
+session:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:comment "A detailed description of a task"@en ;
+    rdfs:domain session:Task ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "0.1.0" .
 
-ex:TestFixingWork a owl:NamedIndividual ;
-    rdfs:label "Test Suite Fixing Work" ;
-    ex:hasPriority "HIGH" ;
-    ex:requires [ rdfs:label "Fix Boldo API Tests" ;
-            rdfs:comment "Update API endpoints and test data for Boldo explorer tests" ],
-        [ rdfs:label "Fix Conformance Tracking Tests" ;
-            rdfs:comment "Add missing namespace definitions and update conformance tracking tests" ],
-        [ rdfs:label "Fix Patch Management Tests" ;
-            rdfs:comment "Update PatchManager implementation to match test expectations" ],
-        [ rdfs:label "Fix Spore Integration Tests" ;
-            rdfs:comment "Update spore integration test assertions and definitions" ],
-        [ rdfs:label "Fix Oracle RDF Tests" ;
-            rdfs:comment "Create missing test ontology files and update test queries" ] ;
-    ex:targetDate "2024-04-11"^^xsd:date ;
-    rdfs:comment "Work items for fixing failing tests" ;
-    prov:generatedAtTime "2024-04-11T17:00:00+00:00"^^xsd:dateTime ;
-    prov:wasAttributedTo ex:OntologyDeveloper ;
-    prov:wasDerivedFrom ex:GuidanceOntology ;
-    prov:wasGeneratedBy ex:TestFixingSession ;
-    prov:wasRevisionOf [ prov:atTime "2024-04-11T17:00:00+00:00"^^xsd:dateTime ;
-            prov:hadPrimarySource ex:TestFixingWork ;
-            prov:specializationOf ex:TestFixingSession ] .
+session:currentSession a session:Session ;
+    rdfs:label "Current Session"@en ;
+    rdfs:comment "The current work session"@en ;
+    session:hasStatus "Active" .
 
-bt:BowTieOntology prov:generatedAtTime "2024-04-11T14:00:00+00:00"^^xsd:dateTime ;
-    prov:wasAttributedTo ex:OntologyDeveloper ;
-    prov:wasDerivedFrom ex:GuidanceOntology ;
-    prov:wasRevisionOf [ prov:atTime "2024-04-11T16:00:00+00:00"^^xsd:dateTime ;
-            prov:hadPrimarySource ex:CompletedTasks ;
-            prov:specializationOf ex:BowTiePatternDevelopment ] .
+session:task1 a session:Task ;
+    rdfs:label "Set Up Project Ontology"@en ;
+    rdfs:comment "Create a new project ontology using GuidanceMCPService"@en ;
+    session:hasStatus "In Progress" ;
+    session:hasPriority "HIGH" ;
+    session:hasDescription "Using BFG9K MCP to create and manage a new project ontology" .
 
-ex:CurrentSession a owl:NamedIndividual ;
-    rdfs:label "Bow Tie Transformation Pattern Development",
-        "Error Handling and Validation Rules Implementation" ;
-    rdfs:comment "Session for developing and validating the bow tie transformation pattern ontology",
-        "Session for implementing error handling and validation rules based on guidance" ;
-    prov:startedAtTime "2024-04-11T14:00:00+00:00"^^xsd:dateTime ;
-    prov:wasAssociatedWith ex:OntologyDeveloper .
+session:task2 a session:Task ;
+    rdfs:label "Define Domain Classes"@en ;
+    rdfs:comment "Define domain-specific classes for the project"@en ;
+    session:hasStatus "Pending" ;
+    session:hasPriority "HIGH" ;
+    session:hasDescription "Create classes with proper labels, comments, and version info" .
 
-ex:TestFixingSession a owl:NamedIndividual ;
-    rdfs:label "Test Suite Fixing Session" ;
-    rdfs:comment "Session for fixing failing tests in the test suite" ;
-    prov:startedAtTime "2024-04-11T17:00:00+00:00"^^xsd:dateTime ;
-    prov:wasAssociatedWith ex:OntologyDeveloper .
+session:task3 a session:Task ;
+    rdfs:label "Establish Validation Rules"@en ;
+    rdfs:comment "Set up SHACL validation rules for the domain"@en ;
+    session:hasStatus "Pending" ;
+    session:hasPriority "MEDIUM" ;
+    session:hasDescription "Define SHACL shapes to validate the domain ontology" .
+
+session:currentSession session:hasTask session:task1, session:task2, session:task3 .
+
+# SHACL shapes for validation
+session:TaskShape a sh:NodeShape ;
+    sh:targetClass session:Task ;
+    sh:property [
+        sh:path session:hasStatus ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "Pending" "In Progress" "Completed" "Blocked" ) ;
+    ] , [
+        sh:path session:hasPriority ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "HIGH" "MEDIUM" "LOW" ) ;
+    ] , [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:languageIn ( "en" ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] , [
+        sh:path rdfs:comment ;
+        sh:datatype xsd:string ;
+        sh:languageIn ( "en" ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
 

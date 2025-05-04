@@ -1,7 +1,6 @@
 channels:
 - conda-forge
 - defaults
-- https://raw.githubusercontent.com/louspringer/bfg9k/main/channel
 dependencies:
 - python=3.10
 - pip
@@ -42,7 +41,7 @@ dependencies:
   - PyPDF2>=3.0.0
   - httpx>=0.24.0
   - yt-dlp>=2023.0
-- bfg9k
-- bfg9k-mcp
-- bfg9k-ontology
+  - bfg9k
+  - bfg9k-mcp
+  - bfg9k-ontology
 name: ontology-framework
