@@ -197,3 +197,7 @@ GraphDB.epub
 GraphDB.pdf
 miniconda.sh
 *.ttl
+
+# Ignore GraphDB index and backup files
+graphdb.index
+*.bak
