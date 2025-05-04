@@ -4683,3 +4683,42 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Session Summary - 2025-05-04T16:10:01.383360
+
+- Total tests: 658
+- Passed: 656
+- Failed: 2
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-04T16:10:33.526130
+
+- Total tests: 0
+- Passed: 0
+- Failed: 0
+- Exit status: 4
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Session Summary - 2025-05-04T16:11:12.782786
+
+- Total tests: 658
+- Passed: 656
+- Failed: 2
+- Exit status: 2
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
