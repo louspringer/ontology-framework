@@ -1,0 +1,77 @@
+@startuml OntologyFrameworkArchitecture
+
+!define LIGHTBLUE
+!define LIGHTORANGE
+!define LIGHTGREEN
+!define LIGHTRED
+
+skinparam componentStyle uml2
+skinparam componentBackgroundColor LIGHTBLUE
+skinparam databaseBackgroundColor LIGHTORANGE
+skinparam fileBackgroundColor LIGHTGREEN
+skinparam noteBackgroundColor LIGHTRED
+skinparam arrowColor black
+
+' Components
+component "GuidanceMCPService\n(BFG9K Maintenance Server)" as MCPService
+component "ModelContextManager" as MCM
+component "SPARQL Client" as SPARQLClient
+component "Patch Management" as PatchMgmt
+
+' External systems
+database "GraphDB" as GraphDB {
+    folder "Ontology Graphs" as OntoGraphs
+    folder "SHACL Shapes" as SHACLShapes
+    folder "Ingestion Registry" as Registry
+}
+
+' Files
+file "TTL Files\n(Projections)" as TTLFiles
+file "Validation Rules" as Rules
+file "Migration Manifest" as Manifest
+
+' Relationships
+MCPService --> MCM : uses
+MCPService --> SPARQLClient : queries/updates
+MCPService --> PatchMgmt : manages patches
+MCM --> TTLFiles : reads/writes
+SPARQLClient --> GraphDB : connects to
+PatchMgmt --> OntoGraphs : applies patches to
+PatchMgmt --> Registry : records migrations
+
+' Notes
+note top of MCPService
+  <b>GuidanceMCPService (BFG9K)</b>
+  Central coordination point for:
+  - GraphDB-TTL synchronization
+  - Validation
+  - Ingestion registry maintenance
+end note
+
+note bottom of GraphDB
+  <b>Source of Truth</b>
+  - Authoritative representation
+  - Contains all inference state
+  - Versioned via named graphs
+end note
+
+note right of TTLFiles
+  <b>TTL Projections</b>
+  - For documentation
+  - For Git version control
+  - Not authoritative
+end note
+
+note bottom of Registry
+  <b>Ingestion Registry</b>
+  - Tracks TTL to GraphDB migrations
+  - Records versions, timestamps
+  - Maintains audit trail
+end note
+
+' Process flow
+MCPService -[#blue,dashed]-> GraphDB : 1. Load & validate
+MCPService -[#blue,dashed]-> Registry : 2. Register ingestion
+MCPService -[#blue,dashed]-> TTLFiles : 3. Project updated model
+
+@enduml 

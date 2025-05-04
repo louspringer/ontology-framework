@@ -1,0 +1,36 @@
+FROM openjdk:11-slim
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    graphviz \
+    fonts-dejavu \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a directory for the application
+WORKDIR /opt/plantuml
+
+# Copy the PlantUML JAR file
+COPY plantuml.jar /opt/plantuml/plantuml.jar
+
+# Create a user to run the application
+RUN groupadd -r plantuml && useradd -r -g plantuml plantuml
+RUN chown -R plantuml:plantuml /opt/plantuml
+
+# Set the environment variables
+ENV PLANTUML_LIMIT_SIZE=8192
+ENV PLANTUML_SECURITY_PROFILE=INTERNET
+
+# Create a simple web server script
+RUN echo '#!/bin/bash\njava -Djetty.contextPath=${JETTY_CONTEXTPATH:-/} -jar /opt/plantuml/plantuml.jar -picoweb:${PORT:-20075}' > /opt/plantuml/run.sh && \
+    chmod +x /opt/plantuml/run.sh
+
+# Switch to non-root user
+USER plantuml
+
+# Expose the port
+EXPOSE 20075
+
+# Command to run the server
+CMD ["/opt/plantuml/run.sh"] 

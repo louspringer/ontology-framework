@@ -1,0 +1,131 @@
+@startuml OntologyFrameworkClassDiagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor #EEEEEE
+skinparam noteBackgroundColor #FFFFCC
+
+package "MCP Service Layer" {
+  class MaintenanceServer {
+    - model: Graph
+    - active_validations: List
+    - processed_results: List
+    + __init__()
+    + get_maintenance_model(): str
+    + get_validation_rules(): List
+    + get_maintenance_metrics(): List
+    + validate_artifact(artifact_uri: str): Dict
+    + track_change(change_id: str, description: str, affected_components: List): Dict
+    + update_metric(metric_type: str, value: float): Dict
+    + start_validation(target_id: str, config: Dict): Dict
+    + process_validation(validation_result: Dict): Dict
+  }
+
+  class ModelContextManager {
+    - ontology_path: str
+    - graph: Graph
+    + __init__(ontology_path: str)
+    + setup_mcp_config()
+    + validate_ontology(): Dict
+    + query_ontology(sparql_query: str): List
+    + update_ontology(sparql_update: str): void
+    + get_validation_rules(): List
+    + add_validation_rule(rule_uri: str, message: str, target: str, priority: str): void
+    + get_validation_targets(): List
+  }
+}
+
+package "GraphDB Integration" {
+  class SPARQLClient {
+    - endpoint_url: str
+    - auth: Dict
+    - default_graph: str
+    + __init__(endpoint_url: str, auth: Dict)
+    + query(sparql_query: str): List
+    + update(sparql_update: str): Dict
+    + load_ttl(ttl_path: str, graph_uri: str): Dict
+    + clear_graph(graph_uri: str): Dict
+    + get_graph_metadata(graph_uri: str): Dict
+  }
+
+  class PatchManagement {
+    - client: SPARQLClient
+    - registry_graph: str
+    + __init__(client: SPARQLClient)
+    + create_patch(changes: List): Dict
+    + apply_patch(patch_id: str): Dict
+    + record_migration(source_file: str, target_graph: str, version: str): Dict
+    + get_migration_history(graph_uri: str): List
+  }
+}
+
+package "Validation Framework" {
+  class ValidationRule {
+    - rule_id: str
+    - message: str
+    - priority: str
+    - target: str
+    - validator: str
+    - sparql: str
+    + __init__(rule_id: str, config: Dict)
+    + validate(graph: Graph): Dict
+    + get_validator(): str
+  }
+
+  class SHACLValidator {
+    - shapes_graph: Graph
+    + __init__(shapes_graph: Graph)
+    + validate(data_graph: Graph): Dict
+    + get_validation_report(): Dict
+  }
+  
+  class DAGValidator {
+    - rules: List
+    + __init__(rules: List)
+    + validate_structure(graph: Graph): Dict
+    + validate_components(graph: Graph): Dict
+  }
+}
+
+package "Registry Management" {
+  class IngestionRegistry {
+    - client: SPARQLClient
+    - registry_graph: str
+    + __init__(client: SPARQLClient, registry_graph: str)
+    + register_ingestion(ttl_file: str, graph_uri: str, version: str): Dict
+    + get_ingestion_status(ttl_file: str): Dict
+    + list_registered_files(): List
+    + validate_ingestion_consistency(): Dict
+  }
+}
+
+' Relationships
+MaintenanceServer -- ModelContextManager : uses
+MaintenanceServer -- ValidationRule : manages
+ModelContextManager -- SPARQLClient : uses
+SPARQLClient -- PatchManagement : enables
+ValidationRule <|-- SHACLValidator : implements
+ValidationRule <|-- DAGValidator : implements
+PatchManagement -- IngestionRegistry : updates
+
+note right of MaintenanceServer
+  The BFG9K Maintenance Server 
+  orchestrates the entire process
+end note
+
+note bottom of SPARQLClient
+  Handles all interactions with
+  GraphDB through SPARQL
+end note
+
+note top of IngestionRegistry
+  Maintains record of all TTLs
+  ingested into GraphDB
+end note
+
+note right of ValidationRule
+  Defines validation rules
+  that enforce ontology constraints
+end note
+
+@enduml 

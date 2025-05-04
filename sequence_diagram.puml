@@ -1,0 +1,87 @@
+@startuml OntologyManagementWorkflow
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderThickness 2
+skinparam noteBackgroundColor LightYellow
+skinparam noteBorderColor DarkYellow
+
+participant "User/Client" as User
+participant "GuidanceMCPService\n(BFG9K)" as MCP
+participant "ModelContext\nManager" as MCM
+participant "SPARQL\nClient" as SPARQL
+participant "Ingestion\nRegistry" as Registry
+database "GraphDB" as GraphDB
+collections "TTL Files" as TTL
+
+note across: Step 1: Author TTL (Projection)
+
+User -> TTL: Create/Edit Ontology
+activate TTL
+
+note across: Step 2: Validate with PySHACL
+
+User -> MCP: Request TTL Validation
+activate MCP
+MCP -> MCM: Validate ontology
+activate MCM
+MCM -> MCM: Run PySHACL validation
+MCM --> MCP: Validation results
+deactivate MCM
+MCP --> User: Validation report
+deactivate MCP
+
+note across: Step 3: Clear & Load into GraphDB
+
+User -> MCP: Request GraphDB ingestion
+activate MCP
+MCP -> SPARQL: Clear target graph
+activate SPARQL
+SPARQL -> GraphDB: CLEAR GRAPH <graph_uri>
+GraphDB --> SPARQL: Successful
+SPARQL --> MCP: Graph cleared
+deactivate SPARQL
+
+MCP -> SPARQL: Load TTL into graph
+activate SPARQL
+SPARQL -> GraphDB: LOAD <ttl_file> INTO GRAPH <graph_uri>
+GraphDB --> SPARQL: Successful
+SPARQL --> MCP: TTL loaded
+deactivate SPARQL
+MCP --> User: Ingestion successful
+deactivate MCP
+
+note across: Step 4: Version and Document Projection
+
+User -> MCP: Request Graph Export
+activate MCP
+MCP -> SPARQL: Export graph to TTL
+activate SPARQL
+SPARQL -> GraphDB: CONSTRUCT ... WHERE ... 
+GraphDB --> SPARQL: Graph data
+SPARQL -> TTL: Write updated TTL projection
+TTL --> SPARQL: File written
+SPARQL --> MCP: Export complete
+deactivate SPARQL
+MCP --> User: Export successful
+deactivate MCP
+
+note across: Step 5: Register Ingestion in Manifest Graph
+
+User -> MCP: Register ingestion
+activate MCP
+MCP -> Registry: Record ingestion event
+activate Registry
+Registry -> SPARQL: Store ingestion metadata
+activate SPARQL
+SPARQL -> GraphDB: INSERT DATA { ... }
+GraphDB --> SPARQL: Successful
+SPARQL --> Registry: Metadata stored
+deactivate SPARQL
+Registry --> MCP: Registration complete
+deactivate Registry
+MCP --> User: Ingestion registered
+deactivate MCP
+
+note over MCP, GraphDB: GraphDB is now the authoritative source\nTTL files are simply projections
+
+@enduml 

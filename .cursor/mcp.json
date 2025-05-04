@@ -62,6 +62,10 @@
     "bfg9k": {
       "url": "http://localhost:8080",
       "type": "bfg9k"
+    },
+    "datapilot": {
+      "url": "http://localhost:7702/sse",
+      "type": "sse"
     }
   }
 }

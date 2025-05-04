@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  plantuml:
+    build:
+      context: .
+      dockerfile: Dockerfile.plantuml
+    container_name: plantuml-server
+    ports:
+      - "20075:20075"
+    environment:
+      - PLANTUML_LIMIT_SIZE=8192
+      - PLANTUML_SECURITY_PROFILE=INTERNET
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:20075"]
+      interval: 30s
+      timeout: 10s
+      retries: 3 

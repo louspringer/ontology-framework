@@ -1,0 +1,93 @@
+@startuml GraphDBIntegration
+
+skinparam componentStyle rectangle
+skinparam componentBackgroundColor LightBlue
+skinparam databaseBackgroundColor LightGreen
+skinparam cloudBackgroundColor LightGray
+skinparam noteBackgroundColor LightYellow
+skinparam arrowColor Black
+
+' Components
+[GuidanceMCPService] as MCP
+[SPARQL Client] as SPARQL
+[PySHACL Validator] as PySHACL
+[Ingestion Registry] as Registry
+[Export Manager] as Export
+
+' External systems
+database "GraphDB" {
+  [Named Graph 1] as Graph1
+  [Named Graph 2] as Graph2
+  [Registry Graph] as RegGraph
+  [SHACL Shapes Graph] as SHACLGraph
+}
+
+cloud "Git Repository" {
+  [TTL Files] as TTL
+  [Documentation] as Docs
+}
+
+' Interfaces
+interface "GraphDB REST API" as GDBAPI
+interface "SPARQL Endpoint" as SPARQLEndpoint
+interface "File I/O" as FileIO
+
+' Connections
+MCP -- SPARQL
+MCP -- PySHACL
+MCP -- Registry
+MCP -- Export
+
+SPARQL -- SPARQLEndpoint
+SPARQLEndpoint -- GraphDB
+
+Registry -- RegGraph
+
+PySHACL -- FileIO
+PySHACL -- SHACLGraph
+
+Export -- FileIO
+FileIO -- TTL
+
+GraphDB -- GDBAPI
+
+' Notes and labels
+note right of MCP
+  <b>GuidanceMCPService (BFG9K)</b> orchestrates:
+  - Validation via PySHACL
+  - GraphDB interactions via SPARQL
+  - Registration in Registry Graph
+  - Export to TTL projections
+end note
+
+note right of Registry
+  <b>Ingestion Registry</b> records:
+  - Source TTL file
+  - Target named graph
+  - Version
+  - Timestamp
+  - Validation state
+end note
+
+note bottom of GraphDB
+  <b>GraphDB is the source of truth</b>
+  - Named graphs enable versioning
+  - SHACL validation at REST API level
+  - Materialized inferences
+end note
+
+note bottom of TTL
+  <b>TTL files are projections</b>
+  - Generated from GraphDB exports
+  - Used for documentation and review
+  - Initial authoring before GraphDB
+end note
+
+' Process flows
+MCP -[#blue,dashed]-> SPARQL : 1. Execute SPARQL operations
+SPARQL -[#blue,dashed]-> GraphDB : 2. Manage graphs
+MCP -[#blue,dashed]-> Registry : 3. Record changes
+MCP -[#blue,dashed]-> Export : 4. Generate projections
+Export -[#blue,dashed]-> TTL : 5. Write TTL files
+
+@enduml 

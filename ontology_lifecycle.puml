@@ -1,0 +1,60 @@
+@startuml OntologyLifecycle
+
+skinparam stateBorderColor Black
+skinparam stateBackgroundColor LightBlue
+skinparam stateArrowColor Black
+skinparam stateFontStyle bold
+skinparam noteBackgroundColor LightYellow
+
+state "TTL Creation/Edit" as TTLEdit
+state "PySHACL Validation" as Validation
+state "GraphDB Ingestion" as Ingestion
+state "GraphDB Testing" as Testing
+state "TTL Export (Projection)" as Export
+state "Ingestion Registry Update" as Registry
+
+[*] --> TTLEdit : Start lifecycle
+
+TTLEdit --> Validation : Submit for validation
+Validation --> TTLEdit : Validation failed
+Validation --> Ingestion : Validation passed
+
+Ingestion --> Testing : Loaded in GraphDB
+Testing --> Ingestion : Test failed, reload required
+Testing --> Export : Testing passed
+Testing --> Registry : Record successful ingestion
+
+Export --> TTLEdit : New edit cycle starts
+Registry --> [*] : Lifecycle complete
+
+note right of TTLEdit
+  TTL files are initially authored but are 
+  **NOT the source of truth** once loaded
+end note
+
+note right of Validation
+  PySHACL validates the TTL structure
+  before loading into GraphDB
+end note
+
+note right of Ingestion
+  Graph is cleared and TTL is loaded 
+  to prevent lingering inferences
+end note
+
+note right of Testing
+  GraphDB testing verifies the loaded
+  ontology works correctly with inference
+end note
+
+note right of Export
+  Exports from GraphDB create TTL projections
+  that reflect the authoritative state
+end note
+
+note right of Registry
+  Each successful ingestion is recorded
+  with version, timestamp, and context
+end note
+
+@enduml 

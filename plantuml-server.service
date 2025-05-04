@@ -1,0 +1,15 @@
+[Unit]
+Description=PlantUML Server
+After=network.target
+
+[Service]
+Type=simple
+User=plantuml
+Group=plantuml
+WorkingDirectory=/opt/plantuml
+ExecStart=/usr/bin/java -jar /opt/plantuml/plantuml.jar -picoweb:20075
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target 
