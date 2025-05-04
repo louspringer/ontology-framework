@@ -1,0 +1,16 @@
+# Exclude persistent data and logs
+data/
+logs/
+# Exclude temporary embeddings and caches
+temp_embeddings/
+__pycache__/
+# Exclude Python artifacts
+*.pyc
+*.pyo
+# Exclude log files
+*.log
+# Exclude Git metadata
+.git/
+# Exclude Docker artifacts
+Dockerfile~
+.dockerignore 
