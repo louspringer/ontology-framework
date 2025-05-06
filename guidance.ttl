@@ -20,17 +20,12 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
 : a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
-    owl:versionInfo "1.0.0" ;
-    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#>,
-                <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
+    owl:versionInfo "1.0.0" .
 
 :ClassHierarchyCheck a :ConsistencyRule ;
     :hasMessage "Check for cycles in class hierarchy" ;
     :hasPriority "HIGH" ;
-    :hasTarget :ClassHierarchy ;
+    :hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchy"^^xsd:anyURI ;
     :hasValidator "validate_consistency" .
 
 :IntegrationRequirement a owl:Class ;
@@ -59,22 +54,22 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     rdfs:comment "Pattern for implementing validation rules"@en .
 
 :ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ],
-        [ sh:datatype xsd:anyURI ;
+    sh:property [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path :hasTarget ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasValidator ] ;
+            sh:path :hasPriority ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasValidator ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ] ;
     sh:targetClass :ValidationRule .
 
 :ConsistencyRule a owl:Class ;
@@ -92,62 +87,9 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
 :hasValidator a owl:DatatypeProperty ;
     rdfs:domain :ValidationRule .
 
+owl:DatatypeProperty rdfs:subClassOf rdf:Property .
+
+owl:Class rdfs:subClassOf rdfs:Class .
+
 :ValidationRule a owl:Class .
-
-:LegacySupport a owl:Class ;
-    rdfs:label "Legacy Support"@en ;
-    rdfs:comment "Support for legacy systems"@en .
-
-:LegacyMapping a owl:Class ;
-    rdfs:label "Legacy Mapping"@en ;
-    rdfs:comment "Mapping between legacy and current systems"@en .
-
-:hasLegacyMapping a owl:ObjectProperty ;
-    rdfs:label "has legacy mapping"@en ;
-    rdfs:comment "Links a module to its legacy mapping"@en ;
-    rdfs:domain :LegacySupport ;
-    rdfs:range :LegacyMapping .
-
-:CoreLegacySupport a :LegacySupport ;
-    :hasLegacyMapping :CoreMapping1, :CoreMapping2 .
-
-:ModelLegacySupport a :LegacySupport ;
-    :hasLegacyMapping :ModelMapping1, :ModelMapping2 .
-
-:SecurityLegacySupport a :LegacySupport ;
-    :hasLegacyMapping :SecurityMapping1, :SecurityMapping2 .
-
-:ValidationLegacySupport a :LegacySupport ;
-    :hasLegacyMapping :ValidationMapping1, :ValidationMapping2 .
-
-:CollaborationLegacySupport a :LegacySupport ;
-    :hasLegacyMapping :CollaborationMapping1, :CollaborationMapping2 .
-
-:CoreMapping1 a :LegacyMapping .
-:CoreMapping2 a :LegacyMapping .
-:ModelMapping1 a :LegacyMapping .
-:ModelMapping2 a :LegacyMapping .
-:SecurityMapping1 a :LegacyMapping .
-:SecurityMapping2 a :LegacyMapping .
-:ValidationMapping1 a :LegacyMapping .
-:ValidationMapping2 a :LegacyMapping .
-:CollaborationMapping1 a :LegacyMapping .
-:CollaborationMapping2 a :LegacyMapping .
-
-:ModuleRegistry a owl:Class ;
-    rdfs:label "Module Registry"@en ;
-    rdfs:comment "Registry for managing ontology modules"@en .
-
-:registeredModule a owl:ObjectProperty ;
-    rdfs:label "registered module"@en ;
-    rdfs:comment "Links the registry to registered modules"@en ;
-    rdfs:domain :ModuleRegistry ;
-    rdfs:range owl:Ontology .
-
-:MainRegistry a :ModuleRegistry ;
-    :registeredModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#>,
-                     <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
 

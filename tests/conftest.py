@@ -24,11 +24,11 @@ logger = logging.getLogger(__name__)
 
 # Test fixtures
 import pytest
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF, RDFS, OWL, XSD
 import tempfile
 import shutil
 
-import pytest
 from ontology_framework.modules.patch_management import PatchManager
 from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus, MetaOntology
 from tests.utils.test_monitoring import TestMonitor
@@ -39,7 +39,8 @@ TEST_CONFIG = {
     "environment": "development",
     "timeout": 300,
     "report_file": "tests/test_report.md",
-    "report_format": "markdown"
+    "report_format": "markdown",
+    "test_data_dir": Path(__file__).parent / "test_data"
 }
 
 @pytest.fixture
@@ -225,4 +226,19 @@ def test_namespaces() -> dict[str, Namespace]:
         "rdf": Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
         "rdfs": Namespace("http://www.w3.org/2000/01/rdf-schema#"),
         "ex": Namespace("http://example.org/")
-    } 
+    }
+
+@pytest.fixture
+def test_data_dir() -> Path:
+    """Return the path to the test data directory."""
+    return TEST_CONFIG["test_data_dir"]
+
+@pytest.fixture
+def python_shapes(test_data_dir) -> Path:
+    """Return the path to the Python shapes file."""
+    return test_data_dir / "python_shapes.ttl"
+
+@pytest.fixture
+def test_ontology(test_data_dir) -> Path:
+    """Return the path to the test ontology file."""
+    return test_data_dir / "test_ontology.ttl" 
