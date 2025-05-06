@@ -3,11 +3,14 @@ from rdflib.namespace import Namespace
 from pyshacl import validate
 import requests
 import json
+import logging
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
 BFG9K = Namespace("https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
+
+logger = logging.getLogger(__name__)
 
 class BFG9KManager:
     def __init__(self, config_path="bfg9k_config.ttl"):
@@ -27,11 +30,30 @@ class BFG9KManager:
             response = requests.post(url, files={'ontology': f})
         return response.json()
     
-    def query_ontology(self, sparql_query):
-        """Execute SPARQL query using BFG9K server"""
-        url = f"{self.base_url}/query"
-        response = requests.post(url, json={'query': sparql_query})
-        return response.json()
+    def query_ontology(self, query):
+        """Query the ontology using SPARQL."""
+        try:
+            response = requests.post(
+                f"{self.base_url}/repositories/ontology/statements",
+                data={"query": query},
+                headers={"Accept": "application/json"}
+            )
+            response.raise_for_status()
+            
+            if not response.text.strip():
+                logger.warning("Empty response received from GraphDB")
+                return {}
+            
+            try:
+                return response.json()
+            except requests.exceptions.JSONDecodeError as e:
+                logger.error(f"Failed to decode JSON response: {e}")
+                logger.debug(f"Response content: {response.text}")
+                return {}
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to query GraphDB: {e}")
+            return {}
     
     def update_ontology(self, ontology_path):
         """Update ontology using BFG9K server"""

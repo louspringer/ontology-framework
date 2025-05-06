@@ -1,58 +1,53 @@
 version: '3.8'
 
 services:
+  bfg9k-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./guidance.ttl:/app/guidance.ttl
+      - ./data:/app/data
+      - ./temp_embeddings:/app/temp_embeddings
+    environment:
+      - PYTHONPATH=/app/src
+      - GRAPHDB_URL=http://graphdb:7200
+      - MCP_PORT=8080
+    depends_on:
+      - graphdb
+    command: conda run --no-capture-output -n ontology-framework python bfg9k_mcp_server.py
+
   graphdb:
     image: ontotext/graphdb:10.4.0
-    container_name: graphdb
     ports:
       - "7200:7200"
     volumes:
-      - ./data/graphdb:/opt/graphdb/home
+      - graphdb-data:/opt/graphdb/home
     environment:
-      - GDB_HEAP_SIZE=1g
-      - GDB_JAVA_OPTS=-Dgraphdb.workbench.maxUploadSize=100000000 -Xms512m -Xmx512m
-    restart: unless-stopped
+      - GDB_HEAP_SIZE=2g
+      - GDB_MIN_MEM=1g
+      - GDB_MAX_MEM=2g
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
       interval: 30s
       timeout: 10s
       retries: 3
-    shm_size: '1gb'
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
 
-  mcp:
+  validation-service:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mcp_reference_server
-    command: ["python", "-u", "mcp_reference_server.py"]
-    ports:
-      - "8080:8080"
     volumes:
-      - .:/app
-    environment:
-      - PYTHONPATH=/app
-    depends_on:
-      graphdb:
-        condition: service_healthy
-
-  pdf-processor:
-    build: .
-    volumes:
-      - .:/app
+      - ./guidance.ttl:/app/guidance.ttl
       - ./data:/app/data
     environment:
-      - PYTHONPATH=/app
-    command: ["python", "-m", "tests.test_pdf_processor"]
+      - PYTHONPATH=/app/src
+      - GRAPHDB_URL=http://graphdb:7200
     depends_on:
-      graphdb:
-        condition: service_healthy
+      - graphdb
+    command: conda run --no-capture-output -n ontology-framework python src/ontology_framework/tools/validate_guidance.py
 
 volumes:
   graphdb-data:
