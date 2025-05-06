@@ -30,7 +30,7 @@ import shutil
 
 import pytest
 from ontology_framework.modules.patch_management import PatchManager
-from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus
+from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus, MetaOntology
 from tests.utils.test_monitoring import TestMonitor
 from tests.utils.mock_graphdb import MockGraphDBServer
 
@@ -72,7 +72,8 @@ def temp_dir() -> Generator[Path, None, None]:
 @pytest.fixture
 def patch_manager(temp_dir: Path) -> PatchManager:
     """Create a PatchManager instance with a temporary directory."""
-    return PatchManager(str(temp_dir))
+    meta_ontology = MetaOntology()
+    return PatchManager(meta_ontology=meta_ontology)
 
 @pytest.fixture
 def sample_patch() -> OntologyPatch:

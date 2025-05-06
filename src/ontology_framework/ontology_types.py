@@ -29,6 +29,7 @@ class ValidationRuleType(str, Enum):
 
 class PatchType(Enum):
     """Types of patches that can be applied."""
+    ADD = "add"
     MINOR = "minor"
     MAJOR = "major"
     CRITICAL = "critical"
@@ -60,6 +61,7 @@ class PatchStatus(Enum):
     DRAFT = "draft"
     REVIEW = "review"
     APPROVED = "approved"
+    APPLIED = "applied"
     REJECTED = "rejected"
     MERGED = "merged"
     DEPLOYED = "deployed"

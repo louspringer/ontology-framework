@@ -12,6 +12,7 @@ from .ontology_types import PatchType, PatchStatus
 
 # Define namespaces
 META = Namespace("http://example.org/meta#")
+PATCH = Namespace("http://example.org/patch#")
 
 @dataclass
 class OntologyPatch:
@@ -38,24 +39,25 @@ class OntologyPatch:
         """Convert patch to RDF graph."""
         g = Graph()
         g.bind("meta", META)
+        g.bind("patch", PATCH)
         
-        patch_uri = URIRef(f"{META}patch_{self.patch_id}")
-        g.add((patch_uri, RDF.type, META.Patch))
-        g.add((patch_uri, META.type, Literal(self.patch_type.value)))
-        g.add((patch_uri, META.status, Literal(self.status.value)))
-        g.add((patch_uri, META.targetOntology, Literal(self.target_ontology)))
-        g.add((patch_uri, META.content, Literal(self.content)))
-        g.add((patch_uri, META.createdAt, Literal(self.created_at)))
-        g.add((patch_uri, META.updatedAt, Literal(self.updated_at)))
+        patch_uri = URIRef(f"{PATCH}{self.patch_id}")
+        g.add((patch_uri, RDF.type, PATCH.Patch))
+        g.add((patch_uri, PATCH.type, Literal(self.patch_type.value)))
+        g.add((patch_uri, PATCH.status, Literal(self.status.value)))
+        g.add((patch_uri, PATCH.targetOntology, Literal(self.target_ontology)))
+        g.add((patch_uri, PATCH.content, Literal(self.content)))
+        g.add((patch_uri, PATCH.createdAt, Literal(self.created_at)))
+        g.add((patch_uri, PATCH.updatedAt, Literal(self.updated_at)))
             
         if self.changes:
             for i, change in enumerate(self.changes):
-                change_uri = URIRef(f"{META}change_{self.patch_id}_{i}")
-                g.add((change_uri, RDF.type, META.Change))
-                g.add((patch_uri, META.hasChange, change_uri))
+                change_uri = URIRef(f"{PATCH}change_{self.patch_id}_{i}")
+                g.add((change_uri, RDF.type, PATCH.Change))
+                g.add((patch_uri, PATCH.hasChange, change_uri))
                 
                 for key, value in change.items():
-                    g.add((change_uri, META[key], Literal(str(value))))
+                    g.add((change_uri, PATCH[key], Literal(str(value))))
                     
         return g
 
@@ -65,6 +67,7 @@ class MetaOntology:
     def __init__(self) -> None:
         self.graph = Graph()
         self._setup_namespaces()
+        self._setup_patch_ontology()
         
     def _setup_namespaces(self) -> None:
         """Set up common namespaces used in the meta ontology."""
@@ -72,6 +75,22 @@ class MetaOntology:
         self.graph.bind("rdfs", RDFS)
         self.graph.bind("owl", OWL)
         self.graph.bind("meta", META)
+        self.graph.bind("patch", PATCH)
+        
+    def _setup_patch_ontology(self) -> None:
+        """Set up the patch ontology structure."""
+        # Define Patch class
+        self.add_class(PATCH.Patch, "Patch", "A patch that can be applied to an ontology")
+        self.add_class(PATCH.Change, "Change", "A change made by a patch")
+        
+        # Define properties
+        self.add_property(PATCH.type, "type", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.status, "status", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.targetOntology, "targetOntology", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.content, "content", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.createdAt, "createdAt", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.updatedAt, "updatedAt", domain=PATCH.Patch, range=RDFS.Literal)
+        self.add_property(PATCH.hasChange, "hasChange", domain=PATCH.Patch, range=PATCH.Change)
         
     def add_class(self, class_uri: URIRef, label: str, comment: Optional[str] = None) -> None:
         """Add a class to the meta ontology."""
@@ -94,4 +113,8 @@ class MetaOntology:
             
     def serialize(self, format: str = "turtle") -> str:
         """Serialize the meta ontology to the specified format."""
-        return self.graph.serialize(format=format) 
+        return self.graph.serialize(format=format)
+        
+    def get_patch_ontology(self) -> Graph:
+        """Get the patch ontology graph."""
+        return self.graph 
