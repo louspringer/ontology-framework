@@ -4,23 +4,6 @@
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:sh="http://www.w3.org/ns/shacl#"
 >
-  <rdf:Description rdf:about="http://example.org/graphdb#base_url">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>Base URL</rdfs:label>
-    <rdfs:comment>Base URL of the GraphDB server</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/requirement#SPARQLSupport">
-    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
-    <rdfs:label>SPARQL Query Support</rdfs:label>
-    <rdfs:comment>Must support SPARQL query execution</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/graphdb#graph_uri">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>Graph URI</rdfs:label>
-    <rdfs:comment>URI of the graph</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://example.org/requirement#Validation">
     <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
     <rdfs:label>Validation</rdfs:label>
@@ -32,10 +15,21 @@
     <rdfs:comment>Path to backup file</rdfs:comment>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/graphdb#GraphDBClient">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>GraphDB Client</rdfs:label>
-    <rdfs:comment>Client for interacting with GraphDB server</rdfs:comment>
+  <rdf:Description rdf:about="http://example.org/constraint#GraphDBServer">
+    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
+    <rdfs:label>GraphDB Server</rdfs:label>
+    <rdfs:comment>Must have access to GraphDB server</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/constraint#Authentication">
+    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
+    <rdfs:label>Authentication</rdfs:label>
+    <rdfs:comment>Must have valid credentials</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/graphdb#base_url">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Base URL</rdfs:label>
+    <rdfs:comment>Base URL of the GraphDB server</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://example.org/graphdb#query">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
@@ -43,62 +37,10 @@
     <rdfs:comment>SPARQL query</rdfs:comment>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/requirement#Authentication">
-    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
-    <rdfs:label>Authentication</rdfs:label>
-    <rdfs:comment>Must support authentication mechanisms</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N4d58f53cb0d741428f54e66e1e3d9bab">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <sh:targetClass rdf:resource="http://example.org/graphdb#GraphDBClient"/>
-    <sh:property rdf:nodeID="Nbee0f11fcb164e1e9f726740c5857c58"/>
-    <sh:property rdf:nodeID="N0a99c4b36fa04a028e65d9f6ff05e842"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/graphdb#repository">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>Repository</rdfs:label>
-    <rdfs:comment>Repository name</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/requirement#ErrorHandling">
-    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
-    <rdfs:label>Error Handling</rdfs:label>
-    <rdfs:comment>Must implement proper error handling</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/risk#Performance">
-    <rdf:type rdf:resource="http://example.org/risk#Risk"/>
-    <rdfs:label>Performance Risk</rdfs:label>
-    <rdfs:comment>Risk of performance degradation</rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://example.org/constraint#Network">
     <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
     <rdfs:label>Network</rdfs:label>
     <rdfs:comment>Must have network connectivity</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/constraint#Storage">
-    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
-    <rdfs:label>Storage</rdfs:label>
-    <rdfs:comment>Must have sufficient storage for graphs</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N0a99c4b36fa04a028e65d9f6ff05e842">
-    <sh:path rdf:resource="http://example.org/graphdb#repository"/>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/constraint#Authentication">
-    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
-    <rdfs:label>Authentication</rdfs:label>
-    <rdfs:comment>Must have valid credentials</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/risk#ConnectionFailure">
-    <rdf:type rdf:resource="http://example.org/risk#Risk"/>
-    <rdfs:label>Connection Failure</rdfs:label>
-    <rdfs:comment>Risk of connection to GraphDB server failing</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/graphdb#update">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>Update</rdfs:label>
-    <rdfs:comment>SPARQL update</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://example.org/risk#Security">
     <rdf:type rdf:resource="http://example.org/risk#Risk"/>
@@ -110,18 +52,76 @@
     <rdfs:label>Data Loss</rdfs:label>
     <rdfs:comment>Risk of data loss during operations</rdfs:comment>
   </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/risk#Performance">
+    <rdf:type rdf:resource="http://example.org/risk#Risk"/>
+    <rdfs:label>Performance Risk</rdfs:label>
+    <rdfs:comment>Risk of performance degradation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/graphdb#repository">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Repository</rdfs:label>
+    <rdfs:comment>Repository name</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/graphdb#graph_uri">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Graph URI</rdfs:label>
+    <rdfs:comment>URI of the graph</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/risk#ConnectionFailure">
+    <rdf:type rdf:resource="http://example.org/risk#Risk"/>
+    <rdfs:label>Connection Failure</rdfs:label>
+    <rdfs:comment>Risk of connection to GraphDB server failing</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N93dd926a118f435b91f2911fa6ab80ae">
+    <sh:path rdf:resource="http://example.org/graphdb#repository"/>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/requirement#ErrorHandling">
+    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
+    <rdfs:label>Error Handling</rdfs:label>
+    <rdfs:comment>Must implement proper error handling</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/graphdb#GraphDBClient">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>GraphDB Client</rdfs:label>
+    <rdfs:comment>Client for interacting with GraphDB server</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N41e287ff1f1c4c3ca68239e1cb06e45c">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:targetClass rdf:resource="http://example.org/graphdb#GraphDBClient"/>
+    <sh:property rdf:nodeID="Na53f194c27014871964cd478369003bb"/>
+    <sh:property rdf:nodeID="N93dd926a118f435b91f2911fa6ab80ae"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/graphdb#update">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>Update</rdfs:label>
+    <rdfs:comment>SPARQL update</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/constraint#Storage">
+    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
+    <rdfs:label>Storage</rdfs:label>
+    <rdfs:comment>Must have sufficient storage for graphs</rdfs:comment>
+  </rdf:Description>
   <rdf:Description rdf:about="http://example.org/requirement#GraphManagement">
     <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
     <rdfs:label>Graph Management</rdfs:label>
     <rdfs:comment>Must support graph upload/download/clear operations</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://example.org/constraint#GraphDBServer">
-    <rdf:type rdf:resource="http://example.org/constraint#Constraint"/>
-    <rdfs:label>GraphDB Server</rdfs:label>
-    <rdfs:comment>Must have access to GraphDB server</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nbee0f11fcb164e1e9f726740c5857c58">
+  <rdf:Description rdf:nodeID="Na53f194c27014871964cd478369003bb">
     <sh:path rdf:resource="http://example.org/graphdb#base_url"/>
     <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/requirement#SPARQLSupport">
+    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
+    <rdfs:label>SPARQL Query Support</rdfs:label>
+    <rdfs:comment>Must support SPARQL query execution</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/requirement#Authentication">
+    <rdf:type rdf:resource="http://example.org/requirement#Requirement"/>
+    <rdfs:label>Authentication</rdfs:label>
+    <rdfs:comment>Must support authentication mechanisms</rdfs:comment>
   </rdf:Description>
 </rdf:RDF>

@@ -1,10 +1,12 @@
-@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> .
 @prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
 @prefix dc1: <http://purl.org/dc/elements/1.1/#> .
 @prefix dct: <http://purl.org/dc/terms/#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
 :IncidentResponse a owl:NamedIndividual,
         :IncidentResponsePattern ;
@@ -164,5 +166,21 @@
 :exampleSLAViolation2 a :SLAViolation ;
     rdfs:label "Example SLAViolation 2" ;
     rdfs:comment "This is example instance 2 of class SLAViolation" ;
+    owl:versionInfo "1.0.0" .
+
+: a owl:Ontology ;
+    rdfs:label "Security Module"@en ;
+    rdfs:comment "Module for security rules and patterns"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+:SecurityPattern a owl:Class ;
+    rdfs:label "Security Pattern"@en ;
+    rdfs:comment "Pattern for security rules"@en ;
+    owl:versionInfo "1.0.0" .
+
+:SecurityRule a owl:Class ;
+    rdfs:label "Security Rule"@en ;
+    rdfs:comment "Rule for security"@en ;
     owl:versionInfo "1.0.0" .
 

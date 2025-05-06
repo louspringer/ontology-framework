@@ -1,52 +1,56 @@
 """Test script for PDF processor functionality."""
 
-import logging
+import unittest
 from pathlib import Path
+import logging
+from reportlab.pdfgen import canvas
 from ontology_framework.pdf_processor import PDFProcessor
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(levelname)s:%(name)s:%(message)s'
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def test_pdf_processor():
-    """Test the PDF processor with a sample PDF."""
-    try:
-        # Initialize processor
-        processor = PDFProcessor()
+class TestPDFProcessor(unittest.TestCase):
+    def setUp(self):
+        self.processor = PDFProcessor()
+        self.test_dir = Path("data")
+        self.test_dir.mkdir(exist_ok=True)
         
-        # Process PDF
-        pdf_path = Path("GraphDB.pdf")
-        logger.info(f"Processing PDF: {pdf_path}")
-        processor.process_pdf(pdf_path)
+        # Create a sample PDF with actual content
+        self.pdf_path = self.test_dir / "test.pdf"
+        c = canvas.Canvas(str(self.pdf_path))
+        c.drawString(100, 750, "This is a test PDF document.")
+        c.drawString(100, 700, "It contains multiple lines of text.")
+        c.drawString(100, 650, "This text will be used for testing the PDF processor.")
+        c.save()
         
-        # Test search
-        test_queries = [
-            "repository configuration",
-            "GraphDB setup",
-            "RDF storage"
-        ]
-        
-        for query in test_queries:
-            logger.info(f"\nSearching for: {query}")
-            results = processor.search(query)
-            for result in results:
-                logger.info(f"Page {result['page']} (score: {result['score']:.2f}):")
-                logger.info(f"{result['snippet'][:200]}...")
-        
-        # Save index for future use
-        processor.save_index("graphdb.index")
-        logger.info("Index saved to graphdb.index")
-        
-        # Export RDF
-        processor.export_rdf("graphdb.ttl")
-        logger.info("RDF exported to graphdb.ttl")
-        
-    except Exception as e:
-        logger.error(f"Error during testing: {str(e)}")
-        raise
+    def test_pdf_processing(self):
+        try:
+            # Process the PDF
+            logger.info("Processing PDF...")
+            self.processor.process_pdf(self.pdf_path)
+            
+            # Test search functionality
+            logger.info("Testing search...")
+            results = self.processor.search("test document")
+            self.assertGreater(len(results), 0)
+            
+            # Test RDF export
+            logger.info("Testing RDF export...")
+            rdf_path = self.test_dir / "test.ttl"
+            self.processor.export_rdf(rdf_path)
+            self.assertTrue(rdf_path.exists())
+            
+        except Exception as e:
+            logger.error(f"Test failed: {str(e)}")
+            raise
+            
+    def tearDown(self):
+        # Clean up test files
+        if self.pdf_path.exists():
+            self.pdf_path.unlink()
+        if (self.test_dir / "test.ttl").exists():
+            (self.test_dir / "test.ttl").unlink()
 
-if __name__ == "__main__":
-    test_pdf_processor() 
+if __name__ == '__main__':
+    unittest.main() 

@@ -41,7 +41,4 @@ dependencies:
   - PyPDF2>=3.0.0
   - httpx>=0.24.0
   - yt-dlp>=2023.0
-  - bfg9k
-  - bfg9k-mcp
-  - bfg9k-ontology
 name: ontology-framework

@@ -1,29 +1,32 @@
-@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
-core: a owl:Ontology ;
+: a owl:Ontology ;
     rdfs:label "Core Module"@en ;
-    rdfs:comment "Core concepts for the guidance framework"@en ;
-    owl:versionInfo "1.0.0" .
+    rdfs:comment "Core concepts and rules for the ontology framework"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
-core:Action a owl:Class ;
+:Action a owl:Class ;
     rdfs:label "Action"@en ;
-    rdfs:comment "Class for representing actions that can be taken"@en ;
+    rdfs:comment "Class for representing actions"@en ;
     owl:versionInfo "1.0.0" .
 
-core:BestPractice a owl:Class ;
+:BestPractice a owl:Class ;
     rdfs:label "BestPractice"@en ;
     rdfs:comment "Class for representing best practices"@en ;
     owl:versionInfo "1.0.0" .
 
-core:DomainAnalogy a owl:Class ;
+:DomainAnalogy a owl:Class ;
     rdfs:label "DomainAnalogy"@en ;
     rdfs:comment "Class for representing domain analogies"@en ;
     owl:versionInfo "1.0.0" .
 
-core:Interpretation a owl:Class ;
+:Interpretation a owl:Class ;
     rdfs:label "Interpretation"@en ;
-    rdfs:comment "Class for representing interpretations of ontology elements"@en ;
+    rdfs:comment "Class for representing interpretations"@en ;
     owl:versionInfo "1.0.0" .
 

@@ -4,41 +4,41 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 >
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PDCALoop_20250430_132007">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PDCALoop"/>
-    <rdfs:label>PDCA Loop PDCALoop_20250430_132007</rdfs:label>
-    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-04-30T13:20:07.061998</pdca:hasStartTime>
-    <pdca:hasStatus>ACTIVE</pdca:hasStatus>
-    <pdca:hasPlanPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250430_132007"/>
-    <pdca:hasDoPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250430_132007"/>
-    <pdca:hasCheckPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250430_132007"/>
-    <pdca:hasActPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#ActPhase_20250430_132007"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250430_132007">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase"/>
-    <rdfs:label>Check Phase</rdfs:label>
-    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-04-30T13:20:07.064309</pdca:hasStartTime>
-    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
-    <pdca:evaluatesDoPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250430_132007"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250430_132007">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase"/>
-    <rdfs:label>Plan Phase</rdfs:label>
-    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-04-30T13:20:07.062815</pdca:hasStartTime>
-    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250430_132007">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase"/>
-    <rdfs:label>Do Phase</rdfs:label>
-    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-04-30T13:20:07.063525</pdca:hasStartTime>
-    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
-    <pdca:implementsPlan rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250430_132007"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#ActPhase_20250430_132007">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#ActPhase_20250505_113956">
     <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#ActPhase"/>
     <rdfs:label>Act Phase</rdfs:label>
-    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-04-30T13:20:07.065259</pdca:hasStartTime>
+    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-05-05T11:39:56.921969</pdca:hasStartTime>
     <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
-    <pdca:basedOnCheckPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250430_132007"/>
+    <pdca:basedOnCheckPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250505_113956"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250505_113956">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase"/>
+    <rdfs:label>Check Phase</rdfs:label>
+    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-05-05T11:39:56.921752</pdca:hasStartTime>
+    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
+    <pdca:evaluatesDoPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250505_113956"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250505_113956">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase"/>
+    <rdfs:label>Plan Phase</rdfs:label>
+    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-05-05T11:39:56.921289</pdca:hasStartTime>
+    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250505_113956">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase"/>
+    <rdfs:label>Do Phase</rdfs:label>
+    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-05-05T11:39:56.921526</pdca:hasStartTime>
+    <pdca:hasStatus>IN_PROGRESS</pdca:hasStatus>
+    <pdca:implementsPlan rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250505_113956"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PDCALoop_20250505_113956">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PDCALoop"/>
+    <rdfs:label>PDCA Loop PDCALoop_20250505_113956</rdfs:label>
+    <pdca:hasStartTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-05-05T11:39:56.921056</pdca:hasStartTime>
+    <pdca:hasStatus>ACTIVE</pdca:hasStatus>
+    <pdca:hasPlanPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#PlanPhase_20250505_113956"/>
+    <pdca:hasDoPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#DoPhase_20250505_113956"/>
+    <pdca:hasCheckPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#CheckPhase_20250505_113956"/>
+    <pdca:hasActPhase rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#ActPhase_20250505_113956"/>
   </rdf:Description>
 </rdf:RDF>

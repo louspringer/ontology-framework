@@ -4,6 +4,8 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
 dc:title rdfs:label "title" ;
     rdfs:comment "Description of title" ;
@@ -75,5 +77,21 @@ owl:versionInfo rdfs:label "owl#versionInfo" ;
     rdfs:comment "Description of owl#versionInfo" ;
     rdfs:domain owl:Thing ;
     rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+: a owl:Ontology ;
+    rdfs:label "Collaboration Module"@en ;
+    rdfs:comment "Module for managing collaboration aspects"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+:CollaborationPattern a owl:Class ;
+    rdfs:label "Collaboration Pattern"@en ;
+    rdfs:comment "Pattern for collaboration between components"@en ;
+    owl:versionInfo "1.0.0" .
+
+:CollaborationRule a owl:Class ;
+    rdfs:label "Collaboration Rule"@en ;
+    rdfs:comment "Rule governing collaboration"@en ;
     owl:versionInfo "1.0.0" .
 

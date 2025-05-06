@@ -84,14 +84,15 @@ class QueryExecutor(ABC):
 class GraphDBExecutor(QueryExecutor):
     """Executor for GraphDB SPARQL queries."""
     
-    def __init__(self, base_url: str = "http://localhost:7200", repository: str = "guidance"):
+    def __init__(self, endpoint: str = "http://localhost:7200", repository: str = "guidance", base_url: Optional[str] = None):
         """Initialize GraphDB executor.
         
         Args:
-            base_url: Base URL of GraphDB server
+            endpoint: Base URL of GraphDB server
             repository: Repository name
         """
-        self.client = GraphDBClient(base_url, repository)
+        chosen_url = base_url if base_url is not None else endpoint
+        self.client = GraphDBClient(chosen_url, repository)
         
     def execute_query(self, query: str, query_type: QueryType) -> QueryResult:
         """Execute a SPARQL query.
@@ -354,4 +355,9 @@ class SparqlOperations:
                 'created': str(cast(ResultRow, row)[4]) if cast(ResultRow, row)[4] else None,
                 'modified': str(cast(ResultRow, row)[5]) if cast(ResultRow, row)[5] else None
             }
-        return {} 
+        return {}
+
+# Add alias so tests can import SparqlExecutor
+SparqlExecutor = GraphDBExecutor
+
+# ... existing code ... 

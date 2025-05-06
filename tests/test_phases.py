@@ -16,6 +16,7 @@ from ontology_framework.modules.phases import (
     CheckPhase,
     AdjustPhase
 )
+import pytest
 
 @pytest.fixture
 def valid_context():
