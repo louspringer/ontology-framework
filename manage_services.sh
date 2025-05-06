@@ -17,13 +17,54 @@ if ! command_exists docker-compose; then
     exit 1
 fi
 
+# Function to wait for service health
+wait_for_service() {
+    local service=$1
+    local max_attempts=30
+    local attempt=1
+    
+    echo "Waiting for $service to be healthy..."
+    while [ $attempt -le $max_attempts ]; do
+        if docker-compose ps $service | grep -q "healthy"; then
+            echo "$service is healthy"
+            return 0
+        fi
+        echo "Attempt $attempt/$max_attempts: $service not ready yet..."
+        sleep 2
+        attempt=$((attempt + 1))
+    done
+    
+    echo "Error: $service failed to become healthy after $max_attempts attempts"
+    return 1
+}
+
 # Function to start services
 start_services() {
     echo "Starting services..."
     docker-compose up -d
-    echo "Waiting for services to be ready..."
-    sleep 10
-    echo "Services started. You can access:"
+    
+    # Wait for GraphDB to be healthy first
+    if ! wait_for_service graphdb; then
+        echo "Error: GraphDB failed to start properly"
+        docker-compose down
+        exit 1
+    fi
+    
+    # Then wait for BFG9K MCP
+    if ! wait_for_service bfg9k-mcp; then
+        echo "Error: BFG9K MCP failed to start properly"
+        docker-compose down
+        exit 1
+    fi
+    
+    # Finally wait for validation service
+    if ! wait_for_service validation-service; then
+        echo "Error: Validation service failed to start properly"
+        docker-compose down
+        exit 1
+    fi
+    
+    echo "All services are healthy. You can access:"
     echo "- BFG9K MCP server at http://localhost:8080"
     echo "- GraphDB at http://localhost:7200"
 }
