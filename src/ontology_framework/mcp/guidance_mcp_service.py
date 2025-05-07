@@ -1,31 +1,79 @@
-from ontology_framework.tools.guidance_manager import GuidanceManager
-from typing import List, Optional, Dict, Any
+"""
+Guidance MCP service implementation.
+"""
+
+import asyncio
+import json
+import sys
+from typing import Dict, Any, Optional, TextIO
+from .core import MCPServer
 
 class GuidanceMCPService:
-    """MCP service for managing ontologies conforming to guidance."""
-    def __init__(self, ontology_path: str = 'guidance.ttl'):
-        self.manager = GuidanceManager(ontology_path)
+    """Service for handling MCP server lifecycle."""
+    
+    def __init__(self, server: MCPServer):
+        self.server = server
+        self.reader: Optional[asyncio.StreamReader] = None
+        self.writer: Optional[asyncio.StreamWriter] = None
 
-    def add_imports(self, import_iris: List[str], base_iri: Optional[str] = None) -> None:
-        """Add owl:imports to the ontology."""
-        self.manager.add_imports(import_iris, base_iri)
-        self.manager.save()
+    async def _read_request(self) -> Optional[Dict[str, Any]]:
+        """Read request from stdin."""
+        try:
+            line = await self.reader.readline()
+            if not line:
+                return None
+            return json.loads(line.decode())
+        except json.JSONDecodeError:
+            return None
 
-    def validate(self) -> Dict[str, Any]:
-        """Validate the ontology using SHACL and guidance rules."""
-        return self.manager.validate_guidance()
+    async def _write_response(self, response: Dict[str, Any]) -> None:
+        """Write response to stdout."""
+        try:
+            line = json.dumps(response) + "\n"
+            self.writer.write(line.encode())
+            await self.writer.drain()
+        except Exception as e:
+            print(f"Error writing response: {e}", file=sys.stderr)
 
-    def add_validation_rule(self, rule_id: str, rule: Dict[str, Any], type: str, message: Optional[str] = None, priority: str = 'MEDIUM') -> None:
-        """Add a validation rule to the ontology."""
-        self.manager.add_validation_rule(rule_id, rule, type, message, priority)
-        self.manager.save()
+    async def _handle_connection(self) -> None:
+        """Handle connection lifecycle."""
+        while True:
+            request = await self._read_request()
+            if request is None:
+                break
 
-    def get_validation_rules(self) -> Any:
-        """Get all validation rules."""
-        return self.manager.get_validation_rules()
+            try:
+                response = await self.server.handle_request(request)
+                await self._write_response(response)
+            except Exception as e:
+                error_response = {
+                    "error": str(e),
+                    "request": request
+                }
+                await self._write_response(error_response)
 
-    def save(self, path: Optional[str] = None) -> None:
-        self.manager.save(path)
+    async def run(self) -> None:
+        """Run the service."""
+        # Use stdin/stdout for communication
+        loop = asyncio.get_event_loop()
+        self.reader = asyncio.StreamReader()
+        protocol = asyncio.StreamReaderProtocol(self.reader)
+        await loop.connect_read_pipe(lambda: protocol, sys.stdin)
+        
+        transport, protocol = await loop.connect_write_pipe(
+            asyncio.streams.FlowControlMixin, 
+            sys.stdout
+        )
+        self.writer = asyncio.StreamWriter(transport, protocol, self.reader, loop)
 
-    def load(self, path: str) -> None:
-        self.manager.load(path) 
+        try:
+            if self.server.lifespan:
+                async with self.server.lifespan(self.server) as context:
+                    self.server.request_context = context
+                    await self._handle_connection()
+            else:
+                await self._handle_connection()
+        finally:
+            if self.writer:
+                self.writer.close()
+                await self.writer.wait_closed() 

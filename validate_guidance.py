@@ -5,117 +5,70 @@ import logging
 from pathlib import Path
 from datetime import datetime
 from ontology_framework.mcp.core import MCPCore, ValidationContext
+from bfg9k_manager import BFG9KManager
+import json
+from rdflib import Graph, URIRef, Literal, BNode
+from rdflib.namespace import RDF, RDFS, OWL, SH, Namespace
+from pyshacl import validate
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def validate_guidance():
+    """Validate guidance.ttl using SHACL."""
+    # Load guidance ontology
+    data_graph = Graph()
+    data_graph.parse("guidance.ttl", format="turtle")
+    
+    # Create SHACL shapes graph
+    shapes_graph = Graph()
+    
+    # Define namespaces
+    BFG9K = Namespace("https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#")
+    
+    # ValidationRule shape
+    rule_shape = BNode()
+    shapes_graph.add((rule_shape, RDF.type, SH.NodeShape))
+    shapes_graph.add((rule_shape, SH.targetClass, URIRef("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule")))
+    
+    # Required properties
+    for prop in ["hasMessage", "hasPriority", "hasTarget", "hasValidator"]:
+        prop_shape = BNode()
+        shapes_graph.add((rule_shape, SH.property, prop_shape))
+        shapes_graph.add((prop_shape, SH.path, URIRef(f"https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#{prop}")))
+        shapes_graph.add((prop_shape, SH.minCount, Literal(1)))
+        shapes_graph.add((prop_shape, SH.maxCount, Literal(1)))
+    
+    # Validate
+    conforms, results_graph, results_text = validate(
+        data_graph,
+        shacl_graph=shapes_graph,
+        ont_graph=None,
+        inference='rdfs',
+        abort_on_first=False,
+        allow_infos=True,
+        allow_warnings=True,
+        meta_shacl=False,
+        debug=False
+    )
+    
+    return {
+        'conforms': conforms,
+        'results': results_text
+    }
+
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: validate_guidance.py <ontology_file>")
-        sys.exit(1)
-        
-    ontology_file = sys.argv[1]
+    print("Validating guidance.ttl...")
     try:
-        # Create MCP configuration
-        config = {
-            'ontologyPath': ontology_file,
-            'targetFiles': [ontology_file],
-            'validation': {
-                'phaseExecution': {
-                    'ontology': {
-                        'order': ['ontology'],
-                        'requiredFiles': [ontology_file],
-                        'validationRules': ['ClassHierarchyCheck', 'PropertyDomainCheck', 'BFG9KPatternCheck']
-                    }
-                },
-                'rules': {
-                    'phaseOrder': True
-                }
-            },
-            'validationRules': {
-                'ClassHierarchyCheck': {
-                    'sparql': """
-                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        SELECT ?class ?superClass
-                        WHERE {
-                            ?class rdfs:subClassOf+ ?superClass .
-                            ?superClass rdfs:subClassOf+ ?class .
-                        }
-                    """,
-                    'message': 'Circular class hierarchy detected'
-                },
-                'PropertyDomainCheck': {
-                    'sparql': """
-                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        SELECT ?prop ?domain
-                        WHERE {
-                            ?prop rdfs:domain ?domain .
-                            FILTER NOT EXISTS { ?domain a rdfs:Class }
-                        }
-                    """,
-                    'message': 'Property domain is not a valid class'
-                },
-                'BFG9KPatternCheck': {
-                    'sparql': """
-                        PREFIX bfg9k: <http://example.org/bfg9k#>
-                        SELECT ?pattern ?violation
-                        WHERE {
-                            ?pattern a bfg9k:Pattern .
-                            ?violation bfg9k:violatesPattern ?pattern .
-                        }
-                    """,
-                    'message': 'BFG9K pattern violations found'
-                }
-            },
-            'metadata': {
-                'version': '0.1.0'
-            },
-            'logging': {
-                'level': 'INFO',
-                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            }
-        }
-        
-        # Create MCP core instance
-        core = MCPCore(config)
-        
-        # Create validation context
-        context = ValidationContext(
-            ontology_path=Path(ontology_file),
-            target_files=[Path(ontology_file)],
-            phase='ontology',
-            metadata={'timestamp': datetime.now().isoformat()},
-            timestamp=datetime.now()
-        )
-        
-        # Execute validation
-        result = core.execute_phase('ontology', context)
-        
-        # Print results
+        result = validate_guidance()
         print("\nValidation Results:")
         print("-" * 50)
-        print(f"Success: {'✓' if result.success else '✗'}")
-        
-        if result.errors:
-            print("\nErrors:")
-            for error in result.errors:
-                print(f"  - {error}")
-                
-        if result.warnings:
-            print("\nWarnings:")
-            for warning in result.warnings:
-                print(f"  - {warning}")
-                
-        if result.success:
-            print("\nAll validations passed successfully!")
-            sys.exit(0)
-        else:
-            print("\nValidation failed. Please fix the errors and try again.")
-            sys.exit(1)
-            
+        print(f"Conforms: {'✓' if result['conforms'] else '✗'}")
+        if result['results']:
+            print("\nDetails:")
+            print(result['results'])
     except Exception as e:
-        logger.error(f"Validation failed: {e}")
-        sys.exit(1)
+        print(f"Error validating guidance.ttl: {str(e)}")
 
 if __name__ == "__main__":
     main() 

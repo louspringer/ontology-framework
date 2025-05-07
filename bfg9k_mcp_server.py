@@ -1,157 +1,82 @@
-from contextlib import asynccontextmanager
-from collections.abc import AsyncIterator
-from typing import Dict, Any, List
-import mcp.server.stdio
-import mcp.types as types
-from mcp.server.lowlevel import NotificationOptions, Server
-from mcp.server.models import InitializationOptions
+from fastapi import FastAPI, Request
+from fastapi_mcp import FastApiMCP
 from bfg9k_manager import BFG9KManager
+import json
+import logging
+from typing import Dict, Any, Optional
+from rdflib import Graph, URIRef, Literal, Namespace
+from rdflib.namespace import RDF, RDFS, OWL, XSD
+from sse_starlette.sse import EventSourceResponse
+import asyncio
+from fastapi.responses import StreamingResponse, JSONResponse
+from starlette.background import BackgroundTask
 
-class BFG9KMCPManager:
-    def __init__(self, config_path: str = "bfg9k_config.ttl"):
-        self.bfg9k = BFG9KManager(config_path)
-        self.governance_rules = self.bfg9k.get_governance_rules()
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    filename='mcp.log'
+)
+logger = logging.getLogger(__name__)
 
-    async def validate_guidance(self, content: str) -> Dict[str, Any]:
-        """Validate content against guidance ontology"""
-        # Create temporary file for validation
+# Create FastAPI app
+app = FastAPI(
+    title="BFG9K Guidance Server",
+    description="The Big Friendly Guidance 9000 - Ultimate firepower for ontology validation and management."
+)
+
+# Initialize BFG9K manager
+bfg9k = BFG9KManager()
+
+@app.post("/validate_guidance", operation_id="validate_guidance")
+async def validate_guidance(content: str) -> Dict[str, Any]:
+    """Validate content against guidance ontology."""
+    try:
+        logger.debug(f"Validating content: {content[:100]}...")
         with open("temp_validation.ttl", "w") as f:
             f.write(content)
-        
-        # Validate using BFG9K
-        result = self.bfg9k.validate_ontology("temp_validation.ttl")
-        return result
+        result = bfg9k.validate_ontology("temp_validation.ttl")
+        logger.debug(f"Validation result: {result}")
+        return {"result": result}
+    except Exception as e:
+        logger.error(f"Validation error: {e}")
+        return {"error": str(e)}
 
-    async def query_guidance(self, sparql_query: str) -> Dict[str, Any]:
-        """Query guidance ontology"""
-        return self.bfg9k.query_ontology(sparql_query)
+@app.post("/query_guidance", operation_id="query_guidance")
+async def query_guidance(sparql_query: str) -> Dict[str, Any]:
+    """Query guidance ontology using SPARQL."""
+    try:
+        logger.debug(f"Executing query: {sparql_query}")
+        result = bfg9k.query_ontology(sparql_query)
+        logger.debug(f"Query result: {result}")
+        return {"result": result}
+    except Exception as e:
+        logger.error(f"Query error: {e}")
+        return {"error": str(e)}
 
-    async def update_guidance(self, content: str) -> Dict[str, Any]:
-        """Update guidance ontology"""
-        # Create temporary file for update
+@app.post("/update_guidance", operation_id="update_guidance")
+async def update_guidance(content: str) -> Dict[str, Any]:
+    """Update guidance ontology."""
+    try:
+        logger.debug(f"Updating content: {content[:100]}...")
         with open("temp_update.ttl", "w") as f:
             f.write(content)
-        
-        # Update using BFG9K
-        result = self.bfg9k.update_ontology("temp_update.ttl")
-        return result
+        result = bfg9k.update_ontology("temp_update.ttl")
+        logger.debug(f"Update result: {result}")
+        return {"result": result}
+    except Exception as e:
+        logger.error(f"Update error: {e}")
+        return {"error": str(e)}
 
-@asynccontextmanager
-async def server_lifespan(server: Server) -> AsyncIterator[Dict[str, Any]]:
-    """Manage server startup and shutdown lifecycle."""
-    # Initialize BFG9K manager
-    manager = BFG9KMCPManager()
-    try:
-        yield {"manager": manager}
-    finally:
-        # Cleanup if needed
-        pass
+@app.get("/echo", operation_id="echo")
+async def echo(text: str) -> Dict[str, Any]:
+    """Echoes the input string."""
+    return {"result": text}
 
-# Create server instance
-server = Server("bfg9k-guidance-server", lifespan=server_lifespan)
-
-@server.list_prompts()
-async def handle_list_prompts() -> List[types.Prompt]:
-    """List available guidance prompts"""
-    return [
-        types.Prompt(
-            name="validate-guidance",
-            description="Validate content against guidance ontology",
-            arguments=[
-                types.PromptArgument(
-                    name="content",
-                    description="Turtle content to validate",
-                    required=True
-                )
-            ],
-        ),
-        types.Prompt(
-            name="query-guidance",
-            description="Query guidance ontology",
-            arguments=[
-                types.PromptArgument(
-                    name="sparql",
-                    description="SPARQL query to execute",
-                    required=True
-                )
-            ],
-        ),
-        types.Prompt(
-            name="update-guidance",
-            description="Update guidance ontology",
-            arguments=[
-                types.PromptArgument(
-                    name="content",
-                    description="Turtle content to update",
-                    required=True
-                )
-            ],
-        )
-    ]
-
-@server.get_prompt()
-async def handle_get_prompt(
-    name: str, arguments: Dict[str, str] | None
-) -> types.GetPromptResult:
-    """Get prompt template"""
-    if name not in ["validate-guidance", "query-guidance", "update-guidance"]:
-        raise ValueError(f"Unknown prompt: {name}")
-
-    return types.GetPromptResult(
-        description=f"BFG9K Guidance {name.replace('-', ' ').title()}",
-        messages=[
-            types.PromptMessage(
-                role="user",
-                content=types.TextContent(
-                    type="text",
-                    text=f"Execute {name} with arguments: {arguments}"
-                ),
-            )
-        ],
-    )
-
-@server.call_tool()
-async def handle_validate_guidance(
-    name: str, arguments: Dict[str, Any]
-) -> Dict[str, Any]:
-    """Validate content against guidance"""
-    ctx = server.request_context
-    manager = ctx.lifespan_context["manager"]
-    return await manager.validate_guidance(arguments["content"])
-
-@server.call_tool()
-async def handle_query_guidance(
-    name: str, arguments: Dict[str, Any]
-) -> Dict[str, Any]:
-    """Query guidance ontology"""
-    ctx = server.request_context
-    manager = ctx.lifespan_context["manager"]
-    return await manager.query_guidance(arguments["sparql"])
-
-@server.call_tool()
-async def handle_update_guidance(
-    name: str, arguments: Dict[str, Any]
-) -> Dict[str, Any]:
-    """Update guidance ontology"""
-    ctx = server.request_context
-    manager = ctx.lifespan_context["manager"]
-    return await manager.update_guidance(arguments["content"])
-
-async def run():
-    async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
-        await server.run(
-            read_stream,
-            write_stream,
-            InitializationOptions(
-                server_name="bfg9k-guidance",
-                server_version="1.0.0",
-                capabilities=server.get_capabilities(
-                    notification_options=NotificationOptions(),
-                    experimental_capabilities={},
-                ),
-            ),
-        )
+# Initialize and mount MCP
+mcp = FastApiMCP(app)
+mcp.mount(app, mount_path="/mcp", transport="sse")
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(run()) 
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080) 

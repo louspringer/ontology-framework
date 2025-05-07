@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  graphdb:
+    image: ontotext/graphdb:10.4.0
+    ports:
+      - "7200:7200"
+    environment:
+      - GDB_HEAP_SIZE=2G
+      - GDB_MIN_MEM=1G
+      - GDB_MAX_MEM=2G
+    volumes:
+      - graphdb-data:/opt/graphdb/home
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   bfg9k-mcp:
     build:
       context: .
@@ -8,49 +24,17 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./guidance.ttl:/app/guidance.ttl
-      - ./data:/app/data
-      - ./temp_embeddings:/app/temp_embeddings
+      - .:/app
     environment:
-      - PYTHONPATH=/app/src
-      - GRAPHDB_URL=http://graphdb:7200
-      - MCP_PORT=8080
+      - PYTHONPATH=/app
+      - GRAPHDB_HOST=graphdb
+      - GRAPHDB_PORT=7200
     depends_on:
-      - graphdb
-    command: conda run --no-capture-output -n ontology-framework python bfg9k_mcp_server.py
-
-  graphdb:
-    image: ontotext/graphdb:10.4.0
-    ports:
-      - "7200:7200"
-    volumes:
-      - graphdb-data:/opt/graphdb/home
-    environment:
-      - GDB_HEAP_SIZE=2g
-      - GDB_MIN_MEM=1g
-      - GDB_MAX_MEM=2g
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7200/rest/repositories"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  validation-service:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./guidance.ttl:/app/guidance.ttl
-      - ./data:/app/data
-    environment:
-      - PYTHONPATH=/app/src
-      - GRAPHDB_URL=http://graphdb:7200
-    depends_on:
-      - graphdb
-    command: conda run --no-capture-output -n ontology-framework python src/ontology_framework/tools/validate_guidance.py
+      graphdb:
+        condition: service_healthy
+    command: uvicorn bfg9k_mcp_server:app --host 0.0.0.0 --port 8080 --reload
 
 volumes:
   graphdb-data:
-    driver: local
   graphdb-import:
     driver: local 

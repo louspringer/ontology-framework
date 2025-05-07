@@ -25,7 +25,7 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
 :ClassHierarchyCheck a :ConsistencyRule ;
     :hasMessage "Check for cycles in class hierarchy" ;
     :hasPriority "HIGH" ;
-    :hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchy"^^xsd:anyURI ;
+    :hasTarget :ClassHierarchy ;
     :hasValidator "validate_consistency" .
 
 :IntegrationRequirement a owl:Class ;
@@ -54,14 +54,10 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     rdfs:comment "Pattern for implementing validation rules"@en .
 
 :ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:anyURI ;
+    sh:property [ sh:class owl:Thing ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path :hasTarget ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasPriority ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -69,7 +65,11 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasMessage ] ;
+            sh:path :hasMessage ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasPriority ] ;
     sh:targetClass :ValidationRule .
 
 :ConsistencyRule a owl:Class ;
@@ -81,15 +81,11 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
 :hasPriority a owl:DatatypeProperty ;
     rdfs:domain :ValidationRule .
 
-:hasTarget a owl:DatatypeProperty ;
+:hasTarget a owl:ObjectProperty ;
     rdfs:domain :ValidationRule .
 
 :hasValidator a owl:DatatypeProperty ;
     rdfs:domain :ValidationRule .
-
-owl:DatatypeProperty rdfs:subClassOf rdf:Property .
-
-owl:Class rdfs:subClassOf rdfs:Class .
 
 :ValidationRule a owl:Class .
 

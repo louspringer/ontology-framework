@@ -34,26 +34,29 @@ class BFG9KManager:
         """Query the ontology using SPARQL."""
         try:
             response = requests.post(
-                f"{self.base_url}/repositories/ontology/statements",
+                f"{self.base_url}/repositories/ontology/sparql",
                 data={"query": query},
-                headers={"Accept": "application/json"}
+                headers={
+                    "Accept": "application/sparql-results+json",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
             )
             response.raise_for_status()
             
             if not response.text.strip():
                 logger.warning("Empty response received from GraphDB")
-                return {}
+                return {"results": {"bindings": []}}
             
             try:
                 return response.json()
             except requests.exceptions.JSONDecodeError as e:
                 logger.error(f"Failed to decode JSON response: {e}")
                 logger.debug(f"Response content: {response.text}")
-                return {}
+                return {"results": {"bindings": []}}
             
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to query GraphDB: {e}")
-            return {}
+            return {"results": {"bindings": []}}
     
     def update_ontology(self, ontology_path):
         """Update ontology using BFG9K server"""

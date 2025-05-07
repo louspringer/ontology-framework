@@ -5019,3 +5019,119 @@ assert False
 - SHACL Validation Tests: 0 tests
 - Functional Tests: 0 tests
 
+
+## Test Run - 2025-05-06T17:22:47.105555
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-05-06T17:22:47.131193
+
+### shacl_pattern_validation
+- Status: PASSED
+- Details: All SHACL patterns validated successfully
+
+
+## Test Session Summary - 2025-05-06T17:23:48.718528
+
+- Total tests: 682
+- Passed: 282
+- Failed: 400
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Run - 2025-05-06T17:24:35.574941
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-05-06T17:24:35.601226
+
+### shacl_pattern_validation
+- Status: PASSED
+- Details: All SHACL patterns validated successfully
+
+
+## Test Session Summary - 2025-05-06T17:25:36.510415
+
+- Total tests: 682
+- Passed: 283
+- Failed: 399
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Run - 2025-05-06T17:26:25.890897
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-05-06T17:26:25.917716
+
+### shacl_pattern_validation
+- Status: PASSED
+- Details: All SHACL patterns validated successfully
+
+
+## Test Session Summary - 2025-05-06T17:27:25.072075
+
+- Total tests: 682
+- Passed: 283
+- Failed: 399
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+
+
+## Test Run - 2025-05-06T17:29:29.228401
+
+### model_structure_validation
+- Status: FAILED
+- Error: OntologyPatch must have patch_id
+assert False
+ +  where False = hasattr(OntologyPatch, 'patch_id')
+
+
+## Test Run - 2025-05-06T17:29:29.255372
+
+### shacl_pattern_validation
+- Status: PASSED
+- Details: All SHACL patterns validated successfully
+
+
+## Test Session Summary - 2025-05-06T17:30:29.583790
+
+- Total tests: 682
+- Passed: 283
+- Failed: 399
+- Exit status: 1
+
+### Test Categories Summary
+- Model Structure Tests: 0 tests
+- SHACL Validation Tests: 0 tests
+- Functional Tests: 0 tests
+

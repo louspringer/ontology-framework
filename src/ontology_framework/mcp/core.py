@@ -3,12 +3,14 @@ Core MCP implementation.
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Callable, AsyncContextManager
 from datetime import datetime
 import logging
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
+import asyncio
+from contextlib import asynccontextmanager
 
 @dataclass
 class ValidationContext:
@@ -26,6 +28,88 @@ class ValidationResult:
     errors: List[str]
     warnings: List[str]
     metadata: Dict[str, Any]
+
+class MCPTypes:
+    """MCP type definitions."""
+    
+    @dataclass
+    class TextContent:
+        type: str
+        text: str
+
+    @dataclass
+    class PromptMessage:
+        role: str
+        content: 'MCPTypes.TextContent'
+
+    @dataclass
+    class PromptArgument:
+        name: str
+        description: str
+        required: bool = True
+
+    @dataclass
+    class Prompt:
+        name: str
+        description: str
+        arguments: List['MCPTypes.PromptArgument']
+
+    @dataclass
+    class GetPromptResult:
+        description: str
+        messages: List['MCPTypes.PromptMessage']
+
+class MCPServer:
+    """MCP server implementation."""
+    
+    def __init__(self, name: str, lifespan: Optional[AsyncContextManager] = None):
+        self.name = name
+        self.lifespan = lifespan
+        self.request_context = None
+        self._prompt_handlers: Dict[str, Callable] = {}
+        self._tool_handlers: Dict[str, Callable] = {}
+
+    def list_prompts(self) -> Callable:
+        """Decorator for list_prompts handler."""
+        def decorator(func: Callable) -> Callable:
+            self._prompt_handlers['list_prompts'] = func
+            return func
+        return decorator
+
+    def get_prompt(self) -> Callable:
+        """Decorator for get_prompt handler."""
+        def decorator(func: Callable) -> Callable:
+            self._prompt_handlers['get_prompt'] = func
+            return func
+        return decorator
+
+    def call_tool(self) -> Callable:
+        """Decorator for call_tool handler."""
+        def decorator(func: Callable) -> Callable:
+            self._tool_handlers['call_tool'] = func
+            return func
+        return decorator
+
+    async def handle_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
+        """Handle incoming request."""
+        method = request.get('method')
+        if method == 'list_prompts':
+            handler = self._prompt_handlers.get('list_prompts')
+            if handler:
+                return await handler()
+        elif method == 'get_prompt':
+            handler = self._prompt_handlers.get('get_prompt')
+            if handler:
+                name = request.get('name')
+                arguments = request.get('arguments')
+                return await handler(name, arguments)
+        elif method == 'call_tool':
+            handler = self._tool_handlers.get('call_tool')
+            if handler:
+                name = request.get('name')
+                arguments = request.get('arguments')
+                return await handler(name, arguments)
+        raise ValueError(f"Unknown method: {method}")
 
 class MCPCore:
     """Core MCP implementation."""

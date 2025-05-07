@@ -1,102 +1,104 @@
 #!/usr/bin/env python3
-"""Fix guidance ontology using semantic web tools."""
+"""Script to fix the guidance ontology using RDFlib and PyShacl."""
 
 import logging
 from pathlib import Path
-import rdflib
-from rdflib import Graph, Namespace, RDF, XSD
-from pyshacl import validate
+from rdflib import Graph, URIRef, Literal, Namespace
+from rdflib.namespace import RDF, RDFS, XSD
+import pyshacl
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
-def load_ontology(file_path):
-    """Load ontology from file."""
-    try:
-        g = Graph()
-        g.parse(file_path, format="turtle")
-        return g
-    except Exception as e:
-        logger.error(f"Failed to load ontology: {e}")
-        raise
-
-def remove_incorrect_triple(graph, subject, predicate):
-    """Remove incorrect triple from graph."""
-    for s, p, o in graph.triples((subject, predicate, None)):
-        graph.remove((s, p, o))
-        logger.info(f"Removed incorrect triple: {s} {p} {o}")
-
-def add_correct_triple(graph, subject, predicate, object_value, datatype):
-    """Add correct triple to graph with datatype."""
-    graph.add((subject, predicate, rdflib.Literal(object_value, datatype=datatype)))
-    logger.info(f"Added correct triple: {subject} {predicate} {object_value}")
-
-def validate_ontology(graph):
-    """Validate ontology using PyShacl."""
-    try:
-        conforms, results_graph, results_text = validate(graph)
-        if not conforms:
-            logger.error(f"Validation failed: {results_text}")
-            return False
-        logger.info("Validation successful")
-        return True
-    except Exception as e:
-        logger.error(f"Validation error: {e}")
-        return False
-
-def save_ontology(graph, file_path):
-    """Save ontology to file."""
-    try:
-        graph.serialize(destination=file_path, format="turtle")
-        logger.info(f"Saved ontology to {file_path}")
-    except Exception as e:
-        logger.error(f"Failed to save ontology: {e}")
-        raise
-
-def fix_guidance_ontology():
-    """Fix guidance ontology by correcting hasTarget property."""
-    try:
-        # Load ontology
-        ontology_path = Path("guidance.ttl")
-        graph = load_ontology(ontology_path)
+def load_ontology(file_path: str) -> Graph:
+    """Load the ontology from a file.
+    
+    Args:
+        file_path: Path to the ontology file
         
-        # Define namespaces
-        GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+    Returns:
+        The loaded RDF graph
+    """
+    logger.info(f"Loading ontology from {file_path}")
+    g = Graph()
+    g.parse(file_path, format="turtle")
+    return g
+
+def remove_incorrect_triple(g: Graph) -> None:
+    """Remove the incorrect :hasTarget triple from :ClassHierarchyCheck.
+    
+    Args:
+        g: The RDF graph to modify
+    """
+    logger.info("Removing incorrect :hasTarget triple")
+    ns = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+    g.remove((URIRef(ns.ClassHierarchyCheck), URIRef(ns.hasTarget), URIRef(ns.ClassHierarchy)))
+
+def add_correct_triple(g: Graph) -> None:
+    """Add the correct :hasTarget triple with datatype xsd:anyURI.
+    
+    Args:
+        g: The RDF graph to modify
+    """
+    logger.info("Adding correct :hasTarget triple")
+    ns = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+    g.add((URIRef(ns.ClassHierarchyCheck), URIRef(ns.hasTarget), 
+           Literal("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchy", datatype=XSD.anyURI)))
+
+def validate_ontology(g: Graph) -> bool:
+    """Validate the ontology using PyShacl.
+    
+    Args:
+        g: The RDF graph to validate
         
-        # Fix ClassHierarchyCheck hasTarget property
-        class_hierarchy_check = GUIDANCE.ClassHierarchyCheck
-        has_target = GUIDANCE.hasTarget
+    Returns:
+        True if validation passes, False otherwise
+    """
+    logger.info("Validating ontology")
+    conforms, results_graph, results_text = pyshacl.validate(g)
+    if not conforms:
+        logger.error(f"Validation failed:\n{results_text}")
+    else:
+        logger.info("Validation passed")
+    return conforms
+
+def save_ontology(g: Graph, file_path: str) -> None:
+    """Save the ontology to a file.
+    
+    Args:
+        g: The RDF graph to save
+        file_path: Path to save the ontology to
+    """
+    logger.info(f"Saving ontology to {file_path}")
+    g.serialize(destination=file_path, format="turtle")
+
+def fix_guidance_ontology() -> None:
+    """Fix the guidance ontology."""
+    try:
+        # Load the ontology
+        g = load_ontology("guidance.ttl")
         
         # Remove incorrect triple
-        remove_incorrect_triple(graph, class_hierarchy_check, has_target)
+        remove_incorrect_triple(g)
         
-        # Add correct triple with xsd:anyURI datatype
-        add_correct_triple(
-            graph,
-            class_hierarchy_check,
-            has_target,
-            "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck",
-            XSD.anyURI
-        )
+        # Add correct triple
+        add_correct_triple(g)
         
         # Validate changes
-        if not validate_ontology(graph):
-            logger.error("Validation failed, not saving changes")
-            return False
-        
-        # Save changes
-        save_ontology(graph, ontology_path)
-        return True
-        
+        if validate_ontology(g):
+            # Save changes
+            save_ontology(g, "guidance.ttl")
+            logger.info("Successfully fixed and saved guidance ontology")
+        else:
+            logger.error("Failed to fix guidance ontology - validation failed")
+            
     except Exception as e:
         logger.error(f"Failed to fix guidance ontology: {e}")
-        return False
+        raise
 
 if __name__ == "__main__":
-    if fix_guidance_ontology():
-        logger.info("Successfully fixed guidance ontology")
-        exit(0)
-    else:
-        logger.error("Failed to fix guidance ontology")
-        exit(1) 
+    fix_guidance_ontology() 

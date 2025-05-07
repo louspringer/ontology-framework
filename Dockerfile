@@ -17,8 +17,12 @@ COPY environment.yml .
 # Copy project files
 COPY . .
 
-# Create conda environment
-RUN conda env create -f environment.yml && conda clean -afy
+# Create conda environment and install dependencies
+RUN conda env create -f environment.yml && \
+    conda init bash && \
+    . /opt/conda/etc/profile.d/conda.sh && \
+    conda activate ontology-framework && \
+    pip install uvicorn fastapi fastapi-mcp
 
 # Download spacy model
 SHELL ["conda", "run", "-n", "ontology-framework", "/bin/bash", "-c"]
@@ -33,5 +37,12 @@ ENV PYTHONPATH=/app/src
 # Define volumes for persistent data
 VOLUME ["/app/data", "/app/temp_embeddings"]
 
-# Run tests
-CMD ["conda", "run", "--no-capture-output", "-n", "ontology-framework", "python", "-m", "unittest", "discover", "tests"]
+# Make port 8080 available
+EXPOSE 8080
+
+# Copy entrypoint.sh and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Activate conda environment and run the server
+ENTRYPOINT ["/entrypoint.sh"]
