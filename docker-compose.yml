@@ -49,8 +49,42 @@ services:
       - graphdb
     command: conda run --no-capture-output -n ontology-framework python src/ontology_framework/tools/validate_guidance.py
 
+  ontology-framework:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src
+    environment:
+      - PYTHONPATH=/app/src
+      - CONDA_DEFAULT_ENV=ontology-framework
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "conda", "run", "-n", "ontology-framework", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - ontology-network
+
+  plantuml-server:
+    image: plantuml/plantuml-server:jetty
+    ports:
+      - "8080:8080"
+    networks:
+      - ontology-network
+
 volumes:
   graphdb-data:
     driver: local
   graphdb-import:
-    driver: local 
+    driver: local
+
+networks:
+  ontology-network:
+    driver: bridge 

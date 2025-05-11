@@ -4,8 +4,9 @@
 import logging
 from pathlib import Path
 import rdflib
-from rdflib import Graph, Namespace, RDF, XSD
+from rdflib import Graph, Namespace, RDF, XSD, URIRef, Literal
 from pyshacl import validate
+from rdflib.namespace import RDFS, OWL
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -63,6 +64,11 @@ def fix_guidance_ontology():
         
         # Define namespaces
         GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+        MODEL = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#")
+        CORE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#")
+        SECURITY = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#")
+        VALIDATION = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#")
+        COLLABORATION = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#")
         
         # Fix ClassHierarchyCheck hasTarget property
         class_hierarchy_check = GUIDANCE.ClassHierarchyCheck
@@ -87,6 +93,21 @@ def fix_guidance_ontology():
         
         # Save changes
         save_ontology(graph, ontology_path)
+
+        # Load and fix model ontology
+        g = load_ontology('guidance/modules/model.ttl')
+        
+        # Add ModelFirstPrinciple class if not exists
+        model_first = URIRef(MODEL.ModelFirstPrinciple)
+        if not (model_first, RDF.type, OWL.Class) in g:
+            g.add((model_first, RDF.type, OWL.Class))
+            g.add((model_first, RDFS.label, Literal("Model First Principle", lang="en")))
+            g.add((model_first, RDFS.comment, Literal("Principle that emphasizes modeling before implementation", lang="en")))
+            g.add((model_first, OWL.versionInfo, Literal("1.0.0")))
+        
+        # Save the updated model ontology
+        save_ontology(g, 'guidance/modules/model.ttl')
+
         return True
         
     except Exception as e:

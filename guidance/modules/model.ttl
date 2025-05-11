@@ -1,14 +1,19 @@
 @prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 : a owl:Ontology ;
     rdfs:label "Model Module"@en ;
     rdfs:comment "Module containing model-related concepts and rules"@en ;
-    owl:versionInfo "1.0.0" ;
-    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+    owl:imports guidance: ;
+    owl:versionInfo "1.0.0" .
+
+:hasModelingRule a owl:ObjectProperty ;
+    rdfs:label "has modeling rule"@en ;
+    rdfs:comment "Links a model to its modeling rules"@en ;
+    rdfs:domain :ModelFirstPrinciple ;
+    rdfs:range :ModelingRule .
 
 :ModelFirstPrinciple a owl:Class ;
     rdfs:label "Model First Principle"@en ;
@@ -19,10 +24,4 @@
     rdfs:label "Modeling Rule"@en ;
     rdfs:comment "Rule for modeling practices"@en ;
     owl:versionInfo "1.0.0" .
-
-:hasModelingRule a owl:ObjectProperty ;
-    rdfs:label "has modeling rule"@en ;
-    rdfs:comment "Links a model to its modeling rules"@en ;
-    rdfs:domain :ModelFirstPrinciple ;
-    rdfs:range :ModelingRule .
 

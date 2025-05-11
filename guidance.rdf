@@ -1,402 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
-   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#"
+   xmlns:guidance="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#"
    xmlns:owl="http://www.w3.org/2002/07/owl#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:sh="http://www.w3.org/ns/shacl#"
 >
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Validation Target</rdfs:label>
-    <rdfs:comment xml:lang="en">Targets for validation rules</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Sensitive Data Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Rules for detecting sensitive data patterns</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRUCTURAL">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <rdfs:label xml:lang="en">Structural Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Structural validation rules</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb31">
+  <rdf:Description rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb1">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have a comment</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb28">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a validator</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb35">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:languageIn rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb36"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have an English label</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:label xml:lang="en">Consistency Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Rule for consistency validation</rdfs:comment>
-    <hasMessage>Consistency validation failed</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation"/>
-    <hasValidator>validate_consistency</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRuleShape">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb1"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb2"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb3"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb4"/>
-    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb26">
-    <rdf:first>MEDIUM</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb27"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb32">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have a label</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleShape">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb5"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb6"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb10"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb11"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb12"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb13"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb14"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb15"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb19"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb20"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb21"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb22"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb23"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb24"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb28"/>
-    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb12">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a validator</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:label xml:lang="en">Semantic Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Rule for semantic validation</rdfs:comment>
-    <hasMessage>Semantic validation failed</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SEMANTIC"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation"/>
-    <hasValidator>validate_semantic</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb17">
-    <rdf:first>MEDIUM</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb18"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTargetShape">
-    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb29"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb30"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb31"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb32"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb33"/>
-    <sh:property rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb35"/>
-    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SYNTAX">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <rdfs:label xml:lang="en">Syntax Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Syntax validation rules</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb21">
-    <sh:class_ rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a target</sh:message>
     <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
     <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation">
-    <rdfs:label>Installation Validation</rdfs:label>
-    <rdfs:comment>Target for installation validation</rdfs:comment>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleRegistryInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleRegistry"/>
+    <guidance:registeredModule rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#"/>
+    <guidance:registeredModule rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#"/>
+    <guidance:registeredModule rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#"/>
+    <guidance:registeredModule rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#"/>
+    <guidance:registeredModule rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#SemanticFirst">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"/>
-    <rdfs:label>Semantic First Approach</rdfs:label>
-    <rdfs:comment>Always use semantic web tools before text-based operations</rdfs:comment>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule"/>
+    <guidance:hasMessage>Check for cycles in class hierarchy</guidance:hasMessage>
+    <guidance:hasPriority>HIGH</guidance:hasPriority>
+    <guidance:hasTarget rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck</guidance:hasTarget>
+    <guidance:hasValidator>validate_consistency</guidance:hasValidator>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <rdfs:label>Semantic Validation</rdfs:label>
-    <rdfs:comment>Target for semantic validation</rdfs:comment>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACLValidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">SHACL Validation</rdfs:label>
+    <rdfs:comment xml:lang="en">Rules and patterns for SHACL validation</rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#LegacySupportInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#LegacySupport"/>
+    <guidance:hasLegacyMapping rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#"/>
+    <guidance:hasLegacyMapping rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#"/>
+    <guidance:hasLegacyMapping rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#"/>
+    <guidance:hasLegacyMapping rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#"/>
+    <guidance:hasLegacyMapping rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasLegacyMapping">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label xml:lang="en">has rule type</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies the type of validation rule</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb33">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:languageIn rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb34"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have an English comment</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb5">
-    <sh:class rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a rule type</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Validation Rule Type</rdfs:label>
-    <rdfs:comment xml:lang="en">Types of validation rules supported by the framework</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb30">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have a label</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:label xml:lang="en">Syntax Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Rule for syntax validation</rdfs:comment>
-    <hasMessage>Syntax validation failed</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SYNTAX"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation"/>
-    <hasValidator>validate_syntax</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb15">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:in_ rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb16"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Priority must be HIGH, MEDIUM, or LOW</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <rdfs:label>Syntax Validation</rdfs:label>
-    <rdfs:comment>Target for syntax validation</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb13">
-    <sh:class_ rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a rule type</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb24">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:in rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb25"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Priority must be HIGH, MEDIUM, or LOW</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPattern">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">has pattern</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies a validation pattern</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#ValidationApproach">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"/>
-    <rdfs:label>Validation Approach</rdfs:label>
-    <rdfs:comment>How to handle validation tasks</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationRule">
-    <hasMessage>Installation command validation</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation"/>
-    <hasValidator>validate_installation.py</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:label xml:lang="en">Sensitive Data Detection</rdfs:label>
-    <rdfs:comment xml:lang="en">Rule for detecting sensitive data patterns</rdfs:comment>
-    <hasMessage>Sensitive data detected in literal value</hasMessage>
-    <hasPattern>\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b</hasPattern>
-    <hasPattern>\b\d{3}-\d{2}-\d{4}\b</hasPattern>
-    <hasPattern>\b\d{4}-\d{4}-\d{4}-\d{4}\b</hasPattern>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SENSITIVE_DATA"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation"/>
-    <hasValidator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">validate_sensitive_data</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label xml:lang="en">Validation Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Base class for validation rules</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <rdfs:label>Consistency Validation</rdfs:label>
-    <rdfs:comment>Target for consistency validation</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb1">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation">
-    <rdfs:label>Security Validation</rdfs:label>
-    <rdfs:comment>Target for security validation</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb8">
-    <rdf:first>MEDIUM</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb9"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb2">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb29">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation target must have a comment</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb6">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:in_ rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb7"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Priority must be HIGH, MEDIUM, or LOW</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb9">
-    <rdf:first>LOW</rdf:first>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    <rdfs:label xml:lang="en">has legacy mapping</rdfs:label>
+    <rdfs:comment xml:lang="en">Maps to legacy system concepts</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#LegacySupport"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
   </rdf:Description>
   <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
     <rdfs:label xml:lang="en">Guidance Ontology</rdfs:label>
     <rdfs:comment xml:lang="en">Ontology for managing guidance and validation rules</rdfs:comment>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#"/>
+    <owl:imports rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#"/>
     <owl:versionInfo>1.0.0</owl:versionInfo>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb3">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#label"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#OntologyManagement">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#GovernanceRule"/>
-    <rdfs:label>Ontology Management</rdfs:label>
-    <rdfs:comment>Rules for managing ontologies</rdfs:comment>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleShape">
+    <rdf:type rdf:resource="http://www.w3.org/ns/shacl#NodeShape"/>
+    <sh:property rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb1"/>
+    <sh:property rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb2"/>
+    <sh:property rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb3"/>
+    <sh:property rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb4"/>
+    <sh:targetClass rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb7">
-    <rdf:first>HIGH</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb8"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb10">
-    <sh:class_ rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a rule type</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasRuleType"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationRule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <hasMessage>Installation command validation</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation"/>
-    <hasValidator>validate_installation.py</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPORERule">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:label xml:lang="en">SPORE Rule</rdfs:label>
-    <rdfs:comment xml:lang="en">Rule for SPORE validation</rdfs:comment>
-    <hasMessage>SPORE validation failed</hasMessage>
-    <hasPriority>HIGH</hasPriority>
-    <hasRuleType rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#STRUCTURAL"/>
-    <hasTarget rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation"/>
-    <hasValidator>validate_spore</hasValidator>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">has priority</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies the validation priority</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb22">
-    <sh:class_ rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a target</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb27">
-    <rdf:first>LOW</rdf:first>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
-    <rdfs:label>22-rdf-syntax-ns#type</rdfs:label>
-    <rdfs:comment>Description of 22-rdf-syntax-ns#type</rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <owl:versionInfo>1.0.0</owl:versionInfo>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <rdfs:label>SPORE Validation</rdfs:label>
-    <rdfs:comment>Target for SPORE validation</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/installation#InstallationValidation">
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Installation Validation</rdfs:label>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Target for installation validation</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SEMANTIC">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <rdfs:label xml:lang="en">Semantic Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">Semantic validation rules using SPARQL</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb16">
-    <rdf:first>HIGH</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb17"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb20">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a validator</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb19">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a message</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#subClassOf">
     <rdfs:label>rdf-schema#subClassOf</rdfs:label>
@@ -405,78 +82,97 @@
     <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
     <owl:versionInfo>1.0.0</owl:versionInfo>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget">
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#registeredModule">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label xml:lang="en">has target</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies the validation target</rdfs:comment>
+    <rdfs:label xml:lang="en">registered module</rdfs:label>
+    <rdfs:comment xml:lang="en">Links to a registered module</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleRegistry"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb2">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasPriority">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ModuleRegistry">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Module Registry</rdfs:label>
+    <rdfs:comment xml:lang="en">Registry of all ontology modules</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationPattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Validation Pattern</rdfs:label>
+    <rdfs:comment xml:lang="en">Pattern for implementing validation rules</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb4">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
+    <rdfs:label>22-rdf-syntax-ns#type</rdfs:label>
+    <rdfs:comment>Description of 22-rdf-syntax-ns#type</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#LegacySupport">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Legacy Support</rdfs:label>
+    <rdfs:comment xml:lang="en">Support for legacy system mappings</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="n56bb90713ff84530b8d7dc97d10f62cdb3">
+    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
+    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
+    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#IntegrationRequirement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Integration Requirement</rdfs:label>
+    <rdfs:comment xml:lang="en">Requirements for integrating validation components</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPORERule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#TODO">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Future Improvements</rdfs:label>
+    <rdfs:comment>Items for future development and enhancement</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Class">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb36">
-    <rdf:first>en</rdf:first>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb14">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a message</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">has message</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies the validation message</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">has validator</rdfs:label>
-    <rdfs:comment xml:lang="en">Specifies the validator function</rdfs:comment>
-    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb4">
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="http://www.w3.org/2000/01/rdf-schema#comment"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb11">
-    <sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a message</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb23">
-    <sh:class rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationTarget"/>
-    <sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>
-    <sh:message>Validation rule must have a target</sh:message>
-    <sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>
-    <sh:path rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasTarget"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb25">
-    <rdf:first>HIGH</rdf:first>
-    <rdf:rest rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb26"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#DatatypeProperty">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb18">
-    <rdf:first>LOW</rdf:first>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasValidator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
   </rdf:Description>
-  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SHACL">
-    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRuleType"/>
-    <rdfs:label xml:lang="en">SHACL Validation</rdfs:label>
-    <rdfs:comment xml:lang="en">SHACL-based validation rules</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="n906de0d218e942a7a2be5cc97aa9890fb34">
-    <rdf:first>en</rdf:first>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#hasMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ValidationRule"/>
   </rdf:Description>
 </rdf:RDF>

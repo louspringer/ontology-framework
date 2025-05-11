@@ -1,4 +1,4 @@
-@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -17,79 +17,122 @@ rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
-: a owl:Ontology ;
+guidance: a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
     owl:versionInfo "1.0.0" .
 
-:ClassHierarchyCheck a :ConsistencyRule ;
-    :hasMessage "Check for cycles in class hierarchy" ;
-    :hasPriority "HIGH" ;
-    :hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchy"^^xsd:anyURI ;
-    :hasValidator "validate_consistency" .
+guidance:ClassHierarchyCheck a guidance:ConsistencyRule ;
+    guidance:hasMessage "Check for cycles in class hierarchy" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck"^^xsd:anyURI ;
+    guidance:hasValidator "validate_consistency" .
 
-:IntegrationRequirement a owl:Class ;
+guidance:IntegrationRequirement a owl:Class ;
     rdfs:label "Integration Requirement"@en ;
     rdfs:comment "Requirements for integrating validation components"@en .
 
-:SHACLValidation a owl:Class ;
+guidance:LegacySupportInstance a guidance:LegacySupport ;
+    guidance:hasLegacyMapping <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+
+guidance:ModuleRegistryInstance a guidance:ModuleRegistry ;
+    guidance:registeredModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+
+guidance:SHACLValidation a owl:Class ;
     rdfs:label "SHACL Validation"@en ;
     rdfs:comment "Rules and patterns for SHACL validation"@en .
 
-:SPORERule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
+guidance:SPORERule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
 
-:SemanticRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
+guidance:SemanticRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
 
-:SyntaxRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
+guidance:SyntaxRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
 
-:TODO a owl:Class ;
+guidance:TODO a owl:Class ;
     rdfs:label "Future Improvements" ;
     rdfs:comment "Items for future development and enhancement" .
 
-:ValidationPattern a owl:Class ;
+guidance:ValidationPattern a owl:Class ;
     rdfs:label "Validation Pattern"@en ;
     rdfs:comment "Pattern for implementing validation rules"@en .
 
-:ValidationRuleShape a sh:NodeShape ;
+guidance:ValidationRuleShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasTarget ],
+            sh:path guidance:hasTarget ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasPriority ],
+            sh:path guidance:hasPriority ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasValidator ],
+            sh:path guidance:hasValidator ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasMessage ] ;
-    sh:targetClass :ValidationRule .
+            sh:path guidance:hasMessage ] ;
+    sh:targetClass guidance:ValidationRule .
 
-:ConsistencyRule a owl:Class ;
-    rdfs:subClassOf :ValidationRule .
+guidance:hasLegacyMapping a owl:ObjectProperty ;
+    rdfs:label "has legacy mapping"@en ;
+    rdfs:comment "Maps to legacy system concepts"@en ;
+    rdfs:domain guidance:LegacySupport ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
 
-:hasMessage a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+guidance:registeredModule a owl:ObjectProperty ;
+    rdfs:label "registered module"@en ;
+    rdfs:comment "Links to a registered module"@en ;
+    rdfs:domain guidance:ModuleRegistry ;
+    rdfs:range owl:Ontology ;
+    owl:versionInfo "1.0.0" .
 
-:hasPriority a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+guidance:ConsistencyRule a owl:Class ;
+    rdfs:subClassOf guidance:ValidationRule .
 
-:hasTarget a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+guidance:hasMessage a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
 
-:hasValidator a owl:DatatypeProperty ;
-    rdfs:domain :ValidationRule .
+guidance:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:hasTarget a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:hasValidator a owl:DatatypeProperty ;
+    rdfs:domain guidance:ValidationRule .
+
+guidance:LegacySupport a owl:Class ;
+    rdfs:label "Legacy Support"@en ;
+    rdfs:comment "Support for legacy system mappings"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:ModuleRegistry a owl:Class ;
+    rdfs:label "Module Registry"@en ;
+    rdfs:comment "Registry of all ontology modules"@en ;
+    owl:versionInfo "1.0.0" .
 
 owl:DatatypeProperty rdfs:subClassOf rdf:Property .
 
-owl:Class rdfs:subClassOf rdfs:Class .
+guidance:ValidationRule a owl:Class .
 
-:ValidationRule a owl:Class .
+owl:Class rdfs:subClassOf rdfs:Class .
 
