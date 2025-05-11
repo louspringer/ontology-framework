@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Build stage for conda environment
-FROM --platform=$BUILDPLATFORM continuumio/miniconda3:latest AS conda-builder
+FROM continuumio/miniconda3:latest AS conda-builder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -14,30 +14,33 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy only the files needed for environment setup
-COPY --link environment.yml setup.py pyproject.toml README.md ./
-COPY --link src/ontology_framework/__init__.py src/ontology_framework/
+COPY environment.yml setup.py pyproject.toml README.md ./
+COPY src/ontology_framework/__init__.py src/ontology_framework/
 
-# Create conda environment with improved caching and memory limits
-RUN --mount=type=cache,target=/opt/conda/pkgs \
-    --mount=type=cache,target=/root/.cache/pip \
-    conda env create -f environment.yml && \
-    conda clean -afy
+# Create conda environment (no BuildKit cache mounts for ACR)
+RUN conda env create -f environment.yml && conda clean -afy
+
+# Install FastAPI dependencies
+RUN conda run -n ontology-framework pip install fastapi uvicorn
 
 # Runtime stage
-FROM --platform=$TARGETPLATFORM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:latest
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     graphviz \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy conda environment from builder
-COPY --from=conda-builder --link /opt/conda/envs/ontology-framework /opt/conda/envs/ontology-framework
+COPY --from=conda-builder /opt/conda/envs/ontology-framework /opt/conda/envs/ontology-framework
 
-# Copy project files
-COPY --link . .
+# Copy project files and guidance.ttl
+COPY . .
+COPY guidance.ttl /app/guidance.ttl
+COPY start.sh /app/start.sh
 
 # Create necessary directories with proper permissions
 RUN mkdir -p /app/data/ontologies /app/data/validation /app/data/visualization && \
@@ -48,7 +51,9 @@ ENV PYTHONPATH=/app/src \
     CONDA_DEFAULT_ENV=ontology-framework \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONHASHSEED=random
+    PYTHONHASHSEED=random \
+    GRAPHDB_URL=http://graphdb:7200 \
+    MCP_PORT=8080
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser && \
@@ -58,6 +63,9 @@ USER appuser
 # Define volumes for persistent data
 VOLUME ["/app/data"]
 
+# Expose ports for Python services
+EXPOSE 8000 8080
+
 # Add healthcheck
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD conda run -n ontology-framework python -c "import requests; requests.get('http://localhost:8000/health')"
@@ -65,5 +73,16 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
 # Install the package in development mode
 RUN conda run -n ontology-framework pip install -e .
 
-# Set the default command
-CMD ["conda", "run", "-n", "ontology-framework", "python", "bfg9k_mcp_server.py"]
+# Create startup script
+RUN echo '#!/bin/bash\n\
+echo "Starting BFG9K MCP Server..."\n\
+conda run -n ontology-framework python src/ontology_framework/mcp/bfg9k_mcp_server.py &\n\
+echo "Starting Validation Service..."\n\
+conda run -n ontology-framework python src/ontology_framework/tools/validate_guidance.py &\n\
+echo "Starting Ontology Framework..."\n\
+conda run -n ontology-framework python src/ontology_framework/cli/main.py &\n\
+echo "All services started. Waiting..."\n\
+wait' > /app/start.sh && chmod +x /app/start.sh
+
+# Set the default command to run all services
+CMD ["/app/start.sh"]

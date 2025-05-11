@@ -1,0 +1,46 @@
+version: v1.1.0
+steps:
+  - id: setup-buildx
+    cmd: |
+      docker buildx create --use
+      docker buildx inspect --bootstrap
+    timeout: 300
+    when: ["-"]
+    retryOnError: true
+    retryCount: 3
+    retryDelay: 10
+
+  - id: build-and-push
+    cmd: |
+      docker buildx build \
+        --platform linux/amd64 \
+        --tag ontologyframework.azurecr.io/ontology-framework:{{.Run.ID}} \
+        --tag ontologyframework.azurecr.io/ontology-framework:latest \
+        --push \
+        .
+    timeout: 3600
+    when: ["-"]
+    retryOnError: true
+    retryCount: 3
+    retryDelay: 10
+
+  - id: run-services
+    cmd: |
+      docker-compose up -d
+    timeout: 3600
+    when: ["-"]
+    retryOnError: true
+    retryCount: 3
+    retryDelay: 10
+
+  - id: health-check
+    cmd: |
+      echo "Waiting for services to be healthy..."
+      sleep 30
+      curl -f http://localhost:8000/health || exit 1
+      curl -f http://localhost:7200/rest/repositories || exit 1
+    timeout: 300
+    when: ["-"]
+    retryOnError: true
+    retryCount: 5
+    retryDelay: 10 
