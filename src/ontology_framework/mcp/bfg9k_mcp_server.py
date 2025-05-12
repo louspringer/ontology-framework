@@ -275,4 +275,4 @@ async def get_metrics() -> List[Dict[str, Any]]:
     return metrics
 
 if __name__ == "__main__":
-    mcp.run(port=8080) 
+    mcp.run(host="0.0.0.0", port=8080, mode="http") 
