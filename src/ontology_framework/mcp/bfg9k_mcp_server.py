@@ -9,8 +9,7 @@ from datetime import datetime
 import logging
 import json
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
-import uvicorn
+import mcp
 from ontology_framework.tools.guidance_manager import GuidanceManager
 
 # Configure logging
@@ -23,9 +22,6 @@ logger = logging.getLogger(__name__)
 # Define namespaces
 MCP = Namespace("http://example.org/mcp#")
 BFG9K = Namespace("http://example.org/bfg9k#")
-
-# Initialize FastAPI app
-app = FastAPI(title="BFG9K MCP Server")
 
 class BFG9KMCPServer:
     """Server for managing BFG9K ontologies and validation."""
@@ -94,43 +90,6 @@ class BFG9KMCPServer:
         self.model.add((metric_uri, MCP.value, Literal(0.90)))
         self.model.add((metric_uri, MCP.timestamp, Literal(datetime.now().isoformat())))
         
-    def validate_ontology(self, ontology_path: str) -> Dict[str, Any]:
-        """Validate an ontology against BFG9K patterns and guidance.
-        
-        Args:
-            ontology_path: Path to the ontology file to validate
-            
-        Returns:
-            Validation results
-        """
-        try:
-            # Load and validate using guidance manager
-            self.guidance_manager.load(ontology_path)
-            guidance_results = self.guidance_manager.validate_guidance()
-            
-            # Add BFG9K specific validation
-            bfg9k_results = self._validate_bfg9k_patterns(ontology_path)
-            
-            # Combine results
-            results = {
-                "guidance_validation": guidance_results,
-                "bfg9k_validation": bfg9k_results,
-                "timestamp": datetime.now().isoformat(),
-                "ontology": ontology_path
-            }
-            
-            # Track validation
-            self.processed_results.append(results)
-            
-            return results
-            
-        except Exception as e:
-            logger.error(f"Error validating ontology: {str(e)}")
-            return {
-                "success": False,
-                "error": f"Validation error: {str(e)}"
-            }
-            
     def _validate_bfg9k_patterns(self, ontology_path: str) -> Dict[str, Any]:
         """Validate BFG9K specific patterns.
         
@@ -234,37 +193,86 @@ class BFG9KMCPServer:
             })
         return metrics
 
-# FastAPI endpoints
-@app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+# Create MCP server instance
+server = BFG9KMCPServer()
 
-@app.post("/validate")
-async def validate_ontology(ontology_path: str):
-    """Validate an ontology endpoint."""
-    try:
-        server = BFG9KMCPServer()
-        results = server.validate_ontology(ontology_path)
-        return results
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/metrics")
-async def get_metrics():
-    """Get metrics endpoint."""
-    try:
-        server = BFG9KMCPServer()
-        return server.get_metrics()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-def main():
-    """Main entry point for the BFG9K MCP server."""
-    logger.info("Starting BFG9K MCP Server")
+@mcp.tool()
+async def validate_ontology(ontology_path: str) -> Dict[str, Any]:
+    """Validate an ontology against BFG9K patterns and guidance.
     
-    # Run FastAPI server
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    Args:
+        ontology_path: Path to the ontology file to validate
+        
+    Returns:
+        Validation results
+    """
+    try:
+        # Load and validate using guidance manager
+        server.guidance_manager.load(ontology_path)
+        guidance_results = server.guidance_manager.validate_guidance()
+        
+        # Add BFG9K specific validation
+        bfg9k_results = server._validate_bfg9k_patterns(ontology_path)
+        
+        # Combine results
+        results = {
+            "guidance_validation": guidance_results,
+            "bfg9k_validation": bfg9k_results,
+            "timestamp": datetime.now().isoformat(),
+            "ontology": ontology_path
+        }
+        
+        # Track validation
+        server.processed_results.append(results)
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error validating ontology: {str(e)}")
+        return {
+            "success": False,
+            "error": f"Validation error: {str(e)}"
+        }
+
+@mcp.tool()
+async def get_validation_rules() -> List[Dict[str, Any]]:
+    """Get all validation rules."""
+    return server.guidance_manager.get_validation_rules()
+
+@mcp.tool()
+async def update_metric(metric_type: str, value: float) -> Dict[str, Any]:
+    """Update a maintenance metric.
+    
+    Args:
+        metric_type: Type of metric to update
+        value: New metric value
+        
+    Returns:
+        Update result
+    """
+    metric_uri = URIRef(f"http://example.org/mcp/metrics#{metric_type}")
+    server.model.add((metric_uri, RDF.type, URIRef("http://example.org/mcp#Metric")))
+    server.model.add((metric_uri, URIRef("http://example.org/mcp#value"), Literal(value)))
+    server.model.add((metric_uri, URIRef("http://example.org/mcp#timestamp"), Literal(datetime.now().isoformat())))
+    
+    return {
+        "status": "updated",
+        "metric": metric_type,
+        "value": value,
+        "timestamp": datetime.now().isoformat()
+    }
+
+@mcp.tool()
+async def get_metrics() -> List[Dict[str, Any]]:
+    """Get all metrics."""
+    metrics = []
+    for metric in server.model.subjects(RDF.type, MCP.Metric):
+        metrics.append({
+            "id": str(metric).split("#")[-1],
+            "value": float(server.model.value(metric, MCP.value)),
+            "timestamp": str(server.model.value(metric, MCP.timestamp))
+        })
+    return metrics
 
 if __name__ == "__main__":
-    main() 
+    mcp.run(port=8080) 
