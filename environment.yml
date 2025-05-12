@@ -41,4 +41,5 @@ dependencies:
   - PyPDF2>=3.0.0
   - httpx>=0.24.0
   - yt-dlp>=2023.0
+  - fastmcp
 name: ontology-framework
