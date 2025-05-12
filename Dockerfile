@@ -57,7 +57,7 @@ RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
 
 # Install the package and dependencies
-RUN conda run -n ontology-framework pip install .
+RUN conda run -n ontology-framework pip install -e .
 
 # Switch to non-root user
 USER appuser
