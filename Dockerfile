@@ -73,4 +73,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/mcp/health || exit 1
 
 # Set the default command to run the MCP server with FastMCP
-CMD ["sh", "-c", "echo 'Starting BFG9K MCP Server...' && ls -la /app && echo 'Contents of /app/guidance.ttl:' && cat /app/guidance.ttl && echo 'Installed packages:' && conda run -n ontology-framework pip list && echo 'Starting FastMCP...' && conda run -n ontology-framework python -m ontology_framework.mcp.bfg9k_mcp_server"]
+CMD ["sh", "-c", "echo 'Starting BFG9K MCP Server...' && ls -la /app && echo 'Contents of /app/guidance.ttl:' && cat /app/guidance.ttl && echo 'Installed packages:' && conda run -n ontology-framework pip list && echo 'Starting FastMCP...' && conda run -n ontology-framework python -c 'from ontology_framework.mcp.bfg9k_mcp_server import mcp; mcp.run(host=\"0.0.0.0\", port=8080)'"]
