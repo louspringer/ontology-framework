@@ -9,7 +9,8 @@ from datetime import datetime
 import logging
 import json
 from pathlib import Path
-import mcp
+from fastmcp import FastMCP
+
 from ontology_framework.tools.guidance_manager import GuidanceManager
 
 # Configure logging
@@ -22,6 +23,13 @@ logger = logging.getLogger(__name__)
 # Define namespaces
 MCP = Namespace("http://example.org/mcp#")
 BFG9K = Namespace("http://example.org/bfg9k#")
+
+# Create FastAPI app
+# app = FastAPI(title="BFG9K MCP Server")
+
+# Create FastMCP instance
+mcp = FastMCP("BFG9K MCP Server")
+
 
 class BFG9KMCPServer:
     """Server for managing BFG9K ontologies and validation."""
@@ -193,7 +201,7 @@ class BFG9KMCPServer:
             })
         return metrics
 
-# Create MCP server instance
+# Create server instance
 server = BFG9KMCPServer()
 
 @mcp.tool()
@@ -224,15 +232,10 @@ async def validate_ontology(ontology_path: str) -> Dict[str, Any]:
         
         # Track validation
         server.processed_results.append(results)
-        
         return results
-        
     except Exception as e:
         logger.error(f"Error validating ontology: {str(e)}")
-        return {
-            "success": False,
-            "error": f"Validation error: {str(e)}"
-        }
+        return {"success": False, "error": f"Validation error: {str(e)}"}
 
 @mcp.tool()
 async def get_validation_rules() -> List[Dict[str, Any]]:
@@ -254,7 +257,6 @@ async def update_metric(metric_type: str, value: float) -> Dict[str, Any]:
     server.model.add((metric_uri, RDF.type, URIRef("http://example.org/mcp#Metric")))
     server.model.add((metric_uri, URIRef("http://example.org/mcp#value"), Literal(value)))
     server.model.add((metric_uri, URIRef("http://example.org/mcp#timestamp"), Literal(datetime.now().isoformat())))
-    
     return {
         "status": "updated",
         "metric": metric_type,
@@ -275,4 +277,4 @@ async def get_metrics() -> List[Dict[str, Any]]:
     return metrics
 
 if __name__ == "__main__":
-    mcp.run(host="0.0.0.0", port=8080, mode="http") 
+    mcp.run(port=8080, transport="sse") 
