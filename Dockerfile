@@ -27,7 +27,6 @@ FROM continuumio/miniconda3:latest
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     graphviz \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -74,13 +73,5 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
 
 RUN conda init
 
-# Set the default command to run the MCP server with FastMCP
-CMD ["sh", "-c", "echo 'Starting BFG9K MCP Server...' && \
-    . /opt/conda/etc/profile.d/conda.sh && \
-    conda activate ontology-framework && \
-    echo 'Contents of /app/guidance.ttl:' && \
-    cat /app/guidance.ttl && \
-    echo 'Installed packages:' && \
-    pip list && \
-    echo 'Starting FastMCP...' && \
-    python -m ontology_framework.mcp.bfg9k_mcp_server"]
+# Set the default command to run the MCP server
+CMD ["sh", "-c", ". /opt/conda/etc/profile.d/conda.sh && conda activate ontology-framework && python -m ontology_framework.mcp.bfg9k_mcp_server"]
