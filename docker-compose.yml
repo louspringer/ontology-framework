@@ -17,7 +17,7 @@ services:
       - MCP_PORT=8080
     depends_on:
       - graphdb
-    command: conda run --no-capture-output -n ontology-framework python bfg9k_mcp_server.py
+    command: conda run --no-capture-output -n ontology-framework python bfg9k_mcp.py
 
   graphdb:
     image: ontotext/graphdb:10.4.3
