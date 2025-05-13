@@ -37,12 +37,27 @@ else
 
     # Tag as latest if build succeeds
     if [ $? -eq 0 ]; then
-        echo "Build successful. Tagging as latest..."
-        az acr import --name $ACR_NAME \
-            --source $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG \
-            --image $IMAGE_NAME:latest
-        echo "Image available at: $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG"
-        echo "Latest tag updated to: $ACR_NAME.azurecr.io/$IMAGE_NAME:latest"
+        echo "Build successful. Updating latest tag..."
+        
+        # Get all images tagged as latest
+        echo "Finding all images tagged as latest..."
+        LATEST_DIGESTS=$(az acr repository show-tags --name $ACR_NAME --repository bfg9k-mcp-sse --orderby time_desc --query "[?contains(tags, 'latest')].digest" -o tsv)
+        
+        # Remove all existing latest tags
+        for digest in $LATEST_DIGESTS; do
+            echo "Removing latest tag from digest: $digest"
+            az acr repository untag --name $ACR_NAME --image bfg9k-mcp-sse@$digest
+        done
+        
+        # Create new latest tag
+        echo "Creating new latest tag..."
+        az acr repository update \
+            --name $ACR_NAME \
+            --image bfg9k-mcp-sse:latest \
+            --tag bfg9k-mcp-sse:$TAG
+            
+        echo "Image available at: $ACR_NAME.azurecr.io/bfg9k-mcp-sse:$TAG"
+        echo "Latest tag updated to: $ACR_NAME.azurecr.io/bfg9k-mcp-sse:latest"
     else
         echo "Build failed. Check ACR build logs for details."
         exit 1

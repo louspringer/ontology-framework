@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from fastmcp import FastMCP
 from bfg9k_manager import BFG9KManager
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -14,7 +15,8 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("BFG9K MCP Server")
 
 # Create BFG9KManager instance
-bfg9k = BFG9KManager("bfg9k_config.ttl")
+config_path = os.path.join(os.path.dirname(__file__), "bfg9k_config.ttl")
+bfg9k = BFG9KManager(config_path)
 
 def get_manager():
     # Helper to get a fresh manager if needed
@@ -46,4 +48,4 @@ async def update_guidance(content: str) -> dict:
     return {"result": result, "timestamp": datetime.now().isoformat()}
 
 if __name__ == "__main__":
-    mcp.run(transport="sse", port=8080, host="127.0.0.1") 
+    mcp.run(transport="sse", port=8080, host="0.0.0.0") 

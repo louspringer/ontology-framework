@@ -6,6 +6,7 @@
   "config": {
     "ontology_path": "guidance.ttl",
     "validation_enabled": true,
-    "sse_enabled": true
+    "sse_enabled": true,
+    "sse_endpoint": "http://localhost:8085/sse"
   }
 }

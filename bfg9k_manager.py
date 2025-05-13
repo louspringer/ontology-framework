@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class BFG9KManager:
     def __init__(self, config_path="bfg9k_config.ttl"):
+        print(f"[DEBUG] BFG9KManager loading config from: {config_path}")
         self.config = Graph()
         self.config.parse(config_path, format="turtle")
         

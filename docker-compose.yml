@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8085:8085"
     volumes:
       - ./guidance.ttl:/app/guidance.ttl
       - ./data:/app/data
@@ -14,7 +14,7 @@ services:
     environment:
       - PYTHONPATH=/app/src
       - GRAPHDB_URL=http://graphdb:7200
-      - MCP_PORT=8080
+      - MCP_PORT=8085
     depends_on:
       - graphdb
     command: conda run --no-capture-output -n ontology-framework python bfg9k_mcp.py

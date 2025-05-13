@@ -31,6 +31,10 @@ COPY setup.py pyproject.toml README.md ./
 COPY src/ontology_framework/ src/ontology_framework/
 COPY guidance.ttl /app/guidance.ttl
 COPY bfg9k_mcp.py /app/bfg9k_mcp.py
+COPY bfg9k_manager.py /app/bfg9k_manager.py
+COPY bfg9k_config.ttl /app/bfg9k_config.ttl
+
+RUN echo "=== /app contents after COPY bfg9k_config.ttl ===" && ls -l /app && cat /app/bfg9k_config.ttl
 
 RUN mkdir -p /app/data/ontologies /app/data/validation /app/data/visualization && \
     chmod -R 755 /app/data
@@ -40,12 +44,20 @@ ENV PYTHONPATH=/app/src \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONHASHSEED=random \
-    MCP_PORT=8080
+    MCP_PORT=8080 \
+    MCP_KEEP_ALIVE=1 \
+    MCP_KEEP_ALIVE_TIMEOUT=75 \
+    MCP_KEEP_ALIVE_INTERVAL=30 \
+    MCP_MAX_REQUESTS=10000 \
+    MCP_MAX_REQUESTS_JITTER=1000
 
 RUN useradd -m -u 1000 appuser && \
     chown -R appuser:appuser /app
 
 RUN conda run -n ontology-framework pip install -e .
+
+
+RUN echo "=== /app contents after conda run -n ontology-framework pip install -e . ===" && ls -l /app && cat /app/bfg9k_config.ttl
 
 USER appuser
 
@@ -53,7 +65,13 @@ VOLUME ["/app/data"]
 
 EXPOSE 8080
 
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/mcp/health || exit 1
+
 RUN conda init
 
-# Entrypoint for bfg9k-mcp image
-CMD ["sh", "-c", ". /opt/conda/etc/profile.d/conda.sh && conda activate ontology-framework && python /app/bfg9k_mcp.py"] 
+RUN echo "=== /app contents after conda init ===" && ls -l /app && cat /app/bfg9k_config.ttl
+
+# Entrypoint for bfg9k-mcp image with keep-alive settings
+CMD ["sh", "-c", ". /opt/conda/etc/profile.d/conda.sh && conda activate ontology-framework && python /app/bfg9k_mcp.py --keep-alive --keep-alive-timeout 75 --keep-alive-interval 30 --max-requests 10000 --max-requests-jitter 1000"] 

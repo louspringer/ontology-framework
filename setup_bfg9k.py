@@ -90,6 +90,32 @@ def update_governing_models():
     g += shapes_graph
     g.serialize("guidance.ttl", format="turtle")
 
+def verify_setup():
+    """Verify the BFG9K MCP setup."""
+    print("\nVerifying BFG9K MCP setup...")
+    
+    # Check MCP configuration
+    if not os.path.exists(".cursor/mcp/guidance-mcp.json"):
+        print("❌ MCP configuration not found")
+        return False
+    
+    print("✅ MCP configuration found")
+    
+    # Check MCP service
+    try:
+        import subprocess
+        result = subprocess.run(["cursor", "mcp", "list"], capture_output=True, text=True)
+        if "guidance-mcp" not in result.stdout:
+            print("❌ BFG9K MCP service not found")
+            return False
+    except Exception as e:
+        print(f"❌ Failed to check MCP service: {e}")
+        return False
+    
+    print("✅ BFG9K MCP service found")
+    print("\nSetup verification complete!")
+    return True
+
 def main():
     print("Setting up Cursor IDE MCP service...")
     setup_cursor_mcp()
