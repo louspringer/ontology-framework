@@ -72,6 +72,8 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/mcp/health || exit 1
 
+RUN conda init
+
 # Set the default command to run the MCP server with FastMCP
 CMD ["sh", "-c", "echo 'Starting BFG9K MCP Server...' && \
     . /opt/conda/etc/profile.d/conda.sh && \
