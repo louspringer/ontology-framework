@@ -1,3 +1,5 @@
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 import logging
 from datetime import datetime
 from fastmcp import FastMCP
@@ -82,6 +84,9 @@ async def update_guidance(content: str) -> dict:
         with open("temp_update.ttl", "w") as f:
             f.write(content)
         logger.debug("[update_guidance] Wrote content to temp_update.ttl")
+        with open("temp_update.ttl", "r") as f:
+            debug_content = f.read()
+        logger.debug(f"[update_guidance] Content of temp_update.ttl (first 500 chars): {debug_content[:500]}")
         result = get_manager().update_ontology("temp_update.ttl")
         logger.info(f"[update_guidance] Update result: {str(result)[:200]}")
         if not isinstance(result, dict):
