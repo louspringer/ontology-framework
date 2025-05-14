@@ -4,7 +4,7 @@
 
 ns1:ServerConfiguration a ns1:ServerConfiguration ;
     rdfs:label "BFG9K - Ontology Validation Powerhouse" ;
-    ns1:host "localhost" ;
+    ns1:host "10.0.2.6" ;
     ns1:ontologyPath "guidance.ttl" ;
     ns1:port 7200 ;
     ns1:validationEnabled true .

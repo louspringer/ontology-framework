@@ -5,15 +5,22 @@ import logging
 from pathlib import Path
 from rdflib import Graph
 from ontology_framework.graphdb_client import GraphDBClient
+import os
+from dotenv import load_dotenv
 
 def main():
     """Set up GraphDB repository."""
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
     
+    # Load environment variables from .env if present
+    load_dotenv()
+    # Use GRAPHDB_URL env var if set, else default to new remote
+    base_url = os.environ.get("GRAPHDB_URL", "http://10.0.2.6:7200")
+    
     # Initialize GraphDB client
     client = GraphDBClient(
-        base_url="http://localhost:7200"
+        base_url=base_url
     )
     
     repository_name = "guidance"

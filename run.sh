@@ -85,8 +85,8 @@ fi
 
 if [ "$RUN_TYPE" = "local" ]; then
     # echo "Running locally with Docker..."
-    # echo "Removing local image $ACR_SERVER/$IMAGE_NAME:$TAG (if exists)..."
-    # docker rmi $ACR_SERVER/$IMAGE_NAME:$TAG 2>/dev/null || true
+    echo "Removing local image $ACR_SERVER/$IMAGE_NAME:$TAG (if exists)..."
+    docker rmi $ACR_SERVER/$IMAGE_NAME:$TAG 2>/dev/null || true
     echo "Pulling latest image from $ACR_SERVER..."
     docker pull $ACR_SERVER/$IMAGE_NAME:$TAG
     if [ -n "$ACR_USERNAME" ] && [ -n "$ACR_PASSWORD" ]; then

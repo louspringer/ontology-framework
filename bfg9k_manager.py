@@ -6,6 +6,8 @@ import json
 import logging
 import os
 from urllib.parse import urlparse
+import io
+from dotenv import load_dotenv
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -13,6 +15,8 @@ BFG9K = Namespace("https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 class BFG9KManager:
     def __init__(self, config_path="bfg9k_config.ttl"):
@@ -32,21 +36,35 @@ class BFG9KManager:
             self.host = str(self.config.value(server_config, BFG9K.host))
             self.port = int(self.config.value(server_config, BFG9K.port))
             self.base_url = f"http://{self.host}:{self.port}"
-        self.repository = "ontology-framework"
+        self.repository = os.environ.get("GRAPHDB_REPOSITORY", "ontologyframework")
         self.guidance_endpoint = f"{self.base_url}/repositories/{self.repository}/guidance#"
     
     def validate_ontology(self, ontology_path):
-        """Validate ontology using BFG9K server"""
-        url = f"{self.base_url}/validate"
-        with open(ontology_path, 'rb') as f:
-            response = requests.post(url, files={'ontology': f})
-        return response.json()
+        """Validate ontology locally using pyshacl and check isomorphism."""
+        # Load the ontology
+        g = Graph()
+        g.parse(ontology_path, format="turtle")
+
+        # SHACL validation (no shapes graph for now, just basic RDF/OWL checks)
+        conforms, results_graph, results_text = validate(g, inference='rdfs', abort_on_first=False)
+
+        # Isomorphism test: serialize and reload, then compare
+        serialized = g.serialize(format="turtle")
+        g2 = Graph()
+        g2.parse(data=serialized, format="turtle")
+        isomorphic = g.isomorphic(g2)
+
+        return {
+            "shacl_conforms": conforms,
+            "shacl_results": results_text,
+            "isomorphic": isomorphic
+        }
     
     def query_ontology(self, query):
         """Query the ontology using SPARQL."""
         try:
             response = requests.post(
-                f"{self.base_url}/repositories/ontology/statements",
+                f"{self.base_url}/repositories/{self.repository}/statements",
                 data={"query": query},
                 headers={"Accept": "application/json"}
             )
