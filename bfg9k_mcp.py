@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("BFG9K MCP Server")
 
 # Create BFG9KManager instance
+print("Current working directory:", os.getcwd())
 config_path = os.path.join(os.path.dirname(__file__), "bfg9k_config.ttl")
+print("Config path:", config_path)
 bfg9k = BFG9KManager(config_path)
 
 def get_manager():

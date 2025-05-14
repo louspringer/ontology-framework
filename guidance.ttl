@@ -136,3 +136,90 @@ guidance:ValidationRule a owl:Class .
 
 owl:Class rdfs:subClassOf rdfs:Class .
 
+# BFG9K MCP Architecture Classes
+guidance:BFG9KArchitecture a owl:Class ;
+    rdfs:label "BFG9K Architecture"@en ;
+    rdfs:comment "Core architecture class for BFG9K MCP system"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:ContainerInstance a owl:Class ;
+    rdfs:label "Container Instance"@en ;
+    rdfs:comment "Azure Container Instance configuration"@en ;
+    rdfs:subClassOf guidance:BFG9KArchitecture ;
+    owl:versionInfo "1.0.0" .
+
+guidance:NetworkConfiguration a owl:Class ;
+    rdfs:label "Network Configuration"@en ;
+    rdfs:comment "Network settings for container instances"@en ;
+    rdfs:subClassOf guidance:BFG9KArchitecture ;
+    owl:versionInfo "1.0.0" .
+
+guidance:EnvironmentVariable a owl:Class ;
+    rdfs:label "Environment Variable"@en ;
+    rdfs:comment "Environment variable configuration"@en ;
+    rdfs:subClassOf guidance:BFG9KArchitecture ;
+    owl:versionInfo "1.0.0" .
+
+# BFG9K MCP Properties
+guidance:hasContainerName a owl:DatatypeProperty ;
+    rdfs:label "has container name"@en ;
+    rdfs:comment "Specifies the container name"@en ;
+    rdfs:domain guidance:ContainerInstance ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+guidance:hasNetworkType a owl:DatatypeProperty ;
+    rdfs:label "has network type"@en ;
+    rdfs:comment "Specifies the network type (public/private)"@en ;
+    rdfs:domain guidance:NetworkConfiguration ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+guidance:hasEnvironmentVariable a owl:ObjectProperty ;
+    rdfs:label "has environment variable"@en ;
+    rdfs:comment "Links to environment variable configuration"@en ;
+    rdfs:domain guidance:ContainerInstance ;
+    rdfs:range guidance:EnvironmentVariable ;
+    owl:versionInfo "1.0.0" .
+
+# BFG9K MCP Individuals
+guidance:BFG9KMCPServer a guidance:ContainerInstance ;
+    guidance:hasContainerName "bfg9k-mcp-server" ;
+    guidance:hasEnvironmentVariable guidance:ServerConfig .
+
+guidance:ServerConfig a guidance:EnvironmentVariable ;
+    rdfs:label "Server Configuration"@en ;
+    rdfs:comment "Environment variables for server configuration"@en .
+
+guidance:PublicNetwork a guidance:NetworkConfiguration ;
+    guidance:hasNetworkType "public" ;
+    rdfs:label "Public Network"@en ;
+    rdfs:comment "Public network configuration"@en .
+
+# SHACL Validation Rules
+guidance:ContainerInstanceShape a sh:NodeShape ;
+    sh:targetClass guidance:ContainerInstance ;
+    sh:property [
+        sh:path guidance:hasContainerName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+guidance:NetworkConfigurationShape a sh:NodeShape ;
+    sh:targetClass guidance:NetworkConfiguration ;
+    sh:property [
+        sh:path guidance:hasNetworkType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("public" "private")
+    ] .
+
+# TODO Section
+guidance:BFG9KEnhancements a guidance:TODO ;
+    rdfs:label "BFG9K Future Enhancements"@en ;
+    rdfs:comment "Future improvements for BFG9K MCP architecture"@en ;
+    guidance:hasPriority "MEDIUM" ;
+    guidance:hasTargetDate "2024-Q3" .
+

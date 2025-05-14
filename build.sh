@@ -1,65 +1,57 @@
 #!/bin/bash
 
-# Default values
-BUILD_TYPE=${1:-"acr"}
-PLATFORM=${2:-"linux/amd64"}
-DOCKERFILE=${3:-"Dockerfile"}
-IMAGE_NAME=${4:-"ontology-framework"}
+# Usage:
+#   ./build.sh [local|acr] [platform] [dockerfile] [image_name] [tag]
+#
+# Examples:
+#   ./build.sh local linux/amd64 Dockerfile.bfg9k bfg9k-mcp-sse latest
+#   ./build.sh acr linux/amd64 Dockerfile.bfg9k bfg9k-mcp-sse 20240514_120000
 
-# ACR configuration
-ACR_NAME="ontologyframework"
-TAG=$(date +%Y%m%d_%H%M%S)
+# Load environment variables from .env file if it exists
+if [ -f .env ]; then
+    source .env
+fi
+
+# Defaults
+BUILD_TYPE=${1:-"acr"}  # local or acr
+PLATFORM=${2:-"linux/amd64"}
+DOCKERFILE=${3:-"Dockerfile.bfg9k"}
+IMAGE_NAME=${4:-"bfg9k-mcp"}
+TAG=${5:-$(date +%Y%m%d_%H%M%S)}
+ACR_NAME="${ACR_NAME:-ontologyframework}"
+ACR_SERVER="${ACR_SERVER:-$ACR_NAME.azurecr.io}"
+
+set -e
 
 echo "Build type: $BUILD_TYPE"
 echo "Platform: $PLATFORM"
 echo "Dockerfile: $DOCKERFILE"
-echo "Image: $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG"
+echo "Image: $ACR_SERVER/$IMAGE_NAME:$TAG"
+
+echo "Logging in to Azure Container Registry..."
+az acr login --name $ACR_NAME
 
 if [ "$BUILD_TYPE" = "local" ]; then
     echo "Performing local Docker build..."
     docker build -f $DOCKERFILE -t $IMAGE_NAME:$TAG --build-arg BUILDPLATFORM=$PLATFORM --build-arg TARGETPLATFORM=$PLATFORM .
-    if [ $? -eq 0 ]; then
-        echo "Local build successful: $IMAGE_NAME:$TAG"
-    else
-        echo "Local build failed."
-        exit 1
-    fi
+    docker tag $IMAGE_NAME:$TAG $ACR_SERVER/$IMAGE_NAME:$TAG
+    docker push $ACR_SERVER/$IMAGE_NAME:$TAG
+    # Always tag and push as latest
+    docker tag $IMAGE_NAME:$TAG $ACR_SERVER/$IMAGE_NAME:latest
+    docker push $ACR_SERVER/$IMAGE_NAME:latest
+    echo "Local build and push successful: $IMAGE_NAME:$TAG and :latest"
 else
     echo "Building with ACR Build service..."
     az acr build \
         --registry $ACR_NAME \
         --image $IMAGE_NAME:$TAG \
+        --image $IMAGE_NAME:latest \
         --platform $PLATFORM \
         --file $DOCKERFILE \
         --build-arg BUILDPLATFORM=$PLATFORM \
         --build-arg TARGETPLATFORM=$PLATFORM \
         .
+    echo "ACR build submitted for: $IMAGE_NAME:$TAG and :latest"
+fi
 
-    # Tag as latest if build succeeds
-    if [ $? -eq 0 ]; then
-        echo "Build successful. Updating latest tag..."
-        
-        # Get all images tagged as latest
-        echo "Finding all images tagged as latest..."
-        LATEST_DIGESTS=$(az acr repository show-tags --name $ACR_NAME --repository bfg9k-mcp-sse --orderby time_desc --query "[?contains(tags, 'latest')].digest" -o tsv)
-        
-        # Remove all existing latest tags
-        for digest in $LATEST_DIGESTS; do
-            echo "Removing latest tag from digest: $digest"
-            az acr repository untag --name $ACR_NAME --image bfg9k-mcp-sse@$digest
-        done
-        
-        # Create new latest tag
-        echo "Creating new latest tag..."
-        az acr repository update \
-            --name $ACR_NAME \
-            --image bfg9k-mcp-sse:latest \
-            --tag bfg9k-mcp-sse:$TAG
-            
-        echo "Image available at: $ACR_NAME.azurecr.io/bfg9k-mcp-sse:$TAG"
-        echo "Latest tag updated to: $ACR_NAME.azurecr.io/bfg9k-mcp-sse:latest"
-    else
-        echo "Build failed. Check ACR build logs for details."
-        exit 1
-    fi
-fi 
+echo "Build script completed." 

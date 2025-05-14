@@ -74,4 +74,4 @@ RUN conda init
 RUN echo "=== /app contents after conda init ===" && ls -l /app && cat /app/bfg9k_config.ttl
 
 # Entrypoint for bfg9k-mcp image with keep-alive settings
-CMD ["sh", "-c", ". /opt/conda/etc/profile.d/conda.sh && conda activate ontology-framework && python /app/bfg9k_mcp.py --keep-alive --keep-alive-timeout 75 --keep-alive-interval 30 --max-requests 10000 --max-requests-jitter 1000"] 
+CMD ["sh", "-c", ". /opt/conda/etc/profile.d/conda.sh && conda activate ontology-framework && python /app/bfg9k_mcp.py --keep-alive --keep-alive-timeout ${MCP_KEEP_ALIVE_TIMEOUT} --keep-alive-interval ${MCP_KEEP_ALIVE_INTERVAL} --max-requests ${MCP_MAX_REQUESTS} --max-requests-jitter ${MCP_MAX_REQUESTS_JITTER}"] 
