@@ -70,6 +70,16 @@ class GraphDBClient:
         self.base_url = base_url.rstrip('/')
         self.repository = repository
         self.logger = logging.getLogger(__name__)
+        # Load credentials from environment
+        username = os.environ.get("GRAPHDB_USERNAME")
+        password = os.environ.get("GRAPHDB_PASSWORD")
+        if not username or not password:
+            raise RuntimeError(
+                "GRAPHDB_USERNAME and GRAPHDB_PASSWORD environment variables must be set. "
+                "Do not use hardcoded defaults for credentials."
+            )
+        self._auth = HTTPBasicAuth(username, password)
+        self.logger.debug(f"GraphDBClient initialized with user: {username}")
         
     def _get_endpoint(self, path: str) -> str:
         """Get the full endpoint URL.
@@ -125,7 +135,8 @@ class GraphDBClient:
             response = requests.get(
                 f"{self.base_url}/repositories/{self.repository}",
                 params={"query": query},
-                headers=headers
+                headers=headers,
+                auth=self._auth
             )
             
             response.raise_for_status()
@@ -162,7 +173,8 @@ class GraphDBClient:
             response = requests.post(
                 f"{self.base_url}/repositories/{self.repository}/statements",
                 data=update_query,
-                headers={"Content-Type": "application/sparql-update"}
+                headers={"Content-Type": "application/sparql-update"},
+                auth=self._auth
             )
             
             response.raise_for_status()
@@ -208,7 +220,8 @@ class GraphDBClient:
                 f"{self.base_url}/repositories/{self.repository}/statements",
                 data=data,
                 params=params,
-                headers={"Content-Type": "application/n-triples"}
+                headers={"Content-Type": "application/n-triples"},
+                auth=self._auth
             )
             
             response.raise_for_status()
@@ -236,7 +249,8 @@ class GraphDBClient:
             response = requests.get(
                 self._get_endpoint("/rdf-graphs/service"),
                 params=params,
-                headers={"Accept": "text/turtle"}
+                headers={"Accept": "text/turtle"},
+                auth=self._auth
             )
             response.raise_for_status()
             
@@ -262,7 +276,8 @@ class GraphDBClient:
                 
             response = requests.delete(
                 self._get_endpoint("/rdf-graphs/service"),
-                params=params
+                params=params,
+                auth=self._auth
             )
             response.raise_for_status()
             return True
@@ -435,7 +450,8 @@ class GraphDBClient:
                     response = requests.post(
                         f"{self.base_url}/rest/repositories",
                         files=files,
-                        headers={'Accept': 'application/json'}
+                        headers={'Accept': 'application/json'},
+                        auth=self._auth
                     )
 
                 if response.status_code == 201:
@@ -469,7 +485,7 @@ class GraphDBClient:
             GraphDBError: If repository deletion fails
         """
         try:
-            response = requests.delete(f"{self.base_url}/rest/repositories/{repository_id}")
+            response = requests.delete(f"{self.base_url}/rest/repositories/{repository_id}", auth=self._auth)
             
             if response.status_code >= 400:
                 raise GraphDBError(f"Repository deletion failed: {response.text}")
@@ -494,7 +510,8 @@ class GraphDBClient:
         try:
             response = requests.get(
                 f"{self.base_url}/rest/repositories",
-                headers={"Accept": "application/json"}
+                headers={"Accept": "application/json"},
+                auth=self._auth
             )
             
             if response.status_code >= 400:
@@ -521,7 +538,8 @@ class GraphDBClient:
             response = requests.post(
                 f"{self.base_url}/rest/repositories/{self.repository}/settings",
                 json=settings,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
+                auth=self._auth
             )
             return response.status_code == 204
         except Exception as e:
@@ -540,7 +558,8 @@ class GraphDBClient:
         try:
             response = requests.get(
                 f"{self.base_url}/rest/repositories/{self.repository}/settings",
-                headers={"Accept": "application/json"}
+                headers={"Accept": "application/json"},
+                auth=self._auth
             )
             return response.json()
         except Exception as e:
@@ -558,7 +577,8 @@ class GraphDBClient:
         """
         try:
             response = requests.post(
-                f"{self.base_url}/rest/repositories/{self.repository}/transactions"
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions",
+                auth=self._auth
             )
             if response.status_code == 201:
                 return response.headers["Location"].split("/")[-1]
@@ -580,7 +600,8 @@ class GraphDBClient:
             response = requests.post(
                 f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}/statements",
                 data=data,
-                headers={"Content-Type": "text/turtle"}
+                headers={"Content-Type": "text/turtle"},
+                auth=self._auth
             )
             return response.status_code == 204
         except Exception as e:
@@ -597,7 +618,8 @@ class GraphDBClient:
         """
         try:
             response = requests.put(
-                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}"
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}",
+                auth=self._auth
             )
             return response.status_code == 204
         except Exception as e:
@@ -614,7 +636,8 @@ class GraphDBClient:
         """
         try:
             response = requests.delete(
-                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}"
+                f"{self.base_url}/rest/repositories/{self.repository}/transactions/{tx_id}",
+                auth=self._auth
             )
             return response.status_code == 204
         except Exception as e:
@@ -644,7 +667,8 @@ class GraphDBClient:
                 f"{self.base_url}/repositories/{self.repository}/statements",
                 data=data,
                 params=params,
-                headers={"Content-Type": "application/x-binary-rdf"}
+                headers={"Content-Type": "application/x-binary-rdf"},
+                auth=self._auth
             )
             
             response.raise_for_status()

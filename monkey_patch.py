@@ -7,7 +7,7 @@ logger = logging.getLogger("mcp.server.sse")
 class PatchedServerSession(ServerSession):
     async def _received_request(self, responder):
         retries = 5
-        delay = 0.1
+        delay = 0.5
 
         # Wait for full initialization
         while not self.initialized and retries > 0:

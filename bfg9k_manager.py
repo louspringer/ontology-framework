@@ -90,7 +90,15 @@ class BFG9KManager:
         url = f"{self.base_url}/update"
         with open(ontology_path, 'rb') as f:
             response = requests.post(url, files={'ontology': f})
-        return response.json()
+        logger.info(f"[update_ontology] POST {url} status={response.status_code}")
+        logger.debug(f"[update_ontology] Response headers: {response.headers}")
+        logger.debug(f"[update_ontology] Response text: {response.text[:500]}")
+        try:
+            return response.json()
+        except Exception as e:
+            logger.error(f"[update_ontology] Failed to decode JSON: {e}")
+            logger.error(f"[update_ontology] Raw response: {response.text}")
+            return {"error": "Invalid JSON response", "raw_response": response.text, "status_code": response.status_code}
     
     def get_governance_rules(self):
         """Get governance rules from BFG9K server"""
