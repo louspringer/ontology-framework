@@ -6,6 +6,9 @@ from typing import Optional, Dict, Any, List
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 import os
+import asyncio
+from fastapi.responses import StreamingResponse
+from datetime import datetime
 
 app = FastAPI(
     title="BFG9K Ontology System",
@@ -210,6 +213,18 @@ async def check_duplicates(directory: Optional[str] = None) -> dict:
         if len(paths) > 1:
             duplicates[str(iri)] = paths
     return {"duplicates": duplicates, "count": len(duplicates)}
+
+@app.get("/sse")
+async def sse_endpoint():
+    """SSE endpoint for MCP events."""
+    async def event_generator():
+        # Send tools event on connect
+        yield f"event: tools\ndata: {json.dumps(app.state.tools)}\n\n"
+        # Send ping events every 15 seconds
+        while True:
+            yield f"event: ping\ndata: {datetime.now().isoformat()}\n\n"
+            await asyncio.sleep(15)
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 # Mount the MCP server to your FastAPI app with tool definitions
 mcp = FastApiMCP(

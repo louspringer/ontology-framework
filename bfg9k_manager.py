@@ -4,6 +4,8 @@ from pyshacl import validate
 import requests
 import json
 import logging
+import os
+from urllib.parse import urlparse
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -14,15 +16,24 @@ logger = logging.getLogger(__name__)
 
 class BFG9KManager:
     def __init__(self, config_path="bfg9k_config.ttl"):
-        print(f"[DEBUG] BFG9KManager loading config from: {config_path}")
-        self.config = Graph()
-        self.config.parse(config_path, format="turtle")
-        
-        # Get server configuration
-        server_config = self.config.value(predicate=RDF.type, object=BFG9K.ServerConfiguration)
-        self.host = str(self.config.value(server_config, BFG9K.host))
-        self.port = int(self.config.value(server_config, BFG9K.port))
-        self.base_url = f"http://{self.host}:{self.port}"
+        endpoint = os.environ.get("GRAPHDB_ENDPOINT")
+        if endpoint:
+            parsed = urlparse(endpoint)
+            self.host = parsed.hostname
+            self.port = parsed.port or 80
+            self.base_url = endpoint.rstrip("/")
+        else:
+            print(f"[DEBUG] BFG9KManager loading config from: {config_path}")
+            self.config = Graph()
+            self.config.parse(config_path, format="turtle")
+            
+            # Get server configuration
+            server_config = self.config.value(predicate=RDF.type, object=BFG9K.ServerConfiguration)
+            self.host = str(self.config.value(server_config, BFG9K.host))
+            self.port = int(self.config.value(server_config, BFG9K.port))
+            self.base_url = f"http://{self.host}:{self.port}"
+        self.repository = "ontology-framework"
+        self.guidance_endpoint = f"{self.base_url}/repositories/{self.repository}/guidance#"
     
     def validate_ontology(self, ontology_path):
         """Validate ontology using BFG9K server"""

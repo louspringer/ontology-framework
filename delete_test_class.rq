@@ -1,0 +1,2 @@
+PREFIX : <http://example.org/test#>
+DELETE WHERE { :TestClass ?p ?o } 
