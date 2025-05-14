@@ -1,0 +1,11 @@
+2025-05-14 17:36:22,958 - __main__ - DEBUG - [main] Starting BFG9K MCP Server with SSE transport on 0.0.0.0:8080
+[05/14/25 17:36:22] INFO     Starting server "BFG9K MCP"...        server.py:207
+2025-05-14 17:36:22,959 - FastMCP.fastmcp.server.server - INFO - Starting server "BFG9K MCP"...
+INFO:     Started server process [515469]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+Current working directory: /home/lou/ontology-framework
+Config path: /home/lou/ontology-framework/bfg9k_config.ttl
+INFO:     127.0.0.1:38648 - "GET /sse HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38660 - "GET /sse HTTP/1.1" 200 OK

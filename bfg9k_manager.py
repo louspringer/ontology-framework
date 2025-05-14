@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 import io
 from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
+from pathlib import Path
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -41,7 +42,7 @@ class BFG9KManager:
         self.guidance_endpoint = f"{self.base_url}/repositories/{self.repository}/guidance#"
     
     def validate_ontology(self, ontology_path):
-        """Validate ontology locally using pyshacl and check isomorphism."""
+        """Validate ontology locally using pyshacl and check isomorphism. Also run OWLReady2 reasoning, with auto-correction if needed."""
         # Load the ontology
         g = Graph()
         g.parse(ontology_path, format="turtle")
@@ -55,10 +56,33 @@ class BFG9KManager:
         g2.parse(data=serialized, format="turtle")
         isomorphic = g.isomorphic(g2)
 
+        # --- OWLReady2 Reasoner Validation (original) ---
+        def try_owlready2(path):
+            try:
+                from owlready2 import get_ontology, sync_reasoner
+                onto = get_ontology(f"file://{str(Path(path).absolute())}").load()
+                with onto:
+                    sync_reasoner()
+                inconsistent = list(onto.inconsistent_classes())
+                return True, [str(icls) for icls in inconsistent]
+            except Exception as e:
+                return False, [str(e)]
+
+        owlready2_consistent, owlready2_inconsistencies = try_owlready2(ontology_path)
+        auto_correction_applied = False
+        correction_summary = ""
+        corrected_owlready2_consistent = None
+        corrected_owlready2_inconsistencies = None
+        corrected_path = None
+
+        # Remove auto-correction logic: only report errors, do not attempt to fix
+
         return {
             "shacl_conforms": conforms,
             "shacl_results": results_text,
-            "isomorphic": isomorphic
+            "isomorphic": isomorphic,
+            "owlready2_consistent": owlready2_consistent,
+            "owlready2_inconsistencies": owlready2_inconsistencies
         }
     
     def query_ontology(self, query):

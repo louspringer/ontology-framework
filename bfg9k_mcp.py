@@ -7,6 +7,8 @@ from bfg9k_manager import BFG9KManager
 import os
 import traceback
 from monkey_patch import PatchedServerSession
+from fix_prefixes import fix_prefixes
+from turtle_validation import validate_all
 
 # Configure logging
 
@@ -54,7 +56,16 @@ async def validate_guidance(content: str) -> dict:
         if not isinstance(result, dict):
             result = {"raw_result": str(result)}
         logger.info(f"[validate_guidance] RETURN: {result}")
-        return {"result": result, "timestamp": datetime.now().isoformat()}
+        # Return all validation results, including OWLReady2 reasoning
+        return {
+            "result": result,
+            "shacl_conforms": result.get("shacl_conforms"),
+            "shacl_results": result.get("shacl_results"),
+            "isomorphic": result.get("isomorphic"),
+            "owlready2_consistent": result.get("owlready2_consistent"),
+            "owlready2_inconsistencies": result.get("owlready2_inconsistencies"),
+            "timestamp": datetime.now().isoformat()
+        }
     except Exception as e:
         logger.error(f"[validate_guidance] Validation failed: {e}")
         logger.error(traceback.format_exc())
@@ -96,6 +107,63 @@ async def update_guidance(content: str) -> dict:
         logger.error(f"[update_guidance] Update failed: {e}")
         logger.error(traceback.format_exc())
         return {"error": str(e), "trace": traceback.format_exc(), "timestamp": datetime.now().isoformat()}
+
+@mcp.tool()
+async def fix_prefixes_tool(content: str, apply: bool = False) -> dict:
+    """Fix relative and malformed prefixes in a Turtle file. Accepts a filename or raw Turtle content. Returns the changes it would make (dry-run by default)."""
+    import os
+    import tempfile
+    import traceback
+    import datetime
+    try:
+        # If content is a file path, use it directly
+        if os.path.isfile(content):
+            turtle_file = content
+        else:
+            # Write content to a temp file
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w") as tf:
+                tf.write(content)
+                turtle_file = tf.name
+        changes = fix_prefixes(turtle_file, dry_run=not apply)
+        return {
+            "changes": changes,
+            "applied": apply,
+            "timestamp": datetime.datetime.now().isoformat()
+        }
+    except Exception as e:
+        return {
+            "error": str(e),
+            "trace": traceback.format_exc(),
+            "timestamp": datetime.datetime.now().isoformat()
+        }
+
+@mcp.tool()
+async def validate_turtle_tool(content: str) -> dict:
+    """Validate a Turtle file or raw Turtle content for common ontology issues. Returns a structured report."""
+    import os
+    import tempfile
+    import datetime
+    import traceback
+    try:
+        # If content is a file path, use it directly
+        if os.path.isfile(content):
+            turtle_file = content
+        else:
+            # Write content to a temp file
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w") as tf:
+                tf.write(content)
+                turtle_file = tf.name
+        results = validate_all(turtle_file)
+        return {
+            "results": results,
+            "timestamp": datetime.datetime.now().isoformat()
+        }
+    except Exception as e:
+        return {
+            "error": str(e),
+            "trace": traceback.format_exc(),
+            "timestamp": datetime.datetime.now().isoformat()
+        }
 
 if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)

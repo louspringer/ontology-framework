@@ -5,6 +5,8 @@ import logging
 from pathlib import Path
 from datetime import datetime
 from ontology_framework.mcp.core import MCPCore, ValidationContext
+from owlready2 import get_ontology, sync_reasoner
+import types
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -105,7 +107,27 @@ def main():
             print("\nWarnings:")
             for warning in result.warnings:
                 print(f"  - {warning}")
-                
+        
+        # --- OWLReady2 Reasoner Validation ---
+        print("\nRunning OWLReady2 reasoning (HermiT)...")
+        onto = get_ontology(f"file://{Path(ontology_file).absolute()}").load()
+        try:
+            with onto:
+                sync_reasoner()
+            inconsistent = list(onto.inconsistent_classes())
+            if inconsistent:
+                print("\nOWL Reasoner found inconsistencies:")
+                for icls in inconsistent:
+                    print(f"  - {icls}")
+                print("\nValidation failed due to OWL inconsistencies.")
+                sys.exit(1)
+            else:
+                print("OWL Reasoner: No inconsistencies found. Ontology is consistent.")
+        except Exception as e:
+            print(f"OWLReady2 reasoning failed: {e}")
+            sys.exit(1)
+        # --- End OWLReady2 Reasoner Validation ---
+        
         if result.success:
             print("\nAll validations passed successfully!")
             sys.exit(0)
