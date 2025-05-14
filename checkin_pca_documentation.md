@@ -19,6 +19,21 @@ The check-in process validation failures were caused by several structural issue
    - Error messages don't provide clear guidance on how to fix issues
    - No workflow support for correcting validation failures
 
+## Documented Validation Requirements
+
+The current validation requirements for check-in plans and related ontologies are:
+
+- **Syntax Validation:** All Turtle files must be valid according to rdflib.
+- **Prefix Validation:** All prefixes must be declared, used, unique, and point to reachable IRIs. No relative or malformed prefixes/IRIs are allowed.
+- **SHACL/OWL Conformance:** All ontologies must pass SHACL and OWL reasoning checks.
+- **Triple-store Consistency:** Every declared prefix IRI must correspond to a named graph in GraphDB.
+- **Automated Correction:** The validation pipeline can auto-correct relative/malformed prefixes/IRIs in a non-destructive, brownfield-safe manner.
+- **Test Coverage:** Every validation rule must have associated test cases.
+- **CI/CD Enforcement:** Validation is enforced in pre-commit and CI/CD workflows.
+- **Traceability:** All requirements are versioned and traceable to `guidance.ttl`.
+
+The template generator and validation helper are synchronized with the main validation pipeline. All requirements are explicit, versioned, and traceable to the central ontology guidance.
+
 ## Permanent Corrective Action Implementation
 
 ### 1. Template Generator (`checkin_template_generator.py`)

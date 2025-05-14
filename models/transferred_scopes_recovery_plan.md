@@ -7,6 +7,20 @@
   - Monitoring validation: true
   - Security validation: true
   - Performance validation: true
+  - **GraphDB Validation:** Repository, named graph, and IRI consistency checks are enforced for all ontologies.
+  - **Monitoring Validation:** Validation metrics are collected and reported for all validation steps.
+  - **Security Validation:** All validation endpoints and data flows are subject to access control, audit logging, and encryption requirements.
+  - **Performance Validation:** Validation pipeline performance is monitored and optimized for efficiency.
+  - **Syntax Validation:** All Turtle files must be valid according to rdflib.
+  - **Prefix Validation:** All prefixes must be declared, used, unique, and point to reachable IRIs. No relative or malformed prefixes/IRIs are allowed.
+  - **SHACL/OWL Conformance:** All ontologies must pass SHACL and OWL reasoning checks.
+  - **Triple-store Consistency:** Every declared prefix IRI must correspond to a named graph in GraphDB.
+  - **Automated Correction:** The validation pipeline can auto-correct relative/malformed prefixes/IRIs in a non-destructive, brownfield-safe manner.
+  - **Test Coverage:** Every validation rule must have associated test cases.
+  - **CI/CD Enforcement:** Validation is enforced in pre-commit and CI/CD workflows.
+  - **Traceability:** All requirements are versioned and traceable to `guidance.ttl`.
+  
+  See [Validation Procedures](../docs/validation_procedures.md) and the CLI/MCP tool documentation for details.
 
 ## Integration Process
 1. **GraphDB Validation Step**

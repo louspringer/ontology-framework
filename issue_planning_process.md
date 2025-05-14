@@ -32,7 +32,7 @@ A systematic approach to analyze GitHub issues and create structured plans with 
 - Generate markdown documentation
 - Define success criteria
 - Outline implementation steps
-- Add validation requirements
+- Add validation requirements (must be derived from the central validation pipeline and guidance.ttl; see validation/fix tool documentation for authoritative requirements and traceability)
 
 ### 4. Dependency Analysis 🔗
 **Requires**: Issue Plans
@@ -98,3 +98,13 @@ A systematic approach to analyze GitHub issues and create structured plans with 
 - ✓ Dependencies clearly documented
 - ✓ Priorities assigned with rationale
 - ✓ Implementation timeline established 
+
+## Validation Requirements Traceability
+
+All validation requirements for issue plans must be:
+- Derived from the central validation pipeline and `guidance.ttl`
+- Documented in both the TTL and markdown representations
+- Linked to the validation/fix tools as the source of truth
+- Versioned and traceable for audit and compliance
+
+See [Validation Procedures](docs/validation_procedures.md) and the CLI/MCP tool documentation for details. 
