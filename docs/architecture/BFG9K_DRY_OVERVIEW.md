@@ -83,6 +83,10 @@ Docs ..> Artillery : documents
 @enduml
 ```
 
+> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+
+![Component Dependency Diagram](BFG9K_DRY_OVERVIEW_1.svg)
+
 ## 7. Validation Workflow Interaction Diagram
 
 ```plantuml
@@ -104,6 +108,10 @@ Artillery --> Engineer : show results
 
 @enduml
 ```
+
+> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+
+![Validation Workflow Interaction Diagram](BFG9K_DRY_OVERVIEW_2.svg)
 
 ## 9. Use Cases & Integration Scenarios
 

@@ -24,3 +24,9 @@ DRY ..> MCPVAL : "Validator Details"
 
 @enduml
 ```
+
+---
+
+> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+
+![Documentation Navigation Diagram](BFG9K_DOC_NAVIGATION.svg)
