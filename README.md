@@ -2,6 +2,15 @@
 
 > **Note:** For a detailed explanation of the "spore" concept, its purpose, and its role in ontology governance, see [SPORE_CONCEPT.md](./SPORE_CONCEPT.md).
 
+## 📚 Documentation Index
+
+- [DRY Scientific Overview](docs/architecture/BFG9K_DRY_OVERVIEW.md)
+- [Spore Concept & Governance](SPORE_CONCEPT.md)
+- [MCP & BFG9K Architecture](docs/architecture/bfg9k_mcp_architecture.md)
+- [MCP Validator Structure](docs/architecture/mcp_validator_structure.md)
+- [Cursor IDE, LLM, and BFG9K_MCP Integration](docs/architecture/CURSOR_BFG9K_INTEGRATION.md)
+- [Navigation Diagram (with links)](docs/architecture/BFG9K_DOC_NAVIGATION.md)
+
 This framework provides tools for validating spore instances against governance rules and transformation patterns, ensuring compliance with the Spore Governance Discipline.
 
 ## Overview
