@@ -2,8 +2,7 @@
     "mcpServers": {
         "bfg9k": {
             "url": "http://localhost:8080/sse",
-            "type": "sse",
-            "timeout": 10
+            "type": "sse"
         }
     }
 } 

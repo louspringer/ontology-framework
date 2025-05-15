@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 import logging
@@ -9,6 +10,11 @@ import traceback
 from monkey_patch import PatchedServerSession
 from fix_prefixes import fix_prefixes
 from turtle_validation import validate_all
+import asyncio
+try:
+    from fastmcp.server.http import connect_sse
+except ImportError:
+    connect_sse = None  # Fallback or error if not available
 
 # Configure logging
 
@@ -165,7 +171,53 @@ async def validate_turtle_tool(content: str) -> dict:
             "timestamp": datetime.datetime.now().isoformat()
         }
 
+# Patch FastMCP's SSE handler to emit keepalive pings
+# if connect_sse is not None:
+#     async def handle_sse(scope, receive, send):
+#         async with connect_sse(scope, receive, send) as (read_stream, write_stream):
+
+#             async def ping_task():
+#                 while True:
+#                     await asyncio.sleep(10)
+#                     await write_stream.send("event: ping\ndata: keepalive\n\n")
+
+#             async def main():
+#                 await mcp._mcp_server.run(read_stream, write_stream)
+
+#             await asyncio.gather(
+#                 ping_task(),
+#                 main(),
+#             )
+
+#     # Register the patched handler
+#     mcp._sse_handler = handle_sse
+    
+# @mcp.call_tool()
+# async def handle_shutdown_server(
+#     name: str, arguments: Dict[str, Any]
+# ) -> Dict[str, Any]:
+#     """Send SSE shutdown signal and stop the server"""
+
+#     # Send SSE shutdown message if possible
+#     ctx = mcp.request_context
+#     try:
+#         await ctx.send("event: shutdown\ndata: MCP server restarting\n\n")
+#     except Exception as e:
+#         print(f"Failed to send shutdown message: {e}")
+
+#     # Stop the server after short delay
+#     async def shutdown_task():
+#         await asyncio.sleep(1.0)
+#         for task in asyncio.all_tasks():
+#             if task is not asyncio.current_task():
+#                 task.cancel()
+
+#     asyncio.create_task(shutdown_task())
+
+#     return {"status": "Shutdown signal sent. MCP server will terminate."}
+
 if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logger.debug("[main] Starting BFG9K MCP Server with SSE transport on 0.0.0.0:8080")
+    # mcp.run(transport="sse", port=8080, host="0.0.0.0") 
     mcp.run(transport="sse", port=8080, host="0.0.0.0") 
