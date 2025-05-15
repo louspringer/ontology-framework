@@ -1,5 +1,7 @@
 # Spore Validation Framework
 
+> **Note:** For a detailed explanation of the "spore" concept, its purpose, and its role in ontology governance, see [SPORE_CONCEPT.md](./SPORE_CONCEPT.md).
+
 This framework provides tools for validating spore instances against governance rules and transformation patterns, ensuring compliance with the Spore Governance Discipline.
 
 ## Overview
@@ -87,3 +89,50 @@ The framework validates spore instances against the following governance rules:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+# Ontology Validation Workflow
+
+## Recommended Validation Steps
+
+To ensure robust and DRY ontology management, follow this two-step validation process:
+
+### 1. Prefix Validation and Fixing
+- **Tool:** `fix_prefixes_tool`
+- **Purpose:** Ensures all prefixes are absolute IRIs and well-formed.
+- **How to use:**
+  - **Dry run:** Preview changes without modifying the file.
+    ```bash
+    # Example (dry run)
+    fix_prefixes_tool <your_file.ttl>
+    ```
+  - **Apply fixes:**
+    ```bash
+    # Example (apply fixes)
+    fix_prefixes_tool --apply <your_file.ttl>
+    ```
+- **Why:** Relative or malformed prefixes will cause errors in downstream validation and reasoning tools. Fixing them first prevents cascading issues.
+
+### 2. Full Ontology Validation
+- **Tool:** `validate_turtle_tool`
+- **Purpose:** Checks Turtle syntax, semantic consistency, SHACL/OWL rules, and more.
+- **How to use:**
+    ```bash
+    validate_turtle_tool <your_file.ttl>
+    ```
+- **Why:** Ensures your ontology is valid, consistent, and ready for use in the framework. This step assumes prefixes are already correct.
+
+---
+
+## Why This Order?
+- **Prefix issues** are a common source of validation failure. Fixing them first makes the main validation step more reliable and actionable.
+- **Iterative improvement:** This workflow is robust and can be automated in the future if needed, based on real-world usage and pain points.
+
+---
+
+## When to Revisit
+- If prefix issues become a bottleneck or are frequently forgotten, consider integrating prefix fixing into the main validation tool or creating a wrapper script.
+- For now, this two-step process is recommended for reliability and clarity.
+
+---
+
+For more details or to suggest improvements, see the `CONTRIBUTING.md` or open an issue.

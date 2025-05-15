@@ -65,9 +65,6 @@
     },
     "mcpServers": {
         "bfg9k": {
-            "url": "http://localhost:8080",
-            "type": "sparql",
-            "timeout": 30
         }
     },
     "validationRules": {

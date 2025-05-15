@@ -1,8 +1,17 @@
 {
-    "mcpServers": {
-        "bfg9k": {
-            "url": "http://localhost:8080/sse",
-            "type": "sse"
-        }
+  "mcpServers": {
+    "bfg9k": {
+      "command": "/Users/lou/miniconda3/envs/ontology-framework/bin/python",
+      "args": [
+        "/Users/lou/Documents/ontology-framework/bfg9k_mcp.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/lou/Documents/ontology-framework/src"
+      }
+    },
+    "datapilot": {
+      "url": "http://localhost:7700/sse",
+      "type": "sse"
     }
-} 
+  }
+}

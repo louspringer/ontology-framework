@@ -218,6 +218,8 @@ async def validate_turtle_tool(content: str) -> dict:
 
 if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
-    logger.debug("[main] Starting BFG9K MCP Server with SSE transport on 0.0.0.0:8080")
+    # logger.debug("[main] Starting BFG9K MCP Server with SSE transport on 0.0.0.0:8080")
+    logger.debug("[main] Starting BFG9K MCP Server with stdio transport")
     # mcp.run(transport="sse", port=8080, host="0.0.0.0") 
-    mcp.run(transport="sse", port=8080, host="0.0.0.0") 
+    # mcp.run(transport="sse", port=8080, host="0.0.0.0") 
+    mcp.run(transport="stdio")
