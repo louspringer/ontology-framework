@@ -260,7 +260,54 @@ def update_mcp_config():
         print(f"Python path: {sys.executable}")
         return False
 
+def check_mcp_config():
+    """Validate .cursor/mcp.json and log any perceived misconfiguration, including GraphDB endpoint URL."""
+    import logging
+    config_path = Path(__file__).parent / ".cursor" / "mcp.json"
+    logger = logging.getLogger("mcp_config_check")
+    if not config_path.exists():
+        logger.error(f"MCP config file not found: {config_path}")
+        return False
+    try:
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        # Check for required structure
+        servers = config.get("mcpServers", {})
+        bfg9k = servers.get("bfg9k", {})
+        if not bfg9k:
+            logger.error("No 'bfg9k' server config found in mcp.json.")
+            return False
+        command = bfg9k.get("command")
+        args = bfg9k.get("args", [])
+        env = bfg9k.get("env", {})
+        if not command or not Path(command).exists():
+            logger.error(f"'command' path is missing or does not exist: {command}")
+        if not args or not Path(args[0]).exists():
+            logger.error(f"'args[0]' (script) path is missing or does not exist: {args}")
+        if not env.get("PYTHONPATH") or not Path(env["PYTHONPATH"]).exists():
+            logger.error(f"'PYTHONPATH' is missing or does not exist: {env.get('PYTHONPATH')}")
+        # Optionally, check for datapilot config
+        datapilot = servers.get("datapilot", {})
+        if not datapilot.get("url"):
+            logger.warning("No 'url' found for 'datapilot' in mcp.json.")
+        # Check for GraphDB endpoint URL in config or environment
+        graphdb_url = os.environ.get("GRAPHDB_URL")
+        if not graphdb_url:
+            # Try to find in config (if you store it there)
+            graphdb_url = config.get("graphdb_url") or env.get("GRAPHDB_URL")
+        if graphdb_url:
+            logger.info(f"GraphDB endpoint URL: {graphdb_url}")
+        else:
+            logger.error("No GraphDB endpoint URL found in environment or config. Set GRAPHDB_URL in your environment or config.")
+        logger.info("MCP config validation complete.")
+        return True
+    except Exception as e:
+        logger.error(f"Error reading or parsing mcp.json: {e}")
+        return False
+
 if __name__ == "__main__":
+    # Boot check for MCP config
+    check_mcp_config()
     parser = argparse.ArgumentParser(description="BFG9K MCP Server")
     parser.add_argument("--update-config", action="store_true", help="Update .cursor/mcp.json configuration")
     args = parser.parse_args()
