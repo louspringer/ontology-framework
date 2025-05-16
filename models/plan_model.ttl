@@ -1,0 +1,96 @@
+@prefix plan: <./plan_model#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix guidance: <./guidance#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+plan:PlanModel a owl:Class ;
+    rdfs:label "Plan Model"@en ;
+    rdfs:comment "A model for representing plans, steps, and their relationships."@en ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:subClassOf owl:Thing .
+
+plan:Task a owl:Class ;
+    rdfs:label "Task"@en ;
+    rdfs:comment "A single actionable task within a plan."@en ;
+    owl:versionInfo "1.0.0" ;
+    rdfs:subClassOf plan:PlanModel .
+
+plan:hasStep a owl:ObjectProperty ;
+    rdfs:label "has step"@en ;
+    rdfs:comment "Relates a plan to its steps/tasks."@en ;
+    rdfs:domain plan:PlanModel ;
+    rdfs:range plan:Task ;
+    owl:versionInfo "1.0.0" .
+
+plan:stepOrder a owl:DatatypeProperty ;
+    rdfs:label "step order"@en ;
+    rdfs:comment "The order of a step in the plan."@en ;
+    rdfs:domain plan:Task ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+plan:stepDescription a owl:DatatypeProperty ;
+    rdfs:label "step description"@en ;
+    rdfs:comment "A description of the task or step."@en ;
+    rdfs:domain plan:Task ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Example individuals
+plan:CurrentPlan a plan:PlanModel ;
+    rdfs:label "Current Plan"@en ;
+    plan:hasStep plan:CheckSync, plan:UploadGuidance, plan:FetchAndValidate .
+
+plan:CheckSync a plan:Task ;
+    plan:stepOrder 1 ;
+    plan:stepDescription "Check if the guidance ontology in GraphDB is up to date with the filesystem version." .
+
+plan:UploadGuidance a plan:Task ;
+    plan:stepOrder 2 ;
+    plan:stepDescription "If not, upload the latest guidance.ttl to the GraphDB 'guidance' repository." .
+
+plan:FetchAndValidate a plan:Task ;
+    plan:stepOrder 3 ;
+    plan:stepDescription "Fetch the ontology from GraphDB and run validation on that content." .
+
+# TODO Section
+plan:PlanModelEnhancements a plan:Task ;
+    rdfs:label "Plan Model Enhancements"@en ;
+    plan:stepDescription "Add support for plan dependencies, status tracking, and user assignments." ;
+    plan:stepOrder 99 .
+    rdfs:seeAlso guidance:TODO .
+
+# Detailed execution notes for sibling LLMs:
+#
+# 1. CheckSync:
+#    - Export the current guidance ontology from the 'guidance' repository in GraphDB.
+#    - Use the GraphDB REST API or a client (e.g., GraphDBClient) to fetch the ontology in Turtle format.
+#    - Compare the exported ontology with the local guidance.ttl using isomorphism (semantic equivalence), not just text diff.
+#    - If GraphDB is not accessible (e.g., due to VPC/network restrictions), document the issue and request access or a secure API gateway.
+#
+# 2. UploadGuidance:
+#    - If the ontologies are not isomorphic, upload the local guidance.ttl to the 'guidance' repository in GraphDB.
+#    - Use secure credentials (from environment variables or a .env file loaded with python-dotenv).
+#    - Ensure the repository exists; create it if needed.
+#    - If upload fails, log the error and suggest checking network, credentials, or repository state.
+#
+# 3. FetchAndValidate:
+#    - After upload (or if already in sync), fetch the guidance ontology from GraphDB again.
+#    - Run validation using SHACL (e.g., pySHACL) and OWL consistency checks.
+#    - Report any validation errors, and if possible, suggest fixes.
+#    - If GraphDB is not accessible, validate the local guidance.ttl as a fallback, but note this in the report.
+#
+# General notes:
+# - Always use isomorphic comparison for ontologies (e.g., rdflib.compare.isomorphic).
+# - Use robust error handling and verbose logging.
+# - For cloud/VPC environments, prefer secure API gateways or VPN for remote access.
+# - Document all actions and results in session.ttl or a similar session log.
+# - Reference this plan_model.ttl for traceability and reproducibility. 
