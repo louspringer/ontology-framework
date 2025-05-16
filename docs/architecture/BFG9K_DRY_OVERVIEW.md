@@ -58,60 +58,19 @@ The BFG9K system and ontology framework provide a DRY, modular, and automated ap
 
 ## 6. Component Dependency Diagram
 
-```plantuml
-@startuml BFG9K_Component_Dependencies
-
-package "BFG9K System" {
-  [BFG9KPattern] as Pattern
-  [BFG9K MCP Service] as MCP
-  [BFG9K Manager] as Manager
-  [Artillery & Prompt Helper] as Artillery
-  [Test Logs & Configs] as Logs
-  [Documentation] as Docs
-}
-
-Artillery --> Manager : setup/configure
-Manager --> Pattern : orchestrates
-MCP --> Pattern : invokes validation
-MCP --> Manager : uses config/env
-Pattern --> Logs : writes results
-MCP --> Logs : writes results
-Docs ..> Pattern : documents
-Docs ..> MCP : documents
-Docs ..> Artillery : documents
-
-@enduml
-```
-
-> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
 ![Component Dependency Diagram](BFG9K_Component_Dependencies.svg)
 
+[View PlantUML source](BFG9K_Component_Dependencies.puml)
+
 ## 7. Validation Workflow Interaction Diagram
 
-```plantuml
-@startuml BFG9K_Validation_Workflow
-actor Engineer
-participant "Artillery/Prompt Helper" as Artillery
-participant "BFG9K MCP Service" as MCP
-participant "BFG9KPattern" as Pattern
-participant "Test Logs/Configs" as Logs
-
-Engineer -> Artillery : setup project
-Artillery -> MCP : trigger validation
-MCP -> Pattern : validate (ontology)
-Pattern -> Pattern : apply SHACL/semantic rules
-Pattern -> Logs : record results
-Pattern --> MCP : return validation result
-MCP --> Artillery : report outcome
-Artillery --> Engineer : show results
-
-@enduml
-```
-
-> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
 ![Validation Workflow Interaction Diagram](BFG9K_Validation_Workflow.svg)
+
+[View PlantUML source](BFG9K_Validation_Workflow.puml)
 
 ## 9. Use Cases & Integration Scenarios
 

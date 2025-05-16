@@ -1,32 +1,9 @@
 ## Documentation Navigation Diagram
 
-```plantuml
-@startuml BFG9K_Documentation_Navigation
-
-!define RECTANGLE class
-
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/README.md Project Root README.md\n(Entry Point)]]" as ROOTREADME
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/docs/architecture/BFG9K_DRY_OVERVIEW.md BFG9K_DRY_OVERVIEW.md\n(DRY Scientific Overview & Documentation README)]]" as DRY
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/SPORE_CONCEPT.md SPORE_CONCEPT.md\n(Spore Concept & Governance)]]" as SPORE
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/docs/architecture/bfg9k_mcp_architecture.md bfg9k_mcp_architecture.md\n(MCP & BFG9K Architecture)]]" as ARCH
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/docs/architecture/mcp_validator_structure.md mcp_validator_structure.md\n(MCP Validator Structure)]]" as MCPVAL
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/docs/architecture/CURSOR_BFG9K_INTEGRATION.md CURSOR_BFG9K_INTEGRATION.md\n(Cursor IDE, LLM, BFG9K_MCP Integration)]]" as CURSOR
-RECTANGLE "[[https://github.com/louspringer/ontology-framework/blob/main/docs/architecture/BFG9K_DOC_NAVIGATION.md BFG9K_DOC_NAVIGATION.md\n(Navigation Diagram)]]" as NAV
-
-ROOTREADME -down-> DRY : "Documentation Entry Point"
-DRY -right-> ARCH : "System Architecture"
-DRY -down-> SPORE : "Governance Patterns"
-DRY -down-> CURSOR : "Use Cases &\nIntegration"
-ARCH -down-> MCPVAL : "Validator Structure"
-DRY -down-> NAV : "Navigation Diagram"
-ROOTREADME -right-> NAV : "Navigation"
-DRY ..> MCPVAL : "Validator Details"
-
-@enduml
-```
-
----
-
-> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
 ![Documentation Navigation Diagram](BFG9K_Documentation_Navigation.svg)
+
+[View PlantUML source](BFG9K_Documentation_Navigation.puml)
+
+---
