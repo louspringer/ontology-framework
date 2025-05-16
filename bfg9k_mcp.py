@@ -11,6 +11,7 @@ from monkey_patch import PatchedServerSession
 from fix_prefixes import fix_prefixes
 from turtle_validation import validate_all
 import asyncio
+import tempfile
 try:
     from fastmcp.server.http import connect_sse
 except ImportError:
@@ -48,30 +49,45 @@ async def validate_guidance(content: str) -> dict:
     try:
         # Check if 'content' is a path to an existing file
         if os.path.isfile(content):
+            logger.debug(f"[validate_guidance] Detected file path: {content}")
             with open(content, "r") as infile:
                 turtle_content = infile.read()
             logger.debug(f"[validate_guidance] Read Turtle content from file: {content}")
         else:
             turtle_content = content
             logger.debug("[validate_guidance] Treating input as raw Turtle content")
-        with open("temp_validation.ttl", "w") as f:
-            f.write(turtle_content)
-        logger.debug("[validate_guidance] Wrote content to temp_validation.ttl")
-        result = get_manager().validate_ontology("temp_validation.ttl")
-        logger.info(f"[validate_guidance] Validation result: {str(result)[:200]}")
-        if not isinstance(result, dict):
-            result = {"raw_result": str(result)}
-        logger.info(f"[validate_guidance] RETURN: {result}")
-        # Return all validation results, including OWLReady2 reasoning
-        return {
-            "result": result,
-            "shacl_conforms": result.get("shacl_conforms"),
-            "shacl_results": result.get("shacl_results"),
-            "isomorphic": result.get("isomorphic"),
-            "owlready2_consistent": result.get("owlready2_consistent"),
-            "owlready2_inconsistencies": result.get("owlready2_inconsistencies"),
-            "timestamp": datetime.now().isoformat()
-        }
+        temp_file = None
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w") as tf:
+                temp_file = tf.name
+                logger.debug(f"[validate_guidance] Writing to temp file: {temp_file}")
+                tf.write(turtle_content)
+            logger.debug(f"[validate_guidance] Wrote content to {temp_file}")
+            result = get_manager().validate_ontology(temp_file)
+            logger.info(f"[validate_guidance] Validation result: {str(result)[:200]}")
+            if not isinstance(result, dict):
+                result = {"raw_result": str(result)}
+            logger.info(f"[validate_guidance] RETURN: {result}")
+            return {
+                "result": result,
+                "shacl_conforms": result.get("shacl_conforms"),
+                "shacl_results": result.get("shacl_results"),
+                "isomorphic": result.get("isomorphic"),
+                "owlready2_consistent": result.get("owlready2_consistent"),
+                "owlready2_inconsistencies": result.get("owlready2_inconsistencies"),
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"[validate_guidance] Error during temp file handling: {e}")
+            logger.error(traceback.format_exc())
+            return {"error": str(e), "trace": traceback.format_exc(), "timestamp": datetime.now().isoformat()}
+        finally:
+            if temp_file:
+                try:
+                    os.remove(temp_file)
+                    logger.debug(f"[validate_guidance] Deleted temp file: {temp_file}")
+                except Exception as cleanup_err:
+                    logger.error(f"[validate_guidance] Failed to delete temp file {temp_file}: {cleanup_err}")
     except Exception as e:
         logger.error(f"[validate_guidance] Validation failed: {e}")
         logger.error(traceback.format_exc())
@@ -97,18 +113,33 @@ async def query_guidance(sparql_query: str) -> dict:
 async def update_guidance(content: str) -> dict:
     """Update guidance ontology."""
     logger.info(f"[update_guidance] Called with content (first 60 chars): {content[:60]}...")
+    temp_file = None
     try:
-        with open("temp_update.ttl", "w") as f:
-            f.write(content)
-        logger.debug("[update_guidance] Wrote content to temp_update.ttl")
-        with open("temp_update.ttl", "r") as f:
-            debug_content = f.read()
-        logger.debug(f"[update_guidance] Content of temp_update.ttl (first 500 chars): {debug_content[:500]}")
-        result = get_manager().update_ontology("temp_update.ttl")
-        logger.info(f"[update_guidance] Update result: {str(result)[:200]}")
-        if not isinstance(result, dict):
-            result = {"raw_result": str(result)}
-        return {"result": result, "timestamp": datetime.now().isoformat()}
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w") as tf:
+                temp_file = tf.name
+                logger.debug(f"[update_guidance] Writing to temp file: {temp_file}")
+                tf.write(content)
+            logger.debug(f"[update_guidance] Wrote content to {temp_file}")
+            with open(temp_file, "r") as f:
+                debug_content = f.read()
+            logger.debug(f"[update_guidance] Content of {temp_file} (first 500 chars): {debug_content[:500]}")
+            result = get_manager().update_ontology(temp_file)
+            logger.info(f"[update_guidance] Update result: {str(result)[:200]}")
+            if not isinstance(result, dict):
+                result = {"raw_result": str(result)}
+            return {"result": result, "timestamp": datetime.now().isoformat()}
+        except Exception as e:
+            logger.error(f"[update_guidance] Error during temp file handling: {e}")
+            logger.error(traceback.format_exc())
+            return {"error": str(e), "trace": traceback.format_exc(), "timestamp": datetime.now().isoformat()}
+        finally:
+            if temp_file:
+                try:
+                    os.remove(temp_file)
+                    logger.debug(f"[update_guidance] Deleted temp file: {temp_file}")
+                except Exception as cleanup_err:
+                    logger.error(f"[update_guidance] Failed to delete temp file {temp_file}: {cleanup_err}")
     except Exception as e:
         logger.error(f"[update_guidance] Update failed: {e}")
         logger.error(traceback.format_exc())
