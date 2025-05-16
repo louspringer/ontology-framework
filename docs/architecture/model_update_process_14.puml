@@ -1,0 +1,29 @@
+@startuml Model Update Process
+
+actor "Hypercube Analyzer" as HA
+participant "Update Detector" as UD
+participant "Model Updater" as MU
+participant "Validation Engine" as VE
+participant "Telemetry" as T
+
+HA -> UD : detect_update_needed
+activate UD
+UD --> HA : update_required
+deactivate UD
+
+HA -> MU : generate_update
+activate MU
+MU --> HA : update_plan
+deactivate MU
+
+HA -> VE : validate_update
+activate VE
+VE --> HA : validation_result
+deactivate VE
+
+HA -> T : log_update
+activate T
+T --> HA : update_logged
+deactivate T
+
+@enduml

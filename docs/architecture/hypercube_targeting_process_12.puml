@@ -1,0 +1,29 @@
+@startuml Hypercube Targeting Process
+
+actor "Targeting System" as TS
+participant "Hypercube Analyzer" as HA
+participant "Trajectory Predictor" as TP
+participant "BFG9K Validator" as BV
+participant "Telemetry Collector" as TC
+
+TS -> HA : analyze_dimensions
+activate HA
+HA --> TS : current_position
+deactivate HA
+
+TS -> TP : predict_trajectory
+activate TP
+TP --> TS : future_positions
+deactivate TP
+
+TS -> BV : validate_target
+activate BV
+BV --> TS : validation_result
+deactivate BV
+
+TS -> TC : collect_telemetry
+activate TC
+TC --> TS : telemetry_data
+deactivate TC
+
+@enduml

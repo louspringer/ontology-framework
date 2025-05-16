@@ -1,0 +1,58 @@
+@startuml MCPValidator Internal Structure
+
+package "MCP Validator" {
+    class ValidationTarget {
+        +uri: URIRef
+        +target_type: str
+        +priority: str
+        +metadata: Dict[str, Any]
+        +validation_errors: List[str]
+        +add_error(error: str)
+    }
+
+    class MCPValidator {
+        -config: Dict[str, Any]
+        -validation_rules: Dict[str, Callable]
+        +_to_uriref(identifier: Any) -> URIRef
+        +_create_validation_target(identifier: Any, target_type: str, priority: str) -> ValidationTarget
+        +_get_sparql_value(row: Union[ResultRow, Mapping, Tuple, bool], var_name: str) -> Optional[Identifier]
+        +_examine_sparql_result(row: ResultRow) -> None
+        +_log_query_results(query: str, results: Any) -> None
+        +acquire_targets(graph: Graph) -> Dict[str, List[ValidationTarget]]
+        +validate_target(target: ValidationTarget, graph: Graph) -> List[str]
+        +validate_hierarchy(graph: Graph) -> List[str]
+        +validate_semantics(graph: Graph) -> List[str]
+        +validate_shacl(graph: Graph) -> List[str]
+        +validate_properties(graph: Graph) -> List[str]
+        +validate_individuals(graph: Graph) -> List[str]
+        +validate_bfg9k(graph: Graph) -> List[str]
+        +validate(ontology_path: Path) -> Dict[str, Dict[str, Any]]
+    }
+
+    ValidationTarget "1" -- "*" MCPValidator : contains
+}
+
+package "Tests" {
+    class TestMCPValidator {
+        +test_validate_hierarchy()
+        +test_validate_semantics()
+        +test_validate_shacl()
+        +test_validate_properties()
+        +test_validate_individuals()
+        +test_validate_bfg9k()
+        +test_validate()
+        +test_acquire_targets()
+        +test_validate_target()
+    }
+
+    class TestValidationTarget {
+        +test_validation_target_creation()
+        +test_add_error()
+        +test_metadata_management()
+    }
+}
+
+MCPValidator ..> TestMCPValidator : tested by
+ValidationTarget ..> TestValidationTarget : tested by
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml Hypercube Visualization
+
+package "Hypercube Space" {
+    frame "Semantic Accuracy" as SA
+    frame "Response Time" as RT
+    frame "Confidence" as CF
+    frame "Validation Success" as VS
+}
+
+node "Current Position" as CP
+node "Future Position" as FP
+node "Optimal Position" as OP
+
+CP --> FP : trajectory
+CP --> OP : targeting vector
+
+SA -[hidden]> RT
+RT -[hidden]> CF
+CF -[hidden]> VS
+
+@enduml

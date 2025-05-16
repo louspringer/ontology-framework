@@ -1,0 +1,14 @@
+@startuml Test Dependencies
+
+package "Test Suite" {
+    [test_validator.py] as TV
+    [test_validation_target.py] as TVT
+    [test_bfg9k.py] as TB
+    [test_integration.py] as TI
+}
+
+TV --> TVT : depends on
+TV --> TB : depends on
+TV --> TI : depends on
+
+@enduml

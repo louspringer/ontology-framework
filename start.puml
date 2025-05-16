@@ -1,0 +1,27 @@
+@startuml
+start
+:Load .env if present;
+:Parse arguments and set defaults;
+:Login to Azure Container Registry;
+
+if (Build type == local?) then (yes)
+  :Build Docker image locally;
+  :Tag image for ACR;
+  :Push image to ACR;
+  if (Tag != latest?) then (yes)
+    :Tag image as latest;
+    :Push latest tag to ACR;
+  endif
+else (no)
+  :Submit build to ACR Build service;
+  :Tag as custom tag and latest;
+endif
+
+:Print completion message;
+stop
+
+note right:
+- Use .env for config
+- Always tag/push latest for CI/CD
+- Use ACR build for cloud-native builds
+@enduml

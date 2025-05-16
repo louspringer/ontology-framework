@@ -1,0 +1,19 @@
+@startuml
+actor User
+participant "build.sh" as Script
+participant Docker
+participant "Azure CLI" as AzCLI
+participant "Azure Container Registry" as ACR
+participant "Dockerfile.bfg9k" as Dockerfile
+
+User -> Script: Run build.sh with arguments
+Script -> Script: Parse .env and arguments
+Script -> Docker: Build image (local)
+Docker -> Dockerfile: Use Dockerfile.bfg9k
+Script -> AzCLI: Login to ACR
+Script -> Docker: Tag & push image to ACR
+Docker -> ACR: Push image
+Script -> AzCLI: (if acr) az acr build
+AzCLI -> ACR: Cloud build & push
+Script -> User: Print completion message
+@enduml

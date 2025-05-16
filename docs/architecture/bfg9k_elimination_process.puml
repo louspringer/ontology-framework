@@ -1,0 +1,28 @@
+@startuml BFG9K Elimination Process
+
+actor "Test Runner" as TR
+participant "Issue Detector" as ID
+participant "BFG9K Validator" as BV
+participant "Elimination Engine" as EE
+participant "Telemetry" as T
+
+TR -> ID : detect_issues
+activate ID
+ID --> TR : issues_found
+deactivate ID
+
+TR -> BV : validate_issues
+activate BV
+BV --> TR : validation_result
+deactivate BV
+
+TR -> EE : eliminate_issues
+activate EE
+EE -> T : collect_telemetry
+activate T
+T --> EE : telemetry_data
+deactivate T
+EE --> TR : elimination_result
+deactivate EE
+
+@enduml

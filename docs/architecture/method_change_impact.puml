@@ -1,0 +1,14 @@
+@startuml Method Change Impact
+   
+   node "Method Change" as MC
+   node "Tests" as T
+   node "Documentation" as D
+   node "Type Definitions" as TD
+   node "Mock Objects" as MO
+   
+   MC --> T : requires update
+   MC --> D : requires update
+   MC --> TD : may require update
+   MC --> MO : may require update
+   
+   @enduml

@@ -1,0 +1,11 @@
+@startuml
+package "BFG9K Build System" {
+  [build.sh] --> [Docker]
+  [build.sh] --> [Azure CLI]
+  [build.sh] --> [Azure Container Registry]
+  [build.sh] --> [Dockerfile.bfg9k]
+  [build.sh] --> [.env]
+  [Docker] --> [Dockerfile.bfg9k]
+  [Azure CLI] --> [Azure Container Registry]
+}
+@enduml

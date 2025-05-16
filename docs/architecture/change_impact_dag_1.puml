@@ -1,0 +1,56 @@
+@startuml Change Impact DAG
+
+' Core Components
+node "MCPValidator\n(owl:Class)" as MV
+node "ValidationTarget\n(owl:Class)" as VT
+node "SPARQLQueries\n(owl:Class)" as SQ
+node "ValidationRules\n(owl:Class)" as VR
+
+' Configuration
+node "MCPConfig\n(owl:Class)" as CFG
+node "RuleDefinitions\n(owl:Class)" as RD
+node "Thresholds\n(owl:Class)" as TH
+node "ErrorTemplates\n(owl:Class)" as ET
+
+' Test Components
+node "TestData\n(owl:Class)" as TD
+node "TestConfigs\n(owl:Class)" as TC
+node "TestAssertions\n(owl:Class)" as TA
+node "MockObjects\n(owl:Class)" as MO
+
+' Documentation
+node "MethodDocs\n(owl:Class)" as MD
+node "TypeDocs\n(owl:Class)" as TDOC
+node "RuleDocs\n(owl:Class)" as RDOC
+
+' Semantic Dependencies
+MV --> VT : :requiresUpdate
+MV --> SQ : :requiresUpdate
+MV --> VR : :requiresUpdate
+MV --> CFG : :requiresUpdate
+
+VT --> TD : :requiresUpdate
+VT --> TA : :requiresUpdate
+VT --> MD : :requiresUpdate
+
+SQ --> TD : :requiresUpdate
+SQ --> TA : :requiresUpdate
+SQ --> MD : :requiresUpdate
+
+VR --> RD : :requiresUpdate
+VR --> TH : :requiresUpdate
+VR --> TA : :requiresUpdate
+VR --> RDOC : :requiresUpdate
+
+CFG --> TC : :requiresUpdate
+CFG --> MD : :requiresUpdate
+
+RD --> TDOC : :requiresUpdate
+TH --> TDOC : :requiresUpdate
+ET --> TDOC : :requiresUpdate
+
+TD --> MO : :requiresUpdate
+TC --> MO : :requiresUpdate
+TA --> MO : :requiresUpdate
+
+@enduml

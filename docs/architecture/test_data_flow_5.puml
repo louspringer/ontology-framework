@@ -1,0 +1,30 @@
+@startuml Test Data Flow
+
+actor "Test Runner" as TR
+participant "Test Suite" as TS
+participant "MCPValidator" as MV
+participant "ValidationTarget" as VT
+participant "Test Data" as TD
+
+TR -> TS : run tests
+activate TS
+
+TS -> TD : load test data
+activate TD
+TD --> TS : test graphs
+deactivate TD
+
+TS -> MV : validate
+activate MV
+MV -> VT : create targets
+activate VT
+VT --> MV : validation targets
+deactivate VT
+
+MV --> TS : validation results
+deactivate MV
+
+TS --> TR : test results
+deactivate TS
+
+@enduml

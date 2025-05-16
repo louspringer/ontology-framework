@@ -1,0 +1,12 @@
+@startuml Config Change Impact
+   
+   node "Config Change" as CC
+   node "Test Configs" as TC
+   node "Validation Logic" as VL
+   node "Documentation" as D
+   
+   CC --> TC : requires update
+   CC --> VL : may require update
+   CC --> D : requires update
+   
+   @enduml

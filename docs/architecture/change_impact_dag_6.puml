@@ -1,0 +1,56 @@
+@startuml Change Impact DAG
+
+' Core Components
+node "MCPValidator" as MV
+node "ValidationTarget" as VT
+node "SPARQL Queries" as SQ
+node "Validation Rules" as VR
+
+' Configuration
+node "mcp_config.json" as CFG
+node "Rule Definitions" as RD
+node "Thresholds" as TH
+node "Error Templates" as ET
+
+' Test Components
+node "Test Data" as TD
+node "Test Configs" as TC
+node "Test Assertions" as TA
+node "Mock Objects" as MO
+
+' Documentation
+node "Method Docs" as MD
+node "Type Docs" as TDOC
+node "Rule Docs" as RDOC
+
+' Dependencies
+MV --> VT : changes require
+MV --> SQ : changes require
+MV --> VR : changes require
+MV --> CFG : changes require
+
+VT --> TD : changes require
+VT --> TA : changes require
+VT --> MD : changes require
+
+SQ --> TD : changes require
+SQ --> TA : changes require
+SQ --> MD : changes require
+
+VR --> RD : changes require
+VR --> TH : changes require
+VR --> TA : changes require
+VR --> RDOC : changes require
+
+CFG --> TC : changes require
+CFG --> MD : changes require
+
+RD --> TDOC : changes require
+TH --> TDOC : changes require
+ET --> TDOC : changes require
+
+TD --> MO : changes require
+TC --> MO : changes require
+TA --> MO : changes require
+
+@enduml

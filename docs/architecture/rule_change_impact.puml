@@ -1,0 +1,14 @@
+@startuml Rule Change Impact
+   
+   node "Rule Change" as RC
+   node "Test Data" as TD
+   node "Test Assertions" as TA
+   node "Config" as C
+   node "Documentation" as D
+   
+   RC --> TD : requires update
+   RC --> TA : requires update
+   RC --> C : may require update
+   RC --> D : requires update
+   
+   @enduml

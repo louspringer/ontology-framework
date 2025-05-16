@@ -1,0 +1,30 @@
+@startuml BFG9K Targeting Process
+
+actor "Test Runner" as TR
+participant "LLM Test" as LT
+participant "BFG9K Validator" as BV
+participant "Telemetry Collector" as TC
+participant "Issue Eliminator" as IE
+
+TR -> LT : execute_test
+activate LT
+
+LT -> BV : validate_response
+activate BV
+BV --> LT : validation_result
+deactivate BV
+
+LT -> TC : collect_telemetry
+activate TC
+TC --> LT : telemetry_data
+deactivate TC
+
+LT -> IE : eliminate_issue
+activate IE
+IE --> LT : elimination_result
+deactivate IE
+
+LT --> TR : test_result
+deactivate LT
+
+@enduml

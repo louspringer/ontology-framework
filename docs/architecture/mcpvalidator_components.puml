@@ -1,0 +1,29 @@
+@startuml MCPValidator Components
+
+package "MCP Validator" {
+    [ValidationTarget] as VT
+    [MCPValidator] as MV
+    [SPARQL Query Handler] as SQH
+    [Validation Rules] as VR
+    [Error Handler] as EH
+    [Logging] as LG
+}
+
+package "Tests" {
+    [Unit Tests] as UT
+    [Integration Tests] as IT
+    [Smoke Tests] as ST
+}
+
+MV --> VT : manages
+MV --> SQH : uses
+MV --> VR : applies
+MV --> EH : handles
+MV --> LG : logs
+
+UT ..> MV : tests
+UT ..> VT : tests
+IT ..> MV : tests
+ST ..> MV : tests
+
+@enduml
