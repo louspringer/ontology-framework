@@ -57,6 +57,11 @@ To verify Oracle setup:
 python -m scripts.verify_oracle_setup
 ```
 
+## ⚠️ Configuration Portability Note
+
+- **Avoid absolute paths in configuration files.** Use relative paths (e.g., `./bfg9k_mcp.py`, `./src`) to ensure portability across different environments and operating systems.
+- **Always run commands from the project root directory.** This ensures that all relative paths in configuration files resolve correctly.
+
 ## Development Setup
 
 1. Clone the repository:

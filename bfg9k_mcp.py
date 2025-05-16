@@ -1,3 +1,12 @@
+import os
+import sys
+from pathlib import Path
+
+# Add src to Python path before other imports
+project_root = Path(__file__).parent.absolute()
+src_path = project_root / "src"
+sys.path.insert(0, str(src_path))
+
 from typing import Any, Dict
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
@@ -5,13 +14,14 @@ import logging
 from datetime import datetime
 from fastmcp import FastMCP
 from bfg9k_manager import BFG9KManager
-import os
 import traceback
 from monkey_patch import PatchedServerSession
 from fix_prefixes import fix_prefixes
 from turtle_validation import validate_all
 import asyncio
 import tempfile
+import json
+import argparse
 try:
     from fastmcp.server.http import connect_sse
 except ImportError:
@@ -202,55 +212,64 @@ async def validate_turtle_tool(content: str) -> dict:
             "timestamp": datetime.datetime.now().isoformat()
         }
 
-# Patch FastMCP's SSE handler to emit keepalive pings
-# if connect_sse is not None:
-#     async def handle_sse(scope, receive, send):
-#         async with connect_sse(scope, receive, send) as (read_stream, write_stream):
-
-#             async def ping_task():
-#                 while True:
-#                     await asyncio.sleep(10)
-#                     await write_stream.send("event: ping\ndata: keepalive\n\n")
-
-#             async def main():
-#                 await mcp._mcp_server.run(read_stream, write_stream)
-
-#             await asyncio.gather(
-#                 ping_task(),
-#                 main(),
-#             )
-
-#     # Register the patched handler
-#     mcp._sse_handler = handle_sse
-    
-# @mcp.call_tool()
-# async def handle_shutdown_server(
-#     name: str, arguments: Dict[str, Any]
-# ) -> Dict[str, Any]:
-#     """Send SSE shutdown signal and stop the server"""
-
-#     # Send SSE shutdown message if possible
-#     ctx = mcp.request_context
-#     try:
-#         await ctx.send("event: shutdown\ndata: MCP server restarting\n\n")
-#     except Exception as e:
-#         print(f"Failed to send shutdown message: {e}")
-
-#     # Stop the server after short delay
-#     async def shutdown_task():
-#         await asyncio.sleep(1.0)
-#         for task in asyncio.all_tasks():
-#             if task is not asyncio.current_task():
-#                 task.cancel()
-
-#     asyncio.create_task(shutdown_task())
-
-#     return {"status": "Shutdown signal sent. MCP server will terminate."}
+def update_mcp_config():
+    """Update .cursor/mcp.json with absolute paths discovered at runtime."""
+    try:
+        # Get absolute paths
+        project_root = Path(__file__).parent.absolute()
+        python_path = sys.executable
+        bfg9k_script = project_root / "bfg9k_mcp.py"
+        src_path = project_root / "src"
+        
+        # Create the MCP config directory if it doesn't exist
+        mcp_dir = project_root / ".cursor"
+        mcp_dir.mkdir(exist_ok=True)
+        
+        # Create/update the MCP config with absolute paths
+        mcp_config = {
+            "mcpServers": {
+                "bfg9k": {
+                    "command": str(python_path),
+                    "args": [
+                        str(bfg9k_script)
+                    ],
+                    "env": {
+                        "PYTHONPATH": str(src_path)
+                    }
+                },
+                "datapilot": {
+                    "url": "http://localhost:7700/sse",
+                    "type": "sse"
+                }
+            }
+        }
+        
+        # Write the config
+        config_path = mcp_dir / "mcp.json"
+        with open(config_path, 'w') as f:
+            json.dump(mcp_config, f, indent=2)
+            
+        print(f"Updated MCP configuration at {config_path}")
+        print(f"Using Python: {python_path}")
+        print(f"BFG9K script: {bfg9k_script}")
+        print(f"PYTHONPATH: {src_path}")
+        return True
+    except Exception as e:
+        print(f"Error updating MCP configuration: {e}")
+        print(f"Project root: {project_root}")
+        print(f"Python path: {sys.executable}")
+        return False
 
 if __name__ == "__main__":
-    logger.setLevel(logging.DEBUG)
-    # logger.debug("[main] Starting BFG9K MCP Server with SSE transport on 0.0.0.0:8080")
-    logger.debug("[main] Starting BFG9K MCP Server with stdio transport")
-    # mcp.run(transport="sse", port=8080, host="0.0.0.0") 
-    # mcp.run(transport="sse", port=8080, host="0.0.0.0") 
-    mcp.run(transport="stdio")
+    parser = argparse.ArgumentParser(description="BFG9K MCP Server")
+    parser.add_argument("--update-config", action="store_true", help="Update .cursor/mcp.json configuration")
+    args = parser.parse_args()
+    
+    if args.update_config:
+        if update_mcp_config():
+            sys.exit(0)
+        else:
+            sys.exit(1)
+    
+    # Start the MCP server
+    mcp.run()
