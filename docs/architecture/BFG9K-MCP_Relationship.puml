@@ -1,0 +1,115 @@
+@startuml BFG9K-MCP Relationship
+
+' Core Components
+package "MCP (Model Context Protocol)" {
+    class MCPValidator {
+        +validate_bfg9k(context: Dict[str, Any]): bool
+        +validateHierarchy(): bool
+        +validateSemantics(): bool
+        +validateSHACL(): bool
+    }
+    
+    class MCPConfig {
+        +core: CoreConfig
+        +adapters: AdaptersConfig
+        +metadata: MetadataConfig
+        +logging: LoggingConfig
+    }
+    
+    class CoreConfig {
+        +validation: ValidationConfig
+        +validationRules: ValidationRulesConfig
+    }
+    
+    class ValidationConfig {
+        +enabled: bool
+        +requirePhaseOrder: bool
+        +requireContext: bool
+        +requireServerConfig: bool
+        +dryRun: bool
+        +backupEnabled: bool
+        +rules: Dict[str, Any]
+    }
+    
+    class ValidationRulesConfig {
+        +ontologyStructure: OntologyStructureConfig
+        +phaseExecution: PhaseExecutionConfig
+    }
+}
+
+package "PDCA Cycle" {
+    class PlanPhase {
+        +execute(context: Dict[str, Any]): Dict[str, Any]
+        -_validate_plan(): bool
+    }
+    
+    class DoPhase {
+        +execute(context: Dict[str, Any]): Dict[str, Any]
+        -_validate_do(): bool
+    }
+    
+    class CheckPhase {
+        +execute(context: Dict[str, Any]): Dict[str, Any]
+        -_validate_check(): bool
+    }
+    
+    class AdjustPhase {
+        +execute(context: Dict[str, Any]): Dict[str, Any]
+        -_validate_adjust(): bool
+    }
+}
+
+' Supporting Components
+package "Validation" {
+    class ValidationHandler {
+        +validate(rule: ValidationRule, data: Any): bool
+        -_validate_risk(): bool
+        -_validate_security(): bool
+        -_validate_sensitive_data(): bool
+    }
+    
+    class BFG9KTargeter {
+        +detect_targets(metrics: Dict[str, float]): List[Target]
+        +generate_elimination_plan(target: Target): EliminationPlan
+        +execute_elimination(plan: EliminationPlan): bool
+    }
+}
+
+' Relationships
+MCPValidator --> MCPConfig : uses
+MCPValidator --> PlanPhase : uses
+MCPValidator --> DoPhase : uses
+MCPValidator --> CheckPhase : uses
+MCPValidator --> AdjustPhase : uses
+MCPValidator --> ValidationHandler : uses
+ValidationHandler --> BFG9KTargeter : uses
+
+@enduml
+```
+
+### Static Structure Explanation
+
+The static structure diagram shows the hierarchical relationship between the MCP system and its PDCA cycle components. The MCP (Model Context Protocol) serves as the overarching framework, with the PDCA cycle being its core process improvement methodology.
+
+#### Key Components:
+
+1. **MCP Core**:
+   - `MCPValidator`: The main validation orchestrator that coordinates all validation activities
+   - `MCPConfig`: Manages the unified configuration structure
+   - `CoreConfig`: Core validation settings and rules
+   - `ValidationConfig`: Validation-specific settings
+   - `ValidationRulesConfig`: Ontology structure and phase execution rules
+
+2. **PDCA Cycle**:
+   - `PlanPhase`: Defines objectives and processes
+   - `DoPhase`: Implements planned changes
+   - `CheckPhase`: Measures and monitors results
+   - `AdjustPhase`: Improves processes based on results
+
+3. **Validation Support**:
+   - `ValidationHandler`: Manages specific validation rules and checks
+   - `BFG9KTargeter`: Implements targeting and elimination strategies
+
+## Communication Flow
+
+```plantuml
