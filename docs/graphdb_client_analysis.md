@@ -16,79 +16,11 @@ The GraphDB client system consists of the following main components:
 
 ## Model Visualization
 
-```plantuml
-@startuml GraphDB Client Model
-skinparam classAttributeIconSize 0
-skinparam classFontSize 10
-skinparam classFontStyle bold
-skinparam classBackgroundColor white
-skinparam classBorderColor black
-skinparam classArrowColor black
-skinparam packageBackgroundColor white
-skinparam packageBorderColor black
-skinparam noteBackgroundColor white
-skinparam noteBorderColor black
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-class GraphDBClient {
-  Client for interacting with GraphDB server
-}
+![GraphDB Client Model Diagram](graphdb_client_model.svg)
 
-class GraphDBError {
-  Base exception for GraphDB client errors
-}
-
-GraphDBClient --> GraphDBError : raises
-
-package Requirements {
-  class SPARQLSupport <<Requirement>> {
-    Must support SPARQL query execution
-  }
-  class GraphManagement <<Requirement>> {
-    Must support graph upload/download/clear operations
-  }
-  class ErrorHandling <<Requirement>> {
-    Must implement proper error handling
-  }
-  class Authentication <<Requirement>> {
-    Must support authentication mechanisms
-  }
-  class Validation <<Requirement>> {
-    Must support data validation
-  }
-}
-
-package Risks {
-  class ConnectionFailure <<Risk>> {
-    Risk of connection to GraphDB server failing
-  }
-  class DataLoss <<Risk>> {
-    Risk of data loss during operations
-  }
-  class Security <<Risk>> {
-    Risk of unauthorized access
-  }
-  class Performance <<Risk>> {
-    Risk of performance degradation
-  }
-}
-
-package Constraints {
-  class GraphDBServer <<Constraint>> {
-    Must have access to GraphDB server
-  }
-  class Authentication <<Constraint>> {
-    Must have valid credentials
-  }
-  class Network <<Constraint>> {
-    Must have network connectivity
-  }
-  class Storage <<Constraint>> {
-    Must have sufficient storage for graphs
-  }
-}
-
-@enduml
-```
+[View PlantUML source](graphdb_client_model.puml)
 
 ## Key Features
 
