@@ -1,0 +1,203 @@
+@prefix : <./boldo_api#> .
+@prefix rdf: <http:/www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http:/www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http:/www.w3.org/2002/07/owl#> .
+@prefix xsd: <http:/www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http:/purl.org/dc/elements/1.1/#> .
+@prefix dct: <http:/purl.org/dc/terms/#> .
+@prefix meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#> .
+@prefix problem: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/problem#> .
+@prefix solution: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/solution#> .
+@prefix sh: <http:/www.w3.org/ns/shacl#> .
+@prefix api_doc: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/api_documentation#> .
+
+# Ontology Definition
+:BoldoAPIDocumentation rdf:type owl:Ontology ;
+    rdfs:label "Boldo API Documentation" ;
+    rdfs:comment "Models the structure and documentation of the Boldo API" ;
+    dc:title "Boldo API Documentation" ;
+    dc:version "1.0.0" ;
+    owl:versionInfo "1.0.0" ;
+    dct:created "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-04-12T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    dct:description "Comprehensive model of the Boldo API structure and documentation" .
+
+# Core Classes
+:APIEndpoint rdf:type owl:Class ;
+    rdfs:label "API Endpoint" ;
+    rdfs:comment "An endpoint in the Boldo API" ;
+    owl:versionInfo "1.0.0" .
+
+:EndpointParameter rdf:type owl:Class ;
+    rdfs:label "Endpoint Parameter" ;
+    rdfs:comment "A parameter for an API endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+:ResponseType rdf:type owl:Class ;
+    rdfs:label "Response Type" ;
+    rdfs:comment "The type of response from an endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+:AuthenticationRequirement rdf:type owl:Class ;
+    rdfs:label "Authentication Requirement" ;
+    rdfs:comment "Authentication requirements for an endpoint" ;
+    owl:versionInfo "1.0.0" .
+
+# Properties
+:hasPath rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Path" ;
+    rdfs:comment "The URL path of the endpoint" ;
+    rdfs:domain :APIEndpoint ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasMethod rdf:type owl:DatatypeProperty ;
+    rdfs:label "Has Method" ;
+    rdfs:comment "The HTTP method of the endpoint" ;
+    rdfs:domain :APIEndpoint ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasParameter rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Parameter" ;
+    rdfs:comment "A parameter required by the endpoint" ;
+    rdfs:domain :APIEndpoint ;
+    rdfs:range :EndpointParameter ;
+    owl:versionInfo "1.0.0" .
+
+:hasResponse rdf:type owl:ObjectProperty ;
+    rdfs:label "Has Response" ;
+    rdfs:comment "The response type of the endpoint" ;
+    rdfs:domain :APIEndpoint ;
+    rdfs:range :ResponseType ;
+    owl:versionInfo "1.0.0" .
+
+:requiresAuth rdf:type owl:ObjectProperty ;
+    rdfs:label "Requires Authentication" ;
+    rdfs:comment "The authentication requirements of the endpoint" ;
+    rdfs:domain :APIEndpoint ;
+    rdfs:range :AuthenticationRequirement ;
+    owl:versionInfo "1.0.0" .
+
+:parameterName rdf:type owl:DatatypeProperty ;
+    rdfs:label "Parameter Name" ;
+    rdfs:comment "The name of the parameter" ;
+    rdfs:domain :EndpointParameter ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:parameterType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Parameter Type" ;
+    rdfs:comment "The data type of the parameter" ;
+    rdfs:domain :EndpointParameter ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:isRequired rdf:type owl:DatatypeProperty ;
+    rdfs:label "Is Required" ;
+    rdfs:comment "Whether the parameter is required" ;
+    rdfs:domain :EndpointParameter ;
+    rdfs:range xsd:boolean ;
+    owl:versionInfo "1.0.0" .
+
+:responseFormat rdf:type owl:DatatypeProperty ;
+    rdfs:label "Response Format" ;
+    rdfs:comment "The format of the response" ;
+    rdfs:domain :ResponseType ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:responseSchema rdf:type owl:DatatypeProperty ;
+    rdfs:label "Response Schema" ;
+    rdfs:comment "The schema of the response" ;
+    rdfs:domain :ResponseType ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:authType rdf:type owl:DatatypeProperty ;
+    rdfs:label "Authentication Type" ;
+    rdfs:comment "The type of authentication required" ;
+    rdfs:domain :AuthenticationRequirement ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+# Example Individuals
+:inventoryEndpoint rdf:type :APIEndpoint ;
+    rdfs:label "Inventory Endpoint" ;
+    rdfs:comment "Endpoint for managing inventory items" ;
+    :hasPath "/api/alpha/inventory" ;
+    :hasMethod "GET" ;
+    :hasParameter :inventoryPageParam ;
+    :hasResponse :inventoryResponse ;
+    :requiresAuth :bearerAuth .
+
+:inventoryPageParam rdf:type :EndpointParameter ;
+    rdfs:label "Page Parameter" ;
+    rdfs:comment "Page number for inventory results" ;
+    :parameterName "page" ;
+    :parameterType "integer" ;
+    :isRequired false .
+
+:inventoryResponse rdf:type :ResponseType ;
+    rdfs:label "Inventory Response" ;
+    rdfs:comment "Response format for inventory queries" ;
+    :responseFormat "application/json" ;
+    :responseSchema "{items: Array<InventoryItem>, total: number}" .
+
+:bearerAuth rdf:type :AuthenticationRequirement ;
+    rdfs:label "Bearer Authentication" ;
+    rdfs:comment "Bearer token authentication requirement" ;
+    :authType "Bearer Token" .
+
+# SHACL Shapes
+:APIEndpointShape a sh:NodeShape ;
+    sh:targetClass :APIEndpoint ;
+    sh:property [
+        sh:path :hasPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "API endpoint must have exactly one path" ;
+    ] ,
+    [
+        sh:path :hasMethod ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "API endpoint must have exactly one method" ;
+    ] .
+
+:EndpointParameterShape a sh:NodeShape ;
+    sh:targetClass :EndpointParameter ;
+    sh:property [
+        sh:path :parameterName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Parameter must have exactly one name" ;
+    ] ,
+    [
+        sh:path :parameterType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Parameter must have exactly one type" ;
+    ] ,
+    [
+        sh:path :isRequired ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Parameter must specify if it is required" ;
+    ] .
+
+# TODO Section
+# 1. Add more endpoint definitions from the scraped documentation
+# 2. Add response examples for each endpoint
+# 3. Add validation rules for response schemas
+# 4. Add error response definitions
+# 5. Add rate limiting information
+# 6. Add versioning information for each endpoint
+# 7. Add endpoint grouping/categorization
+# 8. Add endpoint relationships/dependencies 

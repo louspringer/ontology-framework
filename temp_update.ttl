@@ -1,0 +1,71 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix meta: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+:DeploymentPattern a owl:Class ;
+    rdfs:label "Deployment Pattern"@en ;
+    rdfs:comment "A reusable pattern for deploying a Python server in Docker and Azure ACR/ACI."@en ;
+    owl:versionInfo "1.0.0" .
+
+:PythonServerDeployment a owl:Class ;
+    rdfs:label "Python Server Deployment"@en ;
+    rdfs:comment "A deployment of a Python server using Docker and Azure ACR/ACI."@en ;
+    rdfs:subClassOf :DeploymentPattern ;
+    owl:versionInfo "1.0.0" .
+
+:hasDockerfile a owl:ObjectProperty ;
+    rdfs:label "has Dockerfile"@en ;
+    rdfs:comment "Links a deployment to its Dockerfile."@en ;
+    rdfs:domain :PythonServerDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasBuildScript a owl:ObjectProperty ;
+    rdfs:label "has Build Script"@en ;
+    rdfs:comment "Links a deployment to its build script."@en ;
+    rdfs:domain :PythonServerDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasRunScript a owl:ObjectProperty ;
+    rdfs:label "has Run Script"@en ;
+    rdfs:comment "Links a deployment to its run script."@en ;
+    rdfs:domain :PythonServerDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasAzureResource a owl:ObjectProperty ;
+    rdfs:label "has Azure Resource"@en ;
+    rdfs:comment "Links a deployment to its Azure resource (ACR, ACI, VM, etc.)."@en ;
+    rdfs:domain :PythonServerDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:hasHealthcheck a owl:DatatypeProperty ;
+    rdfs:label "has Healthcheck"@en ;
+    rdfs:comment "The healthcheck endpoint or command for the deployment."@en ;
+    rdfs:domain :PythonServerDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+:GraphDBServerDeployment a :PythonServerDeployment ;
+    rdfs:label "GraphDB Server Deployment"@en ;
+    rdfs:comment "Production deployment of GraphDB server at 10.0.2.6:7200 on Azure VM using Docker."@en ;
+    :hasDockerfile "Dockerfile.graphdb" ;
+    :hasBuildScript "deploy_azure_spot.sh" ;
+    :hasRunScript "docker run -d --name graphdb -p 7200:7200 -v /data:/data ontotext/graphdb:10.1.0" ;
+    :hasAzureResource "Azure VM, Resource Group, VNet, NSG" ;
+    :hasHealthcheck "http://10.0.2.6:7200/rest/repositories" .
+
+:BFG9K_MCP_SSE_Deployment a :PythonServerDeployment ;
+    rdfs:label "BFG9K MCP SSE Deployment"@en ;
+    rdfs:comment "Production deployment of bfg9k_mcp SSE server at localhost:8080 or ACI using Docker and Azure ACR."@en ;
+    :hasDockerfile "Dockerfile.bfg9k" ;
+    :hasBuildScript "build.sh" ;
+    :hasRunScript "run.sh" ;
+    :hasAzureResource "Azure Container Registry, Azure Container Instance" ;
+    :hasHealthcheck "http://localhost:8080/mcp/health" .
