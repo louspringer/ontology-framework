@@ -41,53 +41,23 @@ Build and push your Docker image to Azure Container Registry (ACR) or locally.
 
 ## 🗂️ Activity Diagram: build.sh
 
-```plantuml
-@startuml
-start
-:Load .env if present;
-:Parse arguments and set defaults;
-:Login to Azure Container Registry;
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-if (Build type == local?) then (yes)
-  :Build Docker image locally;
-  :Tag image for ACR;
-  :Push image to ACR;
-  if (Tag != latest?) then (yes)
-    :Tag image as latest;
-    :Push latest tag to ACR;
-  endif
-else (no)
-  :Submit build to ACR Build service;
-  :Tag as custom tag and latest;
-endif
+![Diagram](start.svg)
 
-:Print completion message;
-stop
+[View PlantUML source](start.puml)
 
-note right:
-- Use .env for config
-- Always tag/push latest for CI/CD
-- Use ACR build for cloud-native builds
-@enduml
-```
 
 ---
 
 ## 🏗️ Static Structure Diagram: build.sh Components & Dependencies
 
-```plantuml
-@startuml
-package "BFG9K Build System" {
-  [build.sh] --> [Docker]
-  [build.sh] --> [Azure CLI]
-  [build.sh] --> [Azure Container Registry]
-  [build.sh] --> [Dockerfile.bfg9k]
-  [build.sh] --> [.env]
-  [Docker] --> [Dockerfile.bfg9k]
-  [Azure CLI] --> [Azure Container Registry]
-}
-@enduml
-```
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](package.svg)
+
+[View PlantUML source](package.puml)
+
 
 **Legend:**
 - `build.sh`: The build script
@@ -101,27 +71,12 @@ package "BFG9K Build System" {
 
 ## 📡 Communication Diagram: build.sh Workflow
 
-```plantuml
-@startuml
-actor User
-participant "build.sh" as Script
-participant Docker
-participant "Azure CLI" as AzCLI
-participant "Azure Container Registry" as ACR
-participant "Dockerfile.bfg9k" as Dockerfile
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-User -> Script: Run build.sh with arguments
-Script -> Script: Parse .env and arguments
-Script -> Docker: Build image (local)
-Docker -> Dockerfile: Use Dockerfile.bfg9k
-Script -> AzCLI: Login to ACR
-Script -> Docker: Tag & push image to ACR
-Docker -> ACR: Push image
-Script -> AzCLI: (if acr) az acr build
-AzCLI -> ACR: Cloud build & push
-Script -> User: Print completion message
-@enduml
-```
+![Diagram](actor_user.svg)
+
+[View PlantUML source](actor_user.puml)
+
 
 ---
 

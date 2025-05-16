@@ -54,7 +54,12 @@ To render a diagram, use either of these methods:
 
 1. **Text input**: Visit http://localhost:20075 and enter your PlantUML code in the text area
 2. **URL-encoded**: http://localhost:20075/plantuml/png/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000
-3. **GET request**: http://localhost:20075/plantuml/png?uml=@startuml%0A%0AAlice%20-%3E%20Bob%3A%20Hello%0A%0A@enduml
+3. **GET request**: http://localhost:20075/plantuml/png?uml=> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](README-plantuml-server_diagram_1.svg)
+
+[View PlantUML source](README-plantuml-server_diagram_1.puml)
+
 
 ### Output Formats
 
@@ -68,22 +73,22 @@ The server supports multiple output formats:
 
 **Sequence Diagram:**
 ```
-@startuml
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: Another authentication Response
-@enduml
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](alice__.svg)
+
+[View PlantUML source](alice__.puml)
+
 ```
 
 **Class Diagram:**
 ```
-@startuml
-class Car
-Driver -- Car : drives >
-Car *-- Wheel : has 4 >
-Car -- Person : < owns
-@enduml
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](class_car.svg)
+
+[View PlantUML source](class_car.puml)
+
 ```
 
 ## Integration
@@ -114,9 +119,12 @@ You can use the `%plantuml` magic command with IPython:
 %load_ext plantuml_magic
 %plantuml_config url="http://localhost:20075/plantuml/png"
 %plantuml
-@startuml
-Alice -> Bob: Hello
-@enduml
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](alice__.svg)
+
+[View PlantUML source](alice__.puml)
+
 ```
 
 ## Troubleshooting

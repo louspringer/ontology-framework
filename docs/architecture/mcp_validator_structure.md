@@ -47,64 +47,12 @@ This documentation follows the MCP's self-referential model structure, where eac
 
 ## Change Impact DAG (Semantic Version)
 
-```plantuml
-@startuml Change Impact DAG
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-' Core Components
-node "MCPValidator\n(owl:Class)" as MV
-node "ValidationTarget\n(owl:Class)" as VT
-node "SPARQLQueries\n(owl:Class)" as SQ
-node "ValidationRules\n(owl:Class)" as VR
+![Diagram](change_impact_dag.svg)
 
-' Configuration
-node "MCPConfig\n(owl:Class)" as CFG
-node "RuleDefinitions\n(owl:Class)" as RD
-node "Thresholds\n(owl:Class)" as TH
-node "ErrorTemplates\n(owl:Class)" as ET
+[View PlantUML source](change_impact_dag.puml)
 
-' Test Components
-node "TestData\n(owl:Class)" as TD
-node "TestConfigs\n(owl:Class)" as TC
-node "TestAssertions\n(owl:Class)" as TA
-node "MockObjects\n(owl:Class)" as MO
-
-' Documentation
-node "MethodDocs\n(owl:Class)" as MD
-node "TypeDocs\n(owl:Class)" as TDOC
-node "RuleDocs\n(owl:Class)" as RDOC
-
-' Semantic Dependencies
-MV --> VT : :requiresUpdate
-MV --> SQ : :requiresUpdate
-MV --> VR : :requiresUpdate
-MV --> CFG : :requiresUpdate
-
-VT --> TD : :requiresUpdate
-VT --> TA : :requiresUpdate
-VT --> MD : :requiresUpdate
-
-SQ --> TD : :requiresUpdate
-SQ --> TA : :requiresUpdate
-SQ --> MD : :requiresUpdate
-
-VR --> RD : :requiresUpdate
-VR --> TH : :requiresUpdate
-VR --> TA : :requiresUpdate
-VR --> RDOC : :requiresUpdate
-
-CFG --> TC : :requiresUpdate
-CFG --> MD : :requiresUpdate
-
-RD --> TDOC : :requiresUpdate
-TH --> TDOC : :requiresUpdate
-ET --> TDOC : :requiresUpdate
-
-TD --> MO : :requiresUpdate
-TC --> MO : :requiresUpdate
-TA --> MO : :requiresUpdate
-
-@enduml
-```
 
 ## LLM-Friendly Change Rules
 
@@ -269,100 +217,21 @@ def analyze_change_impact(change_type: str, component: str) -> List[Dict[str, An
 
 ### Class Diagram
 
-```plantuml
-@startuml MCPValidator Internal Structure
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-package "MCP Validator" {
-    class ValidationTarget {
-        +uri: URIRef
-        +target_type: str
-        +priority: str
-        +metadata: Dict[str, Any]
-        +validation_errors: List[str]
-        +add_error(error: str)
-    }
+![Diagram](mcpvalidator_internal_structure.svg)
 
-    class MCPValidator {
-        -config: Dict[str, Any]
-        -validation_rules: Dict[str, Callable]
-        +_to_uriref(identifier: Any) -> URIRef
-        +_create_validation_target(identifier: Any, target_type: str, priority: str) -> ValidationTarget
-        +_get_sparql_value(row: Union[ResultRow, Mapping, Tuple, bool], var_name: str) -> Optional[Identifier]
-        +_examine_sparql_result(row: ResultRow) -> None
-        +_log_query_results(query: str, results: Any) -> None
-        +acquire_targets(graph: Graph) -> Dict[str, List[ValidationTarget]]
-        +validate_target(target: ValidationTarget, graph: Graph) -> List[str]
-        +validate_hierarchy(graph: Graph) -> List[str]
-        +validate_semantics(graph: Graph) -> List[str]
-        +validate_shacl(graph: Graph) -> List[str]
-        +validate_properties(graph: Graph) -> List[str]
-        +validate_individuals(graph: Graph) -> List[str]
-        +validate_bfg9k(graph: Graph) -> List[str]
-        +validate(ontology_path: Path) -> Dict[str, Dict[str, Any]]
-    }
+[View PlantUML source](mcpvalidator_internal_structure.puml)
 
-    ValidationTarget "1" -- "*" MCPValidator : contains
-}
-
-package "Tests" {
-    class TestMCPValidator {
-        +test_validate_hierarchy()
-        +test_validate_semantics()
-        +test_validate_shacl()
-        +test_validate_properties()
-        +test_validate_individuals()
-        +test_validate_bfg9k()
-        +test_validate()
-        +test_acquire_targets()
-        +test_validate_target()
-    }
-
-    class TestValidationTarget {
-        +test_validation_target_creation()
-        +test_add_error()
-        +test_metadata_management()
-    }
-}
-
-MCPValidator ..> TestMCPValidator : tested by
-ValidationTarget ..> TestValidationTarget : tested by
-
-@enduml
-```
 
 ### Component Diagram
 
-```plantuml
-@startuml MCPValidator Components
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-package "MCP Validator" {
-    [ValidationTarget] as VT
-    [MCPValidator] as MV
-    [SPARQL Query Handler] as SQH
-    [Validation Rules] as VR
-    [Error Handler] as EH
-    [Logging] as LG
-}
+![Diagram](mcpvalidator_components.svg)
 
-package "Tests" {
-    [Unit Tests] as UT
-    [Integration Tests] as IT
-    [Smoke Tests] as ST
-}
+[View PlantUML source](mcpvalidator_components.puml)
 
-MV --> VT : manages
-MV --> SQH : uses
-MV --> VR : applies
-MV --> EH : handles
-MV --> LG : logs
-
-UT ..> MV : tests
-UT ..> VT : tests
-IT ..> MV : tests
-ST ..> MV : tests
-
-@enduml
-```
 
 ## Method Signatures
 
@@ -450,57 +319,21 @@ def test_validation_pipeline(self):
 
 ## Test Dependencies
 
-```plantuml
-@startuml Test Dependencies
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-package "Test Suite" {
-    [test_validator.py] as TV
-    [test_validation_target.py] as TVT
-    [test_bfg9k.py] as TB
-    [test_integration.py] as TI
-}
+![Diagram](test_dependencies.svg)
 
-TV --> TVT : depends on
-TV --> TB : depends on
-TV --> TI : depends on
+[View PlantUML source](test_dependencies.puml)
 
-@enduml
-```
 
 ## Test Data Flow
 
-```plantuml
-@startuml Test Data Flow
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-actor "Test Runner" as TR
-participant "Test Suite" as TS
-participant "MCPValidator" as MV
-participant "ValidationTarget" as VT
-participant "Test Data" as TD
+![Diagram](test_data_flow.svg)
 
-TR -> TS : run tests
-activate TS
+[View PlantUML source](test_data_flow.puml)
 
-TS -> TD : load test data
-activate TD
-TD --> TS : test graphs
-deactivate TD
-
-TS -> MV : validate
-activate MV
-MV -> VT : create targets
-activate VT
-VT --> MV : validation targets
-deactivate VT
-
-MV --> TS : validation results
-deactivate MV
-
-TS --> TR : test results
-deactivate TS
-
-@enduml
-```
 
 ## Test Configuration
 
@@ -596,118 +429,38 @@ The following components are actively monitored for changes:
 
 ### Change Impact DAG
 
-```plantuml
-@startuml Change Impact DAG
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-' Core Components
-node "MCPValidator" as MV
-node "ValidationTarget" as VT
-node "SPARQL Queries" as SQ
-node "Validation Rules" as VR
+![Diagram](change_impact_dag.svg)
 
-' Configuration
-node "mcp_config.json" as CFG
-node "Rule Definitions" as RD
-node "Thresholds" as TH
-node "Error Templates" as ET
+[View PlantUML source](change_impact_dag.puml)
 
-' Test Components
-node "Test Data" as TD
-node "Test Configs" as TC
-node "Test Assertions" as TA
-node "Mock Objects" as MO
-
-' Documentation
-node "Method Docs" as MD
-node "Type Docs" as TDOC
-node "Rule Docs" as RDOC
-
-' Dependencies
-MV --> VT : changes require
-MV --> SQ : changes require
-MV --> VR : changes require
-MV --> CFG : changes require
-
-VT --> TD : changes require
-VT --> TA : changes require
-VT --> MD : changes require
-
-SQ --> TD : changes require
-SQ --> TA : changes require
-SQ --> MD : changes require
-
-VR --> RD : changes require
-VR --> TH : changes require
-VR --> TA : changes require
-VR --> RDOC : changes require
-
-CFG --> TC : changes require
-CFG --> MD : changes require
-
-RD --> TDOC : changes require
-TH --> TDOC : changes require
-ET --> TDOC : changes require
-
-TD --> MO : changes require
-TC --> MO : changes require
-TA --> MO : changes require
-
-@enduml
-```
 
 ### Change Impact Rules
 
 1. **Method Signature Changes**
-   ```plantuml
-   @startuml Method Change Impact
-   
-   node "Method Change" as MC
-   node "Tests" as T
-   node "Documentation" as D
-   node "Type Definitions" as TD
-   node "Mock Objects" as MO
-   
-   MC --> T : requires update
-   MC --> D : requires update
-   MC --> TD : may require update
-   MC --> MO : may require update
-   
-   @enduml
-   ```
+   > **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](method_change_impact.svg)
+
+[View PlantUML source](method_change_impact.puml)
+
 
 2. **Validation Rule Changes**
-   ```plantuml
-   @startuml Rule Change Impact
-   
-   node "Rule Change" as RC
-   node "Test Data" as TD
-   node "Test Assertions" as TA
-   node "Config" as C
-   node "Documentation" as D
-   
-   RC --> TD : requires update
-   RC --> TA : requires update
-   RC --> C : may require update
-   RC --> D : requires update
-   
-   @enduml
-   ```
+   > **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](rule_change_impact.svg)
+
+[View PlantUML source](rule_change_impact.puml)
+
 
 3. **Configuration Changes**
-   ```plantuml
-   @startuml Config Change Impact
-   
-   node "Config Change" as CC
-   node "Test Configs" as TC
-   node "Validation Logic" as VL
-   node "Documentation" as D
-   
-   CC --> TC : requires update
-   CC --> VL : may require update
-   CC --> D : requires update
-   
-   @enduml
-   ```
+   > **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](config_change_impact.svg)
+
+[View PlantUML source](config_change_impact.puml)
+
 
 ### Change Monitoring Process
 
@@ -820,38 +573,12 @@ When making changes to any component, verify:
 
 ### BFG9K Targeting Process
 
-```plantuml
-@startuml BFG9K Targeting Process
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-actor "Test Runner" as TR
-participant "LLM Test" as LT
-participant "BFG9K Validator" as BV
-participant "Telemetry Collector" as TC
-participant "Issue Eliminator" as IE
+![Diagram](bfg9k_targeting_process.svg)
 
-TR -> LT : execute_test
-activate LT
+[View PlantUML source](bfg9k_targeting_process.puml)
 
-LT -> BV : validate_response
-activate BV
-BV --> LT : validation_result
-deactivate BV
-
-LT -> TC : collect_telemetry
-activate TC
-TC --> LT : telemetry_data
-deactivate TC
-
-LT -> IE : eliminate_issue
-activate IE
-IE --> LT : elimination_result
-deactivate IE
-
-LT --> TR : test_result
-deactivate LT
-
-@enduml
-```
 
 ### Example Prompt-Based Test
 
@@ -1001,36 +728,12 @@ def execute_llm_live_fire_test(self, test_config: Dict[str, Any]) -> TestResult:
 
 ### BFG9K Elimination Process
 
-```plantuml
-@startuml BFG9K Elimination Process
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-actor "Test Runner" as TR
-participant "Issue Detector" as ID
-participant "BFG9K Validator" as BV
-participant "Elimination Engine" as EE
-participant "Telemetry" as T
+![Diagram](bfg9k_elimination_process.svg)
 
-TR -> ID : detect_issues
-activate ID
-ID --> TR : issues_found
-deactivate ID
+[View PlantUML source](bfg9k_elimination_process.puml)
 
-TR -> BV : validate_issues
-activate BV
-BV --> TR : validation_result
-deactivate BV
-
-TR -> EE : eliminate_issues
-activate EE
-EE -> T : collect_telemetry
-activate T
-T --> EE : telemetry_data
-deactivate T
-EE --> TR : elimination_result
-deactivate EE
-
-@enduml
-```
 
 ### Test Configuration Example
 
@@ -1105,37 +808,12 @@ deactivate EE
 
 ### Hypercube Targeting Process
 
-```plantuml
-@startuml Hypercube Targeting Process
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-actor "Targeting System" as TS
-participant "Hypercube Analyzer" as HA
-participant "Trajectory Predictor" as TP
-participant "BFG9K Validator" as BV
-participant "Telemetry Collector" as TC
+![Diagram](hypercube_targeting_process.svg)
 
-TS -> HA : analyze_dimensions
-activate HA
-HA --> TS : current_position
-deactivate HA
+[View PlantUML source](hypercube_targeting_process.puml)
 
-TS -> TP : predict_trajectory
-activate TP
-TP --> TS : future_positions
-deactivate TP
-
-TS -> BV : validate_target
-activate BV
-BV --> TS : validation_result
-deactivate BV
-
-TS -> TC : collect_telemetry
-activate TC
-TC --> TS : telemetry_data
-deactivate TC
-
-@enduml
-```
 
 ### Trajectory Analysis
 
@@ -1334,29 +1012,12 @@ class BFG9KHypercubeTargeter:
 
 ### Hypercube Visualization
 
-```plantuml
-@startuml Hypercube Visualization
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-package "Hypercube Space" {
-    frame "Semantic Accuracy" as SA
-    frame "Response Time" as RT
-    frame "Confidence" as CF
-    frame "Validation Success" as VS
-}
+![Diagram](hypercube_visualization.svg)
 
-node "Current Position" as CP
-node "Future Position" as FP
-node "Optimal Position" as OP
+[View PlantUML source](hypercube_visualization.puml)
 
-CP --> FP : trajectory
-CP --> OP : targeting vector
-
-SA -[hidden]> RT
-RT -[hidden]> CF
-CF -[hidden]> VS
-
-@enduml
-```
 
 ## Model Updates from Hypercube Analysis
 
@@ -1385,37 +1046,12 @@ CF -[hidden]> VS
 
 ### Update Process
 
-```plantuml
-@startuml Model Update Process
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-actor "Hypercube Analyzer" as HA
-participant "Update Detector" as UD
-participant "Model Updater" as MU
-participant "Validation Engine" as VE
-participant "Telemetry" as T
+![Diagram](model_update_process.svg)
 
-HA -> UD : detect_update_needed
-activate UD
-UD --> HA : update_required
-deactivate UD
+[View PlantUML source](model_update_process.puml)
 
-HA -> MU : generate_update
-activate MU
-MU --> HA : update_plan
-deactivate MU
-
-HA -> VE : validate_update
-activate VE
-VE --> HA : validation_result
-deactivate VE
-
-HA -> T : log_update
-activate T
-T --> HA : update_logged
-deactivate T
-
-@enduml
-```
 
 ### Update Implementation
 
