@@ -15,95 +15,11 @@ This document illustrates the relationship between these components through stat
 
 ## Static Structure
 
-```plantuml
-@startuml BFG9K-MCP Relationship
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-' Core Components
-package "MCP (Model Context Protocol)" {
-    class MCPValidator {
-        +validate_bfg9k(context: Dict[str, Any]): bool
-        +validateHierarchy(): bool
-        +validateSemantics(): bool
-        +validateSHACL(): bool
-    }
-    
-    class MCPConfig {
-        +core: CoreConfig
-        +adapters: AdaptersConfig
-        +metadata: MetadataConfig
-        +logging: LoggingConfig
-    }
-    
-    class CoreConfig {
-        +validation: ValidationConfig
-        +validationRules: ValidationRulesConfig
-    }
-    
-    class ValidationConfig {
-        +enabled: bool
-        +requirePhaseOrder: bool
-        +requireContext: bool
-        +requireServerConfig: bool
-        +dryRun: bool
-        +backupEnabled: bool
-        +rules: Dict[str, Any]
-    }
-    
-    class ValidationRulesConfig {
-        +ontologyStructure: OntologyStructureConfig
-        +phaseExecution: PhaseExecutionConfig
-    }
-}
+![BFG9K-MCP Relationship Diagram](BFG9K-MCP_Relationship.svg)
 
-package "PDCA Cycle" {
-    class PlanPhase {
-        +execute(context: Dict[str, Any]): Dict[str, Any]
-        -_validate_plan(): bool
-    }
-    
-    class DoPhase {
-        +execute(context: Dict[str, Any]): Dict[str, Any]
-        -_validate_do(): bool
-    }
-    
-    class CheckPhase {
-        +execute(context: Dict[str, Any]): Dict[str, Any]
-        -_validate_check(): bool
-    }
-    
-    class AdjustPhase {
-        +execute(context: Dict[str, Any]): Dict[str, Any]
-        -_validate_adjust(): bool
-    }
-}
-
-' Supporting Components
-package "Validation" {
-    class ValidationHandler {
-        +validate(rule: ValidationRule, data: Any): bool
-        -_validate_risk(): bool
-        -_validate_security(): bool
-        -_validate_sensitive_data(): bool
-    }
-    
-    class BFG9KTargeter {
-        +detect_targets(metrics: Dict[str, float]): List[Target]
-        +generate_elimination_plan(target: Target): EliminationPlan
-        +execute_elimination(plan: EliminationPlan): bool
-    }
-}
-
-' Relationships
-MCPValidator --> MCPConfig : uses
-MCPValidator --> PlanPhase : uses
-MCPValidator --> DoPhase : uses
-MCPValidator --> CheckPhase : uses
-MCPValidator --> AdjustPhase : uses
-MCPValidator --> ValidationHandler : uses
-ValidationHandler --> BFG9KTargeter : uses
-
-@enduml
-```
+[View PlantUML source](BFG9K-MCP_Relationship.puml)
 
 ### Static Structure Explanation
 
@@ -130,50 +46,11 @@ The static structure diagram shows the hierarchical relationship between the MCP
 
 ## Communication Flow
 
-```plantuml
-@startuml PDCA Communication Flow
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-participant "Client" as client
-participant "MCPValidator" as mcp
-participant "PlanPhase" as plan
-participant "DoPhase" as do
-participant "CheckPhase" as check
-participant "AdjustPhase" as adjust
-participant "ValidationHandler" as handler
+![PDCA Communication Flow Diagram](PDCA_Communication_Flow.svg)
 
-client -> mcp: validate_bfg9k(context)
-activate mcp
-
-mcp -> plan: execute(context)
-activate plan
-plan --> mcp: plan_results
-deactivate plan
-
-mcp -> do: execute(context)
-activate do
-do --> mcp: do_results
-deactivate do
-
-mcp -> check: execute(context)
-activate check
-check --> mcp: check_results
-deactivate check
-
-mcp -> adjust: execute(context)
-activate adjust
-adjust --> mcp: adjust_results
-deactivate adjust
-
-mcp -> handler: validate(ValidationRule.SPORE, data)
-activate handler
-handler --> mcp: validation_result
-deactivate handler
-
-mcp --> client: final_result
-deactivate mcp
-
-@enduml
-```
+[View PlantUML source](PDCA_Communication_Flow.puml)
 
 ### Communication Flow Explanation
 
