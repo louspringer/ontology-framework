@@ -1,5 +1,8 @@
 ## Cursor IDE, LLM, and BFG9K_MCP Integration Diagram
 
-![Cursor IDE, LLM, and BFG9K_MCP Integration Diagram](Cursor_BFG9K_Integration.svg)
+> **Note:** (update_markdown_with_svgs.py) The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
 
-[View PlantUML source](Cursor_BFG9K_Integration.puml) 
+![Diagram](cursor_bfg9k_integration.svg)
+
+[View PlantUML source](cursor_bfg9k_integration.puml)
+ 

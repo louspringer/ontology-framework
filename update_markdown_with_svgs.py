@@ -37,7 +37,7 @@ def replace_plantuml_blocks(text, fname):
         base = get_puml_base(block, fname, i)
         svg_name = f'{base}.svg'
         puml_name = f'{base}.puml'
-        replacement = f'> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.\n\n![Diagram]({svg_name})\n\n[View PlantUML source]({puml_name})\n'
+        replacement = f'> **Note:** (update_markdown_with_svgs.py) The SVG below is rendered from the PlantUML diagram for GitHub compatibility.\n\n![Diagram]({svg_name})\n\n[View PlantUML source]({puml_name})\n'
         new_text = new_text[:start+offset] + replacement + new_text[end+offset:]
         offset += len(replacement) - (end - start)
     return new_text, len(blocks)
