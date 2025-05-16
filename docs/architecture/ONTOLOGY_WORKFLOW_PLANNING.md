@@ -78,4 +78,18 @@ The architecture and workflow described in `bfg9k_mcp_architecture.md`—with it
 
 ---
 
+## Strategic Principle: Purposeful Projection & Documentation
+
+As we move toward a fully model-driven, DRY documentation and governance workflow, we recognize that:
+
+- **Projection is a tool, not a goal.** We aim to generate documentation, diagrams, and navigation from our models only when it adds real value for users and maintainers.
+- **Curation matters.** Automated docs should be curated, layered, and supplemented with human context, examples, and rationale.
+- **Signal over noise.** We strive for documentation that is not just accurate, but also useful, discoverable, and actionable.
+- **Separation of concerns.** Rendering and presentation metadata should be kept out of core semantic models, and managed in view/config layers or at projection time.
+- **Feedback and evolution.** We will periodically review our documentation and projection practices to ensure they serve real user needs, not just automation completeness.
+
+> These principles will guide our tooling, documentation, and modeling strategy as the project evolves. They are adjacent to DRY and model-driven development, and are documented here as a strategic target for the team.
+
+---
+
 > This document is a living plan for restoring and maintaining a DRY, traceable, and user-friendly ontology framework workflow. All contributors should reference and update this as the cleanup proceeds. 

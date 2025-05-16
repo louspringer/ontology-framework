@@ -26,6 +26,19 @@ def extract_plantuml_blocks(text):
             blocks.append(block.group(0))
     return blocks
 
+def normalize_base(fname, i):
+    # Lowercase, underscores, no spaces or dashes
+    return Path(fname).stem.lower().replace(' ', '_').replace('-', '_') + (f'_{i}' if i > 1 else '')
+
+def rewrite_startuml(block, base):
+    # Replace the @startuml line with @startuml base
+    lines = block.splitlines()
+    for idx, line in enumerate(lines):
+        if line.strip().startswith('@startuml'):
+            lines[idx] = f'@startuml {base}'
+            break
+    return '\n'.join(lines)
+
 def main():
     found = []
     for search_dir in SEARCH_DIRS:
@@ -37,19 +50,16 @@ def main():
                         text = f.read()
                     blocks = extract_plantuml_blocks(text)
                     for i, block in enumerate(blocks, 1):
-                        # Try to get a title from @startuml line
-                        m = re.match(r'@startuml\s*([\w\- ]+)?', block)
-                        if m and m.group(1):
-                            base = m.group(1).strip().replace(' ', '_').replace('-', '_').lower()
-                        else:
-                            base = Path(fname).stem + f'_diagram_{i}'
+                        base = normalize_base(fname, i)
                         puml_name = f'{base}.puml'
                         puml_path = os.path.join(root, puml_name)
                         # Avoid overwriting existing files
                         if os.path.exists(puml_path):
                             puml_path = os.path.join(root, f'{base}_{i}.puml')
+                        # Rewrite @startuml line
+                        block_fixed = rewrite_startuml(block, Path(puml_path).stem)
                         with open(puml_path, 'w', encoding='utf-8') as pf:
-                            pf.write(block + '\n')
+                            pf.write(block_fixed + '\n')
                         found.append((fpath, puml_path))
     print('Extracted PlantUML diagrams:')
     for src, puml in found:
