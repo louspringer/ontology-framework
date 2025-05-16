@@ -1,6 +1,3 @@
-## Documentation Navigation Diagram
-
-```plantuml
 @startuml BFG9K_Documentation_Navigation
 
 !define RECTANGLE class
@@ -22,11 +19,4 @@ DRY -down-> NAV : "Navigation Diagram"
 ROOTREADME -right-> NAV : "Navigation"
 DRY ..> MCPVAL : "Validator Details"
 
-@enduml
-```
-
----
-
-> **Note:** The SVG below is rendered from the PlantUML diagram above for GitHub compatibility.
-
-![Documentation Navigation Diagram](BFG9K_Documentation_Navigation.svg)
+@enduml 
