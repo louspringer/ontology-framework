@@ -2,6 +2,90 @@
 
 ## Model-Driven Documentation
 
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](change_impact_dag.svg)
+
+[View PlantUML source](change_impact_dag.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](mcpvalidator_internal_structure.svg)
+
+[View PlantUML source](mcpvalidator_internal_structure.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](mcpvalidator_components.svg)
+
+[View PlantUML source](mcpvalidator_components.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](test_dependencies.svg)
+
+[View PlantUML source](test_dependencies.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](test_data_flow.svg)
+
+[View PlantUML source](test_data_flow.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](method_change_impact.svg)
+
+[View PlantUML source](method_change_impact.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](rule_change_impact.svg)
+
+[View PlantUML source](rule_change_impact.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](config_change_impact.svg)
+
+[View PlantUML source](config_change_impact.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](bfg9k_targeting_process.svg)
+
+[View PlantUML source](bfg9k_targeting_process.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](bfg9k_elimination_process.svg)
+
+[View PlantUML source](bfg9k_elimination_process.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](hypercube_targeting_process.svg)
+
+[View PlantUML source](hypercube_targeting_process.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](hypercube_visualization.svg)
+
+[View PlantUML source](hypercube_visualization.puml)
+
+> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](model_update_process.svg)
+
+[View PlantUML source](model_update_process.puml)
+
+
+
+
+
+
+
 This documentation follows the MCP's self-referential model structure, where each component is defined both in terms of its implementation and its semantic meaning within the validation framework.
 
 ### Semantic Definitions

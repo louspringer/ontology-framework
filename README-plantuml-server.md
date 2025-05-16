@@ -98,7 +98,12 @@ The server supports multiple output formats:
 You can integrate with Markdown by using image links:
 
 ```markdown
-![My Diagram](http://localhost:20075/plantuml/png?uml=@startuml%0A%0AAlice%20-%3E%20Bob%3A%20Hello%0A%0A@enduml)
+![My Diagram](http://localhost:20075/plantuml/png?uml=> **Note:** The SVG below is rendered from the PlantUML diagram for GitHub compatibility.
+
+![Diagram](README-plantuml-server_diagram_1.svg)
+
+[View PlantUML source](README-plantuml-server_diagram_1.puml)
+)
 ```
 
 ### With Visual Studio Code

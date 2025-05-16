@@ -52,6 +52,7 @@ def main():
                     with open(fpath, 'r', encoding='utf-8') as f:
                         text = f.read()
                     new_text, n = replace_plantuml_blocks(text, fname)
+                    print(f'Processing {fpath}: found {n} PlantUML block(s)')
                     if n > 0 and new_text != text:
                         with open(fpath, 'w', encoding='utf-8') as f:
                             f.write(new_text)
