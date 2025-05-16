@@ -7,6 +7,10 @@ project_root = Path(__file__).parent.absolute()
 src_path = project_root / "src"
 sys.path.insert(0, str(src_path))
 
+# Set working directory
+working_dir = os.environ.get("WORKING_DIR", str(project_root))
+os.chdir(working_dir)
+
 from typing import Any, Dict
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
@@ -22,30 +26,64 @@ import asyncio
 import tempfile
 import json
 import argparse
-try:
-    from fastmcp.server.http import connect_sse
-except ImportError:
-    connect_sse = None  # Fallback or error if not available
 
 # Configure logging
-
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
+# Add a FileHandler to the logger
+log_file_path = project_root / "bfg9k_debug.log"
+file_handler = logging.FileHandler(str(log_file_path))
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+logger.info("BFG9K logger initialized and writing to bfg9k_debug.log")
+logger.info(f"Project root: {project_root}")
+logger.info(f"Working directory: {os.getcwd()}")
+logger.info(f"Python path: {sys.path}")
+
+# Try to set up Azure logging
+try:
+    from opencensus.ext.azure.log_exporter import AzureLogHandler
+    AI_CONNECTION_STRING = os.environ.get("APPINSIGHTS_CONNECTION_STRING")
+    if AI_CONNECTION_STRING and "YOUR_KEY_HERE" not in AI_CONNECTION_STRING:
+        azure_handler = AzureLogHandler(connection_string=AI_CONNECTION_STRING)
+        azure_handler.setLevel(logging.INFO)
+        logger.addHandler(azure_handler)
+        logger.info("Azure Application Insights logging enabled.")
+    else:
+        logger.warning("Azure Application Insights connection string not set. Skipping cloud logging.")
+except ImportError:
+    logger.warning("opencensus-ext-azure not installed. Skipping Azure Application Insights logging.")
+
+# Try to import SSE support
+try:
+    from fastmcp.server.http import connect_sse
+    logger.info("Successfully imported connect_sse")
+except ImportError:
+    logger.warning("Failed to import connect_sse")
+    connect_sse = None
+
 # Create FastMCP instance
+logger.info("Creating FastMCP instance...")
 mcp = FastMCP(
     "BFG9K MCP",
     session_class=PatchedServerSession
 )
+logger.info("FastMCP instance created successfully")
 
 # Create BFG9KManager instance
-print("Current working directory:", os.getcwd())
+logger.info(f"Current working directory: {os.getcwd()}")
+logger.info(f"GRAPHDB_URL: {os.environ.get('GRAPHDB_URL')}")
 config_path = os.path.join(os.path.dirname(__file__), "bfg9k_config.ttl")
-print("Config path:", config_path)
+logger.info(f"Config path: {config_path}")
 bfg9k = BFG9KManager(config_path)
+logger.info("BFG9KManager instance created successfully")
 
 def get_manager():
     # Helper to get a fresh manager if needed
@@ -186,26 +224,33 @@ async def fix_prefixes_tool(content: str, apply: bool = False) -> dict:
 
 @mcp.tool()
 async def validate_turtle_tool(content: str) -> dict:
-    """Validate a Turtle file or raw Turtle content for common ontology issues. Returns a structured report."""
+    print("HELLO FROM validate_turtle_tool")
     import os
     import tempfile
     import datetime
     import traceback
+    logger.info(f"[validate_turtle_tool] ENTERED (pid={os.getpid()}) with content: {repr(content)[:60]}")
     try:
         # If content is a file path, use it directly
         if os.path.isfile(content):
             turtle_file = content
+            logger.debug(f"[validate_turtle_tool] Using file path: {turtle_file} (type: {type(turtle_file)})")
         else:
             # Write content to a temp file
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w") as tf:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ttl", mode="w", encoding="utf-8") as tf:
                 tf.write(content)
                 turtle_file = tf.name
-        results = validate_all(turtle_file)
+            logger.debug(f"[validate_turtle_tool] Wrote raw content to temp file: {turtle_file} (type: {type(turtle_file)})")
+        # Ensure the file path is a string
+        if isinstance(turtle_file, bytes):
+            turtle_file = turtle_file.decode('utf-8')
+        results = validate_all(str(turtle_file))
         return {
             "results": results,
             "timestamp": datetime.datetime.now().isoformat()
         }
     except Exception as e:
+        logger.error(f"[validate_turtle_tool] Exception: {e}")
         return {
             "error": str(e),
             "trace": traceback.format_exc(),
@@ -249,15 +294,15 @@ def update_mcp_config():
         with open(config_path, 'w') as f:
             json.dump(mcp_config, f, indent=2)
             
-        print(f"Updated MCP configuration at {config_path}")
-        print(f"Using Python: {python_path}")
-        print(f"BFG9K script: {bfg9k_script}")
-        print(f"PYTHONPATH: {src_path}")
+        logger.info(f"Updated MCP configuration at {config_path}")
+        logger.info(f"Using Python: {python_path}")
+        logger.info(f"BFG9K script: {bfg9k_script}")
+        logger.info(f"PYTHONPATH: {src_path}")
         return True
     except Exception as e:
-        print(f"Error updating MCP configuration: {e}")
-        print(f"Project root: {project_root}")
-        print(f"Python path: {sys.executable}")
+        logger.error(f"Error updating MCP configuration: {e}")
+        logger.error(f"Project root: {project_root}")
+        logger.error(f"Python path: {sys.executable}")
         return False
 
 def check_mcp_config():

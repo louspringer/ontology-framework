@@ -1,3 +1,11 @@
-@prefix : <http://example.org/test#> .
+@prefix ex: <http://example.org/test#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-:TestClass a rdfs:Class ; rdfs:label "Test Class" . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:TestClass a owl:Class ;
+    rdfs:label "Test Class" ;
+    rdfs:comment "A class for testing validation." .
+
+ex:instance1 a ex:TestClass .
+ex:instance2 a ex:TestClass . 

@@ -1,13 +1,15 @@
 {
   "mcpServers": {
     "bfg9k": {
-      "command": "/Users/lou/miniconda3/envs/ontology-framework/bin/python",
+      "command": "/home/lou/miniconda/envs/ontology-framework/bin/python",
       "args": [
-        "/Users/lou/Documents/ontology-framework/bfg9k_mcp.py"
+        "/home/lou/ontology-framework/bfg9k_mcp.py"
       ],
       "env": {
-        "PYTHONPATH": "/Users/lou/Documents/ontology-framework/src"
-      }
+        "PYTHONPATH": "/home/lou/ontology-framework/src",
+        "WORKING_DIR": "/home/lou/ontology-framework"
+      },
+      "cwd": "/home/lou/ontology-framework"
     },
     "datapilot": {
       "url": "http://localhost:7700/sse",
