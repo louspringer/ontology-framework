@@ -1,0 +1,34 @@
+{
+  "id": "guidance",
+  "title": "Guidance Repository",
+  "type": "graphdb:SailRepository",
+  "params": {
+    "ruleset": {
+      "name": "empty"
+    },
+    "storage-folder": "storage",
+    "enable-context-index": true,
+    "enablePredicateList": true,
+    "in-memory-literal-properties": true,
+    "enable-fts-index": true,
+    "ftsIndexPolicy": "never",
+    "cache-select": "sparse",
+    "cache-insert": "sparse",
+    "cache-delete": "sparse",
+    "cache-literal-language": "sparse",
+    "cache-literal-datatype": "sparse",
+    "cache-literal-language-datatype": "sparse",
+    "cache-uri": "sparse",
+    "cache-bnode": "sparse",
+    "cache-type": "sparse",
+    "cache-role": "sparse",
+    "cache-role-inverse": "sparse",
+    "cache-has-statement": "sparse",
+    "cache-is-consistent": "sparse",
+    "cache-size": "100M",
+    "tuple-index-memory": "64M",
+    "inference-use-query-optimization": true,
+    "defaultNS": "",
+    "imports": ""
+  }
+} 

@@ -1,0 +1,33 @@
+name: graphdb-dev
+resourceGroup: GRAPHDB_RG
+location: westus
+properties:
+  managedEnvironmentId: /subscriptions/dae16755-7832-4e6d-bae2-c49ff833042f/resourceGroups/GRAPHDB_RG/providers/Microsoft.App/managedEnvironments/graphdb-env
+  configuration:
+    ingress:
+      external: true
+      targetPort: 7200
+      transport: http
+      allowInsecure: true
+  template:
+    containers:
+      - name: graphdb
+        image: ontotext/graphdb:10.4.1
+        resources:
+          cpu: 0.5
+          memory: 1Gi
+        env:
+          - name: GDB_HEAP_SIZE
+            value: 1g
+          - name: GDB_JAVA_OPTS
+            value: "-Xms1g -Xmx1g"
+        volumeMounts:
+          - volumeName: graphdbshare
+            mountPath: /opt/graphdb/home
+    volumes:
+      - name: graphdbshare
+        storageType: azureFile
+        storageName: graphdbshare
+    scale:
+      minReplicas: 1
+      maxReplicas: 1 

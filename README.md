@@ -258,3 +258,98 @@ To ensure robust and DRY ontology management, follow this two-step validation pr
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+# GraphDB on Azure Container Apps
+
+This repository contains deployment scripts for running Ontotext GraphDB on Azure Container Apps (ACA) in a development environment.
+
+## Prerequisites
+
+- Azure CLI installed and configured
+- Azure subscription with permissions to create:
+  - Resource Groups
+  - Storage Accounts
+  - Container Apps
+  - Container Apps Environments
+
+## Deployment Steps
+
+1. Make the deployment script executable:
+   ```bash
+   chmod +x deploy-graphdb.sh
+   ```
+
+2. Run the deployment script:
+   ```bash
+   ./deploy-graphdb.sh
+   ```
+
+The script will:
+- Create a resource group
+- Set up Azure Files storage
+- Create a Container Apps environment
+- Deploy GraphDB with persistent storage
+- Configure HTTPS ingress
+- Set up basic authentication
+
+## Configuration Details
+
+### Storage
+- Azure Files is mounted at `/opt/graphdb/home`
+- Storage account uses Standard_LRS SKU
+- File share name: `graphdbdata`
+
+### Container App
+- Image: ontotext/graphdb:10.4.1
+- Port: 7200
+- Memory: 2GB heap size
+- Authentication: Basic auth
+- Default credentials:
+  - Username: admin
+  - Password: graphdb-dev-password
+
+### Network
+- External HTTPS ingress enabled
+- Custom domain name provided by Azure Container Apps
+- No VNet integration required
+
+## Accessing GraphDB
+
+Once deployed, you can access GraphDB through:
+1. Web interface: `https://<container-app-dns>`
+2. REST API: `https://<container-app-dns>/repositories`
+
+### Testing the Connection
+
+```bash
+curl -X GET https://<container-app-dns>/repositories -u admin:graphdb-dev-password
+```
+
+## Security Notes
+
+- Basic authentication is enabled by default
+- HTTPS is enforced
+- Storage account uses Azure's built-in encryption
+- Consider implementing IP restrictions if needed
+
+## Cleanup
+
+To remove all resources:
+```bash
+az group delete --name graphdb-dev-rg --yes
+```
+
+## Limitations
+
+- This setup is for development purposes only
+- Single instance deployment
+- No high availability
+- Basic authentication only
+- No custom domain configuration
+
+## Cost Optimization
+
+- Uses Standard_LRS storage for cost efficiency
+- Single instance deployment
+- No additional services (API Gateway, etc.)
+- Auto-scaling disabled

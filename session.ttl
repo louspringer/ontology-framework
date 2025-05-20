@@ -114,3 +114,8 @@ session:TaskShape a sh:NodeShape ;
         sh:maxCount 1 ;
     ] .
 
+:session20240610 a :Session ;
+    rdfs:comment "Confirmed VNet baldo-net-westus and subnets baldo-dev-subnet (VM) and aci-subnet (ACI) in BALDO-DEVBOX-RG. GraphDB ACI service is at 10.0.2.6:7200 in aci-subnet. Ontology updated. Next: deploy API gateway in same subnet for secure access." ;
+    :date "2024-06-10" ;
+    :relatedResource "infrastructure/azure/infrastructure.ttl" .
+

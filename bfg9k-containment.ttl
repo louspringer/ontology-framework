@@ -1,0 +1,60 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ex: <https://example.org/bfg9k#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spore: <https://example.org/spore#> .
+
+ex:BashShell a ex:Shell ;
+    rdfs:label "Bash Shell" ;
+    ex:preferredCommand "bash -c 'python3 tools/langchain_bfg9k_launcher.py \"{instruction}\"'" .
+
+ex:DualContainmentSpore a spore:SporePackage ;
+    rdfs:label "BFG9K Dual Containment Strategy" ;
+    spore:hasDescription "Encapsulates TTL-guided LangChain tooling for GraphDB/WASM adapter pattern." ;
+    spore:hasEntryPoint ex:LangChainSniperTool ;
+    spore:hasVersion "0.1.0" ;
+    spore:includesFile "ontology/bfg9k-containment.ttl",
+        "tools/bfg9k_langchain_launcher.py" .
+
+ex:DualContainmentStrategy a ex:ContainmentStrategy ;
+    dct:title "Dual RDF backend strategy for BFG9K (GraphDB + WASM)" ;
+    ex:hasConcern ex:ConfigContamination,
+        ex:DataDrift ;
+    ex:hasFallbackPolicy ex:AutoDetectFallback ;
+    ex:hasGuidanceFor ex:ClaudeCursorExecutionContext ;
+    ex:hasImplementationPlan ex:DualBackendAdapterPlan ;
+    ex:hasInterfaceContract ex:RDFBackendInterface ;
+    ex:isTriggeredBy ex:BrowserSelection,
+        ex:CLIFlag,
+        ex:EnvFlag .
+
+ex:PowerShellShell a ex:Shell ;
+    rdfs:label "PowerShell 7+" ;
+    ex:preferredCommand "pwsh -File tools/langchain_bfg9k_launcher.py \"{instruction}\"" .
+
+ex:ZshShell a ex:Shell ;
+    rdfs:label "Zsh Shell" ;
+    ex:preferredCommand "zsh -c 'python3 tools/langchain_bfg9k_launcher.py \"{instruction}\"'" .
+
+ex:AutoDetectFallback a ex:FallbackPolicy ;
+    rdfs:label "Autodetect fallback to WASM if GraphDB unreachable" ;
+    ex:hasPriority "WASM for authoring, GraphDB for prod" .
+
+ex:DualBackendAdapterPlan a ex:ImplementationPlan ;
+    rdfs:label "Adapter Plan" ;
+    ex:createsClass "GraphDBConnector",
+        "WASMRDFConnector" ;
+    ex:requiresFile "bfg9k_manager.py",
+        "bfg9k_prompt_helper.py" ;
+    ex:wiresInterface ex:RDFBackendInterface .
+
+ex:LangChainSniperTool a ex:BFG9KTool ;
+    rdfs:label "LangChain TTL Launcher" ;
+    ex:hasPath "tools/bfg9k_langchain_launcher.py" ;
+    ex:invokes "LangChain GPT-4o with TTL guidance" .
+
+ex:RDFBackendInterface a ex:InterfaceContract ;
+    rdfs:label "RDFBackend Interface" ;
+    ex:definesMethod "query(sparql: str) -> dict",
+        "update(ttl: str) -> bool",
+        "validate(ttl: str) -> dict" .
+

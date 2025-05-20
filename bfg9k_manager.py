@@ -10,6 +10,9 @@ import io
 from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 from pathlib import Path
+from abc import ABC, abstractmethod
+import wasmtime
+import tempfile
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -20,28 +23,223 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-class BFG9KManager:
-    def __init__(self, config_path="bfg9k_config.ttl"):
-        base_url = os.environ.get("GRAPHDB_URL")
-        if base_url:
-            parsed = urlparse(base_url)
-            self.host = parsed.hostname
-            self.port = parsed.port or 80
-            self.base_url = base_url.rstrip("/")
-        else:
-            print(f"[DEBUG] BFG9KManager loading config from: {config_path}")
-            self.config = Graph()
-            self.config.parse(config_path, format="turtle")
+class RDFBackend(ABC):
+    """Abstract base class for RDF backends implementing the interface contract."""
+    
+    @abstractmethod
+    def query(self, sparql: str) -> dict:
+        """Execute a SPARQL query and return results."""
+        pass
+    
+    @abstractmethod
+    def update(self, ttl: str) -> bool:
+        """Update the RDF store with new triples."""
+        pass
+    
+    @abstractmethod
+    def validate(self, ttl: str) -> dict:
+        """Validate RDF data against SHACL constraints."""
+        pass
+
+class WASMRDFConnector(RDFBackend):
+    """WASM-based RDF backend implementation."""
+    
+    def __init__(self, wasm_path="tools/bfg9k_rdf_engine.wasm"):
+        self.engine = wasmtime.Engine()
+        self.store = wasmtime.Store(self.engine)
+        self.module = wasmtime.Module.from_file(self.engine, wasm_path)
+        self.instance = wasmtime.Instance(self.store, self.module, [])
+        self.memory = self.instance.exports(self.store)["memory"]
+        
+    def query(self, sparql: str) -> dict:
+        """Execute SPARQL query using WASM engine."""
+        try:
+            # Allocate memory for query string
+            query_bytes = sparql.encode('utf-8')
+            query_ptr = self.instance.exports(self.store)["allocate"](self.store, len(query_bytes))
             
-            # Get server configuration
-            server_config = self.config.value(predicate=RDF.type, object=BFG9K.ServerConfiguration)
-            self.host = str(self.config.value(server_config, BFG9K.host))
-            self.port = int(self.config.value(server_config, BFG9K.port))
-            self.base_url = f"http://{self.host}:{self.port}"
-        self.repository = os.environ.get("GRAPHDB_REPOSITORY", "ontologyframework")
-        self.guidance_endpoint = f"{self.base_url}/repositories/{self.repository}/guidance#"
+            # Write query to WASM memory
+            memory = self.memory.data_ptr(self.store)
+            memory[query_ptr:query_ptr + len(query_bytes)] = query_bytes
+            
+            # Execute query
+            result_ptr = self.instance.exports(self.store)["execute_query"](self.store, query_ptr, len(query_bytes))
+            
+            # Read result from WASM memory
+            result_len = self.instance.exports(self.store)["get_result_length"](self.store, result_ptr)
+            result_bytes = memory[result_ptr:result_ptr + result_len]
+            result = json.loads(result_bytes.tobytes().decode('utf-8'))
+            
+            # Free allocated memory
+            self.instance.exports(self.store)["deallocate"](self.store, query_ptr)
+            self.instance.exports(self.store)["deallocate"](self.store, result_ptr)
+            
+            return result
+        except Exception as e:
+            logger.error(f"WASM query execution failed: {e}")
+            return {"error": str(e)}
+    
+    def update(self, ttl: str) -> bool:
+        """Update RDF store using WASM engine."""
+        try:
+            # Allocate memory for TTL string
+            ttl_bytes = ttl.encode('utf-8')
+            ttl_ptr = self.instance.exports(self.store)["allocate"](self.store, len(ttl_bytes))
+            
+            # Write TTL to WASM memory
+            memory = self.memory.data_ptr(self.store)
+            memory[ttl_ptr:ttl_ptr + len(ttl_bytes)] = ttl_bytes
+            
+            # Execute update
+            success = self.instance.exports(self.store)["execute_update"](self.store, ttl_ptr, len(ttl_bytes))
+            
+            # Free allocated memory
+            self.instance.exports(self.store)["deallocate"](self.store, ttl_ptr)
+            
+            return bool(success)
+        except Exception as e:
+            logger.error(f"WASM update execution failed: {e}")
+            return False
+    
+    def validate(self, ttl: str) -> dict:
+        """Validate RDF data using WASM engine."""
+        try:
+            # Allocate memory for TTL string
+            ttl_bytes = ttl.encode('utf-8')
+            ttl_ptr = self.instance.exports(self.store)["allocate"](self.store, len(ttl_bytes))
+            
+            # Write TTL to WASM memory
+            memory = self.memory.data_ptr(self.store)
+            memory[ttl_ptr:ttl_ptr + len(ttl_bytes)] = ttl_bytes
+            
+            # Execute validation
+            result_ptr = self.instance.exports(self.store)["execute_validation"](self.store, ttl_ptr, len(ttl_bytes))
+            
+            # Read result from WASM memory
+            result_len = self.instance.exports(self.store)["get_result_length"](self.store, result_ptr)
+            result_bytes = memory[result_ptr:result_ptr + result_len]
+            result = json.loads(result_bytes.tobytes().decode('utf-8'))
+            
+            # Free allocated memory
+            self.instance.exports(self.store)["deallocate"](self.store, ttl_ptr)
+            self.instance.exports(self.store)["deallocate"](self.store, result_ptr)
+            
+            return result
+        except Exception as e:
+            logger.error(f"WASM validation execution failed: {e}")
+            return {"error": str(e)}
+
+class GraphDBConnector(RDFBackend):
+    """GraphDB-based RDF backend implementation."""
+    
+    def __init__(self, base_url, repository, username=None, password=None):
+        self.base_url = base_url.rstrip("/")
+        self.repository = repository
+        self.auth = HTTPBasicAuth(username, password) if username and password else None
+    
+    def query(self, sparql: str) -> dict:
+        """Execute SPARQL query using GraphDB."""
+        try:
+            response = requests.post(
+                f"{self.base_url}/repositories/{self.repository}/statements",
+                data={"query": sparql},
+                headers={"Accept": "application/json"},
+                auth=self.auth
+            )
+            response.raise_for_status()
+            return response.json() if response.text.strip() else {}
+        except Exception as e:
+            logger.error(f"GraphDB query execution failed: {e}")
+            return {"error": str(e)}
+    
+    def update(self, ttl: str) -> bool:
+        """Update RDF store using GraphDB."""
+        try:
+            response = requests.post(
+                f"{self.base_url}/repositories/{self.repository}/statements",
+                headers={"Content-Type": "application/x-turtle"},
+                data=ttl.encode("utf-8"),
+                auth=self.auth
+            )
+            response.raise_for_status()
+            return True
+        except Exception as e:
+            logger.error(f"GraphDB update execution failed: {e}")
+            return False
+    
+    def validate(self, ttl: str) -> dict:
+        """Validate RDF data using GraphDB's SHACL validation."""
+        try:
+            # Create temporary file for TTL content
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.ttl', delete=False) as temp:
+                temp.write(ttl)
+                temp_path = temp.name
+            
+            # Use pyshacl for validation
+            g = Graph()
+            g.parse(temp_path, format="turtle")
+            conforms, results_graph, results_text = validate(g, inference='rdfs')
+            
+            # Clean up temporary file
+            os.unlink(temp_path)
+            
+            return {
+                "conforms": conforms,
+                "results": results_text
+            }
+        except Exception as e:
+            logger.error(f"GraphDB validation execution failed: {e}")
+            return {"error": str(e)}
+
+class BFG9KManager:
+    def __init__(self, config_path="bfg9k_config.ttl", use_wasm=False):
+        self.use_wasm = use_wasm
+        
+        if use_wasm:
+            self.backend = WASMRDFConnector()
+        else:
+            base_url = os.environ.get("GRAPHDB_URL")
+            if base_url:
+                parsed = urlparse(base_url)
+                self.host = parsed.hostname
+                self.port = parsed.port or 80
+                self.base_url = base_url.rstrip("/")
+            else:
+                print(f"[DEBUG] BFG9KManager loading config from: {config_path}")
+                self.config = Graph()
+                self.config.parse(config_path, format="turtle")
+                
+                # Get server configuration
+                server_config = self.config.value(predicate=RDF.type, object=BFG9K.ServerConfiguration)
+                self.host = str(self.config.value(server_config, BFG9K.host))
+                self.port = int(self.config.value(server_config, BFG9K.port))
+                self.base_url = f"http://{self.host}:{self.port}"
+            
+            self.repository = os.environ.get("GRAPHDB_REPOSITORY", "ontologyframework")
+            self.backend = GraphDBConnector(
+                self.base_url,
+                self.repository,
+                os.environ.get("GRAPHDB_USERNAME"),
+                os.environ.get("GRAPHDB_PASSWORD")
+            )
+    
+    def query_ontology(self, query):
+        """Query the ontology using the configured backend."""
+        return self.backend.query(query)
+    
+    def update_ontology(self, ontology_path):
+        """Update ontology using the configured backend."""
+        with open(ontology_path, "r") as f:
+            ttl_content = f.read()
+        return self.backend.update(ttl_content)
     
     def validate_ontology(self, ontology_path):
+        """Validate ontology using the configured backend."""
+        with open(ontology_path, "r") as f:
+            ttl_content = f.read()
+        return self.backend.validate(ttl_content)
+    
+    def validate_ontology_locally(self, ontology_path):
         """Validate ontology locally using pyshacl and check isomorphism. Also run OWLReady2 reasoning, with auto-correction if needed."""
         # Load the ontology
         g = Graph()
@@ -84,67 +282,6 @@ class BFG9KManager:
             "owlready2_consistent": owlready2_consistent,
             "owlready2_inconsistencies": owlready2_inconsistencies
         }
-    
-    def query_ontology(self, query):
-        """Query the ontology using SPARQL."""
-        try:
-            response = requests.post(
-                f"{self.base_url}/repositories/{self.repository}/statements",
-                data={"query": query},
-                headers={"Accept": "application/json"}
-            )
-            response.raise_for_status()
-            
-            if not response.text.strip():
-                logger.warning("Empty response received from GraphDB")
-                return {}
-            
-            try:
-                return response.json()
-            except requests.exceptions.JSONDecodeError as e:
-                logger.error(f"Failed to decode JSON response: {e}")
-                logger.debug(f"Response content: {response.text}")
-                return {}
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to query GraphDB: {e}")
-            return {}
-    
-    def update_ontology(self, ontology_path):
-        """Update ontology using GraphDB server (not /update endpoint)"""
-        repo = os.environ.get("GRAPHDB_REPOSITORY", "guidance")
-        username = os.environ.get("GRAPHDB_USERNAME")
-        password = os.environ.get("GRAPHDB_PASSWORD")
-        base_uri = os.environ.get("GRAPHDB_BASE_URI", "https://raw.githubusercontent.com/louspringer/ontology-framework/main")
-        if not username or not password:
-            raise RuntimeError("GRAPHDB_USERNAME and GRAPHDB_PASSWORD must be set in environment.")
-        url = f"{self.base_url}/repositories/{repo}/statements"
-        headers = {"Content-Type": "application/x-turtle"}
-        logger.info(f"[update_ontology] POST {url} with file {ontology_path}")
-        # Parse and serialize with base URI
-        with open(ontology_path, "r") as f:
-            raw_ttl = f.read()
-        logger.debug(f"[update_ontology] Raw Turtle from file (first 500 chars): {raw_ttl[:500]}")
-        g = Graph()
-        g.parse(ontology_path, format="turtle", publicID=base_uri)
-        logger.debug(f"[update_ontology] Parsed graph has {len(g)} triples")
-        data = g.serialize(format="turtle", base=base_uri)
-        logger.debug(f"[update_ontology] Serialized Turtle (first 500 chars): {data[:500]}")
-        try:
-            response = requests.post(url, headers=headers, data=data.encode("utf-8"), auth=HTTPBasicAuth(username, password))
-            logger.info(f"[update_ontology] Response status: {response.status_code}")
-            logger.debug(f"[update_ontology] Response headers: {response.headers}")
-            logger.debug(f"[update_ontology] Response text: {response.text[:500]}")
-            if response.headers.get("Content-Type", "").startswith("application/json"):
-                return response.json()
-            elif response.status_code == 204:
-                return {"status": "success", "code": 204}
-            else:
-                return {"error": "Non-JSON response", "raw_response": response.text, "status_code": response.status_code}
-        except Exception as e:
-            logger.error(f"[update_ontology] Exception: {e}")
-            logger.error(f"[update_ontology] Raw response: {getattr(response, 'text', '')}")
-            return {"error": str(e), "raw_response": getattr(response, 'text', ''), "status_code": getattr(response, 'status_code', None)}
     
     def get_governance_rules(self):
         """Get governance rules from BFG9K server"""

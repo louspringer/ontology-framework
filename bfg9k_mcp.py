@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+import requests
 
 # Add src to Python path before other imports
 project_root = Path(__file__).parent.absolute()
@@ -76,6 +77,19 @@ mcp = FastMCP(
     session_class=PatchedServerSession
 )
 logger.info("FastMCP instance created successfully")
+
+# After loading .env and before creating BFG9KManager
+GRAPHDB_URL = os.environ.get("GRAPHDB_URL", "http://localhost:7200")
+def is_graphdb_available(base_url):
+    try:
+        resp = requests.get(f"{base_url}/rest/cluster", timeout=3)
+        return resp.status_code == 200
+    except Exception:
+        return False
+
+graphdb_available = is_graphdb_available(GRAPHDB_URL)
+if not graphdb_available:
+    logger.warning(f"GraphDB is not available at {GRAPHDB_URL}. Only local validation will be performed. Full validation, sync, and SPARQL queries are disabled.")
 
 # Create BFG9KManager instance
 logger.info(f"Current working directory: {os.getcwd()}")

@@ -410,3 +410,25 @@ inf:VirtualMachine a owl:Class ;
     rdfs:comment "Azure virtual machine instance" ;
     owl:versionInfo "1.0.0" .
 
+# Baldo Devbox VNet and Subnets
+inf:vnet-baldo-net-westus a inf:VirtualNetwork ;
+    inf:hasName "baldo-net-westus" ;
+    inf:hasAddressSpace "10.0.0.0/16" ;
+    rdfs:comment "VNet for baldo-devbox and ACI services in BALDO-DEVBOX-RG." .
+
+inf:subnet-baldo-dev-subnet a inf:Subnet ;
+    inf:hasName "baldo-dev-subnet" ;
+    inf:hasAddressPrefix "10.0.0.0/24" ;
+    rdfs:comment "Subnet for baldo-devbox VM in baldo-net-westus." .
+
+inf:subnet-aci-subnet a inf:Subnet ;
+    inf:hasName "aci-subnet" ;
+    inf:hasAddressPrefix "10.0.2.0/24" ;
+    rdfs:comment "Subnet for Azure Container Instances (ACI) in baldo-net-westus." .
+
+# GraphDB ACI Service
+inf:graphdb-aci-10-0-2-6 a inf:NetworkInterface ;
+    inf:hasIPAddress "10.0.2.6" ;
+    inf:hasSubnet inf:subnet-aci-subnet ;
+    rdfs:comment "GraphDB server running as ACI at 10.0.2.6:7200 in aci-subnet." .
+
