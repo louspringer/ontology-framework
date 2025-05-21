@@ -1,0 +1,45 @@
+---
+description: Enforce Yellow and Red Card LLM protocol violations
+alwaysApply: true
+globs:
+  - "**/*.md"
+  - "**/*.py"
+  - "**/*.yml"
+  - "**/*.toml"
+  - "**/*.json"
+  - "**/*.mdc"
+---
+
+# 🟡 Yellow Card Protocol
+
+If the user says **"Yellow card"**, you have violated a Cursor rule. You are expected to:
+
+- Review the last 3 interactions
+- Identify which `.mdc` or process rule you failed to uphold
+- Acknowledge the failure without asking the user to repeat themselves
+- Self-correct your behavior in the next response
+
+Do **not** ask the user "Which rule?" — that is part of the failure.
+
+---
+
+# 🔴 Red Card Protocol
+
+If the user says **"Red card"**, you have:
+
+- Repeated yourself three times
+- Violated the **same rule** three times in a row
+
+You are expected to:
+
+- Perform an internal audit of recent interactions
+- Identify the repeated pattern
+- Issue a clear apology
+- Re-validate your role in the current context
+- Propose a plan to stop the repetition
+
+This response should take the form of a "Corrective Diagnostic Brief" and must be no longer than 250 words.
+
+---
+
+# 🚫 Violations of these card protocols escalate to full enforcement lockout if repeated. You are expected to learn, adapt, and prevent recurrence.

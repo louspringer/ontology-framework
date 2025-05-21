@@ -1,0 +1,116 @@
+---
+description: add package to project
+globs:
+alwaysApply: false
+---
+
+# Package Management Rules
+
+## Overview
+
+This rule enforces standardized package management practices for the Boldo Ensemble project. It must be followed whenever a package is added by either the AI or the user to ensure consistency and correctness.
+
+## Package Management Hierarchy
+
+1. **Primary Package Manager: Conda**
+   - All primary dependencies MUST be declared in `environment.yml`
+   - Use conda-forge channel as primary source
+   - Maintain Python version constraints
+   - Include pip dependencies section for packages not available in conda
+
+2. **Secondary Package Manager: PyProject.toml**
+   - Development dependencies MUST be declared in `[project.optional-dependencies]`
+   - Maintain version constraints consistent with environment.yml
+   - Use semantic versioning for all dependencies
+
+## Package Addition Procedure
+
+1. **For Primary Dependencies**
+
+   ```bash
+   # 1. Add to environment.yml
+   conda install <package> --dry-run  # Verify availability
+   # 2. Add to environment.yml dependencies section
+   # 3. Update environment
+   conda env update -f environment.yml
+   ```
+
+2. **For Development Dependencies**
+
+   ```bash
+   # 1. Add to pyproject.toml [project.optional-dependencies]
+   # 2. Update development environment
+   pip install -e ".[dev]"
+   ```
+
+## Validation Rules
+
+1. **Environment Consistency**
+   - All packages in environment.yml MUST have corresponding entries in pyproject.toml
+   - Version constraints MUST be consistent between files
+   - Python version constraints MUST match
+
+2. **Package Categories**
+   - Core dependencies: environment.yml
+   - Development tools: pyproject.toml [project.optional-dependencies]
+   - Jupyter/Notebook tools: Both files (as development dependencies)
+
+3. **Version Management**
+   - Use semantic versioning
+   - Pin major versions for stability
+   - Document version constraints in both files
+
+## Enforcement
+
+This rule is enforced through:
+
+1. Pre-commit hooks
+2. CI/CD validation
+3. IDE integration checks
+
+## Example Configurations
+
+### environment.yml
+
+```yaml
+name: boldo-ensemble
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python="3.10.17"
+  - pip
+  - graphviz
+  - jupyter  # Development tool
+  - notebook  # Development tool
+  - ipykernel  # Development tool
+  - pip:
+    - -e ../ontology-framework
+    - rdflib>=7.0.0
+    # ... other pip dependencies
+```
+
+### pyproject.toml
+
+```toml
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+    "jupyter>=1.0.0",  # Development tool
+    "notebook>=7.0.0",  # Development tool
+    "ipykernel>=6.0.0",  # Development tool
+]
+```
+
+## Compliance Checklist
+
+- [ ] Package added to correct file based on type
+- [ ] Version constraints consistent between files
+- [ ] Python version constraints maintained
+- [ ] Development dependencies properly categorized
+- [ ] Environment updated after changes
+- [ ] Changes documented in commit message

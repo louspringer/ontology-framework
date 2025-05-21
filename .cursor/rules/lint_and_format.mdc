@@ -1,0 +1,22 @@
+---
+description: Enforce Python linting and formatting
+globs:
+  - "src/**/*.py"
+  - "tests/**/*.py"
+  - "tools/**/*.py"
+alwaysApply: true
+---
+
+# Lint and Format
+
+All code must conform to the following:
+
+- `ruff check .`
+- `black --check .`
+
+## To fix:
+
+```bash
+ruff check . --fix
+black .
+```

@@ -1,0 +1,19 @@
+---
+description: Safely remove the Conda environment
+alwaysApply: false
+---
+
+# Conda Cleanup Protocol
+
+This rule ensures the Conda environment `boldo-ensemble` is safely removed without being active.
+
+## Steps
+
+```bash
+if [[ "$CONDA_DEFAULT_ENV" == "boldo-ensemble" ]]; then
+  echo "⚠️ Cannot delete active environment. Switching to base..."
+  conda deactivate
+fi
+
+conda remove --name boldo-ensemble --all -y
+```

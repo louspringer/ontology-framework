@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# project_setup.mdc
+meta:
+  name: Project Setup
+  description: >
+    Standardizes the project setup process for new contributors and environments. Ensures consistency and clarity for both humans and AI agents.
+
+rules:
+  - when: user.requests_setup
+    then:
+      - Run the canonical setup script: ./scripts/setup.sh
+      - Ensure the conda environment is activated (e.g., conda activate boldo-ensemble)
+      - Validate the conda environment using the validation script
+      - Check for required external tools (PlantUML, Graphviz, ImageMagick) as documented in the project model
+      - Run ontology validation (e.g., SHACL or isomorphism checks)
+      - Report any setup failures or warnings
+  - when: file.created
+    match: scripts/setup.sh
+    then:
+      hint: >
+        Ensure the setup script includes steps for conda environment creation, dependency installation, pre-commit hooks, and ontology file initialization.
+  - when: file.created
+    match: ontologies/*.ttl
+    then:
+      hint: >
+        Ensure all ontology files are created and edited using semantic web tools, not text editors.

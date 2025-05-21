@@ -1,0 +1,124 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Conda Environment Validation Rule
+
+## Purpose
+This rule ensures that the `boldo-ensemble` conda environment is properly defined and consistent across the project.
+
+## Validation Criteria
+
+### Environment File
+- `environment.yml` must exist in the project root
+- Must specify `name: boldo-ensemble`
+- Must include required channels:
+  - conda-forge
+  - defaults
+- Must specify Python version constraint: `3.10`
+- Must include core dependencies:
+  - pip
+  - graphviz
+  - jupyter
+
+### Package Management
+- All pip packages must be listed under the `pip:` section
+- Package versions must be consistent with `pyproject.toml`
+- No duplicate package entries
+- No conflicting version constraints
+
+### Validation Script
+```python
+#!/usr/bin/env python
+"""Validate conda environment configuration."""
+import sys
+import yaml
+from pathlib import Path
+
+def validate_environment_yml() -> tuple[bool, list[str]]:
+    """Validate environment.yml file."""
+    errors = []
+
+    # Check if file exists
+    env_file = Path("environment.yml")
+    if not env_file.exists():
+        return False, ["environment.yml not found"]
+
+    # Load and validate content
+    with open(env_file) as f:
+        try:
+            env_data = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            return False, [f"Invalid YAML: {str(e)}"]
+
+    # Check name
+    if env_data.get("name") != "boldo-ensemble":
+        errors.append("Environment name must be 'boldo-ensemble'")
+
+    # Check channels
+    required_channels = {"conda-forge", "defaults"}
+    if not all(channel in env_data.get("channels", []) for channel in required_channels):
+        errors.append("Missing required channels: conda-forge, defaults")
+
+    # Check Python version
+    python_dep = next((dep for dep in env_data.get("dependencies", [])
+                      if isinstance(dep, str) and dep.startswith("python")), None)
+    if not python_dep or ">=3.10" not in python_dep or "<3.12" not in python_dep:
+        errors.append("Python version must be >=3.10,<3.12")
+
+    # Check core dependencies
+    core_deps = {"pip", "graphviz", "jupyter"}
+    deps = {dep.split("=")[0] if "=" in dep else dep
+            for dep in env_data.get("dependencies", [])
+            if isinstance(dep, str)}
+    missing_deps = core_deps - deps
+    if missing_deps:
+        errors.append(f"Missing core dependencies: {', '.join(missing_deps)}")
+
+    # Check pip section
+    pip_deps = []
+    for dep in env_data.get("dependencies", []):
+        if isinstance(dep, dict) and "pip" in dep:
+            pip_deps.extend(dep["pip"])
+
+    if not pip_deps:
+        errors.append("No pip dependencies found")
+
+    return len(errors) == 0, errors
+
+def main() -> int:
+    """Main validation function."""
+    is_valid, errors = validate_environment_yml()
+
+    if not is_valid:
+        print("Conda environment validation failed:")
+        for error in errors:
+            print(f"- {error}")
+        return 1
+
+    print("Conda environment validation passed!")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+## Usage
+1. Save the validation script as `scripts/validate_conda_environment.py`
+2. Make it executable: `chmod +x scripts/validate_conda_environment.py`
+3. Run validation: `./scripts/validate_conda_environment.py`
+
+## Integration
+- Add to CI/CD pipeline
+- Run before environment updates
+- Run as pre-commit hook
+
+## Dependencies
+- PyYAML
+- Python 3.10+
+
+## Notes
+- Validation ensures consistency between `environment.yml` and `pyproject.toml`
+- Maintains project standards for conda environment configuration
+- Prevents common configuration errors

@@ -1,0 +1,91 @@
+---
+description:
+globs: **/*.ipynb,**/*.py
+alwaysApply: false
+---
+# enforce_project_structure.mdc
+meta:
+  name: Enforce Project Structure
+  description: >
+    Enforces separation of core logic, tools, configs, and exploratory notebooks.
+    Helps maintain clean architecture across the ontology-MCP-LLM workspace.
+
+rules:
+  - when: file.created
+    match: "**/*.py"
+    unless:
+      - path: "src/**"
+      - path: "tools/**"
+      - path: "tests/**"
+    then:
+      error: >
+        Python modules should reside in `src/`, `tools/`, or `tests/`. Avoid placing .py files in the root or unrelated directories.
+
+  - when: file.created
+    match: **/*_tool.py
+    unless:
+      - path: "tools/**"
+    then:
+      error: >
+        Tools must be placed under the `tools/` directory for clarity and separation from core logic.
+
+  - when: file.created
+    match: "**/*.ipynb"
+    unless:
+      - path: "notebooks/**"
+    then:
+      error: >
+        Jupyter notebooks must be placed under the `notebooks/` directory for clarity and separation from core logic.
+
+  - when: file.created
+    match: "**/*.ttl"
+    unless:
+      - path: "ontologies/**"
+      - path: "configs/**"
+      - path: "configs/prompts/**"
+      - path: "etc/**"
+    then:
+      error: >
+        Turtle config and prompts must be stored under `ontologies/`, `configs/`, `configs/prompts/`, or `etc/`.
+
+  - when: file.created
+    match: "**/*.ttl"
+    then:
+      error: >
+        Turtle (.ttl) files must be semantically isomorphic after round-trip serialization with a semantic web tool (e.g., RDFlib).
+        Use the provided check_ttl_isomorphism.py tool to validate before committing.
+
+  - when: file.modified
+    match: "**/*.ttl"
+    then:
+      error: >
+        Turtle (.ttl) files must be edited using semantic web tools (BFG9K, RDFlib, SPARQL, or PySHACL).
+        Direct text editing is not allowed to maintain semantic integrity.
+        Use the appropriate tool for your task:
+        - BFG9K for ontology management
+        - RDFlib for programmatic manipulation
+        - SPARQL for querying
+        - PySHACL for validation
+
+  - when: file.created
+    match: "**/cli/*.py"
+    unless:
+      - path: "tools/cli/**"
+    then:
+      error: >
+        CLI command scripts belong in `tools/cli/`.
+
+  - when: file.created
+    match: "requirements.txt"
+    unless:
+      - path: "tools/**"
+      - path: "etc/**"
+    then:
+      error: >
+        Do not place `requirements.txt` in the project root. Use `environment.yml` for dependency management. If you need a requirements file, put it in `tools/` or `etc/` and document its purpose.
+
+  - when: file.modified
+    match: "**"
+    then:
+      hint: >
+        Consider running `guidance validate` to ensure that config, prompts, and model files are consistent and validated.

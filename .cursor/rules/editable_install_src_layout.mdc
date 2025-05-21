@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# editable_install_src_layout.mdc
+meta:
+  name: Editable Install for src Layout
+  description: >
+    Ensures Python packages using a src/ layout are always importable and testable in development mode. Provides a canonical, tested process for editable installs, compatible with all modern Python tooling.
+
+rules:
+  - when: project.uses_src_layout
+    then:
+      - Ensure all core Python packages are under src/ (e.g., src/boldo_ensemble/)
+      - Add a minimal setup.py at the project root with:
+        '''python
+        from setuptools import setup, find_packages
+        setup(
+            name="<project-name>",
+            version="<version>",
+            package_dir={"": "src"},
+            packages=find_packages(where="src"),
+        )
+        '''
+      - Install the package in editable mode with:
+        pip install -e .
+      - Validate the install with:
+        python -c "import <your_package>"
+      - Run the test suite with:
+        pytest tests/ -v
+      - If any step fails, iterate until import and tests succeed.
+      - Document this process for all contributors.
+  - when: onboarding
+    then:
+      hint: >
+        This is the canonical, validated process for src/ layout Python projects. Do not rely solely on pyproject.toml for editable installs with src/ layout; always include setup.py for maximum compatibility.

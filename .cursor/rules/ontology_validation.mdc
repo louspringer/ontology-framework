@@ -1,0 +1,19 @@
+---
+description: Validate ontologies and SHACL rules
+globs:
+  - "ontologies/**/*.ttl"
+  - "**/*.shapes.ttl"
+alwaysApply: false
+---
+
+# Ontology Validation
+
+Run ontology validators against RDF and SHACL documents.
+
+## Example
+
+```bash
+python scripts/validate_ontologies.py
+```
+
+Ensure all `.ttl` files are parsable and conform to expected vocabularies.

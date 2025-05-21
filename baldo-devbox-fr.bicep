@@ -1,0 +1,86 @@
+param virtualMachines_baldo_devbox_fr_name string = 'baldo-devbox-fr'
+param disks_baldo_devbox_fr_OsDisk_1_4e84a2bba3844211a587ef4eb877dc76_externalid string = '/subscriptions/dae16755-7832-4e6d-bae2-c49ff833042f/resourceGroups/baldo-devbox-rg/providers/Microsoft.Compute/disks/baldo-devbox-fr_OsDisk_1_4e84a2bba3844211a587ef4eb877dc76'
+param networkInterfaces_baldo_devbox_fr896_externalid string = '/subscriptions/dae16755-7832-4e6d-bae2-c49ff833042f/resourceGroups/baldo-devbox-rg/providers/Microsoft.Network/networkInterfaces/baldo-devbox-fr896'
+
+resource virtualMachines_baldo_devbox_fr_name_resource 'Microsoft.Compute/virtualMachines@2024-11-01' = {
+  name: virtualMachines_baldo_devbox_fr_name
+  location: 'northeurope'
+  properties: {
+    hardwareProfile: {
+      vmSize: 'Standard_D4s_v3'
+    }
+    additionalCapabilities: {
+      hibernationEnabled: false
+    }
+    storageProfile: {
+      imageReference: {
+        publisher: 'canonical'
+        offer: '0001-com-ubuntu-server-jammy'
+        sku: '22_04-lts-gen2'
+        version: 'latest'
+      }
+      osDisk: {
+        osType: 'Linux'
+        name: '${virtualMachines_baldo_devbox_fr_name}_OsDisk_1_4e84a2bba3844211a587ef4eb877dc76'
+        createOption: 'FromImage'
+        caching: 'ReadWrite'
+        managedDisk: {
+          id: disks_baldo_devbox_fr_OsDisk_1_4e84a2bba3844211a587ef4eb877dc76_externalid
+        }
+        deleteOption: 'Delete'
+      }
+      dataDisks: []
+      diskControllerType: 'SCSI'
+    }
+    osProfile: {
+      computerName: virtualMachines_baldo_devbox_fr_name
+      adminUsername: 'lou'
+      linuxConfiguration: {
+        disablePasswordAuthentication: true
+        ssh: {
+          publicKeys: [
+            {
+              path: '/home/lou/.ssh/authorized_keys'
+              keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCytpPtRNzLIW0rAuGmAuR35Lpd6wldTDwRIqxEPzUPLYSE7B+dhftpBsabGfTNRxTt7kd3m2OwrTQmAv4Yqg9nmON4u+4fhSjr88utpyDITvznQdgj/mAkd/M69I6u4Eoa81hJR0bw6x/GUviCT8a6t8acrBaybvbJuxYdPU34dBfWHPVFOshMP3zDFuitCrb+PKsDeHtiIM9LUReA5OCnITMGInhxw2eIXMgC1W5efOLSr+yrdGDk0lgiFCmtI4EB96goVOMejVRd2INhOfj7+Vwn8upAS22kvDvwXASrNuHFUzV2+yhBw0OFhKvdFSj8EX02rXV7Mh9icsY7NcoO/WC5igAvL3skrCDqMnO/2lghyjUJZH9iadgQRb1CSdkgl2x8LxoykACB0/AkkGeWhUpe9ngSlZqcA1hOfApWvfdwTN+EJSyHIpjm0pUsORAmq3TMxyUZvyDk9QR6C7GayY/OvYEBXy+x0QGxDb4iJ7sqJJSDrJf9MRfB1I08iNU= generated-by-azure'
+            }
+          ]
+        }
+        provisionVMAgent: true
+        patchSettings: {
+          patchMode: 'ImageDefault'
+          assessmentMode: 'ImageDefault'
+        }
+      }
+      secrets: []
+      allowExtensionOperations: true
+      requireGuestProvisionSignal: true
+    }
+    securityProfile: {
+      uefiSettings: {
+        secureBootEnabled: true
+        vTpmEnabled: true
+      }
+      securityType: 'TrustedLaunch'
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: networkInterfaces_baldo_devbox_fr896_externalid
+          properties: {
+            deleteOption: 'Delete'
+          }
+        }
+      ]
+    }
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: true
+      }
+    }
+    priority: 'Spot'
+    evictionPolicy: 'Deallocate'
+    billingProfile: {
+      maxPrice: json('-1')
+    }
+  }
+}

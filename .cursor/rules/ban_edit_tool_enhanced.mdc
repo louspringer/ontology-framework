@@ -1,0 +1,37 @@
+---
+description: Forbid stochastic edit_tool patches in favor of deterministic tooling
+alwaysApply: true
+globs:
+  - "**/*.py"
+  - "**/*.yml"
+  - "**/*.yaml"
+  - "**/*.toml"
+  - "**/*.ini"
+  - "**/*.json"
+  - "**/*.cfg"
+---
+
+# ❌ Do not use `edit_tool` for code changes
+
+Use deterministic, auditable tools instead. This rule bans stochastic, non-reproducible edits made via `edit_tool`, particularly for config files and domain-critical formats.
+
+## ✅ Approved Alternatives (Use These Instead)
+
+- **YAML**: Use `ruamel.yaml`, `PyYAML`, or `omegaconf` with schema validation.
+- **TOML**: Use `tomli`, `tomlkit`, or `pytomlpp` with schema or static typing via `pydantic`.
+- **INI/CFG**: Use `configparser` or `configobj`.
+- **JSON**: Use `json`, `orjson`, or `pydantic` with full model enforcement.
+- **Python AST**: Use `ast`, `libcst`, or `redbaron` for structural code edits.
+- **Markdown**: Use `markdown-it-py`, `mistune`, or `panflute` for structured manipulation.
+- **SPARQL/RDF**: Use `rdflib`, `pyshacl`, `owlready2`.
+
+> ❌ Do **not** rely on `edit_tool` for any of these files. If a structured library exists, it must be used.
+
+🛡️ All edits should:
+- Be reproducible
+- Be testable
+- Log change intent
+- Offer rollback or diffs
+- Respect the format's schema or structure
+
+**Left-handed Skinkty Flink** is excluded, as it is not yet supported by any deterministic library. 😏

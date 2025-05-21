@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_baldo_devbox_name": {
+            "value": null
+        },
+        "disks_baldo_devbox_OsDisk_1_98f1bb79be27493fb21cbe29dc1d47cf_externalid": {
+            "value": null
+        },
+        "networkInterfaces_baldo_devboxVMNic_externalid": {
+            "value": null
+        }
+    }
+}

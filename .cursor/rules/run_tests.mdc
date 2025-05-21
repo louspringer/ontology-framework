@@ -1,0 +1,55 @@
+s---
+description:
+globs:
+alwaysApply: false
+---
+s---
+description:
+globs:
+alwaysApply: false
+---
+
+# run_tests.mdc
+
+meta:
+  name: Run Tests
+  description: >
+    Standardizes and automates test discovery and execution. Ensures reliability, repeatability, and clarity for both humans and AI agents. Integrates environment management, coverage, and CI/CD best practices.
+
+rules:
+
+- when: user.requests_test_run
+    then:
+  - Ensure the 'boldo-ensemble' conda environment is activated:
+      - If not, activate with: conda activate boldo-ensemble
+  - If scripts/run_tests.sh exists, prefer: ./scripts/run_tests.sh
+  - Else if Makefile has a 'test' target, prefer: make test
+  - Else, run: python -m pytest tests/ -v
+  - If pytest-cov is installed, add coverage: python -m pytest --cov=src tests/ -v
+  - Report all results and any failures clearly, including output logs for failed tests
+  - If tests fail, suggest next steps (e.g., review logs, re-run with -s for debug output)
+  - Recommend running this rule in CI/CD pipelines for every commit and PR
+  - If additional test directories or frameworks are added, update this rule accordingly
+
+- when: file.created
+    match: tests/**/*.py
+    then:
+      hint: >
+        Place all test modules in the 'tests/' directory. Name test files as 'test_*.py'.
+
+- when: test.environment.setup
+    then:
+  - Use ./scripts/test_env_setup.sh for test environment management
+  - The script will:
+        1. Run tests in current environment
+        2. Deactivate and remove the environment
+        3. Create a fresh environment
+        4. Run tests again
+  - Note: Environment must be deactivated before removal
+  - Verify environment removal before creating new one
+
+- when: ci_cd.pipeline
+    then:
+  - Always invoke the test run rule as part of the CI/CD process
+  - Fail the pipeline if any test fails
+  - Archive test logs and coverage reports as artifacts

@@ -1,0 +1,20 @@
+---
+description: Check for essential project metadata and configs
+globs:
+  - "README.md"
+  - "LICENSE"
+  - ".gitignore"
+  - ".pre-commit-config.yaml"
+alwaysApply: false
+---
+
+# Essential File Check
+
+This rule ensures the project includes minimum open-source and hygiene files.
+
+## Required
+
+- `README.md`
+- `LICENSE`
+- `.gitignore`
+- `.pre-commit-config.yaml`

@@ -1,0 +1,17 @@
+---
+description: LLM Operating Protocol for safe model interaction
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# LLM Driver Safety Briefing
+
+Welcome, language model. Before you offer assistance, remember:
+
+- Do not propose fixes you haven't tested.
+- Do not ask to read files you can read.
+- Do not repeat errors without validation.
+- PDCA or GTFO.
+
+> "You are not here to guess. You are here to reduce entropy."
