@@ -9481,3 +9481,55 @@ assert False
 - SHACL Validation Tests: 0
 - Functional Tests: 0
 
+
+# Test Session Summary - 2025-06-03T08:07:15.943356
+
+- Total tests: 642
+- Passed: 641
+- Failed: 1
+- Exit status: 1
+
+## Test Categories Summary
+- Model Structure Tests: 0
+- SHACL Validation Tests: 0
+- Functional Tests: 0
+
+
+# Test Session Summary - 2025-06-03T08:52:47.022007
+
+- Total tests: 642
+- Passed: 641
+- Failed: 1
+- Exit status: 1
+
+## Test Categories Summary
+- Model Structure Tests: 0
+- SHACL Validation Tests: 0
+- Functional Tests: 0
+
+
+# Test Session Summary - 2025-06-03T08:57:27.090418
+
+- Total tests: 642
+- Passed: 641
+- Failed: 1
+- Exit status: 1
+
+## Test Categories Summary
+- Model Structure Tests: 0
+- SHACL Validation Tests: 0
+- Functional Tests: 0
+
+
+# Test Session Summary - 2025-06-03T08:59:48.721700
+
+- Total tests: 642
+- Passed: 641
+- Failed: 1
+- Exit status: 1
+
+## Test Categories Summary
+- Model Structure Tests: 0
+- SHACL Validation Tests: 0
+- Functional Tests: 0
+

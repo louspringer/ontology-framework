@@ -1,0 +1,6530 @@
+[
+  {
+    "path": "___000-incoming/validate.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "run_validation"
+    ],
+    "classes": []
+  },
+  {
+    "path": "abematv.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "add_validation_rules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "analyze_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "analyze_guidance_state.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "analyze_model_coverage.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "auto_implementing_pipeline.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "load_1password_secrets",
+      "setup_environment",
+      "__init__",
+      "extract_code_blocks",
+      "_determine_change_type",
+      "_extract_context",
+      "__init__",
+      "create_backup",
+      "implement_change",
+      "_implement_test_file",
+      "_implement_logging",
+      "_implement_modification",
+      "_insert_logging_code",
+      "__init__",
+      "_setup_logging",
+      "_create_debugging_prompt",
+      "validate_inputs",
+      "debug_wrapper",
+      "wrapper",
+      "check_environment",
+      "setup_method",
+      "test_basic_import",
+      "test_basic_execution",
+      "teardown_method",
+      "test_script_execution",
+      "execute_python_file",
+      "generate_debugging_prompt",
+      "analyze_with_llm",
+      "extract_changes",
+      "implement_changes",
+      "create_workflow",
+      "create_auto_implementing_pipeline",
+      "create_auto_implementing_chain",
+      "run_auto_implementing_pipeline",
+      "rollback_changes",
+      "main"
+    ],
+    "classes": [
+      "DebuggingState",
+      "CodeExtractor",
+      "CodeImplementor",
+      "AutoImplementingPipeline",
+      "TestTargetModule"
+    ]
+  },
+  {
+    "path": "auto_reload_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bear.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bfg9k_artillery.py",
+    "added_functions": [
+      "start_bfg9k",
+      "save_session",
+      "fire",
+      "check_bfg9k",
+      "create_initial_ontology",
+      "register_project",
+      "__init__",
+      "print_next_steps",
+      "check_graphdb",
+      "update_session_targeting",
+      "acquire_target"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "BFG9KArtillery": [
+        "start_bfg9k",
+        "save_session",
+        "fire",
+        "check_bfg9k",
+        "create_initial_ontology",
+        "register_project",
+        "__init__",
+        "print_next_steps",
+        "check_graphdb",
+        "update_session_targeting",
+        "load_ammo",
+        "acquire_target"
+      ]
+    }
+  },
+  {
+    "path": "bfg9k_langchain_launcher.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bfg9k_manager.py",
+    "added_functions": [
+      "list_graphs"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bfg9k_mcp.py",
+    "added_functions": [
+      "main",
+      "validate_graphdb_config",
+      "check_config_changes"
+    ],
+    "removed_functions": [
+      "check_mcp_config",
+      "update_mcp_config",
+      "get_manager",
+      "update_guidance",
+      "validate_turtle_tool",
+      "is_graphdb_available",
+      "query_guidance",
+      "validate_guidance",
+      "fix_prefixes_tool"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "bfg9k_mcp_copy.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "check_config_changes",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "bfg9k_mcp_debug.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "check_config_changes",
+      "validate_graphdb_config",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "bfg9k_mcp_preflight.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bfg9k_mcp_sse_example.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "bfg9k_prompt_helper.py",
+    "added_functions": [
+      "process_prompt",
+      "__init__",
+      "execute_artillery"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "BFG9KPromptHelper": [
+        "process_prompt",
+        "__init__",
+        "execute_artillery"
+      ]
+    }
+  },
+  {
+    "path": "bfg9k_spore_injector.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "boldo_content_enricher.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "boldo_structural_scraper.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "build_executor.py",
+    "added_functions": [
+      "get_acr_credentials",
+      "_expand_command",
+      "_execute_command",
+      "execute_build",
+      "get_vm_ip",
+      "__init__"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "BuildExecutor": [
+        "get_acr_credentials",
+        "_expand_command",
+        "_execute_command",
+        "execute_build",
+        "get_vm_ip",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "build_process_manager.py",
+    "added_functions": [
+      "_create_properties",
+      "save",
+      "_create_classes",
+      "__init__",
+      "get_steps",
+      "_bind_namespaces",
+      "_create_build_process",
+      "load"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "BuildProcessManager": [
+        "_create_properties",
+        "save",
+        "_create_classes",
+        "__init__",
+        "get_steps",
+        "_bind_namespaces",
+        "_create_build_process",
+        "load"
+      ]
+    }
+  },
+  {
+    "path": "cdp_test.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "setup_driver",
+      "find_claude_tab",
+      "get_initial_message_count",
+      "send_message_to_claude",
+      "wait_for_response",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "cdp_test_selenium.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "connect_to_chrome",
+      "find_claude_tab",
+      "wait_for_response_completion",
+      "is_ui_noise",
+      "extract_messages",
+      "determine_message_role",
+      "deduplicate_messages",
+      "send_test_message",
+      "run_extraction"
+    ],
+    "classes": [
+      "ClaudeMessageExtractor"
+    ]
+  },
+  {
+    "path": "check_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_loaded_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_privileges.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_rdf_features.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_schema.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_sem_apis.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_sem_objects.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_table_structure.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_tables.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "check_version.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "checkin_template_generator.py",
+    "added_functions": [
+      "_create_step",
+      "create_plan",
+      "save_plan",
+      "__init__"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "CheckinTemplateGenerator": [
+        "_create_step",
+        "create_plan",
+        "save_plan",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "checkin_validation_helper.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "chrome_devtools_bridge.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "_kill_existing_chrome",
+      "_ensure_chrome_running",
+      "get_or_create_tab",
+      "find_chat_input",
+      "send_message",
+      "close",
+      "main"
+    ],
+    "classes": [
+      "ChromeDevToolsBridge"
+    ]
+  },
+  {
+    "path": "claude_grep.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "trigger_new_chat",
+      "get_page_state",
+      "wait_for_page_state",
+      "use_landing_input",
+      "connect_to_chrome",
+      "get_messages",
+      "main"
+    ],
+    "classes": [
+      "ClaudeMessageExtractor"
+    ]
+  },
+  {
+    "path": "clean_validation_targets.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "comprehensive_fix.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_malformed_syntax",
+      "fix_import_line",
+      "fix_comma_issues",
+      "fix_function_definition_issues",
+      "fix_variable_assignment_issues",
+      "fix_for_loop_issues",
+      "fix_print_statement_issues",
+      "fix_string_issues",
+      "split_mixed_lines",
+      "process_file",
+      "find_python_files",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "conformance_tracking.py",
+    "added_functions": [
+      "get_violation",
+      "get_violation_history",
+      "get_violation_statistics",
+      "resolve_violation",
+      "load_ontologies",
+      "export_violations",
+      "__init__",
+      "record_violation",
+      "notify_violation"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ConformanceTracker": [
+        "get_violation",
+        "get_violation_history",
+        "get_violation_statistics",
+        "resolve_violation",
+        "load_ontologies",
+        "export_violations",
+        "__init__",
+        "record_violation",
+        "notify_violation"
+      ]
+    }
+  },
+  {
+    "path": "create_domain_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 37,
+        "line": "    g.add((product_class, RDFS.label, Literal(\"Product\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 38,
+        "line": "    g.add((product_class, RDFS.comment, Literal(\"A product in the domain\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 39,
+        "line": "    g.add((product_class, OWL.versionInfo, Literal(\"0.1.0\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 42,
+        "line": "    g.add((component_class, RDF.type, OWL.Class))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 43,
+        "line": "    g.add((component_class, RDFS.label, Literal(\"Component\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 44,
+        "line": "    g.add((component_class, RDFS.comment, Literal(\"A component of a product\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 45,
+        "line": "    g.add((component_class, OWL.versionInfo, Literal(\"0.1.0\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 48,
+        "line": "    g.add((feature_class, RDF.type, OWL.Class))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 49,
+        "line": "    g.add((feature_class, RDFS.label, Literal(\"Feature\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 50,
+        "line": "    g.add((feature_class, RDFS.comment, Literal(\"A feature of a product\", lang=\"en\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 51,
+        "line": "    g.add((feature_class, OWL.versionInfo, Literal(\"0.1.0\")))"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "create_rdf_tablespace.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "create_spore_zip.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "create_spore_zip"
+    ],
+    "classes": []
+  },
+  {
+    "path": "debugging_agent.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "_create_debugging_prompt",
+      "execute_tests",
+      "generate_analysis_prompt",
+      "create_workflow",
+      "create_debugging_agent",
+      "analyze_project",
+      "create_debugging_chain",
+      "run_analysis"
+    ],
+    "classes": [
+      "DebuggingState",
+      "DebuggingAgent"
+    ]
+  },
+  {
+    "path": "debugging_pipeline.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "load_1password_secrets",
+      "setup_environment",
+      "__init__",
+      "_setup_logging",
+      "_create_debugging_prompt",
+      "execute_python_file",
+      "generate_debugging_prompt",
+      "analyze_with_llm",
+      "create_workflow",
+      "create_debugging_pipeline",
+      "create_complete_debugging_chain",
+      "run_debugging_pipeline",
+      "create_prompt_only_chain",
+      "generate_prompt_only",
+      "main"
+    ],
+    "classes": [
+      "DebuggingState",
+      "CompletePipelineAgent"
+    ]
+  },
+  {
+    "path": "directory_sync/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "directory_sync/cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "directory_sync/sync.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "enable_rdf.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "extract_plantuml_diagrams.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance_core.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance_imports_and_registry.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance_modules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_guidance_shapes.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_imports.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "is_malformed_import_line",
+      "split_malformed_import_line",
+      "split_import_part",
+      "fix_import_statements",
+      "fix_long_import_lines",
+      "process_file",
+      "find_python_files",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "fix_ontology_data.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_ontology_uris.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_prefixes.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_priorities.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_session_ttl.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_unterminated_strings.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_unterminated_strings",
+      "process_file",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "fix_validation_issues.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_validation_issues_v2.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_validation_rules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "fix_validation_targets.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "generate_docs.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "grant_rdf_privileges.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "guidance.py",
+    "added_functions": [
+      "get_classes",
+      "get_validation_patterns",
+      "get_conformance_levels",
+      "emit_ontology",
+      "get_individuals",
+      "get_todo_items",
+      "__init__",
+      "get_shacl_shapes",
+      "get_test_protocols",
+      "validate_conformance_level",
+      "get_properties",
+      "get_test_requirements"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 4,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "GuidanceOntology": [
+        "get_classes",
+        "get_validation_patterns",
+        "get_conformance_levels",
+        "emit_ontology",
+        "get_individuals",
+        "get_todo_items",
+        "__init__",
+        "get_shacl_shapes",
+        "get_test_protocols",
+        "validate_conformance_level",
+        "get_properties",
+        "get_test_requirements"
+      ]
+    }
+  },
+  {
+    "path": "identify_broken_files.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "check_file_syntax",
+      "categorize_error",
+      "find_python_files",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "infrastructure/azure/infrastructure.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "infrastructure/azure/infrastructure_reader.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 66,
+        "line": "            shapes.append((s, target_class, str(label)))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 84,
+        "line": "    for shape, target_class, label in shapes:"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "infrastructure/azure/test_infrastructure.py",
+    "added_functions": [
+      "test_property_domains_and_ranges",
+      "setUp",
+      "test_class_labels_and_comments",
+      "test_required_prefixes",
+      "test_shacl_shapes",
+      "test_guidance_compliance",
+      "test_instances"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestInfrastructureOntology": [
+        "test_property_domains_and_ranges",
+        "setUp",
+        "test_class_labels_and_comments",
+        "test_required_prefixes",
+        "test_shacl_shapes",
+        "test_guidance_compliance",
+        "test_instances"
+      ]
+    }
+  },
+  {
+    "path": "ingest_build_process.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "insert_diagram_links_mcp_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "interactive_ontology_vis.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "json_to_md.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "langchain_bfg9k_launcher.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "mac_ui_inspector.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "run_applescript",
+      "send_terminal_command",
+      "has_accessibility_permissions",
+      "get_running_applications",
+      "get_app_info",
+      "get_window_info",
+      "get_ui_elements",
+      "inspect_safari",
+      "send_message_to_claude",
+      "send_spore_to_claude",
+      "send_technical_response",
+      "inspect_safari_ui",
+      "inspect_using_axui",
+      "inspect_web_elements",
+      "inspect_using_devtools",
+      "inspect_using_accessibility",
+      "interact_with_web_content",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "manage_inference.py",
+    "added_functions": [
+      "get_current_ruleset",
+      "disable_inference",
+      "separate_inferred_explicit",
+      "enable_inference",
+      "__init__",
+      "change_ruleset",
+      "clear_inferred_statements",
+      "export_without_inference"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "InferenceManager": [
+        "get_current_ruleset",
+        "disable_inference",
+        "separate_inferred_explicit",
+        "enable_inference",
+        "__init__",
+        "change_ruleset",
+        "clear_inferred_statements",
+        "export_without_inference"
+      ]
+    }
+  },
+  {
+    "path": "manage_models.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "mcp_reference_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "mcp_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "merge_shapes.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "model_context_manager.py",
+    "added_functions": [
+      "update_ontology",
+      "get_validation_targets",
+      "query_ontology",
+      "__init__",
+      "validate_ontology",
+      "setup_mcp_config",
+      "get_validation_rules",
+      "add_validation_rule"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ModelContextManager": [
+        "update_ontology",
+        "get_validation_targets",
+        "query_ontology",
+        "__init__",
+        "validate_ontology",
+        "setup_mcp_config",
+        "get_validation_rules",
+        "add_validation_rule"
+      ]
+    }
+  },
+  {
+    "path": "monkey_patch.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "ontology_framework/exceptions.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "patch_management.py",
+    "added_functions": [
+      "create_patch",
+      "_get_operations",
+      "load_ontologies",
+      "_check_required_properties",
+      "apply_patch",
+      "__init__",
+      "update_version",
+      "_get_original_state",
+      "rollback_patch",
+      "validate_patch",
+      "_apply_operation",
+      "_validate_patch_type",
+      "get_dependencies"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PatchManager": [
+        "create_patch",
+        "_get_operations",
+        "load_ontologies",
+        "_check_required_properties",
+        "apply_patch",
+        "__init__",
+        "update_version",
+        "_get_original_state",
+        "rollback_patch",
+        "validate_patch",
+        "_apply_operation",
+        "_validate_patch_type",
+        "get_dependencies"
+      ]
+    }
+  },
+  {
+    "path": "prompt-manager/setup.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "prompt-manager/src/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "prompt-manager/src/ontology_parser.py",
+    "added_functions": [
+      "get_project_structure",
+      "__init__",
+      "generate_readme"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PromptManagerReadmeGenerator": [
+        "get_project_structure",
+        "__init__",
+        "generate_readme"
+      ]
+    }
+  },
+  {
+    "path": "prompt-manager/src/prompt_cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "prompt-manager/src/prompt_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "purge_validation_rules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "query_example.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "query_guidance.py",
+    "added_functions": [
+      "query_sparql",
+      "__init__",
+      "get_validation_rules",
+      "get_validation_patterns",
+      "test_connection"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "GraphDBGuidanceManager": [
+        "get_validation_rules",
+        "get_validation_patterns",
+        "query_sparql",
+        "__init__",
+        "test_connection"
+      ]
+    }
+  },
+  {
+    "path": "query_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "quick_fixes.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_leading_zeros",
+      "replace_leading_zeros",
+      "fix_simple_bracket_issues",
+      "fix_unterminated_strings",
+      "process_file",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "register_tools.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "rename_svgs_to_underscores.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/add_error_handling.py",
+    "added_functions": [],
+    "removed_functions": [
+      "find_ttl_files"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 23,
+        "line": "    \"\"\"Create, an RDF, list from, the given, items using RDFlib's Collection.\"\"\""
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/add_missing_metadata.py",
+    "added_functions": [
+      "__init__",
+      "get_classes_without_examples",
+      "add_example",
+      "add_comment",
+      "enhance_metadata",
+      "get_entities_without_comments"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "MetadataEnhancer": [
+        "__init__",
+        "add_example",
+        "add_comment",
+        "enhance_metadata",
+        "get_entities_without_comments",
+        "get_classes_without_examples"
+      ]
+    }
+  },
+  {
+    "path": "scripts/analyze_usage_patterns.py",
+    "added_functions": [],
+    "removed_functions": [
+      "develop_migration_strategies"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 51,
+        "line": "                                    uri = match[1] if isinstance(match, tuple) else, match"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/check_ontology_status.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/deploy.py",
+    "added_functions": [],
+    "removed_functions": [
+      "setup_logging"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 15,
+        "line": "    \"\"\"Load, ontologies from, a directory, into GraphDB."
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/edit_ttl.py",
+    "added_functions": [],
+    "removed_functions": [
+      "fix_file"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/enhance_ontology.py",
+    "added_functions": [
+      "add_property_shacl_shape",
+      "add_class_shacl_shape",
+      "execute_update",
+      "get_classes_without_examples",
+      "__init__",
+      "enhance_ontology",
+      "add_example",
+      "get_modules_missing_shacl",
+      "execute_query",
+      "add_module_shacl_shape"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "OntologyEnhancer": [
+        "add_property_shacl_shape",
+        "add_class_shacl_shape",
+        "execute_update",
+        "get_classes_without_examples",
+        "__init__",
+        "enhance_ontology",
+        "add_example",
+        "get_modules_missing_shacl",
+        "execute_query",
+        "add_module_shacl_shape"
+      ]
+    }
+  },
+  {
+    "path": "scripts/explore_guidance.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/find_orphaned_modules.py",
+    "added_functions": [],
+    "removed_functions": [
+      "find_references",
+      "infer_module_relationships",
+      "analyze_module_content"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 32,
+        "line": "                    'label': str(label) if label else, None,"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 33,
+        "line": "                    'comment': str(comment) if comment else, None"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 43,
+        "line": "                    'label': str(label) if label else, None,"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 44,
+        "line": "                    'comment': str(comment) if comment else, None"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 120,
+        "line": "    # Find all module, references from, main guidance, referenced, main_classes, main_properties = find_references(main_graph)"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/fix_comma_issues.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_commas",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "scripts/fix_iri_format.py",
+    "added_functions": [],
+    "removed_functions": [
+      "replace_property_blank_node",
+      "replace_blank_node",
+      "process_file"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/fix_iri_issues.py",
+    "added_functions": [
+      "fix_all_files",
+      "_fix_prefix",
+      "__init__",
+      "_fix_iri",
+      "fix_file"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "IRIFixer": [
+        "fix_all_files",
+        "_fix_iri",
+        "_fix_prefix",
+        "fix_file",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "scripts/fix_node_imports.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_node_imports",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "scripts/fix_ontology_paths.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 64,
+        "line": "                new_s = URIRef(self._convert_uri(str(s))) if isinstance(s, URIRef) else, s"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 65,
+        "line": "                new_p = URIRef(self._convert_uri(str(p))) if isinstance(p, URIRef) else, p"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 66,
+        "line": "                new_o = URIRef(self._convert_uri(str(o))) if isinstance(o, URIRef) and, not str(o).startswith(\"http://\") else, o"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/fix_ontology_patterns.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/fix_prefixes.py",
+    "added_functions": [],
+    "removed_functions": [
+      "load_ttl_file",
+      "save_ttl_file",
+      "fix_prefixes"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 51,
+        "line": "        # Always get string, output from, serialize"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/fix_rdflib_imports.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_rdflib_imports",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "scripts/fix_turtle_syntax.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 38,
+        "line": "            shacl_graph=None,  # Use shapes from, data graph"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 74,
+        "line": "            shacl_graph=None,  # Use shapes from, the same, graph"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/fix_turtle_syntax_rdflib.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/fix_validation_issues.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 71,
+        "line": "            class_name = class_uri.split('# ')[-1] if '#' in class_uri else, class_uri.split('/')[-1]"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/generate_dependency_graph.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/generate_deployment_config.py",
+    "added_functions": [],
+    "removed_functions": [
+      "generate_deployment_config"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 50,
+        "line": "        g.add((prop, RDF.type, OWL.ObjectProperty, if range_type, in [Environment, ResourceRequirements] else, OWL.DatatypeProperty))"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/generate_model_provenance.py",
+    "added_functions": [],
+    "removed_functions": [
+      "generate_model_provenance"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 55,
+        "line": "        g.add((prop, RDF.type, OWL.ObjectProperty, if range_type, not in [XSD.string, XSD.dateTime] else, OWL.DatatypeProperty))"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/generate_tests.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/import_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/inventory_example_org.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/list_shacl_nodeshapes.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/load_binary_rdf.py",
+    "added_functions": [],
+    "removed_functions": [
+      "run_query"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/load_guidance_ontology.py",
+    "added_functions": [
+      "__init__",
+      "check_repository_exists",
+      "create_repository",
+      "load_ontology"
+    ],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "GraphDBClient"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/load_ontologies.py",
+    "added_functions": [
+      "load_all_modules",
+      "update_tracking_status",
+      "load_ontology",
+      "__init__",
+      "_get_absolute_path"
+    ],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "OntologyLoader": [
+        "load_ontology",
+        "_get_absolute_path",
+        "load_all_modules",
+        "update_tracking_status",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "scripts/load_ontology_framework.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/load_ontology_tracking.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "OntologyTracker"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/load_patch_ontology.py",
+    "added_functions": [
+      "__init__",
+      "check_repository_exists",
+      "create_repository",
+      "load_ontology"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "GraphDBClient"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/load_transformed_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/namespace_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [
+      "validate_uri",
+      "emit",
+      "save_analysis_report",
+      "__init__",
+      "generate_dependency_graph",
+      "generate_analysis_report",
+      "log_processing_step",
+      "parse_inventory"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "ErrorMonitor"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/namespace_dependency_mapper.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/ontology_validation.py",
+    "added_functions": [],
+    "removed_functions": [
+      "to_dict"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/query_plan.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/rdf_editor.py",
+    "added_functions": [],
+    "removed_functions": [
+      "load",
+      "save",
+      "fix_prefixes"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 115,
+        "line": "        s = URIRef(subject) if subject.startswith('http') else, self.GUIDANCE[subject]"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 116,
+        "line": "        p = URIRef(predicate) if predicate.startswith('http') else, self.GUIDANCE[predicate]"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 121,
+        "line": "            o = URIRef(object_) if object_.startswith('http') else, self.GUIDANCE[object_]"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 127,
+        "line": "        s = URIRef(subject) if subject.startswith('http') else, self.GUIDANCE[subject]"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 128,
+        "line": "        p = URIRef(predicate) if predicate.startswith('http') else, self.GUIDANCE[predicate]"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 129,
+        "line": "        o = URIRef(object_) if object_.startswith('http') else, self.GUIDANCE[object_]"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/refactor_with_mcp.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/run_dependency_visualizer.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/run_mcp_prompt.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/run_module_tests.py",
+    "added_functions": [],
+    "removed_functions": [
+      "run_tests"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/run_module_validation.py",
+    "added_functions": [],
+    "removed_functions": [
+      "run_validation"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/run_tests_with_logging.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "startTest",
+      "addSuccess",
+      "addError",
+      "addFailure",
+      "addSkip",
+      "run_tests_with_logging"
+    ],
+    "classes": [
+      "TestResultWithLogging"
+    ]
+  },
+  {
+    "path": "scripts/semantic_equivalence_check.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/setup_graphdb.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 13,
+        "line": "    # Use GRAPHDB_URL env, var if set, else, default to, localhost"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/update_deployment.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/update_module_constraints.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/validate_graphdb.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/validate_loaded_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/validate_module_constraints.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/validate_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "scripts/validate_ontology.py",
+    "added_functions": [],
+    "removed_functions": [
+      "load_graph"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 9,
+        "line": "    \"\"\"Load, an RDF, graph from, a file."
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "scripts/verify_oracle_setup.py",
+    "added_functions": [],
+    "removed_functions": [
+      "check_environment",
+      "get_oracle_connection"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "selenium_bridge.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "setup_driver",
+      "navigate_to_claude",
+      "find_chat_input",
+      "send_message",
+      "close",
+      "main"
+    ],
+    "classes": [
+      "ClaudeAutomation"
+    ]
+  },
+  {
+    "path": "selenuim_chat.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "get_random_user_agent",
+      "setup_driver",
+      "add_random_delays",
+      "save_cookies",
+      "load_cookies",
+      "is_browser_alive",
+      "wait_and_find_element",
+      "handle_cloudflare",
+      "analyze_page",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "set_env.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": []
+  },
+  {
+    "path": "setup.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "setup_bfg9k.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "simple_mcp_server.py",
+    "added_functions": [],
+    "removed_functions": [
+      "health",
+      "validate_ontology"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "sparql_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "spore_integration.py",
+    "added_functions": [
+      "load_ontologies",
+      "migrate_version",
+      "_get_patches",
+      "apply_patch",
+      "integrate_spore",
+      "__init__",
+      "resolve_dependencies",
+      "check_compatibility",
+      "integrate_concurrent"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "SporeIntegrator": [
+        "load_ontologies",
+        "migrate_version",
+        "_get_patches",
+        "apply_patch",
+        "integrate_spore",
+        "__init__",
+        "resolve_dependencies",
+        "check_compatibility",
+        "integrate_concurrent"
+      ]
+    }
+  },
+  {
+    "path": "spore_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/analyze_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/api/boldo_explorer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/api/exceptions.py",
+    "added_functions": [
+      "__init__"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "AuthenticationError",
+      "ResourceNotFoundError",
+      "APIRequestError"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/apps/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/apps/dependency_visualizer_app.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/bow_tie_transformation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli/checkin_cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli/guidance_mcp_cli.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/cli/main.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli/mcp_cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/cli/model_watch.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'while'",
+        "lineno": 25,
+        "line": "            while, True:"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/client_manager.py",
+    "status": "new_file",
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 12,
+        "line": "from dataclasses import dataclass, asdict"
+      }
+    ],
+    "functions": [
+      "_generate_client_id",
+      "_track_client_state",
+      "_cleanup_inactive_clients",
+      "get_client_info",
+      "get_active_clients",
+      "update_client_activity"
+    ],
+    "classes": [
+      "ClientStatus",
+      "ClientInfo",
+      "ClientManager"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/conformance_tracking.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ViolationDetails": [
+        "__post_init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/data_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 91,
+        "line": "        self.graph.add((subclass, RDFS.subClassOf, superclass))"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 148,
+        "line": "        \"\"\"Import, a data, model from, a file."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/debug/action_tracer.py",
+    "status": "new_file",
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 13,
+        "line": "from dataclasses import dataclass, asdict"
+      }
+    ],
+    "functions": [],
+    "classes": [
+      "ActionStatus",
+      "ActionContext",
+      "ActionTracer"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/debug/debug_logger.py",
+    "status": "new_file",
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 16,
+        "line": "from dataclasses import dataclass, asdict"
+      }
+    ],
+    "functions": [],
+    "classes": [
+      "LogLevel",
+      "LogContext",
+      "DebugLogger"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/debug/state_inspector.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": [
+      "StateInspector"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/dependency_model.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 10,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/deployment_modeler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/error.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 1,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "Error": [
+        "__post_init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/error_handler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/exceptions.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [
+      "SporeIntegrationError"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/extensions/azure_openapi_to_shacl/__init__.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": []
+  },
+  {
+    "path": "src/ontology_framework/extensions/azure_openapi_to_shacl/azure_openapi_to_shacl.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": [
+      "AzureOpenAPIToSHACL"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/generate_plantuml.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/github_project_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/graphdb_client.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 74,
+        "line": "        # Load credentials from, environment"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 227,
+        "line": "        \"\"\"Download, an RDF, graph from, GraphDB."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/guidance_loader.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/manage_models.py",
+    "added_functions": [
+      "get_version",
+      "check_dependencies",
+      "load_model",
+      "project_model",
+      "check_quality",
+      "validate_version",
+      "__init__"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 199,
+        "line": "            model_name: Name, of model, to get, version from, Returns:"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 210,
+        "line": "        return str(version) if version else, None "
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "ModelManager": [
+        "get_version",
+        "check_dependencies",
+        "load_model",
+        "project_model",
+        "check_quality",
+        "validate_version",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/mcp/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/adapters/ide.py",
+    "added_functions": [
+      "update_config",
+      "get_server_config",
+      "handle_file_change",
+      "handle_phase_request",
+      "__init__",
+      "_save_config",
+      "_normalize_config",
+      "_load_config"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "IDEAdapter"
+    ],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 17,
+        "line": "        \"\"\"Load, configuration from, file.\"\"\""
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/mcp/bfg9k_fastapi_server.py",
+    "added_functions": [],
+    "removed_functions": [
+      "health_check",
+      "validate_ontology",
+      "get_metrics"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/mcp/bfg9k_targeting.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 6,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/core.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/guidance_mcp_service.py",
+    "added_functions": [
+      "add_imports",
+      "save",
+      "load",
+      "get_validation_rules",
+      "add_validation_rule",
+      "__init__",
+      "validate"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "GuidanceMCPService"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/mcp/hypercube_analysis.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 6,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/maintenance_config.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 6,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/maintenance_metrics.py",
+    "added_functions": [
+      "validate_metrics",
+      "add_metric",
+      "get_metric_stats",
+      "__init__"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "MaintenanceMetrics": [
+        "validate_metrics",
+        "add_metric",
+        "get_metric_stats",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/mcp/maintenance_prompts.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/maintenance_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/mcp_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/migrate.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 2,
+        "line": "Migration, script for transitioning from, old MCP, configuration format to new unified format."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/recreate_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/target_dag_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/mcp/validation_telemetry.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 6,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/meta.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/metameta.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/model/graphdb_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/model/model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/model/pdca_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/model_graphdb_client.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/base.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/base_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/checkin_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 151,
+        "line": "        \"\"\"Load, a check-in, plan from, a file."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/code_analyzer.py",
+    "added_functions": [
+      "_check_rdf_patterns",
+      "__init__",
+      "_check_type_hints",
+      "_check_regex_patterns",
+      "analyze_file"
+    ],
+    "removed_functions": [
+      "print_analysis_results"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "CodeIssue",
+      "IssueType",
+      "CodeAnalyzer"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/modules/compliance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/config_change_detector.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": [
+      "ConfigChangeDetector"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/modules/consistency/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/consistency/consistency_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/constants.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/dependency_pattern_analyzer.py",
+    "added_functions": [
+      "compare_dependency_types",
+      "_get_dependency_stats",
+      "__init__",
+      "_find_orphaned_components",
+      "_find_hierarchical_patterns",
+      "_find_circular_dependencies",
+      "_find_transitive_dependencies",
+      "_calculate_max_depth",
+      "analyze_common_patterns"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "DependencyPatternAnalyzer": [
+        "compare_dependency_types",
+        "_get_dependency_stats",
+        "__init__",
+        "_find_orphaned_components",
+        "_find_hierarchical_patterns",
+        "_find_circular_dependencies",
+        "_find_transitive_dependencies",
+        "_calculate_max_depth",
+        "analyze_common_patterns"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/dependency_visualizer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/compliance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ComplianceHandler": [
+        "get_compliance_report",
+        "_update_compliance_level",
+        "update_compliance"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/error_handler.py",
+    "added_functions": [
+      "handle_error",
+      "get_step_order",
+      "process_validation_results",
+      "validate_matrix",
+      "__init__",
+      "validate_ontology",
+      "validate_pattern",
+      "get_error_severity"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ErrorHandler": [
+        "handle_error",
+        "get_step_order",
+        "process_validation_results",
+        "validate_matrix",
+        "__init__",
+        "validate_ontology",
+        "validate_pattern",
+        "get_error_severity"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/main.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ErrorHandler": [
+        "get_metrics_report",
+        "validate_security",
+        "set_current_step",
+        "to_rdf",
+        "get_compliance_report",
+        "add_error",
+        "get_current_step"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/metrics.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "MetricsHandler": [
+        "get_metrics_report"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/rdf.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "RDFHandler": [
+        "_bind_namespaces"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/security.py",
+    "added_functions": [
+      "_validate_access_control",
+      "validate",
+      "_validate_encryption",
+      "__init__",
+      "_validate_sensitive_data"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "SecurityValidationResult": [
+        "__init__"
+      ],
+      "SecurityHandler": [
+        "_validate_access_control",
+        "validate",
+        "_validate_encryption",
+        "__init__",
+        "_validate_sensitive_data"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/types.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [
+      "RuleSeverity",
+      "ComplianceResult",
+      "ComplianceRule"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/error_handling/validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [
+      "ValidationRule",
+      "ValidationResult"
+    ],
+    "removed_classes": [
+      "CustomRule"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ValidationHandler": [
+        "_validate_with_shacl",
+        "_get_field_types",
+        "_load_shacl_shapes",
+        "configure_validation_threshold",
+        "get_validation_statistics",
+        "_get_security_level",
+        "_get_constraints",
+        "export_validation_history",
+        "add_custom_rule",
+        "_get_security_requirements",
+        "_validate_bfg9k_pattern",
+        "filter_validation_history",
+        "_log_validation_attempt",
+        "generate_validation_report",
+        "_convert_to_rdf",
+        "_get_required_fields",
+        "_get_validation_requirements"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/fix_stereo.py",
+    "added_functions": [],
+    "removed_functions": [
+      "fix_stereo_ttl"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/modules/fix_ttl.py",
+    "added_functions": [],
+    "removed_functions": [
+      "fix_ttl_file"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/modules/graphdb_validator.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "ttl_escape",
+      "__init__",
+      "_setup_logging",
+      "_load_validation_patterns",
+      "_log_request",
+      "_log_response",
+      "validate_config",
+      "log_debug_dump",
+      "_get_environment_info",
+      "_validate_against_patterns",
+      "_add_check",
+      "_export_validation_report",
+      "get_validation_history"
+    ],
+    "classes": [
+      "GraphDBValidator"
+    ]
+  },
+  {
+    "path": "src/ontology_framework/modules/guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 9,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "DimensionalScore": [
+        "get_stakeholder_satisfaction"
+      ],
+      "ChangeRate": [
+        "get_acceleration"
+      ],
+      "RelationshipQuality": [
+        "get_stakeholder_summary",
+        "get_stress_patterns",
+        "record_tension"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/implementation_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/mcp_config.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/mcp_prompt.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 5,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/namespaces.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/ontology_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main",
+      "convert_rdf_types"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "OntologyAnalyzer": [
+        "analyze_classes",
+        "analyze_shacl",
+        "analyze_individuals",
+        "analyze_properties",
+        "load_ontology",
+        "to_json",
+        "analyze",
+        "analyze_imports",
+        "print_analysis"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/ontology_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/package_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PackageManager": [
+        "get_dev_dependencies",
+        "validate_dependencies",
+        "_load_dependencies",
+        "create_dependency_graph",
+        "get_dependencies"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/patch_management.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/phases.py",
+    "added_functions": [
+      "_validate_context",
+      "execute",
+      "__init__",
+      "_create_phase_instance"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "PhaseResult",
+      "PromptPhase"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PlanPhase": [
+        "execute"
+      ],
+      "DoPhase": [
+        "execute"
+      ],
+      "CheckPhase": [
+        "execute"
+      ],
+      "AdjustPhase": [
+        "execute"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/prompt_base.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 4,
+        "line": "from dataclasses import dataclass, field"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/semantic/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/semantic/semantic_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/syntax/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/syntax/syntax_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/telemetry.py",
+    "added_functions": [
+      "get_metric_history",
+      "analyze_metrics",
+      "__init__",
+      "reset"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "TelemetryPoint"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TelemetryCollector": [
+        "collect_metric",
+        "analyze_metrics",
+        "reset",
+        "get_metric_history",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/template_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 58,
+        "line": "            subclass_relations: Optional list of (subclass, superclass) pairs"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 78,
+        "line": "            for subclass, superclass in subclass_relations:"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 79,
+        "line": "                self.graph.add((subclass, RDFS.subClassOf, superclass))"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/test_coverage.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/test_coverage_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/test_generator.py",
+    "added_functions": [
+      "setUp",
+      "get_individuals",
+      "get_property_definitions",
+      "__init__",
+      "_get_conformance_levels",
+      "test_round_trip_consistency",
+      "generate_test_file",
+      "test_guidance_structure",
+      "get_shapes",
+      "_get_required_shapes",
+      "_compare_graphs_semantically",
+      "test_emit_reload_consistency",
+      "get_class_definitions"
+    ],
+    "removed_functions": [],
+    "added_classes": [
+      "TestGuidanceConsistency"
+    ],
+    "removed_classes": [
+      "TestGenerator"
+    ],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 17,
+        "line": "        \"\"\"Get, all required, classes from, the ontology."
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 45,
+        "line": "        \"\"\"Get, all conformance, levels from, the ontology."
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 141,
+        "line": "        # Generate a new, ontology from, Python"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/modules/test_inference.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/test_setup_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestSetupManager": [
+        "cleanup",
+        "get_test_data",
+        "create_test_shapes",
+        "setup_test_ontology",
+        "_load_config"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/ttl_fixer.py",
+    "added_functions": [
+      "fix_frequency_validation",
+      "__init__",
+      "fix_stereo_ttl",
+      "load_ttl",
+      "fix_invalid_ttl_syntax",
+      "save_ttl"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "SHACLShapeBuilder"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TTLFixer": [
+        "fix_stereo_ttl",
+        "full_fix",
+        "fix_frequency_validation",
+        "load_ttl",
+        "fix_invalid_ttl_syntax",
+        "__init__",
+        "save_ttl"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/modules/turtle_syntax.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Double comma",
+        "lineno": 24,
+        "line": "    content = content.replace(\",,\", \",\")"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/validation.py",
+    "added_functions": [
+      "set_shapes_graph",
+      "__init__",
+      "get_requirements"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "ValidationModule"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/modules/validation/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/validation/bfg9k_pattern.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/validation/validation_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/modules/validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/namespace.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/namespace_recovery/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/namespace_recovery/find_example_org.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/namespace_recovery/namespace_recovery.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/ontology_types.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/ontology_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/pdf_processor.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/performance_monitor.py",
+    "status": "new_file",
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 111,
+        "line": "            'avg_ttfb': sum(ttfb_values) / len(ttfb_values) if ttfb_values else, 0,"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 112,
+        "line": "            'max_ttfb': max(ttfb_values) if ttfb_values else, 0,"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 113,
+        "line": "            'avg_total_time': sum(total_times) / len(total_times) if total_times else, 0,"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 114,
+        "line": "            'max_total_time': max(total_times) if total_times else, 0,"
+      }
+    ],
+    "functions": [
+      "__init__",
+      "record_first_byte",
+      "end_request",
+      "get_metrics",
+      "get_all_metrics",
+      "analyze_performance"
+    ],
+    "classes": []
+  },
+  {
+    "path": "src/ontology_framework/prefix_map.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/python_validator.py",
+    "added_functions": [
+      "__init__",
+      "validate_file"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PythonValidator": [
+        "validate_file",
+        "__init__",
+        "validate_node",
+        "save_validation_report"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/reasoner.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 343,
+        "line": "            if self._has_class_cycle(superclass, visited.copy()):"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/register_ontology.py",
+    "added_functions": [
+      "onto_get_registered_ontologies",
+      "onto_register_ontology",
+      "onto_update_session_ttl",
+      "onto_load_ontology"
+    ],
+    "removed_functions": [
+      "update_session_ttl",
+      "get_registered_ontologies",
+      "load_ontology",
+      "register_ontology"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/sparql_client.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/sparql_operations.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/spore_integration.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 63,
+        "line": "                  or, as a, URIRef from, the guidance, ontology."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/spore_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 267,
+        "line": "                pattern_properties = set(pattern_graph.predicates(pattern_class, None))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 268,
+        "line": "                ontology_properties = set(self.graph.predicates(pattern_class, None))"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/test_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tests/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tests/test_checkin_manager.py",
+    "added_functions": [],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_fix_ttl.py",
+    "added_functions": [],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_guidance_consistency.py",
+    "added_functions": [
+      "setUp",
+      "test_round_trip_consistency",
+      "test_guidance_structure",
+      "_compare_graphs_semantically",
+      "test_emit_reload_consistency"
+    ],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "TestGuidanceConsistency"
+    ],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 74,
+        "line": "        # Generate a new, ontology from, Python"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_guidance_generator.py",
+    "added_functions": [],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_stereo_validation.py",
+    "added_functions": [],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_triple_validator.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "test_validate_valid_triple",
+      "test_validate_literal_object",
+      "test_validate_blank_nodes",
+      "test_validate_predicate_vocabulary",
+      "test_validate_graph"
+    ],
+    "classes": []
+  },
+  {
+    "path": "src/ontology_framework/tests/test_ttl_fixer.py",
+    "added_functions": [],
+    "removed_functions": [
+      "setUpClass",
+      "tearDownClass",
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "FrequencyCase",
+      "TestTTLFixer"
+    ],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 105,
+        "line": "        # Get the base, URI from, the file, path"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tests/test_ttl_validation.py",
+    "added_functions": [
+      "setUp",
+      "validate_prefixes",
+      "create_test_ttl",
+      "test_validate_ttl_files",
+      "tearDown"
+    ],
+    "removed_functions": [
+      "graphdb_client"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestTTLValidation": [
+        "setUp",
+        "tearDownClass",
+        "validate_prefixes",
+        "setUpClass",
+        "create_test_ttl",
+        "test_validate_ttl_files",
+        "test_analyze_ontologies",
+        "tearDown"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/tests/validate_all_ttl.py",
+    "added_functions": [],
+    "removed_functions": [
+      "validate_ttl_file"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tools/check_isomorphism.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/generate_isomorphic_rdf.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 14,
+        "line": "    \"\"\"Generate, an isomorphic, RDF/XML, file from, a Turtle, file."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/generate_models.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/guidance_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/model_generator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/ontology_editor.py",
+    "added_functions": [],
+    "removed_functions": [
+      "add_validation_rule"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tools/pattern_manager.py",
+    "added_functions": [
+      "list_patterns",
+      "remove_pattern",
+      "__init__",
+      "get_pattern"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "PatternManager": [
+        "add_pattern",
+        "remove_pattern",
+        "_add_nested_dict",
+        "list_patterns",
+        "__init__",
+        "get_pattern",
+        "_add_list_values"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/tools/update_guidance.py",
+    "added_functions": [],
+    "removed_functions": [
+      "update_guidance_ontology"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tools/validate_guidance.py",
+    "added_functions": [],
+    "removed_functions": [
+      "validate_guidance_ontology"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/tools/validate_modules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 100,
+        "line": "            label = str(row[1]) if row[1] else, None  # Access label from, second column, comment = str(row[2]) if row[2] else, None  # Access comment from, third column, if not, label or, not comment:"
+      },
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 100,
+        "line": "            label = str(row[1]) if row[1] else, None  # Access label from, second column, comment = str(row[2]) if row[2] else, None  # Access comment from, third column, if not, label or, not comment:"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/validation_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/validation_ontology_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 31,
+        "line": "        graph.add((self.validation_rule_class, RDF.type, RDFS.Class))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 32,
+        "line": "        graph.add((self.validation_rule_class, RDFS.label, Literal(\"Validation Rule\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 33,
+        "line": "        graph.add((self.validation_rule_class, RDFS.comment, Literal(\"Base class for all validation rules\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 35,
+        "line": "        graph.add((self.validation_level_class, RDF.type, RDFS.Class))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 36,
+        "line": "        graph.add((self.validation_level_class, RDFS.label, Literal(\"Validation Level\")))"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 37,
+        "line": "        graph.add((self.validation_level_class, RDFS.comment, Literal(\"Defines the severity level of validation rules\")))"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/tools/visualize_dependencies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/triggers/model_trigger.py",
+    "added_functions": [
+      "_update_model",
+      "_ensure_model_exists",
+      "start",
+      "on_created",
+      "__init__",
+      "_load_guidance",
+      "on_modified",
+      "_setup_namespaces",
+      "stop"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ModelTriggerHandler": [
+        "_update_model",
+        "_ensure_model_exists",
+        "on_created",
+        "__init__",
+        "_requires_model",
+        "_load_guidance",
+        "on_modified",
+        "_create_module_model",
+        "_setup_namespaces"
+      ],
+      "ModelTrigger": [
+        "start",
+        "stop",
+        "__init__"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/update_runtime_error_handling.py",
+    "added_functions": [],
+    "removed_functions": [
+      "update_runtime_error_handling"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/update_runtime_ontology.py",
+    "added_functions": [
+      "add_validation_rules",
+      "add_error_handling_steps",
+      "add_prevention_measures",
+      "add_recovery_strategies",
+      "load_ontology",
+      "__init__",
+      "save_ontology",
+      "add_risk_types"
+    ],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "RuntimeOntologyUpdater": [
+        "update_all",
+        "add_validation_rules",
+        "add_error_handling_steps",
+        "add_prevention_measures",
+        "add_recovery_strategies",
+        "load_ontology",
+        "__init__",
+        "add_error_type_hierarchy",
+        "save_ontology",
+        "add_risk_types"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/validate_runtime_ontology.py",
+    "added_functions": [
+      "validate_instances",
+      "validate_shacl_shapes",
+      "__init__",
+      "load_ontology",
+      "validate_properties",
+      "validate_all"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "RuntimeOntologyValidator": [
+        "__init__",
+        "validate_properties",
+        "validate_instances",
+        "validate_shacl_shapes",
+        "validate_classes",
+        "validate_all",
+        "load_ontology"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/validation/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/conformance_level.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/error_severity.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/pattern_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/python_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'return'",
+        "lineno": 78,
+        "line": "            self.data_graph.add((no_return, RDF.type, PY.NoReturnType))"
+      },
+      {
+        "message": "Comma after keyword 'return'",
+        "lineno": 79,
+        "line": "            self.data_graph.add((no_return, PY.name, Literal('__init__')))"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/triple_validator.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "_validate_subject",
+      "_validate_predicate",
+      "_validate_object",
+      "validate_graph"
+    ],
+    "classes": []
+  },
+  {
+    "path": "src/ontology_framework/validation/validation.py",
+    "added_functions": [],
+    "removed_functions": [
+      "remove_validator"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 75,
+        "line": "                if isinstance(superclass, URIRef):"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 76,
+        "line": "                    if get_superclasses(superclass, visited):"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/validation/validation_handler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/validation_report.py",
+    "added_functions": [
+      "create_validation_report",
+      "save_report",
+      "load_report",
+      "_setup_namespaces",
+      "__init__",
+      "query_validation_results"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "ValidationReportManager": [
+        "create_validation_report",
+        "_setup_namespaces",
+        "save_report",
+        "load_report",
+        "add_validation_result",
+        "__init__",
+        "query_validation_results"
+      ]
+    }
+  },
+  {
+    "path": "src/ontology_framework/validation/validation_result.py",
+    "added_functions": [
+      "to_dict"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "ValidationResult"
+    ],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 77,
+        "line": "            focus_node=URIRef(data[\"focus_node\"]) if data.get(\"focus_node\") else, None"
+      }
+    ],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/validation/validation_rule.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation/validation_rule_type.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/validation_handler.py",
+    "added_functions": [],
+    "removed_functions": [
+      "to_dict",
+      "test_property_validation",
+      "remove_rule",
+      "test_class_validation"
+    ],
+    "added_classes": [],
+    "removed_classes": [
+      "ConsistencyRule",
+      "ValidationHandler",
+      "SyntaxRule",
+      "SemanticRule"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/verify_isomorphism.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/visualization/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "src/ontology_framework/visualization/cognition_dashboard.py",
+    "added_functions": [
+      "_add_pattern_context",
+      "__init__",
+      "_add_validation_flow",
+      "add_pattern",
+      "_add_confidence_timeline",
+      "_add_pattern_network",
+      "create_dashboard"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "CognitionPattern",
+      "ValidationStep",
+      "CognitionDashboard"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "src/ontology_framework/visualization/generate_dashboard.py",
+    "added_functions": [],
+    "removed_functions": [
+      "generate_sample_patterns"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "sync_package/cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "systematic_comma_fix.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "__init__",
+      "get_git_tracked_files",
+      "create_backup",
+      "fix_file_content",
+      "fix_file",
+      "find_python_files",
+      "scan_for_corruption",
+      "fix_all",
+      "main"
+    ],
+    "classes": [
+      "CommaCorruptionFixer"
+    ]
+  },
+  {
+    "path": "targeted_comma_fix.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "fix_comma_corruption",
+      "fix_shebang_comma",
+      "fix_comment_commas",
+      "fix_string_commas",
+      "fix_for_loop_commas",
+      "fix_import_commas",
+      "fix_assignment_commas",
+      "fix_function_def_commas",
+      "fix_expression_commas",
+      "process_file",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "test_bfg9k_mcp.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "test_checkin.py",
+    "added_functions": [],
+    "removed_functions": [
+      "main"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "test_comma_corruption.py",
+    "status": "new_file",
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'def'",
+        "lineno": 8,
+        "line": "def, process_data(data):"
+      },
+      {
+        "message": "Double comma",
+        "lineno": 13,
+        "line": "        processed_item = transform(item),, normalize(item)"
+      },
+      {
+        "message": "Comma after opening parenthesis",
+        "lineno": 18,
+        "line": "def transform(, item):"
+      },
+      {
+        "message": "Comma after keyword 'if'",
+        "lineno": 27,
+        "line": "    elif, item < 0:  # Comma corruption after elif"
+      },
+      {
+        "message": "Comma after keyword 'elif'",
+        "lineno": 27,
+        "line": "    elif, item < 0:  # Comma corruption after elif"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 33,
+        "line": "class, DataProcessor:"
+      },
+      {
+        "message": "Comma after opening parenthesis",
+        "lineno": 40,
+        "line": "    def process(, self, data):"
+      },
+      {
+        "message": "Line starts with comma",
+        "lineno": 48,
+        "line": "            , \"max\": max(data) if data else 0,"
+      }
+    ],
+    "functions": [
+      "transform",
+      "normalize",
+      "__init__",
+      "process",
+      "get_stats",
+      "calculate_metrics"
+    ],
+    "classes": []
+  },
+  {
+    "path": "test_connection.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_env_debug.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": []
+  },
+  {
+    "path": "test_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_parse.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_plantuml_server.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_rdf_direct.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_rdf_model.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_rdf_network.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_rdf_setup.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_rdflib.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_solution_load.py",
+    "added_functions": [
+      "test_01_ontology_metadata",
+      "execute_sparql",
+      "test_05_cross_references",
+      "tearDownClass",
+      "test_06_version_consistency",
+      "setUpClass",
+      "test_02_class_definitions",
+      "test_04_instance_validation",
+      "test_03_property_definitions"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestSolutionOntologyLoad": [
+        "test_01_ontology_metadata",
+        "execute_sparql",
+        "test_05_cross_references",
+        "tearDownClass",
+        "test_06_version_consistency",
+        "setUpClass",
+        "test_02_class_definitions",
+        "test_04_instance_validation",
+        "test_03_property_definitions"
+      ]
+    }
+  },
+  {
+    "path": "test_sparql.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_spore_validation.py",
+    "added_functions": [
+      "test_conformance_tracking",
+      "setUp",
+      "test_shacl_validation",
+      "test_patch_support",
+      "test_pattern_registration"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestSporeValidator": [
+        "test_conformance_tracking",
+        "setUp",
+        "test_shacl_validation",
+        "test_patch_support",
+        "test_pattern_registration"
+      ]
+    }
+  },
+  {
+    "path": "test_thin.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "test_wallet.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/api/test_boldo_explorer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/conftest.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/coverage_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/diagnose_classes.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "diagnose_class",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/diagnose_fix.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "verify_fix",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/diagnose_initialization.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "track_initialization",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/diagnose_references.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "find_references",
+      "main"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/extensions/test_azure_openapi_to_shacl.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "test_check_preconditions",
+      "test_generate_shacl_from_schema"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/generate_test_dependencies.py",
+    "added_functions": [
+      "visit_Import",
+      "visit_ImportFrom",
+      "_get_module_classes",
+      "visit_Assert",
+      "__init__",
+      "_get_class_methods",
+      "visit_FunctionDef",
+      "visit_Assign",
+      "visit_Call"
+    ],
+    "removed_functions": [
+      "generate_test_dependencies"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 80,
+        "line": "                # Check if this, is from, our src, directory"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 99,
+        "line": "                            # Check if this, is a, class from, our codebase, module_path = \".\".join(impl_path.split(\".\")[:-1])"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 158,
+        "line": "                            # Check if this, is a, class from, our codebase, module_path = \".\".join(impl_path.split(\".\")[:-1])"
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestDependencyAnalyzer": [
+        "visit_Import",
+        "visit_ImportFrom",
+        "_get_module_classes",
+        "visit_Assert",
+        "__init__",
+        "_get_class_methods",
+        "visit_FunctionDef",
+        "visit_Assign",
+        "visit_Call"
+      ]
+    }
+  },
+  {
+    "path": "tests/modules/error_handling/test_config.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/modules/error_handling/test_error_handler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/modules/error_handling/test_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/modules/test_bfg9k_pattern.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/modules/test_validation_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/run_tests.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'else'",
+        "lineno": 100,
+        "line": "    return 0 if test_results.wasSuccessful() else, 1"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/sample_pdfs/__init__.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/sample_pdfs/generate_test_pdfs.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/show_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_abematv.py",
+    "added_functions": [
+      "logging_has_drm"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_bfg9k_config.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "temp_config",
+      "test_validate_graphdb_config_success",
+      "test_validate_graphdb_config_env_override",
+      "test_validate_graphdb_config_connection_error",
+      "test_validate_graphdb_config_missing_file"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/test_bfg9k_live.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_bow_tie_transformation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_checkin_manager.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_step_status"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_cli.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_compliance_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_config_change_detector.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": [
+      "TestConfigChangeDetector"
+    ]
+  },
+  {
+    "path": "tests/test_conformance_tracking.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_data_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_dependency_model.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_dependency_visualizer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_deployment.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_deployment_modeler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_docker_compose.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_error_handler.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_error_type_hierarchy",
+      "test_error_prevention_and_recovery",
+      "test_error_handling_process",
+      "test_error_handling_steps",
+      "test_error_handling_validations"
+    ],
+    "added_classes": [
+      "TestErrorHandler"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_error_handler_root.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_error_logging.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_example_org_inventory.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_find_example_org.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_github_project_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_graphdb_client.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_check_server_status_error"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_graphdb_integration.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_graphdb_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_graphdb_patch_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_graphdb_validator.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [],
+    "classes": [
+      "TestGraphDBValidator"
+    ]
+  },
+  {
+    "path": "tests/test_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 473,
+        "line": "                if not isinstance(superclass, URIRef):"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_guidance_conformance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_guidance_consistency.py",
+    "added_functions": [
+      "log_graph_details",
+      "log_triple_differences"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 161,
+        "line": "            if isinstance(superclass, URIRef):"
+      },
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 162,
+        "line": "                ok, msg = self._verify_class_hierarchy(graph, superclass, visited)"
+      }
+    ],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestGuidanceConsistency": [
+        "test_emit_reload_consistency",
+        "test_round_trip_consistency"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_guidance_loader.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_guidance_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_guidance_queries.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestGuidanceQueries": [
+        "test_get_test_protocols",
+        "test_validate_conformance_level",
+        "test_get_validation_patterns",
+        "test_get_conformance_levels",
+        "test_get_shacl_shapes",
+        "test_get_integration_steps"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_guidance_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_implementation_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_mcp.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_server_initialization",
+      "test_get_maintenance_metrics",
+      "maintenance_prompts",
+      "test_prompts_initialization",
+      "test_get_maintenance_model",
+      "maintenance_config",
+      "test_get_validation_rules",
+      "test_validate_artifact",
+      "maintenance_server",
+      "test_update_metric",
+      "test_config_initialization",
+      "test_track_change"
+    ],
+    "added_classes": [
+      "TestMaintenanceServer"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_mcp_config.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [
+      "TestMCPValidator"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestMCPConfig": [
+        "test_invalid_server",
+        "test_get_server_config",
+        "test_get_validation_rules",
+        "test_load_config"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_mcp_migration.py",
+    "added_functions": [
+      "migrate_config",
+      "test_migrate_nonexistent_file",
+      "migrate_file",
+      "test_file"
+    ],
+    "removed_functions": [
+      "test_migrate_file_error",
+      "temp_config_file"
+    ],
+    "added_classes": [
+      "TestMigration"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_mcp_phases.py",
+    "added_functions": [
+      "test_phases",
+      "test_add_phase",
+      "test_phase_validation",
+      "test_successful_execution",
+      "test_phase_order",
+      "__init__",
+      "test_phase_completion_time",
+      "test_phase_execution",
+      "validate_transition",
+      "test_phase_transition",
+      "add_phase",
+      "validate_phase_configuration",
+      "phase_manager",
+      "get_ordered_phases",
+      "setUp",
+      "test_phase_dependencies",
+      "test_phase_initialization",
+      "get_phases",
+      "test_invalid_phase_execution",
+      "get_phase_dependencies",
+      "add_dependency",
+      "tearDown",
+      "execute_phase"
+    ],
+    "removed_functions": [],
+    "added_classes": [
+      "CheckPhase",
+      "PhaseError",
+      "PlanPhase",
+      "PhaseValidationError",
+      "Phase",
+      "PromptPhase",
+      "TestPhaseManager",
+      "PhaseTransition",
+      "PhaseManager",
+      "AdjustPhase",
+      "PhaseExecutionError",
+      "DoPhase"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestDiscoveryPhase": [
+        "test_successful_execution",
+        "test_invalid_context",
+        "test_missing_ontology"
+      ],
+      "TestPlanPhase": [
+        "test_successful_execution",
+        "test_invalid_context",
+        "test_missing_discovery"
+      ],
+      "TestDoPhase": [
+        "test_successful_execution",
+        "test_invalid_context",
+        "test_missing_plan"
+      ],
+      "TestCheckPhase": [
+        "test_successful_execution",
+        "test_missing_do_results",
+        "test_invalid_context",
+        "test_validation_error"
+      ],
+      "TestAdjustPhase": [
+        "test_successful_execution",
+        "test_invalid_context",
+        "test_missing_check_results",
+        "test_no_adjustments_needed"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_mcp_prompt.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [
+      "MCPPrompt",
+      "PromptResult",
+      "PromptError",
+      "PromptConfig"
+    ],
+    "removed_classes": [
+      "TestAdjustPhase",
+      "TestPromptContext",
+      "TestPlanPhase",
+      "TestCheckPhase",
+      "TestDoPhase",
+      "TestDiscoveryPhase",
+      "TestActPhase"
+    ],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestMCPPrompt": [
+        "test_successful_execution",
+        "test_error_handling"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_mcp_server.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "test_context"
+    ],
+    "classes": [
+      "TestContext",
+      "TestMCPServer"
+    ]
+  },
+  {
+    "path": "tests/test_mcp_stdio_probe.py",
+    "status": "new_file",
+    "comma_corruptions": [],
+    "functions": [
+      "test_mcp_stdio_probe"
+    ],
+    "classes": []
+  },
+  {
+    "path": "tests/test_model_generator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_module.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_module_constraints.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [
+      "ModuleConstraints",
+      "ConstraintViolation",
+      "ConstraintValidationResult"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestModuleConstraints": [
+        "test_update_module_constraints"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_modules/test_error_handling.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestErrorHandler": [
+        "test_validate_risk_assessment",
+        "test_validate_sensitive_data"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_namespace_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_validate_uri",
+      "test_generate_analysis_report",
+      "test_save_analysis_report",
+      "test_parse_inventory",
+      "test_malformed_uris"
+    ],
+    "added_classes": [
+      "TestNamespaceDependencyAnalyzer"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_namespace_dependency_mapper.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_save_migration_plan",
+      "test_parse_inventory",
+      "test_generate_migration_plan"
+    ],
+    "added_classes": [
+      "TestNamespaceDependencyMapper"
+    ],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_namespace_recovery.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_ontologies/conftest.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_ontologies/test_ontology_error_handling.py",
+    "added_functions": [
+      "test_validation_rules_defined",
+      "test_error_ontology_validation",
+      "test_error_types_defined"
+    ],
+    "removed_functions": [
+      "test_validation_rules",
+      "test_error_types_exist",
+      "test_error_handling_steps",
+      "test_shacl_validation"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_ontology_consistency.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 207,
+        "line": "        self.assertTrue(found_subclass, \"rdfs:subClassOf metadata not found\")"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_ontology_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_ontology_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_oracle_rdf.py",
+    "added_functions": [],
+    "removed_functions": [
+      "tearDownClass",
+      "setUp",
+      "test_semantic_network_creation",
+      "test_semantic_model_creation"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "tests/test_patch_management.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_patch_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_pdca_model_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_pdf_processor.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_prefix_map.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_python_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_reasoner.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_repository_management.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_runtime_error_handling.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true,
+    "removed_methods": {
+      "TestRuntimeErrorHandling": [
+        "test_validation_rules_compliance",
+        "test_error_handling_constraints",
+        "test_error_classification_accuracy",
+        "test_compliance_standards_validation",
+        "test_error_handling_steps",
+        "test_confusion_matrix_confidence_intervals",
+        "test_error_handling_traceability",
+        "test_error_type_hierarchy",
+        "test_enhanced_confusion_matrix_validation",
+        "test_error_handling_metrics",
+        "test_error_handling_assumptions",
+        "test_error_documentation_requirements",
+        "test_error_handling_validation",
+        "test_error_prevention_measures",
+        "test_error_handling_compliance",
+        "test_error_handling_security",
+        "test_confusion_matrix_version_control",
+        "test_test_error_handling_steps",
+        "test_confusion_matrix_cross_validation",
+        "test_error_recovery_strategy",
+        "test_test_error_handling_process",
+        "test_confusion_matrix_temporal_validation",
+        "test_error_handling_performance",
+        "test_error_handling_process",
+        "test_error_handling_risks",
+        "test_error_property_validation",
+        "test_error_handling_integration"
+      ]
+    }
+  },
+  {
+    "path": "tests/test_semantic_equivalence.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_session_update.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_sparql_client.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_sparql_operations.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_sparql_patterns.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_spore_integration.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_spore_validation.py",
+    "added_functions": [
+      "create_integrator_with_data",
+      "validator"
+    ],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_test_coverage.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_test_coverage_dependency_analyzer.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_test_inference.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_validation_handler.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_validation_telemetry.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/test_validator.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/tools/test_validation_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/tools/test_validation_ontology_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/unit/core/test_ontology_types.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/utils/mock_graphdb.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 114,
+        "line": "                        # Get the file, path from, the Content-Disposition, header"
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/utils/test_monitoring.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [
+      {
+        "message": "Comma after keyword 'class'",
+        "lineno": 12,
+        "line": "from dataclasses import dataclass, field"
+      },
+      {
+        "message": "Comma after keyword 'from'",
+        "lineno": 51,
+        "line": "        \"\"\"Get, logs from, the GraphDB, server."
+      }
+    ],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validate_all.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validate_coverage.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validation/test_guidance_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validation/test_ontology_types_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validation/test_pattern_manager.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "tests/validation/test_validation_handler.py",
+    "added_functions": [],
+    "removed_functions": [
+      "test_validate_structural_with_invalid_data",
+      "test_get_validation_targets",
+      "test_validate_semantic_with_invalid_data",
+      "test_validate_shacl_with_invalid_data",
+      "test_get_validation_messages"
+    ],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": true
+  },
+  {
+    "path": "ttl_validation_example.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "turtle_validation.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_docker_compose.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_installation_commands.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_markdown_with_svgs.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_mcp_config.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_shacl_and_reload.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "update_shacl_constraints.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_all_modules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_guidance_modules.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_ontologies.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_shapes.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_turtle.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "validate_updated_guidance.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  },
+  {
+    "path": "visualize_ontology.py",
+    "added_functions": [],
+    "removed_functions": [],
+    "added_classes": [],
+    "removed_classes": [],
+    "comma_corruptions": [],
+    "functional_loss": false
+  }
+]
