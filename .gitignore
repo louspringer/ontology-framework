@@ -201,6 +201,3 @@ miniconda.sh
 graphdb.index
 *.bak
 *.backup
-chrome/*/**
-chromedriver/*/**
-~/*/**
