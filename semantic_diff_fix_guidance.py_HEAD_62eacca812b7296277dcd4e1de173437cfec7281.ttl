@@ -1,0 +1,172 @@
+@prefix code: <http://example.org/code#> .
+@prefix diff: <http://example.org/diff#> .
+@prefix func: <http://example.org/function#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/diff/HEAD_62eacca812b7296277dcd4e1de173437cfec7281/fix_guidance.py> a diff:FileDiff ;
+    diff:compares <http://example.org/file/fix_guidance.py> ;
+    diff:fromCommit "HEAD" ;
+    diff:hasFunctionalLoss true ;
+    diff:hasLoss [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: validate_ontology" ],
+        [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: load_ontology" ],
+        [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: add_correct_triple" ],
+        [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: save_ontology" ],
+        [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: fix_guidance_ontology" ],
+        [ a diff:FunctionLoss ;
+            rdfs:label "Lost function: remove_incorrect_triple" ] ;
+    diff:toCommit "62eacca812b7296277dcd4e1de173437cfec7281" .
+
+<http://example.org/file/fix_guidance.py#add_correct_triple> a func:Function ;
+    rdfs:label "add_correct_triple" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasArgument [ a func:Argument ;
+            rdfs:label "subject" ],
+        [ a func:Argument ;
+            rdfs:label "predicate" ],
+        [ a func:Argument ;
+            rdfs:label "predicate" ],
+        [ a func:Argument ;
+            rdfs:label "object_value" ],
+        [ a func:Argument ;
+            rdfs:label "datatype" ],
+        [ a func:Argument ;
+            rdfs:label "object_value" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "datatype" ],
+        [ a func:Argument ;
+            rdfs:label "subject" ] ;
+    func:hasDocstring "Add correct triple to graph with datatype." ;
+    func:lineNumber 31 .
+
+<http://example.org/file/fix_guidance.py#fix_guidance_ontology> a func:Function ;
+    rdfs:label "fix_guidance_ontology" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasDocstring "Fix guidance ontology by correcting hasTarget property." ;
+    func:lineNumber 58 .
+
+<http://example.org/file/fix_guidance.py#load_ontology> a func:Function ;
+    rdfs:label "load_ontology" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasArgument [ a func:Argument ;
+            rdfs:label "file_path" ],
+        [ a func:Argument ;
+            rdfs:label "file_path" ] ;
+    func:hasDocstring "Load ontology from file." ;
+    func:lineNumber 15 .
+
+<http://example.org/file/fix_guidance.py#remove_incorrect_triple> a func:Function ;
+    rdfs:label "remove_incorrect_triple" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasArgument [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "subject" ],
+        [ a func:Argument ;
+            rdfs:label "predicate" ],
+        [ a func:Argument ;
+            rdfs:label "subject" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "predicate" ] ;
+    func:hasDocstring "Remove incorrect triple from graph." ;
+    func:lineNumber 25 .
+
+<http://example.org/file/fix_guidance.py#save_ontology> a func:Function ;
+    rdfs:label "save_ontology" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasArgument [ a func:Argument ;
+            rdfs:label "file_path" ],
+        [ a func:Argument ;
+            rdfs:label "file_path" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ] ;
+    func:hasDocstring "Save ontology to file." ;
+    func:lineNumber 49 .
+
+<http://example.org/file/fix_guidance.py#validate_ontology> a func:Function ;
+    rdfs:label "validate_ontology" ;
+    func:definedIn <http://example.org/file/fix_guidance.py> ;
+    func:hasArgument [ a func:Argument ;
+            rdfs:label "graph" ],
+        [ a func:Argument ;
+            rdfs:label "graph" ] ;
+    func:hasDocstring "Validate ontology using PyShacl." ;
+    func:lineNumber 36 .
+
+<http://example.org/file/fix_guidance.py> a code:PythonFile ;
+    rdfs:label "fix_guidance.py" ;
+    code:hasFunction <http://example.org/file/fix_guidance.py#add_correct_triple>,
+        <http://example.org/file/fix_guidance.py#fix_guidance_ontology>,
+        <http://example.org/file/fix_guidance.py#load_ontology>,
+        <http://example.org/file/fix_guidance.py#remove_incorrect_triple>,
+        <http://example.org/file/fix_guidance.py#save_ontology>,
+        <http://example.org/file/fix_guidance.py#validate_ontology> ;
+    code:hasImport [ a code:Import ;
+            rdfs:label "pathlib.Path" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.RDF" ],
+        [ a code:Import ;
+            rdfs:label "pyshacl.validate" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Namespace" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.RDF" ],
+        [ a code:Import ;
+            rdfs:label "pyshacl.validate" ],
+        [ a code:Import ;
+            rdfs:label "rdflib" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Namespace" ],
+        [ a code:Import ;
+            rdfs:label "rdflib" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.namespace.RDFS" ],
+        [ a code:Import ;
+            rdfs:label "pathlib.Path" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.URIRef" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Graph" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.XSD" ],
+        [ a code:Import ;
+            rdfs:label "logging" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Graph" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.XSD" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.namespace.RDFS" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Literal" ],
+        [ a code:Import ;
+            rdfs:label "logging" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.namespace.OWL" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.namespace.OWL" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.URIRef" ],
+        [ a code:Import ;
+            rdfs:label "rdflib.Literal" ] ;
+    code:hasSyntaxError [ a code:SyntaxError ;
+            rdfs:label "invalid syntax (<unknown>, line 7)" ;
+            code:lineNumber 7 ],
+        [ a code:SyntaxError ;
+            rdfs:label "invalid syntax (<unknown>, line 7)" ;
+            code:lineNumber 7 ] ;
+    code:path "fix_guidance.py" .
+

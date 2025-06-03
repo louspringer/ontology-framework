@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-""""Semantic Diff Analyzer
+"""Semantic Diff Analyzer
 
-is script builds a model from semantic comparison of individual Python code artifacts
-tween the HEAD of the current branch and 'main', focusing on detecting syntax corruption
-om misplaced commas and analyzing functional loss caused by repository cleanup.
+This script builds a model from semantic comparison of individual Python code artifacts
+between the HEAD of the current branch and 'main', focusing on detecting syntax corruption
+from misplaced commas and analyzing functional loss caused by repository cleanup.
 
-nerated following ontology framework rules and ClaudeReflector constraints
-tology-Version: 1.0.0
-havioral-Profile: ClaudeReflector
-""""""
+Generated following ontology framework rules and ClaudeReflector constraints
+Ontology-Version: 1.0.0
+Behavioral-Profile: ClaudeReflector
+"""
 
 
 import os
@@ -77,7 +77,8 @@ class FunctionSignature:
             if default:
                 graph.add((kwarg_node, FUNC.hasDefault, Literal(default)))
             graph.add((func_uri, FUNC.hasKeywordArgument, kwarg_node))
-        decorators:
+        
+        for decorator in self.decorators:
             dec_node = BNode()
             graph.add((dec_node, RDF.type, FUNC.Decorator))
             graph.add((dec_node, RDFS.label, Literal(decorator)))
@@ -280,7 +281,16 @@ class SemanticDiffAnalyzer:
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef) or isinstance(node, ast.AsyncFunctionDef):
                     # Skip methods (they'll be handled with classes)
-                    if not any(isinstance(parent, ast.ClassDef) for parent in ast.iter_parents(tree, node)):
+                    # Check if this function is a method of a class
+                    is_method = False
+                    for potential_class in ast.walk(tree):
+                        if isinstance(potential_class, ast.ClassDef):
+                            for item in potential_class.body:
+                                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) and item.name == node.name:
+                                    is_method = True
+                                    break
+                    
+                    if not is_method:
                         docstring = ast.get_docstring(node)
                         
                         # Get arguments
