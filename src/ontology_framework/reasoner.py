@@ -5,7 +5,18 @@ from pathlib import Path
 from datetime import datetime
 import logging
 import re
-from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD, SH, Node
+from rdflib import (
+    Graph,
+    URIRef,
+    Literal,
+    BNode,
+    Namespace,
+    RDF,
+    RDFS,
+    OWL,
+    XSD,
+    SH
+)
 from rdflib.namespace import NamespaceManager
 from rdflib.query import Result, ResultRow
 from .exceptions import ReasonerError
@@ -18,7 +29,7 @@ class ReasonerResult:
     def __init__(
         self,
         success: bool,
-        inferred_triples: List[Tuple[Union[URIRef, BNode, Node], URIRef, Union[URIRef, Literal, BNode]]],
+        inferred_triples: List[Tuple[Union[URIRef, BNode], URIRef, Union[URIRef, Literal, BNode]]],
         warnings: List[str],
         errors: List[str],
         execution_time: float,
@@ -95,7 +106,7 @@ class OntologyReasoner:
             Reasoner result containing inferred triples and messages
         """
         start_time = datetime.now()
-        inferred_triples: List[Tuple[Union[URIRef, BNode, Node], URIRef, Union[URIRef, Literal, BNode]]] = []
+        inferred_triples: List[Tuple[Union[URIRef, BNode], URIRef, Union[URIRef, Literal, BNode]]] = []
         warnings: List[str] = []
         errors: List[str] = []
         
@@ -136,7 +147,7 @@ class OntologyReasoner:
                 timestamp=start_time
             )
             
-    def _apply_owl_rules(self, inferred_triples: List[Tuple[Union[URIRef, BNode, Node], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
+    def _apply_owl_rules(self, inferred_triples: List[Tuple[Union[URIRef, BNode], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
         """Apply OWL reasoning rules.
         
         Args:
@@ -160,7 +171,7 @@ class OntologyReasoner:
                 for s, p, o in self.graph.triples((None, prop, None)):
                     inferred_triples.append((o, inv_prop, s))
                     
-    def _apply_shacl_rules(self, inferred_triples: List[Tuple[Union[URIRef, BNode, Node], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
+    def _apply_shacl_rules(self, inferred_triples: List[Tuple[Union[URIRef, BNode], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
         """Apply SHACL reasoning rules.
         
         Args:
@@ -203,7 +214,7 @@ class OntologyReasoner:
                                     if isinstance(value, Literal) and value.datatype != datatype:
                                         warnings.append(f"Value {value} has incorrect datatype for {path}")
                                         
-    def _apply_custom_rules(self, rules: List[str], inferred_triples: List[Tuple[Union[URIRef, BNode, Node], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
+    def _apply_custom_rules(self, rules: List[str], inferred_triples: List[Tuple[Union[URIRef, BNode], URIRef, Union[URIRef, Literal, BNode]]], warnings: List[str]) -> None:
         """Apply custom reasoning rules.
         
         Args:
@@ -233,53 +244,103 @@ class OntologyReasoner:
                     warnings.append(f"Invalid conclusion in rule: {conclusion}")
                     continue
                     
-                # Find matches for condition
-                for s, p, o in self.graph.triples((None, None, None)):
-                    if str(p) == condition_parts[1]:
-                        # Create conclusion triple
-                        if conclusion_parts[0] == "?x":
-                            subject: Union[URIRef, BNode, Node] = s
-                        else:
-                            subject = URIRef(conclusion_parts[0])
-                            
-                        predicate = URIRef(conclusion_parts[1])
-                        
-                        # Handle object based on its type
-                        if conclusion_parts[2].startswith('"') and conclusion_parts[2].endswith('"'):
-                            obj: Union[URIRef, Literal, BNode] = Literal(conclusion_parts[2][1:-1])
-                        else:
-                            obj = URIRef(conclusion_parts[2])
-                            
-                        inferred_triples.append((subject, predicate, obj))
-                        
+                # Apply rule (simplified implementation)
+                cond_s, cond_p, cond_o = condition_parts
+                conc_s, conc_p, conc_o = conclusion_parts
+                
+                # Convert string patterns to URIRefs or literals
+                for s, p, o in self.graph.triples((
+                    URIRef(cond_s) if cond_s.startswith("http") else None,
+                    URIRef(cond_p) if cond_p.startswith("http") else None,
+                    URIRef(cond_o) if cond_o.startswith("http") else None
+                )):
+                    # Add conclusion triple
+                    new_s = URIRef(conc_s) if conc_s.startswith("http") else s
+                    new_p = URIRef(conc_p) if conc_p.startswith("http") else p
+                    new_o = URIRef(conc_o) if conc_o.startswith("http") else o
+                    inferred_triples.append((new_s, new_p, new_o))
+                    
             except Exception as e:
-                warnings.append(f"Failed to apply custom rule: {str(e)}")
+                warnings.append(f"Error applying custom rule '{rule}': {str(e)}")
                 
     def validate(self) -> Dict[str, Union[bool, List[str]]]:
-        """Validate the ontology using SHACL.
+        """Validate the ontology for consistency.
         
         Returns:
-            Dictionary with validation results
+            Dictionary containing validation results
         """
-        issues = []
-        is_valid = True
+        validation_results = {
+            "is_consistent": True,
+            "errors": [],
+            "warnings": []
+        }
         
-        # Check for undefined classes
-        for class_uri in self.graph.subjects(RDF.type, OWL.Class):
-            if not any(self.graph.triples((class_uri, RDFS.subClassOf, None))):
-                is_valid = False
-                issues.append(f"Class has no superclass: {class_uri}")
+        try:
+            # Check for basic consistency violations
+            # Check for class cycles
+            for cls in self.graph.subjects(RDF.type, OWL.Class):
+                if self._has_class_cycle(cls):
+                    validation_results["is_consistent"] = False
+                    validation_results["errors"].append(f"Class cycle detected involving {cls}")
+                    
+            # Check for property domain/range violations
+            for prop in self.graph.subjects(RDF.type, OWL.ObjectProperty):
+                domain = self.graph.value(prop, RDFS.domain)
+                range_val = self.graph.value(prop, RDFS.range)
                 
-        # Check for undefined properties
-        for prop in self.graph.subjects(RDF.type, OWL.DatatypeProperty):
-            if not any(self.graph.triples((prop, RDFS.domain, None))):
-                is_valid = False
-                issues.append(f"Property has no domain: {prop}")
-            if not any(self.graph.triples((prop, RDFS.range, None))):
-                is_valid = False
-                issues.append(f"Property has no range: {prop}")
+                if domain and range_val:
+                    for s, p, o in self.graph.triples((None, prop, None)):
+                        # Check domain constraint
+                        if not list(self.graph.triples((s, RDF.type, domain))):
+                            validation_results["warnings"].append(
+                                f"Subject {s} of property {prop} may not satisfy domain constraint {domain}"
+                            )
+                        # Check range constraint
+                        if not list(self.graph.triples((o, RDF.type, range_val))):
+                            validation_results["warnings"].append(
+                                f"Object {o} of property {prop} may not satisfy range constraint {range_val}"
+                            )
+            
+            # Check for undefined properties without domains or ranges
+            issues = []
+            for prop in self.graph.subjects(RDF.type, OWL.DatatypeProperty):
+                if not any(self.graph.triples((prop, RDFS.domain, None))):
+                    validation_results["is_consistent"] = False
+                    issues.append(f"Property has no domain: {prop}")
+                if not any(self.graph.triples((prop, RDFS.range, None))):
+                    validation_results["is_consistent"] = False
+                    issues.append(f"Property has no range: {prop}")
+                             
+        except Exception as e:
+            validation_results["is_consistent"] = False
+            validation_results["errors"].append(f"Validation error: {str(e)}")
+            
+        # For backward compatibility, add the old keys
+        validation_results["is_valid"] = validation_results["is_consistent"]
+        validation_results["issues"] = validation_results["errors"] + validation_results["warnings"] + (issues if 'issues' in locals() else [])
+            
+        return validation_results
+        
+    def _has_class_cycle(self, cls: URIRef, visited: Optional[set] = None) -> bool:
+        """Check if a class has a cycle in its subclass hierarchy.
+        
+        Args:
+            cls: Class to check for cycles
+            visited: Set of already visited classes
+            
+        Returns:
+            True if a cycle is detected
+        """
+        if visited is None:
+            visited = set()
+            
+        if cls in visited:
+            return True
+            
+        visited.add(cls)
+        
+        for _, _, superclass in self.graph.triples((cls, RDFS.subClassOf, None)):
+            if self._has_class_cycle(superclass, visited.copy()):
+                return True
                 
-        return {
-            "is_valid": is_valid,
-            "issues": issues
-        } 
+        return False 

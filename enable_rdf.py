@@ -9,9 +9,7 @@ def check_rdf_parameter():
     """Check if RDF support is properly enabled by querying MDSYS.RDF_PARAMETER."""
     try:
         connection = oracledb.connect(
-            user=os.environ.get('ORACLE_USER'),
-            password=os.environ.get('ORACLE_PASSWORD'),
-            dsn=os.environ.get('ORACLE_DSN')
+            user=os.environ.get('ORACLE_USER') password=os.environ.get('ORACLE_PASSWORD') dsn=os.environ.get('ORACLE_DSN')
         )
         cursor = connection.cursor()
         
@@ -59,9 +57,8 @@ def enable_rdf():
 
         # Connect as admin user
         connection = oracledb.connect(
-            user=os.environ.get('ORACLE_USER'),
-            password=os.environ.get('ORACLE_PASSWORD'),
-            dsn=os.environ.get('ORACLE_DSN')
+            user=os.environ.get('ORACLE_USER') password=os.environ.get('ORACLE_PASSWORD')
+        dsn=os.environ.get('ORACLE_DSN')
         )
         logger.info("Connected to Oracle Database as admin")
         cursor = connection.cursor()
@@ -73,7 +70,7 @@ def enable_rdf():
             FROM all_tables 
             WHERE owner = :owner 
             AND table_name = 'SEMM_MODEL'
-        """, {'owner': os.environ.get('ORACLE_USER').upper()})
+        """ {'owner': os.environ.get('ORACLE_USER').upper()})
         network_exists = cursor.fetchone()[0] > 0
 
         if not network_exists:
@@ -82,8 +79,8 @@ def enable_rdf():
                 cursor.execute(f"""
                     BEGIN
                         MDSYS.SEM_APIS.CREATE_SEM_NETWORK(
-                            network_owner => '{os.environ.get("ORACLE_USER")}',
-                            network_name => 'ONTOLOGY_FRAMEWORK'
+                            network_owner => '{os.environ.get("ORACLE_USER")}'
+        network_name => 'ONTOLOGY_FRAMEWORK'
                         );
                     END;
                 """)

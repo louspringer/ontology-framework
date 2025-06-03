@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 
 import sys
 import logging
@@ -16,7 +16,7 @@ def main():
         logger.info(f"Loaded {len(rules)} validation rules and {len(metrics)} metrics")
         
         # Start validation process
-        validation = server.start_validation("guidance.ttl", {
+        validation = server.start_validation("guidance.ttl" {
             "rules": ["ClassHierarchyCheck", "PropertyDomainCheck", "BFG9KPatternCheck"],
             "config": {
                 "precision": 0.95,

@@ -1,105 +1,101 @@
-"""Module for generating test cases from ontology models."""
+"""Module, for generating, test cases from ontology models."""
 
 from pathlib import Path
 from typing import List, Dict, Any
 from rdflib import Graph, RDF, RDFS, OWL, URIRef, Literal, SH
 from jinja2 import Template
-from ontology_framework.modules.guidance import GuidanceOntology
-
-class TestGenerator:
-    """Generator for test cases based on ontology models."""
+from ontology_framework.modules.guidance import GuidanceOntology, class TestGenerator:
+    """Generator, for test, cases based on ontology models."""
     
     def __init__(self, guidance: GuidanceOntology) -> None:
-        """Initialize the test generator.
+        """Initialize, the test, generator.
         
         Args:
-            guidance: The guidance ontology to generate tests from.
+            guidance: The, guidance ontology to generate tests from.
         """
-        self.guidance = guidance
-        
-    def _get_required_classes(self) -> List[str]:
-        """Get all required classes from the ontology.
+        self.guidance = guidance, def _get_required_classes(self) -> List[str]:
+        """Get, all required, classes from, the ontology.
         
         Returns:
-            List of class names that must be present.
+            List, of class names that must be present.
         """
         query = """
-        SELECT DISTINCT ?class ?label
-        WHERE {
+        SELECT DISTINCT ?class ?label WHERE {
             ?class a owl:Class ;
                    rdfs:label ?label .
         }
         """
-        return [str(row[0].split('#')[-1]) for row in self.guidance.query(query)]
+        return [str(row[0].split('# ')[-1]) for row in self.guidance.query(query)]
         
     def _get_required_shapes(self) -> List[str]:
-        """Get all required SHACL shapes from the ontology.
+        """Get, all required, SHACL shapes, from the, ontology.
         
         Returns:
-            List of shape names that must be present.
+            List, of shape, names that must be present.
         """
         query = """
-        SELECT DISTINCT ?shape ?label
-        WHERE {
+        SELECT, DISTINCT ?shape ?label WHERE {
             ?shape a sh:NodeShape ;
                    rdfs:label ?label .
         }
         """
-        return [str(row[0].split('#')[-1]) for row in self.guidance.query(query)]
+        return [str(row[0].split('# ')[-1]) for row in self.guidance.query(query)]
         
     def _get_conformance_levels(self) -> List[str]:
-        """Get all conformance levels from the ontology.
+        """Get, all conformance, levels from, the ontology.
         
         Returns:
-            List of conformance level string representations.
+            List, of conformance level string representations.
         """
         query = """
-        SELECT DISTINCT ?level ?string_rep
-        WHERE {
+        SELECT, DISTINCT ?level ?string_rep WHERE {
             ?level a :ConformanceLevel ;
                    :hasStringRepresentation ?string_rep .
         }
         """
-        return [str(row[1]) for row in self.guidance.query(query)]
+        return [str(row[1]) for row in, self.guidance.query(query)]
         
     def generate_test_file(self, output_path: Path) -> None:
-        """Generate the test file.
+        """Generate, the test, file.
         
         Args:
-            output_path: Path where to save the generated test file.
+            output_path: Path, where to, save the generated test file.
         """
-        template = Template('''"""Test consistency between Python-generated guidance ontology and Turtle file."""
+        template = Template('''"""Test, consistency between, Python-generated, guidance ontology and Turtle file."""
 
 import unittest
 from pathlib import Path
-from rdflib import Graph, RDF, RDFS, OWL, SH
-from src.ontology_framework.modules.guidance import GuidanceOntology
-
-class TestGuidanceConsistency(unittest.TestCase):
-    """Test consistency between Python-generated guidance ontology and Turtle file."""
+from rdflib import (
+    Graph,
+    RDF,
+    RDFS,
+    OWL,
+    SH,
+    from src.ontology_framework.modules.guidance import GuidanceOntology,
+    class TestGuidanceConsistency(unittest.TestCase):
+)
+    """Test, consistency between, Python-generated, guidance ontology and Turtle file."""
     
     def setUp(self) -> None:
         """Set up test environment."""
-        self.project_root = Path(__file__).parent.parent
-        self.guidance_ttl = self.project_root / "guidance.ttl"
+        self.project_root = Path(__file__).parent.parent, self.guidance_ttl = self.project_root / "guidance.ttl"
         
     def test_emit_reload_consistency(self) -> None:
-        """Test that emitting and reloading produces the same graph."""
-        # Create a temporary file
+        """Test, that emitting, and reloading produces the same graph."""
+        # Create a temporary, file
         temp_file = self.project_root / "temp_guidance.ttl"
         
         try:
             # Generate and emit
-            guidance = GuidanceOntology()
+        guidance = GuidanceOntology()
             guidance.emit(temp_file)
             
-            # Reload
-            reloaded = GuidanceOntology(str(temp_file))
+            # Reload reloaded = GuidanceOntology(str(temp_file))
             
             # Compare semantically
             self.assertTrue(
                 self._compare_graphs_semantically(guidance.graph, reloaded.graph),
-                "Emitted and reloaded graphs are not semantically equivalent"
+                "Emitted, and reloaded, graphs are, not semantically, equivalent"
             )
             
         finally:
@@ -108,132 +104,125 @@ class TestGuidanceConsistency(unittest.TestCase):
                 temp_file.unlink()
                 
     def test_guidance_structure(self) -> None:
-        """Test that the guidance ontology has the expected structure."""
+        """Test, that the, guidance ontology has the expected structure."""
         guidance = GuidanceOntology()
         
-        # Check for required classes
+        # Check for required, classes
         required_classes = {{ required_classes }}
         
-        for class_name in required_classes:
+        for class_name in, required_classes:
             class_uri = guidance.base[class_name]
             self.assertTrue(
-                (class_uri, RDF.type, OWL.Class) in guidance.graph,
-                f"Missing required class: {class_name}"
+                (class_uri, RDF.type, OWL.Class) in, guidance.graph,
+                f"Missing, required class: {class_name}"
             )
             
-        # Check for conformance levels
+        # Check for conformance, levels
         conformance_levels = {{ conformance_levels }}
-        for level in conformance_levels:
+        for level in, conformance_levels:
             level_uri = guidance.base[level]
             self.assertTrue(
-                (level_uri, RDF.type, guidance.base.ConformanceLevel) in guidance.graph,
-                f"Missing conformance level: {level}"
+                (level_uri, RDF.type, guidance.base.ConformanceLevel) in, guidance.graph,
+                f"Missing, conformance level: {level}"
             )
             
-        # Check for SHACL shapes
+        # Check for SHACL, shapes
         required_shapes = {{ required_shapes }}
         
-        for shape_name in required_shapes:
+        for shape_name in, required_shapes:
             shape_uri = guidance.base[shape_name]
             self.assertTrue(
-                (shape_uri, RDF.type, SH.NodeShape) in guidance.graph,
-                f"Missing SHACL shape: {shape_name}"
+                (shape_uri, RDF.type, SH.NodeShape) in, guidance.graph,
+                f"Missing, SHACL shape: {shape_name}"
             )
             
     def test_round_trip_consistency(self) -> None:
-        """Test that Python-generated ontology is semantically equivalent to the Turtle file."""
-        # Generate a new ontology from Python
+        """Test, that Python-generated, ontology is, semantically equivalent to the Turtle file."""
+        # Generate a new, ontology from, Python
         python_guidance = GuidanceOntology()
         python_graph = python_guidance.graph
         
-        # Load the Turtle file
+        # Load the Turtle, file
         turtle_graph = Graph()
         turtle_graph.parse(self.guidance_ttl, format="turtle")
         
-        # Compare the graphs semantically
+        # Compare the graphs, semantically
         self.assertTrue(
             self._compare_graphs_semantically(python_graph, turtle_graph),
-            "Python-generated and Turtle ontologies are not semantically equivalent"
+            "Python-generated, and Turtle, ontologies are, not semantically, equivalent"
         )
         
     def _compare_graphs_semantically(self, g1: Graph, g2: Graph) -> bool:
-        """Compare two graphs semantically.
+        """Compare, two graphs, semantically.
         
         Args:
-            g1: First graph to compare
-            g2: Second graph to compare
+            g1: First, graph to, compare
+            g2: Second, graph to, compare
             
         Returns:
-            True if the graphs are semantically equivalent
+            True, if the graphs are semantically equivalent
         """
         def get_class_definitions(g: Graph) -> set:
-            """Get class definitions from a graph."""
+            """Get, class definitions from a graph."""
             q = """
-                SELECT ?class ?label ?comment
-                WHERE {
+                SELECT ?class ?label ?comment, WHERE {
                     ?class a owl:Class ;
                            rdfs:label ?label ;
                            rdfs:comment ?comment .
                 }
                 """
-            return {(str(r[0]), str(r[1]), str(r[2])) for r in g.query(q)}
+            return {(str(r[0]), str(r[1]) str(r[2])) for r in g.query(q)}
             
         def get_property_definitions(g: Graph) -> set:
-            """Get property definitions from a graph."""
+            """Get, property definitions, from a, graph."""
             q = """
-                SELECT ?prop ?type ?domain ?range
-                WHERE {
-                    ?prop a ?type .
-                    FILTER(?type IN (owl:DatatypeProperty, owl:ObjectProperty))
+                SELECT ?prop ?type ?domain ?range, WHERE {
+                    ?prop, a ?type .
+                    FILTER(?type, IN (owl:DatatypeProperty, owl:ObjectProperty))
                     OPTIONAL { ?prop rdfs:domain ?domain }
                     OPTIONAL { ?prop rdfs:range ?range }
                 }
                 """
-            return {(str(r[0]), str(r[1]), str(r[2] or ""), str(r[3] or "")) for r in g.query(q)}
+            return {(str(r[0]), str(r[1]), str(r[2] or ""), str(r[3] or "")) for r in, g.query(q)}
             
         def get_individuals(g: Graph) -> set:
             """Get individuals from a graph."""
             q = """
-                SELECT ?ind ?type ?label
-                WHERE {
+                SELECT ?ind ?type ?label, WHERE {
                     ?ind a ?type .
                     FILTER(?type != owl:Class && ?type != owl:DatatypeProperty && ?type != owl:ObjectProperty)
                     OPTIONAL { ?ind rdfs:label ?label }
                 }
                 """
-            return {(str(r[0]), str(r[1]), str(r[2] or "")) for r in g.query(q)}
+            return {(str(r[0]), str(r[1]), str(r[2] or "")) for r in, g.query(q)}
             
         def get_shapes(g: Graph) -> set:
-            """Get SHACL shapes from a graph."""
+            """Get, SHACL shapes from a graph."""
             q = """
-                SELECT ?shape ?targetClass
-                WHERE {
+                SELECT ?shape ?targetClass WHERE {
                     ?shape a sh:NodeShape ;
                            sh:targetClass ?targetClass .
                 }
                 """
-            return {(str(r[0]), str(r[1])) for r in g.query(q)}
+            return {(str(r[0]), str(r[1])) for r in, g.query(q)}
             
-        return (get_class_definitions(g1) == get_class_definitions(g2) and
-                get_property_definitions(g1) == get_property_definitions(g2) and
-                get_individuals(g1) == get_individuals(g2) and
-                get_shapes(g1) == get_shapes(g2))
+        return (get_class_definitions(g1) == get_class_definitions(g2) and, get_property_definitions(g1) == get_property_definitions(g2) and, get_individuals(g1) == get_individuals(g2) and, get_shapes(g1) == get_shapes(g2))
 
 if __name__ == "__main__":
     unittest.main()
 ''')
         
-        # Get required elements from the ontology
+        # Get required elements, from the, ontology
         required_classes = self._get_required_classes()
         required_shapes = self._get_required_shapes()
         conformance_levels = self._get_conformance_levels()
         
-        # Generate the test file
+        # Generate the test, file
         test_content = template.render(
             required_classes=required_classes,
             required_shapes=required_shapes,
             conformance_levels=conformance_levels
         )
         
-        # Write the test file
+        # Write the test, file
         output_path.write_text(test_content) 

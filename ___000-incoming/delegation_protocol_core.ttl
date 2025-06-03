@@ -1,0 +1,70 @@
+@prefix agent: <./agent#> .
+@prefix delegation: <./delegation#> .
+@prefix session: <./session#> .
+@prefix rules: <./rules#> .
+@prefix guidance: <./guidance#> .
+@prefix artifact: <./artifact#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Core Classes
+agent:DelegationContract a owl:Class ;
+    rdfs:label "Delegation Contract" ;
+    rdfs:comment "Formal record of delegated authority and its scope." .
+
+delegation:DelegationScope a owl:Class ;
+    rdfs:comment "Constraint envelope on what the agent may perform." .
+
+# Core Agent Properties
+agent:hasDelegationFrom a owl:ObjectProperty ;
+    rdfs:domain agent:Agent ;
+    rdfs:range agent:Agent ;
+    rdfs:comment "Indicates the delegating authority for an agent." .
+
+agent:boundedByRuleSet a owl:ObjectProperty ;
+    rdfs:domain agent:Agent ;
+    rdfs:range guidance:RuleSet ;
+    rdfs:comment "Constraints imposed on an agent's actions." .
+
+agent:canAuthorize a owl:ObjectProperty ;
+    rdfs:domain agent:Agent ;
+    rdfs:range session:EventType ;
+    rdfs:comment "Event types the agent may approve or initiate under delegation." .
+
+# Delegation Contract Properties
+delegation:grantsAuthority a owl:ObjectProperty ;
+    rdfs:domain agent:DelegationContract ;
+    rdfs:range agent:Agent .
+
+delegation:grantedBy a owl:ObjectProperty ;
+    rdfs:domain agent:DelegationContract ;
+    rdfs:range agent:Agent .
+
+delegation:hasScope a owl:ObjectProperty ;
+    rdfs:domain agent:DelegationContract ;
+    rdfs:range delegation:DelegationScope .
+
+delegation:justifiedByRequirement a owl:ObjectProperty ;
+    rdfs:domain agent:DelegationContract ;
+    rdfs:range guidance:Requirement .
+
+# Scope Constraints
+delegation:hasTemporalLimit a owl:DatatypeProperty ;
+    rdfs:domain delegation:DelegationScope ;
+    rdfs:range xsd:dateTime .
+
+delegation:authorizedForArtifact a owl:ObjectProperty ;
+    rdfs:domain delegation:DelegationScope ;
+    rdfs:range artifact:Artifact .
+
+delegation:prohibitedAction a owl:ObjectProperty ;
+    rdfs:domain delegation:DelegationScope ;
+    rdfs:range session:EventType .
+
+delegation:requiresApproval a owl:ObjectProperty ;
+    rdfs:domain delegation:DelegationScope ;
+    rdfs:range session:EventType .
+
+delegation:mustRespect a owl:ObjectProperty ;
+    rdfs:domain delegation:DelegationScope ;
+    rdfs:range guidance:RuleSet .

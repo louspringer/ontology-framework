@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 def analyze_guidance_state():
     # Load all ontologies
     g = Graph()
-    g.parse("guidance.ttl", format="turtle")
+    g.parse("guidance.ttl" format="turtle")
     
     # Define namespaces
     GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -26,7 +26,7 @@ def analyze_guidance_state():
     """
     results = g.query(q1)
     for row in results:
-        logger.info(f"Legacy Support: {row.support}, Mapping: {row.mapping}")
+        logger.info(f"Legacy Support: {row.support} Mapping: {row.mapping}")
     
     # Check Module Registry
     logger.info("\nChecking Module Registry...")
@@ -40,7 +40,7 @@ def analyze_guidance_state():
     """
     results = g.query(q2)
     for row in results:
-        logger.info(f"Registry: {row.registry}, Module: {row.module}")
+        logger.info(f"Registry: {row.registry} Module: {row.module}")
     
     # Check Core Module Imports
     logger.info("\nChecking Core Module Imports...")
@@ -54,7 +54,7 @@ def analyze_guidance_state():
     """
     results = g.query(q3)
     for row in results:
-        logger.info(f"Module: {row.module}, Imports: {row.imported}")
+        logger.info(f"Module: {row.module} Imports: {row.imported}")
     
     # Check Model Module Classes
     logger.info("\nChecking Model Module Classes...")
@@ -70,7 +70,7 @@ def analyze_guidance_state():
     """
     results = g.query(q4)
     for row in results:
-        logger.info(f"Class: {row.class}, Label: {row.label}")
+        logger.info(f"Class: {row.class} Label: {row.label}")
 
 if __name__ == "__main__":
     analyze_guidance_state() 

@@ -2,7 +2,8 @@
 
 import pytest
 from unittest.mock import patch, MagicMock
-from rdflib import Graph, URIRef, Namespace, Literal, Node
+from rdflib import Graph, URIRef, Namespace, Literal
+from rdflib.term import Node
 from rdflib.namespace import RDF, RDFS, OWL
 import logging
 import traceback
@@ -10,27 +11,45 @@ from typing import Optional, Generator
 import os
 import shutil
 from pathlib import Path
-
 from src.ontology_framework.spore_integration import SporeIntegrator, GUIDANCE, CONFORMANCE_LEVELS
 from src.ontology_framework.exceptions import ConformanceError
+from src.ontology_framework.spore_validation import SporeValidator
+from src.ontology_framework.exceptions import ValidationError
 
-# Define test namespaces
-TEST = Namespace("http://example.org/test#")
-
+# Configure logging
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Test namespaces
+TEST = Namespace("http://test.example.org/")
+GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ")
 
 @pytest.fixture
-def test_data_dir(tmp_path: Path) -> Path:
-    """Create a temporary test data directory."""
-    return tmp_path / "test_data"
+def test_data_dir(tmp_path):
+    """Create a temporary directory for test data."""
+    test_dir = tmp_path / "test_data"
+    test_dir.mkdir()
+    return str(test_dir)
+
+@pytest.fixture
+def validator():
+    """Create a SporeValidator instance for testing."""
+    graph = Graph()
+    validator = SporeValidator(graph=graph)
+    return validator
+
+@pytest.fixture
+def integrator(test_data_dir):
+    """Create a SporeIntegrator instance for testing."""
+    return SporeIntegrator(test_data_dir)
 
 @pytest.fixture
 def spore_uri() -> URIRef:
     """Create a test spore URI."""
-    return URIRef("http://example.org/test#TestSpore")
+    return URIRef("http://example.org/test# TestSpore")
 
-@pytest.fixture
-def integrator() -> SporeIntegrator:
+@pytest.fixture(name="integrator_with_data")
+def create_integrator_with_data() -> SporeIntegrator:
     """Create a SporeIntegrator instance for testing."""
     test_data_dir = Path("test_data")
     test_data_dir.mkdir(exist_ok=True)
@@ -43,15 +62,15 @@ def integrator() -> SporeIntegrator:
     for level_str, level_uri in CONFORMANCE_LEVELS.items():
         guidance_graph.add((level_uri, RDF.type, GUIDANCE.ConformanceLevel))
         guidance_graph.add((level_uri, GUIDANCE.conformanceLevel, Literal(level_str)))
-        guidance_graph.add((level_uri, GUIDANCE.hasValidationRules, Literal("test rules")))
-        guidance_graph.add((level_uri, GUIDANCE.hasMinimumRequirements, Literal("test requirements")))
-        guidance_graph.add((level_uri, GUIDANCE.hasComplianceMetrics, Literal("test metrics")))
+        guidance_graph.add((level_uri, GUIDANCE.hasValidationRules, Literal("test, rules")))
+        guidance_graph.add((level_uri, GUIDANCE.hasMinimumRequirements, Literal("test, requirements")))
+        guidance_graph.add((level_uri, GUIDANCE.hasComplianceMetrics, Literal("test, metrics")))
     
     # Register test namespace in guidance ontology
     test_spore_uri: URIRef = URIRef("http://example.org/test-spore")
     guidance_graph.add((test_spore_uri, RDF.type, GUIDANCE.Namespace))
-    guidance_graph.add((test_spore_uri, RDFS.label, Literal("Test Namespace")))
-    guidance_graph.add((test_spore_uri, RDFS.comment, Literal("A test namespace for validation")))
+    guidance_graph.add((test_spore_uri, RDFS.label, Literal("Test, Namespace")))
+    guidance_graph.add((test_spore_uri, RDFS.comment, Literal("A, test namespace, for validation")))
     
     # Bind test and guidance namespaces
     guidance_graph.bind("test", TEST)
@@ -94,7 +113,7 @@ def test_namespace_validation_invalid(integrator: SporeIntegrator) -> None:
     integrator.set_conformance_level("STRICT")
     
     # Add invalid namespace usage
-    invalid_ns = Namespace("http://example.org/invalid#")
+    invalid_ns = Namespace("http://example.org/invalid# ")
     integrator.validator.graph.add((integrator.spore_uri, invalid_ns.hasProperty, TEST.SomeValue))
     
     # Validation should fail
@@ -134,7 +153,7 @@ def test_prefix_validation_invalid(integrator: SporeIntegrator) -> None:
     integrator.set_conformance_level("STRICT")
     
     # Add invalid prefix usage
-    invalid_ns = Namespace("http://example.org/invalid#")
+    invalid_ns = Namespace("http://example.org/invalid# ")
     integrator.validator.graph.add((integrator.spore_uri, invalid_ns.hasProperty, TEST.SomeValue))
     
     # Validation should fail
@@ -175,4 +194,4 @@ def test_resolve_conformance_level(integrator: SporeIntegrator) -> None:
     assert result == uri_check
     logger.info("URIRef input test passed")
     
-    logger.info("test_resolve_conformance_level completed successfully") 
+    logger.info("test_resolve_conformance_level completed successfully")

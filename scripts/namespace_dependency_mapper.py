@@ -30,13 +30,16 @@ class NamespaceDependencyMapper:
     def parse_inventory(self) -> None:
         """Parse the inventory file to extract namespace definitions and usage."""
         try:
+            if not self.inventory_file.exists():
+                logging.warning(f"Inventory file {self.inventory_file} does not exist")
+                return
+                
             with open(self.inventory_file, 'r', encoding='utf-8') as f:
                 current_file = None
                 for line in f:
                     if line.startswith('## '):
                         current_file = line[3:].strip()
                         continue
-                    
                     if current_file and line.strip():
                         # Extract namespace definitions
                         for prefix, uri in self.namespace_pattern.findall(line):
@@ -70,14 +73,15 @@ class NamespaceDependencyMapper:
         ax = plt.gca()
         ax.set_facecolor('white')
         
-        pos = nx.spring_layout(self.graph)
-        nx.draw(self.graph, pos, with_labels=True, 
-                node_color='lightblue',
-                node_size=2000, 
-                font_size=8,
-                font_weight='bold',
-                edge_color='#666666',
-                width=1.5)
+        if len(self.graph.nodes()) > 0:
+            pos = nx.spring_layout(self.graph)
+            nx.draw(self.graph, pos, with_labels=True, 
+                    node_color='lightblue',
+                    node_size=2000, 
+                    font_size=8,
+                    font_weight='bold',
+                    edge_color='#666666',
+                    width=1.5)
         
         plt.title("Namespace Dependency Graph", pad=20)
         plt.savefig('docs/namespace_dependency_graph.svg', 
@@ -111,17 +115,17 @@ class NamespaceDependencyMapper:
         plan.append("## Migration Steps")
         plan.append("")
 
-        plan.append("### 1. Ontology Namespaces")
+        plan.append("## 1. Ontology Namespaces")
         for ns in sorted(ontology_ns):
             prefix, uri = ns.split(':', 1)
             plan.append(f"- Migrate `{prefix}` from `{uri}` to `https://ontologies.louspringer.com/test/`")
 
-        plan.append("\n### 2. Python Namespaces")
+        plan.append("\n## 2. Python Namespaces")
         for ns in sorted(python_ns):
             prefix, uri = ns.split(':', 1)
             plan.append(f"- Update `{prefix}` in Python scripts from `{uri}` to `https://ontologies.louspringer.com/test/`")
 
-        plan.append("\n### 3. Documentation References")
+        plan.append("\n## 3. Documentation References")
         for ns in sorted(doc_ns):
             prefix, uri = ns.split(':', 1)
             plan.append(f"- Update `{prefix}` in documentation from `{uri}` to `https://ontologies.louspringer.com/test/`")
@@ -131,6 +135,7 @@ class NamespaceDependencyMapper:
     def save_migration_plan(self, output_file: str = 'docs/namespace_migration_plan.md') -> None:
         """Save the migration plan to a file."""
         plan = self.generate_migration_plan()
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(plan)
         logging.info(f"Migration plan saved to {output_file}")

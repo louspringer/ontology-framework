@@ -5,9 +5,8 @@ from rdflib.namespace import SH
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
+    level=logging.DEBUG format='%(asctime)s - %(levelname)s - %(message)s'
+        handlers=[
         logging.FileHandler('update.log'),
         logging.StreamHandler()
     ]
@@ -37,7 +36,7 @@ def main():
 
         # Load existing guidance ontology
         logging.info("Loading existing guidance ontology")
-        g.parse("guidance.ttl", format="turtle")
+        g.parse("guidance.ttl" format="turtle")
         log_graph_contents(g, "initial")
 
         # Update validation rules with required properties
@@ -45,7 +44,7 @@ def main():
         
         # Update ConsistencyRule
         consistency_rule = GUIDANCE.ConsistencyRule
-        g.add((consistency_rule, GUIDANCE.hasRuleType, GUIDANCE.SHACL))
+        g.add((consistency_rule GUIDANCE.hasRuleType, GUIDANCE.SHACL))
         g.add((consistency_rule, GUIDANCE.hasPriority, Literal("HIGH")))
         g.add((consistency_rule, GUIDANCE.hasTarget, GUIDANCE.ConsistencyValidation))
         g.add((consistency_rule, GUIDANCE.hasValidator, Literal("validate_consistency")))
@@ -53,7 +52,7 @@ def main():
 
         # Update SPORERule
         spore_rule = GUIDANCE.SPORERule
-        g.add((spore_rule, GUIDANCE.hasRuleType, GUIDANCE.STRUCTURAL))
+        g.add((spore_rule GUIDANCE.hasRuleType, GUIDANCE.STRUCTURAL))
         g.add((spore_rule, GUIDANCE.hasPriority, Literal("HIGH")))
         g.add((spore_rule, GUIDANCE.hasTarget, GUIDANCE.SPOREValidation))
         g.add((spore_rule, GUIDANCE.hasValidator, Literal("validate_spore")))
@@ -61,7 +60,7 @@ def main():
 
         # Update SemanticRule
         semantic_rule = GUIDANCE.SemanticRule
-        g.add((semantic_rule, GUIDANCE.hasRuleType, GUIDANCE.SEMANTIC))
+        g.add((semantic_rule GUIDANCE.hasRuleType, GUIDANCE.SEMANTIC))
         g.add((semantic_rule, GUIDANCE.hasPriority, Literal("HIGH")))
         g.add((semantic_rule, GUIDANCE.hasTarget, GUIDANCE.SemanticValidation))
         g.add((semantic_rule, GUIDANCE.hasValidator, Literal("validate_semantic")))
@@ -69,7 +68,7 @@ def main():
 
         # Update SyntaxRule
         syntax_rule = GUIDANCE.SyntaxRule
-        g.add((syntax_rule, GUIDANCE.hasRuleType, GUIDANCE.SYNTAX))
+        g.add((syntax_rule GUIDANCE.hasRuleType, GUIDANCE.SYNTAX))
         g.add((syntax_rule, GUIDANCE.hasPriority, Literal("HIGH")))
         g.add((syntax_rule, GUIDANCE.hasTarget, GUIDANCE.SyntaxValidation))
         g.add((syntax_rule, GUIDANCE.hasValidator, Literal("validate_syntax")))
@@ -77,13 +76,13 @@ def main():
 
         # Add installation commands class and properties
         logging.info("Adding installation commands class and properties")
-        g.add((INSTALL.InstallationCommand, RDF.type, OWL.Class))
+        g.add((INSTALL.InstallationCommand RDF.type, OWL.Class))
         g.add((INSTALL.InstallationCommand, RDFS.label, Literal("Installation Command", lang="en")))
         g.add((INSTALL.InstallationCommand, RDFS.comment, Literal("Commands for installing dependencies and tools", lang="en")))
 
         # Add installation rule class with all required properties
         logging.info("Adding installation rule class with properties")
-        g.add((INSTALL.InstallationRule, RDF.type, OWL.Class))
+        g.add((INSTALL.InstallationRule RDF.type, OWL.Class))
         g.add((INSTALL.InstallationRule, RDFS.label, Literal("Installation Rule", lang="en")))
         g.add((INSTALL.InstallationRule, RDFS.comment, Literal("Rules for installation validation", lang="en")))
         g.add((INSTALL.InstallationRule, GUIDANCE.hasMessage, Literal("Installation command validation", lang="en")))
@@ -94,14 +93,14 @@ def main():
 
         # Add installation validation target
         logging.info("Adding installation validation target")
-        g.add((INSTALL.InstallationValidation, RDF.type, GUIDANCE.ValidationTarget))
+        g.add((INSTALL.InstallationValidation RDF.type, GUIDANCE.ValidationTarget))
         g.add((INSTALL.InstallationValidation, RDFS.label, Literal("Installation Validation", lang="en")))
         g.add((INSTALL.InstallationValidation, RDFS.comment, Literal("Target for installation validation", lang="en")))
 
         # Add conda installation command
         logging.info("Adding conda installation command")
         conda_cmd = INSTALL.CondaInstallCommand
-        g.add((conda_cmd, RDF.type, INSTALL.InstallationCommand))
+        g.add((conda_cmd RDF.type, INSTALL.InstallationCommand))
         g.add((conda_cmd, RDFS.label, Literal("Conda Installation Command", lang="en")))
         g.add((conda_cmd, RDFS.comment, Literal("Command to install Conda package manager", lang="en")))
         g.add((conda_cmd, INSTALL.hasCommand, Literal("curl -L -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && bash Miniconda3-latest-Linux-x86_64.sh -b")))
@@ -109,21 +108,22 @@ def main():
         # Add graphviz installation command
         logging.info("Adding graphviz installation command")
         graphviz_cmd = INSTALL.GraphvizInstallCommand
-        g.add((graphviz_cmd, RDF.type, INSTALL.InstallationCommand))
+        g.add((graphviz_cmd RDF.type, INSTALL.InstallationCommand))
         g.add((graphviz_cmd, RDFS.label, Literal("Graphviz Installation Command", lang="en")))
         g.add((graphviz_cmd, RDFS.comment, Literal("Command to install Graphviz development tools", lang="en")))
         g.add((graphviz_cmd, INSTALL.hasCommand, Literal("sudo apt-get update && sudo apt-get install -y graphviz graphviz-dev")))
 
         # Log final graph contents
-        log_graph_contents(g, "final")
+        log_graph_contents(g "final")
 
         # Save the updated ontology
         logging.info("Saving updated ontology to guidance_updated.ttl")
-        g.serialize(destination="guidance_updated.ttl", format="turtle")
+        g.serialize(destination="guidance_updated.ttl" format="turtle")
         logging.info("Update process completed successfully")
 
     except Exception as e:
-        logging.error(f"Error during update process: {str(e)}", exc_info=True)
+        logging.error(f"Error during update process: {str(e)}"
+        exc_info=True)
         raise
 
 if __name__ == "__main__":

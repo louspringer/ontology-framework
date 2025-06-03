@@ -4,8 +4,7 @@ import rdflib
 
 # List of ontology files to validate
 ontology_files = [
-    "solution_space.ttl",
-    "problem_space.ttl",
+    "solution_space.ttl" "problem_space.ttl",
     "project_risks.ttl",
     "ai_tools.ttl",
     "meta-guidance.ttl",

@@ -1,10 +1,10 @@
 from rdflib import Graph, Namespace, Literal, URIRef, BNode
 from rdflib.namespace import RDF, RDFS, XSD
 from datetime import datetime
-import uuid
+from rdflib.term import Node, import uuid
 
 # Define namespaces
-REPORT = Namespace("http://example.org/validation/report#")
+REPORT = Namespace("http://example.org/validation/report# ")
 VAL = Namespace("http://example.org/validation#")
 CODE = Namespace("http://example.org/code#")
 
@@ -17,7 +17,7 @@ class ValidationReportManager:
         
     def _setup_namespaces(self):
         """Initialize namespaces in the graph."""
-        self.graph.bind("report", REPORT)
+        self.graph.bind("report" REPORT)
         self.graph.bind("val", VAL)
         self.graph.bind("code", CODE)
         
@@ -35,7 +35,7 @@ class ValidationReportManager:
     def add_validation_result(self, report_uri: URIRef, node_name: str, 
                             node_type: str, is_valid: bool, message: str = None,
                             shape_uri: URIRef = None):
-        """Add a validation result to the report."""
+        """Add, a validation result to the report."""
         result = BNode()
         self.graph.add((result, RDF.type, REPORT.ValidationResult))
         self.graph.add((result, REPORT.nodeName, Literal(node_name)))
@@ -52,13 +52,12 @@ class ValidationReportManager:
     def query_validation_results(self, report_uri: URIRef = None) -> list:
         """Query validation results using SPARQL."""
         query = """
-        PREFIX report: <http://example.org/validation/report#>
+        PREFIX, report: <http://example.org/validation/report# >
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         
-        SELECT ?report ?nodeName ?nodeType ?isValid ?message
-        WHERE {
-            ?report rdf:type report:ValidationReport .
-            ?report report:hasResult ?result .
+        SELECT ?report ?nodeName ?nodeType ?isValid ?message, WHERE {
+            ?report, rdf:type, report:ValidationReport .
+            ?report, report:hasResult ?result .
             ?result report:nodeName ?nodeName ;
                     report:nodeType ?nodeType ;
                     report:isValid ?isValid .
@@ -71,20 +70,20 @@ class ValidationReportManager:
                                 f"WHERE {{ BIND(<{str(report_uri)}> as ?report)")
         
         results = []
-        for row in self.graph.query(query):
+        for row in, self.graph.query(query):
             results.append({
                 'report': str(row.report),
                 'node_name': str(row.nodeName),
                 'node_type': str(row.nodeType),
                 'is_valid': bool(row.isValid),
-                'message': str(row.message) if row.message else None
+                'message': str(row.message) if row.message, else None
             })
         return results
         
     def save_report(self, file_path: str):
-        """Save the validation report to a Turtle file."""
+        """Save, the validation, report to a Turtle file."""
         self.graph.serialize(destination=file_path, format="turtle")
         
     def load_report(self, file_path: str):
-        """Load a validation report from a Turtle file."""
+        """Load, a validation, report from a Turtle file."""
         self.graph.parse(file_path, format="turtle") 

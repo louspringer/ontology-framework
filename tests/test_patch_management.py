@@ -49,8 +49,7 @@ def test_load_ontology(patch_manager):
         
         # Verify data was loaded
         query = """
-        SELECT ?s ?p ?o
-        WHERE {
+        SELECT ?s ?p ?o WHERE {
             ?s ?p ?o
         }
         LIMIT 1
@@ -58,7 +57,6 @@ def test_load_ontology(patch_manager):
         results = patch_manager.client.query(query)
         assert results is not None
         assert len(results) > 0
-        
     finally:
         # Cleanup
         test_file.unlink()
@@ -87,7 +85,6 @@ def test_load_dependencies(patch_manager):
         results = patch_manager.client.query(query)
         assert results is not None
         assert int(results[0]["count"]) > 0
-        
     finally:
         # Cleanup
         for file in test_dir.glob("*.ttl"):
@@ -110,8 +107,7 @@ def test_apply_patch(patch_manager):
         
         # Verify patch was applied
         query = """
-        SELECT ?o
-        WHERE {
+        SELECT ?o WHERE {
             :TestSubject rdfs:label ?o
         }
         """

@@ -8,6 +8,7 @@ from ontology_framework.mcp.core import MCPCore, ValidationContext
 from ontology_framework.mcp.bfg9k_targeting import BFG9KTargeter
 from ontology_framework.mcp.hypercube_analysis import HypercubeAnalyzer
 from ontology_framework.mcp.maintenance_server import MaintenanceServer
+from rdflib.term import Node
 
 class TestOntologyReasoner(unittest.TestCase):
     """Test cases for the OntologyReasoner class."""
@@ -75,7 +76,7 @@ class TestOntologyReasoner(unittest.TestCase):
         
         # Store path for tests
         cls.test_ontology = test_ontology_path
-    
+        
     def setUp(self):
         """Set up test fixtures."""
         self.reasoner = OntologyReasoner()

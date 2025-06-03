@@ -5,13 +5,16 @@ from pathlib import Path
 import networkx as nx
 from src.ontology_framework.modules.implementation_dependency_analyzer import ImplementationDependencyAnalyzer
 
+
 @pytest.fixture
 def sample_src():
     return Path("src/ontology_framework")
 
+
 @pytest.fixture
 def analyzer(sample_src):
     return ImplementationDependencyAnalyzer(sample_src)
+
 
 def test_analyzer_initialization(analyzer):
     """Test analyzer initialization."""
@@ -19,6 +22,7 @@ def test_analyzer_initialization(analyzer):
     assert analyzer.dependency_graph is not None
     assert analyzer.module_cache == {}
     assert analyzer.class_cache == {}
+
 
 def test_module_dependencies(analyzer):
     """Test module dependency analysis."""
@@ -29,6 +33,7 @@ def test_module_dependencies(analyzer):
     assert "ontology_framework.modules" in deps
     assert "rdflib" in deps["ontology_framework.modules"]
 
+
 def test_class_dependencies(analyzer):
     """Test class dependency analysis."""
     deps = analyzer.analyze_class_dependencies()
@@ -37,6 +42,7 @@ def test_class_dependencies(analyzer):
     # Check for expected class dependencies
     assert "OntologyDependencyAnalyzer" in deps
     assert "ImplementationDependencyAnalyzer" in deps
+
 
 def test_method_dependencies(analyzer):
     """Test method dependency analysis."""
@@ -47,6 +53,7 @@ def test_method_dependencies(analyzer):
     assert "OntologyDependencyAnalyzer.build_dependency_graph" in deps
     assert "ImplementationDependencyAnalyzer.build_dependency_graph" in deps
 
+
 def test_build_dependency_graph(analyzer):
     """Test complete dependency graph construction."""
     graph = analyzer.build_dependency_graph()
@@ -56,6 +63,7 @@ def test_build_dependency_graph(analyzer):
     # Check for expected edge types
     edge_types = {data['type'] for _, _, data in graph.edges(data=True)}
     assert {'module', 'class', 'method'}.issubset(edge_types)
+
 
 def test_module_name_conversion(analyzer):
     """Test module name conversion."""

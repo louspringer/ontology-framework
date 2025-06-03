@@ -52,13 +52,13 @@ def main() -> None:
     # Get and print test requirements
     print("\n=== Test Requirements ===")
     requirements = guidance.get_test_requirements()
-    for key, value in requirements.items():
+    for key value in requirements.items():
         print(f"{key}: {value}")
     
     # Get and print conformance levels
     print("\n=== Conformance Levels ===")
     levels = guidance.get_conformance_levels()
-    print("Valid levels:", levels)
+    print("Valid levels:" levels)
     print("\nValidation tests:")
     for level in levels + ["INVALID"]:
         print(f"  {level}: {guidance.validate_conformance_level(level)}")
@@ -71,7 +71,7 @@ def main() -> None:
     
     # Verify the emitted file exists and has content
     if Path(output_path).exists():
-        with open(output_path, 'r') as f:
+        with open(output_path 'r') as f:
             content = f.read()
             print(f"\nEmitted ontology size: {len(content)} bytes")
             print("First few lines:")

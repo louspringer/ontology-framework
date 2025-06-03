@@ -3,11 +3,19 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix bfg: <http://ontologies.louspringer.com/build_process#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# Ontology Definition
+bfg: a owl:Ontology ;
+    rdfs:label "Build Process Ontology" ;
+    rdfs:comment "An ontology for describing build and deployment processes" ;
+    owl:versionInfo "1.0.0" .
 
 # Classes
 bfg:BuildProcess rdf:type owl:Class ;
     rdfs:label "Build Process" ;
-    rdfs:comment "A process for building and deploying software" .
+    rdfs:comment "A process for building and deploying software" ;
+    owl:versionInfo "1.0.0" .
 
 bfg:BuildStep rdf:type owl:Class ;
     rdfs:label "Build Step" ;
@@ -57,6 +65,43 @@ bfg:hasEvictionPolicy rdf:type owl:DatatypeProperty ;
 bfg:hasPriority rdf:type owl:DatatypeProperty ;
     rdfs:domain bfg:VirtualMachine ;
     rdfs:range xsd:string .
+
+# Property Characteristics
+bfg:hasStepOrder rdf:type owl:FunctionalProperty ;
+    rdfs:label "has step order" ;
+    rdfs:comment "Specifies the order of execution for a build step" .
+
+bfg:hasCommand rdf:type owl:FunctionalProperty ;
+    rdfs:label "has command" ;
+    rdfs:comment "Specifies the command to execute for a build step" .
+
+bfg:hasAutoConfirm rdf:type owl:FunctionalProperty ;
+    rdfs:label "has auto confirm" ;
+    rdfs:comment "Specifies whether the step should auto-confirm prompts" .
+
+bfg:hasEnvironmentVariable rdf:type owl:DatatypeProperty ;
+    rdfs:label "has environment variable" ;
+    rdfs:comment "Specifies an environment variable for the build process" .
+
+bfg:hasSize rdf:type owl:FunctionalProperty ;
+    rdfs:label "has size" ;
+    rdfs:comment "Specifies the size of a virtual machine" .
+
+bfg:hasLocation rdf:type owl:FunctionalProperty ;
+    rdfs:label "has location" ;
+    rdfs:comment "Specifies the location of a resource group" .
+
+bfg:hasImage rdf:type owl:FunctionalProperty ;
+    rdfs:label "has image" ;
+    rdfs:comment "Specifies the image for a virtual machine" .
+
+bfg:hasEvictionPolicy rdf:type owl:FunctionalProperty ;
+    rdfs:label "has eviction policy" ;
+    rdfs:comment "Specifies the eviction policy for a virtual machine" .
+
+bfg:hasPriority rdf:type owl:FunctionalProperty ;
+    rdfs:label "has priority" ;
+    rdfs:comment "Specifies the priority for a virtual machine" .
 
 # Build Process Instance
 bfg:buildProcess rdf:type bfg:BuildProcess ;
@@ -137,4 +182,63 @@ bfg:loginACRStep rdf:type bfg:BuildStep ;
 bfg:buildPushImageStep rdf:type bfg:BuildStep ;
     bfg:hasCommand "ssh -i ~/.ssh/pdf-processor-vm_key $ADMIN_USERNAME@$VM_IP 'cd /app && docker build -t $ACR_NAME.azurecr.io/pdf-processor:latest . && docker push $ACR_NAME.azurecr.io/pdf-processor:latest'" ;
     bfg:hasStepOrder 13 ;
-    bfg:hasAutoConfirm true . 
+    bfg:hasAutoConfirm true .
+
+# SHACL Shapes
+bfg:BuildStepShape a sh:NodeShape ;
+    sh:targetClass bfg:BuildStep ;
+    sh:property [
+        sh:path bfg:hasCommand ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Build step must have exactly one command"
+    ] ,
+    [
+        sh:path bfg:hasStepOrder ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:message "Build step must have exactly one order number"
+    ] ,
+    [
+        sh:path bfg:hasAutoConfirm ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Build step must specify auto-confirm setting"
+    ] .
+
+bfg:VirtualMachineShape a sh:NodeShape ;
+    sh:targetClass bfg:VirtualMachine ;
+    sh:property [
+        sh:path bfg:hasSize ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Virtual machine must have exactly one size"
+    ] ,
+    [
+        sh:path bfg:hasImage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Virtual machine must have exactly one image"
+    ] ,
+    [
+        sh:path bfg:hasEvictionPolicy ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Virtual machine may have at most one eviction policy"
+    ] .
+
+bfg:ResourceGroupShape a sh:NodeShape ;
+    sh:targetClass bfg:ResourceGroup ;
+    sh:property [
+        sh:path bfg:hasLocation ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Resource group must have exactly one location"
+    ] . 

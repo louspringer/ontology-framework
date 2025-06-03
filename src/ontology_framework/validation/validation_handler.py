@@ -1,5 +1,5 @@
 from typing import Dict, Any, List, Set, Optional, Union, Sequence, Tuple, cast
-from rdflib import Graph, URIRef, Literal, RDF, Namespace, Node, Variable, BNode
+from rdflib import Graph, URIRef, Literal, RDF, Namespace, Variable, BNode
 from rdflib.namespace import RDF, RDFS, XSD, SH, OWL
 from rdflib.query import ResultRow, Result
 import pyshacl
@@ -17,7 +17,11 @@ from ontology_framework.validation.pattern_manager import PatternManager
 from pyshacl import validate
 from .validation_rule import ValidationRule
 from .conformance_level import ConformanceLevel
-from ..ontology_types import ValidationRule as OntologyValidationRule, ErrorSeverity as OntologyErrorSeverity
+from ..ontology_types import (
+    ValidationRule as OntologyValidationRule,
+    ErrorSeverity as OntologyErrorSeverity
+)
+from rdflib.term import Node
 
 # Define namespaces
 GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
@@ -174,21 +178,16 @@ class ValidationHandler:
         """
         if conformance_level is not None:
             rule["conformance_level"] = conformance_level.value
-            
         if rule_type is not None:
             rule["type"] = rule_type.value
-            
         if message is not None:
             rule["message"] = message
-            
         rule["priority"] = priority
-        
         if dependencies is not None:
             rule["dependencies"] = dependencies
-            
         self.rules[rule_id] = rule
         return rule_id
-
+        
     def _validate_dependencies(self, rule_id: str) -> None:
         """Validate rule dependencies to detect cycles.
         
@@ -208,7 +207,6 @@ class ValidationHandler:
                 
             if rid in visited:
                 return
-                
             if rid not in self.rules:
                 raise ValueError(f"Missing dependency: {rid}")
                 
@@ -488,8 +486,7 @@ class ValidationHandler:
                             f"(bound(?{var_name}) && datatype(?{var_name}) != <{expected_type}>)"
                         )
                     query = f"""
-                        SELECT ?s ?p ?o
-                        WHERE {{
+                        SELECT ?s ?p ?o WHERE {{
                             ?s a <{class_uri}> .
                             ?s ?p ?o .
                             {' '.join(property_clauses)}
@@ -558,8 +555,7 @@ class ValidationHandler:
                 @prefix sh: <http://www.w3.org/ns/shacl#> .
                 @prefix ex: <http://example.org/> .
                 
-                ex:SyntaxShape
-                    a sh:NodeShape ;
+                ex:SyntaxShape a sh:NodeShape ;
                     {self.SHACL_TEMPLATES["syntax"].format(
                         path="?p",
                         pattern=f'"{pattern}"',
@@ -644,7 +640,6 @@ class ValidationHandler:
             if rule_type not in self.rules:
                 self.logger.warning(f"No rules found for type {rule_type}")
                 continue
-                
             for rule in self.rules[rule_type]:
                 try:
                     rule_result = rule.validate(graph)
@@ -726,7 +721,6 @@ class ValidationHandler:
                     validation_text += "\n\nCustom Validation Results:\n" + "\n".join(custom_results)
             
             return is_valid, validation_text, validation_graph
-            
         except Exception as e:
             error_msg = f"Validation failed with error: {str(e)}"
             logging.error(error_msg)
@@ -755,7 +749,6 @@ class ValidationHandler:
                             temp_graph = Graph()
                             temp_graph += graph
                             temp_graph += shape
-                            
                             is_valid, _, report = pyshacl.validate(
                                 temp_graph,
                                 shacl_graph=shape,
@@ -771,41 +764,43 @@ class ValidationHandler:
             
         return validation_results
     
-    def _create_rule_shape(self, rule_id: str, rule: Dict[str, Any]) -> Optional[Graph]:
-        """Create a SHACL shape for a custom validation rule."""
-        try:
-            shape = Graph()
-            shape.bind('sh', SH)
+    def _create_rule_shape(self, rule_id: str, rule: ValidationRule) -> Optional[Graph]:
+        """Create a SHACL shape graph for a validation rule.
+        
+        Args:
+            rule_id: ID of the rule
+            rule: The validation rule
             
-            shape_node = BNode()
-            shape.add((shape_node, RDF.type, SH.NodeShape))
-            shape.add((shape_node, RDFS.label, Literal(f"Shape for rule {rule_id}")))
-            shape.add((shape_node, SH.message, Literal(rule['message'])))
+        Returns:
+            Optional Graph containing SHACL shapes
+        """
+        try:
+            shape_graph = Graph()
+            shape_graph.bind('sh', SH)
+            shape_graph.bind('ex', EX)
+            
+            # Create basic shape
+            shape = BNode()
+            shape_graph.add((shape, RDF.type, SH.NodeShape))
             
             # Add rule-specific constraints
-            pattern = self.pattern_manager.get_validation_pattern(rule_id)
-            if pattern:
-                shape.add((shape_node, SH.sparql, Literal(pattern)))
+            if hasattr(rule, 'pattern') and rule.pattern:
+                # Add pattern constraint
+                prop = BNode()
+                shape_graph.add((shape, SH.property, prop))
+                shape_graph.add((prop, SH.path, RDFS.label))  # Default to rdfs:label
+                shape_graph.add((prop, SH.pattern, Literal(rule.pattern)))
+                shape_graph.add((prop, SH.message, Literal(rule.message or f"Pattern validation failed: {rule.pattern}")))
             
-            return shape
-            
+            return shape_graph
         except Exception as e:
             logging.error(f"Error creating rule shape for {rule_id}: {str(e)}")
             return None
-
+            
     def get_shacl_rules(self) -> Graph:
-        """Get SHACL validation rules.
+        """Get all SHACL rules as a combined graph.
         
         Returns:
-            Graph containing SHACL validation rules
+            Graph containing all SHACL shapes
         """
-        shacl_graph = Graph()
-        shacl_graph.bind("sh", SH)
-        
-        for rule_id, rule in self.rules.items():
-            if rule.get("type") == ValidationRuleType.SHACL.value:
-                shape = self._create_rule_shape(rule_id, rule)
-                if shape:
-                    shacl_graph += shape
-                    
-        return shacl_graph 
+        return self.shacl_shapes

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Shared test fixtures and configurations for the ontology framework tests.
 Following the standards defined in guidance.ttl.
@@ -6,33 +6,30 @@ Following the standards defined in guidance.ttl.
 
 import os
 import sys
+import logging
+import pytest
+import tempfile
+import shutil
 from pathlib import Path
 from typing import Dict, Any, Generator, Iterator
 from datetime import datetime
+from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib.namespace import RDF, RDFS, OWL, XSD
+from ontology_framework.modules.patch_management import PatchManager
+from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus, MetaOntology
+from tests.utils.test_monitoring import TestMonitor
+from tests.utils.mock_graphdb import MockGraphDBServer
 
 # Add the src directory to the Python path
 src_dir = Path(__file__).parent.parent / "src"
 sys.path.append(str(src_dir))
 
 # Configure logging
-import logging
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
-
-# Test fixtures
-import pytest
-from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import RDF, RDFS, OWL, XSD
-import tempfile
-import shutil
-
-from ontology_framework.modules.patch_management import PatchManager
-from ontology_framework.meta import OntologyPatch, PatchType, PatchStatus, MetaOntology
-from tests.utils.test_monitoring import TestMonitor
-from tests.utils.mock_graphdb import MockGraphDBServer
 
 # Test Configuration
 TEST_CONFIG = {
@@ -158,23 +155,25 @@ def error_ontology(ontology_dir):
 
 @pytest.fixture(scope="function")
 def temp_ttl_file() -> Generator[Path, None, None]:
-    """Create a temporary TTL file with test data."""
+    """Create a temporary TTL file with test data using RDFLib, not embedded TTL."""
+    import tempfile
+    from rdflib import Graph, Namespace, RDF, RDFS, Literal
     with tempfile.TemporaryDirectory() as temp_dir:
         test_file = Path(temp_dir) / "test.ttl"
-        test_data = """
-        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-        @prefix ex: <http://example.org/> .
-
-        ex:TestClass a rdfs:Class ;
-            rdfs:label "Test Class" ;
-            rdfs:comment "A test class for testing" .
-
-        ex:TestInstance a ex:TestClass ;
-            rdfs:label "Test Instance" ;
-            rdfs:comment "A test instance for testing" .
-        """
-        test_file.write_text(test_data)
+        g = Graph()
+        EX = Namespace("http://example.org/")
+        g.bind("ex", EX)
+        g.bind("rdfs", RDFS)
+        g.bind("rdf", RDF)
+        # ex:TestClass a rdfs:Class ; rdfs:label "Test Class" ; rdfs:comment "A test class for testing" .
+        g.add((EX.TestClass, RDF.type, RDFS.Class))
+        g.add((EX.TestClass, RDFS.label, Literal("Test Class")))
+        g.add((EX.TestClass, RDFS.comment, Literal("A test class for testing")))
+        # ex:TestInstance a ex:TestClass ; rdfs:label "Test Instance" ; rdfs:comment "A test instance for testing" .
+        g.add((EX.TestInstance, RDF.type, EX.TestClass))
+        g.add((EX.TestInstance, RDFS.label, Literal("Test Instance")))
+        g.add((EX.TestInstance, RDFS.comment, Literal("A test instance for testing")))
+        g.serialize(destination=str(test_file), format="turtle")
         yield test_file
 
 @pytest.fixture
@@ -183,7 +182,7 @@ def test_report():
     def _generate_report(test_name: str, results: Dict[str, Any]) -> None:
         """Generate test report entry."""
         with open(str(TEST_CONFIG["report_file"]), "a") as f:
-            f.write(f"\n### {test_name} - {datetime.now().isoformat()}\n")
+            f.write(f"\n## {test_name} - {datetime.now().isoformat()}\n")
             for key, value in results.items():
                 f.write(f"- {key}: {value}\n")
             f.write("\n")
@@ -195,7 +194,7 @@ def pytest_sessionfinish(session, exitstatus):
     logger.info(f"Test session completed with exit status: {exitstatus}")
     
     with open(TEST_CONFIG["report_file"], "a") as f:
-        f.write(f"\n## Test Session Summary - {datetime.now().isoformat()}\n\n")
+        f.write(f"\n# Test Session Summary - {datetime.now().isoformat()}\n\n")
         f.write(f"- Total tests: {session.testscollected}\n")
         f.write(f"- Passed: {session.testscollected - session.testsfailed}\n")
         f.write(f"- Failed: {session.testsfailed}\n")
@@ -208,30 +207,31 @@ def pytest_sessionfinish(session, exitstatus):
             "functional": "Functional Tests"
         }
         
-        f.write("### Test Categories Summary\n")
+        f.write("## Test Categories Summary\n")
         for marker, title in categories.items():
             count = len([item for item in session.items if item.get_closest_marker(marker)])
-            f.write(f"- {title}: {count} tests\n")
+            f.write(f"- {title}: {count}\n")
+        
         f.write("\n")
 
 @pytest.fixture(scope="session")
 def empty_graph() -> Graph:
-    """Create an empty RDF graph."""
+    """Fixture providing an empty RDF graph for session-scoped tests."""
     return Graph()
 
 @pytest.fixture(scope="session")
 def test_namespaces() -> dict[str, Namespace]:
-    """Create test namespaces."""
+    """Fixture providing common test namespaces."""
     return {
-        "rdf": Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
-        "rdfs": Namespace("http://www.w3.org/2000/01/rdf-schema#"),
-        "ex": Namespace("http://example.org/")
+        "ex": Namespace("http://example.org/"),
+        "test": Namespace("http://test.example.org/"),
+        "onto": Namespace("http://ontology.example.org/")
     }
 
 @pytest.fixture
 def test_data_dir() -> Path:
     """Return the path to the test data directory."""
-    return TEST_CONFIG["test_data_dir"]
+    return Path(__file__).parent / "test_data"
 
 @pytest.fixture
 def python_shapes(test_data_dir) -> Path:
@@ -240,5 +240,5 @@ def python_shapes(test_data_dir) -> Path:
 
 @pytest.fixture
 def test_ontology(test_data_dir) -> Path:
-    """Return the path to the test ontology file."""
+    """Return the path to the test ontology."""
     return test_data_dir / "test_ontology.ttl" 

@@ -1,0 +1,113 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/spore-ontology/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix repair: <https://raw.githubusercontent.com/louspringer/bfg9k/main/repair#> .
+@prefix bfg9k: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix code: <https://example.org/code#> .
+
+# Repair Plan Document
+repair:BFG9KRepairPlan_2024_03 a spore:RepairPlan ;
+    dc:title "BFG9K MCP System Repair Plan" ;
+    dc:date "2024-03-21"^^xsd:date ;
+    spore:affectedSystem bfg:BFG9KSystem ;
+    spore:status "InProgress" ;
+    spore:hasRepairStep 
+        repair:FixGraphDBValidator,
+        repair:UpdateConfigValidation,
+        repair:AddEnvironmentChecks,
+        repair:UpdateLogging ;
+    rdfs:comment "Repair plan for BFG9K MCP system after configuration regression." .
+
+# Repair Steps
+repair:FixGraphDBValidator a repair:RepairStep ;
+    rdfs:label "Fix GraphDB Validator" ;
+    spore:priority 1 ;
+    spore:targetFile "src/ontology_framework/modules/graphdb_validator.py" ;
+    spore:description """
+    1. Fix validation logic to properly handle environment variables
+    2. Add robust error handling for connection failures
+    3. Implement proper validation report generation
+    4. Add validation history tracking""" .
+
+repair:UpdateConfigValidation a repair:RepairStep ;
+    rdfs:label "Update Configuration Validation" ;
+    spore:priority 2 ;
+    spore:targetFile "bfg9k_mcp.py" ;
+    spore:description """
+    1. Enhance config validation to check for environment overrides
+    2. Add validation for GraphDB endpoint consistency
+    3. Implement proper validation report export
+    4. Add validation history tracking""" .
+
+repair:AddEnvironmentChecks a repair:RepairStep ;
+    rdfs:label "Add Environment Checks" ;
+    spore:priority 3 ;
+    spore:targetFile "bfg9k_mcp.py" ;
+    spore:description """
+    1. Add environment variable validation
+    2. Implement environment override checks
+    3. Add environment consistency validation
+    4. Add environment change tracking""" .
+
+repair:UpdateLogging a repair:RepairStep ;
+    rdfs:label "Update Logging System" ;
+    spore:priority 4 ;
+    spore:targetFile "bfg9k_mcp.py" ;
+    spore:description """
+    1. Enhance logging for validation events
+    2. Add structured logging for configuration changes
+    3. Implement validation report logging
+    4. Add environment change logging""" .
+
+# Validation Requirements
+repair:ValidationRequirements a repair:Requirements ;
+    rdfs:label "Validation Requirements" ;
+    spore:hasRequirement [
+        a repair:Requirement ;
+        rdfs:label "Environment Variable Support" ;
+        spore:description "Must support GRAPHDB_URL environment variable override"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Configuration Validation" ;
+        spore:description "Must validate configuration against guidance.ttl"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Validation History" ;
+        spore:description "Must track and store validation history"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Error Handling" ;
+        spore:description "Must provide clear error messages and recovery options"
+    ] .
+
+# Testing Requirements
+repair:TestingRequirements a repair:Requirements ;
+    rdfs:label "Testing Requirements" ;
+    spore:hasRequirement [
+        a repair:Requirement ;
+        rdfs:label "Configuration Tests" ;
+        spore:description "Must test all configuration scenarios"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Environment Tests" ;
+        spore:description "Must test environment variable handling"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Validation Tests" ;
+        spore:description "Must test validation functionality"
+    ], [
+        a repair:Requirement ;
+        rdfs:label "Error Tests" ;
+        spore:description "Must test error handling scenarios"
+    ] .
+
+bfg9k:validator_py_error
+    a code:SyntaxError ;
+    code:location "src/ontology_framework/modules/validator.py" ;
+    code:line "458" ;
+    code:snippet "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> ." ;
+    code:explanation "Stray Turtle/SPARQL line outside of a string literal, likely from a copy-paste or merge error, causes Python to throw a SyntaxError. This line must be inside a triple-quoted string or removed." ;
+    prov:generatedAtTime "2024-06-09T00:00:00Z" . 

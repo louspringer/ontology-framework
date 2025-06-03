@@ -8,39 +8,10 @@ from datetime import datetime
 import networkx as nx
 import matplotlib.pyplot as plt
 
-# Configure logging with detailed error monitoring
-class ErrorMonitor(logging.Handler):
-    def __init__(self):
-        super().__init__()
-        self.error_count = 0
-        self.error_details = []
-        self.processing_steps = []
-        self.validation_states = []
-        self.validation_errors = 0  # Track validation errors separately
-
-    def emit(self, record):
-        if record.levelno >= logging.ERROR:
-            self.error_count += 1
-            if "Malformed URI" in record.getMessage():
-                self.validation_errors += 1
-            self.error_details.append({
-                'timestamp': datetime.now().isoformat(),
-                'level': record.levelname,
-                'message': record.getMessage(),
-                'step': self.processing_steps[-1] if self.processing_steps else 'unknown'
-            })
-            logging.error(f"Error #{self.error_count} (Validation: {self.validation_errors}): {record.getMessage()} in step {self.processing_steps[-1] if self.processing_steps else 'unknown'}")
-
-error_monitor = ErrorMonitor()
-
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/namespace_dependency_analyzer.log'),
-        logging.StreamHandler(),
-        error_monitor
-    ]
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 class NamespaceDependencyAnalyzer:
@@ -54,122 +25,168 @@ class NamespaceDependencyAnalyzer:
         self.namespace_usage: Dict[str, Dict[str, int]] = {}
         self.errors: List[str] = []
         self.processing_steps: List[str] = []
-        self.validation_errors: int = 0  # Track validation errors in instance
+        self.validation_errors: int = 0
+
+    def get_dependencies(self) -> nx.DiGraph:
+        """Return the dependency graph."""
+        return self.graph
+
+    def analyze(self, graph) -> nx.DiGraph:
+        """Analyze dependencies from an RDF graph."""
+        if not hasattr(graph, 'triples'):
+            raise ValueError("Input must be an RDF graph")
+        
+        # Clear previous analysis
+        self.graph = nx.DiGraph()
+        
+        # Track namespace to URI mappings
+        namespace_map = {}
+        
+        # Extract namespaces and track dependencies
+        for subject, predicate, obj in graph:
+            # Extract namespace from subject
+            if hasattr(subject, 'toPython'):
+                subject_str = subject.toPython()
+            else:
+                subject_str = str(subject)
+            
+            # Extract namespace from object if it's a URI
+            if hasattr(obj, 'toPython'):
+                obj_str = obj.toPython()
+            else:
+                obj_str = str(obj)
+            
+            # Find subject namespace
+            subject_ns = None
+            if '#' in subject_str:
+                subject_ns = subject_str.split('#')[0] + '#'
+            elif '/' in subject_str:
+                # Handle URIs without fragment identifiers
+                parts = subject_str.rstrip('/').split('/')
+                if len(parts) > 3:  # Skip protocol and domain
+                    subject_ns = '/'.join(parts[:-1]) + '/'
+                    
+            # Find object namespace  
+            obj_ns = None
+            if '#' in obj_str:
+                obj_ns = obj_str.split('#')[0] + '#'
+            elif '/' in obj_str:
+                parts = obj_str.rstrip('/').split('/')
+                if len(parts) > 3:
+                    obj_ns = '/'.join(parts[:-1]) + '/'
+            
+            # Add namespaces to graph
+            if subject_ns:
+                self.graph.add_node(subject_ns)
+                namespace_map[subject_ns] = subject_ns
+            if obj_ns:
+                self.graph.add_node(obj_ns)
+                namespace_map[obj_ns] = obj_ns
+                
+            # Create dependency edge if both namespaces exist and are different
+            if subject_ns and obj_ns and subject_ns != obj_ns:
+                self.graph.add_edge(subject_ns, obj_ns)
+        
+        return self.graph
+
+    def get_direct_dependencies(self, namespace: str) -> List[str]:
+        """Get direct dependencies of a namespace."""
+        if namespace in self.graph:
+            return list(self.graph.successors(namespace))
+        return []
+
+    def get_transitive_dependencies(self, namespace: str) -> List[str]:
+        """Get transitive dependencies of a namespace."""
+        if namespace not in self.graph:
+            return []
+        
+        transitive = set()
+        # BFS to find all reachable nodes
+        visited = set()
+        queue = [namespace]
+        
+        while queue:
+            current = queue.pop(0)
+            if current in visited:
+                continue
+            visited.add(current)
+            
+            for successor in self.graph.successors(current):
+                if successor != namespace:  # Avoid self-reference
+                    transitive.add(successor)
+                    queue.append(successor)
+        
+        return list(transitive)
+
+    def get_circular_dependencies(self) -> List[List[str]]:
+        """Detect circular dependencies."""
+        try:
+            cycles = list(nx.simple_cycles(self.graph))
+            return cycles
+        except:
+            return []
+
+    def generate_report(self) -> Dict:
+        """Generate a dependency report."""
+        return {
+            "namespaces": list(self.graph.nodes()),
+            "direct_dependencies": {
+                node: self.get_direct_dependencies(node) 
+                for node in self.graph.nodes()
+            },
+            "transitive_dependencies": {
+                node: self.get_transitive_dependencies(node) 
+                for node in self.graph.nodes()
+            },
+            "circular_dependencies": self.get_circular_dependencies()
+        }
 
     def log_processing_step(self, step: str) -> None:
         """Log the current processing step for error tracking."""
         self.processing_steps.append(step)
-        error_monitor.processing_steps.append(step)
         logging.info(f"Starting processing step: {step}")
 
     def validate_uri(self, uri: str) -> bool:
         """Validate URI format and log errors."""
         self.log_processing_step("validate_uri")
-        if not uri.startswith('http://'):
-            error_msg = f"Malformed URI: {uri} - missing double slash"
+        if not uri.startswith('http://') and not uri.startswith('https://'):
+            error_msg = f"Malformed URI: {uri} - missing protocol"
             self.errors.append(error_msg)
             self.validation_errors += 1
             logging.error(error_msg)
-            error_monitor.validation_states.append({
-                'uri': uri,
-                'valid': False,
-                'error': error_msg
-            })
             return False
-        error_monitor.validation_states.append({
-            'uri': uri,
-            'valid': True
-        })
         return True
 
     def parse_inventory(self) -> None:
         """Parse the inventory file to extract namespace definitions and usage."""
         try:
             self.log_processing_step("parse_inventory")
+            if not self.inventory_file.exists():
+                logging.warning(f"Inventory file {self.inventory_file} does not exist")
+                return
+                
             with open(self.inventory_file, 'r', encoding='utf-8') as f:
                 current_file = None
-                self.dependencies = {}  # Clear any existing dependencies
-                self.namespace_usage = {}  # Clear any existing usage
-                has_validation_errors = False
+                self.dependencies = {}
+                self.namespace_usage = {}
                 
-                # First pass: validate all URIs
-                self.log_processing_step("first_pass_validation")
                 for line in f:
                     if line.startswith('## '):
                         current_file = line[3:].strip()
                         continue
-                    
+                        
                     if current_file and line.strip():
                         # Check namespace definitions
                         for prefix, uri in self.namespace_pattern.findall(line):
-                            if not self.validate_uri(uri):
-                                has_validation_errors = True
-                        
-                        # Check Python namespace declarations
-                        for uri in self.python_namespace_pattern.findall(line):
-                            if not self.validate_uri(uri):
-                                has_validation_errors = True
-                
-                # Log validation state
-                logging.info(f"Validation complete. Errors found: {has_validation_errors}")
-                logging.info(f"Total error count: {error_monitor.error_count}")
-                logging.info(f"Validation error count: {self.validation_errors}")
-                logging.info(f"Validation states: {error_monitor.validation_states}")
-                
-                # If any validation errors were found, return without processing
-                if has_validation_errors or self.validation_errors > 0:
-                    logging.error(f"Validation errors detected ({self.validation_errors} errors), aborting processing")
-                    return
-                
-                # Reset file pointer for second pass
-                f.seek(0)
-                current_file = None
-                
-                # Second pass: process valid URIs
-                self.log_processing_step("second_pass_processing")
-                for line in f:
-                    if line.startswith('## '):
-                        current_file = line[3:].strip()
-                        continue
-                    
-                    if current_file and line.strip():
-                        # Process namespace definitions
-                        for prefix, uri in self.namespace_pattern.findall(line):
-                            if current_file not in self.dependencies:
-                                self.dependencies[current_file] = set()
-                            self.dependencies[current_file].add(f"{prefix}:{uri}")
-                            self.graph.add_node(f"{prefix}:{uri}")
-                            
-                            # Track namespace usage
-                            if uri not in self.namespace_usage:
-                                self.namespace_usage[uri] = {"definitions": 0, "references": 0}
-                            self.namespace_usage[uri]["definitions"] += 1
-                        
-                        # Process Python namespace declarations
-                        for uri in self.python_namespace_pattern.findall(line):
-                            if current_file not in self.dependencies:
-                                self.dependencies[current_file] = set()
-                            # Extract prefix from URI
-                            prefix = uri.split('/')[-1].split('#')[0]
-                            self.dependencies[current_file].add(f"{prefix}:{uri}")
-                            self.graph.add_node(f"{prefix}:{uri}")
-                            
-                            # Track namespace usage
-                            if uri not in self.namespace_usage:
-                                self.namespace_usage[uri] = {"definitions": 0, "references": 0}
-                            self.namespace_usage[uri]["definitions"] += 1
-                        
-                        # Process namespace usage
-                        for prefix in self.usage_pattern.findall(line):
-                            if current_file in self.dependencies:
-                                for ns in self.dependencies[current_file]:
-                                    if ns.startswith(prefix + ':'):
-                                        uri = ns.split(':', 1)[1]
-                                        if uri not in self.namespace_usage:
-                                            self.namespace_usage[uri] = {"definitions": 0, "references": 0}
-                                        self.namespace_usage[uri]["references"] += 1
-                                        self.graph.add_edge(ns, f"{prefix}:{uri}")
-                                        logging.debug(f"Found reference to {uri} in {current_file}")
+                            if self.validate_uri(uri):
+                                if current_file not in self.dependencies:
+                                    self.dependencies[current_file] = set()
+                                self.dependencies[current_file].add(f"{prefix}:{uri}")
+                                self.graph.add_node(f"{prefix}:{uri}")
+                                
+                                if uri not in self.namespace_usage:
+                                    self.namespace_usage[uri] = {"definitions": 0, "references": 0}
+                                self.namespace_usage[uri]["definitions"] += 1
 
         except Exception as e:
             logging.error(f"Error parsing inventory file: {str(e)}")
@@ -181,14 +198,15 @@ class NamespaceDependencyAnalyzer:
         ax = plt.gca()
         ax.set_facecolor('white')
         
-        pos = nx.spring_layout(self.graph)
-        nx.draw(self.graph, pos, with_labels=True, 
-                node_color='lightblue',
-                node_size=2000, 
-                font_size=8,
-                font_weight='bold',
-                edge_color='#666666',
-                width=1.5)
+        if len(self.graph.nodes()) > 0:
+            pos = nx.spring_layout(self.graph)
+            nx.draw(self.graph, pos, with_labels=True, 
+                    node_color='lightblue',
+                    node_size=2000, 
+                    font_size=8,
+                    font_weight='bold',
+                    edge_color='#666666',
+                    width=1.5)
         
         plt.title("Namespace Dependency Graph", pad=20)
         plt.savefig('docs/namespace_dependency_graph.svg', 
@@ -209,6 +227,7 @@ class NamespaceDependencyAnalyzer:
         report.append("## Summary Statistics")
         report.append(f"- Total namespaces: {len(self.namespace_usage)}")
         report.append(f"- Total files with namespace definitions: {len(self.dependencies)}")
+        
         if self.errors:
             report.append("\n## Errors Detected")
             for error in self.errors:
@@ -238,6 +257,7 @@ class NamespaceDependencyAnalyzer:
     def save_analysis_report(self, output_file: str = 'docs/namespace_dependency_analysis.md') -> None:
         """Save the analysis report to a file."""
         report = self.generate_analysis_report()
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(report)
         logging.info(f"Analysis report saved to {output_file}")

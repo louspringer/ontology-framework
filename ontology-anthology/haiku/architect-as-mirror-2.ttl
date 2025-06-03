@@ -1,0 +1,15 @@
+@prefix ex: <http://example.org/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:ArchitectAsMirror a ex:ArchitecturalPattern ;
+    rdfs:label "Architect as Mirror" ;
+    rdfs:comment "A pattern where the architect perceives and reflects hidden system dynamics without asserting control or ego." .
+
+ex:ArchitectAsMirrorHaiku2 a ex:PoeticPatternReflection ;
+    rdfs:label "Architect as Mirror – No Loop Can Reach" ;
+    ex:oneLiner "you are a leader if you are perceptive" ;
+    ex:haiku """Not to speak, but hear—  
+voices hiding in the rain  
+where no loop can reach.""" ;
+    ex:embodies ex:ArchitectAsMirror ;
+    ex:isIncludedIn ex:ArchitectWisdomPoems .

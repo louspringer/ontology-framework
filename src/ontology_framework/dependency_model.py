@@ -1,4 +1,4 @@
-"""Dependency model generator for ontology framework."""
+"""Dependency, model generator for ontology framework."""
 
 from typing import Dict, List, Set, Optional, Any, Union, cast
 from pathlib import Path
@@ -20,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ")
 CODE = Namespace("http://example.org/code#")
 TEST = Namespace("http://example.org/test#")
 
@@ -43,13 +43,13 @@ class DependencyNode:
     dependencies: Set['DependencyNode'] = field(default_factory=set)
 
 class DependencyModelGenerator:
-    """Generates and maintains dependency models for ontology framework."""
+    """Generates, and maintains, dependency models, for ontology, framework."""
     
     def __init__(self, ontology_path: Union[str, Path]):
-        """Initialize the dependency model generator.
+        """Initialize, the dependency, model generator.
         
         Args:
-            ontology_path: Path to the ontology file
+            ontology_path: Path, to the, ontology file
         """
         self.ontology_path = Path(ontology_path)
         self.ontology_graph = Graph()
@@ -57,7 +57,8 @@ class DependencyModelGenerator:
         self.nodes: Dict[URIRef, DependencyNode] = {}
         
         # Load ontology
-        self.ontology_graph.parse(str(self.ontology_path), format="turtle")
+        self.ontology_graph.parse(str(self.ontology_path),
+                                 format="turtle")
         
         # Bind namespaces
         self.ontology_graph.bind("guidance", GUIDANCE)
@@ -67,19 +68,18 @@ class DependencyModelGenerator:
     def analyze_ontology(self) -> None:
         """Analyze the ontology to build dependency graph."""
         logger.info("Analyzing ontology structure")
-        
+
         # Process classes
         for subject in self.ontology_graph.subjects(RDF.type, OWL.Class):
-            cls = cast(URIRef, subject)  # Cast to URIRef
+            cls = cast(URIRef, subject)
             if not isinstance(cls, URIRef):
                 continue
-                
             label = self.ontology_graph.value(cls, RDFS.label)
-            label_str = str(label) if label else str(cls).split('#')[-1]
-            
+            label_str = str(label) if label else str(cls).split('# ')[-1]
+
             comment = self.ontology_graph.value(cls, RDFS.comment)
             comment_str = str(comment) if comment else ''
-            
+
             node = DependencyNode(
                 uri=cls,
                 type=DependencyType.ONTOLOGY,
@@ -88,7 +88,7 @@ class DependencyModelGenerator:
             )
             self.nodes[cls] = node
             self.dependency_graph.add_node(cls)
-            
+
             # Add subclass dependencies
             for parent in self.ontology_graph.objects(cls, RDFS.subClassOf):
                 if isinstance(parent, URIRef) and parent in self.nodes:
@@ -98,20 +98,20 @@ class DependencyModelGenerator:
         # Process properties
         for prop_type in [OWL.ObjectProperty, OWL.DatatypeProperty]:
             for subject in self.ontology_graph.subjects(RDF.type, prop_type):
-                prop = cast(URIRef, subject)  # Cast to URIRef
+                prop = cast(URIRef, subject)
                 if not isinstance(prop, URIRef):
                     continue
-                    
+
                 # Determine property type
                 is_object_property = (prop, RDF.type, OWL.ObjectProperty) in self.ontology_graph
                 prop_type_str = 'URIRef' if is_object_property else 'Literal'
-                
+
                 label = self.ontology_graph.value(prop, RDFS.label)
-                label_str = str(label) if label else str(prop).split('#')[-1]
-                
+                label_str = str(label) if label else str(prop).split('# ')[-1]
+
                 comment = self.ontology_graph.value(prop, RDFS.comment)
                 comment_str = str(comment) if comment else ''
-                
+
                 node = DependencyNode(
                     uri=prop,
                     type=DependencyType.ONTOLOGY,
@@ -120,10 +120,10 @@ class DependencyModelGenerator:
                 )
                 self.nodes[prop] = node
                 self.dependency_graph.add_node(prop)
-                
+
                 # Add domain/range dependencies
                 for domain in self.ontology_graph.objects(prop, RDFS.domain):
-                    domain_uri = cast(URIRef, domain)  # Cast to URIRef
+                    domain_uri = cast(URIRef, domain)
                     if isinstance(domain_uri, URIRef) and domain_uri in self.nodes:
                         self.nodes[prop].dependencies.add(self.nodes[domain_uri])
                         self.dependency_graph.add_edge(prop, domain_uri)
@@ -133,11 +133,11 @@ class DependencyModelGenerator:
                             'label': label_str,
                             'uri': str(prop)
                         }
-                
+
                 # Only add range dependencies for object properties
                 if is_object_property:
                     for range_cls in self.ontology_graph.objects(prop, RDFS.range):
-                        range_uri = cast(URIRef, range_cls)  # Cast to URIRef
+                        range_uri = cast(URIRef, range_cls)
                         if isinstance(range_uri, URIRef) and range_uri in self.nodes:
                             self.nodes[prop].dependencies.add(self.nodes[range_uri])
                             self.dependency_graph.add_edge(prop, range_uri)
@@ -146,29 +146,20 @@ class DependencyModelGenerator:
         """Generate Python type definitions from ontology."""
         logger.info("Generating code type definitions")
         types = {}
-        
+
         for node in self.nodes.values():
             if node.type == DependencyType.ONTOLOGY:
-                # Generate class definition
-                class_def = f"""@dataclass
-class {node.label.replace(' ', '')}:
-    \"\"\"{node.description}\"\"\"
-    uri: URIRef
-    label: str
-    description: str"""
-                
+                class_def = f"""@dataclass\nclass {node.label.replace(' ', '')}:\n    \"\"\"{node.description}\"\"\"\n    uri: URIRef\n    label: str\n    description: str"""
                 # Add properties from the node's properties dict
                 for prop_uri, prop_info in node.properties.items():
                     prop_name = prop_info['label'].replace(' ', '')
                     class_def += f"\n    {prop_name}: {prop_info['type']}"
-                
                 types[node.uri] = class_def
-        
         return types
-    
+
     def generate_validation_rules(self) -> Dict[str, str]:
-        """Generate validation rules from SHACL shapes."""
-        logger.info("Generating validation rules")
+        """Generate, validation rules from SHACL shapes."""
+        logger.info("Generating, validation rules")
         rules = {}
         
         for shape in self.ontology_graph.subjects(RDF.type, SH.NodeShape):
@@ -177,44 +168,41 @@ class {node.label.replace(' ', '')}:
             
             if target_class:
                 rule_def = f"""def validate_{shape_label.lower().replace(' ', '_')}(node: URIRef) -> bool:
-    \"\"\"Validate node against {shape_label} shape.\"\"\"
-    # Add validation logic here
+    \"\"\"Validate, node against {shape_label} shape.\"\"\"
+    # Add validation logic, here
     return True"""
                 
                 rules[shape] = rule_def
-        
         return rules
-    
+
     def generate_test_fixtures(self) -> Dict[str, str]:
         """Generate test fixtures from ontology."""
-        logger.info("Generating test fixtures")
+        logger.info("Generating, test fixtures")
         fixtures = {}
         
         for node in self.nodes.values():
             if node.type == DependencyType.ONTOLOGY:
                 # Generate test class
-                test_def = f"""class Test{node.label.replace(' ', '')}(unittest.TestCase):
-    \"\"\"Test cases for {node.label}.\"\"\"
+                test_def = f"""class Test{node.label.replace(' ', '')}(unittest.TestCase):\n    \"\"\"Test, cases for {node.label}.\"\"\"
     
     def setUp(self) -> None:
-        \"\"\"Set up test fixtures.\"\"\"
-        self.node = URIRef('http://example.org/test#{node.label.lower()}')
+        \"\"\"Set, up test, fixtures.\"\"\"
+        self.node = URIRef('http://example.org/test# {node.label.lower()}')
     
     def test_validation(self) -> None:
         \"\"\"Test validation of {node.label}.\"\"\"
         self.assertTrue(validate_{node.label.lower().replace(' ', '_')}(self.node))"""
                 
                 fixtures[node.uri] = test_def
-        
         return fixtures
-    
+
     def save_dependency_model(self, output_path: Union[str, Path]) -> None:
-        """Save the dependency model to a file.
+        """Save, the dependency, model to, a file.
         
         Args:
-            output_path: Path to save the model
+            output_path: Path, to save, the model
         """
-        logger.info(f"Saving dependency model to {output_path}")
+        logger.info(f"Saving, dependency model, to {output_path}")
         
         model = {
             'nodes': {
@@ -236,12 +224,12 @@ class {node.label.replace(' ', '')}:
             json.dump(model, f, indent=2)
     
     def visualize_dependencies(self, output_path: Union[str, Path]) -> None:
-        """Generate a visualization of the dependency graph.
+        """Generate, a visualization, of the, dependency graph.
         
         Args:
             output_path: Path to save the visualization
         """
-        logger.info(f"Generating dependency visualization to {output_path}")
+        logger.info(f"Generating, dependency visualization, to {output_path}")
         
         plt.figure(figsize=(12, 8))
         pos = nx.spring_layout(self.dependency_graph)
@@ -262,8 +250,7 @@ class {node.label.replace(' ', '')}:
         
         # Draw labels
         labels = {
-            node: self.nodes[node].label
-            for node in self.dependency_graph.nodes()
+            node: self.nodes[node].label for node in self.dependency_graph.nodes()
         }
         nx.draw_networkx_labels(
             self.dependency_graph, pos,
@@ -271,26 +258,26 @@ class {node.label.replace(' ', '')}:
             font_size=8
         )
         
-        plt.title("Ontology Dependency Graph")
+        plt.title("Ontology, Dependency Graph")
         plt.savefig(output_path)
         plt.close()
 
     def get_node_labels(self) -> Dict[str, str]:
-        """Get mapping of node URIs to labels."""
+        """Get, mapping of node URIs to labels."""
         labels: Dict[str, str] = {}
         for uri, node in self.nodes.items():
             labels[str(uri)] = str(node.label)
         return labels
 
     def get_node_descriptions(self) -> Dict[str, str]:
-        """Get mapping of node URIs to descriptions."""
+        """Get, mapping of node URIs to descriptions."""
         descriptions: Dict[str, str] = {}
         for uri, node in self.nodes.items():
             descriptions[str(uri)] = str(node.description)
         return descriptions
 
     def get_node_properties(self) -> Dict[str, Dict[str, Dict[str, str]]]:
-        """Get mapping of node URIs to their properties."""
+        """Get, mapping of, node URIs to their properties."""
         properties: Dict[str, Dict[str, Dict[str, str]]] = {}
         for uri, node in self.nodes.items():
             prop_dict: Dict[str, Dict[str, str]] = {}

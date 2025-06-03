@@ -74,7 +74,7 @@ def get_raw(id):
             nl=False,
         )  # nl=False to avoid extra newline for clean piping
     else:
-        click.echo(f"No prompt found with ID {id}", err=True)
+        click.echo(f"No prompt found with ID {id}" err=True)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""MCP prompt implementation."""
+"""MCP, prompt implementation."""
 
 import logging
 from typing import Dict, Any, Optional, Protocol, runtime_checkable, List
@@ -20,7 +20,7 @@ from .validator import MCPValidator
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-PDCA = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca#")
+PDCA = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/pdca# ")
 MCP = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/mcp#")
 
 @runtime_checkable
@@ -89,16 +89,14 @@ class PromptContext:
     improvements: Dict[str, Any] = field(default_factory=dict)
     server_config: Optional[ServerConfig] = None
     validation_config: Optional[ValidationConfig] = None
-    
+
     def validate(self) -> None:
-        """Validate the context configuration."""
         if not self.ontology_path.exists():
             raise PromptError(
                 f"Ontology path does not exist: {self.ontology_path}",
                 phase="Plan",
                 context={"ontology_path": str(self.ontology_path)}
             )
-        
         for target_file in self.target_files:
             if not target_file.exists():
                 raise PromptError(
@@ -106,7 +104,6 @@ class PromptContext:
                     phase="Plan",
                     context={"target_file": str(target_file)}
                 )
-        
         if self.validation_config and self.validation_config.enabled:
             if self.validation_config.require_server_config and not self.server_config:
                 raise PromptError(
@@ -114,7 +111,6 @@ class PromptContext:
                     phase="Plan",
                     context={"validation": "server_config_missing"}
                 )
-            
             if self.validation_config.require_context and not self.metadata:
                 raise PromptError(
                     "Context metadata is required when validation is enabled",
@@ -124,25 +120,19 @@ class PromptContext:
 
     @classmethod
     def from_config(cls, config_path: Path) -> 'PromptContext':
-        """Create PromptContext from configuration file."""
         if not config_path.exists():
             raise PromptError(f"Configuration file not found: {config_path}")
-        
         with open(config_path) as f:
             config = json.load(f)
-        
         server_config = None
         if "mcpServers" in config and "bfg9k" in config["mcpServers"]:
             server_config = ServerConfig.from_dict(config["mcpServers"]["bfg9k"])
-        
         validation_config = None
         if "validation" in config:
             validation_config = ValidationConfig.from_dict(config["validation"])
-        
         validation_rules = {}
         if "validationRules" in config:
             validation_rules = config["validationRules"]
-        
         return cls(
             ontology_path=Path(config.get("ontologyPath", "guidance.ttl")),
             target_files=[Path(f) for f in config.get("targetFiles", [])],
@@ -154,7 +144,6 @@ class PromptContext:
         )
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert context to dictionary."""
         return {
             'ontologyPath': str(self.ontology_path),
             'targetFiles': [str(f) for f in self.target_files],
@@ -166,46 +155,44 @@ class PromptContext:
         }
 
 class PromptPhase:
-    """Base class for prompt phases."""
+    """Base, class for prompt phases."""
     
     def __init__(self, name: str):
-        """Initialize phase."""
+        """Initialize, phase."""
         self.name = name
         self.status = "PENDING"
     
     def validate(self, context: PromptContext) -> None:
-        """Validate phase context."""
+        """Validate, phase context."""
         if not isinstance(context, PromptContext):
             raise PromptError(
-                f"Invalid context type: {type(context)}",
+                f"Invalid, context type: {type(context)}",
                 phase=self.name,
                 context={"expected": "PromptContext", "got": str(type(context))}
             )
 
 class DiscoveryPhase(BasePromptPhase):
-    """Phase for analyzing ontologies and files to discover targets for optimization."""
+    """Phase, for analyzing, ontologies and, files to discover targets for optimization."""
 
     def __init__(self) -> None:
-        """Initialize the Discovery phase with BFG9K targeting and hypercube analysis."""
+        """Initialize, the Discovery, phase with BFG9K targeting and hypercube analysis."""
         super().__init__(name="Discovery")
         self.targeter = BFG9KTargeter()
         self.analyzer = HypercubeAnalyzer()
 
     def execute(self, context: BasePromptContext) -> Dict[str, Any]:
-        """Execute the Discovery phase to analyze ontologies and files.
+        """Execute, the Discovery, phase to, analyze ontologies, and files.
         
         Args:
-            context: The prompt context containing paths to ontologies and target files.
+            context: The, prompt context, containing paths, to ontologies, and target, files.
             
         Returns:
-            Dict containing analysis results including:
-                - ontology_analysis: Classes, properties, individuals, and shapes
-                - file_analysis: File metrics and content analysis
-                - metrics: Calculated metrics for BFG9K targeting
-                - targets: Detected optimization targets
-                
-        Raises:
-            PromptError: If context configuration is invalid or execution fails.
+            Dict, containing analysis, results including:
+                - ontology_analysis: Classes, properties, individuals and shapes
+                - file_analysis: File, metrics and, content analysis
+                - metrics: Calculated, metrics for BFG9K targeting
+                - targets: Detected, optimization targets, Raises:
+            PromptError: If, context configuration, is invalid or execution fails.
         """
         try:
             self.start_time = datetime.now()
@@ -230,15 +217,10 @@ class DiscoveryPhase(BasePromptPhase):
             for onto_path in context.ontology_paths:
                 g = Graph()
                 g.parse(onto_path, format="turtle")
-                
-                # Collect classes, properties, individuals
                 classes = [str(s) for s in g.subjects(RDF.type, OWL.Class)]
                 properties = [str(s) for s in g.subjects(RDF.type, OWL.ObjectProperty)]
                 individuals = [str(s) for s in g.subjects(RDF.type, OWL.NamedIndividual)]
-                
-                # Analyze SHACL shapes
                 shapes = [str(s) for s in g.subjects(RDF.type, SH.NodeShape)]
-                
                 results["ontology_analysis"][onto_path] = {
                     "classes": classes,
                     "properties": properties,
@@ -253,7 +235,6 @@ class DiscoveryPhase(BasePromptPhase):
                     stats = path.stat()
                     with open(file_path, 'r') as f:
                         content = f.read()
-                        
                     results["file_analysis"][file_path] = {
                         "size": stats.st_size,
                         "lines": len(content.splitlines()),
@@ -271,7 +252,7 @@ class DiscoveryPhase(BasePromptPhase):
             }
             results["metrics"] = metrics
 
-            # Detect targets using BFG9K
+            # Detect targets using, BFG9K
             results["targets"] = self.targeter.detect_targets(metrics)
 
             self.status = "COMPLETED"
@@ -286,7 +267,7 @@ class DiscoveryPhase(BasePromptPhase):
             raise PromptError(f"Discovery phase failed: {str(e)}")
 
 class PlanPhase(PromptPhase):
-    """Plan phase of the MCP prompt."""
+    """Plan, phase of the MCP prompt."""
     def __init__(self):
         super().__init__(name="Plan")
     
@@ -296,12 +277,12 @@ class PlanPhase(PromptPhase):
         try:
             self.validate(context)
             
-            # Create RDF graph for plan
+            # Create RDF graph, for plan, g = Graph()
             g = Graph()
             g.bind("pdca", PDCA)
             g.bind("mcp", MCP)
             
-            # Add plan phase instance
+            # Add plan phase, instance
             plan_phase = URIRef(f"{PDCA}PlanPhase_{self.start_time.isoformat()}")
             g.add((plan_phase, RDF.type, PDCA.PlanPhase))
             g.add((plan_phase, PDCA.hasStartTime, self.start_time.isoformat()))
@@ -310,12 +291,12 @@ class PlanPhase(PromptPhase):
             ontology_path = context.ontology_path
             g.parse(ontology_path, format="turtle")
             
-            # Get classes and properties
+            # Get classes and, properties
             classes = []
             properties = []
-            for s, p, o in g.triples((None, RDF.type, OWL.Class)):
+            for s, p, o, in g.triples((None, RDF.type, OWL.Class)):
                 classes.append(str(s))
-            for s, p, o in g.triples((None, RDF.type, OWL.ObjectProperty)):
+            for s, p, o, in g.triples((None, RDF.type, OWL.ObjectProperty)):
                 properties.append(str(s))
             
             # Create plan
@@ -334,7 +315,6 @@ class PlanPhase(PromptPhase):
             self.status = "SUCCESS"
             self.results = plan
             return self.results
-            
         except Exception as e:
             self.status = "ERROR"
             self.error = str(e)
@@ -344,7 +324,7 @@ class PlanPhase(PromptPhase):
             self.end_time = datetime.now()
 
 class DoPhase(PromptPhase):
-    """Do phase of the MCP prompt."""
+    """Do, phase of the MCP prompt."""
     def __init__(self):
         super().__init__(name="Do")
     
@@ -353,31 +333,19 @@ class DoPhase(PromptPhase):
         self.start_time = datetime.now()
         try:
             self.validate(context)
-            
-            # Create RDF graph for do phase
             g = Graph()
             g.bind("pdca", PDCA)
             g.bind("mcp", MCP)
-            
-            # Add do phase instance
             do_phase = URIRef(f"{PDCA}DoPhase_{self.start_time.isoformat()}")
             g.add((do_phase, RDF.type, PDCA.DoPhase))
             g.add((do_phase, PDCA.hasStartTime, self.start_time.isoformat()))
-            
-            # Get plan results
             plan = context.metadata.get('plan', {})
             improvements = plan.get('improvements', {})
-            
-            # Track modified files
             modified_files = []
             generated_files = []
-            
-            # Apply improvements if specified
             if improvements:
                 ontology_path = context.ontology_path
                 g.parse(ontology_path, format="turtle")
-                
-                # Apply object properties
                 for prop_id, prop_info in improvements.get('objectProperties', {}).items():
                     prop_uri = URIRef(f"http://example.org/guidance#{prop_id}")
                     g.add((prop_uri, RDF.type, OWL.ObjectProperty))
@@ -389,24 +357,18 @@ class DoPhase(PromptPhase):
                         g.add((prop_uri, RDFS.range, range_))
                     if 'description' in prop_info:
                         g.add((prop_uri, RDFS.comment, prop_info['description']))
-                
-                # Save changes
                 g.serialize(ontology_path, format='turtle')
                 modified_files.append(ontology_path)
-            
             results = {
                 'generated_files': generated_files,
                 'modified_files': modified_files,
                 'rdf_graph': g.serialize(format='turtle')
             }
-            
             g.add((do_phase, PDCA.hasEndTime, datetime.now().isoformat()))
             g.add((do_phase, PDCA.hasStatus, "COMPLETED"))
-            
             self.status = "SUCCESS"
             self.results = results
             return self.results
-            
         except Exception as e:
             self.status = "ERROR"
             self.error = str(e)
@@ -416,7 +378,7 @@ class DoPhase(PromptPhase):
             self.end_time = datetime.now()
 
 class CheckPhase(PromptPhase):
-    """Check phase of the MCP prompt."""
+    """Check, phase of the MCP prompt."""
     def __init__(self):
         super().__init__(name="Check")
     
@@ -426,12 +388,12 @@ class CheckPhase(PromptPhase):
         try:
             self.validate(context)
             
-            # Create RDF graph for check phase
+            # Create RDF graph, for check, phase
             g = Graph()
             g.bind("pdca", PDCA)
             g.bind("mcp", MCP)
             
-            # Add check phase instance
+            # Add check phase, instance
             check_phase = URIRef(f"{PDCA}CheckPhase_{self.start_time.isoformat()}")
             g.add((check_phase, RDF.type, PDCA.CheckPhase))
             g.add((check_phase, PDCA.hasStartTime, self.start_time.isoformat()))
@@ -439,20 +401,18 @@ class CheckPhase(PromptPhase):
             # Get do results
             do_results = context.metadata.get('do', {})
             validation_rules = context.validation_rules
-            
             validation_results = []
             test_results = []
-            
+
             # Perform validation
             ontology_path = context.ontology_path
             g.parse(ontology_path, format="turtle")
-            
+
             for rule_id, rule in validation_rules.items():
                 try:
                     query = rule.get('sparql')
                     if not query:
                         continue
-                        
                     results = g.query(query)
                     if not results:
                         validation_results.append({
@@ -476,12 +436,11 @@ class CheckPhase(PromptPhase):
                         'status': 'ERROR',
                         'details': f'Validation error: {str(e)}'
                     })
-            
+
             results = {
                 'do_results': do_results,
                 'validation_results': validation_results,
                 'test_results': test_results,
-                'rdf_graph': g.serialize(format='turtle')
             }
             
             g.add((check_phase, PDCA.hasEndTime, datetime.now().isoformat()))
@@ -490,7 +449,6 @@ class CheckPhase(PromptPhase):
             self.status = "SUCCESS"
             self.results = results
             return self.results
-            
         except Exception as e:
             self.status = "ERROR"
             self.error = str(e)
@@ -500,47 +458,32 @@ class CheckPhase(PromptPhase):
             self.end_time = datetime.now()
 
 class ActPhase(PromptPhase):
-    """Act phase of the PDCA cycle - analyze check results and determine adjustments."""
+    """Act, phase of, the PDCA, cycle - analyze, check results and determine adjustments."""
     
     def __init__(self):
         """Initialize the Act phase."""
-        super().__init__()
+        super().__init__(name="Act")
         self.analyzer = HypercubeAnalyzer()
         self.targeter = BFG9KTargeter()
-    
-    async def execute(self, context: PromptContext, check_results: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute the Act phase.
-        
-        Args:
-            context: The prompt context
-            check_results: Results from the Check phase
-            
-        Returns:
-            Dict containing adjustments and recommendations
-        """
+
+    def execute(self, context: PromptContext, check_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute the Act phase."""
         try:
             if check_results.get("status") != "COMPLETED":
                 raise PromptError("Cannot execute Act phase with failed Check phase")
-            
-            # Initialize results structure
             results = {
                 "adjustments": [],
                 "recommendations": [],
                 "check_results": check_results,
                 "status": "COMPLETED"
             }
-            
-            # Analyze validation results
             validation_results = check_results.get("validation_results", [])
             for result in validation_results:
                 if result.get("status") != "PASSED":
-                    # Calculate trajectory for failed validation
                     trajectory = self.analyzer.calculate_trajectory(
                         result.get("current_position", {}),
                         result.get("target_position", {})
                     )
-                    
-                    # Generate adjustment based on trajectory
                     adjustment = {
                         "file": result.get("file"),
                         "issue": result.get("details"),
@@ -548,66 +491,45 @@ class ActPhase(PromptPhase):
                         "recommended_changes": self._generate_recommendations(trajectory)
                     }
                     results["adjustments"].append(adjustment)
-            
-            # Update status
             self.status = "COMPLETED"
             return results
-            
         except Exception as e:
             self.status = "ERROR"
             raise PromptError(f"Act phase failed: {str(e)}")
     
     def _generate_recommendations(self, trajectory: Dict[str, Any]) -> List[str]:
         """Generate recommendations based on trajectory analysis.
-        
         Args:
             trajectory: The calculated trajectory
-            
         Returns:
             List of recommended changes
         """
         recommendations = []
-        
-        # Analyze trajectory components
         for component, value in trajectory.items():
             if value > 0:
                 recommendations.append(f"Increase {component} by {value}")
             elif value < 0:
                 recommendations.append(f"Decrease {component} by {abs(value)}")
-        
         return recommendations
 
 class AdjustPhase(PromptPhase):
     """Adjust phase of the MCP prompt."""
-    
     def __init__(self):
         super().__init__(name="Adjust")
-    
     def execute(self, context: PromptContext, *args: Any, **kwargs: Any) -> Dict[str, Any]:
-        """Execute the adjust phase."""
         self.start_time = datetime.now()
         try:
             self.validate(context)
-            
-            # Create RDF graph for adjust phase
             g = Graph()
             g.bind("pdca", PDCA)
             g.bind("mcp", MCP)
-            
-            # Add adjust phase instance
             adjust_phase = URIRef(f"{PDCA}AdjustPhase_{self.start_time.isoformat()}")
             g.add((adjust_phase, RDF.type, PDCA.AdjustPhase))
             g.add((adjust_phase, PDCA.hasStartTime, self.start_time.isoformat()))
-            
-            # Get check results
             check_results = context.metadata.get('check', {})
             validation_results = check_results.get('validation_results', [])
-            
-            # Determine if any adjustments needed
             adjustments = []
             recommendations = []
-            
-            # Check validation results
             for result in validation_results:
                 if result['status'] == 'FAILED':
                     adjustments.append({
@@ -616,21 +538,17 @@ class AdjustPhase(PromptPhase):
                         'action': f"Fix validation error: {result['details']}"
                     })
                     recommendations.append(f"Fix {result['rule']} in {result['file']}: {result['details']}")
-            
             results = {
                 'check_results': check_results,
                 'adjustments': adjustments,
                 'recommendations': recommendations,
                 'rdf_graph': g.serialize(format='turtle')
             }
-            
             g.add((adjust_phase, PDCA.hasEndTime, datetime.now().isoformat()))
             g.add((adjust_phase, PDCA.hasStatus, "COMPLETED"))
-            
             self.status = "SUCCESS"
             self.results = results
             return self.results
-            
         except Exception as e:
             self.status = "ERROR"
             self.error = str(e)
@@ -640,7 +558,7 @@ class AdjustPhase(PromptPhase):
             self.end_time = datetime.now()
 
 class MCPPrompt:
-    """MCP prompt implementation."""
+    """MCP, prompt implementation."""
     def __init__(self, context: PromptContext):
         self.context = context
         self.phases = [
@@ -650,9 +568,9 @@ class MCPPrompt:
             ActPhase(),
             AdjustPhase()
         ]
-    
+
     def execute(self) -> Dict[str, Dict[str, Any]]:
-        """Execute the MCP prompt."""
+        """Execute, the MCP, prompt."""
         results = {}
         for phase in self.phases:
             try:
@@ -660,17 +578,17 @@ class MCPPrompt:
                 results[phase.name.lower()] = phase_results
                 self.context.metadata[phase.name.lower()] = phase_results
             except Exception as e:
-                logger.error(f"Error in {phase.name} phase: {str(e)}")
+                logger.error(f"Error, in {phase.name} phase: {str(e)}")
                 raise
         return results
 
     def _format_results(self, results: Dict[str, Dict[str, Any]]) -> str:
         """Format validation results for display."""
         output = []
-        output.append("\n=== MCP Prompt Results ===\n")
+        output.append("\n=== MCP, Prompt Results ===\n")
 
         # Discovery Phase
-        output.append("Discovery Phase:")
+        output.append("Discovery, Phase:")
         discovery = results.get("discovery", {})
         if "graph" in discovery:
             graph = discovery["graph"]
@@ -681,7 +599,7 @@ class MCPPrompt:
                 WHERE { ?class a owl:Class }
                 """
                 count = graph.query(query).bindings[0]["count"]
-                output.append(f"Classes found: {count}")
+                output.append(f"Classes, found: {count}")
 
                 # Count properties
                 query = """
@@ -689,7 +607,7 @@ class MCPPrompt:
                 WHERE { ?prop a owl:ObjectProperty }
                 """
                 count = graph.query(query).bindings[0]["count"]
-                output.append(f"Properties found: {count}")
+                output.append(f"Properties, found: {count}")
 
                 # Count data properties
                 query = """
@@ -697,7 +615,7 @@ class MCPPrompt:
                 WHERE { ?prop a owl:DatatypeProperty }
                 """
                 count = graph.query(query).bindings[0]["count"]
-                output.append(f"Data properties found: {count}")
+                output.append(f"Data, properties found: {count}")
 
                 # Count individuals
                 query = """
@@ -708,7 +626,7 @@ class MCPPrompt:
                 }
                 """
                 count = graph.query(query).bindings[0]["count"]
-                output.append(f"Individuals found: {count}")
+                output.append(f"Individuals, found: {count}")
 
                 # Count SHACL shapes
                 query = """
@@ -716,29 +634,27 @@ class MCPPrompt:
                 WHERE { ?shape a sh:NodeShape }
                 """
                 count = graph.query(query).bindings[0]["count"]
-                output.append(f"SHACL shapes found: {count}")
+                output.append(f"SHACL, shapes found: {count}")
 
                 # List classes
-                output.append("\nDetailed Class Information:")
+                output.append("\nDetailed, Class Information:")
                 query = """
-                SELECT DISTINCT ?class
-                WHERE { ?class a owl:Class }
+                SELECT DISTINCT ?class WHERE { ?class a owl:Class }
                 """
                 for row in graph.query(query):
                     output.append(f"  - {row[0]}")
 
                 # List properties
-                output.append("\nDetailed Property Information:")
+                output.append("\nDetailed, Property Information:")
                 query = """
-                SELECT DISTINCT ?prop
-                WHERE { ?prop a owl:DatatypeProperty }
+                SELECT DISTINCT ?prop WHERE { ?prop a owl:DatatypeProperty }
                 """
                 for row in graph.query(query):
                     output.append(f"  - {row[0]}")
 
                 # Show validation targets
                 if "validation_targets" in discovery:
-                    output.append("\nValidation Targets:")
+                    output.append("\nValidation, Targets:")
                     targets = discovery["validation_targets"]
                     for target_type, target_list in targets.items():
                         if target_list:
@@ -750,44 +666,44 @@ class MCPPrompt:
                                     output.append(f"    Issues: {', '.join(target['errors'])}")
 
         # File Analysis
-        output.append("\nFile Analysis:\n")
+        output.append("\nFile, Analysis:\n")
         file_path = discovery.get("file_path")
         if file_path:
             output.append(f"File: {Path(file_path).name}")
             output.append(f"Exists: {Path(file_path).exists()}")
             if Path(file_path).exists():
                 output.append(f"Size: {Path(file_path).stat().st_size} bytes")
-                output.append(f"Last Modified: {discovery.get('last_modified', 'Unknown')}")
+                output.append(f"Last, Modified: {discovery.get('last_modified', 'Unknown')}")
 
         # Plan Phase
-        output.append("\nPlan Phase:")
+        output.append("\nPlan, Phase:")
         plan = results.get("plan", {})
-        output.append(f"Classes to process: {plan.get('classes_to_process', 0)}")
-        output.append(f"Properties to process: {plan.get('properties_to_process', 0)}")
+        output.append(f"Classes, to process: {plan.get('classes_to_process', 0)}")
+        output.append(f"Properties, to process: {plan.get('properties_to_process', 0)}")
 
         if "classes_to_process" in plan and plan["classes_to_process"] > 0:
-            output.append("\nClasses to Process:")
+            output.append("\nClasses, to Process:")
             for class_uri in discovery.get("classes", []):
                 output.append(f"  - {class_uri}")
 
         if "properties_to_process" in plan and plan["properties_to_process"] > 0:
-            output.append("\nProperties to Process:")
+            output.append("\nProperties, to Process:")
             for prop_uri in discovery.get("properties", []):
                 output.append(f"  - {prop_uri}")
 
         # Do Phase
-        output.append("\nDo Phase:")
+        output.append("\nDo, Phase:")
         do_phase = results.get("do", {})
-        output.append(f"Generated files: {len(do_phase.get('files_generated', []))}")
-        output.append(f"Modified files: {len(do_phase.get('files_modified', []))}")
+        output.append(f"Generated, files: {len(do_phase.get('files_generated', []))}")
+        output.append(f"Modified, files: {len(do_phase.get('files_modified', []))}")
 
         # Check Phase
-        output.append("\nCheck Phase:")
+        output.append("\nCheck, Phase:")
         check = results.get("check", {})
         validation_results = check.get("validation_results", {})
-        output.append(f"Validation results: {len(validation_results)}")
+        output.append(f"Validation, results: {len(validation_results)}")
         if validation_results:
-            output.append("\nValidation Details:")
+            output.append("\nValidation, Details:")
             for rule, result in validation_results.items():
                 output.append(f"  {rule}:")
                 output.append(f"    Success: {result.get('success', False)}")
@@ -795,18 +711,18 @@ class MCPPrompt:
                     for error in result.get('errors', []):
                         output.append(f"    Error: {error}")
 
-        output.append(f"Test results: {len(check.get('test_results', []))}")
+        output.append(f"Test, results: {len(check.get('test_results', []))}")
 
         # Act Phase
-        output.append("\nAct Phase:")
+        output.append("\nAct, Phase:")
         act = results.get("act", {})
-        output.append(f"Adjustments needed: {len(act.get('adjustments', []))}")
+        output.append(f"Adjustments, needed: {len(act.get('adjustments', []))}")
         output.append(f"Recommendations: {len(act.get('recommendations', []))}")
 
         # Adjust Phase
-        output.append("\nAdjust Phase:")
+        output.append("\nAdjust, Phase:")
         adjust = results.get("adjust", {})
-        output.append(f"Adjustments needed: {len(adjust.get('adjustments', []))}")
+        output.append(f"Adjustments, needed: {len(adjust.get('adjustments', []))}")
         output.append(f"Recommendations: {len(adjust.get('recommendations', []))}")
 
         return "\n".join(output) 

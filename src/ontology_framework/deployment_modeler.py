@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Module for modeling and generating deployment configurations.
 """
@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 
 class DeploymentModeler:
     """Modeler for deployment configurations."""
-    
     def __init__(self, base_url: str):
         """Initialize the deployment modeler.
         
@@ -26,13 +25,12 @@ class DeploymentModeler:
             base_url: Base URL of the GraphDB server
         """
         self.client = GraphDBClient(base_url)
-        
+
     def model_deployment(self, config: Dict[str, Any]) -> bool:
         """Model a deployment configuration.
         
         Args:
             config: Deployment configuration dictionary
-            
         Returns:
             True if successful
         """
@@ -40,10 +38,8 @@ class DeploymentModeler:
             # Create repository if it doesn't exist
             if not any(repo["id"] == config["repository"] for repo in self.client.list_repositories()):
                 self.client.create_repository(config["repository"], config.get("title", "Deployment Repository"))
-            
             # Set repository for client
             self.client.repository = config["repository"]
-            
             # Load ontologies if specified
             if "ontologies" in config:
                 for ontology_path in config["ontologies"]:
@@ -51,26 +47,21 @@ class DeploymentModeler:
                         self.client.load_ontology(ontology_path)
                     else:
                         logger.warning(f"Ontology file not found: {ontology_path}")
-            
             return True
-            
         except Exception as e:
             logger.error(f"Failed to model deployment: {e}")
             raise OntologyFrameworkError(f"Deployment modeling failed: {str(e)}")
-            
+
     def validate_deployment(self, repository: str) -> bool:
         """Validate a deployment configuration.
         
         Args:
             repository: Repository name
-            
         Returns:
             True if validation passes
         """
         try:
-            # Set repository for client
             self.client.repository = repository
-            
             # Run validation query
             result = self.client.query("""
                 PREFIX sh: <http://www.w3.org/ns/shacl#>
@@ -79,29 +70,22 @@ class DeploymentModeler:
                         sh:conforms true .
                 }
             """)
-            
             return result["boolean"]
-            
         except Exception as e:
             logger.error(f"Failed to validate deployment: {e}")
             raise OntologyFrameworkError(f"Deployment validation failed: {str(e)}")
-            
+
     def clear_deployment(self, repository: str) -> bool:
         """Clear a deployment configuration.
         
         Args:
             repository: Repository name
-            
         Returns:
             True if successful
         """
         try:
-            # Set repository for client
             self.client.repository = repository
-            
-            # Clear the repository
             return self.client.clear_graph()
-            
         except Exception as e:
             logger.error(f"Failed to clear deployment: {e}")
             raise OntologyFrameworkError(f"Deployment clearing failed: {str(e)}")
@@ -112,7 +96,6 @@ class DeploymentModeler:
         Args:
             ontology_path: Path to ontology file
             dataset_name: Optional dataset name
-            
         Returns:
             True if successful
         """
@@ -121,10 +104,9 @@ class DeploymentModeler:
         except Exception as e:
             logger.error(f"Failed to deploy ontology: {e}")
             raise OntologyFrameworkError(f"Deployment error: {str(e)}")
-            
+
     def list_datasets(self) -> List[str]:
         """List all datasets in GraphDB.
-        
         Returns:
             List of dataset names
         """
@@ -133,13 +115,11 @@ class DeploymentModeler:
         except Exception as e:
             logger.error(f"Failed to list datasets: {e}")
             raise OntologyFrameworkError(f"Failed to list datasets: {str(e)}")
-            
+
     def get_dataset_info(self, dataset_name: str) -> Dict:
         """Get information about a dataset.
-        
         Args:
             dataset_name: Name of dataset
-            
         Returns:
             Dataset information
         """
@@ -148,13 +128,11 @@ class DeploymentModeler:
         except Exception as e:
             logger.error(f"Failed to get dataset info: {e}")
             raise OntologyFrameworkError(f"Failed to get dataset info: {str(e)}")
-            
+
     def count_triples(self, dataset_name: str) -> int:
         """Count triples in a dataset.
-        
         Args:
             dataset_name: Name of dataset
-            
         Returns:
             Number of triples
         """
@@ -167,21 +145,16 @@ class DeploymentModeler:
     def get_deployment_config(self, app_name: str, environment: str) -> Dict[str, Any]:
         """
         Get deployment configuration for an application.
-
         Args:
             app_name: Name of the application
-            environment: Target environment (e.g., dev, staging, prod)
-
+            environment: Target environment (e.g., dev staging prod)
         Returns:
             Dictionary containing deployment configuration
         """
         try:
-            # Ensure alphanumeric name
             alphanumeric_name = ''.join(c for c in app_name if c.isalnum())
             if not alphanumeric_name:
                 raise ValueError("Application name must contain at least one alphanumeric character")
-
-            # Default configuration
             config = {
                 "name": alphanumeric_name,
                 "environment": environment,
@@ -200,10 +173,8 @@ class DeploymentModeler:
     def generate_deployment_artifacts(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """
         Generate deployment artifacts based on configuration.
-
         Args:
             config: Deployment configuration
-
         Returns:
             Dictionary containing generated artifacts
         """
@@ -211,7 +182,6 @@ class DeploymentModeler:
             validation_result = self.validate_deployment(config["repository"])
             if not validation_result:
                 return {}
-
             artifacts = {
                 "kubernetes": self._generate_k8s_deployment(config),
                 "docker_compose": self._generate_docker_compose(config),
@@ -219,69 +189,18 @@ class DeploymentModeler:
             }
             return artifacts
         except Exception as e:
-            logger.error(f"Error generating deployment artifacts: {e}")
-            raise OntologyFrameworkError(f"Deployment artifact generation failed: {str(e)}")
+            logger.error(f"Failed to generate deployment artifacts: {e}")
+            raise OntologyFrameworkError(f"Failed to generate deployment artifacts: {str(e)}")
 
+    # Placeholder methods for artifact generation
     def _generate_k8s_deployment(self, config: Dict[str, Any]) -> str:
-        """Generate Kubernetes deployment configuration."""
-        return f"""apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {config['name']}
-spec:
-  replicas: {config['replicas']}
-  selector:
-    matchLabels:
-      app: {config['name']}
-  template:
-    metadata:
-      labels:
-        app: {config['name']}
-    spec:
-      containers:
-      - name: {config['name']}
-        resources:
-          requests:
-            memory: {config['memory_request']}
-            cpu: {config['cpu_request']}
-          limits:
-            memory: {config['memory_limit']}
-            cpu: {config['cpu_limit']}
-        ports:
-        - containerPort: {config['port']}"""
+        return f"Kubernetes deployment for {config['name']}"
 
     def _generate_docker_compose(self, config: Dict[str, Any]) -> str:
-        """Generate Docker Compose configuration."""
-        return f"""version: '3'
-services:
-  {config['name']}:
-    build: .
-    ports:
-      - "{config['port']}:{config['port']}"
-    environment:
-      - ENVIRONMENT={config['environment']}
-    deploy:
-      resources:
-        limits:
-          cpus: '{config['cpu_limit']}'
-          memory: {config['memory_limit']}
-        reservations:
-          cpus: '{config['cpu_request']}'
-          memory: {config['memory_request']}"""
+        return f"Docker Compose for {config['name']}"
 
     def _generate_deploy_script(self, config: Dict[str, Any]) -> str:
-        """Generate deployment script."""
-        return f"""#!/bin/bash
-# Deployment script for {config['name']} in {config['environment']} environment
-
-# Apply Kubernetes deployment
-kubectl apply -f deployment.yaml
-
-# Wait for deployment to be ready
-kubectl rollout status deployment/{config['name']}
-
-echo "Deployment of {config['name']} to {config['environment']} completed."""
+        return f"Deploy script for {config['name']}"
 
 class DeploymentError(Exception):
-    """Exception raised for deployment-related errors."""
     pass 

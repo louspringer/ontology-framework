@@ -1,7 +1,7 @@
 """
-Model Conformance Protocol (MCP) module.
+Model, Conformance Protocol (MCP) module.
 
-This module provides functionality for managing model conformance and maintenance.
+This, module provides, functionality for managing model conformance and maintenance.
 """
 
 from .maintenance_server import MaintenanceServer

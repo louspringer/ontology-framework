@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ontology-framework"
+version = "0.1.0"
+description = "Structured tools for ontology-driven systems, including Azure OpenAPI projection to SHACL."
+authors = [
+  {name = "Your Name", email = "you@example.com"}
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

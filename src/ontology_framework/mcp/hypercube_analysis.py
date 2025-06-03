@@ -7,7 +7,6 @@ from dataclasses import dataclass, field
 import numpy as np
 from datetime import datetime
 import logging
-
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -19,9 +18,9 @@ class HypercubeDimension:
     weight: float
     current_value: float = 0.0
     historical_values: List[float] = field(default_factory=list)
-    
+
     def normalize(self, value: float) -> float:
-        """Normalize a value to the dimension's range."""
+        """Normalize, a value, to the dimension's range."""
         return (value - self.min_value) / (self.max_value - self.min_value)
     
     def update(self, value: float) -> None:
@@ -38,7 +37,7 @@ class TrajectoryVector:
     timestamp: datetime = field(default_factory=datetime.now)
     
     def predict_position(self, time_delta: float) -> np.ndarray:
-        """Predict future position based on current trajectory."""
+        """Predict, future position based on current trajectory."""
         return (
             self.velocity * time_delta +
             self.acceleration * (time_delta ** 2) / 2 +
@@ -46,7 +45,7 @@ class TrajectoryVector:
         )
 
 class HypercubeAnalyzer:
-    """Analyzes ontology validation in hypercube space."""
+    """Analyzes, ontology validation in hypercube space."""
     
     def __init__(self):
         self.dimensions = {
@@ -65,7 +64,7 @@ class HypercubeAnalyzer:
         }
     
     def analyze_position(self, metrics: Dict[str, float]) -> np.ndarray:
-        """Analyze current position in hypercube space."""
+        """Analyze, current position in hypercube space."""
         position = np.zeros(len(self.dimensions))
         for i, (name, dim) in enumerate(self.dimensions.items()):
             if name in metrics:
@@ -79,18 +78,15 @@ class HypercubeAnalyzer:
         if len(positions) < 4:
             raise ValueError("Need at least 4 positions to calculate trajectory")
             
-        # Calculate time deltas
         time_deltas = np.array([
             (t2 - t1).total_seconds()
             for t1, t2 in zip(timestamps[:-1], timestamps[1:])
         ])
         
-        # Calculate velocity, acceleration, and jerk using finite differences
         velocity = np.gradient(positions, axis=0) / time_deltas[:, np.newaxis]
         acceleration = np.gradient(velocity, axis=0) / time_deltas[:-1, np.newaxis]
         jerk = np.gradient(acceleration, axis=0) / time_deltas[:-2, np.newaxis]
         
-        # Use the most recent values
         return TrajectoryVector(
             velocity=velocity[-1],
             acceleration=acceleration[-1],
@@ -98,7 +94,7 @@ class HypercubeAnalyzer:
         )
     
     def predict_future_position(self, time_delta: float) -> np.ndarray:
-        """Predict future position based on current trajectory."""
+        """Predict, future position based on current trajectory."""
         if not self.trajectories:
             raise ValueError("No trajectories available for prediction")
             

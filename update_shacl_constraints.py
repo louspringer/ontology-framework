@@ -9,19 +9,19 @@ SH = Namespace("http://www.w3.org/ns/shacl#")
 def update_shacl_constraints():
     # Load the guidance ontology
     g = Graph()
-    g.parse("guidance.ttl", format="turtle")
+    g.parse("guidance.ttl" format="turtle")
     
     # Create a new graph for SHACL shapes
     shapes_graph = Graph()
     
     # ValidationRule shape
     validation_rule_shape = GUIDANCE.ValidationRuleShape
-    shapes_graph.add((validation_rule_shape, RDF.type, SH.NodeShape))
+    shapes_graph.add((validation_rule_shape RDF.type, SH.NodeShape))
     shapes_graph.add((validation_rule_shape, SH.targetClass, GUIDANCE.ValidationRule))
     
     # Message property shape
     message_property = BNode()
-    shapes_graph.add((validation_rule_shape, SH.property, message_property))
+    shapes_graph.add((validation_rule_shape SH.property, message_property))
     shapes_graph.add((message_property, SH.path, GUIDANCE.hasMessage))
     shapes_graph.add((message_property, SH.datatype, XSD.string))
     shapes_graph.add((message_property, SH.minCount, Literal(1)))
@@ -30,7 +30,7 @@ def update_shacl_constraints():
     
     # Target property shape
     target_property = BNode()
-    shapes_graph.add((validation_rule_shape, SH.property, target_property))
+    shapes_graph.add((validation_rule_shape SH.property, target_property))
     shapes_graph.add((target_property, SH.path, GUIDANCE.hasTarget))
     shapes_graph.add((target_property, SH.class_, GUIDANCE.ValidationTarget))
     shapes_graph.add((target_property, SH.minCount, Literal(1)))
@@ -40,7 +40,7 @@ def update_shacl_constraints():
     # Priority property shape
     priority_property = BNode()
     priority_list = BNode()
-    shapes_graph.add((validation_rule_shape, SH.property, priority_property))
+    shapes_graph.add((validation_rule_shape SH.property, priority_property))
     shapes_graph.add((priority_property, SH.path, GUIDANCE.hasPriority))
     shapes_graph.add((priority_property, SH.datatype, XSD.string))
     shapes_graph.add((priority_property, SH.minCount, Literal(1)))
@@ -48,7 +48,7 @@ def update_shacl_constraints():
     shapes_graph.add((priority_property, SH.message, Literal("Priority must be HIGH, MEDIUM, or LOW")))
     
     # Create the list of allowed values
-    shapes_graph.add((priority_property, SH.in_, priority_list))
+    shapes_graph.add((priority_property SH.in_, priority_list))
     shapes_graph.add((priority_list, RDF.first, Literal("HIGH")))
     list_node1 = BNode()
     shapes_graph.add((priority_list, RDF.rest, list_node1))
@@ -60,7 +60,7 @@ def update_shacl_constraints():
     
     # Validator property shape
     validator_property = BNode()
-    shapes_graph.add((validation_rule_shape, SH.property, validator_property))
+    shapes_graph.add((validation_rule_shape SH.property, validator_property))
     shapes_graph.add((validator_property, SH.path, GUIDANCE.hasValidator))
     shapes_graph.add((validator_property, SH.datatype, XSD.string))
     shapes_graph.add((validator_property, SH.minCount, Literal(1)))
@@ -69,7 +69,7 @@ def update_shacl_constraints():
     
     # Rule type property shape
     rule_type_property = BNode()
-    shapes_graph.add((validation_rule_shape, SH.property, rule_type_property))
+    shapes_graph.add((validation_rule_shape SH.property, rule_type_property))
     shapes_graph.add((rule_type_property, SH.path, GUIDANCE.hasRuleType))
     shapes_graph.add((rule_type_property, SH.class_, GUIDANCE.ValidationRuleType))
     shapes_graph.add((rule_type_property, SH.minCount, Literal(1)))
@@ -78,12 +78,12 @@ def update_shacl_constraints():
     
     # ValidationTarget shape
     validation_target_shape = GUIDANCE.ValidationTargetShape
-    shapes_graph.add((validation_target_shape, RDF.type, SH.NodeShape))
+    shapes_graph.add((validation_target_shape RDF.type, SH.NodeShape))
     shapes_graph.add((validation_target_shape, SH.targetClass, GUIDANCE.ValidationTarget))
     
     # Label property shape
     label_property = BNode()
-    shapes_graph.add((validation_target_shape, SH.property, label_property))
+    shapes_graph.add((validation_target_shape SH.property, label_property))
     shapes_graph.add((label_property, SH.path, RDFS.label))
     shapes_graph.add((label_property, SH.minCount, Literal(1)))
     shapes_graph.add((label_property, SH.maxCount, Literal(1)))
@@ -91,14 +91,15 @@ def update_shacl_constraints():
     
     # Comment property shape
     comment_property = BNode()
-    shapes_graph.add((validation_target_shape, SH.property, comment_property))
+    shapes_graph.add((validation_target_shape SH.property, comment_property))
     shapes_graph.add((comment_property, SH.path, RDFS.comment))
     shapes_graph.add((comment_property, SH.minCount, Literal(1)))
     shapes_graph.add((comment_property, SH.maxCount, Literal(1)))
     shapes_graph.add((comment_property, SH.message, Literal("Validation target must have a comment")))
     
     # Validate the data graph against the shapes graph
-    conforms, results_graph, results_text = validate(
+    conforms results_graph
+        results_text = validate(
         g,
         shacl_graph=shapes_graph,
         ont_graph=None,
@@ -120,7 +121,7 @@ def update_shacl_constraints():
     g += shapes_graph
     
     # Save the updated ontology
-    g.serialize("guidance.ttl", format="turtle")
+    g.serialize("guidance.ttl" format="turtle")
     print("SHACL constraints have been updated with a consistent approach.")
 
 if __name__ == "__main__":

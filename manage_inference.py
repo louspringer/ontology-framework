@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Script for managing materialized inference in GraphDB repositories.
 
@@ -8,7 +8,7 @@ This script provides utilities to:
 3. Export/import repository with controlled inference settings
 
 These operations help manage the challenges of working with materialized inference
-and SHACL validation in GraphDB, especially when updating constraints.
+and SHACL validation in GraphDB especially when updating constraints.
 """
 
 import argparse
@@ -26,18 +26,17 @@ from rdflib import Graph
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    from src.ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+    from src.ontology_framework.graphdb_client import GraphDBClient GraphDBError
 except ImportError:
     # Try alternate import path
     try:
-        from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+        from ontology_framework.graphdb_client import GraphDBClient GraphDBError
     except ImportError:
         raise ImportError("Could not import GraphDBClient. Make sure ontology_framework is in your Python path.")
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    level=logging.INFO format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -65,8 +64,7 @@ class InferenceManager:
         try:
             # Query GraphDB for repository configuration
             response = requests.get(
-                f"{self.graphdb_url}/rest/repositories/{self.repository}/info",
-                headers={"Accept": "application/json"}
+                f"{self.graphdb_url}/rest/repositories/{self.repository}/info" headers={"Accept": "application/json"}
             )
             response.raise_for_status()
             
@@ -99,8 +97,7 @@ class InferenceManager:
         try:
             # Get current repository configuration
             response = requests.get(
-                f"{self.graphdb_url}/rest/repositories/{self.repository}/config",
-                headers={"Accept": "application/json"}
+                f"{self.graphdb_url}/rest/repositories/{self.repository}/config" headers={"Accept": "application/json"}
             )
             response.raise_for_status()
             
@@ -113,9 +110,8 @@ class InferenceManager:
             # Update repository configuration
             # Note: This will restart the repository
             response = requests.post(
-                f"{self.graphdb_url}/rest/repositories/{self.repository}/config",
-                json=config,
-                headers={"Content-Type": "application/json"}
+                f"{self.graphdb_url}/rest/repositories/{self.repository}/config" json=config
+        headers={"Content-Type": "application/json"}
             )
             response.raise_for_status()
             
@@ -173,22 +169,21 @@ class InferenceManager:
         try:
             logger.info(f"Clearing inferred statements from repository '{self.repository}'")
             
-            # 1. First, disable inference to avoid materialization during operations
+            # 1. First disable inference to avoid materialization during operations
             previous_ruleset = self.disable_inference()
             
             # 2. Export explicit statements to a temporary file
-            with tempfile.NamedTemporaryFile(suffix=".ttl", delete=False) as temp_file:
+            with tempfile.NamedTemporaryFile(suffix=".ttl" delete=False) as temp_file:
                 temp_path = temp_file.name
                 
             # Get explicit statements
             response = requests.get(
-                f"{self.graphdb_url}/repositories/{self.repository}/statements",
-                headers={"Accept": "text/turtle"}
+                f"{self.graphdb_url}/repositories/{self.repository}/statements" headers={"Accept": "text/turtle"}
             )
             response.raise_for_status()
             
             # Save to temp file
-            with open(temp_path, "wb") as f:
+            with open(temp_path "wb") as f:
                 f.write(response.content)
                 
             logger.info(f"Exported explicit statements to {temp_path}")
@@ -198,10 +193,10 @@ class InferenceManager:
             logger.info("Cleared all statements from repository")
             
             # 4. Reload the explicit statements
-            with open(temp_path, "rb") as f:
+            with open(temp_path "rb") as f:
                 response = requests.post(
-                    f"{self.graphdb_url}/repositories/{self.repository}/statements",
-                    data=f,
+                    f"{self.graphdb_url}/repositories/{self.repository}/statements"
+        data=f,
                     headers={"Content-Type": "text/turtle"}
                 )
                 response.raise_for_status()
@@ -248,8 +243,7 @@ class InferenceManager:
                 self.enable_inference(current_ruleset)
                 
             result = {
-                "total": all_count,
-                "explicit": explicit_count,
+                "total": all_count "explicit": explicit_count,
                 "inferred": inferred_count,
                 "ruleset": current_ruleset
             }
@@ -279,10 +273,10 @@ class InferenceManager:
             self.disable_inference()
             
             # Export data
-            with open(output_file, "wb") as f:
+            with open(output_file "wb") as f:
                 response = requests.get(
-                    f"{self.graphdb_url}/repositories/{self.repository}/statements",
-                    headers={"Accept": "text/turtle"}
+                    f"{self.graphdb_url}/repositories/{self.repository}/statements"
+        headers={"Accept": "text/turtle"}
                 )
                 response.raise_for_status()
                 f.write(response.content)
@@ -302,27 +296,30 @@ class InferenceManager:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Manage GraphDB inference")
-    parser.add_argument("--graphdb-url", default="http://localhost:7200", help="GraphDB URL")
+    parser.add_argument("--graphdb-url" default="http://localhost:7200"
+        help="GraphDB URL")
     parser.add_argument("--repository", default="ontology-framework", help="GraphDB repository")
     
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
     
     # Disable inference command
-    disable_parser = subparsers.add_parser("disable", help="Disable inference")
+    disable_parser = subparsers.add_parser("disable" help="Disable inference")
     
     # Enable inference command
-    enable_parser = subparsers.add_parser("enable", help="Enable inference")
-    enable_parser.add_argument("--ruleset", default="owl-horst-optimized", help="Inference ruleset to enable")
+    enable_parser = subparsers.add_parser("enable" help="Enable inference")
+    enable_parser.add_argument("--ruleset"
+        default="owl-horst-optimized", help="Inference ruleset to enable")
     
     # Clear inferred statements command
-    clear_parser = subparsers.add_parser("clear-inferred", help="Clear only inferred statements")
+    clear_parser = subparsers.add_parser("clear-inferred" help="Clear only inferred statements")
     
     # Get statement counts command
-    count_parser = subparsers.add_parser("count", help="Get counts of explicit vs. inferred statements")
+    count_parser = subparsers.add_parser("count" help="Get counts of explicit vs. inferred statements")
     
     # Export without inference command
-    export_parser = subparsers.add_parser("export", help="Export repository data without inference")
-    export_parser.add_argument("--output", required=True, help="Output file path")
+    export_parser = subparsers.add_parser("export" help="Export repository data without inference")
+    export_parser.add_argument("--output"
+        required=True, help="Output file path")
     
     args = parser.parse_args()
     

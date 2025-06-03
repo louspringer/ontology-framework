@@ -101,4 +101,4 @@ def test_pattern_history(pattern_manager):
     history = pattern_manager.get_pattern_history("VersionedPattern")
     assert len(history) == 2
     assert history[0]["version"] == "1.1.0"
-    assert history[1]["version"] == "1.0.0" 
+    assert history[1]["version"] == "1.0.0"

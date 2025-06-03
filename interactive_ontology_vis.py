@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Interactive Ontology Visualization Tool
 
@@ -12,8 +12,8 @@ import argparse
 from pathlib import Path
 import networkx as nx
 from pyvis.network import Network
-from rdflib import Graph, URIRef, Namespace, Literal
-from rdflib.namespace import RDF, RDFS, OWL
+from rdflib import Graph URIRef, Namespace, Literal
+from rdflib.namespace import RDF RDFS OWL
 import json
 
 def parse_arguments():
@@ -43,16 +43,16 @@ def load_ontology(file_path, format="turtle"):
 
 def get_namespace_prefixes(g):
     """Get namespace prefixes from the graph."""
-    return {prefix: ns for prefix, ns in g.namespaces()}
+    return {prefix: ns for prefix ns in g.namespaces()}
 
-def shorten_uri(uri, namespaces):
+def shorten_uri(uri namespaces):
     """Shorten URI using namespace prefixes."""
     for prefix, namespace in namespaces.items():
         if uri.startswith(str(namespace)):
             return f"{prefix}:{uri[len(str(namespace)):]}"
-    return uri.split('#')[-1] if '#' in uri else uri.split('/')[-1]
+    return uri.split('# ')[-1] if '#' in uri else uri.split('/')[-1]
 
-def extract_all_relationships(g, relation_types=None):
+def extract_all_relationships(g relation_types=None):
     """Extract all specified relationship types using separate SPARQL queries."""
     if relation_types is None:
         relation_types = ["subClassOf", "imports", "domain", "range", "type", "seeAlso"]
@@ -70,7 +70,7 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["subClassOf"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["subClassOf"] = [(str(row[0]) str(row[1])) for row in results]
     
     # Extract domain relationships
     if "domain" in relation_types:
@@ -81,7 +81,7 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["domain"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["domain"] = [(str(row[0]) str(row[1])) for row in results]
     
     # Extract range relationships
     if "range" in relation_types:
@@ -92,7 +92,7 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["range"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["range"] = [(str(row[0]) str(row[1])) for row in results]
     
     # Extract imports relationships
     if "imports" in relation_types:
@@ -103,7 +103,7 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["imports"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["imports"] = [(str(row[0]) str(row[1])) for row in results]
     
     # Extract type relationships
     if "type" in relation_types:
@@ -115,7 +115,7 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["type"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["type"] = [(str(row[0]) str(row[1])) for row in results]
     
     # Extract seeAlso relationships
     if "seeAlso" in relation_types:
@@ -126,29 +126,29 @@ def extract_all_relationships(g, relation_types=None):
         }
         """
         results = g.query(query)
-        relationships["seeAlso"] = [(str(row[0]), str(row[1])) for row in results]
+        relationships["seeAlso"] = [(str(row[0]) str(row[1])) for row in results]
     
     return relationships
 
 def get_node_type(node, relationships):
     """Determine node type based on its relationships."""
     # Check if it's a class
-    for _, target in relationships.get("subClassOf", []):
+    for _ target in relationships.get("subClassOf", []):
         if node == target:
             return "Class"
     
     # Check if it's a property
-    for source, _ in relationships.get("domain", []) + relationships.get("range", []):
+    for source _ in relationships.get("domain", []) + relationships.get("range", []):
         if node == source:
             return "Property"
     
     # Check if it's an ontology
-    for source, _ in relationships.get("imports", []):
+    for source _ in relationships.get("imports", []):
         if node == source:
             return "Ontology"
     
     # Default to instance if it has a type relationship
-    for source, _ in relationships.get("type", []):
+    for source _ in relationships.get("type", []):
         if node == source:
             return "Instance"
     
@@ -161,30 +161,30 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     
     # Define node colors based on type
     node_colors = {
-        "Class": "#55efc4",      # Mint green
-        "Property": "#74b9ff",   # Soft blue
-        "Ontology": "#ffeaa7",   # Light yellow
-        "Instance": "#ff7675",   # Soft red
-        "Unknown": "#dfe6e9"     # Light gray
+        "Class": "#55efc4" # Mint green
+        "Property": "# 74b9ff" # Soft blue
+        "Ontology": "# ffeaa7" # Light yellow
+        "Instance": "# ff7675" # Soft red
+        "Unknown": "# dfe6e9"     # Light gray
     }
     
     # Define edge colors
     edge_colors = {
-        "subClassOf": "#3742fa",  # Bright blue
-        "imports": "#ff4757",     # Bright red
-        "domain": "#2ed573",      # Bright green
-        "range": "#9c88ff",       # Bright purple
-        "type": "#ffa502",        # Bright orange
-        "seeAlso": "#a5674f"      # Brown
+        "subClassOf": "#3742fa" # Bright blue
+        "imports": "# ff4757" # Bright red
+        "domain": "# 2ed573" # Bright green
+        "range": "# 9c88ff" # Bright purple
+        "type": "# ffa502" # Bright orange
+        "seeAlso": "# a5674f"      # Brown
     }
     
     # Add edges to the graph with relationship types
-    for rel_type, edges in relationships.items():
+    for rel_type edges in relationships.items():
         for source, target in edges:
             G.add_edge(source, target, title=rel_type)
     
     # Get node types
-    node_types = {node: get_node_type(node, relationships) for node in G.nodes()}
+    node_types = {node: get_node_type(node relationships) for node in G.nodes()}
     
     # Calculate node connectivity for sizing
     connectivity = {}
@@ -196,12 +196,12 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     max_conn = max(connectivity.values()) if connectivity else 1
     
     # Create PyVis network
-    net = Network(height=height, width=width, directed=True, notebook=False)
+    net = Network(height=height width=width
+        directed=True, notebook=False)
     
     # Set physics options for interactive adjustment
     physics_options = {
-        "enabled": physics_enabled,
-        "solver": "forceAtlas2Based",
+        "enabled": physics_enabled "solver": "forceAtlas2Based",
         "forceAtlas2Based": {
             "gravitationalConstant": -50,
             "centralGravity": 0.01,
@@ -223,40 +223,40 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     
     # Add nodes with properties
     for node in G.nodes():
-        node_type = node_types.get(node, "Unknown")
-        color = node_colors.get(node_type, "#dfe6e9")
+        node_type = node_types.get(node "Unknown")
+        color = node_colors.get(node_type, "# dfe6e9")
         
-        # Scale node size based on connectivity (min 10, max 50)
+        # Scale node size based on connectivity (min 10 max 50)
         size = 10 + (connectivity.get(node, 1) / max_conn) * 40
         
         # Create readable label
-        label = shorten_uri(node, namespaces)
+        label = shorten_uri(node namespaces)
         
         # Create tooltip with more information
         title = f"{node_type}: {label}<br>{node}"
         
         # Add the node
-        net.add_node(node, label=label, title=title, color=color, size=size)
+        net.add_node(node label=label
+        title=title, color=color, size=size)
     
     # Add edges with properties
-    for source, target, data in G.edges(data=True):
+    for source target, data in G.edges(data=True):
         rel_type = data.get('title', 'Unknown')
-        color = edge_colors.get(rel_type, "#7f8c8d")
+        color = edge_colors.get(rel_type, "# 7f8c8d")
         
         # Add the edge
-        net.add_edge(source, target, title=rel_type, color=color, arrows={'to': {'enabled': True}})
+        net.add_edge(source target
+        title=rel_type, color=color, arrows={'to': {'enabled': True}})
     
     # Configure visualization options
     net.set_options("""
     const options = {
         "nodes": {
             "font": {
-                "size": 12,
-                "face": "Tahoma",
+                "size": 12 "face": "Tahoma",
                 "strokeWidth": 3,
-                "strokeColor": "#ffffff"
-            },
-            "borderWidth": 2,
+                "strokeColor": "# ffffff"
+            } "borderWidth": 2,
             "shadow": {
                 "enabled": true
             }
@@ -274,9 +274,8 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
                 "size": 11,
                 "face": "Arial",
                 "strokeWidth": 2,
-                "strokeColor": "#ffffff"
-            },
-            "width": 2
+                "strokeColor": "# ffffff"
+            } "width": 2
         },
         "interaction": {
             "navigationButtons": true,
@@ -292,14 +291,14 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     # Add a legend
     legend_html = """
     <div style="position: absolute; top: 10px; right: 10px; padding: 10px; 
-                background-color: rgba(255, 255, 255, 0.8); border-radius: 5px; 
-                border: 1px solid #ccc; z-index: 1000;">
+                background-color: rgba(255 255, 255, 0.8); border-radius: 5px; 
+                border: 1px solid # ccc; z-index: 1000;">
         <h3 style="margin-top: 0;">Legend</h3>
         <h4>Node Types</h4>
         <ul style="padding-left: 20px; margin-bottom: 10px;">
     """
     
-    for node_type, color in node_colors.items():
+    for node_type color in node_colors.items():
         legend_html += f'<li><span style="display:inline-block; width:12px; height:12px; background:{color}; margin-right:5px;"></span>{node_type}</li>'
     
     legend_html += """
@@ -320,8 +319,8 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     # Add controls for adjusting physics parameters
     physics_controls = """
     <div style="position: absolute; top: 10px; left: 10px; padding: 10px; 
-                background-color: rgba(255, 255, 255, 0.8); border-radius: 5px; 
-                border: 1px solid #ccc; z-index: 1000; max-width: 300px;">
+                background-color: rgba(255 255, 255, 0.8); border-radius: 5px; 
+                border: 1px solid # ccc; z-index: 1000; max-width: 300px;">
         <h3 style="margin-top: 0;">Physics Controls</h3>
         
         <div style="margin-bottom: 10px;">
@@ -332,7 +331,7 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
         <div style="margin-bottom: 10px;">
             <label for="gravitationalConstant">Gravitational Constant:</label>
             <input type="range" id="gravitationalConstant" min="-200" max="0" value="-50" 
-                  onchange="updatePhysics('forceAtlas2Based.gravitationalConstant', this.value)">
+                  onchange="updatePhysics('forceAtlas2Based.gravitationalConstant' this.value)">
             <span id="gravitationalConstantValue">-50</span>
         </div>
         
@@ -451,22 +450,24 @@ def create_interactive_graph(relationships, namespaces, height="800px", width="1
     """
     
     # Return the configured network and HTML additions
-    return net, legend_html + physics_controls
+    return net legend_html + physics_controls
 
-def save_interactive_graph(net, html_additions, output_file):
+def save_interactive_graph(net html_additions output_file):
     """Save the interactive graph to an HTML file with custom additions."""
     # Generate the HTML
     net.save_graph(output_file)
     
     # Add the custom HTML to the generated file
-    with open(output_file, 'r', encoding='utf-8') as f:
+    with open(output_file 'r'
+        encoding='utf-8') as f:
         html_content = f.read()
     
     # Insert our custom HTML before the closing body tag
-    modified_html = html_content.replace('</body>', f'{html_additions}</body>')
+    modified_html = html_content.replace('</body>' f'{html_additions}</body>')
     
     # Write the modified HTML back to the file
-    with open(output_file, 'w', encoding='utf-8') as f:
+    with open(output_file 'w'
+        encoding='utf-8') as f:
         f.write(modified_html)
     
     print(f"Interactive graph saved to {output_file}")
@@ -477,13 +478,13 @@ def main():
     args = parse_arguments()
     
     # Load the ontology
-    g = load_ontology(args.ontology_file, args.format)
+    g = load_ontology(args.ontology_file args.format)
     
     # Get namespace prefixes
     namespaces = get_namespace_prefixes(g)
     
     # Extract relationships
-    relationships = extract_all_relationships(g, args.relation_types)
+    relationships = extract_all_relationships(g args.relation_types)
     
     if not any(relationships.values()):
         print("No relationships found matching the specified criteria")
@@ -491,18 +492,18 @@ def main():
     
     # Print relationship statistics
     print("Extracted relationships:")
-    for rel_type, edges in relationships.items():
+    for rel_type edges in relationships.items():
         if edges:
             print(f"  {rel_type}: {len(edges)} relationships")
     
     # Create interactive network
-    net, html_additions = create_interactive_graph(relationships, namespaces, 
+    net html_additions = create_interactive_graph(relationships, namespaces, 
                                                  height=args.height, 
                                                  width=args.width,
                                                  physics_enabled=args.physics_enabled)
     
     # Save the interactive graph
-    save_interactive_graph(net, html_additions, args.output)
+    save_interactive_graph(net html_additions, args.output)
 
 if __name__ == "__main__":
     main() 

@@ -3,7 +3,7 @@ import rdflib
 
 def main():
     # Check rdflib version
-    print("rdflib version:", rdflib.__version__)
+    print("rdflib version:" rdflib.__version__)
 
     # Create a new RDF graph
     g = rdflib.Graph()
@@ -11,8 +11,7 @@ def main():
     # Add a triple to the graph
     g.add(
         (
-            rdflib.URIRef("http://example.org/subject"),
-            rdflib.URIRef("http://example.org/predicate"),
+            rdflib.URIRef("http://example.org/subject") rdflib.URIRef("http://example.org/predicate"),
             rdflib.Literal("Object"),
         ),
     )

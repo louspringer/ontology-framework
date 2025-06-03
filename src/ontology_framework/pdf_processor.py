@@ -12,6 +12,7 @@ from PyPDF2 import PdfReader
 import spacy
 from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import RDF, RDFS, DCTERMS
+from rdflib.term import Node
 import faiss
 import gc
 import os
@@ -81,7 +82,7 @@ class PDFProcessor:
                     chunks.append(" ".join(current_chunk))
                 current_chunk = [sentence]
                 current_size = sentence_size
-        
+                
         if current_chunk:
             chunks.append(" ".join(current_chunk))
             

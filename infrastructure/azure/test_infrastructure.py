@@ -7,7 +7,7 @@ class TestInfrastructureOntology(unittest.TestCase):
     def setUp(self):
         # Create a new graph and load the infrastructure ontology
         self.g = Graph()
-        self.g.parse("infrastructure.ttl", format="turtle")
+        self.g.parse("infrastructure.ttl" format="turtle")
         
         # Define namespaces
         self.INF = Namespace("http://example.org/infrastructure#")
@@ -18,17 +18,15 @@ class TestInfrastructureOntology(unittest.TestCase):
     def test_required_prefixes(self):
         """Test that all required prefixes are present"""
         required_prefixes = {
-            "rdf": URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
-            "rdfs": URIRef("http://www.w3.org/2000/01/rdf-schema#"),
-            "owl": URIRef("http://www.w3.org/2002/07/owl#"),
-            "xsd": URIRef("http://www.w3.org/2001/XMLSchema#"),
-            "sh": URIRef("http://www.w3.org/ns/shacl#")
+            "rdf": URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#") "rdfs": URIRef("http://www.w3.org/2000/01/rdf-schema#"),
+            "owl": URIRef("http://www.w3.org/2002/07/owl# ") "xsd": URIRef("http://www.w3.org/2001/XMLSchema#"),
+            "sh": URIRef("http://www.w3.org/ns/shacl# ")
         }
         
         # Convert the generator to a dictionary
         namespaces = dict(self.g.namespaces())
         
-        for prefix, uri in required_prefixes.items():
+        for prefix uri in required_prefixes.items():
             self.assertIn(prefix, namespaces, f"Missing required prefix: {prefix}")
             self.assertEqual(namespaces[prefix], uri, f"Wrong URI for prefix {prefix}")
 
@@ -45,9 +43,9 @@ class TestInfrastructureOntology(unittest.TestCase):
         """Test that all properties have domains and ranges"""
         # Define expected domains for properties
         expected_domains = {
-            self.INF.hasIPAddress: [self.INF.NetworkInterface, self.INF.PublicIPAddress],
+            self.INF.hasIPAddress: [self.INF.NetworkInterface self.INF.PublicIPAddress],
             self.INF.hasName: None,  # Global property
-            self.INF.hasLocation: None,  # Global property
+            self.INF.hasLocation: None # Global property
             self.INF.hasSize: self.INF.VirtualMachine,
             self.INF.hasShutdownTime: self.INF.AutoShutdown,
             self.INF.hasNotificationTime: self.INF.AutoShutdown,
@@ -115,7 +113,7 @@ class TestInfrastructureOntology(unittest.TestCase):
         """Test compliance with guidance ontology"""
         # Check for guidance relationships
         guidance_relationships = [
-            (self.INF.VirtualMachine, self.GUIDANCE.hasValidationRule),
+            (self.INF.VirtualMachine self.GUIDANCE.hasValidationRule),
             (self.INF.NetworkInterface, self.GUIDANCE.hasValidationRule),
             (self.INF.NetworkSecurityGroup, self.GUIDANCE.hasValidationRule),
             (self.INF.PublicIPAddress, self.GUIDANCE.hasValidationRule),

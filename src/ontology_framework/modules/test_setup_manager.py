@@ -1,6 +1,8 @@
-"""
-Module for managing test setup and configurations.
-"""
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]
+# Behavioral-Profile: ClaudeReflector
+
+"""Module for managing test setup and configuration."""
 
 from typing import Dict, List, Optional
 from pathlib import Path
@@ -9,67 +11,48 @@ from rdflib import Graph, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL
 
 class TestSetupManager:
-    """Class for managing test setup and configurations."""
+    """Class for managing test setup and configuration."""
     
-    def __init__(self, config_path: Optional[str] = None):
-        self.config_path = config_path or "tests/config/test_config.yaml"
-        self.config = self._load_config()
-        self.test_graph = Graph()
+    def __init__(self, config_path: Optional[Path] = None) -> None:
+        """Initialize the test setup manager.
         
-    def _load_config(self) -> Dict:
+        Args:
+            config_path: Optional path to test configuration file
+        """
+        self.config_path = config_path or Path("tests/config.yaml")
+        self.config: Dict = {}
+        self.load_config()
+        
+    def load_config(self) -> None:
         """Load test configuration from YAML file."""
-        config_file = Path(self.config_path)
-        if not config_file.exists():
-            return {}
+        if self.config_path.exists():
+            with open(self.config_path) as f:
+                self.config = yaml.safe_load(f)
+        else:
+            self.config = {
+                "test_data": {
+                    "ontologies": [],
+                    "instances": []
+                }
+            }
             
-        with open(config_file, 'r') as f:
-            return yaml.safe_load(f)
-            
-    def setup_test_ontology(self) -> Graph:
-        """Set up a test ontology with sample data."""
-        # Bind common namespaces
-        self.test_graph.bind("rdf", RDF)
-        self.test_graph.bind("rdfs", RDFS)
-        self.test_graph.bind("owl", OWL)
-        self.test_graph.bind("test", URIRef("http://example.org/test#"))
+    def get_test_graphs(self) -> List[Graph]:
+        """Get all test graphs.
         
-        # Create test classes
-        test_class = URIRef("http://example.org/test#TestClass")
-        self.test_graph.add((test_class, RDF.type, OWL.Class))
-        self.test_graph.add((test_class, RDFS.label, Literal("Test Class")))
-        self.test_graph.add((test_class, RDFS.comment, Literal("A class for testing")))
+        Returns:
+            List of RDF graphs for testing
+        """
+        graphs = []
+        for ontology in self.config.get("test_data", {}).get("ontologies", []):
+            g = Graph()
+            g.parse(ontology["path"], format=ontology.get("format", "turtle"))
+            graphs.append(g)
+        return graphs
         
-        # Create test properties
-        test_prop = URIRef("http://example.org/test#testProperty")
-        self.test_graph.add((test_prop, RDF.type, OWL.ObjectProperty))
-        self.test_graph.add((test_prop, RDFS.label, Literal("test property")))
-        self.test_graph.add((test_prop, RDFS.domain, test_class))
+    def get_test_instances(self) -> List[Dict]:
+        """Get all test instances.
         
-        # Create test individuals
-        test_individual = URIRef("http://example.org/test#testIndividual")
-        self.test_graph.add((test_individual, RDF.type, test_class))
-        self.test_graph.add((test_individual, RDFS.label, Literal("test individual")))
-        
-        return self.test_graph
-        
-    def get_test_data(self, data_type: str) -> List[Dict]:
-        """Get test data from configuration."""
-        return self.config.get('test_data', {}).get(data_type, [])
-        
-    def create_test_shapes(self) -> Graph:
-        """Create SHACL shapes for testing."""
-        shapes_graph = Graph()
-        shapes_graph.bind("sh", URIRef("http://www.w3.org/ns/shacl#"))
-        
-        # Add basic shape for TestClass
-        test_shape = URIRef("http://example.org/test#TestShape")
-        shapes_graph.add((test_shape, RDF.type, URIRef("http://www.w3.org/ns/shacl#NodeShape")))
-        shapes_graph.add((test_shape, URIRef("http://www.w3.org/ns/shacl#targetClass"), 
-                         URIRef("http://example.org/test#TestClass")))
-        
-        return shapes_graph
-        
-    def cleanup(self) -> None:
-        """Clean up test resources."""
-        self.test_graph = Graph()
-        # Additional cleanup if needed 
+        Returns:
+            List of test instance configurations
+        """
+        return self.config.get("test_data", {}).get("instances", []) 

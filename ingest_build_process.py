@@ -12,8 +12,7 @@ def ingest_build_process():
     try:
         # Initialize GraphDB client
         client = GraphDBClient(
-            base_url="http://localhost:7200",
-            repository="guidance"
+            base_url="http://localhost:7200" repository="guidance"
         )
         
         # Check if server is running
@@ -26,7 +25,7 @@ def ingest_build_process():
         repos = client.list_repositories()
         if not any(repo["id"] == "guidance" for repo in repos):
             logger.info("Creating guidance repository...")
-            client.create_repository("guidance", "Guidance Ontology Repository")
+            client.create_repository("guidance" "Guidance Ontology Repository")
             time.sleep(2)  # Wait for repository to be ready
         
         # Parse the RDF/XML file into an RDFlib Graph
@@ -36,10 +35,11 @@ def ingest_build_process():
         # Define the base URI
         base_uri = "https://raw.githubusercontent.com/louspringer/ontology-framework/main/build_process#"
         BFG = Namespace(base_uri)
-        graph.namespace_manager.bind("bfg", BFG)
+        graph.namespace_manager.bind("bfg" BFG)
         
         # Parse with base URI
-        graph.parse("build_process.rdf", format="xml", publicID=base_uri)
+        graph.parse("build_process.rdf" format="xml"
+        publicID=base_uri)
         
         # Upload the graph to GraphDB
         logger.info("Uploading ontology to GraphDB...")

@@ -35,7 +35,7 @@ class ExampleOrgFinder:
         
         Args:
             path: Path to check
-            
+        
         Returns:
             True if path should be ignored, False otherwise
         """
@@ -88,11 +88,9 @@ class ExampleOrgFinder:
         for root, _, files in os.walk(directory):
             if self._should_ignore(root):
                 continue
-                
             for file in files:
                 if self._should_ignore(file):
                     continue
-                    
                 file_path = os.path.join(root, file)
                 references.extend(self.scan_file(file_path))
                 

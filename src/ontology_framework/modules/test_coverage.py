@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-TEST = Namespace("http://example.org/test#")
+TEST = Namespace("http://example.org/test# ")
 IMPL = Namespace("http://example.org/implementation#")
 BASE = Namespace("http://example.org/ontology-framework#")
 GUIDANCE = Namespace("http://example.org/guidance#")
@@ -24,13 +24,15 @@ VALIDATION = Namespace("http://example.org/validation#")
 class TestCoverageAnalyzer:
     """Analyzes and validates test coverage for Python modules."""
     
-    def __init__(self, src_path: Optional[Path] = None, test_path: Optional[Path] = None):
+    def __init__(self, guidance_graph=None, src_path: Optional[Path] = None, test_path: Optional[Path] = None):
         """Initialize the test coverage analyzer.
         
         Args:
+            guidance_graph: Optional guidance graph with requirements
             src_path: Path to source directory
             test_path: Path to test directory
         """
+        self.guidance = guidance_graph
         self.src_path = src_path or Path(__file__).parent.parent.parent
         self.test_path = test_path or self.src_path.parent / "tests"
         
@@ -58,7 +60,7 @@ class TestCoverageAnalyzer:
         
         Args:
             directory: Directory to analyze, defaults to src_path
-            
+        
         Returns:
             Dictionary mapping component names to sets of method names
         """
@@ -104,7 +106,7 @@ class TestCoverageAnalyzer:
         
         Args:
             directory: Directory to analyze, defaults to test_path
-            
+        
         Returns:
             Dictionary mapping test names to sets of tested components
         """
@@ -150,42 +152,55 @@ class TestCoverageAnalyzer:
                 
         return coverage
 
-    def validate_coverage(self, guidance_graph: Optional[Graph] = None) -> bool:
+    def validate_coverage(self, guidance_graph: Optional[Graph] = None) -> Graph:
         """Validate test coverage against requirements.
         
         Args:
             guidance_graph: Optional guidance graph with coverage requirements
             
         Returns:
-            True if coverage meets requirements, False otherwise
+            Coverage graph with validation results
         """
-        if guidance_graph:
-            requirements = self._get_coverage_requirements(guidance_graph)
-            coverage_graph = self._generate_coverage_graph()
+        # Analyze source and test files if not already done
+        components = self.analyze_source_files()
+        tests = self.analyze_test_files()
+        
+        if guidance_graph or self.guidance:
+            requirements = self._get_coverage_requirements(guidance_graph or self.guidance)
             
             for component, required_coverage in requirements.items():
-                actual_coverage = self._calculate_coverage(component, coverage_graph)
+                actual_coverage = self._calculate_coverage(component, self.coverage_graph)
+                
+                # Add coverage metrics to graph
+                component_uri = URIRef(f"{IMPL}{component}")
+                coverage_node = BNode()
+                
+                self.coverage_graph.add((component_uri, VALIDATION.hasCoverage, coverage_node))
+                self.coverage_graph.add((coverage_node, VALIDATION.requiredPercentage, Literal(required_coverage)))
+                self.coverage_graph.add((coverage_node, VALIDATION.actualPercentage, Literal(actual_coverage)))
+                self.coverage_graph.add((coverage_node, VALIDATION.status, 
+                                        Literal("PASS" if actual_coverage >= required_coverage else "FAIL")))
+                
                 if actual_coverage < required_coverage:
                     logger.warning(
                         f"Insufficient coverage for {component}: "
                         f"required {required_coverage}%, actual {actual_coverage}%"
                     )
-                    return False
-        return True
+        
+        return self.coverage_graph
 
     def _get_coverage_requirements(self, guidance_graph: Graph) -> Dict[str, float]:
         """Get coverage requirements from guidance graph.
         
         Args:
             guidance_graph: Guidance graph with coverage requirements
-            
+        
         Returns:
             Dictionary mapping component names to required coverage percentages
         """
         requirements = {}
         query = """
-            SELECT ?component ?coverage
-            WHERE {
+            SELECT ?component ?coverage WHERE {
                 ?component a guidance:Component ;
                           guidance:requiredCoverage ?coverage .
             }
@@ -212,8 +227,7 @@ class TestCoverageAnalyzer:
         covered_methods = 0
         
         query = """
-            SELECT ?method
-            WHERE {
+            SELECT ?method WHERE {
                 ?component impl:hasMethod ?method .
             }
         """
@@ -239,38 +253,58 @@ class TestCoverageAnalyzer:
         
         # Query for components and their methods
         query = """
-            SELECT ?component ?method
-            WHERE {
-                ?component a impl:Component ;
-                          impl:hasMethod ?method .
+            SELECT DISTINCT ?component WHERE {
+                ?component a impl:Component .
             }
         """
         
-        current_component = None
         for row in self.coverage_graph.query(query):
             component = str(row.component).split("#")[-1]
-            method = str(row.method).split("#")[-1]
+            report.append(f"\nComponent: {component}")
             
-            if component != current_component:
-                report.append(f"\nComponent: {component}")
-                current_component = component
-                
-            # Check if method is tested
-            test_query = f"""
-                SELECT ?test
-                WHERE {{
-                    ?test a test:Test ;
-                          test:tests <{row.method}> .
+            # Get coverage metrics if available
+            coverage_query = f"""
+                SELECT ?required ?actual ?status WHERE {{
+                    <{row.component}> validation:hasCoverage ?coverage .
+                    ?coverage validation:requiredPercentage ?required ;
+                              validation:actualPercentage ?actual ;
+                              validation:status ?status .
                 }}
             """
             
-            tests = list(self.coverage_graph.query(test_query))
-            status = "✓" if tests else "✗"
-            report.append(f"  {status} {method}")
+            coverage_results = list(self.coverage_graph.query(coverage_query))
+            if coverage_results:
+                required = float(coverage_results[0][0])
+                actual = float(coverage_results[0][1])
+                status = str(coverage_results[0][2])
+                
+                report.append(f"Required Coverage: {required}%")
+                report.append(f"Actual Coverage: {actual}%")
+                report.append(f"Status: {status}")
             
-            if tests:
-                for test in tests:
-                    test_name = str(test[0]).split("#")[-1]
-                    report.append(f"    - {test_name}")
-                    
-        return "\n".join(report) 
+            # List methods and their test status
+            methods_query = f"""
+                SELECT ?method WHERE {{
+                    <{row.component}> impl:hasMethod ?method .
+                }}
+            """
+            
+            methods = list(self.coverage_graph.query(methods_query))
+            report.append(f"Methods: {len(methods)}")
+            
+            # Count tests
+            test_count = 0
+            for method in methods:
+                tests_query = f"""
+                    SELECT ?test WHERE {{
+                        ?test a test:Test ;
+                              test:tests <{method[0]}> .
+                    }}
+                """
+                
+                tests = list(self.coverage_graph.query(tests_query))
+                test_count += len(tests)
+            
+            report.append(f"Tests: {test_count}")
+            
+        return "\n".join(report)

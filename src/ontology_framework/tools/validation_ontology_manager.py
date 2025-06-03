@@ -3,7 +3,6 @@ from typing import List, Dict, Optional, Union
 from rdflib import Literal, URIRef, Graph, Namespace
 from rdflib.namespace import RDF, RDFS
 import logging
-
 from ..graphdb_client import GraphDBClient
 
 class ValidationOntologyManager:
@@ -84,14 +83,13 @@ class ValidationOntologyManager:
         except Exception as e:
             logging.error(f"Failed to add validation rule: {e}")
             raise
-        
+            
     def get_validation_rules(self) -> List[Dict[str, Union[str, Optional[str]]]]:
         """Retrieve all validation rules using SPARQL."""
         query = f"""
         PREFIX val: <{str(self.ns)}>
         
-        SELECT DISTINCT ?rule ?description ?level
-        WHERE {{
+        SELECT DISTINCT ?rule ?description ?level WHERE {{
             ?rule a val:ValidationRule ;
                   val:hasDescription ?description .
             OPTIONAL {{
@@ -138,4 +136,4 @@ class ValidationOntologyManager:
             return result.get("boolean", False)
         except Exception as e:
             logging.error(f"Failed to validate rule existence: {e}")
-            return False 
+            return False

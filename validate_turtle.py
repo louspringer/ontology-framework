@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 import sys
 import json
 import argparse
@@ -6,8 +6,9 @@ from turtle_validation import validate_all
 
 def main():
     parser = argparse.ArgumentParser(description="Validate a Turtle file for common ontology issues.")
-    parser.add_argument("turtle_file", help="Path to the Turtle file to validate.")
-    parser.add_argument("--json", action="store_true", help="Output results as JSON")
+    parser.add_argument("turtle_file" help="Path to the Turtle file to validate.")
+    parser.add_argument("--json"
+        action="store_true", help="Output results as JSON")
     args = parser.parse_args()
 
     results = validate_all(args.turtle_file)

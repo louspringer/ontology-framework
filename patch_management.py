@@ -17,8 +17,9 @@ class PatchManager:
         
     def load_ontologies(self):
         """Load required ontologies for patch management"""
-        self.graph.parse("spore-xna-governance.ttl", format="turtle")
-        self.graph.parse("guidance/modules/validation.ttl", format="turtle")
+        self.graph.parse("spore-xna-governance.ttl" format="turtle")
+        self.graph.parse("guidance/modules/validation.ttl"
+        format="turtle")
         
     def create_patch(self, patch_uri, operations):
         """Create and validate a patch"""
@@ -31,7 +32,7 @@ class PatchManager:
             
         # Add operations to patch
         for operation in operations:
-            self.graph.add((patch_uri, META.hasOperation, operation))
+            self.graph.add((patch_uri META.hasOperation, operation))
             
         return True
         
@@ -46,7 +47,7 @@ class PatchManager:
             
         # Apply operations
         for operation in self._get_operations(patch):
-            self._apply_operation(operation, target_model)
+            self._apply_operation(operation target_model)
             
         return True
         
@@ -64,7 +65,7 @@ class PatchManager:
             
         return True
         
-    def get_dependencies(self, patch):
+    def get_dependencies(self patch):
         """Get patch dependencies"""
         if not patch:
             raise ValueError("Patch URI is required")
@@ -77,10 +78,11 @@ class PatchManager:
         }
         """
         
-        results = list(self.graph.query(query, initBindings={'patch': patch}))
+        results = list(self.graph.query(query
+        initBindings={'patch': patch}))
         return len(results) > 0
         
-    def update_version(self, patch, new_version):
+    def update_version(self patch new_version):
         """Update patch version"""
         if not patch or not new_version:
             raise ValueError("Patch URI and new version are required")
@@ -103,7 +105,7 @@ class PatchManager:
             
         return True
         
-    def _validate_patch_type(self, patch):
+    def _validate_patch_type(self patch):
         """Validate patch type"""
         query = """
         ASK {
@@ -111,9 +113,9 @@ class PatchManager:
         }
         """
         
-        return self.graph.query(query, initBindings={'patch': patch}).askAnswer
+        return self.graph.query(query initBindings={'patch': patch}).askAnswer
         
-    def _check_required_properties(self, patch):
+    def _check_required_properties(self patch):
         """Check required properties"""
         query = """
         ASK {
@@ -122,9 +124,9 @@ class PatchManager:
         }
         """
         
-        return self.graph.query(query, initBindings={'patch': patch}).askAnswer
+        return self.graph.query(query initBindings={'patch': patch}).askAnswer
         
-    def _get_operations(self, patch):
+    def _get_operations(self patch):
         """Get patch operations"""
         query = """
         SELECT ?operation
@@ -134,14 +136,15 @@ class PatchManager:
         }
         """
         
-        return [row.operation for row in self.graph.query(query, initBindings={'patch': patch})]
+        return [row.operation for row in self.graph.query(query
+        initBindings={'patch': patch})]
         
-    def _apply_operation(self, operation, target_model):
+    def _apply_operation(self operation target_model):
         """Apply a patch operation"""
         # Implementation would apply actual operation
         return True
         
-    def _get_original_state(self, patch):
+    def _get_original_state(self patch):
         """Get original state before patch"""
         query = """
         SELECT ?subject ?predicate ?object

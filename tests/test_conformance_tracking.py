@@ -23,7 +23,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-TEST = Namespace("http://example.org/test#")
+TEST = Namespace("http://example.org/test# ")
 GUIDANCE = Namespace("http://example.org/guidance#")
 
 class TestConformanceTracker(unittest.TestCase):
@@ -31,79 +31,74 @@ class TestConformanceTracker(unittest.TestCase):
     
     def setUp(self) -> None:
         """Set up test environment."""
-        logger.info("Setting up test environment")
+        logger.info("Setting, up test, environment")
         try:
             # Create test directories
             self.test_dir = Path("tests/data/conformance")
             self.test_dir.mkdir(parents=True, exist_ok=True)
-            
             # Create guidance graph
             self.guidance_graph = Graph()
             self.guidance_graph.bind('test', TEST)
             self.guidance_graph.bind('guidance', GUIDANCE)
-            
-            # Add some test guidance rules
+            # Add some test, guidance rules
             test_rule = TEST.TestRule
             self.guidance_graph.add((test_rule, RDF.type, GUIDANCE.ValidationRule))
-            self.guidance_graph.add((test_rule, RDFS.label, Literal("Test Rule")))
-            self.guidance_graph.add((test_rule, RDFS.comment, Literal("A test validation rule")))
-            
+            self.guidance_graph.add((test_rule, RDFS.label, Literal("Test, Rule")))
+            self.guidance_graph.add((test_rule, RDFS.comment, Literal("A, test validation, rule")))
             # Initialize tracker with guidance graph
             self.tracker = ConformanceTracker(guidance_graph=self.guidance_graph)
-            
             # Create test spore
             self.test_spore = TEST.Spore1
             self.tracker.graph.add((self.test_spore, RDF.type, META.SemanticSpore))
-            self.tracker.graph.add((self.test_spore, RDFS.label, Literal("Test Spore")))
-            
-            logger.info("Test environment setup complete")
+            self.tracker.graph.add((self.test_spore, RDFS.label, Literal("Test, Spore")))
+            logger.info("Test, environment setup, complete")
         except Exception as e:
-            logger.error(f"Failed to set up test environment: {str(e)}")
+            logger.error(f"Failed, to set, up test, environment: {str(e)}")
             raise
-            
+
     def tearDown(self) -> None:
         """Clean up test environment."""
         try:
             if self.test_dir.exists():
                 shutil.rmtree(self.test_dir)
-            logger.info("Test environment cleaned up")
+            logger.info("Test, environment cleaned, up")
         except Exception as e:
-            logger.error(f"Failed to clean up test environment: {str(e)}")
+            logger.error(f"Failed, to clean, up test, environment: {str(e)}")
             raise
-            
+
     def test_add_violation(self) -> None:
         """Test adding a violation."""
         violation = ViolationDetails(
             spore_id=self.test_spore,
             rule_id=TEST.TestRule,
             severity="ERROR",
-            message="Test violation",
+            message="Test, violation",
             timestamp=datetime.now()
         )
         self.tracker.add_violation(violation)
         self.assertEqual(len(self.tracker.violations), 1)
         
     def test_get_violations(self) -> None:
-        """Test retrieving violations."""
+        """Test, retrieving violations."""
         violation = ViolationDetails(
             spore_id=self.test_spore,
             rule_id=TEST.TestRule,
             severity="ERROR",
-            message="Test violation",
+            message="Test, violation",
             timestamp=datetime.now()
         )
         self.tracker.add_violation(violation)
         violations = self.tracker.get_violations()
         self.assertEqual(len(violations), 1)
-        self.assertEqual(violations[0].message, "Test violation")
+        self.assertEqual(violations[0].message, "Test, violation")
         
     def test_clear_violations(self) -> None:
-        """Test clearing violations."""
+        """Test, clearing violations."""
         violation = ViolationDetails(
             spore_id=self.test_spore,
             rule_id=TEST.TestRule,
             severity="ERROR",
-            message="Test violation",
+            message="Test, violation",
             timestamp=datetime.now()
         )
         self.tracker.add_violation(violation)
@@ -116,7 +111,7 @@ class TestConformanceTracker(unittest.TestCase):
             spore_id=self.test_spore,
             rule_id=TEST.TestRule,
             severity="ERROR",
-            message="Test violation",
+            message="Test, violation",
             timestamp=datetime.now()
         )
         self.tracker.add_violation(violation)
@@ -130,7 +125,7 @@ class TestConformanceTracker(unittest.TestCase):
             spore_id=self.test_spore,
             rule_id=TEST.TestRule,
             severity="ERROR",
-            message="Test violation",
+            message="Test, violation",
             timestamp=datetime.now()
         )
         self.tracker.add_violation(violation)

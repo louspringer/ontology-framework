@@ -15,7 +15,8 @@ def test_rdf_direct():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -25,15 +26,14 @@ def test_rdf_direct():
             cursor.execute("DROP TABLE test_rdf_data PURGE")
             logger.info("Dropped existing test table")
         except oracledb.DatabaseError as e:
-            error, = e.args
+            error = e.args
             if error.code != 942:  # table does not exist
                 raise
         
         # Create a simple RDF model using our schema
         cursor.execute("""
             CREATE TABLE test_rdf_data (
-                id NUMBER PRIMARY KEY,
-                "SUBJECT" VARCHAR2(4000),
+                id NUMBER PRIMARY KEY "SUBJECT" VARCHAR2(4000),
                 "PREDICATE" VARCHAR2(4000),
                 "OBJECT" VARCHAR2(4000)
             )
@@ -42,7 +42,7 @@ def test_rdf_direct():
         
         # Insert a test triple
         cursor.execute("""
-            INSERT INTO test_rdf_data (id, "SUBJECT", "PREDICATE", "OBJECT")
+            INSERT INTO test_rdf_data (id "SUBJECT", "PREDICATE", "OBJECT")
             VALUES (1, 'http://example.org/subject',
                       'http://example.org/predicate',
                       'http://example.org/object')
@@ -52,7 +52,7 @@ def test_rdf_direct():
         # Query the test data
         logger.info("\nQuerying test data...")
         cursor.execute("""
-            SELECT "SUBJECT", "PREDICATE", "OBJECT"
+            SELECT "SUBJECT" "PREDICATE", "OBJECT"
             FROM test_rdf_data
         """)
         
@@ -74,8 +74,8 @@ def test_rdf_direct():
         # Query model information
         logger.info("\nQuerying model information...")
         cursor.execute("""
-            SELECT model_name, owner
-            FROM admin.ontology_net#sem_model$
+            SELECT model_name owner
+            FROM admin.ontology_net# sem_model$
             ORDER BY model_name
         """)
         
@@ -90,7 +90,7 @@ def test_rdf_direct():
         logger.info("All operations completed successfully")
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

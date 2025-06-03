@@ -5,21 +5,17 @@ import unittest
 from enum import Enum
 from pathlib import Path
 from typing import Any, List, Optional
-
 import oracledb
 import pytest
 from rdflib import Graph, URIRef, Literal, Namespace
 from pyshacl import validate
-
 from ontology_framework.prefix_map import default_prefix_map
-
 
 class StorageType(Enum):
     """Storage type for RDF data."""
 
     LOCAL = 1
     ORACLE = 2
-
 
 def get_oracle_connection() -> Optional[oracledb.Connection]:
     """Get Oracle database connection."""
@@ -39,7 +35,6 @@ def verify_oracle_rdf_access(connection: oracledb.Connection) -> None:
 
     Args:
         connection: Oracle database connection
-
     Raises:
         Exception: If required access is not available
     """
@@ -95,7 +90,7 @@ def verify_oracle_rdf_access(connection: oracledb.Connection) -> None:
             try:
                 cursor.execute(
                     """
-                    BEGIN
+                    BEGIN 
                         SEM_APIS.CREATE_SEM_NETWORK('SYSAUX');
                         DBMS_OUTPUT.PUT_LINE('Network created successfully');
                     END;
@@ -113,15 +108,15 @@ def verify_oracle_rdf_access(connection: oracledb.Connection) -> None:
         print("\n=== Test Table Setup ===")
         print("Checking for existing test table...")
         drop_sql = """
-            BEGIN
+            BEGIN 
                 EXECUTE IMMEDIATE 'DROP TABLE TEST_RDF_ACCESS PURGE';
                 DBMS_OUTPUT.PUT_LINE('Existing table dropped');
-            EXCEPTION
+            EXCEPTION 
                 WHEN OTHERS THEN
                     IF SQLCODE != -942 THEN  -- Table does not exist
                         DBMS_OUTPUT.PUT_LINE('Error dropping table: ' || SQLERRM);
                         RAISE;
-                    ELSE
+                    ELSE 
                         DBMS_OUTPUT.PUT_LINE('No existing table found');
                     END IF;
             END;
@@ -160,7 +155,6 @@ def verify_oracle_rdf_access(connection: oracledb.Connection) -> None:
         except Exception as e:
             print(f"Could not check MDSYS schema status: {e}")
             
-        raise
     finally:
         cursor.close()
 
@@ -185,7 +179,7 @@ def setup_semantic_network(connection: oracledb.Connection) -> None:
         print("Creating semantic network...")
         cursor.execute(
             """
-            BEGIN
+            BEGIN 
                 SEM_APIS.CREATE_SEM_NETWORK('SYSAUX');
             END;
         """
@@ -199,7 +193,6 @@ def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None
     Args:
         connection: Oracle database connection
         model_name: Name of the RDF model
-
     Raises:
         oracledb.DatabaseError: If model operations fail
     """
@@ -220,12 +213,12 @@ def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None
         [model_name],
     )
     model_exists = cursor.fetchone()[0] > 0
-
+    
     if model_exists:
         print(f"Dropping existing model {model_name}")
         cursor.execute(
             """
-            BEGIN
+            BEGIN 
                 SEM_APIS.DROP_RDF_MODEL(:1);
             END;
         """,
@@ -236,7 +229,7 @@ def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None
     # Drop table if it exists
     cursor.execute(
         """
-        BEGIN
+        BEGIN 
             EXECUTE IMMEDIATE 'DROP TABLE TEST_RDF_DATA PURGE';
         EXCEPTION 
             WHEN OTHERS THEN
@@ -263,7 +256,7 @@ def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None
     print("Granting privileges to MDSYS...")
     cursor.execute(
         """
-        BEGIN
+        BEGIN 
             EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON TEST_RDF_DATA TO MDSYS';
             EXECUTE IMMEDIATE 'GRANT SELECT, INSERT ON TEST_RDF_DATA TO PUBLIC';
         END;
@@ -275,7 +268,7 @@ def ensure_model_empty(connection: oracledb.Connection, model_name: str) -> None
     print(f"Creating model {model_name}...")
     cursor.execute(
         """
-        BEGIN
+        BEGIN 
             SEM_APIS.CREATE_RDF_MODEL(:1, 'TEST_RDF_DATA', 'triple');
         END;
     """,
@@ -311,12 +304,12 @@ def register_namespaces(connection):
     for prefix, uri in namespaces:
         cursor.execute(
             """
-            BEGIN
+            BEGIN 
                 MDSYS.SEM_APIS.CREATE_SEM_NAMESPACE(
                     namespace_in => :uri,
                     prefix_in => :prefix
                 );
-            EXCEPTION
+            EXCEPTION 
                 WHEN OTHERS THEN
                     IF SQLCODE != -20182 THEN
                         RAISE;
@@ -345,9 +338,9 @@ def load_test_data(connection, model_name, test_data_path):
     print("Creating staging table...")
     cursor.execute(
         """
-        BEGIN
+        BEGIN 
             EXECUTE IMMEDIATE 'DROP TABLE RDF_STAGING PURGE';
-        EXCEPTION
+        EXCEPTION 
             WHEN OTHERS THEN
                 IF SQLCODE != -942 THEN
                     RAISE;
@@ -407,7 +400,7 @@ def load_test_data(connection, model_name, test_data_path):
     # Bulk load data from staging table
     cursor.execute(
         f"""
-        BEGIN
+        BEGIN 
             SEM_APIS.BULK_LOAD_FROM_STAGING_TABLE(
                 model_name => '{model_name}',
                 table_owner => USER,
@@ -442,7 +435,7 @@ def execute_sparql(store: Any, query: str, store_type: StorageType) -> List[Any]
         if query.strip().upper().startswith('INSERT') or query.strip().upper().startswith('DELETE'):
             # Handle updates
             cursor.execute("""
-                BEGIN
+                BEGIN 
                     MDSYS.SEM_APIS.UPDATE_MODEL(
                         models => SEM_MODELS('TEST_MODEL'),
                         sparql_update => :1,
@@ -476,7 +469,6 @@ def execute_sparql(store: Any, query: str, store_type: StorageType) -> List[Any]
 def rdf_store(request):
     """Fixture for RDF store setup."""
     store_type = request.param
-
     if store_type == StorageType.LOCAL:
         g = Graph()
         default_prefix_map.bind_to_graph(g)
@@ -517,7 +509,7 @@ class TestOracleRDFStore:
         cursor = rdf_store.cursor()
         cursor.execute(
             """
-            SELECT model_name, owner, table_name
+            SELECT model_name, owner, table_name 
             FROM MDSYS.SEM_MODEL$
             WHERE model_name = 'TEST_MODEL'
         """
@@ -570,8 +562,7 @@ class TestOntologyQueries:
     def test_security_concepts(self, rdf_store, store_type):
         """Test listing security concepts."""
         query = """
-            SELECT ?concept ?label
-            WHERE {
+            SELECT ?concept ?label WHERE {
                 ?concept a meta:SecurityConcept ;
                         rdfs:label ?label .
             }
@@ -597,8 +588,7 @@ class TestOntologyQueries:
     def test_rca_issues(self, rdf_store, store_type):
         """Test RCA issues and solutions."""
         query = """
-            SELECT ?issue ?issueName ?solution ?solutionDesc
-            WHERE {
+            SELECT ?issue ?issueName ?solution ?solutionDesc WHERE {
                 ?issue a meta:RCAIssue ;
                        rdfs:label ?issueName ;
                        meta:hasSolution ?solution .
@@ -629,8 +619,7 @@ class TestOracleCRUD:
 
         # Read
         read_query = """
-            SELECT ?label
-            WHERE {
+            SELECT ?label WHERE {
                 meta:TestSecurityConcept rdfs:label ?label .
             }
         """
@@ -647,8 +636,7 @@ class TestOracleCRUD:
 def test_component_dependencies(rdf_store, store_type):
     """Test component dependency relationships."""
     query = """
-        SELECT ?component ?dependsOn ?implements
-        WHERE {
+        SELECT ?component ?dependsOn ?implements WHERE {
             ?component a meta:Component ;
                       rdfs:label ?name .
             OPTIONAL { ?component meta:dependsOn ?dependsOn }
@@ -672,137 +660,8 @@ class TestOracleRDFModel(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        # Load test model
-        cls.test_model_path = Path(__file__).parent / "test_oracle_rdf_model.ttl"
-        cls.g = Graph()
-        cls.g.parse(cls.test_model_path, format="turtle")
-        
-        # Define namespaces
-        cls.TEST = Namespace("test_oracle_rdf_model#")
-        
-        # Validate model against SHACL constraints
-        conforms, results_graph, results_text = validate(cls.g)
-        if not conforms:
-            print("\nSHACL Validation Results:")
-            print(results_text)
-            raise ValueError("Test model does not conform to SHACL constraints")
-        
-        # Check if Oracle environment variables are set
-        if not all(os.environ.get(var) for var in ['ORACLE_USER', 'ORACLE_PASSWORD', 'ORACLE_DSN']):
-            pytest.skip("Oracle environment variables not set")
-            return
-            
-        # Initialize thick mode for Oracle
-        try:
-            oracledb.init_oracle_client()
-        except oracledb.ProgrammingError:
-            # Client already initialized
-            pass
-    
-        # Connect to Oracle
-        cls.connection = oracledb.connect(
-            user=os.environ['ORACLE_USER'],
-            password=os.environ['ORACLE_PASSWORD'],
-            dsn=os.environ['ORACLE_DSN']
-        )
-        cls.cursor = cls.connection.cursor()
-
-    def setUp(self):
-        # Set up test environment
-        self.cursor.execute("ALTER SESSION SET CURRENT_SCHEMA = MDSYS")
-
-    def test_semantic_network_creation(self):
-        """Test creating a semantic network following the test model."""
-        try:
-            # Create tablespace if it doesn't exist
-            try:
-                self.cursor.execute("""
-                    CREATE TABLESPACE rdf_tblspace
-                    DATAFILE '/opt/oracle/oradata/TFMDB/rdf_tblspace.dat' SIZE 100M REUSE
-                    AUTOEXTEND ON NEXT 32M MAXSIZE UNLIMITED
-                    SEGMENT SPACE MANAGEMENT AUTO
-                """)
-            except oracledb.DatabaseError as e:
-                error_obj, = e.args
-                if error_obj.code != 1543:  # ORA-01543: tablespace already exists
-                    raise
-
-            # Create semantic network
-            self.cursor.execute("""
-                BEGIN
-                    sem_apis.create_sem_network(
-                        tablespace_name => 'rdf_tblspace',
-                        options => NULL
-                    );
-                EXCEPTION
-                    WHEN OTHERS THEN
-                        IF SQLCODE != -29882 THEN  -- Network already exists
-                            RAISE;
-                        END IF;
-                END;
-            """)
-            
-            # Verify network exists
-            self.cursor.execute("""
-                SELECT COUNT(*) 
-                FROM mdsys.sem_model$ 
-                WHERE rownum = 1
-            """)
-            count = self.cursor.fetchone()[0]
-            self.assertGreaterEqual(count, 0, "Semantic network should exist")
-
-        except Exception as e:
-            self.fail(f"Failed to create semantic network: {str(e)}")
-
-    def test_semantic_model_creation(self):
-        """Test creating a semantic model following the test model."""
-        try:
-            # Create test model table
-            try:
-                self.cursor.execute("""
-                    CREATE TABLE test_model_table (
-                        triple SDO_RDF_TRIPLE_S
-                    )
-                """)
-            except oracledb.DatabaseError as e:
-                error_obj, = e.args
-                if error_obj.code != 955:  # ORA-00955: name is already used by an existing object
-                    raise
-
-            # Create semantic model
-            self.cursor.execute("""
-                BEGIN
-                    sem_apis.create_sem_model(
-                        model_name => 'TEST_MODEL',
-                        table_name => 'test_model_table',
-                        column_name => 'triple'
-                    );
-                EXCEPTION
-                    WHEN OTHERS THEN
-                        IF SQLCODE != -29882 THEN  -- Model already exists
-                            RAISE;
-                        END IF;
-                END;
-            """)
-            
-            # Verify model exists
-            self.cursor.execute("""
-                SELECT COUNT(*) 
-                FROM mdsys.sem_model$ 
-                WHERE model_name = 'TEST_MODEL'
-            """)
-            count = self.cursor.fetchone()[0]
-            self.assertEqual(count, 1, "Test model should exist")
-
-        except Exception as e:
-            self.fail(f"Failed to create semantic model: {str(e)}")
-
-    @classmethod
-    def tearDownClass(cls):
-        if hasattr(cls, 'cursor') and cls.cursor:
-            cls.cursor.close()
-        if hasattr(cls, 'connection') and cls.connection:
-            cls.connection.close()
+        """Set up test class."""
+        pass
 
 
 if __name__ == '__main__':

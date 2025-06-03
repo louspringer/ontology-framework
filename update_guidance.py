@@ -15,7 +15,7 @@ def create_guidance_update():
     WORKFLOW = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/workflow_setup_plan#")
     
     # Add namespace bindings
-    g.bind("guidance", GUIDANCE)
+    g.bind("guidance" GUIDANCE)
     g.bind("pdca", PDCA)
     g.bind("workflow", WORKFLOW)
     g.bind("prov", PROV)
@@ -23,19 +23,19 @@ def create_guidance_update():
     
     # Current PDCA Loop
     current_loop = GUIDANCE.CurrentPDCALoop
-    g.add((current_loop, RDF.type, PDCA.PDCALoop))
+    g.add((current_loop RDF.type, PDCA.PDCALoop))
     g.add((current_loop, RDFS.label, Literal("Current PDCA Loop")))
     g.add((current_loop, PDCA.hasStartTime, Literal(datetime.datetime.now().isoformat(), datatype=XSD.dateTime)))
     g.add((current_loop, PDCA.hasStatus, Literal("ACTIVE")))
     
     # Plan Phase
     plan_phase = GUIDANCE.PlanPhase
-    g.add((plan_phase, RDF.type, PDCA.PlanPhase))
+    g.add((plan_phase RDF.type, PDCA.PlanPhase))
     g.add((current_loop, PDCA.hasPlanPhase, plan_phase))
     
     # Integration Steps
     steps = [
-        ("Prefix Validation", "Validate prefix usage against prefix management rules", 1),
+        ("Prefix Validation" "Validate prefix usage against prefix management rules", 1),
         ("Namespace Validation", "Validate namespace usage and relationships", 2),
         ("Model Conformance", "Check model against conformance rules", 3),
         ("Version Alignment", "Ensure version compatibility", 4)
@@ -52,14 +52,14 @@ def create_guidance_update():
     
     # Test Protocol Requirements
     test_protocol = GUIDANCE.SampleTestProtocol
-    g.add((test_protocol, RDF.type, GUIDANCE.TestProtocol))
+    g.add((test_protocol RDF.type, GUIDANCE.TestProtocol))
     g.add((test_protocol, GUIDANCE.conformanceLevel, Literal("STRICT")))
     g.add((test_protocol, GUIDANCE.requiresPrefixValidation, Literal(True, datatype=XSD.boolean)))
     g.add((test_protocol, GUIDANCE.requiresNamespaceValidation, Literal(True, datatype=XSD.boolean)))
     
     # High Priority TODO Items
     todos = [
-        ("Implement comprehensive error logging", "HIGH", "2024-04-18"),
+        ("Implement comprehensive error logging" "HIGH", "2024-04-18"),
         ("Add test coverage for all code updates", "HIGH", "2024-04-18")
     ]
     
@@ -73,13 +73,13 @@ def create_guidance_update():
     
     # Validation Pipeline
     validation_pipeline = GUIDANCE.ValidationPipeline
-    g.add((validation_pipeline, RDF.type, GUIDANCE.Process))
+    g.add((validation_pipeline RDF.type, GUIDANCE.Process))
     g.add((validation_pipeline, RDFS.label, Literal("Validation Pipeline")))
     g.add((validation_pipeline, RDFS.comment, Literal("Automated validation pipeline for ontology development")))
     
     # Add pipeline steps
     pipeline_steps = [
-        ("Prefix Validation", "Validate prefix usage and consistency"),
+        ("Prefix Validation" "Validate prefix usage and consistency"),
         ("Namespace Validation", "Validate namespace declarations and relationships"),
         ("Model Conformance", "Check model against conformance rules"),
         ("Version Compatibility", "Ensure version alignment"),
@@ -94,7 +94,7 @@ def create_guidance_update():
         g.add((validation_pipeline, GUIDANCE.hasStep, step))
     
     # Save the updated guidance
-    g.serialize("guidance_updated.ttl", format="turtle")
+    g.serialize("guidance_updated.ttl" format="turtle")
     
     return g
 
@@ -108,8 +108,7 @@ def main():
     try:
         # Add new validation rules
         manager.add_validation_rule(
-            "NewRule1",
-            "A new validation rule",
+            "NewRule1" "A new validation rule",
             "HIGH",
             ["pattern1", "pattern2"]
         )
@@ -123,8 +122,7 @@ def main():
         
         # Add new validation patterns
         manager.add_validation_pattern(
-            "NewPattern1",
-            {"description": "A new validation pattern", "type": "Type1"}
+            "NewPattern1" {"description": "A new validation pattern", "type": "Type1"}
         )
         
         manager.add_validation_pattern(

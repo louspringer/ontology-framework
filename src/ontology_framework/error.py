@@ -1,5 +1,6 @@
-from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from dataclasses import dataclass, field
+from typing import Dict, Any
+from typing import Optional
 from datetime import datetime
 from .ontology_types import ErrorType, ErrorSeverity, ErrorStep
 
@@ -10,22 +11,11 @@ class Error:
     message: str
     severity: ErrorSeverity
     step: ErrorStep
-    timestamp: datetime = datetime.now()
-    details: Optional[Dict[str, Any]] = None
-    validation_details: Optional[Dict[str, Any]] = None
-    prevention_measures: Optional[Dict[str, bool]] = None
-    recovery_strategies: Optional[Dict[str, bool]] = None
-
-    def __post_init__(self):
-        """Initialize optional fields if they are None."""
-        if self.details is None:
-            self.details = {}
-        if self.validation_details is None:
-            self.validation_details = {}
-        if self.prevention_measures is None:
-            self.prevention_measures = {}
-        if self.recovery_strategies is None:
-            self.recovery_strategies = {}
+    timestamp: datetime = field(default_factory=datetime.now)
+    details: Optional[Dict[str, Any]] = field(default_factory=dict)
+    validation_details: Optional[Dict[str, Any]] = field(default_factory=dict)
+    prevention_measures: Optional[Dict[str, bool]] = field(default_factory=dict)
+    recovery_strategies: Optional[Dict[str, bool]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert the error to a dictionary."""

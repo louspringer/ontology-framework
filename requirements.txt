@@ -17,4 +17,7 @@ spacy==3.7.2
 PyPDF2==3.0.1
 faiss-cpu==1.7.4
 wasmtime>=1.0.0
+pychrome==0.2.3
+typing-extensions>=4.0.0
+selenium>=4.16.0
 -e .

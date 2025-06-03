@@ -7,7 +7,6 @@ from rdflib.namespace import Namespace
 # Define namespaces
 SPORE = Namespace("https://example.org/spore#")
 EX = Namespace("https://example.org/bfg9k#")
-
 class SporeInjector:
     def __init__(self, spore_path="bfg9k-containment.ttl"):
         self.spore = Graph()
@@ -20,7 +19,6 @@ class SporeInjector:
         spore_package = self.spore.value(predicate=RDF.type, object=SPORE.SporePackage)
         if not spore_package:
             raise ValueError("No spore:SporePackage found in the ontology")
-            
         # Get included files
         included_files = list(self.spore.objects(spore_package, SPORE.includesFile))
         

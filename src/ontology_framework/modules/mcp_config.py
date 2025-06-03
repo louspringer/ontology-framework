@@ -1,21 +1,31 @@
-"""MCP configuration and validation module."""
+"""MCP Configuration and Validation Module."""
 
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, List, Set
+from typing import (
+    Any,
+    Dict,
+    List,
+    Optional,
+    Set,
+)
+
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, SH
+
 
 class MCPConfigError(Exception):
     """Base exception for MCP configuration errors."""
     pass
+
 
 class MCPValidationError(Exception):
     """Exception for validation errors."""
     def __init__(self, message: str, validation_report: Optional[Graph] = None):
         super().__init__(message)
         self.validation_report = validation_report
+
 
 class MCPConfig:
     """MCP configuration manager."""
@@ -90,6 +100,7 @@ class MCPConfig:
             self.logger.warning(f"Failed to configure logging: {e}")
             # Fall back to basic logging
             logging.basicConfig(level=logging.INFO)
+
 
 class MCPValidator:
     """MCP validation manager."""
@@ -289,7 +300,6 @@ class MCPValidator:
         
     def _validate_semantic_first(self, context: Dict[str, Any]) -> bool:
         """Validate semantic first approach."""
-        # Check if semantic tools are used before text operations
         if "ontology_path" not in context:
             return False
             

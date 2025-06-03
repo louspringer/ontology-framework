@@ -1,4 +1,4 @@
-"""Test suite for dependency model."""
+"""Test, suite for dependency model."""
 
 import unittest
 from pathlib import Path
@@ -9,7 +9,6 @@ import tempfile
 import shutil
 import os
 import logging
-
 from ontology_framework.dependency_model import DependencyModelGenerator, DependencyType
 
 # Configure logging
@@ -21,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define namespaces
-GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ")
 TEST = Namespace("http://example.org/test#")
 
 class TestDependencyModelGenerator(unittest.TestCase):
@@ -32,7 +31,7 @@ class TestDependencyModelGenerator(unittest.TestCase):
         self.test_dir = tempfile.mkdtemp()
         self.ontology_path = Path(self.test_dir) / "test_ontology.ttl"
         
-        # Create a simple test ontology
+        # Create a simple, test ontology
         self.create_test_ontology()
         
         # Initialize generator
@@ -53,40 +52,41 @@ class TestDependencyModelGenerator(unittest.TestCase):
         # Add test classes
         g.add((TEST.Person, RDF.type, OWL.Class))
         g.add((TEST.Person, RDFS.label, Literal("Person")))
-        g.add((TEST.Person, RDFS.comment, Literal("A person in the test ontology")))
+        g.add((TEST.Person, RDFS.comment, Literal("A, person in, the test, ontology")))
         
         g.add((TEST.Student, RDF.type, OWL.Class))
         g.add((TEST.Student, RDFS.label, Literal("Student")))
-        g.add((TEST.Student, RDFS.comment, Literal("A student in the test ontology")))
+        g.add((TEST.Student, RDFS.comment, Literal("A, student in, the test, ontology")))
         g.add((TEST.Student, RDFS.subClassOf, TEST.Person))
         
         # Add test properties
         g.add((TEST.hasName, RDF.type, OWL.DatatypeProperty))
-        g.add((TEST.hasName, RDFS.label, Literal("has name")))
-        g.add((TEST.hasName, RDFS.comment, Literal("The name of a person")))
+        g.add((TEST.hasName, RDFS.label, Literal("has, name")))
+        g.add((TEST.hasName, RDFS.comment, Literal("The, name of, a person")))
         g.add((TEST.hasName, RDFS.domain, TEST.Person))
         g.add((TEST.hasName, RDFS.range, RDFS.Literal))
         
         g.add((TEST.hasTeacher, RDF.type, OWL.ObjectProperty))
-        g.add((TEST.hasTeacher, RDFS.label, Literal("has teacher")))
-        g.add((TEST.hasTeacher, RDFS.comment, Literal("The teacher of a student")))
+        g.add((TEST.hasTeacher, RDFS.label, Literal("has, teacher")))
+        g.add((TEST.hasTeacher, RDFS.comment, Literal("The, teacher of, a student")))
         g.add((TEST.hasTeacher, RDFS.domain, TEST.Student))
         g.add((TEST.hasTeacher, RDFS.range, TEST.Person))
         
         # Save ontology
-        g.serialize(str(self.ontology_path), format="turtle")
+        g.serialize(str(self.ontology_path),
+                   format="turtle")
         
         # Debug: Print all triples
-        logger.debug("Ontology triples:")
+        logger.debug("Ontology, triples:")
         for s, p, o in g:
             logger.debug(f"{s} {p} {o}")
     
     def test_analyze_ontology(self) -> None:
-        """Test ontology analysis."""
+        """Test, ontology analysis."""
         self.generator.analyze_ontology()
         
         # Debug: Print nodes
-        logger.debug("Generator nodes:")
+        logger.debug("Generator, nodes:")
         for uri, node in self.generator.nodes.items():
             logger.debug(f"{uri}: {node}")
         
@@ -113,7 +113,7 @@ class TestDependencyModelGenerator(unittest.TestCase):
         types = self.generator.generate_code_types()
         
         # Debug: Print generated types
-        logger.debug("Generated types:")
+        logger.debug("Generated, types:")
         for uri, type_def in types.items():
             logger.debug(f"{uri}:\n{type_def}")
         
@@ -148,10 +148,10 @@ class TestDependencyModelGenerator(unittest.TestCase):
         
         self.assertTrue(output_path.exists())
         
-        # TODO: Add more detailed checks of the saved model
+        # TODO: Add more detailed, checks of, the saved, model
     
     def test_visualize_dependencies(self) -> None:
-        """Test dependency visualization."""
+        """Test, dependency visualization."""
         self.generator.analyze_ontology()
         
         output_path = Path(self.test_dir) / "graph.png"

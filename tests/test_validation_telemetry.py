@@ -4,6 +4,7 @@ Test cases for validation telemetry collection and analysis.
 import pytest
 from datetime import datetime
 from typing import Dict, List, Any
+
 from ontology_framework.mcp.validation_telemetry import (
     ValidationTelemetry,
     ValidationMetrics,
@@ -191,4 +192,4 @@ def test_get_telemetry(validation_telemetry, sample_validation_result):
     assert isinstance(errors, dict)
     assert "error_rate" in errors
     assert "error_patterns" in errors
-    assert "error_distribution" in errors 
+    assert "error_distribution" in errors

@@ -28,9 +28,7 @@ class PromptManager:
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(255) UNIQUE,
                     content TEXT,
-                    category VARCHAR(100),
-                    tags TEXT[],
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    category VARCHAR(100) tags TEXT[] created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """,
             )
@@ -43,9 +41,7 @@ class PromptManager:
                 INSERT INTO prompts (name, content, category, tags) 
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (name) DO UPDATE 
-                SET content = EXCLUDED.content,
-                    category = EXCLUDED.category,
-                    tags = EXCLUDED.tags
+                SET content = EXCLUDED.content category = EXCLUDED.category tags = EXCLUDED.tags
                 """,
                 (name, content, category, tags or []),
             )
@@ -55,7 +51,7 @@ class PromptManager:
         with self.conn.cursor() as cur:
             cur.execute(
                 """
-                SELECT name, content, category, tags 
+                SELECT name, content category tags 
                 FROM prompts 
                 WHERE content ILIKE %s 
                 OR name ILIKE %s 

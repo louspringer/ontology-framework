@@ -1,6 +1,5 @@
 
 from src.ontology_framework.test_module import Component1, Component2
-
 def test_components():
     comp1 = Component1()
     comp2 = Component2()

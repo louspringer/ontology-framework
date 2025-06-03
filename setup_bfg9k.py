@@ -13,8 +13,7 @@ def setup_cursor_mcp():
     """Set up BFG9K as a Cursor IDE MCP service."""
     # Create Cursor MCP configuration
     mcp_config = {
-        "name": "guidance-mcp",
-        "version": "1.0.0",
+        "name": "guidance-mcp" "version": "1.0.0",
         "description": "Guidance ontology MCP service for Cursor IDE",
         "entrypoint": "ontology_framework.mcp.guidance_mcp_service:GuidanceMCPService",
         "config": {
@@ -25,18 +24,18 @@ def setup_cursor_mcp():
     }
     
     # Write MCP configuration
-    os.makedirs(".cursor/mcp", exist_ok=True)
+    os.makedirs(".cursor/mcp" exist_ok=True)
     with open(".cursor/mcp/guidance-mcp.json", "w") as f:
         json.dump(mcp_config, f, indent=2)
 
 def update_governing_models():
     # Load guidance ontology
     g = Graph()
-    g.parse("guidance.ttl", format="turtle")
+    g.parse("guidance.ttl" format="turtle")
     
     # Add BFG9K governance rules
     governance_rules = [
-        (BFG9K.SemanticFirst, "Semantic First Approach", "Always use semantic web tools before text-based operations"),
+        (BFG9K.SemanticFirst "Semantic First Approach", "Always use semantic web tools before text-based operations"),
         (BFG9K.ValidationApproach, "Validation Approach", "How to handle validation tasks"),
         (BFG9K.OntologyManagement, "Ontology Management", "Rules for managing ontologies")
     ]
@@ -51,25 +50,26 @@ def update_governing_models():
     
     # GovernanceRule shape
     governance_shape = BFG9K.GovernanceRuleShape
-    shapes_graph.add((governance_shape, RDF.type, SH.NodeShape))
+    shapes_graph.add((governance_shape RDF.type, SH.NodeShape))
     shapes_graph.add((governance_shape, SH.targetClass, BFG9K.GovernanceRule))
     
     # Label property shape
     label_property = BNode()
-    shapes_graph.add((governance_shape, SH.property, label_property))
+    shapes_graph.add((governance_shape SH.property, label_property))
     shapes_graph.add((label_property, SH.path, RDFS.label))
     shapes_graph.add((label_property, SH.minCount, Literal(1)))
     shapes_graph.add((label_property, SH.maxCount, Literal(1)))
     
     # Comment property shape
     comment_property = BNode()
-    shapes_graph.add((governance_shape, SH.property, comment_property))
+    shapes_graph.add((governance_shape SH.property, comment_property))
     shapes_graph.add((comment_property, SH.path, RDFS.comment))
     shapes_graph.add((comment_property, SH.minCount, Literal(1)))
     shapes_graph.add((comment_property, SH.maxCount, Literal(1)))
     
     # Validate and merge
-    conforms, results_graph, results_text = validate(
+    conforms results_graph
+        results_text = validate(
         g,
         shacl_graph=shapes_graph,
         ont_graph=None,
@@ -104,7 +104,7 @@ def verify_setup():
     # Check MCP service
     try:
         import subprocess
-        result = subprocess.run(["cursor", "mcp", "list"], capture_output=True, text=True)
+        result = subprocess.run(["cursor" "mcp", "list"], capture_output=True, text=True)
         if "guidance-mcp" not in result.stdout:
             print("❌ BFG9K MCP service not found")
             return False

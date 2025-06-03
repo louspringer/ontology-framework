@@ -294,9 +294,9 @@ class TestGuidanceOntology(unittest.TestCase):
         SELECT ?pattern WHERE {
             ?pattern rdf:type validation:ValidationPattern
             FILTER NOT EXISTS {
-                ?pattern rdfs:label ?label ;
-                         rdfs:comment ?comment ;
-                         validation:hasTargetClass ?target
+                ?pattern rdfs:label ?label
+                ?pattern rdfs:comment ?comment
+                ?pattern validation:hasTargetClass ?target
             }
         }
         """
@@ -348,7 +348,7 @@ class TestGuidanceOntology(unittest.TestCase):
             raise
 
     def test_test_coverage(self):
-        """Test that all requirements, aspects, and components have test coverage"""
+        """Test that all requirements aspects and components have test coverage"""
         logger.info("Running test coverage check")
         query = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -367,8 +367,8 @@ class TestGuidanceOntology(unittest.TestCase):
                 BIND("Component" AS ?type)
             }
             FILTER NOT EXISTS {
-                ?test rdf:type validation:TestCase ;
-                      validation:validates ?entity
+                ?test rdf:type validation:TestCase
+                validation:validates ?entity
             }
         }
         """
@@ -390,11 +390,14 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that integration processes have properly ordered steps"""
         logger.info("Testing integration process steps")
         query = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX guidance: <./guidance#>
+        
         SELECT ?process ?step ?order ?description WHERE {
-            ?process rdf:type guidance:IntegrationProcess ;
-                    guidance:hasIntegrationStep ?step .
-            ?step guidance:stepOrder ?order ;
-                  guidance:stepDescription ?description .
+            ?process rdf:type guidance:IntegrationProcess .
+            ?process guidance:hasIntegrationStep ?step .
+            ?step guidance:stepOrder ?order .
+            ?step guidance:stepDescription ?description .
         }
         ORDER BY ?process ?order
         """
@@ -408,10 +411,10 @@ class TestGuidanceOntology(unittest.TestCase):
                 if process != current_process:
                     current_process = process
                     current_order = 0
-                expected_order = current_order + 1
-                if int(order) != expected_order:
-                    logger.error(f"Step {step} in process {process} has incorrect order: {order}, expected {expected_order}")
-                    self.fail(f"Step {step} in process {process} has incorrect order")
+                    expected_order = current_order + 1
+                    if int(order) != expected_order:
+                        logger.error(f"Step {step} in process {process} has incorrect order: {order}, expected {expected_order}")
+                        self.fail(f"Step {step} in process {process} has incorrect order")
                 if description is None:
                     logger.error(f"Step {step} in process {process} missing description")
                     self.fail(f"Step {step} in process {process} missing description")
@@ -425,6 +428,10 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that all properties have proper domain and range definitions"""
         logger.info("Testing property validation")
         query = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        
         SELECT ?property ?domain ?range WHERE {
             ?property rdf:type owl:ObjectProperty .
             OPTIONAL { ?property rdfs:domain ?domain }
@@ -451,6 +458,8 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that class hierarchies are properly defined"""
         logger.info("Testing class hierarchy")
         query = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
         SELECT ?class ?superclass WHERE {
             ?class rdfs:subClassOf ?superclass .
             FILTER (?class != ?superclass)
@@ -473,9 +482,12 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that all imports are valid and accessible"""
         logger.info("Testing import consistency")
         query = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        
         SELECT ?module ?import WHERE {
-            ?module rdf:type owl:Ontology ;
-                   owl:imports ?import .
+            ?module rdf:type owl:Ontology .
+            ?module owl:imports ?import .
         }
         """
         try:
@@ -495,9 +507,12 @@ class TestGuidanceOntology(unittest.TestCase):
         """Test that module versions are compatible"""
         logger.info("Testing version compatibility")
         query = """
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        
         SELECT ?module ?version WHERE {
-            ?module rdf:type owl:Ontology ;
-                   owl:versionInfo ?version .
+            ?module rdf:type owl:Ontology .
+            ?module owl:versionInfo ?version .
         }
         """
         try:
@@ -518,7 +533,6 @@ class TestGuidanceOntology(unittest.TestCase):
         except Exception as e:
             logger.error(f"Error in version compatibility test: {str(e)}")
             raise
-
 
 if __name__ == "__main__":
     unittest.main()

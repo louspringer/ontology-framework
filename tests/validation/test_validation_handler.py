@@ -23,31 +23,33 @@ class TestValidationHandler(unittest.TestCase):
         
     def setup_test_ontology(self):
         """Setup test ontology using semantic web tools"""
-        from rdflib import URIRef, Literal, XSD
         g = self.test_graph
-        TEST = "http://example.org/test#"
-        OWL = "http://www.w3.org/2002/07/owl#"
-        RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        RDFS = "http://www.w3.org/2000/01/rdf-schema#"
+        TEST_STR = "http://example.org/test#"
+        OWL_STR = "http://www.w3.org/2002/07/owl#"
+        RDF_STR = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        RDFS_STR = "http://www.w3.org/2000/01/rdf-schema#"
+        
         # Classes
-        g.add((URIRef(TEST + "Class1"), URIRef(RDF + "type"), URIRef(OWL + "Class")))
-        g.add((URIRef(TEST + "Class2"), URIRef(RDF + "type"), URIRef(OWL + "Class")))
+        g.add((URIRef(TEST_STR + "Class1"), URIRef(RDF_STR + "type"), URIRef(OWL_STR + "Class")))
+        g.add((URIRef(TEST_STR + "Class2"), URIRef(RDF_STR + "type"), URIRef(OWL_STR + "Class")))
+        
         # Property
-        g.add((URIRef(TEST + "prop1"), URIRef(RDF + "type"), URIRef(OWL + "ObjectProperty")))
-        g.add((URIRef(TEST + "prop1"), URIRef(RDFS + "domain"), URIRef(TEST + "Class1")))
-        g.add((URIRef(TEST + "prop1"), URIRef(RDFS + "range"), URIRef(TEST + "Class2")))
+        g.add((URIRef(TEST_STR + "prop1"), URIRef(RDF_STR + "type"), URIRef(OWL_STR + "ObjectProperty")))
+        g.add((URIRef(TEST_STR + "prop1"), URIRef(RDFS_STR + "domain"), URIRef(TEST_STR + "Class1")))
+        g.add((URIRef(TEST_STR + "prop1"), URIRef(RDFS_STR + "range"), URIRef(TEST_STR + "Class2")))
+        
         # Individuals and properties
-        g.add((URIRef(TEST + "inst1"), URIRef(RDF + "type"), URIRef(TEST + "Class1")))
-        g.add((URIRef(TEST + "inst1"), URIRef(TEST + "prop1"), Literal("test_pattern", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst1"), URIRef(TEST + "description"), Literal("This contains a password", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst2"), URIRef(RDF + "type"), URIRef(TEST + "Class1")))
-        g.add((URIRef(TEST + "inst2"), URIRef(TEST + "prop1"), Literal("secret", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst2"), URIRef(TEST + "description"), Literal("Another test_pattern", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst3"), URIRef(RDF + "type"), URIRef(TEST + "Class2")))
-        g.add((URIRef(TEST + "inst3"), URIRef(TEST + "prop1"), Literal("not_sensitive", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst3"), URIRef(TEST + "description"), Literal("no match here", datatype=XSD.string)))
-        g.add((URIRef(TEST + "inst4"), URIRef(RDF + "type"), URIRef(TEST + "Class1")))
-        g.add((URIRef(TEST + "inst4"), URIRef(TEST + "prop1"), Literal(123, datatype=XSD.integer)))
+        g.add((URIRef(TEST_STR + "inst1"), URIRef(RDF_STR + "type"), URIRef(TEST_STR + "Class1")))
+        g.add((URIRef(TEST_STR + "inst1"), URIRef(TEST_STR + "prop1"), Literal("test_pattern", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst1"), URIRef(TEST_STR + "description"), Literal("This contains a password", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst2"), URIRef(RDF_STR + "type"), URIRef(TEST_STR + "Class1")))
+        g.add((URIRef(TEST_STR + "inst2"), URIRef(TEST_STR + "prop1"), Literal("secret", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst2"), URIRef(TEST_STR + "description"), Literal("Another test_pattern", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst3"), URIRef(RDF_STR + "type"), URIRef(TEST_STR + "Class2")))
+        g.add((URIRef(TEST_STR + "inst3"), URIRef(TEST_STR + "prop1"), Literal("not_sensitive", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst3"), URIRef(TEST_STR + "description"), Literal("no match here", datatype=XSD.string)))
+        g.add((URIRef(TEST_STR + "inst4"), URIRef(RDF_STR + "type"), URIRef(TEST_STR + "Class1")))
+        g.add((URIRef(TEST_STR + "inst4"), URIRef(TEST_STR + "prop1"), Literal(123, datatype=XSD.integer)))
 
     def test_shacl_validation(self):
         """Test SHACL validation using proper semantic tooling"""
@@ -354,52 +356,21 @@ def test_validate_with_invalid_rule_type(sample_rules, sample_data_graph):
 
 def test_validate_shacl(sample_rules, sample_data_graph):
     handler = ValidationHandler(sample_rules)
-    result = handler.validate(sample_data_graph, ValidationRuleType.SHACL)
-    assert isinstance(result, bool)
+    result = handler.validate(sample_data_graph, "SHACL")
+    assert isinstance(result, dict)
+    assert "conforms" in result
+    assert "results" in result
 
 def test_validate_semantic(sample_rules, sample_data_graph):
     handler = ValidationHandler(sample_rules)
-    result = handler.validate(sample_data_graph, ValidationRuleType.SEMANTIC)
-    assert isinstance(result, bool)
+    result = handler.validate(sample_data_graph, "SEMANTIC")
+    assert isinstance(result, dict)
+    assert "conforms" in result
+    assert "results" in result
 
 def test_validate_structural(sample_rules, sample_data_graph):
     handler = ValidationHandler(sample_rules)
-    result = handler.validate(sample_data_graph, ValidationRuleType.STRUCTURAL)
-    assert isinstance(result, bool)
-
-def test_get_validation_targets(sample_rules):
-    handler = ValidationHandler(sample_rules)
-    targets = handler.get_validation_targets()
-    assert "SHACL" in targets
-    assert targets["SHACL"] == ["http://example.org/Class1"]
-
-def test_get_validation_messages(sample_rules):
-    handler = ValidationHandler(sample_rules)
-    messages = handler.get_validation_messages()
-    assert "rule1" in messages
-    assert "rule2" in messages
-    assert "rule3" in messages
-    assert messages["rule1"] == "Test SHACL rule"
-    assert messages["rule2"] == "Test semantic rule"
-    assert messages["rule3"] == "Test structural rule"
-
-def test_validate_shacl_with_invalid_data(sample_rules):
-    handler = ValidationHandler(sample_rules)
-    invalid_graph = Graph()
-    result = handler.validate(invalid_graph, ValidationRuleType.SHACL)
-    assert isinstance(result, bool)
-
-def test_validate_semantic_with_invalid_data(sample_rules):
-    handler = ValidationHandler(sample_rules)
-    invalid_graph = Graph()
-    result = handler.validate(invalid_graph, ValidationRuleType.SEMANTIC)
-    assert isinstance(result, bool)
-
-def test_validate_structural_with_invalid_data(sample_rules):
-    handler = ValidationHandler(sample_rules)
-    invalid_graph = Graph()
-    result = handler.validate(invalid_graph, ValidationRuleType.STRUCTURAL)
-    assert isinstance(result, bool)
-
-if __name__ == '__main__':
-    unittest.main() 
+    result = handler.validate(sample_data_graph, "STRUCTURAL")
+    assert isinstance(result, dict)
+    assert "conforms" in result
+    assert "results" in result

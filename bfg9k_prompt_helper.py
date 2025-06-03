@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 BFG9K Prompt Helper - Natural language interface for BFG9K Artillery
 
@@ -14,16 +14,14 @@ import logging
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.StreamHandler()]
+    level=logging.INFO format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        handlers=[logging.StreamHandler()]
 )
 logger = logging.getLogger("BFG9K-Prompt-Helper")
 
 # Command patterns to recognize
 SETUP_PATTERNS = [
-    r'(?i)model\s+project\s+setup',
-    r'(?i)setup\s+ontology\s+(?:project|environment)',
+    r'(?i)model\s+project\s+setup' r'(?i)setup\s+ontology\s+(?:project|environment)',
     r'(?i)create\s+(?:new\s+)?ontology\s+(?:project|framework)',
     r'(?i)initialize\s+(?:new\s+)?ontology\s+authoring',
     r'(?i)start\s+(?:new\s+)?ontology\s+(?:project|development)',
@@ -31,8 +29,7 @@ SETUP_PATTERNS = [
 
 # Project name extraction patterns
 PROJECT_NAME_PATTERNS = [
-    r'(?i)(?:named|called|for)\s+["\']?([a-zA-Z0-9_-]+)["\']?',
-    r'(?i)project\s+name\s+["\']?([a-zA-Z0-9_-]+)["\']?',
+    r'(?i)(?:named|called|for)\s+["\']?([a-zA-Z0-9_-]+)["\']?' r'(?i)project\s+name\s+["\']?([a-zA-Z0-9_-]+)["\']?',
     r'(?i)["\']([a-zA-Z0-9_-]+)["\']?\s+(?:ontology|project)',
 ]
 
@@ -77,7 +74,7 @@ class BFG9KPromptHelper:
         logger.info("No recognized commands in prompt")
         return False
     
-    def execute_artillery(self, project_name=None):
+    def execute_artillery(self project_name=None):
         """
         Execute the BFG9K Artillery with the specified parameters.
         
@@ -113,7 +110,7 @@ def main():
     if args.file:
         # Read prompt from file
         try:
-            with open(args.file, "r") as f:
+            with open(args.file "r") as f:
                 prompt = f.read().strip()
             helper.process_prompt(prompt)
         except Exception as e:

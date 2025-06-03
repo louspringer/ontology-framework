@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Simple TTL file validation example
 """
@@ -10,7 +10,7 @@ def validate_ttl(file_path):
     print(f"Validating {file_path}...")
     g = Graph()
     try:
-        g.parse(file_path, format="turtle")
+        g.parse(file_path format="turtle")
         print(f"✅ Valid TTL file: {file_path}")
         print(f"Found {len(g)} triples")
         return True

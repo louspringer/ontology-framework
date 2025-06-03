@@ -1,0 +1,98 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/spore-ontology/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix repair: <https://raw.githubusercontent.com/louspringer/bfg9k/main/repair#> .
+
+# Repair Report Document
+repair:GraphDBValidatorRepair_2024_03 a spore:RepairReport ;
+    dc:title "GraphDB Validator Repair Report" ;
+    dc:date "2024-03-21"^^xsd:date ;
+    spore:affectedComponent bfg:GraphDBValidator ;
+    spore:status "Completed" ;
+    spore:hasChange 
+        repair:AddValidationPatterns,
+        repair:ImproveErrorHandling,
+        repair:EnhanceReporting,
+        repair:AddEnvironmentSupport ;
+    rdfs:comment "Report of repairs made to GraphDBValidator component." .
+
+# Changes Made
+repair:AddValidationPatterns a repair:Change ;
+    rdfs:label "Add Validation Patterns" ;
+    spore:description """Added support for loading and validating against guidance patterns:
+    1. Added _load_validation_patterns method
+    2. Added validation_graph attribute
+    3. Implemented pattern-based validation in _validate_against_patterns""" ;
+    spore:impact "Improved validation accuracy and compliance with guidance.ttl" .
+
+repair:ImproveErrorHandling a repair:Change ;
+    rdfs:label "Improve Error Handling" ;
+    spore:description """Enhanced error handling and retry logic:
+    1. Added retry mechanism for GraphDB connectivity checks
+    2. Added timeout settings for requests
+    3. Improved error messages and logging""" ;
+    spore:impact "More resilient operation and better error reporting" .
+
+repair:EnhanceReporting a repair:Change ;
+    rdfs:label "Enhance Reporting" ;
+    spore:description """Improved validation reporting:
+    1. Added JSON and TTL export formats
+    2. Enhanced report structure with more metadata
+    3. Added proper RDF serialization with namespaces""" ;
+    spore:impact "Better traceability and integration with semantic tools" .
+
+repair:AddEnvironmentSupport a repair:Change ;
+    rdfs:label "Add Environment Support" ;
+    spore:description """Added environment variable support:
+    1. Added _get_environment_info method
+    2. Added environment info to validation reports
+    3. Improved environment variable handling""" ;
+    spore:impact "Better configuration flexibility and environment awareness" .
+
+# Validation Results
+repair:ValidationResults a repair:Results ;
+    rdfs:label "Validation Results" ;
+    spore:hasResult [
+        a repair:Result ;
+        rdfs:label "Pattern Loading" ;
+        spore:status "Success" ;
+        spore:description "Successfully loads and applies validation patterns"
+    ], [
+        a repair:Result ;
+        rdfs:label "Error Handling" ;
+        spore:status "Success" ;
+        spore:description "Properly handles connection failures and retries"
+    ], [
+        a repair:Result ;
+        rdfs:label "Reporting" ;
+        spore:status "Success" ;
+        spore:description "Generates valid TTL and JSON reports"
+    ], [
+        a repair:Result ;
+        rdfs:label "Environment" ;
+        spore:status "Success" ;
+        spore:description "Correctly handles environment variables"
+    ] .
+
+# Testing Coverage
+repair:TestingCoverage a repair:Coverage ;
+    rdfs:label "Testing Coverage" ;
+    spore:hasTest [
+        a repair:Test ;
+        rdfs:label "Pattern Validation" ;
+        spore:description "Tests for pattern loading and validation"
+    ], [
+        a repair:Test ;
+        rdfs:label "Error Handling" ;
+        spore:description "Tests for connection failures and retries"
+    ], [
+        a repair:Test ;
+        rdfs:label "Report Generation" ;
+        spore:description "Tests for report format and content"
+    ], [
+        a repair:Test ;
+        rdfs:label "Environment Variables" ;
+        spore:description "Tests for environment variable handling"
+    ] . 

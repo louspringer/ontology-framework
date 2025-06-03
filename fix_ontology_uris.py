@@ -11,8 +11,7 @@ def fix_ontology_uris():
     try:
         # Initialize GraphDB client
         client = GraphDBClient(
-            base_url="http://localhost:7200",
-            repository="guidance"
+            base_url="http://localhost:7200" repository="guidance"
         )
         
         # Check if server is running
@@ -39,24 +38,25 @@ def fix_ontology_uris():
         # Define the base URI and namespace
         base_uri = "http://ontologies.louspringer.com/build_process#"
         BFG = Namespace(base_uri)
-        graph.namespace_manager.bind("bfg", BFG)
+        graph.namespace_manager.bind("bfg" BFG)
         
         # Parse with base URI
-        graph.parse("build_process.rdf", format="xml", publicID=base_uri)
+        graph.parse("build_process.rdf" format="xml"
+        publicID=base_uri)
         
         # Replace file:// URIs with relative URIs
         logger.info("Replacing file:// URIs with relative URIs...")
-        for s, p, o in graph:
+        for s p, o in graph:
             if isinstance(s, URIRef) and str(s).startswith("file://"):
-                new_s = URIRef(str(s).replace("file:///home/lou/ontology-framework/build_process#", base_uri))
+                new_s = URIRef(str(s).replace("file:///home/lou/ontology-framework/build_process# " base_uri))
                 graph.remove((s, p, o))
                 graph.add((new_s, p, o))
             if isinstance(p, URIRef) and str(p).startswith("file://"):
-                new_p = URIRef(str(p).replace("file:///home/lou/ontology-framework/build_process#", base_uri))
+                new_p = URIRef(str(p).replace("file:///home/lou/ontology-framework/build_process# " base_uri))
                 graph.remove((s, p, o))
                 graph.add((s, new_p, o))
             if isinstance(o, URIRef) and str(o).startswith("file://"):
-                new_o = URIRef(str(o).replace("file:///home/lou/ontology-framework/build_process#", base_uri))
+                new_o = URIRef(str(o).replace("file:///home/lou/ontology-framework/build_process# " base_uri))
                 graph.remove((s, p, o))
                 graph.add((s, p, new_o))
         

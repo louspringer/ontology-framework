@@ -1,0 +1,145 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation/spores#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spore: a owl:Ontology ;
+    rdfs:label "SPORE Validation Module"@en ;
+    rdfs:comment "Validation rules and patterns for SPORE message exchange"@en ;
+    owl:versionInfo "1.0.0" .
+
+# Conformance Level Definitions
+guidance:ConformanceLevel a owl:Class ;
+    rdfs:label "Conformance Level"@en ;
+    rdfs:comment "Validation conformance level classification"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:STRICT a guidance:ConformanceLevel ;
+    rdfs:label "Strict Conformance"@en ;
+    rdfs:comment "Strict validation rules enforced"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:MODERATE a guidance:ConformanceLevel ;
+    rdfs:label "Moderate Conformance"@en ;
+    rdfs:comment "Moderate validation rules enforced"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:RELAXED a guidance:ConformanceLevel ;
+    rdfs:label "Relaxed Conformance"@en ;
+    rdfs:comment "Relaxed validation rules enforced"@en ;
+    owl:versionInfo "1.0.0" .
+
+# SPORE Message Classes
+spore:Message a owl:Class ;
+    rdfs:label "SPORE Message"@en ;
+    rdfs:comment "Base class for all SPORE messages"@en ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+spore:Request a owl:Class ;
+    rdfs:label "SPORE Request"@en ;
+    rdfs:comment "SPORE request message"@en ;
+    rdfs:subClassOf spore:Message .
+
+spore:Response a owl:Class ;
+    rdfs:label "SPORE Response"@en ;
+    rdfs:comment "SPORE response message"@en ;
+    rdfs:subClassOf spore:Message .
+
+spore:Broadcast a owl:Class ;
+    rdfs:label "SPORE Broadcast"@en ;
+    rdfs:comment "SPORE broadcast message"@en ;
+    rdfs:subClassOf spore:Message .
+
+# SPORE Channel Classes
+spore:Channel a owl:Class ;
+    rdfs:label "SPORE Channel"@en ;
+    rdfs:comment "Communication channel for SPORE messages"@en .
+
+spore:ValidatorChannel a owl:Class ;
+    rdfs:label "Validator Channel"@en ;
+    rdfs:comment "Channel for validation-related messages"@en ;
+    rdfs:subClassOf spore:Channel .
+
+# SPORE Agent Classes
+spore:Agent a owl:Class ;
+    rdfs:label "SPORE Agent"@en ;
+    rdfs:comment "Agent participating in SPORE communication"@en .
+
+spore:Validator a owl:Class ;
+    rdfs:label "SPORE Validator"@en ;
+    rdfs:comment "Agent responsible for validation"@en ;
+    rdfs:subClassOf spore:Agent .
+
+# SPORE Properties
+spore:hasMessageId a owl:DatatypeProperty ;
+    rdfs:label "has message ID"@en ;
+    rdfs:comment "Unique identifier for SPORE message"@en ;
+    rdfs:domain spore:Message ;
+    rdfs:range xsd:string .
+
+spore:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "has timestamp"@en ;
+    rdfs:comment "Timestamp of message creation"@en ;
+    rdfs:domain spore:Message ;
+    rdfs:range xsd:dateTime .
+
+spore:hasChannel a owl:ObjectProperty ;
+    rdfs:label "has channel"@en ;
+    rdfs:comment "Channel used for message transmission"@en ;
+    rdfs:domain spore:Message ;
+    rdfs:range spore:Channel .
+
+spore:hasSender a owl:ObjectProperty ;
+    rdfs:label "has sender"@en ;
+    rdfs:comment "Agent sending the message"@en ;
+    rdfs:domain spore:Message ;
+    rdfs:range spore:Agent .
+
+# SHACL Validation Shapes
+spore:MessageShape a sh:NodeShape ;
+    sh:targetClass spore:Message ;
+    sh:property [
+        sh:path spore:hasMessageId ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ], [
+        sh:path spore:hasTimestamp ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime
+    ], [
+        sh:path spore:hasChannel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class spore:Channel
+    ], [
+        sh:path spore:hasSender ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class spore:Agent
+    ] .
+
+# Example Instances
+spore:ValidationRequest a spore:Request ;
+    spore:hasMessageId "VAL_REQ_001" ;
+    spore:hasTimestamp "2024-03-20T10:00:00Z"^^xsd:dateTime ;
+    spore:hasChannel spore:DefaultValidatorChannel ;
+    spore:hasSender spore:DefaultValidator .
+
+spore:ValidationResponse a spore:Response ;
+    spore:hasMessageId "VAL_RES_001" ;
+    spore:hasTimestamp "2024-03-20T10:00:01Z"^^xsd:dateTime ;
+    spore:hasChannel spore:DefaultValidatorChannel ;
+    spore:hasSender spore:DefaultValidator .
+
+spore:DefaultValidatorChannel a spore:ValidatorChannel ;
+    rdfs:label "Default Validator Channel"@en ;
+    rdfs:comment "Default channel for validation messages"@en .
+
+spore:DefaultValidator a spore:Validator ;
+    rdfs:label "Default Validator"@en ;
+    rdfs:comment "Default validation agent"@en . 

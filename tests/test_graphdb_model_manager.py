@@ -2,7 +2,12 @@
 
 import unittest
 from pathlib import Path
-from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib import (
+    Graph,
+    Namespace,
+    URIRef,
+    Literal
+)
 from rdflib.namespace import RDF, RDFS, OWL
 from ontology_framework.model.graphdb_model_manager import GraphDBModelManager
 
@@ -67,8 +72,7 @@ class TestGraphDBModelManager(unittest.TestCase):
         """Test querying the model."""
         # Query for all requirements
         query = """
-        SELECT ?req ?label ?comment
-        WHERE {
+        SELECT ?req ?label ?comment WHERE {
             ?req a req:Requirement .
             ?req rdfs:label ?label .
             ?req rdfs:comment ?comment .

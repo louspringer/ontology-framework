@@ -1,3 +1,7 @@
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]  
+# Behavioral-Profile: ClaudeReflector
+
 """
 Module for managing patches in the ontology framework.
 """
@@ -7,7 +11,6 @@ from pathlib import Path
 from datetime import datetime
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD
-
 from ..meta import MetaOntology, OntologyPatch, PatchType, PatchStatus
 from .error_handling import ErrorHandler
 from .turtle_syntax import load_and_fix_turtle
@@ -115,9 +118,9 @@ class PatchManager:
             target_graph: The graph to apply the patch to.
         """
         patch = self.get_patch(patch_id)
+        patch_uri = URIRef(f"{PATCH}{patch_id}")
         
         # Get patch content
-        patch_uri = next(patch.subjects(RDF.type, PATCH.Patch))
         content = patch.value(patch_uri, RDFS.comment)
         
         if content:
@@ -129,9 +132,8 @@ class PatchManager:
             
             # Parse and add content to target graph
             target_graph.parse(data=str(content), format="turtle")
-            
+        
         # Update patch status
-        self.graph.set((patch_uri, PATCH.status, Literal(PatchStatus.APPLIED.name)))
         self.graph.set((patch_uri, PATCH.updatedAt, Literal(datetime.now().isoformat(), datatype=XSD.dateTime)))
         
     def validate_patch(self, patch_id: Union[str, URIRef]) -> bool:
@@ -231,7 +233,8 @@ class GraphDBPatchManager:
         """
         self.repository_id = repository_id
         self.base_uri = base_uri
-        self.patches: Dict[str, OntologyPatch] = {}
+        self.patches: Dict[str, Any] = {}
+        self.applied_patches: List[str] = []
         
     def create_patch(self, patch_id: str, patch_type: PatchType, target_ontology: str,
                     content: str, changes: Optional[List[Dict[str, Any]]] = None) -> OntologyPatch:
@@ -283,11 +286,18 @@ class GraphDBPatchManager:
             PatchNotFoundError: If the patch doesn't exist
             PatchApplicationError: If the patch cannot be applied
         """
-        patch = self.get_patch(patch_id)
+        if patch_id not in self.patches:
+            raise PatchNotFoundError(f"Patch {patch_id} not found")
+            
+        if patch_id in self.applied_patches:
+            return
+            
+        patch = self.patches[patch_id]
         try:
             # TODO: Implement actual patch application logic
             patch.status = PatchStatus.APPLIED
             patch.updated_at = datetime.now().isoformat()
+            self.applied_patches.append(patch_id)
         except Exception as e:
             patch.status = PatchStatus.FAILED
             patch.updated_at = datetime.now().isoformat()

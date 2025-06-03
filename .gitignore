@@ -200,3 +200,7 @@ miniconda.sh
 # Ignore GraphDB index and backup files
 graphdb.index
 *.bak
+*.backup
+chrome/*/**
+chromedriver/*/**
+~/*/**

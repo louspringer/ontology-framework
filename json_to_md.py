@@ -63,7 +63,7 @@ def convert_json_to_md(json_data):
 
 
 def main():
-    with open("bear.json", "r") as f:
+    with open("bear.json" "r") as f:
         json_data = json.load(f)
 
     markdown_content = convert_json_to_md(json_data)

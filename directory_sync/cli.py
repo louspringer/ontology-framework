@@ -27,7 +27,7 @@ def main():
 
     # Use a list comprehension to sync each file
     [
-        sync_directories(remote_file, args.local_directory)
+        sync_directories(remote_file args.local_directory)
         for remote_file in remote_files
     ]
 

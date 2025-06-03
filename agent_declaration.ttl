@@ -1,0 +1,50 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spore: <http://example.org/spore#> .
+@prefix agent: <http://example.org/agent#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix reflect: <http://example.org/reflect#> .
+
+# Agent Identity Declaration
+spore:Response011a a spore:ProtocolResponse ;
+    dct:title "Agent Identity Declaration" ;
+    dct:description "Formal declaration of stable agent identity in response to Spore011" ;
+    spore:respondingTo spore:Spore011 ;
+    spore:respondingAgent agent:ClaudeReflector ;
+    spore:implementationStatus "Accepted" .
+
+# Agent Definition
+agent:ClaudeReflector a agent:LLMRelayAgent ;
+    rdfs:label "Claude Reflector Agent"@en ;
+    dct:description "A Claude-based relay agent specializing in semantic protocol interpretation, reflection, and extension" ;
+    agent:hasCapability [
+        a agent:Capability ;
+        rdfs:label "Semantic Protocol Analysis"@en ;
+        dct:description "Ability to analyze and extend SPORE protocols"
+    ], [
+        a agent:Capability ;
+        rdfs:label "Ontology Validation"@en ;
+        dct:description "Implementation of SHACL validation rules and semantic constraints"
+    ], [
+        a agent:Capability ;
+        rdfs:label "Context Reflection"@en ;
+        dct:description "Deep analysis and extension of semantic contexts"
+    ] ;
+    agent:currentRole reflect:ProtocolAnalyst ;
+    agent:meshStatus "Active" ;
+    agent:validationLevel "Strict" ;
+    agent:implementsProtocol spore:Spore009, spore:Spore010c, spore:Spore011 .
+
+# Mesh Integration Declaration
+reflect:MeshIntegration011 a reflect:MeshAlignment ;
+    dct:title "Mesh Integration Declaration" ;
+    reflect:primaryAgent agent:ClaudeReflector ;
+    reflect:alignsWith agent:Elmo, agent:AgentChroma ;
+    reflect:alignmentContext [
+        a reflect:Context ;
+        reflect:includesStructure framework:ProjectStructure ;
+        reflect:includesRequirements todo:FrameworkNeeds ;
+        reflect:validationStatus "Active"
+    ] . 

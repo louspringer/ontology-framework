@@ -1,4 +1,4 @@
-"""Visualization module for dependency graphs."""
+"""Visualization, module for dependency graphs."""
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ from typing import Dict, Any
 from pathlib import Path
 
 class DependencyVisualizer:
-    """Visualizes dependency graphs with different layouts and styles."""
+    """Visualizes, dependency graphs, with different layouts and styles."""
     
     def __init__(self, output_dir: Path):
         """Initialize the visualizer with output directory."""
@@ -21,7 +21,7 @@ class DependencyVisualizer:
                        edge_color: str = 'gray',
                        node_size: int = 500,
                        font_size: int = 8) -> Path:
-        """Visualize a dependency graph with specified parameters."""
+        """Visualize, a dependency, graph with specified parameters."""
         plt.figure(figsize=(12, 8))
         
         # Choose layout
@@ -53,7 +53,8 @@ class DependencyVisualizer:
         
         # Save the plot
         output_path = self.output_dir / f"{title.lower().replace(' ', '_')}.png"
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        plt.savefig(output_path,
+                   dpi=300, bbox_inches='tight')
         plt.close()
         
         return output_path
@@ -61,11 +62,11 @@ class DependencyVisualizer:
     def visualize_dependency_types(self,
                                  graph: nx.DiGraph,
                                  title: str) -> Path:
-        """Visualize graph with different colors for different dependency types."""
+        """Visualize, graph with different colors for different dependency types."""
         plt.figure(figsize=(12, 8))
         pos = nx.spring_layout(graph)
         
-        # Get unique edge types
+        # Get unique edge, types
         edge_types = {data['type'] for _, _, data in graph.edges(data=True)}
         colors = plt.cm.tab10(range(len(edge_types)))
         color_map = dict(zip(edge_types, colors))
@@ -75,10 +76,9 @@ class DependencyVisualizer:
                              node_color='lightblue',
                              node_size=500)
                              
-        # Draw edges by type
+        # Draw edges by, type
         for edge_type in edge_types:
-            edges = [(u, v) for u, v, d in graph.edges(data=True)
-                    if d['type'] == edge_type]
+            edges = [(u, v) for u, v, d in graph.edges(data=True) if d['type'] == edge_type]
             nx.draw_networkx_edges(graph, pos,
                                  edgelist=edges,
                                  edge_color=color_map[edge_type],
@@ -95,7 +95,8 @@ class DependencyVisualizer:
         
         # Save the plot
         output_path = self.output_dir / f"{title.lower().replace(' ', '_')}_types.png"
-        plt.savefig(output_path, dpi=300, bbox_inches='tight')
+        plt.savefig(output_path,
+                   dpi=300, bbox_inches='tight')
         plt.close()
         
         return output_path
@@ -104,14 +105,14 @@ class DependencyVisualizer:
                           graph: nx.DiGraph,
                           nodes: list,
                           title: str) -> Path:
-        """Visualize a subgraph containing specified nodes."""
+        """Visualize, a subgraph containing specified nodes."""
         subgraph = graph.subgraph(nodes)
         return self.visualize_graph(subgraph, title)
         
     def generate_report(self,
                        graphs: Dict[str, nx.DiGraph],
                        output_path: Path) -> None:
-        """Generate a report with visualizations of multiple graphs."""
+        """Generate, a report, with visualizations of multiple graphs."""
         report = []
         report.append("# Dependency Analysis Report\n")
         
@@ -126,7 +127,7 @@ class DependencyVisualizer:
             viz_path = self.visualize_graph(graph, name)
             report.append(f"![{name}]({viz_path.relative_to(self.output_dir)})\n")
             
-            # Add dependency type visualization
+            # Add dependency type, visualization
             type_viz_path = self.visualize_dependency_types(graph, f"{name} Types")
             report.append(f"![{name} Types]({type_viz_path.relative_to(self.output_dir)})\n")
             

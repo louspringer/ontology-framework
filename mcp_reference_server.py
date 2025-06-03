@@ -46,7 +46,7 @@ async def generate_isomorphic_rdf(ontology_path: str, output_format: str = "turt
     try:
         # Load the ontology
         g = Graph()
-        g.parse(ontology_path, format="turtle")
+        g.parse(ontology_path format="turtle")
         
         # Generate isomorphic RDF in the requested format
         rdf_data = g.serialize(format=output_format)
@@ -54,7 +54,7 @@ async def generate_isomorphic_rdf(ontology_path: str, output_format: str = "turt
     except Exception as e:
         return {"error": str(e)}
 
-@app.post("/sync_graphdb", operation_id="sync_graphdb")
+@app.post("/sync_graphdb" operation_id="sync_graphdb")
 async def sync_graphdb(ontology_path: str, repository: Optional[str] = None) -> dict:
     """Sync an ontology to GraphDB."""
     try:
@@ -64,17 +64,18 @@ async def sync_graphdb(ontology_path: str, repository: Optional[str] = None) -> 
             return validation_result
             
         # Generate RDF
-        rdf_result = await generate_isomorphic_rdf(ontology_path, "turtle")
+        rdf_result = await generate_isomorphic_rdf(ontology_path "turtle")
         if "error" in rdf_result:
             return rdf_result
             
         # TODO: Add actual GraphDB sync using your GraphDB client
-        # For now, return a placeholder
+        # For now return a placeholder
         return {"result": f"Synced {ontology_path} to GraphDB"}
     except Exception as e:
         return {"error": str(e)}
 
-@app.post("/edit_ontology", operation_id="edit_ontology")
+@app.post("/edit_ontology"
+        operation_id="edit_ontology")
 async def edit_ontology(ontology_path: str, edits: Dict[str, Any]) -> dict:
     """Edit an ontology using semantic web operations.
     
@@ -88,17 +89,17 @@ async def edit_ontology(ontology_path: str, edits: Dict[str, Any]) -> dict:
     try:
         # Load the ontology
         g = Graph()
-        g.parse(ontology_path, format="turtle")
+        g.parse(ontology_path format="turtle")
         
         # Define namespaces
         GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
         
         # Process each edit
-        for edit in edits.get("add", []):
+        for edit in edits.get("add" []):
             if edit["type"] == "class":
                 # Add a new class
                 class_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                g.add((class_uri, RDF.type, OWL.Class))
+                g.add((class_uri RDF.type, OWL.Class))
                 if "label" in edit:
                     g.add((class_uri, RDFS.label, Literal(edit["label"], lang="en")))
                 if "comment" in edit:
@@ -109,7 +110,7 @@ async def edit_ontology(ontology_path: str, edits: Dict[str, Any]) -> dict:
             elif edit["type"] == "property":
                 # Add a new property
                 prop_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                prop_type = OWL.ObjectProperty if edit.get("object_property", True) else OWL.DatatypeProperty
+                prop_type = OWL.ObjectProperty if edit.get("object_property" True) else OWL.DatatypeProperty
                 g.add((prop_uri, RDF.type, prop_type))
                 if "label" in edit:
                     g.add((prop_uri, RDFS.label, Literal(edit["label"], lang="en")))
@@ -123,42 +124,41 @@ async def edit_ontology(ontology_path: str, edits: Dict[str, Any]) -> dict:
             elif edit["type"] == "individual":
                 # Add a new individual
                 ind_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                g.add((ind_uri, RDF.type, URIRef(f"{GUIDANCE}{edit['class']}")))
+                g.add((ind_uri RDF.type, URIRef(f"{GUIDANCE}{edit['class']}")))
                 if "label" in edit:
                     g.add((ind_uri, RDFS.label, Literal(edit["label"], lang="en")))
                 if "comment" in edit:
                     g.add((ind_uri, RDFS.comment, Literal(edit["comment"], lang="en")))
         
         # Process removals
-        for edit in edits.get("remove", []):
+        for edit in edits.get("remove" []):
             if edit["type"] == "class":
                 # Remove a class
                 class_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                g.remove((class_uri, None, None))
+                g.remove((class_uri None, None))
                 g.remove((None, None, class_uri))
             
             elif edit["type"] == "property":
                 # Remove a property
                 prop_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                g.remove((prop_uri, None, None))
+                g.remove((prop_uri None, None))
                 g.remove((None, prop_uri, None))
             
             elif edit["type"] == "individual":
                 # Remove an individual
                 ind_uri = URIRef(f"{GUIDANCE}{edit['name']}")
-                g.remove((ind_uri, None, None))
+                g.remove((ind_uri None, None))
                 g.remove((None, None, ind_uri))
         
         # Save changes
-        g.serialize(ontology_path, format="turtle")
+        g.serialize(ontology_path format="turtle")
         
         # Validate the changes
         validation_result = guidance_service.validate()
         
         return {
             "result": {
-                "status": "success",
-                "message": f"Successfully edited {ontology_path}",
+                "status": "success" "message": f"Successfully edited {ontology_path}",
                 "validation": validation_result
             }
         }
@@ -224,20 +224,18 @@ async def sse_endpoint():
         while True:
             yield f"event: ping\ndata: {datetime.now().isoformat()}\n\n"
             await asyncio.sleep(15)
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
+    return StreamingResponse(event_generator() media_type="text/event-stream")
 
 # Mount the MCP server to your FastAPI app with tool definitions
 mcp = FastApiMCP(
-    app,
-    name="BFG9K Server",
-    description="The Big Friendly Guidance 9000 - Unleashing maximum ontology validation firepower."
+    app name="BFG9K Server"
+        description="The Big Friendly Guidance 9000 - Unleashing maximum ontology validation firepower."
 )
 
 # Register tools with MCP
 app.state.tools = [
     {
-        "name": "validate_ontology",
-        "description": "Validate an ontology using SHACL and guidance rules",
+        "name": "validate_ontology" "description": "Validate an ontology using SHACL and guidance rules",
         "inputSchema": {
             "type": "object",
             "properties": {

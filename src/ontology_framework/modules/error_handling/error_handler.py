@@ -77,15 +77,15 @@ class ErrorHandler:
         """Validate matrix data."""
         return self.validation_module.validate(data, ValidationRule.MATRIX)
 
-    def validate_ontology(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def validate_ontology(self, data: Dict[str Any]) -> List[Dict[str Any]]:
         """Validate ontology data."""
         return self.validation_module.validate(data, ValidationRule.ONTOLOGY)
 
-    def validate_pattern(self, data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def validate_pattern(self, data: Dict[str Any]) -> List[Dict[str Any]]:
         """Validate pattern data."""
-        return self.validation_module.validate(data, ValidationRule.PATTERN)
+        return self.validation_module.validate(data ValidationRule.PATTERN)
 
-    def get_error_severity(self, error_type: ErrorType) -> ErrorSeverity:
+    def get_error_severity(self error_type: ErrorType) -> ErrorSeverity:
         """Get error severity level for error type."""
         if error_type in self.error_hierarchy:
             return self.error_hierarchy[error_type][0]
@@ -95,7 +95,7 @@ class ErrorHandler:
         """Get step order number."""
         return self.step_ordering.get(step_name, 999)
 
-    def handle_error(self, error_type: ErrorType, message: str, data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def handle_error(self, error_type: ErrorType, message: str, data: Optional[Dict[str Any]] = None) -> Dict[str Any]:
         """Handle error with given type and message."""
         severity = self.get_error_severity(error_type)
         error_info = {

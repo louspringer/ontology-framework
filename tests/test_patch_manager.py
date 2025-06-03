@@ -4,10 +4,24 @@ import pytest
 from pathlib import Path
 import shutil
 from datetime import datetime
-from rdflib import Graph, URIRef, Literal, Namespace, BNode
+from rdflib import (
+    Graph,
+    URIRef,
+    Literal,
+    Namespace,
+    BNode
+)
 from rdflib.namespace import RDF, RDFS, OWL, DCTERMS, XSD
-from ontology_framework.modules.patch_management import PatchManager, PatchNotFoundError
-from ontology_framework.meta import PatchType, OntologyPatch, PatchStatus, MetaOntology
+from ontology_framework.modules.patch_management import (
+    PatchManager,
+    PatchNotFoundError
+)
+from ontology_framework.meta import (
+    PatchType,
+    OntologyPatch,
+    PatchStatus,
+    MetaOntology
+)
 
 PATCH = Namespace("http://example.org/ontology/")
 

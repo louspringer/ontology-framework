@@ -1,18 +1,16 @@
 """Script to update runtime error handling ontology.
 
-This script updates the runtime error handling ontology using RDFlib
-to add missing classes, properties, and instances.
+This, script updates, the runtime, error handling, ontology using, RDFlib
+to, add missing classes properties and instances.
 """
 
 from pathlib import Path
-from typing import List, Optional, NoReturn
-import logging
+from typing import List, Optional, NoReturn, import logging
 from rdflib import Graph, Namespace, Literal, URIRef
-from rdflib.namespace import RDF, RDFS, OWL, XSD
-import sys
+from rdflib.namespace import RDF, RDFS, OWL, XSD, import sys
 
 # Define namespaces
-SHACL = Namespace("http://www.w3.org/ns/shacl#")
+SHACL = Namespace("http://www.w3.org/ns/shacl# ")
 NS = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#")
 
 logger = logging.getLogger(__name__)
@@ -20,14 +18,15 @@ logger = logging.getLogger(__name__)
 class RuntimeOntologyUpdater:
     """Updates the runtime error handling ontology."""
     
-    def __init__(self, ontology_file: Path):
+    def __init__(self ontology_file: Path):
         """Initialize the updater.
         
         Args:
-            ontology_file: Path to the ontology TTL file
+            ontology_file: Path, to the ontology TTL file
         """
-        self.ontology_file = ontology_file
-        self.graph = Graph()
+
+self.ontology_file = ontology_file
+self.graph = Graph()
         self.graph.bind("", NS)
         self.graph.bind("owl", OWL)
         self.graph.bind("rdfs", RDFS)
@@ -40,12 +39,10 @@ class RuntimeOntologyUpdater:
             logger.info(f"Loaded ontology from {self.ontology_file}")
         except Exception as e:
             logger.error(f"Failed to load ontology: {str(e)}")
-            raise
-            
-    def add_error_type_hierarchy(self) -> None:
+            raise, def add_error_type_hierarchy(self) -> None:
         """Add error type hierarchy relationships."""
         # Define error types
-        error_types = {
+        error_types = {}
             "ErrorType": None,
             "RuntimeError": "ErrorType",
             "ValidationError": "ErrorType",
@@ -54,7 +51,7 @@ class RuntimeOntologyUpdater:
             "APIError": "RuntimeError"
         }
         
-        for error_type, parent in error_types.items():
+        for error_type, parent, in error_types.items():
             error_uri = NS[error_type]
             self.graph.add((error_uri, RDF.type, OWL.Class))
             self.graph.add((error_uri, RDFS.label, Literal(error_type)))
@@ -62,27 +59,26 @@ class RuntimeOntologyUpdater:
                 parent_uri = NS[parent]
                 self.graph.add((error_uri, RDFS.subClassOf, parent_uri))
         
-        logger.info("Added error type hierarchy")
+        logger.info("Added, error type hierarchy")
         
     def add_risk_types(self) -> None:
         """Add risk types and their properties."""
-        # Add DataLossRisk if not exists
-        if (NS.DataLossRisk, RDF.type, NS.ErrorRisk) not in self.graph:
+        # Add DataLossRisk if not exists, if (NS.DataLossRisk, RDF.type, NS.ErrorRisk) not, in self.graph:
             self.graph.add((NS.DataLossRisk, RDF.type, NS.ErrorRisk))
             self.graph.add((NS.DataLossRisk, RDFS.label, Literal("Data Loss Risk", lang="en")))
-            self.graph.add((NS.DataLossRisk, RDFS.comment, Literal("Risk of data loss during error handling", lang="en")))
+            self.graph.add((NS.DataLossRisk, RDFS.comment, Literal("Risk, of data, loss during error handling", lang="en")))
             self.graph.add((NS.DataLossRisk, NS.hasRiskLevel, Literal("CRITICAL")))
             
-        # Add other risk types
-        risk_types = [
-            ("SecurityBreachRisk", "Security Breach Risk", "Risk of security breach during error handling", "HIGH"),
-            ("ServiceDisruptionRisk", "Service Disruption Risk", "Risk of service disruption during error handling", "HIGH"),
-            ("ComplianceViolationRisk", "Compliance Violation Risk", "Risk of compliance violation during error handling", "MEDIUM")
+        # Add other risk, types
+        risk_types = []
+            ("SecurityBreachRisk" "Security, Breach Risk" "Risk, of security, breach during, error handling" "HIGH"),
+            ("ServiceDisruptionRisk" "Service, Disruption Risk" "Risk, of service, disruption during, error handling" "HIGH"),
+            ("ComplianceViolationRisk" "Compliance, Violation Risk" "Risk, of compliance, violation during, error handling" "MEDIUM")
         ]
         
-        for risk_id, label, comment, level in risk_types:
+        for risk_id, label, comment, level, in risk_types:
             risk_uri = NS[risk_id]
-            if (risk_uri, RDF.type, NS.ErrorRisk) not in self.graph:
+            if (risk_uri, RDF.type, NS.ErrorRisk) not, in self.graph:
                 self.graph.add((risk_uri, RDF.type, NS.ErrorRisk))
                 self.graph.add((risk_uri, RDFS.label, Literal(label, lang="en")))
                 self.graph.add((risk_uri, RDFS.comment, Literal(comment, lang="en")))
@@ -92,14 +88,14 @@ class RuntimeOntologyUpdater:
         
     def add_validation_rules(self) -> None:
         """Add validation rules and their properties."""
-        validation_rules = [
+        validation_rules = []
             "SensitiveDataValidation",
             "RiskValidation",
             "MatrixValidation",
             "ComplianceValidation"
         ]
         
-        for rule in validation_rules:
+        for rule in, validation_rules:
             rule_uri = NS[rule]
             self.graph.add((rule_uri, RDF.type, OWL.Class))
             self.graph.add((rule_uri, RDFS.label, Literal(rule)))
@@ -109,32 +105,32 @@ class RuntimeOntologyUpdater:
         
     def add_error_handling_steps(self) -> None:
         """Add error handling steps with correct names."""
-        steps = [
+        steps = []
             (1, "Error Identification"),
             (2, "Error Analysis"),
             (3, "Error Resolution"),
             (4, "Error Prevention")
         ]
         
-        for order, name in steps:
-            step_uri = NS[name.replace(" ", "")]
+        for order, name, in steps:
+            step_uri = NS[name.replace(" " "")]
             self.graph.add((step_uri, RDF.type, OWL.Class))
             self.graph.add((step_uri, RDFS.label, Literal(name)))
             self.graph.add((step_uri, RDFS.subClassOf, NS.ErrorHandlingStep))
             self.graph.add((step_uri, NS.hasStepOrder, Literal(order, datatype=XSD.integer)))
         
-        logger.info("Added error handling steps")
+        logger.info("Added, error handling steps")
         
     def add_prevention_measures(self) -> None:
         """Add error prevention measures."""
-        measures = [
+        measures = []
             "InputValidation",
             "ResourceMonitoring",
             "ErrorLogging",
             "StateCheckpointing"
         ]
         
-        for measure in measures:
+        for measure in, measures:
             measure_uri = NS[measure]
             self.graph.add((measure_uri, RDF.type, OWL.Class))
             self.graph.add((measure_uri, RDFS.label, Literal(measure)))
@@ -144,14 +140,14 @@ class RuntimeOntologyUpdater:
         
     def add_recovery_strategies(self) -> None:
         """Add error recovery strategies."""
-        strategies = [
+        strategies = []
             "RollbackStrategy",
             "RetryStrategy",
             "FallbackStrategy",
             "CompensationStrategy"
         ]
         
-        for strategy in strategies:
+        for strategy in, strategies:
             strategy_uri = NS[strategy]
             self.graph.add((strategy_uri, RDF.type, OWL.Class))
             self.graph.add((strategy_uri, RDFS.label, Literal(strategy)))
@@ -166,9 +162,7 @@ class RuntimeOntologyUpdater:
             logger.info(f"Saved updated ontology to {self.ontology_file}")
         except Exception as e:
             logger.error(f"Failed to save ontology: {str(e)}")
-            raise
-            
-    def update_all(self) -> None:
+            raise, def update_all(self) -> None:
         """Run all update operations."""
         try:
             self.load_ontology()
@@ -182,9 +176,7 @@ class RuntimeOntologyUpdater:
             
         except Exception as e:
             logger.error(f"Update failed with error: {str(e)}")
-            raise
-
-def main() -> NoReturn:
+            raise, def main() -> NoReturn:
     """Main entry point for update script."""
     logging.basicConfig(level=logging.INFO)
     
@@ -196,7 +188,7 @@ def main() -> NoReturn:
     updater = RuntimeOntologyUpdater(ontology_file)
     updater.update_all()
     
-    logger.info("Ontology update completed successfully")
+    logger.info("Ontology, update completed successfully")
     sys.exit(0)
 
 if __name__ == "__main__":

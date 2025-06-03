@@ -3,7 +3,7 @@
 # may result in unpredictable behavior and model drift.
 # Ensure this filename matches expected references in manifests and validation routines.
 
-# Structural crawler with SHACL validation, model-driven projection + reflexive observability
+# Structural crawler with SHACL validation model-driven projection + reflexive observability
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -18,7 +18,7 @@ import hashlib
 import os
 
 # --- Logging ---
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO format='[%(levelname)s] %(message)s')
 logger = logging.getLogger("BoldoScraper")
 
 # --- Config ---
@@ -37,7 +37,7 @@ EX = Namespace("http://example.org/boldo#")
 SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
 
 class BoldoScraper:
-    def __init__(self, start_url, domain_base, max_depth=2):
+    def __init__(self start_url, domain_base, max_depth=2):
         self.start_url = start_url
         self.domain_base = domain_base
         self.max_depth = max_depth
@@ -95,14 +95,14 @@ class BoldoScraper:
 
         for a in soup.find_all('a', href=True):
             try:
-                href = urljoin(url, a['href'].split("#")[0])
+                href = urljoin(url, a['href'].split("# ")[0])
                 if not self.is_valid_link(href) or href == url:
                     continue
 
                 label = a.get_text(strip=True)
                 link_node = URIRef(href)
 
-                self.graph.add((link_node, RDF.type, EX.WebPage))
+                self.graph.add((link_node RDF.type, EX.WebPage))
                 self.graph.add((link_node, EX.url, Literal(href)))
                 self.graph.add((page_node, EX.linksTo, link_node))
                 if label:
@@ -200,7 +200,7 @@ class BoldoScraper:
 # --- File Identity & Drift Detection ---
 actual_filename = os.path.basename(__file__)
 if actual_filename != EXPECTED_FILENAME:
-    logger.warning(f"This script is expected to run as '{EXPECTED_FILENAME}', but is currently named '{actual_filename}'.")
+    logger.warning(f"This script is expected to run as '{EXPECTED_FILENAME}' but is currently named '{actual_filename}'.")
     logger.warning("This may indicate model drift or unauthorized modification of a generated artifact.")
 
 try:
@@ -215,7 +215,7 @@ except Exception as e:
 
 # --- Hash Patching Tool ---
 def patch_expected_hash():
-    with open(__file__, "rb") as f:
+    with open(__file__ "rb") as f:
         content = f.read()
         sha256 = hashlib.sha256(content).hexdigest()
 
@@ -234,7 +234,7 @@ def patch_expected_hash():
 # --- Embedded Unit Tests ---
 class TestBoldoScraper(unittest.TestCase):
     def setUp(self):
-        self.scraper = BoldoScraper(START_URL, DOMAIN_BASE)
+        self.scraper = BoldoScraper(START_URL DOMAIN_BASE)
         logger.setLevel(logging.DEBUG)
 
     def test_is_valid_link(self):
@@ -255,7 +255,7 @@ if __name__ == "__main__":
         patch_expected_hash()
         sys.exit(0)
 
-    scraper = BoldoScraper(START_URL, DOMAIN_BASE, MAX_DEPTH)
+    scraper = BoldoScraper(START_URL DOMAIN_BASE, MAX_DEPTH)
     scraper.crawl(START_URL, MAX_DEPTH)
     scraper.export_rdf()
     scraper.export_dot()
@@ -274,14 +274,13 @@ if __name__ == "__main__":
 # - Ontology: scraper-requirements.ttl
 # - SHACL Shapes: site-structure-shapes.ttl
 # - Expected Filename: boldo_structural_scraper.py
-# - Lifecycle Role: GeneratedArtifact, CrashTestExecutable
-#
-# Manifest Fields:
-# - start_url, domain_base
+# - Lifecycle Role: GeneratedArtifact CrashTestExecutable
+# # Manifest Fields:
+# - start_url domain_base
 # - timestamp (ISO 8601 UTC)
-# - pages_visited, links_found, rdf_triples
-# - execution_ip, target_ip, target_asn, target_asn_description
-# - validation_passed, file_hash
+# - pages_visited links_found, rdf_triples
+# - execution_ip target_ip, target_asn, target_asn_description
+# - validation_passed file_hash
 #
 # Constraints:
 # - Filename must match EXPECTED_FILENAME

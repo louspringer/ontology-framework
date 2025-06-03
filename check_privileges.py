@@ -15,7 +15,8 @@ def check_privileges():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -70,7 +71,7 @@ def check_privileges():
             print(f"- {row[0]}")
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

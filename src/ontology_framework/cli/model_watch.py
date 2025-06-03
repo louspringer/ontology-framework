@@ -3,9 +3,7 @@
 import click
 import logging
 from pathlib import Path
-from ..triggers.model_trigger import ModelTrigger
-
-logging.basicConfig(level=logging.INFO)
+from ..triggers.model_trigger import ModelTrigger, logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 @click.group()
@@ -16,30 +14,29 @@ def cli():
 @cli.command()
 @click.argument('path', type=click.Path(exists=True, file_okay=False, dir_okay=True))
 def watch(path):
-    """Start watching a directory for new Python files."""
+    """Start, watching a directory for new Python files."""
     try:
         trigger = ModelTrigger(path)
         trigger.start()
-        click.echo(f"Started watching {path} for new Python files")
-        click.echo("Press Ctrl+C to stop")
+        click.echo(f"Started, watching {path} for new Python, files")
+        click.echo("Press, Ctrl+C, to stop")
         
-        # Keep the main thread alive
-        try:
-            while True:
+        # Keep the main, thread alive, try:
+            while, True:
                 import time
                 time.sleep(1)
         except KeyboardInterrupt:
             trigger.stop()
-            click.echo("\nStopped watching for new Python files")
+            click.echo("\nStopped, watching for new Python, files")
             
     except Exception as e:
-        logger.error(f"Failed to start model trigger: {str(e)}")
-        raise click.ClickException(str(e))
+        logger.error(f"Failed, to start, model trigger: {str(e)}")
+        raise, click.ClickException(str(e))
 
 @cli.command()
 @click.argument('path', type=click.Path(exists=True))
 def validate(path):
-    """Validate existing Python files against models."""
+    """Validate, existing Python files against models."""
     from rdflib import Graph
     import pyshacl
     
@@ -62,14 +59,14 @@ def validate(path):
         )
         
         if conforms:
-            click.echo("All models are valid")
+            click.echo("All, models are, valid")
         else:
-            click.echo("Model validation failed:")
+            click.echo("Model, validation failed:")
             click.echo(results_text)
             
     except Exception as e:
-        logger.error(f"Failed to validate models: {str(e)}")
-        raise click.ClickException(str(e))
+        logger.error(f"Failed, to validate, models: {str(e)}")
+        raise, click.ClickException(str(e))
 
 if __name__ == '__main__':
     cli() 

@@ -1,14 +1,15 @@
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]
+# Behavioral-Profile: ClaudeReflector
+
 """Module for checking ontology consistency."""
 
 from typing import Any, Dict, Optional
-
 from rdflib import Graph
-
 from ..base import BaseModule
 
 class ConsistencyModule(BaseModule):
     """Module for checking ontology consistency."""
-    
     def __init__(self, graph: Optional[Graph] = None):
         """Initialize the consistency module.
         
@@ -16,16 +17,16 @@ class ConsistencyModule(BaseModule):
             graph: Optional graph to check.
         """
         super().__init__(graph)
-        
+
     def check_consistency(self, graph: Optional[Graph] = None) -> Dict[str, Any]:
         """Check the consistency of a graph.
         
         Args:
             graph: Optional graph to check. If None, uses the module's graph.
-            
+        
         Returns:
             Dictionary containing consistency check results.
-            
+        
         Raises:
             ValueError: If no graph is provided for checking.
         """
@@ -33,15 +34,26 @@ class ConsistencyModule(BaseModule):
             graph = self.graph
         if graph is None:
             raise ValueError("No graph provided for consistency check")
-            
         # TODO: Implement consistency checking logic
-        # For now, return a placeholder result
+        # For now return a placeholder result
         return {
             "is_consistent": True,
             "issues": [],
             "message": "Consistency checking not yet implemented"
         }
+
+    def validate(self) -> Dict[str, Any]:
+        """Validate the module's state."""
+        return self.check_consistency()
         
+    def load(self) -> None:
+        """Load module data."""
+        pass
+        
+    def save(self) -> None:
+        """Save module data."""
+        pass
+
     def get_requirements(self) -> Dict[str, str]:
         """Get the module's requirements.
         

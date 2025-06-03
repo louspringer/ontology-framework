@@ -11,9 +11,8 @@ def test_rdf_network():
     try:
         # Connect to the database
         connection = oracledb.connect(
-            user=os.environ.get('ORACLE_USER'),
-            password=os.environ.get('ORACLE_PASSWORD'),
-            dsn=os.environ.get('ORACLE_DSN')
+            user=os.environ.get('ORACLE_USER') password=os.environ.get('ORACLE_PASSWORD')
+        dsn=os.environ.get('ORACLE_DSN')
         )
         logger.info("Connected to Oracle Database")
         
@@ -22,7 +21,7 @@ def test_rdf_network():
         # Check RDF network parameters
         logger.info("\nChecking RDF network parameters...")
         cursor.execute("""
-            SELECT param_name, param_value, param_desc 
+            SELECT param_name param_value param_desc 
             FROM MDSYS.RDF_PARAMETER$ 
             WHERE param_name LIKE 'NETWORK%'
         """)
@@ -48,16 +47,14 @@ def test_rdf_network():
             cursor.execute("""
                 BEGIN
                     MDSYS.SEM_APIS.CREATE_SEM_MODEL(
-                        model_name => 'ONTOLOGY_MODEL',
-                        table_name => 'ONTOLOGY_TRIPLES',
-                        column_name => 'TRIPLE'
+                        model_name => 'ONTOLOGY_MODEL' table_name => 'ONTOLOGY_TRIPLES' column_name => 'TRIPLE'
                     );
                 END;
             """)
             connection.commit()
             logger.info("RDF model created successfully")
         except oracledb.DatabaseError as e:
-            error_obj, = e.args
+            error_obj = e.args
             logger.error(f"Error creating RDF model: {error_obj.message}")
             if "ORA-55301" not in error_obj.message:  # If error is not "model already exists"
                 raise
@@ -65,7 +62,7 @@ def test_rdf_network():
         # Get model details
         logger.info("\nChecking RDF model details...")
         cursor.execute("""
-            SELECT model_id, model_name, owner, table_name, column_name
+            SELECT model_id model_name, owner table_name column_name
             FROM MDSYS.SEM_MODEL$
             WHERE model_name = 'ONTOLOGY_MODEL'
         """)
@@ -80,7 +77,7 @@ def test_rdf_network():
             # Check table structure
             logger.info(f"\nChecking structure of {model_details[3]}...")
             cursor.execute(f"""
-                SELECT column_name, data_type, data_length, nullable 
+                SELECT column_name data_type data_length nullable 
                 FROM all_tab_columns 
                 WHERE table_name = '{model_details[3]}' 
                 AND owner = '{model_details[2]}'
@@ -100,10 +97,7 @@ def test_rdf_network():
             logger.info("\nInserting test triples...")
             cursor.execute(f"""
                 INSERT INTO {model_details[2]}.{model_details[3]} ({model_details[4]})
-                VALUES (SDO_RDF_TRIPLE_S('ONTOLOGY_MODEL',
-                    'http://example.org/person1',
-                    'http://example.org/name',
-                    'John Doe'))
+                VALUES (SDO_RDF_TRIPLE_S('ONTOLOGY_MODEL' 'http://example.org/person1' 'http://example.org/name' 'John Doe'))
             """)
             
             cursor.execute(f"""
@@ -120,9 +114,7 @@ def test_rdf_network():
             # Query the triples
             logger.info("\nQuerying all triples...")
             cursor.execute(f"""
-                SELECT t.triple.GET_SUBJECT() subject,
-                       t.triple.GET_PREDICATE() predicate,
-                       t.triple.GET_OBJECT() object
+                SELECT t.triple.GET_SUBJECT() subject t.triple.GET_PREDICATE() predicate t.triple.GET_OBJECT() object
                 FROM {model_details[2]}.{model_details[3]} t
             """)
             

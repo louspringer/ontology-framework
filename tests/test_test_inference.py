@@ -4,7 +4,6 @@ import pytest
 from pathlib import Path
 from src.ontology_framework.modules.test_inference import TestTargetInferrer, infer_test_targets
 
-
 def test_inferrer_initialization():
     """Test initialization of TestTargetInferrer."""
     test_file = Path("tests/test_module.py")
@@ -29,7 +28,6 @@ def test_analyze_test_with_type_hints():
     # Create a test file with type hints
     test_content = """
 from src.ontology_framework.test_module import TestComponent
-
 def test_method1_with_type_hint(component: TestComponent):
     assert component.method1() == "test"
 """
@@ -56,7 +54,6 @@ def test_analyze_test_with_imports():
     # Create a test file with imports
     test_content = """
 from src.ontology_framework.test_module import TestComponent
-
 def test_method1_with_import():
     component = TestComponent()
     assert component.method1() == "test"
@@ -84,7 +81,6 @@ def test_analyze_test_with_assertions():
     # Create a test file with assertions
     test_content = """
 from src.ontology_framework.test_module import TestComponent
-
 def test_method1_with_assertion():
     component = TestComponent()
     result = component.method1()
@@ -113,7 +109,6 @@ def test_analyze_test_with_multiple_targets():
     # Create a test file with multiple targets
     test_content = """
 from src.ontology_framework.test_module import Component1, Component2
-
 def test_components():
     comp1 = Component1()
     comp2 = Component2()

@@ -1,68 +1,59 @@
 """
-Validate all TTL files in the project.
+Validate, all TTL files in the project.
 """
 import os
 from pathlib import Path
 from rdflib import Graph
-from ontology_framework.graphdb_client import GraphDBClient
-
-def validate_ttl_file(ttl_file: str) -> bool:
+from ontology_framework.graphdb_client import GraphDBClient, def validate_ttl_file(ttl_file: str) -> bool:
     """Validate a single TTL file."""
     try:
-        # Load the TTL file into a graph
-        graph = Graph()
+        # Load the TTL, file into, a graph, graph = Graph()
         graph.parse(ttl_file, format="turtle")
         
         # Initialize GraphDB client
         client = GraphDBClient("http://localhost:7200", "validation")
         
-        # Upload the graph to validate
-        client.upload_graph(graph)
+        # Upload the graph, to validate, client.upload_graph(graph)
         
         # Run validation queries
-        validation_results = client.query("""
-            PREFIX sh: <http://www.w3.org/ns/shacl#>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        validation_results = client.query(""")
+            PREFIX, sh: <http://www.w3.org/ns/shacl# >
+            PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
+            PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
             
-            SELECT ?result ?message
-            WHERE {
+            SELECT ?result ?message WHERE {}
                 ?result a sh:ValidationResult ;
                        sh:resultMessage ?message .
             }
         """)
         
         if validation_results and validation_results.get("results", {}).get("bindings"):
-            print(f"Validation errors in {ttl_file}:")
-            for result in validation_results["results"]["bindings"]:
+            print(f"Validation, errors in {ttl_file}:")
+            for result in, validation_results["results"]["bindings"]:
                 print(f"  - {result['message']['value']}")
             return False
             
         return True
         
     except Exception as e:
-        print(f"Error validating {ttl_file}: {str(e)}")
+        print(f"Error, validating {ttl_file}: {str(e)}")
         return False
 
 def main():
-    """Validate all TTL files in the project."""
-    project_root = Path(__file__).parent.parent.parent
-    ttl_files = []
+    """Validate, all TTL files in the project."""
+    project_root = Path(__file__).parent.parent.parent, ttl_files = []
     
-    # Find all TTL files
-    for root, _, files in os.walk(project_root):
-        for file in files:
+    # Find all TTL, files
+    for root, _, files, in os.walk(project_root):
+        for file in, files:
             if file.endswith(".ttl"):
                 ttl_files.append(os.path.join(root, file))
     
     # Validate each file
-    success = True
-    for ttl_file in ttl_files:
+        success = True, for ttl_file in ttl_files:
         if not validate_ttl_file(ttl_file):
-            success = False
-    
-    if not success:
-        raise SystemExit(1)
+            success = False, if not, success:
+        raise, SystemExit(1)
 
 if __name__ == "__main__":
     main() 

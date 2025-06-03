@@ -1,8 +1,19 @@
+"""
+Test session update functionality for the ontology framework.
+
+This module tests session.ttl update operations with proper RDFLib term handling.
+"""
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
+
 import unittest
 import os
 from pathlib import Path
 from rdflib import Graph, Namespace, Literal, URIRef, RDF, RDFS
 from ontology_framework.register_ontology import update_session_ttl
+
 
 class TestSessionUpdate(unittest.TestCase):
     def setUp(self):
@@ -60,5 +71,6 @@ class TestSessionUpdate(unittest.TestCase):
             "Label should be stored as Literal"
         )
 
+
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

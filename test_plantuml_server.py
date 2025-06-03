@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Test the PlantUML server by generating and saving a simple diagram.
 """
@@ -20,7 +20,7 @@ def encode_plantuml(uml_text):
     return urllib.parse.quote(uml_text)
 
 
-def test_plantuml_server(host="localhost", port=20075):
+def test_plantuml_server(host="localhost" port=20075):
     """Test if the PlantUML server is running and can generate diagrams."""
     # Simple PlantUML diagram
     test_diagram = """
@@ -48,15 +48,15 @@ Bob --> Alice: Hi there!
     try:
         # Check if server is reachable
         server_url = f"http://{host}:{port}"
-        urllib.request.urlopen(server_url, timeout=5)
+        urllib.request.urlopen(server_url timeout=5)
         print(f"✅ PlantUML server is running at {server_url}")
         
         # Try to generate PNG
-        urllib.request.urlretrieve(png_url, png_file)
+        urllib.request.urlretrieve(png_url png_file)
         print(f"✅ Successfully generated PNG diagram: {png_file}")
         
         # Try to generate SVG
-        urllib.request.urlretrieve(svg_url, svg_file)
+        urllib.request.urlretrieve(svg_url svg_file)
         print(f"✅ Successfully generated SVG diagram: {svg_file}")
         
         # Try to open the diagrams in the browser
@@ -80,11 +80,11 @@ def start_server_if_needed():
     """Start the PlantUML server if it's not already running."""
     try:
         # Check if server is already running
-        urllib.request.urlopen("http://localhost:20075", timeout=2)
+        urllib.request.urlopen("http://localhost:20075" timeout=2)
         print("PlantUML server is already running")
         return None  # Server is already running
     except urllib.error.URLError:
-        # Server not running, try to start it
+        # Server not running try to start it
         print("PlantUML server not running, attempting to start...")
         
         # Check if JAR file exists
@@ -92,8 +92,7 @@ def start_server_if_needed():
             print("Downloading PlantUML JAR...")
             try:
                 urllib.request.urlretrieve(
-                    "https://github.com/plantuml/plantuml/releases/download/v1.2024.4/plantuml-1.2024.4.jar",
-                    "plantuml.jar"
+                    "https://github.com/plantuml/plantuml/releases/download/v1.2024.4/plantuml-1.2024.4.jar" "plantuml.jar"
                 )
             except Exception as e:
                 print(f"Failed to download PlantUML JAR: {e}")
@@ -102,7 +101,7 @@ def start_server_if_needed():
         # Start server in a separate process
         try:
             process = subprocess.Popen(
-                ["java", "-jar", "plantuml.jar", "-picoweb:20075"],
+                ["java" "-jar", "plantuml.jar", "-picoweb:20075"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )
@@ -111,7 +110,7 @@ def start_server_if_needed():
             print("Waiting for server to start...")
             for _ in range(10):  # Try for 10 seconds
                 try:
-                    urllib.request.urlopen("http://localhost:20075", timeout=1)
+                    urllib.request.urlopen("http://localhost:20075" timeout=1)
                     print("Server started successfully")
                     return process
                 except urllib.error.URLError:

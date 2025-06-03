@@ -1,13 +1,32 @@
+"""
+Tests for SPARQL patterns in the ontology framework.
+
+This module tests SPARQL pattern recognition, validation, and application
+with semantic compliance and ontology framework integration.
+"""
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
+
 import unittest
 import logging
-from rdflib import Graph, Namespace, RDF, RDFS, OWL, XSD
-from rdflib.namespace import SH
 import datetime
 import os
+from rdflib import (
+    Graph,
+    Namespace,
+    RDF,
+    RDFS,
+    OWL,
+    XSD
+)
+from rdflib.namespace import SH
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class TestSPARQLPatterns(unittest.TestCase):
     def setUp(self):
@@ -51,8 +70,7 @@ class TestSPARQLPatterns(unittest.TestCase):
         
         # Query for test patterns
         query = """
-        SELECT ?pattern ?purpose ?category
-        WHERE {
+        SELECT ?pattern ?purpose ?category WHERE {
             ?pattern rdf:type ?testPattern .
             ?pattern test:hasTestPurpose ?purpose .
             ?pattern test:hasTestCategory ?category .
@@ -95,8 +113,7 @@ class TestSPARQLPatterns(unittest.TestCase):
                           sh:maxCount ?maxCount .
             ?subject ?property ?value .
         }
-        GROUP BY ?subject ?property
-        HAVING (COUNT(?value) < ?minCount || COUNT(?value) > ?maxCount)
+        GROUP BY ?subject ?property HAVING (COUNT(?value) < ?minCount || COUNT(?value) > ?maxCount)
         """
         
         results = self.graph.query(query)
@@ -111,8 +128,7 @@ class TestSPARQLPatterns(unittest.TestCase):
         
         # Query for incomplete processes
         query = """
-        SELECT ?process
-        WHERE {
+        SELECT ?process WHERE {
             ?process rdf:type error:ErrorHandlingProcess .
             FILTER NOT EXISTS {
                 ?process error:hasProcessStep ?step .
@@ -136,8 +152,7 @@ class TestSPARQLPatterns(unittest.TestCase):
         
         # Query for invalid type hierarchies
         query = """
-        SELECT ?type ?superType
-        WHERE {
+        SELECT ?type ?superType WHERE {
             ?type rdfs:subClassOf ?superType .
             FILTER NOT EXISTS {
                 ?type rdf:type owl:Class .
@@ -158,8 +173,7 @@ class TestSPARQLPatterns(unittest.TestCase):
         
         # Query for pattern applications
         query = """
-        SELECT ?application ?pattern ?ontology ?result
-        WHERE {
+        SELECT ?application ?pattern ?ontology ?result WHERE {
             ?application rdf:type test:TestPatternApplication .
             ?application test:appliesPattern ?pattern .
             ?application test:targetOntology ?ontology .
@@ -188,5 +202,6 @@ class TestSPARQLPatterns(unittest.TestCase):
         logger.info("Cleaning up test environment")
         self.graph.close()
 
+
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

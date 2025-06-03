@@ -95,4 +95,4 @@ def test_error_severity_validation(error_handler: ErrorHandler) -> None:
     
     # Test invalid severity
     error_handler.add_error("TEST_ERROR", "Test message", "INVALID")
-    assert len(error_handler.get_errors()) == 1  # Should not add invalid error 
+    assert len(error_handler.get_errors()) == 1  # Should not add invalid error

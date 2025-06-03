@@ -7,8 +7,7 @@ from typing import List, Dict, Any, Optional, Set, Union, Callable
 from datetime import datetime
 from .ontology_types import (
     ErrorType, ErrorSeverity, ErrorStep, ValidationRule, 
-    SecurityLevel, ComplianceLevel, RiskLevel, PerformanceMetric,
-    ValidationRuleType, ErrorResult
+    SecurityLevel, ComplianceLevel, RiskLevel, PerformanceMetric, ValidationRuleType, ErrorResult
 )
 from .error import Error
 import time
@@ -20,8 +19,7 @@ class ErrorHandler:
 
     # Error type hierarchy
     ERROR_HIERARCHY = {
-        ErrorType.VALIDATION: ErrorType.RUNTIME,
-        ErrorType.CONFIGURATION: ErrorType.RUNTIME,
+        ErrorType.VALIDATION: ErrorType.RUNTIME, ErrorType.CONFIGURATION: ErrorType.RUNTIME,
         ErrorType.NETWORK: ErrorType.RUNTIME,
         ErrorType.DATABASE: ErrorType.RUNTIME,
         ErrorType.FILE_SYSTEM: ErrorType.RUNTIME,
@@ -43,16 +41,13 @@ class ErrorHandler:
 
     # Step ordering
     STEP_ORDER = {
-        ErrorStep.IDENTIFICATION: 1,
-        ErrorStep.ANALYSIS: 2,
+        ErrorStep.IDENTIFICATION: 1, ErrorStep.ANALYSIS: 2,
         ErrorStep.VALIDATION: 3,
         ErrorStep.PREVENTION: 4,
         ErrorStep.RECOVERY: 5,
         ErrorStep.MONITORING: 6,
         ErrorStep.REPORTING: 7,
-        ErrorStep.DOCUMENTATION: 8,
-        ErrorStep.REVIEW: 9,
-        ErrorStep.CLOSURE: 10
+        ErrorStep.DOCUMENTATION: 8, ErrorStep.REVIEW: 9, ErrorStep.CLOSURE: 10
     }
 
     def __init__(self) -> None:
@@ -74,7 +69,7 @@ class ErrorHandler:
         }
         self.current_step = ErrorStep.IDENTIFICATION
         self.error_types = {error_type: error_type.value for error_type in ErrorType}
-        
+
         # Track prevention measures and recovery strategies
         self.prevention_measures: Dict[str, bool] = {
             "ErrorBoundary": False,
@@ -92,7 +87,7 @@ class ErrorHandler:
             "StateRecovery": False,
             "ServiceRestart": False
         }
-        
+
         # Initialize metrics
         self.metrics: Dict[str, Dict[str, Union[int, float]]] = {
             "ErrorCount": {"current": 0, "threshold": 100},
@@ -104,7 +99,7 @@ class ErrorHandler:
             "FalseNegativeRate": {"current": 0, "threshold": 0.05},
             "ClassificationAccuracy": {"current": 0, "threshold": 0.98}
         }
-        
+
         # Initialize compliance tracking
         self.compliance: Dict[str, Dict[str, Any]] = {
             "ISO27001": {
@@ -188,8 +183,7 @@ class ErrorHandler:
         
         Args:
             severity: Severity level to filter by
-            
-        Returns:
+            Returns:
             List of errors with the specified severity
         """
         return [error for error in self.errors if error.severity == severity]
@@ -201,8 +195,7 @@ class ErrorHandler:
         Args:
             rule: Validation rule to apply
             data: Data to validate
-            
-        Returns:
+            Returns:
             True if validation passes, False otherwise
         """
         if rule not in self.validation_rules:
@@ -222,8 +215,7 @@ class ErrorHandler:
         
         Args:
             data: Data to validate
-            
-        Returns:
+            Returns:
             True if validation passes, False otherwise
         """
         try:
@@ -275,8 +267,7 @@ class ErrorHandler:
         
         Args:
             data: Data to validate
-            
-        Returns:
+            Returns:
             True if validation passes, False otherwise
         """
         try:
@@ -328,8 +319,7 @@ class ErrorHandler:
         
         Args:
             data: Data to validate
-            
-        Returns:
+            Returns:
             True if validation passes, False otherwise
         """
         try:
@@ -390,8 +380,7 @@ class ErrorHandler:
         
         Args:
             data: Data to validate
-            
-        Returns:
+            Returns:
             True if validation passes, False otherwise
         """
         try:
@@ -475,7 +464,7 @@ class ErrorHandler:
             if not all(metric in metrics for metric in required_metrics):
                 return False
                 
-            # Validate metric values
+            # Validate metric values for metric in required_metrics:
             for metric in required_metrics:
                 if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
                     return False
@@ -507,7 +496,7 @@ class ErrorHandler:
             if not all(metric in metrics for metric in required_metrics):
                 return False
                 
-            # Validate metric values
+            # Validate metric values for metric in required_metrics:
             for metric in required_metrics:
                 if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
                     return False
@@ -539,7 +528,7 @@ class ErrorHandler:
             if not all(metric in metrics for metric in required_metrics):
                 return False
                 
-            # Validate metric values
+            # Validate metric values for metric in required_metrics:
             for metric in required_metrics:
                 if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
                     return False
@@ -575,7 +564,7 @@ class ErrorHandler:
             if not all(metric in metrics for metric in required_metrics):
                 return False
                 
-            # Validate metric values
+            # Validate metric values for metric in required_metrics:
             for metric in required_metrics:
                 if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
                     return False
@@ -607,7 +596,7 @@ class ErrorHandler:
             if not all(metric in metrics for metric in required_metrics):
                 return False
                 
-            # Validate metric values
+            # Validate metric values for metric in required_metrics:
             for metric in required_metrics:
                 if not isinstance(metrics[metric], (int, float)) or metrics[metric] < 0:
                     return False
@@ -710,7 +699,6 @@ class ErrorHandler:
             if metric_name not in thresholds:
                 self.logger.warning(f"No threshold defined for metric: {metric_name}")
                 continue
-                
             if value > thresholds[metric_name]:
                 return False
                 
@@ -728,7 +716,6 @@ class ErrorHandler:
         for error in self.errors:
             error_type = error.error_type.value.lower()
             error_types_count[error_type] = error_types_count.get(error_type, 0) + 1
-
         summary = {
             "total_errors": len(self.errors),
             "error_types": error_types_count,

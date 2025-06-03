@@ -1,0 +1,65 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+# ValidationRuleShape
+bfg:ValidationRuleShape a sh:NodeShape ;
+    sh:targetClass bfg:ValidationRule ;
+    sh:property [
+        sh:path bfg:hasMessage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path bfg:hasPriority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path bfg:hasValidator ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# ValidationPatternShape
+bfg:ValidationPatternShape a sh:NodeShape ;
+    sh:targetClass bfg:ValidationPattern ;
+    sh:property [
+        sh:path bfg:hasMessage ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path bfg:hasPriority ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+# Class shape with high-priority constraints
+[] a sh:NodeShape ;
+    sh:targetClass owl:Class ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "[HIGH] Class must have a label" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "[HIGH] Class must have a comment" ;
+    ] ;
+    sh:property [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "[HIGH] Class must have version info" ;
+    ] . 

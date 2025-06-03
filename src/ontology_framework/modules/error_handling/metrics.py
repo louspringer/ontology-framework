@@ -1,3 +1,7 @@
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]
+# Behavioral-Profile: ClaudeReflector
+
 from typing import Dict, Any, TypedDict
 from datetime import datetime
 import logging
@@ -24,7 +28,7 @@ class MetricsHandler:
         }
         self.thresholds: Dict[str, float] = {
             "max_detection_time": 1.0,  # seconds
-            "max_error_rate": 0.1,     # 10%
+            "max_error_rate": 0.1,      # 10%
             "min_success_rate": 0.9     # 90%
         }
         self.logger = logging.getLogger(__name__)
@@ -41,37 +45,49 @@ class MetricsHandler:
         if detection_time > self.thresholds["max_detection_time"]:
             self.logger.warning(f"Detection time {detection_time}s exceeds threshold for {error_type}")
 
-    def update_error_matrix(self, error_type: str, occurred: bool) -> None:
-        """Update error occurrence matrix."""
+    def update_error_matrix(self, error_type: str, is_resolved: bool) -> None:
+        """Update error matrix with resolution status."""
         if error_type not in self.metrics["error_matrix"]:
-            self.metrics["error_matrix"][error_type] = {"occurrences": 0, "total": 0}
+            self.metrics["error_matrix"][error_type] = {
+                "resolved": 0,
+                "unresolved": 0
+            }
         
-        self.metrics["error_matrix"][error_type]["total"] += 1
-        if occurred:
-            self.metrics["error_matrix"][error_type]["occurrences"] += 1
+        if is_resolved:
+            self.metrics["error_matrix"][error_type]["resolved"] += 1
+        else:
+            self.metrics["error_matrix"][error_type]["unresolved"] += 1
 
     def calculate_derived_metrics(self) -> None:
         """Calculate derived metrics from raw data."""
-        total_errors = sum(self.metrics["error_counts"].values())
-        total_checks = sum(m["total"] for m in self.metrics["error_matrix"].values())
+        total_detection_time = 0.0
+        total_errors = 0
         
-        if total_checks > 0:
-            self.metrics["derived_metrics"]["error_rate"] = total_errors / total_checks
-            self.metrics["derived_metrics"]["success_rate"] = 1 - self.metrics["derived_metrics"]["error_rate"]
-            
-            if self.metrics["derived_metrics"]["error_rate"] > self.thresholds["max_error_rate"]:
-                self.logger.warning("Error rate exceeds threshold")
-            
-            if self.metrics["derived_metrics"]["success_rate"] < self.thresholds["min_success_rate"]:
-                self.logger.warning("Success rate below threshold")
+        for error_type in self.metrics["detection_times"]:
+            times = self.metrics["detection_times"][error_type]
+            if times:
+                total_detection_time += sum(times)
+                total_errors += len(times)
+        
+        if total_errors > 0:
+            self.metrics["derived_metrics"]["mean_detection_time"] = total_detection_time / total_errors
+        
+        total_attempts = sum(
+            self.metrics["error_matrix"][error_type]["resolved"] +
+            self.metrics["error_matrix"][error_type]["unresolved"]
+            for error_type in self.metrics["error_matrix"]
+        )
+        
+        if total_attempts > 0:
+            total_resolved = sum(
+                self.metrics["error_matrix"][error_type]["resolved"]
+                for error_type in self.metrics["error_matrix"]
+            )
+            self.metrics["derived_metrics"]["error_rate"] = total_errors / total_attempts
+            self.metrics["derived_metrics"]["success_rate"] = total_resolved / total_attempts
 
-        # Calculate mean detection time
-        all_times = [t for times in self.metrics["detection_times"].values() for t in times]
-        if all_times:
-            self.metrics["derived_metrics"]["mean_detection_time"] = sum(all_times) / len(all_times)
-
-    def get_metrics_report(self) -> MetricsReport:
-        """Get current metrics with thresholds."""
+    def get_report(self) -> MetricsReport:
+        """Generate a metrics report."""
         return {
             "metrics": self.metrics,
             "thresholds": self.thresholds,

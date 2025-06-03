@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 import os
 import re
 import sys
@@ -13,7 +13,7 @@ def fix_prefixes(turtle_path, dry_run=True):
     prefix_pattern = re.compile(r'@prefix\s+([^:]+):\s*<\./([^>#]+)#>')
     def replace_prefix(match):
         prefix, frag = match.group(1), match.group(2)
-        changes.append(f"[RELATIVE PREFIX] {prefix}: <./{frag}#> → {prefix}: <{base_uri}/{frag}#>")
+        changes.append(f"[RELATIVE PREFIX] {prefix}: <./{frag}# > → {prefix}: <{base_uri}/{frag}#>")
         return f"@prefix {prefix}: <{base_uri}/{frag}#>"
     corrected = prefix_pattern.sub(replace_prefix, content)
     # Fix malformed IRIs in prefix declarations

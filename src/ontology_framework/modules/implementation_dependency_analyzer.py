@@ -16,14 +16,14 @@ class ImplementationDependencyAnalyzer:
     """Analyzes dependencies within implementation code."""
     
     def __init__(self, src_path: Path):
-        self.src_path = src_path
-        self.dependency_graph = nx.DiGraph()
-        self.module_cache = {}
-        self.class_cache = {}
+        self.src_path: Path = src_path
+        self.dependency_graph: nx.DiGraph = nx.DiGraph()
+        self.module_cache: Dict[str, Set[str]] = {}
+        self.class_cache: Dict[str, Set[str]] = {}
         
     def analyze_module_dependencies(self) -> Dict[str, Set[str]]:
         """Analyze module-level dependencies with internal firewall."""
-        module_deps = {}
+        module_deps: Dict[str, Set[str]] = {}
         
         # Track imports between modules
         for py_file in self.src_path.rglob("*.py"):
@@ -48,7 +48,7 @@ class ImplementationDependencyAnalyzer:
         
     def analyze_class_dependencies(self) -> Dict[str, Set[str]]:
         """Analyze class-level dependencies with internal firewall."""
-        class_deps = {}
+        class_deps: Dict[str, Set[str]] = {}
         
         # Track inheritance and composition
         for py_file in self.src_path.rglob("*.py"):
@@ -79,18 +79,16 @@ class ImplementationDependencyAnalyzer:
         
     def analyze_method_dependencies(self) -> Dict[str, Set[str]]:
         """Analyze method-level dependencies."""
-        method_deps = {}
-        current_class = None
+        method_deps: Dict[str, Set[str]] = {}
+        current_class: str | None = None
         
         for file_path in self.src_path.rglob("*.py"):
             if file_path.name.startswith("__"):
                 continue
-                
             with open(file_path, "r") as f:
                 tree = ast.parse(f.read())
                 
-            current_method = None
-            
+            current_method: str | None = None
             for node in ast.walk(tree):
                 if isinstance(node, ast.ClassDef):
                     current_class = node.name
@@ -108,13 +106,14 @@ class ImplementationDependencyAnalyzer:
                             elif isinstance(node.func.value, ast.Attribute):
                                 # Handle nested attributes (e.g., self.something.method())
                                 value = node.func.value
+                                attr_path = []
                                 while isinstance(value, ast.Attribute):
+                                    attr_path.append(value.attr)
                                     value = value.value
                                 if isinstance(value, ast.Name):
-                                    method_deps[current_method].add(f"{value.id}.{node.func.attr}")
+                                    method_deps[current_method].add(f"{value.id}{'.'.join(reversed(attr_path))}.{node.func.attr}")
                         elif isinstance(node.func, ast.Name):
                             method_deps[current_method].add(node.func.id)
-                            
         return method_deps
         
     def build_dependency_graph(self) -> nx.DiGraph:

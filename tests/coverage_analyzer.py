@@ -36,7 +36,7 @@ class CoverageAnalyzer:
             self._calculate_coverage(src_file, test_files_for_module)
             
         return self.coverage_data
-        
+
     def _get_python_files(self, directory: str) -> List[str]:
         """Get all Python files in a directory."""
         python_files = []
@@ -106,7 +106,6 @@ class CoverageAnalyzer:
         total_lines = sum(data['total_lines'] for data in coverage_data.values())
         total_covered = sum(len(data['covered_lines']) for data in coverage_data.values())
         overall_coverage = (total_covered / total_lines * 100) if total_lines else 0.0
-        
         report = {
             'overall_coverage': overall_coverage,
             'modules': {
@@ -141,7 +140,6 @@ class CoverageAnalyzer:
         total_lines = sum(data['total_lines'] for data in coverage_data.values())
         total_covered = sum(len(data['covered_lines']) for data in coverage_data.values())
         overall_coverage = (total_covered / total_lines * 100) if total_lines else 0.0
-        
         print(f"\nOverall Coverage: {overall_coverage:.2f}%")
 
 if __name__ == '__main__':

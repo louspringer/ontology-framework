@@ -109,4 +109,4 @@ def test_save_ontology_without_path(validation_manager):
 def test_save_ontology_to_invalid_path(validation_manager):
     """Test saving the ontology to an invalid path."""
     with pytest.raises(Exception):
-        validation_manager.save_ontology("/nonexistent/directory/validation_rules.ttl") 
+        validation_manager.save_ontology("/nonexistent/directory/validation_rules.ttl")

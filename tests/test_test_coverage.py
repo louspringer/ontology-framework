@@ -7,7 +7,7 @@ from rdflib.namespace import RDF, RDFS
 from src.ontology_framework.modules.test_coverage import TestCoverageAnalyzer
 
 # Define namespaces
-TEST = Namespace("http://example.org/test#")
+TEST = Namespace("http://example.org/test# ")
 IMPL = Namespace("http://example.org/implementation#")
 GUIDANCE = Namespace("http://example.org/guidance#")
 
@@ -18,10 +18,10 @@ def guidance_graph():
     g = Graph()
 
     # Add test coverage requirement
-    req = URIRef("http://example.org/guidance#TestCoverageReq")
+    req = URIRef("http://example.org/guidance# TestCoverageReq")
     g.add((req, RDF.type, GUIDANCE.TestCoverageRequirement))
 
-    coverage = URIRef("http://example.org/guidance#CoverageSpec")
+    coverage = URIRef("http://example.org/guidance# CoverageSpec")
     g.add((req, GUIDANCE.requiresCoverage, coverage))
     g.add((coverage, GUIDANCE.component, IMPL["TestComponent"]))
     g.add((coverage, GUIDANCE.coverageThreshold, Literal(80.0)))
@@ -76,7 +76,6 @@ class TestComponent:
 
     analyzer = TestCoverageAnalyzer(guidance_graph)
     analyzer.src_path = src_dir.parent
-
     components = analyzer.analyze_source_files()
     assert "test_module.test_component.TestComponent" in components
     assert components["test_module.test_component.TestComponent"] == {
@@ -95,7 +94,6 @@ def test_analyze_test_files(guidance_graph, tmp_path):
     test_file.write_text(
         """
 from src.ontology_framework.test_module.test_component import TestComponent
-
 def test_coverage_method1():
     pass
     
@@ -106,7 +104,6 @@ def test_method2():
 
     analyzer = TestCoverageAnalyzer(guidance_graph)
     analyzer.test_path = test_dir
-
     coverage = analyzer.analyze_test_files()
     assert "test_coverage_method1" in coverage
     assert "test_method2" in coverage
@@ -123,7 +120,6 @@ def test_validate_coverage(guidance_graph, test_component, test_coverage):
     # Mock the analysis methods
     analyzer.analyze_source_files = lambda: test_component
     analyzer.analyze_test_files = lambda: test_coverage
-
     coverage_graph = analyzer.validate_coverage()
 
     # Check component

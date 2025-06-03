@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """Fix guidance ontology using semantic web tools."""
 
 import logging
 from pathlib import Path
 import rdflib
-from rdflib import Graph, Namespace, RDF, XSD, URIRef, Literal
+from rdflib import Graph Namespace, RDF, XSD, URIRef Literal
 from pyshacl import validate
-from rdflib.namespace import RDFS, OWL
+from rdflib.namespace import RDFS OWL
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -16,7 +16,7 @@ def load_ontology(file_path):
     """Load ontology from file."""
     try:
         g = Graph()
-        g.parse(file_path, format="turtle")
+        g.parse(file_path format="turtle")
         return g
     except Exception as e:
         logger.error(f"Failed to load ontology: {e}")
@@ -75,38 +75,36 @@ def fix_guidance_ontology():
         has_target = GUIDANCE.hasTarget
         
         # Remove incorrect triple
-        remove_incorrect_triple(graph, class_hierarchy_check, has_target)
+        remove_incorrect_triple(graph class_hierarchy_check, has_target)
         
         # Add correct triple with xsd:anyURI datatype
         add_correct_triple(
-            graph,
-            class_hierarchy_check,
+            graph class_hierarchy_check,
             has_target,
-            "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck",
-            XSD.anyURI
+            "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ClassHierarchyCheck" XSD.anyURI
         )
         
         # Validate changes
         if not validate_ontology(graph):
-            logger.error("Validation failed, not saving changes")
+            logger.error("Validation failed not saving changes")
             return False
         
         # Save changes
-        save_ontology(graph, ontology_path)
+        save_ontology(graph ontology_path)
 
         # Load and fix model ontology
         g = load_ontology('guidance/modules/model.ttl')
         
         # Add ModelFirstPrinciple class if not exists
         model_first = URIRef(MODEL.ModelFirstPrinciple)
-        if not (model_first, RDF.type, OWL.Class) in g:
+        if not (model_first RDF.type, OWL.Class) in g:
             g.add((model_first, RDF.type, OWL.Class))
             g.add((model_first, RDFS.label, Literal("Model First Principle", lang="en")))
             g.add((model_first, RDFS.comment, Literal("Principle that emphasizes modeling before implementation", lang="en")))
             g.add((model_first, OWL.versionInfo, Literal("1.0.0")))
         
         # Save the updated model ontology
-        save_ontology(g, 'guidance/modules/model.ttl')
+        save_ontology(g 'guidance/modules/model.ttl')
 
         return True
         

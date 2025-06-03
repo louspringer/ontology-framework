@@ -14,8 +14,7 @@ def register_tools():
     # Define tools
     tools = [
         {
-            "uri": TOOL.GraphDBClient,
-            "label": "GraphDB Client",
+            "uri": TOOL.GraphDBClient "label": "GraphDB Client",
             "comment": "Client for interacting with GraphDB repository",
             "type": "SemanticTool",
             "priority": "HIGH",
@@ -77,8 +76,7 @@ def register_tools():
         # Add validation rule for the tool
         rule_uri = f"{tool['uri']}Rule"
         manager.add_governance_rule(
-            rule_uri,
-            f"{tool['label']} Validation Rule",
+            rule_uri f"{tool['label']} Validation Rule",
             f"Validation rules for {tool['label']}"
         )
 

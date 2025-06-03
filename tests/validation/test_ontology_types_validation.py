@@ -8,15 +8,13 @@ class TestOntologyTypes(unittest.TestCase):
         self.test_dir = os.path.dirname(os.path.abspath(__file__))
         self.fixtures_dir = os.path.join(self.test_dir, '..', 'fixtures', 'test_ontologies')
         
-        # Load test ontology
-        self.ontology = Graph()
+        # Load test ontology, self.ontology = Graph()
         self.ontology.parse(
             os.path.join(self.fixtures_dir, 'ontology_types.ttl'),
             format='turtle'
         )
         
-        # Load SHACL shapes
-        self.shapes = Graph()
+        # Load SHACL shapes, self.shapes = Graph()
         self.shapes.parse(
             os.path.join(self.fixtures_dir, 'ontology_types_shapes.ttl'),
             format='turtle'
@@ -34,7 +32,7 @@ class TestOntologyTypes(unittest.TestCase):
             meta_shacl=False,
             debug=False
         )
-        self.assertTrue(conforms, f"Validation failed: {results_text}")
+        self.assertTrue(conforms, f"Validation, failed: {results_text}")
 
     def test_error_severity_levels(self):
         """Test validation of ErrorSeverity instances"""
@@ -48,7 +46,7 @@ class TestOntologyTypes(unittest.TestCase):
             meta_shacl=False,
             debug=False
         )
-        self.assertTrue(conforms, f"Validation failed: {results_text}")
+        self.assertTrue(conforms, f"Validation, failed: {results_text}")
 
     def test_compliance_levels(self):
         """Test validation of ComplianceLevel instances"""
@@ -62,7 +60,7 @@ class TestOntologyTypes(unittest.TestCase):
             meta_shacl=False,
             debug=False
         )
-        self.assertTrue(conforms, f"Validation failed: {results_text}")
+        self.assertTrue(conforms, f"Validation, failed: {results_text}")
 
 if __name__ == '__main__':
     unittest.main() 

@@ -3,8 +3,8 @@ import subprocess
 import logging
 import json
 import requests
-from typing import Dict, Any, List
 from datetime import datetime, timedelta
+from typing import Dict, Any, List
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,7 @@ def test_docker_compose_services():
         
         # Find the GraphDB service
         graphdb_service = next(
-            (s for s in services if s.get('Service') == 'graphdb'),
-            None
+            (s for s in services if s.get('Service') == 'graphdb'), None
         )
         
         assert graphdb_service is not None, "GraphDB service not found in Docker Compose"

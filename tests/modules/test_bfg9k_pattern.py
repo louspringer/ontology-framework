@@ -52,4 +52,4 @@ class TestBFG9KPattern(unittest.TestCase):
         self.assertEqual(result.violations, [])
         self.assertEqual(result.focus_nodes, [])
         self.assertEqual(result.severity, "info")
-        self.assertEqual(result.message, "Test validation") 
+        self.assertEqual(result.message, "Test validation")

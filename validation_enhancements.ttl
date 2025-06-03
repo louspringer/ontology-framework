@@ -1,0 +1,102 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix guidance: <./guidance#> .
+@prefix todo: <./todo#> .
+@prefix spore: <http://example.org/spore#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# Enhanced validation rules for the ontology framework
+guidance:EnhancedValidation a owl:Class ;
+    rdfs:label "Enhanced Validation Rules"@en ;
+    rdfs:comment "Additional validation rules for the ontology framework"@en ;
+    owl:versionInfo "1.0.0" .
+
+# SPORE Validation Shape
+guidance:SPOREShape a sh:NodeShape ;
+    sh:targetClass spore:ContextSpore ;
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Each SPORE must have a title"@en
+    ], [
+        sh:path dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Each SPORE must have a description"@en
+    ], [
+        sh:path spore:extends ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "A SPORE may extend another SPORE"@en
+    ], [
+        sh:path spore:containsDirective ;
+        sh:minCount 1 ;
+        sh:message "Each SPORE must contain at least one directive"@en
+    ] .
+
+# TODO section for future refinements
+todo:ValidationEnhancements a guidance:TODO ;
+    rdfs:label "Validation Enhancements"@en ;
+    rdfs:comment "Future improvements for validation system"@en ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasPlannedDate "2024-Q2"^^xsd:date ;
+    guidance:hasTask [
+        a guidance:Task ;
+        rdfs:label "Implement Cross-Module Validation"@en ;
+        guidance:hasPriority "HIGH"
+    ], [
+        a guidance:Task ;
+        rdfs:label "Add Performance Metrics"@en ;
+        guidance:hasPriority "MEDIUM"
+    ], [
+        a guidance:Task ;
+        rdfs:label "SPORE Protocol Validation"@en ;
+        guidance:hasPriority "HIGH" ;
+        rdfs:comment "Implement comprehensive validation for SPORE protocols"@en
+    ] .
+
+# Additional SHACL shapes for validation
+guidance:ClassMetadataShape a sh:NodeShape ;
+    sh:targetClass owl:Class ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+        sh:message "Each class must have an English label"@en
+    ], [
+        sh:path rdfs:comment ;
+        sh:minCount 1 ;
+        sh:languageIn ("en") ;
+        sh:message "Each class must have an English description"@en
+    ], [
+        sh:path owl:versionInfo ;
+        sh:minCount 1 ;
+        sh:pattern "^\\d+\\.\\d+\\.\\d+$" ;
+        sh:message "Version must follow semantic versioning"@en
+    ] .
+
+# Example instances for validation
+guidance:ValidationExample1 a guidance:EnhancedValidation ;
+    rdfs:label "Example Validation Instance 1"@en ;
+    rdfs:comment "First example of enhanced validation"@en ;
+    owl:versionInfo "1.0.0" .
+
+guidance:ValidationExample2 a guidance:EnhancedValidation ;
+    rdfs:label "Example Validation Instance 2"@en ;
+    rdfs:comment "Second example of enhanced validation"@en ;
+    owl:versionInfo "1.0.0" .
+
+# SPORE Protocol Example
+guidance:SPOREExample a spore:ContextSpore ;
+    dct:title "Example SPORE Implementation"@en ;
+    dct:description "Demonstrates proper SPORE structure and validation"@en ;
+    spore:containsDirective [
+        a spore:RelayDirective ;
+        dct:description "Example directive for validation"@en
+    ] ;
+    owl:versionInfo "1.0.0" . 

@@ -12,8 +12,7 @@ class BuildExecutor:
         self.manager = BuildProcessManager()
         self.manager.load()
         self.env_vars = {
-            "RESOURCE_GROUP": "pdf-processor-rg",
-            "LOCATION": "eastasia",
+            "RESOURCE_GROUP": "pdf-processor-rg" "LOCATION": "eastasia",
             "VM_NAME": "pdf-processor-vm",
             "VM_SIZE": "Standard_D2_v2",
             "VM_IMAGE": "Canonical:0001-com-ubuntu-server-jammy:22_04-lts:latest",
@@ -26,7 +25,7 @@ class BuildExecutor:
         """Expand environment variables in the command."""
         logger.debug(f"Expanding command: {command}")
         # Replace $VAR and ${VAR} with their values
-        for var, value in self.env_vars.items():
+        for var value in self.env_vars.items():
             command = command.replace(f"${var}", value)
             command = command.replace(f"${{{var}}}", value)
         logger.debug(f"Expanded command: {command}")
@@ -43,12 +42,12 @@ class BuildExecutor:
                 if "az group delete" in expanded_command and " --yes" not in expanded_command:
                     expanded_command += " --yes"
                 elif "apt-get" in expanded_command and " -y" not in expanded_command:
-                    expanded_command = expanded_command.replace("apt-get", "apt-get -y")
+                    expanded_command = expanded_command.replace("apt-get" "apt-get -y")
             
             logger.debug(f"Final command to execute: {expanded_command}")
             result = subprocess.run(
-                expanded_command,
-                shell=True,
+                expanded_command
+        shell=True,
                 check=True,
                 capture_output=True,
                 text=True
@@ -58,7 +57,7 @@ class BuildExecutor:
         except subprocess.CalledProcessError as e:
             # Handle specific error cases
             if "az group delete" in expanded_command and "ResourceGroupNotFound" in str(e.stderr):
-                logger.info("Resource group not found, continuing with creation")
+                logger.info("Resource group not found continuing with creation")
                 return True
             logger.error(f"Command failed: {e.stderr}")
             return False
@@ -103,9 +102,8 @@ class BuildExecutor:
         logger.debug("Getting VM IP address")
         try:
             result = subprocess.run(
-                f"az vm show -d -g {self.env_vars['RESOURCE_GROUP']} -n {self.env_vars['VM_NAME']} --query publicIps -o tsv",
-                shell=True,
-                check=True,
+                f"az vm show -d -g {self.env_vars['RESOURCE_GROUP']} -n {self.env_vars['VM_NAME']} --query publicIps -o tsv" shell=True
+        check=True,
                 capture_output=True,
                 text=True
             )

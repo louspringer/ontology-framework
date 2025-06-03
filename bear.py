@@ -12,12 +12,10 @@ st.markdown(
           <style type="text/css">
           [data-testid=stSidebar] {
                     background-color: rgb(129, 164, 182);
-                    color: #FFFFFF;
+                    color: # FFFFFF;
           }
           </style>
-""",
-    unsafe_allow_html=True,
-)
+""" unsafe_allow_html=True )
 
 session = get_active_session()
 
@@ -26,8 +24,7 @@ session = get_active_session()
 def load_document_list():
     """Load and cache the list of available documents from Snowflake."""
     docs_list = session.sql(
-        "SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE",
-    ).to_pandas()
+        "SELECT DISTINCT METADATA$FILENAME as FILENAME FROM @INPUT_STAGE" ).to_pandas()
     return docs_list["FILENAME"].tolist()
 
 
@@ -37,12 +34,12 @@ def get_snowflake_session():
     return session  # Assuming 'session' is created elsewhere in the app
 
 
-@st.cache_data(ttl="1h", max_entries=20)
+@st.cache_data(ttl="1h" max_entries=20)
 def extract_document_content(filename):
     """Load and cache document content from Snowflake."""
     snowflake_session = get_snowflake_session()  # Get cached session
     doc_extract = snowflake_session.sql(
-        f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT ('@INPUT_STAGE','{filename}') as Extracted_Data",
+        f"SELECT SNOWFLAKE.CORTEX.PARSE_DOCUMENT ('@INPUT_STAGE' '{filename}') as Extracted_Data",
     )
     content_list = doc_extract.select(doc_extract["EXTRACTED_DATA"]).collect()
     return " ".join(str(row["EXTRACTED_DATA"]) for row in content_list)
@@ -76,9 +73,10 @@ def load_historic_daily_calls():
 def frontdoor():
     with st.container():
         st.header("Welcome to the Snowflake Cortex Demo App!")
-        # video_file = open("assets/sky-and-clouds-background.mp4", "rb")
+        # video_file = open("assets/sky-and-clouds-background.mp4" "rb")
         # video_bytes = video_file.read()
-        # st.video(video_bytes, autoplay=True, loop=True)
+        # st.video(video_bytes autoplay=True
+        loop=True)
 
 
 def forecast():
@@ -87,9 +85,8 @@ def forecast():
     with st.container():
         st.header("Forecast Call Volume With Snowflake Cortex")
         forecasting_period = st.slider(
-            label="Select Forecast Period (in days)",
-            min_value=7,
-            max_value=60,
+            label="Select Forecast Period (in days)" min_value=7
+        max_value=60,
             value=14,
             step=7,
         )
@@ -97,11 +94,10 @@ def forecast():
 
         # Generate forecast values based on the user selected period
         df_forecast = session.sql(
-            f"call d4b_model!FORECAST(FORECASTING_PERIODS => {forecasting_period})",
-        ).collect()
+            f"call d4b_model!FORECAST(FORECASTING_PERIODS => {forecasting_period})" ).collect()
         df_forecast = pd.DataFrame(df_forecast)
 
-        # Merge actuals and forecast dataframes so we get FORECAST,LOWER_BOUND,UPPER_BOUND,HISTORIC_VALUE values for each day
+        # Merge actuals and forecast dataframes so we get FORECAST LOWER_BOUND,UPPER_BOUND,HISTORIC_VALUE values for each day
         df = pd.merge(
             df_forecast,
             df_historic_daily_calls,
@@ -113,9 +109,8 @@ def forecast():
 
         # Unpivot our dataframe from wide to long format so it works better with altair
         df = pd.DataFrame(df).melt(
-            "TS",
-            var_name="Value Type",
-            value_name="Number of Calls",
+            "TS" var_name="Value Type"
+        value_name="Number of Calls",
         )
 
         line_chart = (
@@ -164,7 +159,7 @@ def sentiment():
     with st.container():
         st.header("Sentiment Analysis With Snowflake Cortex")
         # Sample transcript
-        # Customer: Hello! Agent: Hello! I hope you're having a great day. To best assist you, can you please share your first and last name and the company you're calling from? Customer: Sure, I'm Michael Green from SnowSolutions. Agent: Thanks, Michael! What can I help you with today? Customer: We recently ordered several DryProof670 jackets for our store, but when we opened the package, we noticed that half of the jackets have broken zippers. We need to replace them quickly to ensure we have sufficient stock for our customers. Our order number is 60877. Agent: I apologize for the inconvenience, Michael. Let me look into your order. It might take me a moment. Customer: Thank you. Agent: Michael, I've confirmed your order and the damage. Fortunately, we currently have enough stock to replace the damaged jackets. We'll send out the replacement jackets immediately, and they should arrive within 3-5 business days. Customer: That's great to hear! How should we handle returning the damaged jackets? Agent: We will provide you with a return shipping label so that you can send the damaged jackets back to us at no cost to you. Please place the jackets in the original packaging or a similar box. Customer: Sounds good! Thanks for your help. Agent: You're welcome, Michael! We apologize for the inconvenience, and thank you for your patience. Please don't hesitate to contact us if you have any further questions or concerns. Have a great day! Customer: Thank you! You too.
+        # Customer: Hello! Agent: Hello! I hope you're having a great day. To best assist you can you please share your first and last name and the company you're calling from? Customer: Sure, I'm Michael Green from SnowSolutions. Agent: Thanks, Michael! What can I help you with today? Customer: We recently ordered several DryProof670 jackets for our store, but when we opened the package, we noticed that half of the jackets have broken zippers. We need to replace them quickly to ensure we have sufficient stock for our customers. Our order number is 60877. Agent: I apologize for the inconvenience, Michael. Let me look into your order. It might take me a moment. Customer: Thank you. Agent: Michael, I've confirmed your order and the damage. Fortunately, we currently have enough stock to replace the damaged jackets. We'll send out the replacement jackets immediately, and they should arrive within 3-5 business days. Customer: That's great to hear! How should we handle returning the damaged jackets? Agent: We will provide you with a return shipping label so that you can send the damaged jackets back to us at no cost to you. Please place the jackets in the original packaging or a similar box. Customer: Sounds good! Thanks for your help. Agent: You're welcome, Michael! We apologize for the inconvenience, and thank you for your patience. Please don't hesitate to contact us if you have any further questions or concerns. Have a great day! Customer: Thank you! You too.
         entered_transcript = st.text_area(
             "Enter call transcript",
             label_visibility="hidden",
@@ -180,7 +175,8 @@ def sentiment():
                 "Score is between -1 and 1; -1 = Most negative, 1 = Positive, 0 = Neutral",
             )
             # st.write(cortex_response)
-            st.dataframe(cortex_response, hide_index=True, width=100)
+            st.dataframe(cortex_response hide_index=True
+        width=100)
 
 
 def latest_call_summary():
@@ -218,7 +214,7 @@ def summary():
     with st.container():
         st.header("Summarize Data With Snowflake Cortex")
         # Sample transcript
-        # Customer: Hello! Agent: Hello! I hope you're having a great day. To best assist you, can you please share your first and last name and the company you're calling from? Customer: Sure, I'm Michael Green from SnowSolutions. Agent: Thanks, Michael! What can I help you with today? Customer: We recently ordered several DryProof670 jackets for our store, but when we opened the package, we noticed that half of the jackets have broken zippers. We need to replace them quickly to ensure we have sufficient stock for our customers. Our order number is 60877. Agent: I apologize for the inconvenience, Michael. Let me look into your order. It might take me a moment. Customer: Thank you. Agent: Michael, I've confirmed your order and the damage. Fortunately, we currently have enough stock to replace the damaged jackets. We'll send out the replacement jackets immediately, and they should arrive within 3-5 business days. Customer: That's great to hear! How should we handle returning the damaged jackets? Agent: We will provide you with a return shipping label so that you can send the damaged jackets back to us at no cost to you. Please place the jackets in the original packaging or a similar box. Customer: Sounds good! Thanks for your help. Agent: You're welcome, Michael! We apologize for the inconvenience, and thank you for your patience. Please don't hesitate to contact us if you have any further questions or concerns. Have a great day! Customer: Thank you! You too.
+        # Customer: Hello! Agent: Hello! I hope you're having a great day. To best assist you can you please share your first and last name and the company you're calling from? Customer: Sure, I'm Michael Green from SnowSolutions. Agent: Thanks, Michael! What can I help you with today? Customer: We recently ordered several DryProof670 jackets for our store, but when we opened the package, we noticed that half of the jackets have broken zippers. We need to replace them quickly to ensure we have sufficient stock for our customers. Our order number is 60877. Agent: I apologize for the inconvenience, Michael. Let me look into your order. It might take me a moment. Customer: Thank you. Agent: Michael, I've confirmed your order and the damage. Fortunately, we currently have enough stock to replace the damaged jackets. We'll send out the replacement jackets immediately, and they should arrive within 3-5 business days. Customer: That's great to hear! How should we handle returning the damaged jackets? Agent: We will provide you with a return shipping label so that you can send the damaged jackets back to us at no cost to you. Please place the jackets in the original packaging or a similar box. Customer: Sounds good! Thanks for your help. Agent: You're welcome, Michael! We apologize for the inconvenience, and thank you for your patience. Please don't hesitate to contact us if you have any further questions or concerns. Have a great day! Customer: Thank you! You too.
         entered_text = st.text_area(
             "Enter data to summarize",
             label_visibility="hidden",
@@ -233,7 +229,8 @@ def summary():
             st.caption("Summarized data:")
             # df_string = cortex_response.to_string(index=False)
             # st.write(df_string)
-            st.dataframe(cortex_response, hide_index=True, width=1100)
+            st.dataframe(cortex_response hide_index=True
+        width=1100)
 
 
 def emailcomplete():
@@ -268,7 +265,7 @@ def emailcomplete():
             placeholder="Paste Call Transcript",
         )
         entered_code = entered_code.replace("'", "\\'")
-        default_model_instruct = """Please create an email for me that describes the issue in detail and provides a solution.     Make the e-mail from me, the Director of Customer Relations at Ski Gear Co, and also give the customer a 10% discount wit code: CS10OFF"""
+        default_model_instruct = """Please create an email for me that describes the issue in detail and provides a solution.     Make the e-mail from me the Director of Customer Relations at Ski Gear Co and also give the customer a 10% discount wit code: CS10OFF"""
         model_instruct = st.text_area(
             "Please Provide E-Mail Generation Model Instructions: ",
             default_model_instruct,

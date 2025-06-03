@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Tests for the DeploymentModeler class.
 """
@@ -8,6 +8,7 @@ from unittest.mock import patch, MagicMock
 from ontology_framework.deployment_modeler import DeploymentModeler
 from ontology_framework.validation import ValidationManager
 from ontology_framework.exceptions import ValidationError
+
 
 class TestDeploymentModeler(unittest.TestCase):
     """Test cases for the DeploymentModeler class."""
@@ -126,6 +127,7 @@ class TestDeploymentModeler(unittest.TestCase):
         """Test generating deployment script."""
         deploy_script = self.modeler._generate_deploy_script(self.test_config)
         self.assertIn("#!/bin/bash", deploy_script)
+
 
 if __name__ == '__main__':
     unittest.main() 

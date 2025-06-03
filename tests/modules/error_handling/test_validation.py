@@ -3,16 +3,22 @@
 import pytest
 from datetime import datetime
 from typing import Dict, Any
-
 from ontology_framework.modules.error_handling.validation import ValidationHandler
-from ontology_framework.ontology_types import ValidationRule, RiskLevel, SecurityLevel, ComplianceLevel
+from ontology_framework.ontology_types import (
+    ValidationRule,
+    RiskLevel,
+    SecurityLevel,
+    ComplianceLevel
+)
 
 @pytest.fixture
 def validation_handler():
+    """Create a validation handler instance."""
     return ValidationHandler()
 
 @pytest.fixture
 def valid_risk_data():
+    """Create valid risk data."""
     return {
         "level": "HIGH",
         "impact": 8,
@@ -70,38 +76,43 @@ def valid_performance_data():
 
 @pytest.fixture
 def valid_spore_data():
+    """Create valid SPORE data."""
     return {
-        'pattern_type': 'Singleton',
-        'pattern_elements': ['Component1', 'Component2'],
-        'constraints': {
-            'max_instances': 1,
-            'scope': 'Global'
+        "pattern_type": "test",
+        "pattern_elements": ["element1", "element2"],
+        "constraints": {
+            "constraint1": "value1",
+            "constraint2": "value2"
         }
     }
 
 @pytest.fixture
 def valid_semantic_data():
+    """Create valid semantic data."""
     return {
-        'ontology_id': 'http://example.org/ontology',
-        'validation_type': 'consistency'
+        "ontology_id": "test_ontology",
+        "validation_type": "semantic",
+        "data_format": "turtle"
     }
 
 @pytest.fixture
 def valid_syntax_data():
+    """Create valid syntax data."""
     return {
-        'syntax_type': 'Turtle',
-        'content': '@prefix : <http://example.org/>',
-        'format': 'text/turtle'
+        "code": "def test(): pass",
+        "language": "python",
+        "version": "3.8"
     }
 
 @pytest.fixture
 def valid_individual_type_data():
+    """Create valid individual type data."""
     return {
-        'individual_uri': 'http://example.org/individual1',
-        'type_assertions': ['Person', 'Employee'],
-        'property_values': {
-            'name': 'John Doe',
-            'age': 30
+        "individual_uri": "http://example.org/test#individual1",
+        "type_assertions": ["type1", "type2"],
+        "property_values": {
+            "prop1": "value1",
+            "prop2": "value2"
         }
     }
 
@@ -481,4 +492,4 @@ def test_generate_validation_report():
     
     # Check recent validations
     assert isinstance(report["recent_validations"], list)
-    assert len(report["recent_validations"]) <= 10 
+    assert len(report["recent_validations"]) <= 10

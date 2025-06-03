@@ -188,5 +188,4 @@ class MCPCore:
             
         # Update context phase
         context.phase = phase
-        
         return self.validate(context) 

@@ -1,5 +1,5 @@
 """
-Common types and enums for the ontology framework.
+Types and enums used throughout the ontology framework.
 """
 
 from typing import Dict, List, Optional, Union, Any
@@ -205,95 +205,95 @@ class ValidationRule(Enum):
 
     @property
     def message(self) -> str:
-        """Get the validation message for this rule."""
+        """Get validation rule message."""
         messages = {
-            ValidationRule.RISK: "Risk validation failed",
-            ValidationRule.SECURITY: "Security validation failed",
-            ValidationRule.COMPLIANCE: "Compliance validation failed",
-            ValidationRule.PERFORMANCE: "Performance validation failed",
-            ValidationRule.SENSITIVE_DATA: "Sensitive data validation failed",
-            ValidationRule.RELIABILITY: "Reliability validation failed",
-            ValidationRule.AVAILABILITY: "Availability validation failed",
-            ValidationRule.SCALABILITY: "Scalability validation failed",
-            ValidationRule.MAINTAINABILITY: "Maintainability validation failed",
-            ValidationRule.SEVERITY: "Severity validation failed",
-            ValidationRule.STEP_ORDER: "Step order validation failed",
-            ValidationRule.SPORE: "SPORE validation failed",
-            ValidationRule.SEMANTIC: "Semantic validation failed",
-            ValidationRule.SYNTAX: "Syntax validation failed",
-            ValidationRule.MATRIX: "Matrix validation failed",
-            ValidationRule.BFG9K: "BFG9K pattern validation failed"
+            "risk": "Risk validation failed",
+            "security": "Security validation failed",
+            "compliance": "Compliance validation failed",
+            "performance": "Performance validation failed",
+            "sensitive_data": "Sensitive data validation failed",
+            "reliability": "Reliability validation failed",
+            "availability": "Availability validation failed",
+            "scalability": "Scalability validation failed",
+            "maintainability": "Maintainability validation failed",
+            "severity": "Severity validation failed",
+            "step_order": "Step order validation failed",
+            "spore": "SPORE validation failed",
+            "semantic": "Semantic validation failed",
+            "syntax": "Syntax validation failed",
+            "matrix": "Matrix validation failed",
+            "bfg9k": "BFG9K validation failed"
         }
-        return messages.get(self, "Validation failed")
+        return messages.get(self.value, "Validation failed")
 
     @property
     def priority(self) -> str:
-        """Get the priority level for this rule."""
+        """Get validation rule priority."""
         priorities = {
-            ValidationRule.RISK: "HIGH",
-            ValidationRule.SECURITY: "HIGH",
-            ValidationRule.COMPLIANCE: "HIGH",
-            ValidationRule.PERFORMANCE: "MEDIUM",
-            ValidationRule.SENSITIVE_DATA: "HIGH",
-            ValidationRule.RELIABILITY: "HIGH",
-            ValidationRule.AVAILABILITY: "HIGH",
-            ValidationRule.SCALABILITY: "MEDIUM",
-            ValidationRule.MAINTAINABILITY: "MEDIUM",
-            ValidationRule.SEVERITY: "HIGH",
-            ValidationRule.STEP_ORDER: "HIGH",
-            ValidationRule.SPORE: "HIGH",
-            ValidationRule.SEMANTIC: "MEDIUM",
-            ValidationRule.SYNTAX: "LOW",
-            ValidationRule.MATRIX: "HIGH",
-            ValidationRule.BFG9K: "HIGH"
+            "risk": "high",
+            "security": "critical",
+            "compliance": "high",
+            "performance": "medium",
+            "sensitive_data": "critical",
+            "reliability": "high",
+            "availability": "high",
+            "scalability": "medium",
+            "maintainability": "medium",
+            "severity": "high",
+            "step_order": "medium",
+            "spore": "high",
+            "semantic": "medium",
+            "syntax": "high",
+            "matrix": "medium",
+            "bfg9k": "high"
         }
-        return priorities.get(self, "MEDIUM")
+        return priorities.get(self.value, "medium")
 
     @property
     def target(self) -> str:
-        """Get the target of this validation rule."""
+        """Get validation rule target."""
         targets = {
-            ValidationRule.RISK: "data",
-            ValidationRule.SECURITY: "data",
-            ValidationRule.COMPLIANCE: "data",
-            ValidationRule.PERFORMANCE: "data",
-            ValidationRule.SENSITIVE_DATA: "data",
-            ValidationRule.RELIABILITY: "data",
-            ValidationRule.AVAILABILITY: "data",
-            ValidationRule.SCALABILITY: "data",
-            ValidationRule.MAINTAINABILITY: "data",
-            ValidationRule.SEVERITY: "data",
-            ValidationRule.STEP_ORDER: "data",
-            ValidationRule.SPORE: "data",
-            ValidationRule.SEMANTIC: "data",
-            ValidationRule.SYNTAX: "data",
-            ValidationRule.MATRIX: "data",
-            ValidationRule.BFG9K: "pattern"
+            "risk": "system",
+            "security": "system",
+            "compliance": "system",
+            "performance": "system",
+            "sensitive_data": "data",
+            "reliability": "system",
+            "availability": "system",
+            "scalability": "system",
+            "maintainability": "code",
+            "severity": "error",
+            "step_order": "process",
+            "spore": "ontology",
+            "semantic": "ontology",
+            "syntax": "code",
+            "matrix": "data",
+            "bfg9k": "ontology"
         }
-        return targets.get(self, "data")
+        return targets.get(self.value, "system")
 
     @property
     def validator(self) -> str:
-        """Get the validator for this rule."""
+        """Get validation rule validator."""
         validators = {
-            ValidationRule.RISK: "risk_validator",
-            ValidationRule.SECURITY: "security_validator",
-            ValidationRule.COMPLIANCE: "compliance_validator",
-            ValidationRule.PERFORMANCE: "performance_validator",
-            ValidationRule.SENSITIVE_DATA: "sensitive_data_validator",
-            ValidationRule.RELIABILITY: "reliability_validator",
-            ValidationRule.AVAILABILITY: "availability_validator",
-            ValidationRule.SCALABILITY: "scalability_validator",
-            ValidationRule.MAINTAINABILITY: "maintainability_validator",
-            ValidationRule.SEVERITY: "severity_validator",
-            ValidationRule.STEP_ORDER: "step_order_validator",
-            ValidationRule.SPORE: "spore_validator",
-            ValidationRule.SEMANTIC: "semantic_validator",
-            ValidationRule.SYNTAX: "syntax_validator",
-            ValidationRule.MATRIX: "matrix_validator",
-            ValidationRule.BFG9K: "bfg9k_validator"
+            "risk": "risk_validator",
+            "security": "security_validator",
+            "compliance": "compliance_validator",
+            "performance": "performance_validator",
+            "sensitive_data": "data_validator",
+            "reliability": "reliability_validator",
+            "availability": "availability_validator",
+            "scalability": "scalability_validator",
+            "maintainability": "maintainability_validator",
+            "severity": "severity_validator",
+            "step_order": "step_validator",
+            "spore": "spore_validator",
+            "semantic": "semantic_validator",
+            "syntax": "syntax_validator",
+            "matrix": "matrix_validator",
+            "bfg9k": "bfg9k_validator"
         }
-        return validators.get(self, "unknown_validator")
+        return validators.get(self.value, "default_validator")
 
 class RiskLevel(Enum):
     """Levels of risk."""
@@ -362,9 +362,10 @@ class PerformanceMetric(Enum):
     MODIFIABILITY = "modifiability"
     ANALYZABILITY = "analyzability"
     STABILITY = "stability"
-    CHANGEABILITY = "changeability" 
+    CHANGEABILITY = "changeability"
 
 class ValidationResult:
+    """Class for representing validation results."""
     def __init__(
         self,
         rule: ValidationRule,
@@ -378,14 +379,16 @@ class ValidationResult:
         self.details = details or {}
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert the validation result to a dictionary."""
         return {
-            'rule': self.rule,
-            'result': self.result,
-            'timestamp': self.timestamp,
-            'details': self.details
+            "rule": self.rule.value,
+            "result": self.result,
+            "timestamp": self.timestamp,
+            "details": self.details
         }
 
 class ValidationError(Exception):
+    """Exception raised when validation fails."""
     def __init__(self, message: str, rule: ValidationRule, details: Optional[Dict[str, Any]] = None):
         super().__init__(message)
         self.rule = rule

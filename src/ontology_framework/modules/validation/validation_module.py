@@ -1,10 +1,12 @@
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]
+# Behavioral-Profile: ClaudeReflector
+
 """Validation module for SHACL validation."""
 
 from typing import Any, Dict, Optional
-
-from pyshacl import validate
+from pyshacl import validate  # type: ignore
 from rdflib import Graph
-
 from ..base import BaseModule
 
 class ValidationModule(BaseModule):
@@ -19,13 +21,13 @@ class ValidationModule(BaseModule):
         """
         super().__init__(graph)
         self.shapes_graph = shapes_graph
-        
+
     def validate(self, graph: Optional[Graph] = None) -> Dict[str, Any]:
         """Validate the graph against SHACL shapes.
         
         Args:
-            graph: Optional graph to validate. If None, uses the module's graph.
-            
+            graph: Optional graph to validate. If None uses the module's graph.
+        
         Returns:
             Dictionary containing validation results.
         """
@@ -33,10 +35,8 @@ class ValidationModule(BaseModule):
             graph = self.graph
         if graph is None:
             raise ValueError("No graph provided for validation")
-            
         if self.shapes_graph is None:
             raise ValueError("No shapes graph provided for validation")
-            
         conforms, results_graph, results_text = validate(
             data_graph=graph,
             shacl_graph=self.shapes_graph,
@@ -48,13 +48,20 @@ class ValidationModule(BaseModule):
             meta_shacl=False,
             debug=False
         )
-        
         return {
             "conforms": conforms,
             "results_graph": results_graph,
             "results_text": results_text
         }
+
+    def load(self) -> None:
+        """Load module data."""
+        pass
         
+    def save(self) -> None:
+        """Save module data."""
+        pass
+
     def get_requirements(self) -> Dict[str, Any]:
         """Get the module's requirements.
         
@@ -65,7 +72,7 @@ class ValidationModule(BaseModule):
             "shapes_graph": "SHACL shapes graph for validation",
             "data_graph": "RDF graph to validate"
         }
-        
+
     def set_shapes_graph(self, shapes_graph: Graph) -> None:
         """Set the SHACL shapes graph.
         

@@ -37,8 +37,7 @@ class ValidationManager:
     def get_validation_rules(self) -> List[Dict[str, str]]:
         """Query all validation rules using SPARQL."""
         query = """
-        SELECT ?rule ?value
-        WHERE {
+        SELECT ?rule ?value WHERE {
             ?rule a ont:ValidationRule ;
                   ont:hasValue ?value .
         }
@@ -57,4 +56,4 @@ class ValidationManager:
         save_path = path if path else str(self.default_path)
         # Ensure the directory exists
         Path(save_path).parent.mkdir(parents=True, exist_ok=True)
-        self.graph.serialize(destination=save_path, format="turtle") 
+        self.graph.serialize(destination=save_path, format="turtle")

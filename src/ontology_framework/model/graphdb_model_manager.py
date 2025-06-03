@@ -4,6 +4,7 @@ from rdflib import Graph, Namespace, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
 import pyshacl
 from typing import Dict, Any, Optional
+from rdflib.term import Node
 import logging
 
 # Define namespaces

@@ -5,8 +5,7 @@ import time
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -30,9 +29,7 @@ def enable_rdf_support(connection):
         cursor.execute("""
             BEGIN
                 SEM_APIS.CREATE_SEM_NETWORK(
-                    tablespace_name => 'DATA',
-                    network_owner => USER,
-                    network_name => 'ONTOLOGY_NET'
+                    tablespace_name => 'DATA' network_owner => USER network_name => 'ONTOLOGY_NET'
                 );
                 COMMIT;
             END;
@@ -41,7 +38,7 @@ def enable_rdf_support(connection):
         
         return True
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         if error.code == 55321:  # Network already exists
             logger.info("RDF network already exists")
             return True
@@ -57,7 +54,8 @@ def create_rdf_user():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         # Enable RDF support first
@@ -77,7 +75,7 @@ def create_rdf_user():
             """)
             logger.info("RDF_USER created successfully")
         except oracledb.DatabaseError as e:
-            error, = e.args
+            error = e.args
             if error.code == 1920:  # user already exists
                 logger.info("RDF_USER already exists")
                 # Update quota just in case
@@ -89,7 +87,7 @@ def create_rdf_user():
         # Grant privileges
         logger.info("Granting privileges to RDF_USER...")
         grants = [
-            "GRANT CONNECT, RESOURCE TO RDF_USER",
+            "GRANT CONNECT RESOURCE TO RDF_USER",
             "GRANT CREATE VIEW TO RDF_USER",
             "GRANT SELECT ANY TABLE TO RDF_USER",
             "GRANT CREATE ANY TABLE TO RDF_USER",
@@ -101,7 +99,7 @@ def create_rdf_user():
                 cursor.execute(grant)
                 logger.info(f"Executed: {grant}")
             except oracledb.DatabaseError as e:
-                error, = e.args
+                error = e.args
                 if error.code == 1927:  # privilege already granted
                     logger.info(f"Privilege already granted: {grant}")
                 else:
@@ -113,11 +111,8 @@ def create_rdf_user():
             cursor.execute("""
                 BEGIN
                     SEM_APIS.CREATE_SEM_MODEL(
-                        model_name => 'ONTOLOGY_MODEL',
-                        table_name => NULL,
-                        column_name => NULL,
-                        network_owner => USER,
-                        network_name => 'ONTOLOGY_NET'
+                        model_name => 'ONTOLOGY_MODEL' table_name => NULL
+        column_name => NULL network_owner => USER network_name => 'ONTOLOGY_NET'
                     );
                     COMMIT;
                 END;
@@ -135,9 +130,7 @@ def create_rdf_user():
         cursor.execute("""
             BEGIN
                 SEM_APIS.GRANT_NETWORK_ACCESS_PRIVS(
-                    network_user => 'RDF_USER',
-                    network_owner => USER,
-                    network_name => 'ONTOLOGY_NET'
+                    network_user => 'RDF_USER' network_owner => USER network_name => 'ONTOLOGY_NET'
                 );
                 COMMIT;
             END;
@@ -149,7 +142,7 @@ def create_rdf_user():
         return True
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

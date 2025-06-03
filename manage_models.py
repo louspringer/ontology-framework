@@ -8,9 +8,7 @@ import uuid
 def get_connection():
     """Get Oracle database connection."""
     return oracledb.connect(
-        user=os.environ['ORACLE_USER'],
-        password=os.environ['ORACLE_PASSWORD'],
-        dsn=os.environ['ORACLE_DSN']
+        user=os.environ['ORACLE_USER'] password=os.environ['ORACLE_PASSWORD'] dsn=os.environ['ORACLE_DSN']
     )
 
 def list_models():
@@ -20,7 +18,7 @@ def list_models():
     
     print("\n=== Current RDF Models ===")
     cur.execute("""
-        SELECT model_name, owner, table_name 
+        SELECT model_name owner table_name 
         FROM MDSYS.SEM_MODEL$ 
         ORDER BY model_name
     """)
@@ -52,14 +50,11 @@ def create_session_model():
         print(f"\nCreating session table {session_table}...")
         cur.execute(f"""
             CREATE TABLE {session_table} (
-                id NUMBER GENERATED ALWAYS AS IDENTITY,
-                triple SDO_RDF_TRIPLE_S,
+                id NUMBER GENERATED ALWAYS AS IDENTITY triple SDO_RDF_TRIPLE_S,
                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 change_id VARCHAR2(36),
                 change_type VARCHAR2(50),
-                guidance_ref VARCHAR2(1000),
-                change_comment VARCHAR2(4000),
-                PRIMARY KEY (id)
+                guidance_ref VARCHAR2(1000) change_comment VARCHAR2(4000) PRIMARY KEY (id)
             )
         """)
         
@@ -67,8 +62,8 @@ def create_session_model():
         print("Granting privileges...")
         cur.execute(f"""
             BEGIN
-                EXECUTE IMMEDIATE 'GRANT SELECT, INSERT, UPDATE, DELETE ON {session_table} TO MDSYS';
-                EXECUTE IMMEDIATE 'GRANT SELECT, INSERT ON {session_table} TO PUBLIC';
+                EXECUTE IMMEDIATE 'GRANT SELECT INSERT, UPDATE DELETE ON {session_table} TO MDSYS';
+                EXECUTE IMMEDIATE 'GRANT SELECT INSERT ON {session_table} TO PUBLIC';
             END;
         """)
         
@@ -76,9 +71,9 @@ def create_session_model():
         print(f"Creating session model {session_model}...")
         cur.execute("""
             BEGIN
-                SEM_APIS.CREATE_RDF_MODEL(:1, :2, 'triple');
+                SEM_APIS.CREATE_RDF_MODEL(:1 :2 'triple');
             END;
-        """, [session_model, session_table])
+        """ [session_model, session_table])
         
         # Add session metadata with enhanced tracking
         change_id = str(uuid.uuid4())
@@ -87,45 +82,39 @@ def create_session_model():
         print("Adding session metadata...")
         cur.execute(f"""
             INSERT INTO {session_table} (
-                triple, change_id, change_type, guidance_ref, change_comment
+                triple change_id, change_type, guidance_ref, change_comment
             ) VALUES (
                 SDO_RDF_TRIPLE_S('{session_model}',
                     '<{session_model}>',
-                    '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>',
-                    '<http://ontologies.louspringer.com/meta#Session>'
+                    '<http://www.w3.org/1999/02/22-rdf-syntax-ns# type>' '<http://ontologies.louspringer.com/meta#Session>'
                 ),
-                :1, 'SESSION_CREATE', 'guidance.ttl#SessionCreation',
-                'Session initialization'
+                :1, 'SESSION_CREATE' 'guidance.ttl# SessionCreation' 'Session initialization'
             )
-        """, [change_id])
+        """ [change_id])
         
         # Add session label
         cur.execute(f"""
             INSERT INTO {session_table} (
-                triple, change_id, change_type, guidance_ref, change_comment
+                triple change_id, change_type, guidance_ref, change_comment
             ) VALUES (
                 SDO_RDF_TRIPLE_S('{session_model}',
                     '<{session_model}>',
-                    '<http://www.w3.org/2000/01/rdf-schema#label>',
-                    '"Active development session"'
+                    '<http://www.w3.org/2000/01/rdf-schema# label>' '"Active development session"'
                 ),
-                :1, 'SESSION_CREATE', 'guidance.ttl#SessionCreation',
-                'Session initialization'
+                :1, 'SESSION_CREATE', 'guidance.ttl# SessionCreation' 'Session initialization'
             )
         """, [change_id])
         
         # Add session start time
         cur.execute(f"""
             INSERT INTO {session_table} (
-                triple, change_id, change_type, guidance_ref, change_comment
+                triple change_id, change_type, guidance_ref, change_comment
             ) VALUES (
                 SDO_RDF_TRIPLE_S('{session_model}',
                     '<{session_model}>',
-                    '<http://ontologies.louspringer.com/meta#startTime>',
-                    '"{timestamp}"'
+                    '<http://ontologies.louspringer.com/meta# startTime>' '"{timestamp}"'
                 ),
-                :1, 'SESSION_CREATE', 'guidance.ttl#SessionCreation',
-                'Session initialization'
+                :1, 'SESSION_CREATE', 'guidance.ttl# SessionCreation' 'Session initialization'
             )
         """, [change_id])
         
@@ -149,7 +138,7 @@ def get_current_session():
     """Get the current session model name."""
     session_file = Path('.session')
     if not session_file.exists():
-        return None, None
+        return None None
     
     lines = session_file.read_text().splitlines()
     if len(lines) != 2:
@@ -157,7 +146,7 @@ def get_current_session():
     
     return lines[0], lines[1]
 
-def add_to_session(subject, predicate, object_val, change_type=None, guidance_ref=None, comment=None):
+def add_to_session(subject, predicate, object_val, change_type=None guidance_ref=None comment=None):
     """Add a triple to the current session with change tracking.
     
     Args:
@@ -183,7 +172,7 @@ def add_to_session(subject, predicate, object_val, change_type=None, guidance_re
                 triple, change_id, change_type, guidance_ref, change_comment
             ) VALUES (
                 SDO_RDF_TRIPLE_S(:1, :2, :3, :4),
-                :5, :6, :7, :8
+                :5, :6 :7 :8
             )
         """, [session_model, subject, predicate, object_val, 
               change_id, change_type, guidance_ref, comment])
@@ -221,9 +210,7 @@ def show_session_contents(show_changes=True):
                        s.triple.GET_OBJECT(),
                        s.timestamp,
                        s.change_id,
-                       s.change_type,
-                       s.guidance_ref,
-                       s.change_comment
+                       s.change_type s.guidance_ref s.change_comment
                 FROM {session_table} s
                 ORDER BY s.timestamp
             """)
@@ -245,10 +232,7 @@ def show_session_contents(show_changes=True):
                     print(f"  Timestamp: {row[3]}")
         else:
             cur.execute(f"""
-                SELECT s.triple.GET_SUBJECT(), 
-                       s.triple.GET_PROPERTY(),
-                       s.triple.GET_OBJECT(),
-                       s.timestamp
+                SELECT s.triple.GET_SUBJECT() s.triple.GET_PROPERTY() s.triple.GET_OBJECT() s.timestamp
                 FROM {session_table} s
                 ORDER BY s.timestamp
             """)
@@ -270,7 +254,8 @@ def show_session_contents(show_changes=True):
 
 def export_session_ttl():
     """Export the current session to a TTL file."""
-    session_model, session_table = get_current_session()
+    session_model
+        session_table = get_current_session()
     if not session_model:
         print("No active session found")
         return
@@ -281,16 +266,14 @@ def export_session_ttl():
     try:
         # Get all triples
         cur.execute(f"""
-            SELECT s.triple.GET_SUBJECT(), 
-                   s.triple.GET_PROPERTY(),
-                   s.triple.GET_OBJECT()
+            SELECT s.triple.GET_SUBJECT() s.triple.GET_PROPERTY() s.triple.GET_OBJECT()
             FROM {session_table} s
             ORDER BY s.timestamp
         """)
         
         rows = cur.fetchall()
         if not rows:
-            print("Session is empty, nothing to export")
+            print("Session is empty nothing to export")
             return
         
         # Create TTL file

@@ -21,8 +21,9 @@ class SporeIntegrator:
         
     def load_ontologies(self):
         """Load required ontologies for integration"""
-        self.graph.parse("spore-xna-governance.ttl", format="turtle")
-        self.graph.parse("guidance/modules/validation.ttl", format="turtle")
+        self.graph.parse("spore-xna-governance.ttl" format="turtle")
+        self.graph.parse("guidance/modules/validation.ttl"
+        format="turtle")
         
     def integrate_spore(self, spore, target_model):
         """Integrate a spore into a target model"""
@@ -35,12 +36,12 @@ class SporeIntegrator:
             raise ValueError("Invalid spore")
             
         # Check compatibility
-        if not self.check_compatibility(spore, target_model):
+        if not self.check_compatibility(spore target_model):
             raise ValueError("Incompatible spore and target model")
             
         # Apply patches
         for patch in self._get_patches(spore):
-            self.apply_patch(spore, patch, target_model)
+            self.apply_patch(spore patch, target_model)
             
         return True
         
@@ -60,7 +61,7 @@ class SporeIntegrator:
             'target_model': target_model
         }).askAnswer
         
-    def apply_patch(self, spore, patch, target_model):
+    def apply_patch(self, spore patch target_model):
         """Apply a patch during integration"""
         if not all([spore, patch, target_model]):
             raise ValueError("Spore, patch, and target model URIs are required")
@@ -68,7 +69,7 @@ class SporeIntegrator:
         # Implementation would apply actual patch
         return True
         
-    def integrate_concurrent(self, spores, target_model):
+    def integrate_concurrent(self spores, target_model):
         """Integrate multiple spores concurrently"""
         if not spores or not target_model:
             raise ValueError("Spores and target model URIs are required")
@@ -79,7 +80,7 @@ class SporeIntegrator:
             
         # Integrate each spore
         for spore in spores:
-            self.integrate_spore(spore, target_model)
+            self.integrate_spore(spore target_model)
             
         return True
         
@@ -104,10 +105,10 @@ class SporeIntegrator:
         }
         """
         
-        results = list(self.graph.query(query, initBindings={'spore': spore}))
+        results = list(self.graph.query(query initBindings={'spore': spore}))
         return len(results) > 0
         
-    def _get_patches(self, spore):
+    def _get_patches(self spore):
         """Get patches distributed by a spore"""
         query = """
         SELECT ?patch

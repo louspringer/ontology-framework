@@ -1,30 +1,43 @@
-"""Base module class for the ontology framework."""
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: [current version from guidance.ttl]
+# Behavioral-Profile: ClaudeReflector
+
+"""Base module for ontology framework."""
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
-
 from rdflib import Graph
 
 class BaseModule(ABC):
-    """Base class for all ontology framework modules."""
+    """Base class for ontology framework modules."""
     
-    def __init__(self, graph: Optional[Graph] = None):
-        """Initialize the module with an optional graph."""
-        self.graph = graph
-        
-    @abstractmethod
-    def validate(self, graph: Optional[Graph] = None) -> Dict[str, Any]:
-        """Validate the graph according to the module's rules.
+    def __init__(self, graph: Optional[Graph] = None) -> None:
+        """Initialize the base module.
         
         Args:
-            graph: Optional graph to validate. If None, uses the module's graph.
-            
+            graph: Optional RDF graph to use
+        """
+        self.graph = graph or Graph()
+        
+    @abstractmethod
+    def validate(self) -> Dict[str, Any]:
+        """Validate the module's state.
+        
         Returns:
-            Dictionary containing validation results.
+            Dictionary containing validation results
         """
         pass
-    
+        
     @abstractmethod
+    def load(self) -> None:
+        """Load module data."""
+        pass
+        
+    @abstractmethod
+    def save(self) -> None:
+        """Save module data."""
+        pass
+
     def get_requirements(self) -> Dict[str, Any]:
         """Get the module's requirements.
         
@@ -32,7 +45,7 @@ class BaseModule(ABC):
             Dictionary containing the module's requirements.
         """
         pass
-    
+
     def set_graph(self, graph: Graph) -> None:
         """Set the graph for this module.
         

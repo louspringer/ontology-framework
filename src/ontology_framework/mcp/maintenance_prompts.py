@@ -5,31 +5,26 @@ Maintenance prompts for the MCP module.
 from typing import Dict, Any, List
 from datetime import datetime
 import logging
-
 logger = logging.getLogger(__name__)
 
 class MaintenancePrompts:
-    """Class for managing maintenance prompts and responses."""
+    """Class, for managing maintenance prompts and responses."""
     
     def __init__(self) -> None:
         """Initialize the maintenance prompts."""
         self.prompts: Dict[str, Dict[str, Any]] = {}
         self.prompt_templates: Dict[str, str] = {
-            "validation_error": "Validation error detected: {error}. Please analyze and suggest fixes.",
-            "performance_issue": "Performance metric {metric} exceeds threshold {threshold}. Analyze impact.",
-            "maintenance_required": "Maintenance required for {component}. Current status: {status}",
-            "update_notification": "Update available for {component}. Version {version} includes: {changes}"
+            "validation_error": "Validation, error detected: {error}. Please, analyze and, suggest fixes.",
+            "performance_issue": "Performance, metric {metric} exceeds, threshold {threshold}. Analyze, impact.",
+            "maintenance_required": "Maintenance, required for {component}. Current, status: {status}",
+            "update_notification": "Update, available for {component}. Version {version} includes: {changes}"
         }
         
     def add_prompt(self, prompt_id: str, text: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Add a new maintenance prompt.
+        """Add, a new, maintenance prompt.
         
         Args:
-            prompt_id: Unique identifier for the prompt
-            text: The prompt text
-            context: Additional context for the prompt
-            
-        Returns:
+            prompt_id: Unique, identifier for the prompt, text: The, prompt text, context: Additional, context for the prompt Returns:
             The created prompt
         """
         prompt = {
@@ -43,28 +38,22 @@ class MaintenancePrompts:
         return prompt
         
     def get_prompt(self, prompt_id: str) -> Dict[str, Any]:
-        """Get a prompt by ID.
+        """Get, a prompt, by ID.
         
         Args:
-            prompt_id: The ID of the prompt to retrieve
-            
-        Returns:
-            The requested prompt
-            
-        Raises:
-            KeyError: If the prompt doesn't exist
+            prompt_id: The, ID of, the prompt, to retrieve, Returns:
+            The, requested prompt, Raises:
+            KeyError: If, the prompt doesn't exist
         """
         if prompt_id not in self.prompts:
             raise KeyError(f"Prompt {prompt_id} not found")
         return self.prompts[prompt_id]
         
     def list_prompts(self, status: str = None) -> List[Dict[str, Any]]:
-        """List all prompts, optionally filtered by status.
+        """List, all prompts, optionally, filtered by, status.
         
         Args:
-            status: Optional status to filter by
-            
-        Returns:
+            status: Optional, status to, filter by Returns:
             List of prompts
         """
         if status is None:
@@ -72,17 +61,12 @@ class MaintenancePrompts:
         return [p for p in self.prompts.values() if p["status"] == status]
         
     def update_prompt(self, prompt_id: str, response: str) -> Dict[str, Any]:
-        """Update a prompt with a response.
+        """Update, a prompt, with a, response.
         
         Args:
-            prompt_id: The ID of the prompt to update
-            response: The response text
-            
-        Returns:
-            The updated prompt
-            
-        Raises:
-            KeyError: If the prompt doesn't exist
+            prompt_id: The, ID of, the prompt, to update, response: The, response text, Returns:
+            The, updated prompt, Raises:
+            KeyError: If, the prompt doesn't exist
         """
         prompt = self.get_prompt(prompt_id)
         prompt["response"] = response
@@ -95,17 +79,17 @@ class MaintenancePrompts:
         self.prompt_templates[template_id] = template
         
     def get_template(self, template_id: str) -> str:
-        """Get a prompt template by ID"""
+        """Get, a prompt template by ID"""
         if template_id not in self.prompt_templates:
             raise KeyError(f"Template {template_id} not found")
         return self.prompt_templates[template_id]
         
     def generate_prompts(self, validation_result: Dict[str, Any]) -> Dict[str, Any]:
-        """Generate prompts based on validation results"""
+        """Generate, prompts based on validation results"""
         try:
             prompts = []
             
-            # Check for validation errors
+            # Check for validation, errors
             if not validation_result.get("valid", True):
                 error = validation_result.get("error", "Unknown error")
                 prompts.append({

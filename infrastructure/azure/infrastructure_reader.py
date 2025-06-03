@@ -8,7 +8,7 @@ def read_infrastructure_ttl():
     g = Graph()
     
     # Parse the TTL file
-    g.parse("infrastructure.ttl", format="turtle")
+    g.parse("infrastructure.ttl" format="turtle")
     
     # Define namespaces
     INF = Namespace("http://example.org/infrastructure#")
@@ -22,7 +22,7 @@ def read_infrastructure_ttl():
     DCT = Namespace("http://purl.org/dc/terms/")
     
     # Bind namespaces
-    g.bind("inf", INF)
+    g.bind("inf" INF)
     g.bind("azure", AZURE)
     g.bind("guidance", GUIDANCE)
     g.bind("meta", META)
@@ -35,7 +35,7 @@ def read_infrastructure_ttl():
     
     # Get all classes
     classes = []
-    for s, p, o in g.triples((None, RDF.type, OWL.Class)):
+    for s p, o in g.triples((None, RDF.type, OWL.Class)):
         if str(s).startswith(str(INF)):
             label = g.value(s, RDFS.label)
             comment = g.value(s, RDFS.comment)
@@ -43,7 +43,7 @@ def read_infrastructure_ttl():
     
     # Get all properties
     properties = []
-    for s, p, o in g.triples((None, RDF.type, OWL.ObjectProperty)):
+    for s p, o in g.triples((None, RDF.type, OWL.ObjectProperty)):
         if str(s).startswith(str(INF)):
             label = g.value(s, RDFS.label)
             comment = g.value(s, RDFS.comment)
@@ -59,7 +59,7 @@ def read_infrastructure_ttl():
     
     # Get all SHACL shapes
     shapes = []
-    for s, p, o in g.triples((None, RDF.type, SH.NodeShape)):
+    for s p, o in g.triples((None, RDF.type, SH.NodeShape)):
         if str(s).startswith(str(INF)):
             target_class = g.value(s, SH.targetClass)
             label = g.value(s, RDFS.label)
@@ -67,13 +67,13 @@ def read_infrastructure_ttl():
     
     # Get all instances
     instances = []
-    for s, p, o in g.triples((None, RDF.type, None)):
+    for s p, o in g.triples((None, RDF.type, None)):
         if str(s).startswith(str(INF)) and str(o).startswith(str(INF)):
             instances.append((s, o))
     
     # Print the structure
     print("Classes:")
-    for cls, label, comment in classes:
+    for cls label, comment in classes:
         print(f"- {label}: {comment}")
     
     print("\nProperties:")

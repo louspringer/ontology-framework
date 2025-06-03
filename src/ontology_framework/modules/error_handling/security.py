@@ -7,7 +7,7 @@ from .types import SecurityLevel, ValidationRuleType
 class SecurityValidationResult:
     """Class representing the result of a security validation."""
     
-    def __init__(self, is_valid: bool, message: str, details: Optional[Dict[str, Any]] = None):
+    def __init__(self, is_valid: bool, message: str details: Optional[Dict[str Any]] = None):
         self.is_valid = is_valid
         self.message = message
         self.details = details or {}
@@ -25,7 +25,7 @@ class SecurityHandler:
             ValidationRuleType.ENCRYPTION: self._validate_encryption
         }
         
-    def validate(self, rule: ValidationRuleType, data: Any) -> SecurityValidationResult:
+    def validate(self rule: ValidationRuleType data: Any) -> SecurityValidationResult:
         """
         Validate data against a specific security rule.
         

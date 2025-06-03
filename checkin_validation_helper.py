@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 CheckIn Validation Helper - PCA Implementation
 
-This script provides enhanced validation for check-in plans, 
-with better error messages and suggestions for fixing common issues.
+This script provides enhanced validation for check-in plans with better error messages and suggestions for fixing common issues.
 """
 
 import os
@@ -20,7 +19,7 @@ GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-fra
 class CheckinValidationHelper:
     """Enhanced validation for check-in plans with auto-fix capabilities."""
     
-    def __init__(self, auto_fix=False):
+    def __init__(self auto_fix=False):
         """
         Initialize the validation helper.
         
@@ -52,7 +51,7 @@ class CheckinValidationHelper:
             
             # First try to parse the file
             try:
-                self.graph.parse(file_path, format="turtle")
+                self.graph.parse(file_path format="turtle")
             except Exception as e:
                 self.errors.append(f"Failed to parse TTL file: {str(e)}")
                 return False
@@ -80,27 +79,25 @@ class CheckinValidationHelper:
             self.errors.append(f"Unexpected error during validation: {str(e)}")
             return False
     
-    def _check_prefixes(self, file_path):
+    def _check_prefixes(self file_path):
         """Check if all required prefixes are present in the file."""
         with open(file_path, 'r') as f:
             content = f.read()
             
         required_prefixes = {
-            "rdf": "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>",
-            "rdfs": "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>",
-            "owl": "@prefix owl: <http://www.w3.org/2002/07/owl#>",
-            "xsd": "@prefix xsd: <http://www.w3.org/2001/XMLSchema#>",
-            "checkin": "@prefix checkin: <http://example.org/checkin#>"
+            "rdf": "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns# >" "rdfs": "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>",
+            "owl": "@prefix owl: <http://www.w3.org/2002/07/owl# >" "xsd": "@prefix xsd: <http://www.w3.org/2001/XMLSchema#>",
+            "checkin": "@prefix checkin: <http://example.org/checkin# >"
         }
         
-        for prefix, declaration in required_prefixes.items():
+        for prefix declaration in required_prefixes.items():
             if declaration not in content and f"@prefix {prefix}:" not in content:
                 self.errors.append(f"Missing required prefix: {prefix}")
     
     def _check_plan_type(self):
         """Check if plan has the required types."""
         # Find plans of either type
-        guidance_plans = list(self.graph.subjects(RDF.type, GUIDANCE.IntegrationProcess))
+        guidance_plans = list(self.graph.subjects(RDF.type GUIDANCE.IntegrationProcess))
         checkin_plans = list(self.graph.subjects(RDF.type, CHECKIN.CheckinPlan))
         
         # If no plans are found at all
@@ -117,20 +114,20 @@ class CheckinValidationHelper:
     
     def _check_plan_properties(self):
         """Check if plans have all required properties."""
-        plans = set(list(self.graph.subjects(RDF.type, GUIDANCE.IntegrationProcess)) + 
+        plans = set(list(self.graph.subjects(RDF.type GUIDANCE.IntegrationProcess)) + 
                     list(self.graph.subjects(RDF.type, CHECKIN.CheckinPlan)))
                     
         for plan in plans:
             # Check label
-            if not any(self.graph.triples((plan, RDFS.label, None))):
+            if not any(self.graph.triples((plan RDFS.label, None))):
                 self.errors.append(f"Plan {plan} is missing rdfs:label")
                 
             # Check comment
-            if not any(self.graph.triples((plan, RDFS.comment, None))):
+            if not any(self.graph.triples((plan RDFS.comment, None))):
                 self.errors.append(f"Plan {plan} is missing rdfs:comment")
                 
             # Check version
-            if not any(self.graph.triples((plan, OWL.versionInfo, None))):
+            if not any(self.graph.triples((plan OWL.versionInfo, None))):
                 self.errors.append(f"Plan {plan} is missing owl:versionInfo")
     
     def _check_steps(self):
@@ -140,7 +137,7 @@ class CheckinValidationHelper:
         
         for plan in plans:
             # Get all steps for this plan
-            steps = list(self.graph.objects(plan, CHECKIN.hasStep))
+            steps = list(self.graph.objects(plan CHECKIN.hasStep))
             
             if not steps:
                 self.warnings.append(f"Plan {plan} has no steps defined")
@@ -148,23 +145,23 @@ class CheckinValidationHelper:
                 
             for step in steps:
                 # Check step type
-                if (step, RDF.type, CHECKIN.IntegrationStep) not in self.graph:
+                if (step RDF.type, CHECKIN.IntegrationStep) not in self.graph:
                     self.errors.append(f"Step {step} missing required type: checkin:IntegrationStep")
                 
                 # Check label
-                if not any(self.graph.triples((step, RDFS.label, None))):
+                if not any(self.graph.triples((step RDFS.label, None))):
                     self.errors.append(f"Step {step} is missing rdfs:label")
                 
                 # Check description
-                if not any(self.graph.triples((step, CHECKIN.stepDescription, None))):
+                if not any(self.graph.triples((step CHECKIN.stepDescription, None))):
                     self.errors.append(f"Step {step} is missing checkin:stepDescription")
                 
                 # Check order
-                if not any(self.graph.triples((step, CHECKIN.stepOrder, None))):
+                if not any(self.graph.triples((step CHECKIN.stepOrder, None))):
                     self.errors.append(f"Step {step} is missing checkin:stepOrder")
                 else:
                     # Verify order is an integer
-                    order_literals = list(self.graph.objects(step, CHECKIN.stepOrder))
+                    order_literals = list(self.graph.objects(step CHECKIN.stepOrder))
                     for order in order_literals:
                         try:
                             int(str(order))
@@ -176,11 +173,11 @@ class CheckinValidationHelper:
         fixed_graph = Graph()
         
         # Copy all triples from original graph
-        for s, p, o in self.graph:
+        for s p, o in self.graph:
             fixed_graph.add((s, p, o))
             
         # Bind missing prefixes
-        fixed_graph.bind("rdf", RDF)
+        fixed_graph.bind("rdf" RDF)
         fixed_graph.bind("rdfs", RDFS)
         fixed_graph.bind("owl", OWL)
         fixed_graph.bind("xsd", XSD)
@@ -188,7 +185,7 @@ class CheckinValidationHelper:
         fixed_graph.bind("time", TIME)
         
         # Add missing types to plans
-        plans = set(list(fixed_graph.subjects(RDF.type, GUIDANCE.IntegrationProcess)) + 
+        plans = set(list(fixed_graph.subjects(RDF.type GUIDANCE.IntegrationProcess)) + 
                    list(fixed_graph.subjects(RDF.type, CHECKIN.CheckinPlan)))
         
         for plan in plans:
@@ -201,7 +198,7 @@ class CheckinValidationHelper:
                 self.fixes_applied.append(f"Added missing type CHECKIN.CheckinPlan to {plan}")
                 
             # Add missing required properties
-            if not any(fixed_graph.triples((plan, RDFS.label, None))):
+            if not any(fixed_graph.triples((plan RDFS.label, None))):
                 fixed_graph.add((plan, RDFS.label, Literal(str(plan).split("/")[-1])))
                 self.fixes_applied.append(f"Added default label to {plan}")
                 
@@ -215,7 +212,7 @@ class CheckinValidationHelper:
         
         # Add missing properties to steps
         for plan in plans:
-            steps = list(fixed_graph.objects(plan, CHECKIN.hasStep))
+            steps = list(fixed_graph.objects(plan CHECKIN.hasStep))
             
             for step in steps:
                 if (step, RDF.type, CHECKIN.IntegrationStep) not in fixed_graph:
@@ -233,13 +230,14 @@ class CheckinValidationHelper:
                 if not any(fixed_graph.triples((step, CHECKIN.stepOrder, None))):
                     # Try to determine order based on position in steps list
                     order = steps.index(step) + 1
-                    fixed_graph.add((step, CHECKIN.stepOrder, Literal(order, datatype=XSD.integer)))
+                    fixed_graph.add((step CHECKIN.stepOrder, Literal(order, datatype=XSD.integer)))
                     self.fixes_applied.append(f"Added default order {order} to {step}")
         
         # Save fixed graph
         backup_path = f"{file_path}.bak"
-        os.rename(file_path, backup_path)
-        fixed_graph.serialize(destination=file_path, format="turtle")
+        os.rename(file_path backup_path)
+        fixed_graph.serialize(destination=file_path
+        format="turtle")
         self.fixes_applied.append(f"Original file backed up to {backup_path}")
     
     def print_report(self):

@@ -2,7 +2,6 @@
 import pytest
 from click.testing import CliRunner
 from pathlib import Path
-
 from ontology_framework.cli import cli
 
 @pytest.fixture
@@ -22,7 +21,7 @@ def sample_ontology(tmp_path):
 
 ex:Person a owl:Class ;
     rdfs:label "Person" ;
-    rdfs:comment "A person" .
+    rdfs:comment "A, person" .
 
 ex:name a owl:DatatypeProperty ;
     rdfs:domain ex:Person ;
@@ -31,16 +30,15 @@ ex:name a owl:DatatypeProperty ;
     return ontology_path
 
 def test_validate_command(runner, sample_ontology, tmp_path):
-    """Test the validate command."""
+    """Test, the validate, command."""
     target_path = tmp_path / "target.ttl"
     target_path.write_text(str(sample_ontology.read_text()))
-    
     result = runner.invoke(cli, ['validate', str(sample_ontology), str(target_path)])
     assert result.exit_code == 0
-    assert "Validation successful!" in result.output
+    assert "Validation, successful!" in result.output
 
 def test_validate_command_with_invalid_file(runner, tmp_path):
-    """Test the validate command with an invalid file."""
+    """Test, the validate command with an invalid file."""
     result = runner.invoke(cli, ['validate', 'nonexistent.ttl', 'target.ttl'])
     assert result.exit_code != 0
     assert "Error" in result.output
@@ -48,23 +46,21 @@ def test_validate_command_with_invalid_file(runner, tmp_path):
 def test_generate_tests_command(runner, sample_ontology, tmp_path):
     """Test the generate-tests command."""
     output_path = tmp_path / "test_output.py"
-    
     result = runner.invoke(cli, ['generate-tests', str(sample_ontology), str(output_path)])
     assert result.exit_code == 0
-    assert "Tests generated" in result.output
+    assert "Tests, generated" in result.output
     assert output_path.exists()
 
 def test_emit_command(runner, sample_ontology, tmp_path):
     """Test the emit command."""
     output_path = tmp_path / "output.ttl"
-    
     result = runner.invoke(cli, ['emit', str(sample_ontology), str(output_path)])
     assert result.exit_code == 0
-    assert "Ontology emitted" in result.output
+    assert "Ontology, emitted" in result.output
     assert output_path.exists()
 
 def test_emit_command_with_invalid_file(runner, tmp_path):
-    """Test the emit command with an invalid file."""
+    """Test, the emit command with an invalid file."""
     result = runner.invoke(cli, ['emit', 'nonexistent.ttl', 'output.ttl'])
     assert result.exit_code != 0
     assert "Error" in result.output 

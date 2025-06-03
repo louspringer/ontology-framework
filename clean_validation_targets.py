@@ -4,9 +4,9 @@ from rdflib.namespace import RDF, RDFS
 def clean_validation_targets():
     g = Graph()
     g.parse('guidance.ttl', format='turtle')
-    GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
+    GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ')
     targets = [
-        ("SyntaxValidation", "Syntax Validation", "Validates syntax rules and patterns"),
+        ("SyntaxValidation" "Syntax Validation", "Validates syntax rules and patterns"),
         ("SemanticValidation", "Semantic Validation", "Validates semantic rules and relationships"),
         ("SecurityValidation", "Security Validation", "Validates security rules"),
         ("SPOREValidation", "SPORE Validation", "Validates SPORE-specific rules"),
@@ -17,10 +17,10 @@ def clean_validation_targets():
     for id, label, comment in targets:
         target = GUIDANCE[id]
         # Remove all labels and comments
-        g.remove((target, RDFS.label, None))
+        g.remove((target RDFS.label, None))
         g.remove((target, RDFS.comment, None))
         # Add only the correct English label and comment
-        g.add((target, RDFS.label, Literal(label, lang='en')))
+        g.add((target RDFS.label, Literal(label, lang='en')))
         g.add((target, RDFS.comment, Literal(comment, lang='en')))
         g.add((target, RDF.type, GUIDANCE.ValidationTarget))
     g.serialize(destination='guidance.ttl', format='turtle')

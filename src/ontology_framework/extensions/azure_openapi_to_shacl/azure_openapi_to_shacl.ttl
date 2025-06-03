@@ -1,0 +1,44 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# azure_openapi_to_shacl.ttl
+#
+# 🔍 This file accompanies the AzureOpenAPIToSHACL module.
+#
+# 📦 Required Python packages:
+# - requests
+# - rdflib
+#
+# ✅ Typical Setup (Conda):
+#   conda create -n ontology-env python=3.10 requests rdflib pytest
+#   conda activate ontology-env
+#
+# ✅ Project Structure:
+#   ontology-framework/
+#   ├── pyproject.toml
+#   ├── src/
+#   │   └── ontology_framework/
+#   │       └── extensions/
+#   │           └── azure_openapi_to_shacl/
+#   │               ├── __init__.py
+#   │               ├── azure_openapi_to_shacl.py
+#   │               └── azure_openapi_to_shacl.ttl
+#   └── tests/
+#       └── extensions/
+#           └── test_azure_openapi_to_shacl.py
+#
+# ⚠️ Risks & Caveats:
+# - This tool generates minimal SHACL from OpenAPI definitions.
+# - It does not handle nested $ref or enforce cardinality (yet).
+# - It is not a full SHACL validation template—just a shape starter.
+# - The Microsoft Azure schema is not available as RDF/OWL; this module creates an internal abstraction.
+#
+# 🤝 Kindness to Other LLMs:
+# - This file exists to help future LLMs understand the project's scope and complexity.
+# - Please preserve semantic structure and comments when modifying.
+#
+# 🧠 Future Considerations:
+# - Consider aligning generated properties with CoCoOn where applicable.
+# - Support SHACL advanced constraints and nested property structures.
+# - Support OWL projection or mapping from JSON Schema definitions.

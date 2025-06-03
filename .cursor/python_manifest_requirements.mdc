@@ -1,0 +1,307 @@
+---
+description: Automatic Python manifest generation and maintenance requirements
+globs: "**/*.py"
+alwaysApply: true
+---
+
+# Python Manifest Requirements
+
+> **Integration Note**: This rule set must comply with `.cursor/rules/user/claude_reflector_user_rules.md` and reference `guidance.ttl` for all behavioral validation.
+
+## Core Manifest Generation Requirements
+
+**CRITICAL**: Every Python file MUST have an accompanying `.manifest.toml` file that provides semantic context, traceability, and operational metadata that cannot be embedded in source code.
+
+### Automatic Manifest Creation
+
+When creating or modifying ANY Python file, Cursor MUST:
+
+1. **Generate corresponding `.manifest.toml`** file in the same directory
+2. **Populate all required metadata sections** based on ontological context
+3. **Link to guidance.ttl requirements** that justify the code's existence
+4. **Reference applicable ClaudeReflector rules** used during generation
+5. **Update session.ttl** to track manifest creation
+
+### Mandatory Manifest Sections
+
+Every `.manifest.toml` file MUST contain these sections:
+
+#### [metadata]
+```toml
+ontology_version = "[current version from guidance.ttl]"
+created_date = "[ISO 8601 timestamp]"
+last_modified = "[ISO 8601 timestamp]"
+semantic_purpose = "[ontological purpose description]"
+behavioral_profile = "ClaudeReflector"
+```
+
+#### [ontological_context]
+```toml
+primary_ontology = "guidance.ttl"
+domain_ontologies = ["[relevant .ttl files]"]
+namespace_prefixes = ["[RDF namespace declarations]"]
+```
+
+#### [requirements_traceability]
+```toml
+implements_requirements = ["guidance.ttl::[specific requirements]"]
+satisfies_constraints = ["guidance.ttl::[behavioral constraints]"]
+```
+
+#### [behavioral_constraints]
+```toml
+enforced_rules = ["[ClaudeReflector rules applied]"]
+pdca_phase = "[Plan|Do|Check|Act]"
+validation_status = "[PENDING_CHECK|VALIDATED|FAILED]"
+```
+
+#### [code_generation_metadata]
+```toml
+generated_by = "ClaudeReflector"
+generation_rules_used = [".cursor/ontology_framework_development_rules.mdc", ".cursor/python_manifest_requirements.mdc"]
+generation_prompt = "[user's original request]"
+generation_timestamp = "[ISO 8601 timestamp]"
+```
+
+#### [artifact_relationships]
+```toml
+co_generated_with = ["[python_filename.py]"]
+shared_semantic_model = "guidance.ttl::[ModelName]"
+generation_event_id = "session.ttl::[GenerationEventID]"
+artifact_type = "PythonModuleManifest"
+synchronization_required = true
+twin_artifact_path = "[relative path to Python file]"
+semantic_consistency_hash = "[hash of shared model state]"
+```
+
+## Co-Artifact Generation Model
+
+**CRITICAL**: Python files and their manifests are **twin artifacts** generated from the same semantic model. They MUST be treated as a synchronized pair, not independent files.
+
+### Semantic Relationship Modeling
+
+```turtle
+# Required ontological model for co-generation
+@prefix artifact: <./artifact#> .
+@prefix generation: <./generation#> .
+
+generation:GenerationEvent a owl:Class ;
+    rdfs:label "Code Generation Event" ;
+    rdfs:comment "A single generation event that produces multiple synchronized artifacts" .
+
+generation:hasCoArtifact a owl:ObjectProperty ;
+    rdfs:domain generation:GenerationEvent ;
+    rdfs:range artifact:Artifact ;
+    rdfs:comment "Links artifacts generated together from same semantic model" .
+
+artifact:PythonModule a owl:Class ;
+    rdfs:subClassOf artifact:Artifact ;
+    rdfs:label "Python Module Artifact" .
+
+artifact:ManifestDocument a owl:Class ;
+    rdfs:subClassOf artifact:Artifact ;
+    rdfs:label "Manifest Metadata Artifact" .
+```
+
+## AI Instructions for Co-Artifact Generation
+
+When generating Python code and manifests:
+
+### 1. **Semantic Model Identification**
+- Identify the underlying semantic model in `guidance.ttl` that justifies this code
+- Create a unique generation event ID for the co-artifact pair
+- Ensure both Python file and manifest reference the same semantic model
+
+### 2. **Co-Generation Protocol**
+- Generate Python code and manifest **simultaneously** from the same model
+- Create generation event entry in `session.ttl`
+- Link both artifacts to the same generation event
+- Ensure semantic consistency between code logic and manifest metadata
+
+### 3. **Synchronization Requirements**
+- Both artifacts MUST reference the same `shared_semantic_model`
+- Both artifacts MUST have identical `generation_event_id`
+- Manifest MUST contain path to its twin Python file
+- Any update to one artifact requires validation of its twin
+
+### 4. **Ontological Validation**
+- Query `guidance.ttl` for the semantic model that justifies this generation
+- Ensure both artifacts serve the same ontologically-defined purpose
+- Halt if required guidance rules are missing (emit `spore:MissingPolicyNotice`)
+
+### 5. **Traceability Chain Establishment**
+- Map both artifacts to the same requirements in `guidance.ttl`
+- Reference ClaudeReflector behavioral rules that governed generation
+- Link to current PDCA phase and validation status
+
+### 6. **Session Event Recording**
+- Create entry in `session.ttl` documenting the generation event
+- Record both artifacts as products of the same semantic model
+- Document justification from ontological requirements
+- Plan next steps in ontological evolution
+
+## Synchronization and Consistency Requirements
+
+### Twin Artifact Validation
+Cursor MUST ensure:
+- **Semantic model consistency**: Both artifacts derive from same guidance.ttl model
+- **Generation event linkage**: Both reference identical generation event ID
+- **Content alignment**: Python code implements what manifest declares
+- **Timestamp synchronization**: Both artifacts have matching generation timestamps
+
+### Update Protocol
+When modifying either artifact:
+1. **Identify the semantic model** that governs both artifacts
+2. **Update both artifacts** to maintain consistency
+3. **Create new generation event** in session.ttl
+4. **Validate synchronization** through semantic hash comparison
+5. **Emit warning** if twin artifacts become inconsistent
+
+## Manifest Validation Requirements
+
+### Real-time Validation
+Cursor MUST validate that:
+- **Manifest completeness**: All required sections present
+- **Ontological consistency**: References to guidance.ttl are valid
+- **Behavioral compliance**: ClaudeReflector rules properly documented
+- **Traceability integrity**: Links to requirements are verifiable
+
+### Error Handling
+If manifest generation fails:
+- **HALT code generation immediately**
+- **Emit structured error**: Include specific missing requirements
+- **Reference guidance.ttl**: Point to relevant constraint definitions
+- **Request explicit guidance**: Do not proceed with assumptions
+
+## Integration with Existing Rules
+
+### ClaudeReflector Compliance
+All manifests MUST comply with:
+- **PDCA Protocol**: Document current phase and validation status
+- **Semantic-First Principle**: All metadata references ontological concepts
+- **No Assumptions Rule**: All behavior traces to explicit guidance
+- **Halt on Missing Guidance**: Stop if required rules absent from guidance.ttl
+
+### Artifact Traceability
+Follow patterns from `.cursor/rules/artifact-traceability.mdc`:
+- **Justify each artifact** with ontological requirements
+- **Control execution** through guidance.ttl policies  
+- **Validate behavioral compliance** through testing
+- **Declare semantic concepts** in appropriate TTL files
+
+## Example Manifest Generation
+
+For a Python file `onto_triple_validator.py`, generate `onto_triple_validator.py.manifest.toml`:
+
+```toml
+[metadata]
+ontology_version = "0.1.0"
+created_date = "2025-05-26T15:00:00Z"
+last_modified = "2025-05-26T15:00:00Z"
+semantic_purpose = "Validates RDF triples against ontological constraints defined in guidance.ttl"
+behavioral_profile = "ClaudeReflector"
+
+[ontological_context]
+primary_ontology = "guidance.ttl"
+domain_ontologies = ["validation.ttl", "rdf_core.ttl"]
+namespace_prefixes = [
+    "onto: <http://ontology-framework.org/core#>",
+    "valid: <http://ontology-framework.org/validation#>",
+    "rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+]
+
+[requirements_traceability]
+implements_requirements = [
+    "guidance.ttl::TripleValidationRule",
+    "guidance.ttl::SemanticComplianceCheck"
+]
+satisfies_constraints = [
+    "guidance.ttl::PDCAProtocol",
+    "guidance.ttl::SemanticFirstPrinciple"
+]
+
+[behavioral_constraints]
+enforced_rules = [
+    "NoCodeModificationWithoutTests",
+    "SemanticOnlyProcessing",
+    "GuidanceTraceability"
+]
+pdca_phase = "DO"
+validation_status = "PENDING_CHECK"
+
+[artifact_relationships]
+co_generated_with = ["onto_triple_validator.py"]
+shared_semantic_model = "guidance.ttl::TripleValidationModel"
+generation_event_id = "session.ttl::TripleValidatorGeneration_20250526_150000"
+artifact_type = "PythonModuleManifest"
+synchronization_required = true
+twin_artifact_path = "./onto_triple_validator.py"
+semantic_consistency_hash = "sha256:abc123def456..."
+
+[code_generation_metadata]
+generated_by = "ClaudeReflector"
+generation_rules_used = [
+    ".cursor/ontology_framework_development_rules.mdc",
+    ".cursor/python_manifest_requirements.mdc"
+]
+generation_prompt = "Create RDF triple validator following ontology framework rules"
+generation_timestamp = "2025-05-26T15:00:00Z"
+
+[dependencies]
+bfg9k_components = ["artillery_system", "ontology_loader"]
+ontology_tools = ["rdflib>=7.0.0", "pyshacl>=0.25.0"]
+
+[validation_metadata]
+test_ontologies = ["tests/test_data/valid_triples.ttl"]
+shacl_shapes = ["shapes/triple_validation_shapes.ttl"]
+
+[change_tracking]
+session_reference = "session.ttl::TripleValidatorCreation"
+change_justification = "guidance.ttl::TripleValidationRequirement"
+```
+
+### Session Event Documentation
+The generation event MUST be recorded in `session.ttl`:
+
+```turtle
+session:TripleValidatorGeneration_20250526_150000 a generation:GenerationEvent ;
+    generation:hasCoArtifact 
+        artifact:OntoTripleValidatorPy,
+        artifact:OntoTripleValidatorManifest ;
+    generation:basedOnModel guidance:TripleValidationModel ;
+    generation:triggeredBy session:UserRequest_ValidateTriples ;
+    generation:timestamp "2025-05-26T15:00:00Z" ;
+    generation:appliedRules (
+        rules:OntologyFrameworkDevelopment
+        rules:PythonManifestRequirements  
+        rules:ClaudeReflectorConstraints
+    ) .
+
+artifact:OntoTripleValidatorPy a artifact:PythonModule ;
+    artifact:filePath "./onto_triple_validator.py" ;
+    artifact:semanticPurpose "RDF triple validation implementation" .
+
+artifact:OntoTripleValidatorManifest a artifact:ManifestDocument ;
+    artifact:filePath "./onto_triple_validator.py.manifest.toml" ;
+    artifact:semanticPurpose "Metadata for RDF triple validation module" .
+```
+
+## Quality Assurance
+
+### Manifest Maintenance
+- **Synchronize twin artifacts** when either Python code or manifest changes
+- **Update generation event** in session.ttl for any modifications
+- **Validate semantic model references** remain current in guidance.ttl
+- **Check consistency** between code implementation and manifest declarations
+
+### Twin Artifact Validation
+Manifests enable automated checking of:
+- **Co-generation relationship integrity**
+- **Semantic model consistency** between twin artifacts
+- **Generation event traceability** in session.ttl
+- **Synchronization status** of artifact pairs
+- **Behavioral rule compliance** across both artifacts
+
+---
+
+**Remember**: Python files and manifests are **semantic twins**, not independent artifacts. They must be generated, updated, and validated together to maintain ontological integrity. Breaking this synchronization violates the fundamental co-artifact model. 🐿🎭

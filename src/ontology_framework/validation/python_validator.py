@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from rdflib import Graph, Namespace, Literal, URIRef, BNode
 from rdflib.namespace import RDF, RDFS, XSD
+from rdflib.term import Node
 import pyshacl
 
 PY = Namespace("http://example.org/python#")
@@ -28,7 +29,7 @@ class PythonValidator:
             node: The AST function definition node
             
         Returns:
-            Optional[str]: The return type as a string, or None if not present
+            Optional[str]: The return type as a string or None if not present
         """
         if node.returns:
             if isinstance(node.returns, ast.Name):

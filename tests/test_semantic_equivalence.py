@@ -7,6 +7,7 @@ from rdflib.namespace import XSD
 from ontology_framework.register_ontology import register_ontology, load_ontology
 import re
 from collections import defaultdict
+from rdflib.term import Node
 
 # Define SHACL namespace
 SHACL = Namespace('http://www.w3.org/ns/shacl#')
@@ -86,9 +87,7 @@ class TestSemanticEquivalence(unittest.TestCase):
     def is_shacl_related(self, s, p, o):
         """Check if a triple is related to SHACL."""
         return (
-            str(p).startswith(str(SHACL)) or
-            str(o).startswith(str(SHACL)) or
-            str(s).startswith(str(SHACL))
+            str(p).startswith(str(SHACL)) or str(o).startswith(str(SHACL)) or str(s).startswith(str(SHACL))
         )
 
     def normalize_shacl_statements(self, g):
@@ -261,7 +260,7 @@ class TestSemanticEquivalence(unittest.TestCase):
                     norm_g.add((s_norm, p, o_norm))
                     seen_statements.add(stmt_key)
         
-        # Finally, ensure all SHACL property relationships are preserved
+        # Finally ensure all SHACL property relationships are preserved
         for prop_node, shape_node in shape_properties.items():
             if isinstance(prop_node, BNode) and isinstance(shape_node, BNode):
                 prop_norm = node_map.get(prop_node)
@@ -296,9 +295,7 @@ class TestSemanticEquivalence(unittest.TestCase):
     def inspect_network_structure(self):
         # Query to get all RDF/SEM views and tables
         sql = """
-        SELECT owner, table_name, column_name
-        FROM ALL_TAB_COLUMNS
-        WHERE owner IN ('ADMIN', 'MDSYS')
+        SELECT owner, table_name, column_name FROM ALL_TAB_COLUMNS WHERE owner IN ('ADMIN', 'MDSYS')
         AND (
             table_name LIKE '%RDF%'
             OR table_name LIKE '%SEM%'
@@ -325,8 +322,7 @@ class TestSemanticEquivalence(unittest.TestCase):
         FROM TABLE(SEM_MATCH(
             'SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5',
             SEM_MODELS('META'),
-            null, null, null, null,
-            'ORACLE_SEM_NETWORK_OWNER=ADMIN ORACLE_SEM_NETWORK=ONTOLOGY_FRAMEWORK')) t
+            null, null, null, null, 'ORACLE_SEM_NETWORK_OWNER=ADMIN ORACLE_SEM_NETWORK=ONTOLOGY_FRAMEWORK')) t
         """
         self.cursor.execute(sql)
         columns = [col[0] for col in self.cursor.description]
@@ -345,12 +341,10 @@ class TestSemanticEquivalence(unittest.TestCase):
         
         # Query Oracle semantic store using SEM_MATCH
         sql = """
-        SELECT t.s, t.p, t.o, t.o$rdfvtyp, t.o$rdflang, t.o$rdfltyp
-        FROM TABLE(SEM_MATCH(
+        SELECT t.s, t.p, t.o, t.o$rdfvtyp, t.o$rdflang, t.o$rdfltyp FROM TABLE(SEM_MATCH(
             'SELECT ?s ?p ?o WHERE { ?s ?p ?o }',
             SEM_MODELS('META'),
-            null, null, null, null,
-            'ORACLE_SEM_NETWORK_OWNER=ADMIN ORACLE_SEM_NETWORK=ONTOLOGY_FRAMEWORK')) t
+            null, null, null, null, 'ORACLE_SEM_NETWORK_OWNER=ADMIN ORACLE_SEM_NETWORK=ONTOLOGY_FRAMEWORK')) t
         """
         self.cursor.execute(sql)
         
@@ -394,8 +388,7 @@ class TestSemanticEquivalence(unittest.TestCase):
         WHERE {
             ?instance a ?type .
         }
-        GROUP BY ?type
-        ORDER BY ?type
+        GROUP BY ?type ORDER BY ?type
         """
         print("\nAvailable classes and instance counts:")
         for row in g.query(class_query):
@@ -407,8 +400,7 @@ class TestSemanticEquivalence(unittest.TestCase):
         WHERE {
             ?s ?prop ?o .
         }
-        GROUP BY ?prop
-        ORDER BY ?prop
+        GROUP BY ?prop ORDER BY ?prop
         """
         print("\nAvailable properties and usage counts:")
         for row in g.query(prop_query):
@@ -454,8 +446,7 @@ class TestSemanticEquivalence(unittest.TestCase):
 
         # Basic Class Structure Test
         class_query = """
-        SELECT ?class ?superclass
-        WHERE {
+        SELECT ?class ?superclass WHERE {
             ?class a owl:Class .
             OPTIONAL { ?class rdfs:subClassOf ?superclass }
         }
@@ -467,8 +458,7 @@ class TestSemanticEquivalence(unittest.TestCase):
 
         # Basic Property Structure Test
         property_query = """
-        SELECT ?prop ?type
-        WHERE {
+        SELECT ?prop ?type WHERE {
             ?prop a ?type .
             FILTER(?type IN (owl:ObjectProperty, owl:DatatypeProperty, rdf:Property))
         }
@@ -480,8 +470,7 @@ class TestSemanticEquivalence(unittest.TestCase):
 
         # Domain and Range Definitions
         domain_range_query = """
-        SELECT ?prop ?domain ?range
-        WHERE {
+        SELECT ?prop ?domain ?range WHERE {
             ?prop a ?type .
             OPTIONAL { ?prop rdfs:domain ?domain }
             OPTIONAL { ?prop rdfs:range ?range }
@@ -495,8 +484,7 @@ class TestSemanticEquivalence(unittest.TestCase):
 
         # Basic Instance Data Test
         instance_query = """
-        SELECT ?instance ?type ?label
-        WHERE {
+        SELECT ?instance ?type ?label WHERE {
             ?instance a ?type .
             OPTIONAL { ?instance rdfs:label ?label }
             FILTER(?type != owl:Class && ?type != owl:ObjectProperty && ?type != owl:DatatypeProperty)
@@ -509,8 +497,7 @@ class TestSemanticEquivalence(unittest.TestCase):
 
         # Documentation and Labels
         doc_query = """
-        SELECT ?entity ?label ?comment
-        WHERE {
+        SELECT ?entity ?label ?comment WHERE {
             ?entity a ?type .
             OPTIONAL { ?entity rdfs:label ?label }
             OPTIONAL { ?entity rdfs:comment ?comment }
@@ -526,8 +513,7 @@ class TestSemanticEquivalence(unittest.TestCase):
                for _, _, o in oracle_g.triples((None, RDF.type, None))):
             # Security concept relationships
             security_query = """
-            SELECT ?concept ?related
-            WHERE {
+            SELECT ?concept ?related WHERE {
                 ?concept a <file:///Users/lou/Documents/ontology-framework/meta#SecurityConcept> .
                 OPTIONAL { ?concept ?rel ?related .
                           ?related a <file:///Users/lou/Documents/ontology-framework/meta#SecurityConcept> }
@@ -543,8 +529,7 @@ class TestSemanticEquivalence(unittest.TestCase):
                for _, _, o in oracle_g.triples((None, RDF.type, None))):
             # Basic SHACL shape test
             shape_query = """
-            SELECT ?shape ?targetClass
-            WHERE {
+            SELECT ?shape ?targetClass WHERE {
                 ?shape a sh:NodeShape ;
                        sh:targetClass ?targetClass .
             }
@@ -555,4 +540,4 @@ class TestSemanticEquivalence(unittest.TestCase):
             self.assertEqual(original_shapes, oracle_shapes, "SHACL shapes differ")
 
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

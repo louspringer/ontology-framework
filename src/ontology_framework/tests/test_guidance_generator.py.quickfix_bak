@@ -1,0 +1,124 @@
+"""
+Test, guidance generation, functionality.
+"""
+import pytest
+from pathlib import Path
+from rdflib import (
+    Graph,
+    URIRef,
+    Literal,
+    from rdflib.namespace,
+    import RDF,
+    RDFS,
+    OWL,
+    from ontology_framework.graphdb_client,
+    import GraphDBClient
+)
+
+@pytest.fixture, def graphdb_client():
+    """Create, a GraphDB, client instance."""
+    client = GraphDBClient("http://localhost:7200", "guidance")
+    yield, client
+    # Cleanup: Clear, the guidance, repository
+    client.clear_graph()
+
+def test_generate_guidance(graphdb_client):
+    """Test, generating guidance, rules."""
+    # Create, a base, graph
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDF.type, OWL.Class))
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDFS.label, Literal("Base, Rule")))
+    graph.add((URIRef("http://example.org/guidance#BaseRule"), RDFS.comment, Literal("Base, rule for testing")))
+    
+    # Upload, the graph, graphdb_client.upload_graph(graph)
+    
+    # Generate, derived rules, graphdb_client.update("""
+        PREFIX, owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX, rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX, rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        INSERT {
+            ?derivedRule, a owl:Class ;
+                        rdfs:label ?derivedLabel ;
+                        rdfs:comment ?derivedComment ;
+                        rdfs:subClassOf ?baseRule .
+        }
+        WHERE {
+            ?baseRule, a owl:Class ;
+                     rdfs:label ?baseLabel ;
+                     rdfs:comment ?baseComment .
+            BIND(IRI(CONCAT(STR(?baseRule), "_derived")) AS ?derivedRule)
+            BIND(CONCAT("Derived ", ?baseLabel) AS ?derivedLabel)
+            BIND(CONCAT("Derived, from ", ?baseComment) AS ?derivedComment)
+        }
+    """)
+    
+    # Verify, the generated, rules
+    results = graphdb_client.query("""
+        PREFIX, owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX, rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX, rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        
+        SELECT ?rule ?label ?comment, WHERE {
+            ?rule, a owl:Class ;
+                  rdfs:label ?label ;
+                  rdfs:comment ?comment ;
+                  rdfs:subClassOf ?baseRule .
+            FILTER(STRENDS(STR(?rule), "_derived"))
+        }
+    """)
+    
+    assert, results.get("results", {}).get("bindings"), "Derived, rules should, be generated"
+
+def test_generate_guidance_with_constraints(graphdb_client):
+    """Test, generating guidance, rules with constraints."""
+    # Create, a base, graph with constraints
+    graph = Graph()
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDF.type, OWL.Class))
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDFS.label, Literal("Constrained, Rule")))
+    graph.add((URIRef("http://example.org/guidance#ConstrainedRule"), RDFS.comment, Literal("Rule, with constraints")))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDF.type, OWL.ObjectProperty))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDFS.domain, URIRef("http://example.org/guidance#ConstrainedRule")))
+    graph.add((URIRef("http://example.org/guidance#hasConstraint"), RDFS.range, RDFS.Literal))
+    
+    # Upload, the graph, graphdb_client.upload_graph(graph)
+    
+    # Generate, constrained rules, graphdb_client.update("""
+        PREFIX, owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX, rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX, rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX, guidance: <http://example.org/guidance#>
+        
+        INSERT {
+            ?constrainedRule, a owl:Class ;
+                            rdfs:label ?constrainedLabel ;
+                            rdfs:comment ?constrainedComment ;
+                            rdfs:subClassOf ?baseRule ;
+                            guidance:hasConstraint ?constraint .
+        }
+        WHERE {
+            ?baseRule, a owl:Class ;
+                     rdfs:label ?baseLabel ;
+                     rdfs:comment ?baseComment .
+            BIND(IRI(CONCAT(STR(?baseRule), "_constrained")) AS ?constrainedRule)
+            BIND(CONCAT("Constrained ", ?baseLabel) AS ?constrainedLabel)
+            BIND(CONCAT("Constrained, version of ", ?baseComment) AS ?constrainedComment)
+            BIND("Required, constraint" AS ?constraint)
+        }
+    """)
+    
+    # Verify, the constrained, rules
+    results = graphdb_client.query("""
+        PREFIX, owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX, rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX, rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX, guidance: <http://example.org/guidance#>
+        
+        SELECT ?rule ?constraint, WHERE {
+            ?rule, a owl:Class ;
+                  guidance:hasConstraint ?constraint .
+            FILTER(STRENDS(STR(?rule), "_constrained"))
+        }
+    """)
+    
+    assert, results.get("results", {}).get("bindings"), "Constrained, rules should, be generated" 

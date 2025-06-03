@@ -1,4 +1,4 @@
-"""Module for integrating spores into target models with validation and dependency management."""
+"""Module, for integrating, spores into, target models, with validation and dependency management."""
 
 import logging
 import traceback
@@ -7,9 +7,8 @@ from pathlib import Path
 from typing import List, Union, Tuple, Optional, Set, cast, Dict, Mapping, Any
 from rdflib import Graph, URIRef, Literal, Namespace, BNode
 from rdflib.namespace import RDF, RDFS, OWL
-
 from .spore_validation import SporeValidator
-from .exceptions import ConcurrentModificationError, ConformanceError
+from .exceptions import ConcurrentModificationError, ConformanceError, SporeIntegrationError
 
 # Configure logging
 logging.basicConfig(
@@ -23,174 +22,163 @@ GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-fra
 
 # Map string literals to URIRefs for conformance levels
 CONFORMANCE_LEVELS: Dict[str, URIRef] = {
-    "STRICT": GUIDANCE.STRICT,
-    "MODERATE": GUIDANCE.MODERATE,
-    "RELAXED": GUIDANCE.RELAXED
+    "STRICT": URIRef(GUIDANCE + "STRICT"),
+    "MODERATE": URIRef(GUIDANCE + "MODERATE"), 
+    "RELAXED": URIRef(GUIDANCE + "RELAXED")
 }
 
 # Map URIRefs back to string literals for validation
 CONFORMANCE_LEVEL_STRINGS = {
-    GUIDANCE.STRICT: "STRICT",
-    GUIDANCE.MODERATE: "MODERATE",
-    GUIDANCE.RELAXED: "RELAXED"
+    URIRef(GUIDANCE + "STRICT"): "STRICT",
+    URIRef(GUIDANCE + "MODERATE"): "MODERATE", 
+    URIRef(GUIDANCE + "RELAXED"): "RELAXED"
 }
 
 class SporeIntegrator:
-    """Class for managing spore integration into target models."""
+    """Class, for managing, spore integration into target models."""
     
-    def __init__(self, data_dir: str = "data"):
-        """Initialize the SporeIntegrator.
+    def __init__(self, data_dir: str) -> None:
+        """Initialize, the SporeIntegrator.
         
         Args:
-            data_dir: Directory containing data files
+            data_dir: Directory, containing SPORE, data files Raises:
+            SporeIntegrationError: If initialization fails
         """
-        # Store original string path
-        self.data_dir_str: str = data_dir
-        self.conformance_level: URIRef = GUIDANCE.STRICT
-        
-        # Initialize graphs
-        self.guidance_graph: Graph = Graph()
-        self.graph: Graph = Graph()
-        
-        # Load guidance ontology
-        guidance_file = os.path.join(data_dir, "guidance.ttl")
-        if os.path.exists(guidance_file):
-            self.guidance_graph.parse(guidance_file, format="turtle")
-            
-        # Initialize namespaces
-        self.guidance_graph.bind("guidance", GUIDANCE)
-        self.graph.bind("guidance", GUIDANCE)
-
-        logger.info(f"Initializing SporeIntegrator with data directory: {data_dir}")
         try:
-            # Convert to Path for operations
-            self.data_dir: Path = Path(data_dir)
-            self.data_dir.mkdir(exist_ok=True)
+            logger.info("Initializing, SporeIntegrator with data directory: %s", data_dir)
+            self.data_dir = data_dir
+            self.graph = Graph()
             self.validator: SporeValidator = SporeValidator(ontology_graph=self.graph)
-            self.spore_uri: Optional[URIRef] = None  # Initialize spore_uri as None
-            logger.debug("SporeIntegrator initialized successfully")
+            self.conformance_level = CONFORMANCE_LEVELS["STRICT"]
         except Exception as e:
-            logger.error(f"Failed to initialize SporeIntegrator: {str(e)}")
+            logger.error("Failed, to initialize, SporeIntegrator: %s", str(e))
+            logger.error("Traceback: %s", traceback.format_exc())
+            raise SporeIntegrationError(f"Failed, to initialize, SporeIntegrator: {str(e)}")
+
+    def set_conformance_level(self, level: Union[str, URIRef]) -> None:
+        """Set, the conformance, level for the integrator.
+        
+        Args:
+            level: The, conformance level, to set, either, as a, string ('STRICT', 'MODERATE', 'RELAXED')
+                  or, as a, URIRef from, the guidance, ontology.
+                  
+        Raises:
+            ConformanceError: If, the level, is invalid, or not, defined in the guidance ontology.
+        """
+        logger.info(f"Setting, conformance level, to {level}")
+        
+        try:
+            # Validate input type
+            if not self._validate_conformance_type(level):
+                raise ConformanceError(f"Invalid, conformance level, type: {type(level)}")
+                
+            # Handle string input
+            if isinstance(level, str):
+                level_uri = self._validate_conformance_string(level)
+                if not level_uri:
+                    raise ConformanceError(f"Invalid, string conformance, level: {level}")
+            # Handle URIRef input
+            else:
+                level_uri = self._validate_conformance_uri(level)
+                if not level_uri:
+                    raise ConformanceError(f"Invalid, URI conformance, level: {level}")
+                    
+            # Normalize the URI, for consistent, comparison
+            level_uri = self._normalize_conformance_uri(level_uri)
+                
+            # Validate against guidance, ontology
+            if not self._validate_ontology_conformance(level_uri):
+                raise ConformanceError(f"Conformance, level {level_uri} not, defined in, guidance ontology")
+                
+            self.conformance_level = level_uri
+            logger.info(f"Successfully, set conformance, level to {level_uri}")
+            
+        except Exception as e:
+            logger.error(f"Failed, to set, conformance level: {str(e)}")
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise
 
-    def set_conformance_level(self, level: Union[str, URIRef]) -> None:
-        """Set the conformance level for the integrator.
-        
-        Args:
-            level: The conformance level to set, either as a string ('STRICT', 'MODERATE', 'RELAXED')
-                  or as a URIRef from the guidance ontology.
-                  
-        Raises:
-            ConformanceError: If the level is invalid or not defined in the guidance ontology.
-        """
-        logger.info(f"Set conformance level to {level}")
-        
-        # Handle string input
-        if isinstance(level, str):
-            if level not in CONFORMANCE_LEVELS:
-                raise ConformanceError(f"Invalid conformance level: {level}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
-            level_uri = CONFORMANCE_LEVELS[level]
-        # Handle URIRef input
-        elif isinstance(level, URIRef):
-            # Check if this URIRef is in our CONFORMANCE_LEVEL_STRINGS mapping
-            if level in CONFORMANCE_LEVEL_STRINGS:
-                level_uri = level
-                # Validate against guidance ontology
-                if not self._validate_ontology_conformance(level_uri):
-                    raise ConformanceError(f"Conformance level {level_uri} is not defined in the guidance ontology")
-                self.conformance_level = level_uri
-                return
-            # Try to extract the level string from the URI
-            level_str = str(level).split("#")[-1]
-            if level_str in CONFORMANCE_LEVELS:
-                level_uri = CONFORMANCE_LEVELS[level_str]
-            else:
-                raise ConformanceError(f"Invalid conformance level URI: {level}. Must be one of {set(CONFORMANCE_LEVELS.values())}")
-        else:
-            raise ConformanceError(f"Invalid conformance level type: {type(level)}. Must be str or URIRef")
-            
-        # Validate against guidance ontology
-        if not self._validate_ontology_conformance(level_uri):
-            raise ConformanceError(f"Conformance level {level_uri} is not defined in the guidance ontology")
-            
-        self.conformance_level = level_uri
-
     def _validate_conformance_type(self, level: Any) -> bool:
-        """Validate the type of the conformance level.
+        """Validate, the type, of the, conformance level.
         
         Args:
-            level: The conformance level to validate
-            
-        Returns:
-            bool: True if type is valid
-            
-        Raises:
+            level: The, conformance level, to validate, Returns:
+            bool: True, if type, is valid, Raises:
             ConformanceError: If type is invalid
         """
-        logger.debug(f"Validating conformance type for: {level} (type: {type(level)})")
+        logger.debug(f"Validating, conformance type, for: {level} (type: {type(level)})")
         if not isinstance(level, (str, URIRef)):
-            raise ConformanceError(f"Invalid conformance level type: {type(level)}. Must be str or URIRef")
+            raise ConformanceError(f"Invalid, conformance level, type: {type(level)}. Must, be str, or URIRef")
         return True
         
     def _validate_conformance_string(self, level: str) -> Optional[URIRef]:
-        """Validate a string conformance level.
+        """Validate, a string, conformance level.
         
         Args:
-            level: The string conformance level to validate
+            level: The, string conformance, level to, validate
             
         Returns:
-            Optional[URIRef]: The corresponding URIRef if valid, None otherwise
+            Optional[URIRef]: The, corresponding URIRef, if valid, None, otherwise
             
         Raises:
             ConformanceError: If string is invalid
         """
-        logger.debug(f"Validating string conformance: {level}")
+        logger.debug(f"Validating, string conformance: {level}")
+        if isinstance(level, URIRef):
+            return self._validate_conformance_uri(level)
+            
         if level not in CONFORMANCE_LEVELS:
-            raise ConformanceError(f"Invalid conformance level: {level}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
+            raise ConformanceError(f"Invalid, conformance level: {level}. Must, be one, of {set(CONFORMANCE_LEVELS.keys())}")
         return CONFORMANCE_LEVELS[level]
         
     def _validate_conformance_uri(self, level: URIRef) -> Optional[URIRef]:
-        """Validate a URIRef conformance level.
+        """Validate, a URIRef, conformance level.
         
         Args:
-            level: The URIRef conformance level to validate
+            level: The, URIRef conformance, level to, validate
             
         Returns:
-            Optional[URIRef]: The validated URIRef if valid, None otherwise
+            Optional[URIRef]: The, validated URIRef, if valid, None, otherwise
             
         Raises:
             ConformanceError: If URI is invalid
         """
-        logger.debug(f"Validating URI conformance: {level}")
+        logger.debug(f"Validating, URI conformance: {level}")
+        
+        # First check if it's, a direct, match
         if level in CONFORMANCE_LEVEL_STRINGS:
-            logger.debug(f"Found direct match in CONFORMANCE_LEVEL_STRINGS: {level}")
+            logger.debug(f"Found, direct match, in CONFORMANCE_LEVEL_STRINGS: {level}")
             return level
             
+        # Try to extract the level string from the URI
         level_str = str(level).split("#")[-1]
         logger.debug(f"Extracted level string: {level_str}")
-        if level_str not in CONFORMANCE_LEVELS:
-            raise ConformanceError(f"Invalid conformance level: {level_str}. Must be one of {set(CONFORMANCE_LEVELS.keys())}")
-        return CONFORMANCE_LEVELS[level_str]
         
-    def _resolve_conformance_level(self, level: Union[str, URIRef], 
-                                 string_check: Optional[URIRef], 
-                                 uri_check: Optional[URIRef]) -> Optional[URIRef]:
-        """Resolve the conformance level from validation results."""
-        logger.debug(f"Resolving conformance level for input: {level}")
-        logger.debug(f"Type of level: {type(level)}")
-        logger.debug(f"String check result: {string_check}")
-        logger.debug(f"URI check result: {uri_check}")
+        # Check if the extracted string is valid
+        if level_str in CONFORMANCE_LEVELS:
+            return CONFORMANCE_LEVELS[level_str]
+            
+        raise ConformanceError(f"Invalid conformance level URI: {level}")
         
-        if isinstance(level, str):
-            logger.debug("Input is string type, returning string_check")
-            return string_check
-        elif isinstance(level, URIRef):
-            logger.debug("Input is URIRef type, returning uri_check")
-            return uri_check
-        else:
-            logger.error(f"Invalid input type: {type(level)}")
-            return None
+    def _normalize_conformance_uri(self, level_uri: URIRef) -> URIRef:
+        """Normalize a conformance level URI to ensure consistent comparison.
+        
+        Args:
+            level_uri: The URI to normalize
+            
+        Returns:
+            URIRef: The normalized URI
+        """
+        # If it's already in the standard format, return as is
+        if level_uri in CONFORMANCE_LEVEL_STRINGS:
+            return level_uri
+            
+        # Extract the level string and convert to standard URI
+        level_str = str(level_uri).split("#")[-1]
+        if level_str in CONFORMANCE_LEVELS:
+            return CONFORMANCE_LEVELS[level_str]
+            
+        return level_uri
         
     def _validate_ontology_conformance(self, level_uri: URIRef) -> bool:
         """Validate conformance level against ontology.
@@ -204,10 +192,47 @@ class SporeIntegrator:
         Raises:
             ConformanceError: If validation fails
         """
-        if not any(self.guidance_graph.triples((level_uri, RDF.type, GUIDANCE.ModelConformance))):
+        logger.debug(f"Validating ontology conformance for URI: {level_uri}")
+        logger.debug(f"Current graph contains {len(self.graph)} triples")
+        logger.debug(f"Looking for type triple: ({level_uri}, {RDF.type}, {GUIDANCE}ConformanceLevel)")
+        
+        # Check if the conformance level is defined in the ontology
+        is_defined = (level_uri, RDF.type, URIRef(GUIDANCE + "ConformanceLevel")) in self.graph
+        if not is_defined:
+            logger.error(f"Conformance level {level_uri} not found in ontology")
+            logger.debug("Available conformance levels in graph:")
+            for s, p, o in self.graph.triples((None, RDF.type, URIRef(GUIDANCE + "ConformanceLevel"))):
+                logger.debug(f"Found conformance level: {s}")
             raise ConformanceError(f"Conformance level {level_uri} not defined in guidance ontology")
+            
         return True
         
+    def _resolve_conformance_level(self, level: Union[str, URIRef], 
+                                 string_check: Optional[URIRef], 
+                                 uri_check: Optional[URIRef]) -> Optional[URIRef]:
+        """Resolve the conformance level from validation results.
+        
+        Args:
+            level: The original input level
+            string_check: Result from string validation
+            uri_check: Result from URI validation
+            
+        Returns:
+            Optional[URIRef]: The resolved conformance level URI
+        """
+        logger.debug(f"Resolving conformance level for input: {level}")
+        logger.debug(f"Type of level: {type(level)}")
+        logger.debug(f"String check result: {string_check}")
+        logger.debug(f"URI check result: {uri_check}")
+        
+        if isinstance(level, str):
+            return string_check
+        elif isinstance(level, URIRef):
+            return uri_check
+        else:
+            logger.error(f"Invalid input type: {type(level)}")
+            return None
+
     def _validate_conformance_rules(self, level_uri: URIRef) -> bool:
         """Validate conformance level against rules.
         
@@ -234,12 +259,12 @@ class SporeIntegrator:
             bool: True if validation passes
         """
         # Check if the level is defined as a ModelConformance instance
-        if not (level_uri, RDF.type, GUIDANCE.ModelConformance) in self.guidance_graph:
+        if not (level_uri, RDF.type, GUIDANCE.ModelConformance) in self.graph:
             logger.error(f"Conformance level {level_uri} is not defined as a ModelConformance")
             return False
             
         # Check if it has a conformance level string property
-        if not any(self.guidance_graph.triples((level_uri, GUIDANCE.conformanceLevel, None))):
+        if not any(self.graph.triples((level_uri, GUIDANCE.conformanceLevel, None))):
             logger.error(f"Missing conformanceLevel property for {level_uri}")
             return False
                 
@@ -259,7 +284,7 @@ class SporeIntegrator:
         """
         logger.debug(f"Starting prefix validation for spore: {spore_uri}")
         
-        if self.conformance_level == CONFORMANCE_LEVELS["RELAXED"]:
+        if self.conformance_level == URIRef(GUIDANCE + "RELAXED"):
             logger.debug("Skipping validation due to RELAXED conformance level")
             return True
         
@@ -273,7 +298,7 @@ class SporeIntegrator:
             registered_prefixes.add(validator_prefix)
             
         # Add prefixes from guidance graph
-        for prefix, ns in self.guidance_graph.namespaces():
+        for prefix, ns in self.graph.namespaces():
             guidance_prefix: str = str(ns).split('#')[0]
             logger.debug(f"Found registered prefix in guidance: {guidance_prefix}")
             registered_prefixes.add(guidance_prefix)
@@ -327,7 +352,7 @@ class SporeIntegrator:
         """
         logger.debug(f"Starting namespace validation for spore: {spore_uri}")
         
-        if self.conformance_level == CONFORMANCE_LEVELS["RELAXED"]:
+        if self.conformance_level == URIRef(GUIDANCE + "RELAXED"):
             logger.debug("Skipping validation due to RELAXED conformance level")
             return True
         
@@ -341,7 +366,7 @@ class SporeIntegrator:
             registered_namespaces.add(validator_ns_str)
             
         # Add namespaces from guidance graph
-        for prefix, ns in self.guidance_graph.namespaces():
+        for prefix, ns in self.graph.namespaces():
             guidance_ns_str: str = str(ns)
             logger.debug(f"Found registered namespace in guidance: {guidance_ns_str}")
             registered_namespaces.add(guidance_ns_str)
@@ -462,7 +487,6 @@ class SporeIntegrator:
             
             # Apply patch transformations
             # TODO: Implement actual patch application logic
-            
             logger.info("Patch applied successfully")
             return True
         except Exception as e:
@@ -568,26 +592,26 @@ class SporeIntegrator:
             model: The model to validate
             
         Returns:
-            bool: True if model conforms, False otherwise
-            
-        Raises:
-            ConformanceError: If validation fails at STRICT level
+            bool: True if model conforms to guidance
         """
+        logger.info(f"Validating conformance for model: {model}")
+        
         try:
             # Validate prefixes
             self.validate_prefixes(model)
             
-            # Validate namespaces
+            # Validate namespaces  
             self.validate_namespaces(model)
             
             # Validate integration steps if present
-            if (model, GUIDANCE.hasIntegrationStep, None) in self.guidance_graph:
+            if (model, GUIDANCE.hasIntegrationStep, None) in self.graph:
                 self.validate_integration_steps(model)
                 
+            logger.info("Model validation completed successfully")
             return True
             
         except Exception as e:
-            if self.conformance_level == CONFORMANCE_LEVELS["STRICT"]:
+            if self.conformance_level == URIRef(GUIDANCE + "STRICT"):
                 raise ConformanceError(f"Model validation failed: {str(e)}")
             return False
 
@@ -605,8 +629,8 @@ class SporeIntegrator:
         """
         # Get all steps with their order
         steps: List[Tuple[URIRef, int]] = []
-        for step, _, order_node in self.guidance_graph.triples((None, GUIDANCE.hasOrder, None)):
-            if (step, RDF.type, GUIDANCE.IntegrationStep) in self.guidance_graph:
+        for step, _, order_node in self.graph.triples((None, GUIDANCE.hasOrder, None)):
+            if (step, RDF.type, GUIDANCE.IntegrationStep) in self.graph:
                 # Convert order to integer safely
                 if isinstance(order_node, Literal):
                     order_int = int(order_node.value)
@@ -626,7 +650,6 @@ class SporeIntegrator:
             if order != expected_order:
                 raise ConformanceError(f"Invalid step order: {order}. Expected: {expected_order}")
             expected_order += 1
-        
         return True
 
     def execute_integration_steps(self, process: URIRef) -> bool:
@@ -701,4 +724,4 @@ class SporeIntegrator:
         except Exception as e:
             logger.error(f"Unexpected error during step execution: {str(e)}")
             logger.error(f"Traceback: {traceback.format_exc()}")
-            raise ConformanceError(f"Integration step execution failed: {str(e)}") 
+            raise ConformanceError(f"Integration step execution failed: {str(e)}")

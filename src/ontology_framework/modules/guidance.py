@@ -1,72 +1,64 @@
-"""Module for managing the guidance ontology."""
+"""
+Guidance ontology management module.
 
-from typing import List, Dict, Any, Optional, Union, cast, Sequence, TypedDict, TypeGuard, Tuple, Iterator, Set, TypeVar, NamedTuple
-from dataclasses import dataclass, field
-from enum import Enum, auto
-from rdflib import Graph, URIRef, Literal as RDFLiteral, BNode, Namespace, XSD, Node
-from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
-from rdflib.query import ResultRow, Result
-from pathlib import Path
+This module provides classes and utilities for managing ontological guidance,
+including validation rules, conformance tracking, and relationship analysis.
+"""
+
 import math
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
+from enum import Enum, auto
+from typing import Dict, List, Optional, Set, Tuple, Any, Union, TypedDict, cast
+from pathlib import Path
 from collections import defaultdict
-from ontology_framework.modules.ontology import Ontology
-from ontology_framework.modules.constants import CONFORMANCE_LEVELS
-from ontology_framework.modules.template_ontology import TemplateOntology
+
+from rdflib import Graph, URIRef, Literal as RDFLiteral, BNode
+from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
+
+from .template_ontology import TemplateOntology
+
 
 class Stakeholder(Enum):
-    """Different stakeholder perspectives for relationship evaluation."""
-    FINANCE = "finance"           # Financial/cost implications
-    OPERATIONS = "operations"     # Operational efficiency/maintainability
-    PRODUCT = "product"          # Product functionality/features
-    SECURITY = "security"        # Security/risk management
-    COMPLIANCE = "compliance"    # Regulatory/policy compliance
-    ENGINEERING = "engineering"  # Technical implementation
-    BUSINESS = "business"        # Business value/strategy
-    USER = "user"               # End-user experience
-    
+    """Different stakeholders with varying priorities."""
+    DEVELOPER = "developer"
+    DOMAIN_EXPERT = "domain_expert"
+    DATA_ENGINEER = "data_engineer"
+    END_USER = "end_user"
+    GOVERNANCE = "governance"
+    SECURITY = "security"
+
     @property
     def priority_dimensions(self) -> Dict[str, float]:
-        """Get priority weights for different knowledge dimensions per stakeholder."""
-        return {
-            Stakeholder.FINANCE: {
-                "structural": 0.3,
-                "semantic": 0.4,
-                "functional": 0.6,
-                "temporal": 0.8,    # Historical stability is key for financial planning
-                "social": 0.3,
-                "security": 0.7,    # Financial risk management
-                "compliance": 0.9    # Regulatory compliance is critical
+        """Get priority weights for different knowledge dimensions."""
+        priorities = {
+            Stakeholder.DEVELOPER: {
+                "structural": 0.8, "functional": 0.9, "temporal": 0.6,
+                "semantic": 0.7, "social": 0.4, "security": 0.5, "compliance": 0.3
             },
-            Stakeholder.OPERATIONS: {
-                "structural": 0.8,   # System structure is crucial
-                "semantic": 0.6,
-                "functional": 0.9,   # How things work is key
-                "temporal": 0.7,
-                "social": 0.4,
-                "security": 0.6,
-                "compliance": 0.5
+            Stakeholder.DOMAIN_EXPERT: {
+                "semantic": 0.9, "structural": 0.7, "compliance": 0.8,
+                "functional": 0.6, "temporal": 0.5, "social": 0.7, "security": 0.4
             },
-            Stakeholder.PRODUCT: {
-                "structural": 0.5,
-                "semantic": 0.8,     # Meaning and intent are crucial
-                "functional": 0.9,   # Features and capabilities
-                "temporal": 0.4,
-                "social": 0.7,       # User community feedback
-                "security": 0.6,
-                "compliance": 0.5
+            Stakeholder.DATA_ENGINEER: {
+                "functional": 0.9, "structural": 0.8, "temporal": 0.7,
+                "semantic": 0.6, "security": 0.8, "social": 0.3, "compliance": 0.6
+            },
+            Stakeholder.END_USER: {
+                "functional": 0.8, "semantic": 0.7, "social": 0.6,
+                "structural": 0.4, "temporal": 0.3, "security": 0.5, "compliance": 0.4
+            },
+            Stakeholder.GOVERNANCE: {
+                "compliance": 0.9, "security": 0.8, "social": 0.7,
+                "semantic": 0.6, "temporal": 0.7, "structural": 0.5, "functional": 0.4
             },
             Stakeholder.SECURITY: {
-                "structural": 0.7,
-                "semantic": 0.6,
-                "functional": 0.5,
-                "temporal": 0.4,
-                "social": 0.3,
-                "security": 1.0,     # Security is paramount
-                "compliance": 0.8
-            },
-            # Add other stakeholder priorities...
-        }.get(self, {})
+                "security": 0.9, "compliance": 0.8, "temporal": 0.6,
+                "structural": 0.7, "functional": 0.7, "semantic": 0.5, "social": 0.4
+            }
+        }
+        return priorities.get(self, {})
+
 
 class KnowledgeDimension(Enum):
     """Different dimensions of relationship knowledge."""
@@ -78,23 +70,22 @@ class KnowledgeDimension(Enum):
     SECURITY = "security"     # Security implications
     COMPLIANCE = "compliance" # Regulatory/policy compliance
 
+
 @dataclass
 class StakeholderView:
-    """Stakeholder-specific view of a relationship."""
-    stakeholder: Stakeholder
+    """Represents a stakeholder's view of a requirement."""
     satisfaction_score: float = 0.0  # 0.0 to 1.0
-    concerns: List[str] = field(default_factory=list)
-    requirements_met: List[str] = field(default_factory=list)
+    importance_weight: float = 1.0   # How important this is to them
+    feedback: List[str] = field(default_factory=list)
     last_updated: datetime = field(default_factory=datetime.now)
 
     def update_satisfaction(self, score: float, requirement: str, is_met: bool) -> None:
-        """Update stakeholder satisfaction with new information."""
-        self.satisfaction_score = min(1.0, max(0.0, (self.satisfaction_score + score) / 2))
-        if is_met:
-            self.requirements_met.append(requirement)
-        else:
-            self.concerns.append(requirement)
+        """Update satisfaction score and add feedback."""
+        self.satisfaction_score = max(0.0, min(1.0, score))
+        status = "met" if is_met else "not met"
+        self.feedback.append(f"Requirement '{requirement}' {status} (score: {score:.2f})")
         self.last_updated = datetime.now()
+
 
 @dataclass
 class DimensionalScore:
@@ -107,75 +98,56 @@ class DimensionalScore:
     last_updated: datetime = field(default_factory=datetime.now)
 
     def update_score(self, new_score: float, evidence: str, stakeholder: Optional[Stakeholder] = None) -> None:
-        """Update score with new evidence and stakeholder perspective."""
-        self.score = min(1.0, max(0.0, (self.score + new_score) / 2))
-        self.evidence.append(f"{datetime.now()}: {evidence}")
+        """Update the dimensional score with new evidence."""
+        # Weight new score with existing score
+        if self.score == 0.0:
+            self.score = new_score
+        else:
+            self.score = (self.score + new_score) / 2
+        
+        self.evidence.append(f"{datetime.now().isoformat()}: {evidence}")
         self.last_updated = datetime.now()
-        self.confidence = min(1.0, len(self.evidence) * 0.1)
         
         if stakeholder:
             if stakeholder not in self.stakeholder_views:
-                self.stakeholder_views[stakeholder] = StakeholderView(stakeholder)
-            view = self.stakeholder_views[stakeholder]
-            view.update_satisfaction(
-                new_score,
-                evidence,
-                new_score >= 0.7  # Consider requirement met if score is high enough
-            )
+                self.stakeholder_views[stakeholder] = StakeholderView()
+            self.stakeholder_views[stakeholder].update_satisfaction(new_score, evidence, new_score >= 0.5)
 
-    def get_stakeholder_satisfaction(self, stakeholder: Stakeholder) -> float:
-        """Get satisfaction score for a specific stakeholder."""
-        if stakeholder in self.stakeholder_views:
-            return self.stakeholder_views[stakeholder].satisfaction_score
-        return 0.0
+    def get_stakeholder_score(self, stakeholder: Stakeholder) -> float:
+        """Get weighted score from a specific stakeholder's perspective."""
+        if stakeholder not in self.stakeholder_views:
+            return self.score  # Default to general score
+        
+        view = self.stakeholder_views[stakeholder]
+        return self.score * view.importance_weight * view.satisfaction_score
+
 
 @dataclass
 class ChangeRate:
-    """Tracks the rate and acceleration of changes in a system component."""
-    window_size: timedelta = field(default_factory=lambda: timedelta(days=30))
+    """Tracks rate of change over time."""
     changes: List[Tuple[datetime, float]] = field(default_factory=list)
-    
+
     def add_change(self, magnitude: float) -> None:
-        """Record a new change event with its magnitude."""
+        """Add a change measurement."""
         self.changes.append((datetime.now(), magnitude))
-        # Prune old changes outside the window
-        cutoff = datetime.now() - self.window_size
-        self.changes = [c for c in self.changes if c[0] > cutoff]
-    
+
     def get_rate(self) -> float:
-        """Calculate current rate of change (changes per day)."""
-        if not self.changes:
+        """Calculate recent rate of change."""
+        if len(self.changes) < 2:
             return 0.0
         
-        window = (self.changes[-1][0] - self.changes[0][0]).total_seconds() / 86400  # days
-        if window <= 0:
+        # Look at last 7 days
+        cutoff = datetime.now() - timedelta(days=7)
+        recent_changes = [(t, m) for t, m in self.changes if t > cutoff]
+        
+        if len(recent_changes) < 2:
             return 0.0
         
-        return len(self.changes) / window
-    
-    def get_acceleration(self) -> float:
-        """Calculate change acceleration (rate of rate change)."""
-        if len(self.changes) < 3:
-            return 0.0
-            
-        # Calculate rates in two half-windows
-        mid_idx = len(self.changes) // 2
-        first_half = self.changes[:mid_idx]
-        second_half = self.changes[mid_idx:]
+        total_change = sum(m for _, m in recent_changes)
+        time_span = (recent_changes[-1][0] - recent_changes[0][0]).total_seconds()
         
-        if not first_half or not second_half:
-            return 0.0
-            
-        first_window = (first_half[-1][0] - first_half[0][0]).total_seconds() / 86400
-        second_window = (second_half[-1][0] - second_half[0][0]).total_seconds() / 86400
-        
-        if first_window <= 0 or second_window <= 0:
-            return 0.0
-            
-        first_rate = len(first_half) / first_window
-        second_rate = len(second_half) / second_window
-        
-        return (second_rate - first_rate) / ((second_half[-1][0] - first_half[0][0]).total_seconds() / 86400)
+        return total_change / max(time_span, 1.0)
+
 
 @dataclass
 class TensionPoint:
@@ -187,27 +159,28 @@ class TensionPoint:
     emergence_time: datetime = field(default_factory=datetime.now)
     observations: List[str] = field(default_factory=list)
     change_rate: ChangeRate = field(default_factory=ChangeRate)
-    
+
     def add_observation(self, observation: str, change_magnitude: float = 1.0) -> None:
-        """Add a new observation and record its impact on change rate."""
-        self.observations.append(f"{datetime.now()}: {observation}")
+        """Add an observation about this tension point."""
+        self.observations.append(f"{datetime.now().isoformat()}: {observation}")
         self.change_rate.add_change(change_magnitude)
-    
+
     @property
     def urgency(self) -> float:
-        """Calculate urgency based on strength and rate of change."""
+        """Calculate urgency based on strength and change rate."""
         rate = self.change_rate.get_rate()
-        acceleration = self.change_rate.get_acceleration()
-        
-        # Urgency increases with:
-        # 1. Higher tension strength
-        # 2. Faster rate of change
-        # 3. Positive acceleration (changes speeding up)
-        base_urgency = self.strength * (1 + rate)
-        if acceleration > 0:
-            base_urgency *= (1 + acceleration)
-        
-        return min(1.0, base_urgency)
+        return min(1.0, self.strength + (rate * 0.3))
+
+
+@dataclass
+class PhaseTransition:
+    """Represents a phase transition in organizational structure."""
+    from_level: 'BoundaryLevel'
+    to_level: 'BoundaryLevel'
+    trigger_stress: float
+    transition_time: datetime = field(default_factory=datetime.now)
+    stability_period: Optional[timedelta] = None
+    
 
 class BoundaryLevel(Enum):
     """Quantum-like organizational boundaries where phase transitions occur."""
@@ -227,9 +200,10 @@ class BoundaryLevel(Enum):
             BoundaryLevel.IMMEDIATE: (7, 12),
             BoundaryLevel.TRIBE: (50, 150),
             BoundaryLevel.COMMUNITY: (300, 1000),
-            BoundaryLevel.SOCIETY: (1000, 2147483647)  # Using max int instead of float('inf')
+            BoundaryLevel.SOCIETY: (1000, 999999999)  # Use very large int instead of float('inf')
         }
         return ranges[self]
+
 
 class ConfidenceLevel(Enum):
     """Overall confidence level based on dimensional scores."""
@@ -238,6 +212,7 @@ class ConfidenceLevel(Enum):
     ESTABLISHED = auto() # Good understanding in some dimensions
     VERIFIED = auto()    # Verified in multiple dimensions
     COMPLETE = auto()    # High confidence across all relevant dimensions
+
 
 class RelationType(Enum):
     """Types of relationships between ontology elements."""
@@ -248,15 +223,15 @@ class RelationType(Enum):
     SHAPE = "shape"
     UNKNOWN = "unknown"
 
+
 @dataclass
-class PhaseTransition:
-    """Represents a phase transition at a quantum boundary."""
-    boundary: BoundaryLevel
-    from_state: str
-    to_state: str
-    trigger_rate: float  # Rate of change that triggered transition
-    transition_time: datetime = field(default_factory=datetime.now)
-    cascade_effects: List[str] = field(default_factory=list)
+class QuantumState:
+    """Represents a quantum-like organizational state."""
+    level: BoundaryLevel
+    state_vector: Dict[str, float]
+    stability_score: float = 0.0
+    measurement_time: datetime = field(default_factory=datetime.now)
+
 
 @dataclass
 class BoundaryResonance:
@@ -267,14 +242,6 @@ class BoundaryResonance:
     phase_alignment: float = 0.0  # 0 to 2π
     observations: List[str] = field(default_factory=list)
 
-@dataclass
-class QuantumState:
-    """Represents a discrete organizational state at a boundary."""
-    level: BoundaryLevel
-    state_vector: Dict[str, float]  # Key characteristics and their magnitudes
-    stability_score: float = 0.0
-    lifetime: timedelta = field(default_factory=lambda: timedelta())
-    transitions_to: List[Tuple[str, float]] = field(default_factory=list)  # (state_id, probability)
 
 @dataclass
 class BoundaryEffect:
@@ -285,7 +252,7 @@ class BoundaryEffect:
     transitions: List[PhaseTransition] = field(default_factory=list)
     resonances: List[BoundaryResonance] = field(default_factory=list)
     quantum_states: Dict[str, QuantumState] = field(default_factory=dict)
-    
+
     def detect_resonance(self, other: 'BoundaryEffect', window: timedelta = timedelta(days=30)) -> Optional[BoundaryResonance]:
         """Detect resonance patterns between boundary levels."""
         if not (self.stress_history and other.stress_history):
@@ -322,7 +289,7 @@ class BoundaryEffect:
             )
             return resonance
         return None
-    
+
     def _calculate_phase(self, stress_points: List[Tuple[datetime, float]]) -> float:
         """Calculate the phase of a stress pattern using FFT-like analysis."""
         if len(stress_points) < 2:
@@ -341,7 +308,7 @@ class BoundaryEffect:
                 # Use time to first peak for phase
                 return (2 * math.pi * times[peaks[0]]) / times[-1]
         return 0.0
-    
+
     def _calculate_pattern_similarity(self, pattern1: List[float], pattern2: List[float]) -> float:
         """Calculate similarity between two stress patterns."""
         if not pattern1 or not pattern2:
@@ -355,7 +322,8 @@ class BoundaryEffect:
             pattern2 = pattern2[:len1]
             
         # Calculate correlation
-        mean1, mean2 = sum(pattern1)/len(pattern1), sum(pattern2)/len(pattern2)
+        mean1 = sum(pattern1)/len(pattern1)
+        mean2 = sum(pattern2)/len(pattern2)
         diff1 = [x - mean1 for x in pattern1]
         diff2 = [x - mean2 for x in pattern2]
         
@@ -414,7 +382,7 @@ class BoundaryEffect:
         recent_stresses = [s for _, s in self.stress_history[-10:]]
         if not recent_stresses:
             return 1.0
-            
+        
         mean_stress = sum(recent_stresses) / len(recent_stresses)
         variance = sum((s - mean_stress) ** 2 for s in recent_stresses) / len(recent_stresses)
         
@@ -444,15 +412,18 @@ class BoundaryEffect:
         # Check for phase transition if near threshold
         if self.is_near_threshold() and len(self.stress_history) >= 2:
             recent_rate = self._calculate_recent_rate()
-            if recent_rate > 0.7:  # High rate of change near boundary
-                transition = PhaseTransition(
-                    boundary=self.level,
-                    from_state=f"size_{self.current_size}",
-                    to_state=f"size_{self.current_size + 1}",
-                    trigger_rate=recent_rate
-                )
-                self.transitions.append(transition)
-                return transition
+            if recent_rate > 0.5:  # High change rate threshold
+                # Determine transition direction
+                if stress > 0.7:  # High stress pushes to next level
+                    next_level = self._get_next_level()
+                    if next_level:
+                        transition = PhaseTransition(
+                            from_level=self.level,
+                            to_level=next_level,
+                            trigger_stress=stress
+                        )
+                        self.transitions.append(transition)
+                        return transition
         return None
 
     def _calculate_recent_rate(self) -> float:
@@ -460,13 +431,24 @@ class BoundaryEffect:
         if len(self.stress_history) < 2:
             return 0.0
         
-        times, stresses = zip(*self.stress_history[-10:])  # Last 10 measurements
-        time_delta = (times[-1] - times[0]).total_seconds() / 86400  # days
-        if time_delta <= 0:
+        recent = self.stress_history[-5:]  # Last 5 measurements
+        if len(recent) < 2:
             return 0.0
-            
-        stress_delta = sum(abs(s2 - s1) for s1, s2 in zip(stresses[:-1], stresses[1:]))
-        return stress_delta / time_delta
+        
+        total_change = sum(abs(recent[i][1] - recent[i-1][1]) for i in range(1, len(recent)))
+        return total_change / len(recent)
+
+    def _get_next_level(self) -> Optional[BoundaryLevel]:
+        """Get the next boundary level for transitions."""
+        levels = list(BoundaryLevel)
+        try:
+            current_idx = levels.index(self.level)
+            if current_idx < len(levels) - 1:
+                return levels[current_idx + 1]
+        except ValueError:
+            pass
+        return None
+
 
 @dataclass
 class SystemStress:
@@ -478,107 +460,96 @@ class SystemStress:
     boundary_effects: Dict[BoundaryLevel, BoundaryEffect] = field(
         default_factory=lambda: {level: BoundaryEffect(level=level) for level in BoundaryLevel}
     )
-    
+
     def record_adaptation(self, description: str, magnitude: float = 1.0) -> None:
-        """Record how the system adapted to stress."""
-        self.adaptation_history.append(f"{datetime.now()}: {description}")
+        """Record a system adaptation event."""
+        timestamp = datetime.now().isoformat()
+        self.adaptation_history.append(f"{timestamp}: {description}")
         
-        # Update temporal patterns for the adaptation type
-        pattern_type = description.split(":")[0] if ":" in description else "general"
-        self.temporal_patterns[pattern_type].add_change(magnitude)
-    
+        # Update temporal patterns
+        self.temporal_patterns["adaptation"].add_change(magnitude)
+
     def add_tension(self, tension: TensionPoint) -> None:
-        """Add a new tension point and analyze emergence patterns."""
+        """Add a new tension point and analyze its effects."""
         self.stress_points.append(tension)
         
+        # Categorize by nature
         if tension.nature not in self.emergence_patterns:
             self.emergence_patterns[tension.nature] = []
         self.emergence_patterns[tension.nature].append(tension)
         
-        # Track temporal pattern for this type of tension
-        self.temporal_patterns[tension.nature].add_change(tension.strength)
-        
-        # Check for boundary effects
+        # Analyze effects on boundary levels
         self._analyze_boundary_effects(tension)
-        self._analyze_cascade_effects(tension)
-    
-    def _analyze_boundary_effects(self, tension: TensionPoint) -> None:
-        """Analyze how tension affects different organizational boundaries."""
-        # Count related tensions to determine affected boundary level
-        related = len([t for t in self.stress_points 
-                      if t.source == tension.source or t.target == tension.target])
         
-        # Find most relevant boundary level
-        for level in BoundaryLevel:
-            min_size, max_size = level.threshold_range
-            if min_size <= related <= max_size:
-                effect = self.boundary_effects[level]
-                effect.current_size = related
-                
-                # Check for phase transition
-                transition = effect.add_stress(tension.strength)
-                if transition:
-                    transition.cascade_effects.append(
-                        f"Tension {tension.source} ↔ {tension.target} triggered boundary transition"
-                    )
-                    self.record_adaptation(
-                        f"Phase Transition: {level.value} boundary reorganization triggered by "
-                        f"accelerating changes (rate: {transition.trigger_rate:.2f})",
-                        magnitude=tension.strength
-                    )
+        # Look for cascade effects
+        self._analyze_cascade_effects(tension)
+
+    def _analyze_boundary_effects(self, tension: TensionPoint) -> None:
+        """Analyze how tension affects different boundary levels."""
+        # Map tension strength to boundary effects
+        for level, effect in self.boundary_effects.items():
+            # Stronger tensions affect larger boundaries more
+            if level in [BoundaryLevel.COMMUNITY, BoundaryLevel.SOCIETY]:
+                boundary_stress = tension.strength * 0.8
+            elif level in [BoundaryLevel.TRIBE, BoundaryLevel.IMMEDIATE]:
+                boundary_stress = tension.strength * 1.0
+            else:
+                boundary_stress = tension.strength * 0.6
+            
+            transition = effect.add_stress(boundary_stress)
+            if transition:
+                self.record_adaptation(
+                    f"Phase transition detected at {level.value} boundary: "
+                    f"{transition.from_level.value} -> {transition.to_level.value}",
+                    transition.trigger_stress
+                )
 
     def _analyze_cascade_effects(self, tension: TensionPoint) -> None:
-        """Analyze how new tension might affect existing stress points."""
-        related_tensions = [
-            t for t in self.stress_points 
-            if t.source == tension.target or t.target == tension.source
-        ]
-        
-        if related_tensions:
-            cascade_magnitude = sum(t.strength for t in related_tensions) / len(related_tensions)
-            observation = f"Cascade effect: Connected to {len(related_tensions)} other tension points"
-            tension.add_observation(observation, cascade_magnitude)
-    
+        """Analyze potential cascade effects from this tension."""
+        # Look for resonance patterns between boundary levels
+        boundary_levels = list(self.boundary_effects.values())
+        for i, effect1 in enumerate(boundary_levels):
+            for effect2 in boundary_levels[i+1:]:
+                resonance = effect1.detect_resonance(effect2)
+                if resonance and resonance.strength > 0.7:
+                    effect1.resonances.append(resonance)
+                    effect2.resonances.append(resonance)
+
     def get_critical_tensions(self) -> List[Tuple[TensionPoint, float]]:
-        """Identify tensions requiring urgent attention based on dynamics."""
-        critical = []
-        for tension in self.stress_points:
-            urgency = tension.urgency
-            if urgency > 0.7:  # High urgency threshold
-                critical.append((tension, urgency))
-        
-        return sorted(critical, key=lambda x: x[1], reverse=True)
+        """Get tensions sorted by criticality (urgency * strength)."""
+        tensions_with_criticality = [
+            (tension, tension.urgency * tension.strength) 
+            for tension in self.stress_points
+        ]
+        return sorted(tensions_with_criticality, key=lambda x: x[1], reverse=True)
 
     def get_boundary_analysis(self) -> str:
-        """Analyze stress patterns at different organizational boundaries."""
-        summary = ["\nBoundary Analysis:"]
+        """Get a summary of boundary effects and transitions."""
+        analysis = ["=== Boundary Analysis ==="]
         
         for level, effect in self.boundary_effects.items():
-            if effect.stress_history:  # Only show active boundaries
-                summary.append(f"\n{level.value.title()} Boundary:")
-                summary.append(f"  Current Size: {effect.current_size}")
-                summary.append(f"  Recent Rate: {effect._calculate_recent_rate():.2f}")
-                
-                if effect.is_near_threshold():
-                    summary.append("  ⚠️ Near threshold - potential phase transition")
-                
-                if effect.transitions:
-                    summary.append("  Recent Transitions:")
-                    for t in effect.transitions[-3:]:  # Show last 3 transitions
-                        summary.append(f"    • {t.from_state} → {t.to_state}")
-                        summary.append(f"      Triggered by rate: {t.trigger_rate:.2f}")
-                        for cascade in t.cascade_effects:
-                            summary.append(f"      ↪ {cascade}")
+            analysis.append(f"\n{level.value.upper()} Boundary:")
+            analysis.append(f"  Current Size: {effect.current_size}")
+            analysis.append(f"  Transitions: {len(effect.transitions)}")
+            analysis.append(f"  Quantum States: {len(effect.quantum_states)}")
+            analysis.append(f"  Resonances: {len(effect.resonances)}")
+            
+            if effect.transitions:
+                latest = effect.transitions[-1]
+                analysis.append(f"  Latest Transition: {latest.from_level.value} -> {latest.to_level.value}")
+            
+            if effect.resonances:
+                strongest = max(effect.resonances, key=lambda r: r.strength)
+                analysis.append(f"  Strongest Resonance: {strongest.resonant_level.value} (strength: {strongest.strength:.2f})")
         
-        return "\n".join(summary)
+        return "\n".join(analysis)
+
 
 @dataclass
 class RelationshipQuality:
-    """Qualitative and quantitative information about a relationship."""
-    confidence: ConfidenceLevel = ConfidenceLevel.UNKNOWN
+    """Qualitative assessment of a relationship between ontology elements."""
     dimensional_scores: Dict[KnowledgeDimension, DimensionalScore] = field(default_factory=dict)
-    issues: List[str] = field(default_factory=list)
-    validation_history: List[Tuple[float, str]] = field(default_factory=list)
+    confidence: ConfidenceLevel = ConfidenceLevel.UNKNOWN
     system_stress: SystemStress = field(default_factory=SystemStress)
 
     def __post_init__(self):
@@ -600,77 +571,40 @@ class RelationshipQuality:
         total_weight = 0.0
         
         for dim, score in self.dimensional_scores.items():
-            weight = weights.get(dim.value, 0.5)  # Default weight if not specified
-            satisfaction = score.get_stakeholder_satisfaction(stakeholder)
-            weighted_sum += satisfaction * weight
+            weight = weights.get(dim.value, 0.5)  # Default weight
+            weighted_sum += score.get_stakeholder_score(stakeholder) * weight
             total_weight += weight
-            
+        
         return weighted_sum / total_weight if total_weight > 0 else 0.0
 
-    def get_stakeholder_summary(self, stakeholder: Stakeholder) -> str:
-        """Get a summary of relationship quality from a stakeholder's perspective."""
-        score = self.get_stakeholder_score(stakeholder)
-        summary = [f"\n{stakeholder.value.title()} Perspective (Overall: {score:.2f}):"]
+    def get_stress_summary(self) -> str:
+        """Get a summary of current system stress and tensions."""
+        summary = ["=== System Stress Summary ==="]
         
-        for dim, dim_score in self.dimensional_scores.items():
-            view = dim_score.stakeholder_views.get(stakeholder)
-            if view:
-                summary.append(f"  {dim.value}:")
-                summary.append(f"    Satisfaction: {view.satisfaction_score:.2f}")
-                if view.requirements_met:
-                    summary.append(f"    ✓ Met: {', '.join(view.requirements_met)}")
-                if view.concerns:
-                    summary.append(f"    ⚠ Concerns: {', '.join(view.concerns)}")
-                
-        return "\n".join(summary)
-
-    def record_tension(self, source: str, target: str, nature: str, strength: float, observation: str) -> None:
-        """Record a new tension point in the relationship."""
-        tension = TensionPoint(source=source, target=target, nature=nature, strength=strength)
-        tension.add_observation(observation)
-        self.system_stress.add_tension(tension)
-    
-    def get_stress_patterns(self) -> str:
-        """Analyze and summarize stress patterns in the relationship."""
         if not self.system_stress.stress_points:
-            return "No stress patterns observed"
-            
-        summary = ["Stress Pattern Analysis:"]
+            summary.append("No significant stress points detected.")
+            return "\n".join(summary)
         
-        # Get critical tensions first
-        critical_tensions = self.system_stress.get_critical_tensions()
-        if critical_tensions:
-            summary.append("\n🚨 Critical Tensions (Requiring Urgent Attention):")
-            for tension, urgency in critical_tensions:
-                summary.append(f"  • {tension.source} ↔ {tension.target}")
-                summary.append(f"    Urgency: {urgency:.2f}")
-                summary.append(f"    Rate of Change: {tension.change_rate.get_rate():.2f} changes/day")
-                summary.append(f"    Acceleration: {tension.change_rate.get_acceleration():.2f}")
+        # Critical tensions
+        critical = self.system_stress.get_critical_tensions()[:3]  # Top 3
+        if critical:
+            summary.append("\nMost Critical Tensions:")
+            for tension, criticality in critical:
+                summary.append(f"  • {tension.source} ↔ {tension.target}: {tension.nature}")
+                summary.append(f"    Strength: {tension.strength:.2f}, Urgency: {tension.urgency:.2f}")
         
-        # Add boundary analysis
-        summary.append(self.system_stress.get_boundary_analysis())
+        # Boundary effects
+        summary.append(f"\nBoundary Effects: {len(self.system_stress.boundary_effects)} levels tracked")
         
-        # Analyze emergence patterns with temporal dynamics
-        for nature, tensions in self.system_stress.emergence_patterns.items():
-            pattern_rate = self.system_stress.temporal_patterns[nature]
-            summary.append(f"\n{nature} Tensions:")
-            summary.append(f"  Rate of Change: {pattern_rate.get_rate():.2f} changes/day")
-            summary.append(f"  Acceleration: {pattern_rate.get_acceleration():.2f}")
-            
-            for tension in tensions:
-                summary.append(f"  • {tension.source} ↔ {tension.target}")
-                summary.append(f"    Strength: {tension.strength:.2f}")
-                summary.append(f"    Urgency: {tension.urgency:.2f}")
-                if tension.change_rate.get_rate() > 0:
-                    summary.append(f"    Changes: {tension.change_rate.get_rate():.2f}/day")
+        # Recent adaptations
+        recent_adaptations = self.system_stress.adaptation_history[-3:]  # Last 3
+        if recent_adaptations:
+            summary.append("\nRecent Adaptations:")
+            for adaptation in recent_adaptations:
+                summary.append(f"  • {adaptation}")
         
-        # System-wide dynamics
-        total_rate = sum(p.get_rate() for p in self.system_stress.temporal_patterns.values())
-        total_accel = sum(p.get_acceleration() for p in self.system_stress.temporal_patterns.values())
-        
-        summary.append("\nSystem-wide Dynamics:")
-        summary.append(f"  Total Change Rate: {total_rate:.2f} changes/day")
-        summary.append(f"  Overall Acceleration: {total_accel:.2f}")
+        # Check for acceleration
+        total_accel = sum(pattern.get_rate() for pattern in self.system_stress.temporal_patterns.values())
         
         if total_accel > 0.5:
             summary.append("  ⚠️ Warning: System changes are accelerating rapidly")
@@ -715,6 +649,7 @@ class RelationshipQuality:
         else:
             self.confidence = ConfidenceLevel.COMPLETE
 
+
 @dataclass
 class Relationship:
     """Represents a qualified relationship between ontology elements."""
@@ -729,11 +664,13 @@ class Relationship:
         self.quality.dimensional_scores[dimension].update_score(score, evidence)
         self.quality.update_confidence_level()
 
+
 class DependencyInfo(TypedDict):
     """Type for dependency information with qualitative metadata."""
     depends_on: Dict[URIRef, Relationship]
     depended_by: Dict[URIRef, Relationship]
     relation_types: Set[RelationType]
+
 
 class GuidanceOntology(TemplateOntology):
     """Class for managing the guidance ontology."""
@@ -845,7 +782,7 @@ class GuidanceOntology(TemplateOntology):
             results[current_uri] = deps
             
             # Add new URIs to visit
-            for next_uri in deps.depends_on.keys() | deps.depended_by.keys():
+            for next_uri in deps["depends_on"].keys() | deps["depended_by"].keys():
                 if next_uri not in visited:
                     visited.add(next_uri)
                     to_visit.append((next_uri, depth + 1))
@@ -885,7 +822,7 @@ class GuidanceOntology(TemplateOntology):
         self.ConsistencyRule = self._create_uri("ConsistencyRule")
 
     def _initialize_guidance_ontology(self) -> None:
-        """Initialize the guidance ontology with core classes, properties, and validation rules."""
+        """Initialize the guidance ontology with core classes properties and validation rules."""
         init_graph = Graph()
         base_uri_ref = URIRef(self.base_uri)
         init_graph.bind("", base_uri_ref)
@@ -895,6 +832,29 @@ class GuidanceOntology(TemplateOntology):
         init_graph.add((base_uri_ref, RDFS.label, RDFLiteral("Guidance Ontology", lang="en")))
         init_graph.add((base_uri_ref, RDFS.comment, RDFLiteral("Ontology for managing guidance and validation rules", lang="en")))
         init_graph.add((base_uri_ref, OWL.versionInfo, RDFLiteral("1.0.0")))
+
+        # Add missing core classes
+        integration_process = URIRef(self.base_uri + "IntegrationProcess")
+        conformance_level = URIRef(self.base_uri + "ConformanceLevel")
+        integration_step = URIRef(self.base_uri + "IntegrationStep")
+        model_conformance = URIRef(self.base_uri + "ModelConformance")
+        test_phase = URIRef(self.base_uri + "TestPhase")
+        test_protocol = URIRef(self.base_uri + "TestProtocol")
+        test_coverage = URIRef(self.base_uri + "TestCoverage")
+
+        # Define missing core classes with labels and comments
+        for cls, label, comment in [
+            (integration_process, "IntegrationProcess", "Process for integrating ontology components"),
+            (conformance_level, "ConformanceLevel", "Level of conformance to ontology standards"),
+            (integration_step, "IntegrationStep", "Individual step in an integration process"),
+            (model_conformance, "ModelConformance", "Conformance level for a specific model"),
+            (test_phase, "TestPhase", "Phase of testing in the integration process"),
+            (test_protocol, "TestProtocol", "Protocol for testing ontology components"),
+            (test_coverage, "TestCoverage", "Coverage metrics for ontology testing")
+        ]:
+            init_graph.add((cls, RDF.type, OWL.Class))
+            init_graph.add((cls, RDFS.label, RDFLiteral(label, lang="en")))
+            init_graph.add((cls, RDFS.comment, RDFLiteral(comment, lang="en")))
 
         # Core validation classes
         validation_rule = URIRef(self.base_uri + "ValidationRule")
@@ -942,60 +902,42 @@ class GuidanceOntology(TemplateOntology):
         # Add example validation rules
         consistency_example = URIRef(self.base_uri + "ClassHierarchyCheck")
         init_graph.add((consistency_example, RDF.type, consistency_rule))
-        init_graph.add((consistency_example, has_validator, RDFLiteral("validate_consistency")))
-        init_graph.add((consistency_example, has_priority, RDFLiteral("HIGH")))
-        init_graph.add((consistency_example, has_target, URIRef(self.base_uri + "ClassHierarchy")))
-        init_graph.add((consistency_example, has_message, RDFLiteral("Check for cycles in class hierarchy")))
+        init_graph.add((consistency_example, has_validator, RDFLiteral("ClassHierarchyValidator")))
+        init_graph.add((consistency_example, has_message, RDFLiteral("Class hierarchy must be acyclic")))
 
-        # Merge graphs with preservation of existing triples
-        existing_triples: Dict[URIRef, List[Tuple[URIRef, Any]]] = {}
-        for s, p, o in self.graph:
-            if isinstance(s, URIRef) and isinstance(p, URIRef):
-                if s not in existing_triples:
-                    existing_triples[s] = []
-                existing_triples[s].append((p, o))
-            
-        # First add all new triples
-        for s, p, o in init_graph:
-            self.graph.add((s, p, o))
-            
-        # Then selectively add existing triples that don't conflict
-        for s, po_pairs in existing_triples.items():
-            if not list(init_graph.triples((s, None, None))):
-                for p, o in po_pairs:
-                    if not list(init_graph.triples((s, p, None))):
-                        self.graph.add((s, p, o))
+        # Merge with main graph
+        self.graph += init_graph
 
     def get_relationship_summary(self, uri: URIRef) -> str:
-        """Get a summary of relationship quality including stress patterns."""
+        """Get a human-readable summary of relationships for a URI."""
         deps = self.get_dependencies(uri)
         
-        summary = [f"\nRelationship Analysis for {uri}:"]
+        summary = [f"Relationship Summary for {uri}"]
+        summary.append("=" * 50)
         
-        for target, rel in deps['depends_on'].items():
-            summary.append(f"\n→ {target} ({rel.rel_type.value}):")
-            summary.append(f"  Score: {rel.quality.get_overall_score():.2f}")
-            summary.append(f"  Confidence: {rel.quality.confidence.name}")
-            
-            # Add stress pattern analysis
-            stress_patterns = rel.quality.get_stress_patterns()
-            if stress_patterns != "No stress patterns observed":
-                summary.append("\n  " + "\n  ".join(stress_patterns.split("\n")))
+        if deps["depends_on"]:
+            summary.append(f"\nDepends on ({len(deps['depends_on'])} relationships):")
+            for target, rel in deps["depends_on"].items():
+                conf = rel.quality.confidence.name
+                score = rel.quality.get_overall_score()
+                summary.append(f"  → {target} ({rel.rel_type.value}, confidence: {conf}, score: {score:.2f})")
+        
+        if deps["depended_by"]:
+            summary.append(f"\nDepended on by ({len(deps['depended_by'])} relationships):")
+            for source, rel in deps["depended_by"].items():
+                conf = rel.quality.confidence.name
+                score = rel.quality.get_overall_score()
+                summary.append(f"  ← {source} ({rel.rel_type.value}, confidence: {conf}, score: {score:.2f})")
+        
+        summary.append(f"\nRelation types used: {', '.join(rt.value for rt in deps['relation_types'])}")
         
         return "\n".join(summary)
 
     def emit(self, output_path: Union[str, Path] = "guidance.ttl") -> None:
-        """Emit the guidance ontology to a Turtle file."""
-        self.save(output_path)
-
-if __name__ == "__main__":
-    # Generate guidance.ttl in the project root
-    project_root = Path(__file__).parent.parent.parent
-    output_path = project_root / "guidance.ttl"
-    guidance = GuidanceOntology()
-    
-    # Analyze relationships with stress patterns
-    validation_rule = guidance._create_uri("ValidationRule")
-    print(guidance.get_relationship_summary(validation_rule))
-    
-    guidance.emit(output_path) 
+        """Emit the guidance ontology to a file."""
+        try:
+            self.graph.serialize(destination=str(output_path), format="turtle")
+            print(f"Guidance ontology written to {output_path}")
+        except Exception as e:
+            print(f"Error writing guidance ontology: {e}")
+            raise 

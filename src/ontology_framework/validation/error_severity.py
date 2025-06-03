@@ -1,5 +1,6 @@
 from enum import Enum, auto
 
+
 class ErrorSeverity(Enum):
     """Enumeration of validation error severity levels."""
     INFO = "info"

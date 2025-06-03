@@ -1,6 +1,6 @@
 from typing import Dict, Any, Optional, List, cast, Tuple
 from pathlib import Path
-from rdflib import Graph, Namespace, URIRef, Literal, Node
+from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, DC, SH
 from rdflib.query import ResultRow
 import json
@@ -9,6 +9,7 @@ import semver
 import re
 from typing import NamedTuple
 from enum import Enum
+from rdflib.term import Node
 
 # Define validation patterns namespace
 VP = Namespace('http://example.org/validation-patterns#')
@@ -71,7 +72,7 @@ class PatternManager:
     }
 
     REGEX_COMPLEXITY_THRESHOLD = 50  # Threshold for suggesting SHACL alternative
-
+    
     def __init__(self, patterns_file: Optional[str] = None):
         """Initialize the pattern manager.
         
@@ -120,8 +121,7 @@ class PatternManager:
         
         # Query for all patterns
         query = """
-            SELECT ?pattern ?id ?value ?category ?version ?label ?comment
-            WHERE {
+            SELECT ?pattern ?id ?value ?category ?version ?label ?comment WHERE {
                 ?pattern a vp:ValidationPattern ;
                         vp:pattern ?value ;
                         vp:category ?category ;
@@ -409,8 +409,7 @@ class PatternManager:
         
         # Query for all versions of this pattern
         query = """
-            SELECT ?version ?date
-            WHERE {
+            SELECT ?version ?date WHERE {
                 ?pattern vp:version ?version ;
                         dc:date ?date .
             }
@@ -429,8 +428,22 @@ class PatternManager:
                 row_tuple = cast(Tuple[Node, ...], row)
                 if len(row_tuple) >= 2:
                     history.append({
-                        "version": str(row_tuple[0]),
-                        "date": str(row_tuple[1])
+                        "version": str(row_tuple[0]) if row_tuple[0] else "",
+                        "date": str(row_tuple[1]) if row_tuple[1] else ""
                     })
+        
+        return history
+    
+    def get_validation_pattern(self, pattern_id: str) -> Optional[str]:
+        """Get a validation pattern for use in validation rules.
+        
+        Args:
+            pattern_id: ID of the pattern to retrieve
             
-        return history 
+        Returns:
+            Pattern string if found, None otherwise
+        """
+        pattern = self.get_pattern(pattern_id)
+        if pattern:
+            return pattern.get("pattern")
+        return None

@@ -5,10 +5,7 @@ import pytest
 from pathlib import Path
 from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
-from src.ontology_framework.modules.validator import (
-    MCPValidator,
-    ValidationTarget
-)
+from src.ontology_framework.modules.validator import MCPValidator, ValidationTarget
 from ontology_framework.validation.python_validator import PythonValidator
 
 # Define namespaces
@@ -53,7 +50,6 @@ def test_validation_target():
     assert target.target_type == "class"
     assert target.priority == "HIGH"
     assert not target.validation_errors
-    
     target.add_error("Test error")
     assert "Test error" in target.validation_errors
 
@@ -146,4 +142,4 @@ def main():
             print(f"- {violation['message']} (Severity: {violation['severity']})")
 
 if __name__ == "__main__":
-    main() 
+    main()

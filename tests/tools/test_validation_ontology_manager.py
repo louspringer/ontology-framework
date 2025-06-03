@@ -91,7 +91,7 @@ def test_validation_rule_properties(validation_manager):
     # Verify property values using direct graph access
     for _, _, obj in validation_manager.graph.triples((rule_uri, RDF.type, None)):
         assert obj == validation_manager.validation_rule_class
-        
+    
     for _, _, obj in validation_manager.graph.triples((rule_uri, validation_manager.has_description, None)):
         assert isinstance(obj, Literal)
         assert str(obj) == "Test property values"
@@ -100,6 +100,7 @@ def test_validation_rule_properties(validation_manager):
     for _, _, obj in validation_manager.graph.triples((rule_uri, validation_manager.has_level, None)):
         assert str(obj).endswith("Level_HIGH")
         level_found = True
+    
     assert level_found
 
 def test_sparql_query_error_handling(validation_manager):
@@ -135,4 +136,4 @@ def test_update_validation_rule(validation_manager):
     
     assert updated_rule is not None
     assert updated_rule["description"] == "Updated description"
-    assert updated_rule["level"] == "Level_HIGH" 
+    assert updated_rule["level"] == "Level_HIGH"

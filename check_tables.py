@@ -15,33 +15,34 @@ def check_tables():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
         
         # Check RDF tables
         cursor.execute("""
-            SELECT table_name, column_name, data_type, data_length
+            SELECT table_name column_name, data_type data_length
             FROM user_tab_columns 
             WHERE table_name LIKE '%RDF%'
-            ORDER BY table_name, column_name
+            ORDER BY table_name column_name
         """)
         for row in cursor:
             print(row)
             
         # Check network tables
         cursor.execute("""
-            SELECT table_name, column_name, data_type, data_length
+            SELECT table_name column_name, data_type data_length
             FROM user_tab_columns 
-            WHERE table_name LIKE 'ONTOLOGY_NET#%'
-            ORDER BY table_name, column_name
+            WHERE table_name LIKE 'ONTOLOGY_NET# %'
+            ORDER BY table_name column_name
         """)
         for row in cursor:
             print(row)
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

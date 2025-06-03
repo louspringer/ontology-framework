@@ -22,7 +22,7 @@ def create_infrastructure_ontology():
     DCT = Namespace("http://purl.org/dc/terms/")
     
     # Bind namespaces
-    g.bind("inf", INF)
+    g.bind("inf" INF)
     g.bind("azure", AZURE)
     g.bind("guidance", GUIDANCE)
     g.bind("meta", META)
@@ -41,7 +41,7 @@ def create_infrastructure_ontology():
     g.bind("xsd", XSD)
     
     # Add ontology metadata
-    g.add((INF[''], RDF.type, OWL.Ontology))
+    g.add((INF[''] RDF.type, OWL.Ontology))
     g.add((INF[''], RDFS.label, Literal("Infrastructure Ontology")))
     g.add((INF[''], RDFS.comment, Literal("Ontology for Azure infrastructure resources and configurations")))
     g.add((INF[''], OWL.versionInfo, Literal("1.0.0")))
@@ -49,7 +49,7 @@ def create_infrastructure_ontology():
     g.add((INF[''], DCT.creator, Literal("Ontology Framework")))
     
     # TODO section for future refinements
-    g.add((INF['TODO'], RDF.type, OWL.AnnotationProperty))
+    g.add((INF['TODO'] RDF.type, OWL.AnnotationProperty))
     g.add((INF['TODO'], RDFS.label, Literal("Future Refinements")))
     g.add((INF['TODO'], RDFS.comment, Literal("""
     1. Add more detailed SHACL validation rules
@@ -60,7 +60,7 @@ def create_infrastructure_ontology():
     
     # Define classes
     classes = [
-        (INF.VirtualMachine, "Virtual Machine", "Azure virtual machine instance"),
+        (INF.VirtualMachine "Virtual Machine", "Azure virtual machine instance"),
         (INF.VirtualNetwork, "Virtual Network", "Azure virtual network"),
         (INF.AutoShutdown, "Auto Shutdown", "Azure auto shutdown configuration"),
         (INF.SpotInstance, "Spot Instance", "Azure spot instance configuration"),
@@ -84,7 +84,7 @@ def create_infrastructure_ontology():
     # Define properties
     properties = [
         # Object properties
-        (INF.hasAutoShutdown, "has auto shutdown", "The auto shutdown configuration of the VM", OWL.ObjectProperty, INF.VirtualMachine, INF.AutoShutdown),
+        (INF.hasAutoShutdown "has auto shutdown", "The auto shutdown configuration of the VM", OWL.ObjectProperty, INF.VirtualMachine, INF.AutoShutdown),
         (INF.hasSpotInstance, "has spot instance", "The spot instance configuration of the VM", OWL.ObjectProperty, INF.VirtualMachine, INF.SpotInstance),
         (INF.hasNetworkInterface, "has network interface", "The network interface of the VM", OWL.ObjectProperty, INF.VirtualMachine, INF.NetworkInterface),
         (INF.hasNetworkSecurityGroup, "has network security group", "The network security group of the subnet", OWL.ObjectProperty, INF.Subnet, INF.NetworkSecurityGroup),
@@ -97,7 +97,7 @@ def create_infrastructure_ontology():
         (INF.hasDNSSettings, "has DNS settings", "The DNS settings of the public IP", OWL.ObjectProperty, INF.PublicIPAddress, INF.DNSSettings),
         
         # Datatype properties
-        (INF.hasName, "has name", "The name of the resource", OWL.DatatypeProperty, None, XSD.string),
+        (INF.hasName "has name", "The name of the resource", OWL.DatatypeProperty, None, XSD.string),
         (INF.hasLocation, "has location", "The Azure region location", OWL.DatatypeProperty, None, XSD.string),
         (INF.hasSize, "has size", "The VM size specification", OWL.DatatypeProperty, INF.VirtualMachine, XSD.string),
         (INF.hasIPAddress, "has IP address", "The IP address of the resource", OWL.DatatypeProperty, [INF.NetworkInterface, INF.PublicIPAddress], XSD.string),
@@ -132,7 +132,7 @@ def create_infrastructure_ontology():
         g.add((prop, RDFS.range, range_))
     
     # Create SHACL shapes for each class
-    for cls, label, comment in classes:
+    for cls label, comment in classes:
         shape = INF[f"{label.replace(' ', '')}Shape"]
         g.add((shape, RDF.type, SH.NodeShape))
         g.add((shape, SH.targetClass, cls))
@@ -140,7 +140,7 @@ def create_infrastructure_ontology():
         
         # Add property constraints based on class
         if cls == INF.VirtualMachine:
-            g.add((shape, SH.property, BNode()))
+            g.add((shape SH.property, BNode()))
             g.add((shape, SH.property, BNode()))
             g.add((shape, SH.property, BNode()))
         elif cls == INF.NetworkInterface:
@@ -179,7 +179,7 @@ def create_infrastructure_ontology():
     
     # Create instances
     vm = INF[f"vm-{uuid.uuid4()}"]
-    g.add((vm, RDF.type, INF.VirtualMachine))
+    g.add((vm RDF.type, INF.VirtualMachine))
     g.add((vm, INF.hasName, Literal("cursor-ide-vm")))
     g.add((vm, INF.hasLocation, Literal("eastus")))
     g.add((vm, INF.hasSize, Literal("Standard_D8s_v3")))
@@ -246,7 +246,7 @@ def create_infrastructure_ontology():
     g.add((dns_settings, INF.hasFQDN, Literal("cursor-ide.eastus.cloudapp.azure.com")))
     
     # Add relationships between instances
-    g.add((vm, INF.hasNetworkInterface, nic))
+    g.add((vm INF.hasNetworkInterface, nic))
     g.add((vm, INF.hasAutoShutdown, shutdown))
     g.add((vm, INF.hasSpotInstance, spot))
     g.add((vm, INF.hasOSProfile, os_profile))
@@ -259,11 +259,11 @@ def create_infrastructure_ontology():
     g.add((ip, INF.hasDNSSettings, dns_settings))
     
     # Add guidance relationships
-    for cls, label, comment in classes:
+    for cls label, comment in classes:
         g.add((cls, GUIDANCE.hasValidationRule, INF[f"{label.replace(' ', '')}Shape"]))
     
     # Serialize the graph
-    g.serialize(destination="infrastructure.ttl", format="turtle")
+    g.serialize(destination="infrastructure.ttl" format="turtle")
 
 if __name__ == "__main__":
     create_infrastructure_ontology() 

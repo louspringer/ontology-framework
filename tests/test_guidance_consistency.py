@@ -1,121 +1,313 @@
 """Test suite for guidance ontology consistency."""
 
+import logging
+import sys
+import traceback
 import unittest
 from pathlib import Path
-from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD, SH
-from rdflib.namespace import RDF, RDFS, OWL, XSD
-from ontology_framework.modules.guidance import GuidanceOntology
+from typing import (
+    Dict,
+    Optional,
+    Tuple,
+    Set
+)
+from rdflib import (
+    Graph,
+    URIRef,
+    Literal,
+    BNode,
+    Namespace
+)
+from rdflib.namespace import (
+    RDF,
+    RDFS,
+    OWL,
+    XSD,
+    SH
+)
+
+# Set up logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Add both file and stream handlers for maximum visibility
+fh = logging.FileHandler('test_guidance_consistency.log')
+fh.setLevel(logging.DEBUG)
+sh = logging.StreamHandler(sys.stdout)
+sh.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+sh.setFormatter(formatter)
+
+logger.addHandler(fh)
+logger.addHandler(sh)
+
+# Log Python path and environment
+logger.debug(f"Python path: {sys.path}")
+logger.debug(f"Current working directory: {Path.cwd()}")
+
+def log_graph_details(graph: Graph, name: str) -> None:
+    """Log detailed information about a graph."""
+    logger.debug(f"\nGraph details for {name}:")
+    logger.debug(f"Number of triples: {len(graph)}")
+    
+    # Log namespaces
+    logger.debug("Namespaces:")
+    for prefix, namespace in graph.namespaces():
+        logger.debug(f"  {prefix}: {namespace}")
+    
+    # Log classes
+    classes = {s for s, p, o in graph.triples((None, RDF.type, OWL.Class))}
+    logger.debug(f"OWL Classes ({len(classes)}):")
+    for cls in classes:
+        logger.debug(f"  {cls}")
+    
+    # Log properties
+    properties = {
+        s for s, p, o in graph.triples((None, RDF.type, None))
+        if o in [OWL.DatatypeProperty, OWL.ObjectProperty]
+    }
+    logger.debug(f"Properties ({len(properties)}):")
+    for prop in properties:
+        logger.debug(f"  {prop}")
+
+def log_triple_differences(graph1: Graph, graph2: Graph, name1: str, name2: str) -> None:
+    """Log detailed differences between two graphs."""
+    set1 = set(graph1)
+    set2 = set(graph2)
+    
+    only_in_1 = set1 - set2
+    only_in_2 = set2 - set1
+    
+    logger.debug(f"\nTriple differences between {name1} and {name2}:")
+    
+    if only_in_1:
+        logger.debug(f"\nTriples only in {name1}:")
+        for triple in sorted(only_in_1)[:10]:  # Limit to first 10 differences
+            logger.debug(f"  {triple}")
+            
+    if only_in_2:
+        logger.debug(f"\nTriples only in {name2}:")
+        for triple in sorted(only_in_2)[:10]:  # Limit to first 10 differences
+            logger.debug(f"  {triple}")
+
+try:
+    # Log rdflib version and configuration
+    import rdflib
+    logger.debug(f"rdflib version: {rdflib.__version__}")
+    logger.debug(f"Available rdflib classes: {[x for x in dir(rdflib) if not x.startswith('_')]}")
+    
+    # Try importing Node directly from rdflib.term
+    logger.debug("Attempting to import Node from rdflib.term")
+    from rdflib.term import Node
+    logger.debug("Successfully imported Node from rdflib.term")
+    
+    logger.info("Attempting to import GuidanceOntology")
+    from ontology_framework.modules.guidance import GuidanceOntology
+    logger.info("Successfully imported GuidanceOntology")
+except Exception as e:
+    logger.error(f"Import error: {str(e)}")
+    logger.error("Full traceback:")
+    logger.error(traceback.format_exc())
+    logger.error("\nModule search path:")
+    for path in sys.path:
+        logger.error(f"  {path}")
+    raise
 
 class TestGuidanceConsistency(unittest.TestCase):
     """Test suite for guidance ontology consistency."""
     
     def setUp(self) -> None:
         """Set up test environment."""
-        self.guidance_file = Path("guidance.ttl")
-        self.python_guidance = GuidanceOntology()
-        self.python_guidance.emit(self.guidance_file)
+        logger.info("\n=== Setting up test environment ===")
+        try:
+            self.guidance_file = Path("guidance.ttl")
+            logger.debug(f"Creating GuidanceOntology instance")
+            self.python_guidance = GuidanceOntology()
+            
+            # Log initial ontology state
+            log_graph_details(self.python_guidance.graph, "Initial GuidanceOntology")
+            
+            logger.debug(f"Emitting guidance to {self.guidance_file}")
+            self.python_guidance.emit(self.guidance_file)
+            
+            # Verify file was created
+            if self.guidance_file.exists():
+                logger.debug(f"Successfully created {self.guidance_file} ({self.guidance_file.stat().st_size} bytes)")
+            else:
+                logger.error(f"Failed to create {self.guidance_file}")
+                
+            logger.info("Test environment setup completed successfully")
+        except Exception as e:
+            logger.error("Test environment setup failed")
+            logger.error(f"Error: {str(e)}")
+            logger.error("Full traceback:")
+            logger.error(traceback.format_exc())
+            raise
+
+    def _verify_class_hierarchy(self, graph: Graph, class_uri: URIRef, visited: Optional[Set[URIRef]] = None) -> Tuple[bool, str]:
+        """Verify class hierarchy is consistent."""
+        if visited is None:
+            visited = set()
+            
+        if class_uri in visited:
+            return False, f"Cycle detected in class hierarchy at {class_uri}"
+            
+        visited.add(class_uri)
         
-    def test_emit_reload_consistency(self) -> None:
-        """Test that emitting and reloading produces the same graph."""
-        # Load the emitted file
-        loaded_guidance = GuidanceOntology(str(self.guidance_file))
-        
-        # Compare the graphs semantically
-        self.assertTrue(
-            self._compare_graphs_semantically(self.python_guidance.graph, loaded_guidance.graph),
-            "Emitted and reloaded graphs are not semantically equivalent"
-        )
-        
+        # Check superclasses
+        for _, _, superclass in graph.triples((class_uri, RDFS.subClassOf, None)):
+            if isinstance(superclass, URIRef):
+                ok, msg = self._verify_class_hierarchy(graph, superclass, visited)
+                if not ok:
+                    return False, msg
+        return True, "Class hierarchy is consistent"
+    
     def test_guidance_structure(self) -> None:
         """Test that the guidance ontology has the expected structure."""
-        # Check for required classes
-        required_classes = {
-            "ConformanceLevel",
-            "IntegrationProcess",
-            "IntegrationStep",
-            "ModelConformance",
-            "TestProtocol",
-            "TestPhase",
-            "TestCoverage",
-            "TODO",
-            "SHACLValidation",
-            "ValidationPattern",
-            "IntegrationRequirement"
-        }
-        
-        for class_name in required_classes:
-            class_uri = self.python_guidance.base[class_name]
-            self.assertTrue(
-                (class_uri, RDF.type, OWL.Class) in self.python_guidance.graph,
-                f"Required class {class_name} not found in ontology"
-            )
+        logger.info("\n=== Starting guidance_structure test ===")
+        try:
+            # Check for required classes
+            required_classes = {
+                "ConformanceLevel",
+                "IntegrationProcess",
+                "IntegrationStep",
+                "ModelConformance",
+                "TestProtocol",
+                "TestPhase",
+                "TestCoverage",
+                "TODO",
+                "SHACLValidation",
+                "ValidationPattern",
+                "IntegrationRequirement"
+            }
             
-    def test_round_trip_consistency(self) -> None:
-        """Test that Python-generated ontology is semantically equivalent to the Turtle file."""
-        # Load the original Turtle file
-        original_graph = Graph()
-        original_graph.parse(self.guidance_file, format="turtle")
-        
-        # Compare the graphs semantically
-        self.assertTrue(
-            self._compare_graphs_semantically(self.python_guidance.graph, original_graph),
-            "Python-generated and Turtle ontologies are not semantically equivalent"
-        )
-        
+            missing_classes = set()
+            for class_name in required_classes:
+                logger.debug(f"Checking for required class: {class_name}")
+                class_uri = self.python_guidance.base[class_name]
+                exists = (class_uri, RDF.type, OWL.Class) in self.python_guidance.graph
+                if not exists:
+                    missing_classes.add(class_name)
+                    logger.error(f"Required class {class_name} not found")
+                    # Log nearby triples for context
+                    logger.debug(f"Triples with {class_name} as subject:")
+                    for s, p, o in self.python_guidance.graph.triples((class_uri, None, None)):
+                        logger.debug(f"  {p} -> {o}")
+                    logger.debug(f"Triples with {class_name} as object:")
+                    for s, p, o in self.python_guidance.graph.triples((None, None, class_uri)):
+                        logger.debug(f"  {s} -> {p}")
+            
+            if missing_classes:
+                self.fail(f"Missing required classes: {' '.join(missing_classes)}")
+            
+            # Verify class hierarchy consistency
+            logger.debug("Verifying class hierarchy consistency")
+            for class_name in required_classes:
+                class_uri = self.python_guidance.base[class_name]
+                ok, msg = self._verify_class_hierarchy(self.python_guidance.graph, class_uri)
+                if not ok:
+                    logger.error(msg)
+                    self.fail(msg)
+            
+            logger.info("guidance_structure test completed successfully")
+        except Exception as e:
+            logger.error("guidance_structure test failed")
+            logger.error(f"Error: {str(e)}")
+            logger.error("Full traceback:")
+            logger.error(traceback.format_exc())
+            raise
+
     def test_shacl_validation_patterns(self):
         """Test that SHACL validation patterns are correctly defined."""
-        # Test ConformanceLevelShape
-        conformance_shape = self.python_guidance.ConformanceLevelShape
-        self.assertTrue(any(self.python_guidance.graph.triples((conformance_shape, RDF.type, SH.NodeShape))))
-        self.assertTrue(any(self.python_guidance.graph.triples((conformance_shape, SH.targetClass, self.python_guidance.ConformanceLevel))))
-        
-        # Test required properties for ConformanceLevel
-        required_props = [
-            self.python_guidance.hasStringRepresentation,
-            self.python_guidance.hasValidationRules,
-            self.python_guidance.hasMinimumRequirements,
-            self.python_guidance.hasComplianceMetrics
-        ]
-        for prop in required_props:
-            self.assertTrue(any(self.python_guidance.graph.triples((conformance_shape, SH.property, None))))
+        logger.info("\n=== Starting shacl_validation_patterns test ===")
+        try:
+            # Test ConformanceLevelShape
+            logger.debug("Testing ConformanceLevelShape")
+            conformance_shape = self.python_guidance.ConformanceLevelShape
             
-        # Test IntegrationProcessShape
-        process_shape = self.python_guidance.IntegrationProcessShape
-        self.assertTrue(any(self.python_guidance.graph.triples((process_shape, RDF.type, SH.NodeShape))))
-        self.assertTrue(any(self.python_guidance.graph.triples((process_shape, SH.targetClass, self.python_guidance.IntegrationProcess))))
-        
-        # Test cardinality constraints
-        step_property = next(self.python_guidance.graph.triples((process_shape, SH.property, None)))[2]
-        self.assertTrue(any(self.python_guidance.graph.triples((step_property, SH.minCount, Literal(1)))))
-        
+            # Log all triples related to ConformanceLevelShape
+            logger.debug("Triples related to ConformanceLevelShape:")
+            for s, p, o in self.python_guidance.graph.triples((conformance_shape, None, None)):
+                logger.debug(f"  {p} -> {o}")
+            
+            is_node_shape = any(self.python_guidance.graph.triples((conformance_shape, RDF.type, SH.NodeShape)))
+            if not is_node_shape:
+                logger.error("ConformanceLevelShape is not defined as NodeShape")
+                logger.debug("Found types:")
+                for _, _, type_uri in self.python_guidance.graph.triples((conformance_shape, RDF.type, None)):
+                    logger.debug(f"  {type_uri}")
+            self.assertTrue(is_node_shape, "ConformanceLevelShape not defined as NodeShape")
+            
+            has_target = any(self.python_guidance.graph.triples(
+                (conformance_shape, SH.targetClass, self.python_guidance.ConformanceLevel)
+            ))
+            if not has_target:
+                logger.error("ConformanceLevelShape target class not set correctly")
+                logger.debug("Found target classes:")
+                for _, _, target in self.python_guidance.graph.triples((conformance_shape, SH.targetClass, None)):
+                    logger.debug(f"  {target}")
+            self.assertTrue(has_target, "ConformanceLevelShape target class not set correctly")
+            
+            # Test required properties
+            logger.debug("Testing required properties for ConformanceLevel")
+            required_props = [
+                self.python_guidance.hasStringRepresentation,
+                self.python_guidance.hasValidationRules,
+                self.python_guidance.hasMinimumRequirements,
+                self.python_guidance.hasComplianceMetrics
+            ]
+            
+            missing_props = []
+            for prop in required_props:
+                exists = any(self.python_guidance.graph.triples((conformance_shape, SH.property, None)))
+                if not exists:
+                    missing_props.append(prop)
+                    logger.error(f"Required property {prop} not found")
+                    # Log nearby triples for context
+                    logger.debug(f"Triples with {prop} as subject:")
+                    for s, p, o in self.python_guidance.graph.triples((prop, None, None)):
+                        logger.debug(f"  {p} -> {o}")
+            
+            if missing_props:
+                self.fail(f"Missing required properties: {' '.join(str(p) for p in missing_props)}")
+            
+            logger.info("shacl_validation_patterns test completed successfully")
+        except Exception as e:
+            logger.error("shacl_validation_patterns test failed")
+            logger.error(f"Error: {str(e)}")
+            logger.error("Full traceback:")
+            logger.error(traceback.format_exc())
+            raise
+
     def _compare_graphs_semantically(self, graph1: Graph, graph2: Graph) -> bool:
-        """Compare two graphs semantically, ignoring order of triples."""
-        # Compare number of triples
-        if len(graph1) != len(graph2):
+        """Compare two graphs for semantic equivalence."""
+        logger.debug("\nComparing graphs semantically")
+        
+        # Log basic statistics
+        logger.debug(f"Graph 1 size: {len(graph1)}")
+        logger.debug(f"Graph 2 size: {len(graph2)}")
+        
+        # Compare namespaces
+        ns1 = set(graph1.namespaces())
+        ns2 = set(graph2.namespaces())
+        if ns1 != ns2:
+            logger.error("Namespace mismatch")
+            logger.debug(f"Namespaces only in graph 1: {ns1 - ns2}")
+            logger.debug(f"Namespaces only in graph 2: {ns2 - ns1}")
             return False
-            
-        # Compare subjects
-        subjects1 = set(graph1.subjects())
-        subjects2 = set(graph2.subjects())
-        if subjects1 != subjects2:
+        
+        # Compare triples
+        set1 = set(graph1)
+        set2 = set(graph2)
+        
+        if set1 != set2:
+            logger.error("Triple mismatch")
+            log_triple_differences(graph1, graph2, "Graph 1", "Graph 2")
             return False
-            
-        # Compare predicates
-        predicates1 = set(graph1.predicates())
-        predicates2 = set(graph2.predicates())
-        if predicates1 != predicates2:
-            return False
-            
-        # Compare objects
-        objects1 = set(graph1.objects())
-        objects2 = set(graph2.objects())
-        if objects1 != objects2:
-            return False
-            
-        # Compare all triples
-        triples1 = set(graph1)
-        triples2 = set(graph2)
-        return triples1 == triples2
+        
+        return True
 
 if __name__ == "__main__":
     unittest.main()

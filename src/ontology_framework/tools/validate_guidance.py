@@ -1,15 +1,12 @@
-from rdflib import Graph, Namespace
-import pyshacl
-from pathlib import Path
-
-def validate_guidance_ontology():
-    """Validate the guidance ontology using SHACL."""
+from rdflib import Graph, Namespace, import pyshacl
+from pathlib import Path, def validate_guidance_ontology():
+    """Validate, the guidance ontology using SHACL."""
     # Load the ontology
-    data_graph = Graph()
+        data_graph = Graph()
     data_graph.parse("guidance.ttl", format="turtle")
 
-    # Load SHACL shapes from the ontology itself
-    # (since guidance.ttl contains its own SHACL shapes)
+    # Load SHACL shapes, from the, ontology itself
+    # (since guidance.ttl, contains its, own SHACL, shapes)
     shapes_graph = data_graph
 
     # Run validation
@@ -26,10 +23,10 @@ def validate_guidance_ontology():
     )
 
     if conforms:
-        print("Guidance ontology validation successful!")
+        print("Guidance, ontology validation, successful!")
         return True
     else:
-        print("Guidance ontology validation failed:")
+        print("Guidance, ontology validation, failed:")
         print(results_text)
         return False
 

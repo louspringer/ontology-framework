@@ -1,0 +1,38 @@
+{
+    "name": "Ontology Framework",
+    "description": "Model-driven system for managing ontology-based reasoning, validation, and AI tooling alignment.",
+    "framework": "None (Semantic-first architecture)",
+    "language": "Python + RDF/Turtle",
+    "packageManager": "conda",
+    "buildTool": "manual + clpm",
+    "database": "GraphDB (SPARQL/RDF4J)",
+    "deployment": "Local + containerized (GraphDB, BFG9K via stdio)",
+    "environmentVariables": {
+        "GRAPHDB_REPO": "guidance",
+        "GRAPHDB_URL": "http://localhost:7200",
+        "MCP_SERVER": "stdio",
+        "MODEL_SYNC": "true"
+    },
+    "codingStandards": {
+        "style": "black + flake8",
+        "conventions": "Turtle-first ontology, tests before code, semantic-first logic"
+    },
+    "aiInstructions": [
+        "Always query guidance.ttl before proposing or executing any task.",
+        "Do not modify functional code without confirming errors through logs and tests.",
+        "Emit spore:MissingPolicyNotice when required rules are absent.",
+        "Trace all actions in session.ttl.",
+        "Use semantic tools (SPARQL, PySHACL, BFG9K) for all ontology interaction.",
+        "You are not a squirrel. You do not have a bazooka."
+    ],
+    "excludedPaths": [
+        "node_modules",
+        "venv",
+        "dist",
+        ".git",
+        ".mypy_cache",
+        "__pycache__",
+        "chrome_debug_dir",
+        "chromedriver"
+    ]
+}

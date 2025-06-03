@@ -1,0 +1,129 @@
+@prefix artifact: <./artifact#> .
+@prefix trace: <./trace#> .
+@prefix session: <./session#> .
+@prefix lifecycle: <./lifecycle#> .
+@prefix guidance: <./guidance#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# VIOLATION 1: Undocumented Artifact
+artifact:OrphanedPythonModule a artifact:PythonModule ;
+    rdfs:label "Orphaned Python Module" ;
+    artifact:hasSemanticPurpose "Testing undocumented artifact detection" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation .
+
+# VIOLATION 2: Missing Twin Artifact
+artifact:LonelyPythonModule a artifact:PythonModule ;
+    rdfs:label "Lonely Python Module" ;
+    artifact:hasSemanticPurpose "Testing missing twin detection" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:TestEvent001 .
+
+# VIOLATION 3: Desynchronized Twin Artifacts
+artifact:DesyncPythonModule a artifact:PythonModule ;
+    rdfs:label "Desynchronized Python Module" ;
+    artifact:hasSemanticPurpose "Testing twin synchronization" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    artifact:hasTwin artifact:DesyncManifest ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:TestEvent002 .
+
+artifact:DesyncManifest a artifact:ManifestDocument ;
+    rdfs:label "Desynchronized Manifest" ;
+    artifact:hasSemanticPurpose "Testing twin synchronization" ;
+    lifecycle:hasLifecyclePhase lifecycle:Validation ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:TestEvent002 .
+
+# VIOLATION 4: Invalid Lifecycle Transition
+session:InvalidTransitionEvent a session:Event ;
+    session:timestamp "2025-05-26T11:00:00Z"^^xsd:dateTime ;
+    session:eventType session:LifecycleTransition ;
+    session:triggersTransition lifecycle:Production ;
+    session:affectsArtifact artifact:SkippingValidationModule ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .
+
+artifact:SkippingValidationModule a artifact:PythonModule ;
+    rdfs:label "Skipping Validation Module" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    artifact:hasSemanticPurpose "Testing invalid lifecycle transitions" ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:InvalidTransitionEvent .
+
+# VIOLATION 5: Broken Justification Chain
+artifact:UnjustifiedModule a artifact:PythonModule ;
+    rdfs:label "Unjustified Module" ;
+    artifact:hasSemanticPurpose "Testing broken justification chain" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    trace:hasJustification guidance:NonExistentRequirement ;
+    trace:hasSessionEvent session:TestEvent003 .
+
+# VIOLATION 6: Session Event Without Justification
+session:UnjustifiedEvent a session:Event ;
+    session:timestamp "2025-05-26T11:15:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactModification ;
+    session:affectsArtifact artifact:UnjustifiedEventModule .
+
+artifact:UnjustifiedEventModule a artifact:PythonModule ;
+    rdfs:label "Unjustified Event Module" ;
+    artifact:hasSemanticPurpose "Testing session events without justification" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:UnjustifiedEvent .
+
+# VIOLATION 7: Twin Artifacts with Different Justifications
+artifact:MismatchedJustificationPython a artifact:PythonModule ;
+    rdfs:label "Mismatched Justification Python" ;
+    artifact:hasSemanticPurpose "Testing twin justification mismatch" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    artifact:hasTwin artifact:MismatchedJustificationManifest ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:TestEvent004 .
+
+artifact:MismatchedJustificationManifest a artifact:ManifestDocument ;
+    rdfs:label "Mismatched Justification Manifest" ;
+    artifact:hasSemanticPurpose "Testing twin justification mismatch" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    trace:hasJustification guidance:DifferentRequirement ;
+    trace:hasSessionEvent session:TestEvent004 .
+
+# VIOLATION 8: Temporal Inconsistency
+session:TemporalInconsistentEvent a session:Event ;
+    session:timestamp "2025-05-26T10:00:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactModification ;
+    session:affectsArtifact artifact:TemporalInconsistentModule ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .
+
+artifact:TemporalInconsistentModule a artifact:PythonModule ;
+    rdfs:label "Temporal Inconsistent Module" ;
+    artifact:hasSemanticPurpose "Testing temporal consistency" ;
+    lifecycle:hasLifecyclePhase lifecycle:Implementation ;
+    trace:lastModified "2025-05-26T11:00:00Z"^^xsd:dateTime ;
+    trace:hasJustification guidance:TraceabilityEnforcementRequirement ;
+    trace:hasSessionEvent session:TemporalInconsistentEvent .
+
+# Supporting Session Events
+session:TestEvent001 a session:Event ;
+    session:timestamp "2025-05-26T10:30:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactCreation ;
+    session:affectsArtifact artifact:LonelyPythonModule ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .
+
+session:TestEvent002 a session:Event ;
+    session:timestamp "2025-05-26T10:45:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactCreation ;
+    session:affectsArtifact artifact:DesyncPythonModule , artifact:DesyncManifest ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .
+
+session:TestEvent003 a session:Event ;
+    session:timestamp "2025-05-26T11:10:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactCreation ;
+    session:affectsArtifact artifact:UnjustifiedModule ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .
+
+session:TestEvent004 a session:Event ;
+    session:timestamp "2025-05-26T11:20:00Z"^^xsd:dateTime ;
+    session:eventType session:ArtifactCreation ;
+    session:affectsArtifact artifact:MismatchedJustificationPython , artifact:MismatchedJustificationManifest ;
+    session:justifiedBy guidance:TraceabilityEnforcementRequirement .

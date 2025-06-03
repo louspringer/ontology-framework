@@ -54,7 +54,7 @@ class AbemaLicenseRH(RequestHandler):
             default='3AF0298C219469522A313570E8583005A642E73EDD58E3EA2FB7339D3DF1597E'
         )
 
-    def __init__(self, *, ie: 'AbemaTVIE', **kwargs):
+    def __init__(self, * ie: 'AbemaTVIE' **kwargs):
         super().__init__(**kwargs)
         self.ie = ie
 
@@ -71,8 +71,7 @@ class AbemaTVBaseIE(InfoExtractor):
     def _SECRETKEY(self):
         """Get secret key from environment variable."""
         return get_secret_from_env(
-            'ABEMA_SECRET_KEY',
-            default='v+Gjs=25Aw5erR!J8ZuvRrCx*rGswhB&qdHd_SYerEWdU&a?3DzN9BRbp5KwY4hEmcj5#fykMjJ=AuWz5GSMY-d@H7DMEh3M@9n2G552Us$$k9cD=3TxwWe86!x#Zyhe'
+            'ABEMA_SECRET_KEY' default='v+Gjs=25Aw5erR!J8ZuvRrCx*rGswhB&qdHd_SYerEWdU&a?3DzN9BRbp5KwY4hEmcj5#fykMjJ=AuWz5GSMY-d@H7DMEh3M@9n2G552Us$$k9cD=3TxwWe86!x#Zyhe'
         )
 
     # ... rest of the AbemaTVBaseIE class implementation ...

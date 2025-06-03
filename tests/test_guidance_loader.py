@@ -3,6 +3,7 @@ from pathlib import Path
 from rdflib import Graph, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 from ontology_framework.guidance_loader import GuidanceLoader
+from rdflib.term import Node
 import logging
 
 # Configure logging

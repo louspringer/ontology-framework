@@ -12,7 +12,6 @@ from rdflib import Graph, Namespace, RDF, RDFS, OWL, SH, Literal
 from rdflib.namespace import XSD
 from pyshacl import validate
 import logging
-
 from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
 from ontology_framework.exceptions import GraphDBError as OntologyFrameworkError
 
@@ -202,15 +201,15 @@ def test_load_ontology(graphdb_client: GraphDBClient, mock_response, test_graph:
     """Test loading an ontology."""
     with patch('requests.post', return_value=mock_response), \
          patch('requests.delete', return_value=mock_response), \
-         patch('requests.get', return_value=mock_response), \
-         tempfile.NamedTemporaryFile(delete=False, suffix='.ttl') as temp_file:
-        # Save ontology to file using RDFlib
-        test_graph.serialize(destination=temp_file.name, format='turtle')
-        temp_file.flush()
-        
-        result = graphdb_client.load_ontology(temp_file.name)
-        assert result is True
-        os.unlink(temp_file.name)
+         patch('requests.get', return_value=mock_response):
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.ttl') as temp_file:
+            # Save ontology to file using RDFlib
+            test_graph.serialize(destination=temp_file.name, format='turtle')
+            temp_file.flush()
+            
+            result = graphdb_client.load_ontology(temp_file.name)
+            assert result is True
+            os.unlink(temp_file.name)
 
 def test_error_handling(graphdb_client: GraphDBClient):
     """Test error handling."""
@@ -271,28 +270,6 @@ def test_execute_sparql_error(graphdb_client):
         with pytest.raises(GraphDBError):
             graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")
 
-def test_check_server_status_error(graphdb_client):
-    """Test server status check with error."""
-    with patch('requests.get') as mock_get:
-        mock_get.side_effect = requests.RequestException("Test error")
-        assert graphdb_client.check_server_status() is False
-
-def test_load_ontology_error(graphdb_client):
-    """Test loading an ontology with error."""
-    with patch('requests.post') as mock_post:
-        mock_post.return_value.status_code = 500
-        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
-        with pytest.raises(GraphDBError):
-            graphdb_client.load_ontology(Path("test.ttl"))
-
-def test_execute_sparql_error(graphdb_client):
-    """Test executing SPARQL query with error."""
-    with patch('requests.post') as mock_post:
-        mock_post.return_value.status_code = 500
-        mock_post.return_value.raise_for_status.side_effect = requests.exceptions.HTTPError()
-        with pytest.raises(GraphDBError):
-            graphdb_client.execute_sparql("SELECT * WHERE { ?s ?p ?o }")
-
 class TestGraphDBClient:
     """Test suite for GraphDB client functionality."""
     
@@ -303,7 +280,7 @@ class TestGraphDBClient:
         self.client = GraphDBClient(self.endpoint, self.repository)
         
     def test_connection(self):
-        """Test GraphDB connection"""
+        """Test GraphDB connection."""
         logger.info("Testing GraphDB connection")
         try:
             self.client.dataset_exists(self.repository)
@@ -311,7 +288,7 @@ class TestGraphDBClient:
             pytest.skip(f"Failed to connect to GraphDB: {str(e)}")
             
     def test_dataset_operations(self):
-        """Test dataset operations"""
+        """Test dataset operations."""
         # Create dataset
         self.client.create_dataset(self.repository)
         assert self.client.dataset_exists(self.repository)
@@ -327,8 +304,7 @@ class TestGraphDBClient:
         # Query test data
         query = """
         PREFIX ex: <http://example.org/>
-        SELECT ?s ?p ?o
-        WHERE {
+        SELECT ?s ?p ?o WHERE {
             ?s ?p ?o .
         }
         """
@@ -340,7 +316,7 @@ class TestGraphDBClient:
         assert not self.client.dataset_exists(self.repository)
         
     def test_query_execution(self):
-        """Test SPARQL query execution"""
+        """Test SPARQL query execution."""
         # Create test dataset
         self.client.create_dataset(self.repository)
         
@@ -357,8 +333,7 @@ class TestGraphDBClient:
         # Test SELECT query
         select_query = """
         PREFIX ex: <http://example.org/>
-        SELECT ?s ?o
-        WHERE {
+        SELECT ?s ?o WHERE {
             ?s ex:property ?o .
         }
         """
@@ -382,7 +357,7 @@ class TestGraphDBClient:
         self.client.delete_dataset(self.repository)
         
     def test_error_handling(self):
-        """Test error handling"""
+        """Test error handling."""
         # Test invalid endpoint
         with pytest.raises(GraphDBError):
             invalid_client = GraphDBClient("http://invalid:7200", "test")

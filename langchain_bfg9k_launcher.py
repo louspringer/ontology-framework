@@ -16,8 +16,7 @@ def load_ttl_context(path=TTL_PATH):
 def create_langchain_sniper():
     context = load_ttl_context()
     prompt = ChatPromptTemplate.from_template("""
-You are a precision coding agent for BFG9K ontology tooling. Use the RDF/Turtle context below to determine the architecture,
-responsibilities, and required implementation details. Only modify the files listed under ex:requiresFile or ex:createsClass.
+You are a precision coding agent for BFG9K ontology tooling. Use the RDF/Turtle context below to determine the architecture responsibilities and required implementation details. Only modify the files listed under ex:requiresFile or ex:createsClass.
 
 RDF/Turtle Context:
 -------------------

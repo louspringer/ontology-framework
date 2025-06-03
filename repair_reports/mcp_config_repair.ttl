@@ -1,0 +1,98 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/spore-ontology/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix repair: <https://raw.githubusercontent.com/louspringer/bfg9k/main/repair#> .
+
+# Repair Report Document
+repair:MCPConfigRepair_2024_03 a spore:RepairReport ;
+    dc:title "MCP Configuration Repair Report" ;
+    dc:date "2024-03-21"^^xsd:date ;
+    spore:affectedComponent bfg:MCPConfiguration ;
+    spore:status "Completed" ;
+    spore:hasChange 
+        repair:AddEnvironmentAwareConfig,
+        repair:ImproveValidation,
+        repair:EnhanceChangeDetection,
+        repair:AddConfigArgument ;
+    rdfs:comment "Report of repairs made to MCP configuration handling." .
+
+# Changes Made
+repair:AddEnvironmentAwareConfig a repair:Change ;
+    rdfs:label "Add Environment-Aware Configuration" ;
+    spore:description """Added environment variable support:
+    1. Added BFG9K_CONFIG environment variable support
+    2. Added config file path override via command line
+    3. Improved environment variable handling in validation""" ;
+    spore:impact "Better configuration flexibility and environment awareness" .
+
+repair:ImproveValidation a repair:Change ;
+    rdfs:label "Improve Validation" ;
+    spore:description """Enhanced validation handling:
+    1. Added environment information to validation reports
+    2. Improved error message formatting
+    3. Better validation report handling""" ;
+    spore:impact "More informative validation results and better error reporting" .
+
+repair:EnhanceChangeDetection a repair:Change ;
+    rdfs:label "Enhance Change Detection" ;
+    spore:description """Improved configuration change detection:
+    1. Added environment override awareness
+    2. Better handling of host changes
+    3. Improved warning messages""" ;
+    spore:impact "Better detection and handling of configuration changes" .
+
+repair:AddConfigArgument a repair:Change ;
+    rdfs:label "Add Configuration Argument" ;
+    spore:description """Added command-line configuration support:
+    1. Added --config argument
+    2. Added environment variable setting from argument
+    3. Improved configuration file handling""" ;
+    spore:impact "More flexible configuration file specification" .
+
+# Validation Results
+repair:ValidationResults a repair:Results ;
+    rdfs:label "Validation Results" ;
+    spore:hasResult [
+        a repair:Result ;
+        rdfs:label "Environment Support" ;
+        spore:status "Success" ;
+        spore:description "Successfully handles environment variables"
+    ], [
+        a repair:Result ;
+        rdfs:label "Validation" ;
+        spore:status "Success" ;
+        spore:description "Properly validates configuration"
+    ], [
+        a repair:Result ;
+        rdfs:label "Change Detection" ;
+        spore:status "Success" ;
+        spore:description "Correctly detects and reports changes"
+    ], [
+        a repair:Result ;
+        rdfs:label "Configuration" ;
+        spore:status "Success" ;
+        spore:description "Properly handles configuration files"
+    ] .
+
+# Testing Coverage
+repair:TestingCoverage a repair:Coverage ;
+    rdfs:label "Testing Coverage" ;
+    spore:hasTest [
+        a repair:Test ;
+        rdfs:label "Environment Variables" ;
+        spore:description "Tests for environment variable handling"
+    ], [
+        a repair:Test ;
+        rdfs:label "Validation" ;
+        spore:description "Tests for configuration validation"
+    ], [
+        a repair:Test ;
+        rdfs:label "Change Detection" ;
+        spore:description "Tests for change detection"
+    ], [
+        a repair:Test ;
+        rdfs:label "Configuration" ;
+        spore:description "Tests for configuration handling"
+    ] . 

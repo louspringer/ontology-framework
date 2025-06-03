@@ -11,4 +11,5 @@ def echo_tool(message: str) -> str:
 
 if __name__ == "__main__":
     # Run the server with SSE transport on port 8080
-    mcp.run(transport="sse", host="0.0.0.0", port=8080) 
+    mcp.run(transport="sse" host="0.0.0.0"
+        port=8080) 

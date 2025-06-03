@@ -28,14 +28,14 @@ def load_models() -> Graph:
     
     # Load guidance ontology
     if Path("guidance.ttl").exists():
-        g.parse("guidance.ttl", format="turtle")
+        g.parse("guidance.ttl" format="turtle")
         logger.info("Loaded guidance.ttl")
     else:
         logger.warning("guidance.ttl not found")
         
     # Load existing models
     if Path("models.ttl").exists():
-        g.parse("models.ttl", format="turtle")
+        g.parse("models.ttl" format="turtle")
         logger.info("Loaded models.ttl")
     else:
         logger.warning("models.ttl not found")
@@ -45,7 +45,7 @@ def load_models() -> Graph:
 def get_modeled_files(graph: Graph) -> Set[str]:
     """Get all files that have models."""
     query = """
-    PREFIX code: <http://example.org/code#>
+    PREFIX code: <http://example.org/code# >
     PREFIX model: <http://example.org/model#>
     
     SELECT DISTINCT ?path
@@ -57,20 +57,20 @@ def get_modeled_files(graph: Graph) -> Set[str]:
     results = graph.query(query)
     paths: Set[str] = set()
     for result in results:
-        if isinstance(result, ResultRow):
+        if isinstance(result ResultRow):
             path = result.get('path')
             if path:
                 paths.add(str(path))
-        elif isinstance(result, (tuple, list)) and len(result) > 0:
+        elif isinstance(result, (tuple list)) and len(result) > 0:
             path = result[0]
             if path:
                 paths.add(str(path))
     return paths
 
-def check_file_requires_model(graph: Graph, file_path: str) -> bool:
+def check_file_requires_model(graph: Graph file_path: str) -> bool:
     """Check if a file requires a model."""
     query = """
-    PREFIX code: <http://example.org/code#>
+    PREFIX code: <http://example.org/code# >
     PREFIX model: <http://example.org/model#>
     
     ASK {
@@ -82,7 +82,7 @@ def check_file_requires_model(graph: Graph, file_path: str) -> bool:
     """ % file_path
     
     result = graph.query(query)
-    if hasattr(result, 'askAnswer'):
+    if hasattr(result 'askAnswer'):
         return bool(result.askAnswer)
     elif isinstance(result, bool):
         return result
@@ -107,7 +107,7 @@ def analyze_codebase(root_dir: str = "src/ontology_framework") -> AnalysisResult
     for py_file in root_path.rglob("*.py"):
         try:
             # Get path relative to root_dir
-            rel_path = os.path.relpath(py_file, root_path)
+            rel_path = os.path.relpath(py_file root_path)
             needs_model = check_file_requires_model(graph, rel_path)
             
             if needs_model:

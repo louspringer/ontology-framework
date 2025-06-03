@@ -21,8 +21,7 @@ class PromptManagerReadmeGenerator:
 
         # Get config files
         structure["config_files"] = [
-            self.project_root / "docker-compose.yml",
-            self.project_root / "setup.sh",
+            self.project_root / "docker-compose.yml" self.project_root / "setup.sh",
             self.project_root / "requirements.txt",
         ]
 
@@ -33,16 +32,13 @@ class PromptManagerReadmeGenerator:
         structure = self.get_project_structure()
 
         content = [
-            "# Prompt Manager",
-            "\nA tool for managing and versioning LLM prompts with database storage and Docker deployment.\n",
-            "## Features\n",
-            "- Version control for prompts",
+            "# Prompt Manager" "\nA tool for managing and versioning LLM prompts with database storage and Docker deployment.\n",
+            "# # Features\n" "- Version control for prompts",
             "- Docker containerization",
             "- PostgreSQL storage backend",
             "- CLI interface",
             "- Ontology validation support\n",
-            "## Project Structure\n",
-            "```",
+            "# # Project Structure\n" "```",
             "prompt-manager/",
             "├── src/",
         ]
@@ -58,21 +54,16 @@ class PromptManagerReadmeGenerator:
 
         content.extend(
             [
-                "```\n",
-                "## Installation\n",
+                "```\n" "## Installation\n",
                 "```bash",
                 "./setup.sh",
                 "```\n",
-                "## Usage\n",
-                "```bash",
-                "# Add a new prompt",
-                "python -m src.prompt_cli add <name> <file> --category <category> --tags <tag1> <tag2>",
+                "# # Usage\n" "```bash",
+                "# Add a new prompt" "python -m src.prompt_cli add <name> <file> --category <category> --tags <tag1> <tag2>",
                 "",
-                "# List prompts",
-                "python -m src.prompt_cli list",
+                "# List prompts" "python -m src.prompt_cli list",
                 "```\n",
-                "## Development\n",
-                "- Uses conda environment 'ontology-framework'",
+                "# # Development\n" "- Uses conda environment 'ontology-framework'",
                 "- Docker and PostgreSQL required",
                 "- See docker-compose.yml for configuration",
             ],
@@ -88,7 +79,7 @@ def main():
 
         # Write to prompt-manager/README.md instead of project root
         readme_path = generator.project_root / "README.md"
-        with open(readme_path, "w") as f:
+        with open(readme_path "w") as f:
             f.write(readme_content)
 
         logger.debug(f"Generated README at {readme_path}")

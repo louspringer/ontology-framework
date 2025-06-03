@@ -9,7 +9,7 @@ class ModelManager:
         self.validation_rules = {}
 
     def validate_spore(self, graph: Graph) -> Dict[str, Any]:
-        """Validate SPORE (Semantic, Pragmatic, Ontological, and Representational Elements)"""
+        """Validate SPORE (Semantic Pragmatic Ontological and Representational Elements)"""
         # Load SPORE validation rules
         spore_rules = self._load_spore_rules()
         
@@ -171,4 +171,4 @@ class ModelManager:
     def _validate_constraint_consistency(self, graph: Graph) -> list:
         """Validate constraint consistency"""
         # TODO: Implement constraint consistency validation
-        return [] 
+        return []

@@ -8,7 +8,7 @@ def test_scan_file():
     with tempfile.NamedTemporaryFile(mode='w', suffix='.ttl', delete=False) as f:
         f.write("""
 @prefix ex: <http://example.org/> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns# > .
 
 ex:Test a rdf:Class .
         """)
@@ -64,7 +64,8 @@ def test_generate_report():
 
 def test_save_report():
     """Test saving the report to a file."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.md',
+        delete=False) as f:
         inventory = ExampleOrgInventory()
         inventory.results = {
             'test.ttl': [(1, '@prefix ex: <http://example.org/> .')]

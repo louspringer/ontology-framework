@@ -5,6 +5,7 @@ from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
 from pathlib import Path
 from .ontology import Ontology
+from rdflib.term import Node
 
 # Type definitions
 ShapeProperty = Tuple[URIRef, Union[URIRef, XSD], int, Optional[int]]

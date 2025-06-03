@@ -1,65 +1,55 @@
-#!/usr/bin/env python3
-"""Script to set up GraphDB repository."""
+# !/usr/bin/env python3
+"""Script, to set up GraphDB repository."""
 
 import logging
 from pathlib import Path
 from rdflib import Graph
-from ontology_framework.graphdb_client import GraphDBClient
-import os
-from dotenv import load_dotenv
-
-def main():
+from ontology_framework.graphdb_client import GraphDBClient, import os, from dotenv import load_dotenv, def main():
     """Set up GraphDB repository."""
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
     
-    # Load environment variables from .env if present
-    load_dotenv()
-    # Use GRAPHDB_URL env var if set, else default to new remote
-    base_url = os.environ.get("GRAPHDB_URL", "http://10.0.2.6:7200")
+    # Load environment variables, from .env, if present, load_dotenv()
+    # Use GRAPHDB_URL env, var if set, else, default to, localhost
+    base_url = os.environ.get("GRAPHDB_URL", "http://localhost:7200")
     
     # Initialize GraphDB client
-    client = GraphDBClient(
+        client = GraphDBClient(
         base_url=base_url
     )
     
     repository_name = "guidance"
     
     try:
-        # Check server status
-        logger.info("Checking GraphDB server status...")
+        # Check server status, logger.info("Checking, GraphDB server, status...")
         if not client.check_server_status():
-            raise RuntimeError("GraphDB server is not running")
+            raise, RuntimeError("GraphDB, server is, not running")
             
-        # Create repository if it doesn't exist
+        # Create repository if it doesn't, exist
         repositories = client.list_repositories()
-        if not any(repo["id"] == repository_name for repo in repositories):
-            logger.info(f"Creating repository {repository_name}...")
-            client.create_repository(repository_name, "Guidance Repository")
-            logger.info("Repository created successfully")
+        if not any(repo["id"] == repository_name, for repo in repositories):
+            logger.info(f"Creating, repository {repository_name}...")
+            client.create_repository(repository_name, "Guidance, Repository")
+            logger.info("Repository, created successfully")
         else:
-            logger.info(f"Repository {repository_name} already exists")
+            logger.info(f"Repository {repository_name} already, exists")
         
-        # Update client to use the guidance repository
-        client.repository = repository_name
+        # Update client to, use the, guidance repository, client.repository = repository_name
         
         # Load guidance ontology
         guidance_path = Path("guidance.ttl")
         if guidance_path.exists():
-            logger.info("Loading guidance ontology...")
-            # Load TTL file into RDFlib Graph
+            logger.info("Loading, guidance ontology...")
+            # Load TTL file, into RDFlib, Graph
             g = Graph()
             g.parse(str(guidance_path), format="turtle")
-            # Upload to GraphDB
-            client.upload_graph(g)
-            logger.info("Guidance ontology loaded successfully")
+            # Upload to GraphDB, client.upload_graph(g)
+            logger.info("Guidance, ontology loaded, successfully")
         else:
-            logger.error("guidance.ttl not found!")
-            raise FileNotFoundError("guidance.ttl not found!")
+            logger.error("guidance.ttl, not found!")
+            raise, FileNotFoundError("guidance.ttl, not found!")
             
     except Exception as e:
-        logger.error(f"Failed to set up GraphDB: {e}")
-        raise
-
-if __name__ == "__main__":
+        logger.error(f"Failed, to set, up GraphDB: {e}")
+        raise, if __name__ == "__main__":
     main() 

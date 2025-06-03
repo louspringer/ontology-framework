@@ -1,0 +1,45 @@
+# Artifact Traceability Manifest for Ontology Framework Project
+
+[claude_reflector_user_rules]
+type = "rule"
+source = ".cursor/rules/user/claude_reflector_user_rules.md"
+justifies = [
+  "guidance.ttl::PDCA",
+  "guidance.ttl::SemanticFirst",
+  "guidance.ttl::ClaudeReflector"
+]
+
+[environment_config]
+type = "environment"
+source = ".cursor/environment.json"
+controls = [
+  "session.ttl::ModelContext",
+  "guidance.ttl::ExecutionPolicy"
+]
+
+[bfg9k_stdio_bridge]
+type = "tool"
+source = "bfg9k_stdio_bridge.py"
+implements = [
+  "guidance.ttl::ModelControlProtocol",
+  "guidance.ttl::StdioAgent"
+]
+
+[test_claude_reflector_behavior]
+type = "test"
+source = "tests/test_claude_reflector_behavior.py"
+validates = [
+  "claude_reflector_user_rules",
+  "guidance.ttl::ClaudeReflector"
+]
+
+[guidance_ontology]
+type = "ontology"
+source = "guidance.ttl"
+declares = [
+  "PDCA",
+  "SemanticFirst",
+  "ClaudeReflector",
+  "Rule",
+  "ErrorHandlingPolicy"
+]

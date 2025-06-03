@@ -1,0 +1,40 @@
+@prefix guidance: <./guidance#> .
+@prefix trace: <./trace#> .
+@prefix rules: <./rules#> .
+@prefix session: <./session#> .
+@prefix behavior: <./behavior#> .
+@prefix artifact: <./artifact#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+guidance:ArtifactTraceabilityRuleSet a guidance:RuleSet ;
+    rdfs:label "Artifact Traceability Rules" ;
+    rdfs:comment "Defines the traceability constraints for artifacts, twin coordination, and session documentation." ;
+    guidance:formalizedIn <artifact_traceability_rules.md> ;
+    guidance:includesRule rules:TraceabilityEnforcement ,
+                          rules:TwinSynchronization ,
+                          rules:SessionDocumentation ,
+                          rules:LifecycleCompliance ,
+                          rules:OntologicalJustification ;
+    guidance:hasPurpose "Ensure semantic integrity of all generated artifacts via ontological traceability." ;
+    guidance:hasRuleCount 5 ;
+    guidance:hasComplexity guidance:Moderate ;
+    guidance:requiresTooling [
+        guidance:requiresTool "pyshacl" ;
+        guidance:requiresTool "validate.py" ;
+        guidance:requiresTool "cursor-runtime"
+    ] ;
+    guidance:appliesToArtifactTypes (
+        artifact:PythonModule
+        artifact:ManifestDocument
+        artifact:TTLFile
+        artifact:MarkdownDocument
+    ) ;
+    guidance:version "1.0.0" ;
+    guidance:lastModified "2025-05-26T10:30:00Z"^^xsd:dateTime ;
+    guidance:compatibleWith [
+        guidance:ClaudeReflectorBehavior ">=2.0.0" ;
+        guidance:SHACLShapes ">=1.1.0" ;
+        guidance:CursorRuntime ">=1.0.0"
+    ] ;
+    guidance:supersedes guidance:ArtifactTraceabilityRuleSet-v0.9 .

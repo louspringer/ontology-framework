@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """Module for analyzing ontology dependencies with internal firewalls."""
 
 from pathlib import Path

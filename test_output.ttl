@@ -1,0 +1,117 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+rdf:type rdfs:label "22-rdf-syntax-ns# type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns# type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:subClassOf rdfs:label "rdf-schema# subClassOf" ;
+    rdfs:comment "Description of rdf-schema# subClassOf" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+: a owl:Ontology ;
+    rdfs:label "Guidance Ontology"@en ;
+    rdfs:comment "Ontology for managing guidance and validation rules"@en ;
+    owl:versionInfo "1.0.0" .
+
+:ClassHierarchyCheck a :ConsistencyRule ;
+    :hasMessage "Class hierarchy must be acyclic" ;
+    :hasValidator "ClassHierarchyValidator" .
+
+:ConformanceLevel a owl:Class ;
+    rdfs:label "ConformanceLevel"@en ;
+    rdfs:comment "Level of conformance to ontology standards"@en .
+
+:IntegrationProcess a owl:Class ;
+    rdfs:label "IntegrationProcess"@en ;
+    rdfs:comment "Process for integrating ontology components"@en .
+
+:IntegrationRequirement a owl:Class ;
+    rdfs:label "Integration Requirement"@en ;
+    rdfs:comment "Requirements for integrating validation components"@en .
+
+:IntegrationStep a owl:Class ;
+    rdfs:label "IntegrationStep"@en ;
+    rdfs:comment "Individual step in an integration process"@en .
+
+:ModelConformance a owl:Class ;
+    rdfs:label "ModelConformance"@en ;
+    rdfs:comment "Conformance level for a specific model"@en .
+
+:SHACLValidation a owl:Class ;
+    rdfs:label "SHACL Validation"@en ;
+    rdfs:comment "Rules and patterns for SHACL validation"@en .
+
+:SPORERule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
+
+:SemanticRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
+
+:SyntaxRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
+
+:TODO a owl:Class ;
+    rdfs:label "Future Improvements" ;
+    rdfs:comment "Items for future development and enhancement" .
+
+:TestCoverage a owl:Class ;
+    rdfs:label "TestCoverage"@en ;
+    rdfs:comment "Coverage metrics for ontology testing"@en .
+
+:TestPhase a owl:Class ;
+    rdfs:label "TestPhase"@en ;
+    rdfs:comment "Phase of testing in the integration process"@en .
+
+:TestProtocol a owl:Class ;
+    rdfs:label "TestProtocol"@en ;
+    rdfs:comment "Protocol for testing ontology components"@en .
+
+:ValidationPattern a owl:Class ;
+    rdfs:label "Validation Pattern"@en ;
+    rdfs:comment "Pattern for implementing validation rules"@en .
+
+:ValidationRuleShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasPriority ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasTarget ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasValidator ] ;
+    sh:targetClass :ValidationRule .
+
+:ConsistencyRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
+
+:hasMessage a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
+
+:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
+
+:hasTarget a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
+
+:hasValidator a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
+
+:ValidationRule a owl:Class .
+

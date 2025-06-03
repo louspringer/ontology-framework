@@ -1,0 +1,16 @@
+@prefix guidance: <./guidance#> .
+@prefix trace: <./trace#> .
+@prefix rules: <./rules#> .
+@prefix session: <./session#> .
+@prefix behavior: <./behavior#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+guidance:TraceabilityEnforcementRequirement a guidance:Requirement ;
+    guidance:requiresBehavior behavior:ClaudeReflector ;
+    guidance:hasConstraint rules:TraceabilityEnforcement ;
+    guidance:enforcedBy session:CursorRuntime ;
+    rdfs:label "Traceability Enforcement Requirement" ;
+    rdfs:comment "Ensures that all artifacts maintain ontological justification, lifecycle compliance, and session documentation." ;
+    guidance:formalizedIn <traceability_enforcement_mdc.md> ;
+    guidance:hasSeverity guidance:Critical ;
+    guidance:appliesToPattern "**/*.{py,toml,ttl,md}" .

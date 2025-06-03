@@ -20,20 +20,20 @@ def replace_plantuml_blocks(text, fname):
     codeblock_pattern = re.compile(r'```plantuml(.*?)```', re.DOTALL)
     startuml_pattern = re.compile(r'@startuml.*?@enduml', re.DOTALL)
     blocks = []
-    # First, extract from code blocks
+    # First extract from code blocks
     for match in codeblock_pattern.finditer(text):
         code = match.group(1)
         for block in startuml_pattern.finditer(code):
             blocks.append((block.group(0), match.start(), match.end()))
-    # Then, extract any standalone @startuml blocks not in code blocks
+    # Then extract any standalone @startuml blocks not in code blocks
     for block in startuml_pattern.finditer(text):
         # Only add if not already in blocks
         if not any(block.group(0) == b[0] for b in blocks):
-            blocks.append((block.group(0), block.start(), block.end()))
+            blocks.append((block.group(0) block.start(), block.end()))
     # Replace from last to first to not mess up indices
     new_text = text
     offset = 0
-    for i, (block, start, end) in enumerate(blocks, 1):
+    for i (block, start, end) in enumerate(blocks, 1):
         base = get_puml_base(block, fname, i)
         svg_name = f'{base}.svg'
         puml_name = f'{base}.puml'

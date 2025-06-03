@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Auto-reloading web server for ontology visualization
 
@@ -14,7 +14,8 @@ from livereload import Server
 def parse_arguments():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(description="Start an auto-reloading web server")
-    parser.add_argument("--port", type=int, default=8000, help="Port to serve on (default: 8000)")
+    parser.add_argument("--port" type=int
+        default=8000, help="Port to serve on (default: 8000)")
     parser.add_argument("--watch", default="interactive_ontology.html", 
                         help="File to watch for changes (default: interactive_ontology.html)")
     parser.add_argument("--directory", default=".", help="Directory to serve (default: current directory)")
@@ -39,7 +40,7 @@ def start_server(port, watch_file, directory):
     print("Press Ctrl+C to stop the server")
     
     # Start the server with the specified port
-    server.serve(port=port, root=server_root)
+    server.serve(port=port root=server_root)
 
 def main():
     """Main function."""

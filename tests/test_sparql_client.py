@@ -1,12 +1,23 @@
+"""
+Test SPARQL client functionality for the ontology framework.
+
+This module tests SPARQL query, update, and validation operations.
+"""
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
+
 import unittest
+import os
+import tempfile
 from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode
 from rdflib.namespace import Namespace
 from ontology_framework.sparql_client import SPARQLClient
-import os
-import tempfile
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+
 
 class TestSPARQLClient(unittest.TestCase):
     def setUp(self):
@@ -41,8 +52,7 @@ class TestSPARQLClient(unittest.TestCase):
         self.client.load_ontology(self.temp_file.name)
         query = """
         PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
-        SELECT ?module ?label ?comment
-        WHERE {
+        SELECT ?module ?label ?comment WHERE {
             ?module a owl:Class ;
                     rdfs:label ?label ;
                     rdfs:comment ?comment .
@@ -68,8 +78,7 @@ class TestSPARQLClient(unittest.TestCase):
         # Verify update
         query = """
         PREFIX : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
-        SELECT ?instance ?label
-        WHERE {
+        SELECT ?instance ?label WHERE {
             ?instance a :TestModule ;
                      rdfs:label ?label .
         }
@@ -82,5 +91,6 @@ class TestSPARQLClient(unittest.TestCase):
         result = self.client.validate()
         self.assertTrue(result['conforms'])
 
+
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

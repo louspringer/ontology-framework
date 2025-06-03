@@ -56,7 +56,6 @@ class TestCoverageDependencyAnalyzer:
                 tree = ast.parse(f.read())
                 
             current_test = None
-            
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef) and node.name.startswith('test_'):
                     current_test = node.name
@@ -79,12 +78,12 @@ class TestCoverageDependencyAnalyzer:
     def analyze_test_assertions(self) -> Dict[str, Set[str]]:
         """Analyze test assertions to identify tested methods."""
         test_assertions = {}
-        current_test = None
         
         for file_path in self.test_path.rglob("test_*.py"):
             with open(file_path, "r") as f:
                 tree = ast.parse(f.read())
                 
+            current_test = None
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef) and node.name.startswith('test_'):
                     current_test = node.name
@@ -132,4 +131,4 @@ class TestCoverageDependencyAnalyzer:
             for assertion in assertions:
                 self.dependency_graph.add_edge(test, assertion, type='assertion')
                 
-        return self.dependency_graph 
+        return self.dependency_graph

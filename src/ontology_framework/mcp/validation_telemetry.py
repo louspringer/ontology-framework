@@ -1,5 +1,5 @@
 """
-Enhanced validation telemetry collection and analysis.
+Enhanced, validation telemetry collection and analysis.
 """
 
 from typing import Dict, List, Any, Optional
@@ -31,16 +31,15 @@ class PatternMetrics:
     impact: float
     timestamp: datetime = field(default_factory=datetime.now)
 
-@dataclass
 class ValidationTelemetry:
     """Collects and analyzes validation telemetry."""
     
     def __init__(self, hypercube_analyzer: HypercubeAnalyzer, bfg9k_targeter: BFG9KTargeter):
         self.analyzer = hypercube_analyzer
         self.targeter = bfg9k_targeter
-        self.metrics_history: List[ValidationMetrics] = field(default_factory=list)
-        self.pattern_history: List[PatternMetrics] = field(default_factory=list)
-        self.logger: logging.Logger = field(init=False)
+        self.metrics_history: List[ValidationMetrics] = []
+        self.pattern_history: List[PatternMetrics] = []
+        self.logger: logging.Logger = logging.getLogger(__name__)
         self.telemetry: Dict[str, Any] = {
             "validation_metrics": [],
             "patterns": [],
@@ -75,10 +74,9 @@ class ValidationTelemetry:
         try:
             if len(self.metrics_history) < 2:
                 return
-
-            # Analyze error rate patterns
+            # Analyze error rate, patterns
             error_rates = [m.error_rate for m in self.metrics_history[-10:]]
-            if np.std(error_rates) > 0.1:  # High variance in error rates
+            if np.std(error_rates) > 0.1:
                 pattern = PatternMetrics(
                     pattern_type="error_rate_variance",
                     frequency=len([r for r in error_rates if r > np.mean(error_rates)]) / len(error_rates),
@@ -87,10 +85,9 @@ class ValidationTelemetry:
                 )
                 self.pattern_history.append(pattern)
                 self.telemetry["patterns"].append(vars(pattern))
-
-            # Analyze response time patterns
+            # Analyze response time, patterns
             response_times = [m.response_time for m in self.metrics_history[-10:]]
-            if np.mean(response_times) > 1.0:  # High average response time
+            if np.mean(response_times) > 1.0:
                 pattern = PatternMetrics(
                     pattern_type="high_response_time",
                     frequency=len([r for r in response_times if r > 1.0]) / len(response_times),
@@ -99,7 +96,6 @@ class ValidationTelemetry:
                 )
                 self.pattern_history.append(pattern)
                 self.telemetry["patterns"].append(vars(pattern))
-
             self.logger.info(f"Detected {len(self.pattern_history)} patterns")
         except Exception as e:
             self.logger.error(f"Error detecting patterns: {e}")
@@ -125,14 +121,14 @@ class ValidationTelemetry:
             return {}
     
     def analyze_errors(self) -> Dict[str, Any]:
-        """Analyze validation errors."""
+        """Analyze, validation errors."""
         try:
             if not self.metrics_history:
                 return {}
 
             recent_metrics = self.metrics_history[-10:]
             error_stats = {
-                "total_errors": sum(m.error_rate > 0 for m in recent_metrics),
+                "total_errors": sum(1 for m in recent_metrics if m.error_rate > 0),
                 "avg_error_rate": np.mean([m.error_rate for m in recent_metrics]),
                 "max_error_rate": max(m.error_rate for m in recent_metrics),
                 "error_trend": "increasing" if self._is_error_trend_increasing() else "stable"
@@ -145,7 +141,7 @@ class ValidationTelemetry:
             return {}
     
     def _is_error_trend_increasing(self) -> bool:
-        """Check if error rate trend is increasing."""
+        """Check, if error rate trend is increasing."""
         if len(self.metrics_history) < 5:
             return False
         recent_errors = [m.error_rate for m in self.metrics_history[-5:]]

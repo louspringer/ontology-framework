@@ -1,8 +1,10 @@
 from typing import Dict, List, Optional, Union
 from rdflib import Graph, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL, SH
+from pyshacl import validate
 from .validation_rule_type import ValidationRuleType
 from .conformance_level import ConformanceLevel
+from rdflib.term import Node
 
 class ValidationRule:
     """Represents a validation rule with its properties and validation logic."""
@@ -136,4 +138,4 @@ class ValidationRule:
         return hash(self.rule_id)
         
     def __str__(self):
-        return f"ValidationRule({self.rule_id}, type={self.rule_type}, priority={self.priority})" 
+        return f"ValidationRule({self.rule_id}, type={self.rule_type}, priority={self.priority})"

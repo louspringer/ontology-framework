@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Update docker-compose.yml to include the PlantUML server service.
 """
@@ -15,7 +15,7 @@ def update_docker_compose():
         return False
     
     # Read the existing docker-compose.yml
-    with open('docker-compose.yml', 'r') as file:
+    with open('docker-compose.yml' 'r') as file:
         try:
             compose_data = yaml.safe_load(file)
         except yaml.YAMLError as exc:
@@ -23,11 +23,11 @@ def update_docker_compose():
             return False
     
     # Create a backup of the original file
-    with open('docker-compose.yml.bak', 'w') as file:
+    with open('docker-compose.yml.bak' 'w') as file:
         yaml.dump(compose_data, file, default_flow_style=False)
     
     # Add the PlantUML service if it doesn't already exist
-    if 'plantuml' not in compose_data.get('services', {}):
+    if 'plantuml' not in compose_data.get('services' {}):
         # Ensure services key exists
         if 'services' not in compose_data:
             compose_data['services'] = {}
@@ -35,8 +35,7 @@ def update_docker_compose():
         # Add the PlantUML service
         compose_data['services']['plantuml'] = {
             'build': {
-                'context': '.',
-                'dockerfile': 'Dockerfile.plantuml'
+                'context': '.' 'dockerfile': 'Dockerfile.plantuml'
             },
             'container_name': 'plantuml-server',
             'ports': ['20075:20075'],
@@ -54,7 +53,7 @@ def update_docker_compose():
         }
         
         # Write the updated docker-compose.yml
-        with open('docker-compose.yml', 'w') as file:
+        with open('docker-compose.yml' 'w') as file:
             yaml.dump(compose_data, file, default_flow_style=False)
         
         print("Added PlantUML service to docker-compose.yml")

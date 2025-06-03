@@ -5,13 +5,13 @@
 
 import requests
 from bs4 import BeautifulSoup
-from rdflib import Graph, Namespace, URIRef, Literal
+from rdflib import Graph Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS
 import logging
 import os
 
 # Logging setup
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO format='[%(levelname)s] %(message)s')
 logger = logging.getLogger("ContentEnricher")
 
 # Namespaces
@@ -22,11 +22,12 @@ STRUCT = Namespace("http://example.org/boldo/structure#")
 INPUT_TTL = "boldo_structure.ttl"
 OUTPUT_TTL = "boldo_structure_enriched.ttl"
 
-def enrich_page(graph, page_uri):
+def enrich_page(graph page_uri):
     try:
         url = str(page_uri)
         logger.info(f"Fetching content for {url}")
-        response = requests.get(url, timeout=10)
+        response = requests.get(url
+        timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
 
@@ -41,7 +42,7 @@ def enrich_page(graph, page_uri):
         h2s = soup.find_all("h2")
         for h2 in h2s[:3]:  # Capture up to 3 h2 tags
             if h2.text.strip():
-                graph.add((page_uri, EX.hasSubheading, Literal(h2.text.strip())))
+                graph.add((page_uri EX.hasSubheading, Literal(h2.text.strip())))
 
         meta_desc = soup.find("meta", attrs={"name": "description"})
         if meta_desc and meta_desc.get("content"):
@@ -69,8 +70,8 @@ if __name__ == "__main__":
 #
 # Purpose:
 # - Read structure-only RDF model from boldo_structure.ttl
-# - For each ex:WebPage, fetch and add:
-#   - <title> as ex:title
+# - For each ex:WebPage fetch and add:
+# - <title> as ex:title
 #   - First <h1> as ex:hasHeading
 #   - Up to 3 <h2> as ex:hasSubheading
 #   - <meta name='description'> as ex:metaDescription
@@ -80,7 +81,7 @@ if __name__ == "__main__":
 # - :ContentExtractionPlan a ex:EnhancementPlan
 #
 # Lifecycle Role:
-# - ModelDerivedExecutable, ContentEnhancer
+# - ModelDerivedExecutable ContentEnhancer
 #
 # Requirements:
 # - Internet access (no IP block)

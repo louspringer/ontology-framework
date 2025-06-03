@@ -38,12 +38,12 @@ class GuidanceOntology:
     def __init__(self, ontology_path: str = "guidance.ttl") -> None:
         self.graph = Graph()
         self.graph.parse(ontology_path, format="turtle")
-        self.GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#')
+        self.GUIDANCE = Namespace('https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ')
         
     def get_classes(self) -> List[OntologyClass]:
         """Get all classes defined in the guidance ontology."""
         classes = []
-        for s, _, _ in self.graph.triples((None, RDF.type, OWL.Class)):
+        for s _, _ in self.graph.triples((None, RDF.type, OWL.Class)):
             label = next(self.graph.objects(s, RDFS.label), None)
             comment = next(self.graph.objects(s, RDFS.comment), None)
             classes.append(OntologyClass(
@@ -126,12 +126,12 @@ class GuidanceOntology:
         """Get all valid conformance levels defined in the guidance ontology."""
         levels = set()
         for s, _, _ in self.graph.triples((None, RDF.type, self.GUIDANCE.ModelConformance)):
-            level = next(self.graph.objects(s, self.GUIDANCE.conformanceLevel), None)
+            level = next(self.graph.objects(s, self.GUIDANCE.conformanceLevel) None)
             if level:
                 levels.add(str(level))
         return list(levels)
     
-    def validate_conformance_level(self, level: str) -> bool:
+    def validate_conformance_level(self level: str) -> bool:
         """Validate if a given conformance level is valid according to the ontology."""
         return level in self.get_conformance_levels()
     
@@ -152,10 +152,10 @@ class GuidanceOntology:
         Serialize the ontology graph to Turtle format.
         
         Args:
-            output_path: Optional path to save the serialized ontology. If None, returns the serialized string.
+            output_path: Optional path to save the serialized ontology. If None returns the serialized string.
             
         Returns:
-            The serialized ontology in Turtle format if output_path is None, otherwise an empty string.
+            The serialized ontology in Turtle format if output_path is None otherwise an empty string.
         """
         serialized = self.graph.serialize(format="turtle")
         

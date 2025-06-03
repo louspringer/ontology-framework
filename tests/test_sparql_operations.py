@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
-"""Tests for SPARQL operations module."""
+"""
+Tests for SPARQL operations module.
+
+This module tests SPARQL query execution, result handling, and various executors
+with semantic compliance and ontology framework integration.
+"""
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
 
 import pytest
+import unittest
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 from ontology_framework.sparql_operations import (
     execute_sparql,
     QueryType,
@@ -11,8 +22,7 @@ from ontology_framework.sparql_operations import (
     GraphDBExecutor,
     SparqlExecutor
 )
-import unittest
-from unittest.mock import MagicMock, patch
+
 
 class MockResponse:
     """Mock response for requests."""
@@ -26,6 +36,7 @@ class MockResponse:
     def raise_for_status(self):
         if self.status_code >= 400:
             raise Exception(f"HTTP Error {self.status_code}")
+
 
 @pytest.fixture
 def mock_requests(monkeypatch):
@@ -47,6 +58,7 @@ def mock_requests(monkeypatch):
             
     monkeypatch.setattr("requests.get", mock_get)
     monkeypatch.setattr("requests.post", mock_post)
+
 
 def test_query_result_str():
     """Test QueryResult string representation."""
@@ -71,6 +83,7 @@ def test_query_result_str():
     result.success = False
     assert "FAILURE" in str(result)
 
+
 def test_execute_select_query(mock_requests):
     """Test executing a SELECT query."""
     result = execute_sparql("SELECT ?s WHERE { ?s ?p ?o }")
@@ -80,6 +93,7 @@ def test_execute_select_query(mock_requests):
     assert result.query_type == QueryType.SELECT
     assert len(result.data) == 1
     assert result.data[0]["s"]["value"] == "http://example.org/test"
+
 
 def test_execute_ask_query(mock_requests):
     """Test executing an ASK query."""
@@ -96,6 +110,7 @@ def test_execute_ask_query(mock_requests):
     assert result.query_type == QueryType.ASK
     assert result.data is True
 
+
 def test_execute_update_query(mock_requests):
     """Test executing an UPDATE query."""
     result = execute_sparql(
@@ -107,6 +122,7 @@ def test_execute_update_query(mock_requests):
     assert not result.empty
     assert result.query_type == QueryType.INSERT
     assert result.data is True
+
 
 def test_empty_results(mock_requests):
     """Test handling of empty results."""
@@ -122,6 +138,7 @@ def test_empty_results(mock_requests):
     assert result.empty
     assert len(result.data) == 0
 
+
 def test_error_handling(mock_requests):
     """Test error handling."""
     def mock_post(*args, **kwargs):
@@ -136,6 +153,7 @@ def test_error_handling(mock_requests):
     assert result.empty
     assert result.error is not None
 
+
 def test_neo4j_executor():
     """Test Neo4j executor placeholder."""
     executor = Neo4jExecutor()
@@ -143,13 +161,15 @@ def test_neo4j_executor():
     with pytest.raises(NotImplementedError):
         executor.execute_query("SELECT ?s WHERE { ?s ?p ?o }", QueryType.SELECT)
 
+
 def test_custom_endpoint(mock_requests):
     """Test using a custom endpoint."""
     executor = GraphDBExecutor(endpoint="http://custom-endpoint:7200", repository="test")
     result = execute_sparql("SELECT ?s WHERE { ?s ?p ?o }", executor=executor)
     
     assert result.success
-    assert not result.empty 
+    assert not result.empty
+
 
 class TestGraphDBExecutor(unittest.TestCase):
     """Test cases for GraphDBExecutor."""
@@ -188,7 +208,8 @@ class TestGraphDBExecutor(unittest.TestCase):
             mock_post.return_value.text = "Invalid query syntax"
             with self.assertRaises(Exception):
                 self.executor.execute_query(test_query)
-                
+
+
 class TestNeo4jExecutor(unittest.TestCase):
     """Test cases for Neo4jExecutor."""
     
@@ -222,6 +243,7 @@ class TestNeo4jExecutor(unittest.TestCase):
             
             with self.assertRaises(Exception):
                 self.executor.execute_query(test_query)
-                
+
+
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

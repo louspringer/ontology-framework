@@ -4,5 +4,5 @@
 
 checkin:test_plan a <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#IntegrationProcess> ;
     rdfs:label "test_plan" ;
-    time:created "2025-05-06T16:34:14.178870" .
+    time:created "2025-05-21T22:13:48.045254" .
 

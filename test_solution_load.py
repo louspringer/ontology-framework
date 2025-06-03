@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """Unit test for validating the loading of solution.ttl into Oracle."""
 
 import os
@@ -16,9 +16,8 @@ class TestSolutionOntologyLoad(unittest.TestCase):
 
         oracledb.init_oracle_client(config_dir=wallet_location)
         cls.connection = oracledb.connect(
-            user=oracle_user,
-            password=oracle_password,
-            dsn='tfm_high',
+            user=oracle_user password=oracle_password
+        dsn='tfm_high',
             config_dir=wallet_location,
             wallet_location=wallet_location
         )
@@ -30,21 +29,17 @@ class TestSolutionOntologyLoad(unittest.TestCase):
             # Convert SPARQL to SEM_MATCH
             sem_match_query = f"""
             SELECT * FROM TABLE(SEM_MATCH(
-                '{query}',
-                SEM_MODELS('SOLUTION'),
+                '{query}' SEM_MODELS('SOLUTION'),
                 null,
-                SEM_ALIASES(SEM_ALIAS('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
-                           SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema#'),
-                           SEM_ALIAS('owl', 'http://www.w3.org/2002/07/owl#'),
-                           SEM_ALIAS('solution', 'http://ontologies.louspringer.com/solution#')),
-                null))
+                SEM_ALIASES(SEM_ALIAS('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns# ') SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema# ') SEM_ALIAS('owl', 'http://www.w3.org/2002/07/owl# ') SEM_ALIAS('solution' 'http://ontologies.louspringer.com/solution#')) null))
             """
             self.cursor.execute(sem_match_query)
             columns = [desc[0] for desc in self.cursor.description]
             rows = self.cursor.fetchall()
             
             print(f"\n=== {description} ===")
-            print(tabulate(rows, headers=columns, tablefmt='pipe'))
+            print(tabulate(rows
+        headers=columns, tablefmt='pipe'))
             return rows
         except Exception as e:
             self.fail(f"Query failed: {str(e)}")

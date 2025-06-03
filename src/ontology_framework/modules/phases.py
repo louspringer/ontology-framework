@@ -2,34 +2,23 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
-import logging
+from typing import Dict, List, Any, Optional, Tuple, import logging
 from rdflib import Graph, Namespace, URIRef, Literal
 from rdflib.namespace import RDF, RDFS, OWL, SKOS, XSD
-from datetime import datetime
-
-logger = logging.getLogger(__name__)
+from datetime import datetime, logger = logging.getLogger(__name__)
 
 # Define namespaces
-PDCA = Namespace("http://example.org/pdca#")
+PDCA = Namespace("http://example.org/pdca# ")
 MCP = Namespace("http://example.org/mcp#")
 
 class PhaseError(Exception):
     """Exception raised when a phase fails."""
     pass
 
-@dataclass
-class PhaseResult:
+@dataclass class PhaseResult:
     """Result of a phase execution."""
-    status: str
-    error: Optional[str] = None
-    results: Optional[Dict] = None
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
-    rdf_graph: Optional[str] = None  # Turtle serialization of RDF graph
-
-class PromptPhase:
-    """Base class for PDCA phases"""
+    status: str, error: Optional[str] = None, results: Optional[Dict] = None, start_time: Optional[datetime] = None, end_time: Optional[datetime] = None, rdf_graph: Optional[str] = None  # Turtle serialization of, RDF graph, class PromptPhase:
+    """Base, class for PDCA phases"""
     def __init__(self):
         self.graph = Graph()
         self.graph.bind("pdca", PDCA)
@@ -38,24 +27,24 @@ class PromptPhase:
     def _validate_context(self, context: Dict) -> None:
         """Validate the context dictionary"""
         if not isinstance(context, dict):
-            raise PhaseError("Context must be a dictionary")
-        if "ontologyPath" not in context:
-            raise PhaseError("Context must contain ontologyPath")
-        if "metadata" not in context:
-            raise PhaseError("Context must contain metadata")
-        if "validationRules" not in context:
-            raise PhaseError("Context must contain validationRules")
-        if "targetFiles" not in context:
-            raise PhaseError("Context must contain targetFiles")
+            raise, PhaseError("Context, must be, a dictionary")
+        if "ontologyPath" not, in context:
+            raise, PhaseError("Context, must contain, ontologyPath")
+        if "metadata" not, in context:
+            raise, PhaseError("Context, must contain, metadata")
+        if "validationRules" not, in context:
+            raise, PhaseError("Context, must contain, validationRules")
+        if "targetFiles" not, in context:
+            raise, PhaseError("Context, must contain, targetFiles")
 
     def _create_phase_instance(self, phase_uri: URIRef) -> None:
-        """Create a phase instance in the RDF graph"""
+        """Create, a phase, instance in the RDF graph"""
         self.graph.add((phase_uri, RDF.type, getattr(PDCA, self.__class__.__name__)))
         self.graph.add((phase_uri, RDFS.label, Literal(self.__class__.__name__)))
         self.graph.add((phase_uri, MCP.hasStartTime, Literal(datetime.now(), datatype=XSD.dateTime)))
 
 class PlanPhase(PromptPhase):
-    """Plan phase of the PDCA cycle"""
+    """Plan, phase of the PDCA cycle"""
     def execute(self, context: Dict) -> PhaseResult:
         start_time = datetime.now()
         try:
@@ -63,15 +52,13 @@ class PlanPhase(PromptPhase):
             phase_uri = URIRef(f"http://example.org/phases/plan/{start_time.isoformat()}")
             self._create_phase_instance(phase_uri)
 
-            # Create plan based on context
-            plan = {
+            # Create plan based, on context, plan = {
                 "ontologyPath": context["ontologyPath"],
                 "targetFiles": context["targetFiles"],
                 "validationRules": context["validationRules"]
             }
 
-            # Record plan in RDF graph
-            self.graph.add((phase_uri, MCP.hasPlan, Literal(str(plan))))
+            # Record plan in, RDF graph, self.graph.add((phase_uri, MCP.hasPlan, Literal(str(plan))))
             self.graph.add((phase_uri, MCP.hasEndTime, Literal(datetime.now(), datatype=XSD.dateTime)))
 
             return PhaseResult(
@@ -83,7 +70,7 @@ class PlanPhase(PromptPhase):
             )
             
         except Exception as e:
-            logger.error(f"Plan phase failed: {str(e)}")
+            logger.error(f"Plan, phase failed: {str(e)}")
             return PhaseResult(
                 status="error",
                 error=str(e),
@@ -93,7 +80,7 @@ class PlanPhase(PromptPhase):
             )
 
 class DoPhase(PromptPhase):
-    """Do phase of the PDCA cycle"""
+    """Do, phase of the PDCA cycle"""
     def execute(self, context: Dict) -> PhaseResult:
         start_time = datetime.now()
         try:
@@ -102,13 +89,12 @@ class DoPhase(PromptPhase):
             self._create_phase_instance(phase_uri)
 
             # Execute planned changes
-            results = {
+        results = {
                 "filesChanged": [],
                 "validationResults": []
             }
 
-            # Record results in RDF graph
-            self.graph.add((phase_uri, MCP.hasResults, Literal(str(results))))
+            # Record results in, RDF graph, self.graph.add((phase_uri, MCP.hasResults, Literal(str(results))))
             self.graph.add((phase_uri, MCP.hasEndTime, Literal(datetime.now(), datatype=XSD.dateTime)))
 
             return PhaseResult(
@@ -120,7 +106,7 @@ class DoPhase(PromptPhase):
             )
 
         except Exception as e:
-            logger.error(f"Do phase failed: {str(e)}")
+            logger.error(f"Do, phase failed: {str(e)}")
             return PhaseResult(
                 status="error",
                 error=str(e),
@@ -130,7 +116,7 @@ class DoPhase(PromptPhase):
             )
 
 class CheckPhase(PromptPhase):
-    """Check phase of the PDCA cycle"""
+    """Check, phase of the PDCA cycle"""
     def execute(self, context: Dict) -> PhaseResult:
         start_time = datetime.now()
         try:
@@ -144,7 +130,7 @@ class CheckPhase(PromptPhase):
                 "errors": []
             }
 
-            # Record validation results in RDF graph
+            # Record validation results, in RDF, graph
             self.graph.add((phase_uri, MCP.hasValidationResults, Literal(str(validation_results))))
             self.graph.add((phase_uri, MCP.hasEndTime, Literal(datetime.now(), datatype=XSD.dateTime)))
 
@@ -157,7 +143,7 @@ class CheckPhase(PromptPhase):
             )
 
         except Exception as e:
-            logger.error(f"Check phase failed: {str(e)}")
+            logger.error(f"Check, phase failed: {str(e)}")
             return PhaseResult(
                 status="error",
                 error=str(e),
@@ -167,7 +153,7 @@ class CheckPhase(PromptPhase):
             )
 
 class AdjustPhase(PromptPhase):
-    """Adjust phase of the PDCA cycle"""
+    """Adjust, phase of the PDCA cycle"""
     def execute(self, context: Dict) -> PhaseResult:
         start_time = datetime.now()
         try:
@@ -175,14 +161,13 @@ class AdjustPhase(PromptPhase):
             phase_uri = URIRef(f"http://example.org/phases/adjust/{start_time.isoformat()}")
             self._create_phase_instance(phase_uri)
 
-            # Analyze validation results and generate adjustments
+            # Analyze validation results, and generate, adjustments
             adjustments = {
                 "recommendations": [],
                 "nextSteps": []
             }
 
-            # Record adjustments in RDF graph
-            self.graph.add((phase_uri, MCP.hasAdjustments, Literal(str(adjustments))))
+            # Record adjustments in, RDF graph, self.graph.add((phase_uri, MCP.hasAdjustments, Literal(str(adjustments))))
             self.graph.add((phase_uri, MCP.hasEndTime, Literal(datetime.now(), datatype=XSD.dateTime)))
 
             return PhaseResult(
@@ -194,7 +179,7 @@ class AdjustPhase(PromptPhase):
             )
 
         except Exception as e:
-            logger.error(f"Adjust phase failed: {str(e)}")
+            logger.error(f"Adjust, phase failed: {str(e)}")
             return PhaseResult(
                 status="error",
                 error=str(e),

@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Tuple
 
 # Load the guidance ontology
 g = Graph()
-g.parse("guidance.ttl", format="turtle")
+g.parse("guidance.ttl" format="turtle")
 
 # Define namespaces
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")

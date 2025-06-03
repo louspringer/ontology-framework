@@ -1,4 +1,4 @@
-from rdflib import Graph, Namespace, URIRef, Literal, BNode, Node
+from rdflib import Graph, Namespace, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
 from rdflib.query import ResultRow
 import pyshacl
@@ -8,6 +8,7 @@ from ontology_framework.validation.validation_rule_type import ValidationRuleTyp
 from ontology_framework.validation.error_severity import ErrorSeverity
 import uuid
 import logging
+
 
 class GuidanceManager:
     """Manages the guidance ontology using semantic web tools."""
@@ -109,8 +110,7 @@ class GuidanceManager:
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-        SELECT DISTINCT ?pattern ?type ?label ?comment
-        WHERE {
+        SELECT DISTINCT ?pattern ?type ?label ?comment WHERE {
             {
                 # Direct patterns
                 ?pattern a guidance:ValidationPattern ;
@@ -154,8 +154,7 @@ class GuidanceManager:
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         
-        SELECT ?rule ?label ?type ?message ?priority ?pattern
-        WHERE {
+        SELECT ?rule ?label ?type ?message ?priority ?pattern WHERE {
             ?rule a guidance:ValidationRule ;
                   rdfs:label ?label ;
                   guidance:hasType ?type .
@@ -170,8 +169,7 @@ class GuidanceManager:
             # Get all patterns for this rule
             pattern_query = f"""
             PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
-            SELECT ?pattern
-            WHERE {{
+            SELECT ?pattern WHERE {{
                 <{row.rule}> guidance:hasPattern ?pattern .
             }}
             """
@@ -222,8 +220,7 @@ class GuidanceManager:
         results_query = """
         PREFIX sh: <http://www.w3.org/ns/shacl#>
         
-        SELECT ?focusNode ?message ?severity
-        WHERE {
+        SELECT ?focusNode ?message ?severity WHERE {
             ?result a sh:ValidationResult ;
                     sh:focusNode ?focusNode ;
                     sh:resultMessage ?message ;
@@ -262,28 +259,35 @@ class GuidanceManager:
         priority: str = 'MEDIUM'
     ) -> URIRef:
         """Add a validation rule to the guidance ontology.
+        
         Args:
             rule_id: Unique identifier for the rule.
             rule: Rule configuration dictionary.
             type: Type of validation rule.
             message: Optional message to display for violations.
             priority: Rule execution priority (HIGH, MEDIUM, LOW).
+            
         Returns:
             URIRef of the created rule.
+            
         Raises:
             ValueError: If required parameters are missing.
         """
         rule_uri = URIRef(f"{self.GUIDANCE}{rule_id}")
         target_graph = self._get_current_transaction()['graph'] if self._get_current_transaction() else self.graph
+        
         # Add basic rule properties
         target_graph.add((rule_uri, RDF.type, self.GUIDANCE.ValidationRule))
         target_graph.add((rule_uri, RDFS.label, Literal(rule_id)))
+        
         # Priority as string
         priority_str = priority if priority in ("HIGH", "MEDIUM", "LOW") else "MEDIUM"
         target_graph.add((rule_uri, self.GUIDANCE.hasPriority, Literal(priority_str)))
+        
         # Message
         if message:
             target_graph.add((rule_uri, self.GUIDANCE.hasMessage, Literal(message)))
+        
         # Map required properties from rule JSON
         if 'validator' in rule:
             target_graph.add((rule_uri, self.GUIDANCE.hasValidator, Literal(rule['validator'])))
@@ -295,8 +299,12 @@ class GuidanceManager:
             target_graph.add((rule_uri, self.GUIDANCE.hasRuleType, self.GUIDANCE[rule['type'].upper()]))
         if 'pattern' in rule:
             target_graph.add((rule_uri, self.GUIDANCE.hasPattern, Literal(rule['pattern'])))
+        if 'query' in rule:
+            target_graph.add((rule_uri, self.GUIDANCE.hasSPARQLQuery, Literal(rule['query'])))
+        
         # Add type as string for compatibility
         target_graph.add((rule_uri, self.GUIDANCE.hasType, Literal(type)))
+        
         return rule_uri
         
     def save(self, path: Optional[str] = None) -> None:
@@ -328,8 +336,7 @@ class GuidanceManager:
         type_query = f"""
         PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
         
-        SELECT ?type
-        WHERE {{
+        SELECT ?type WHERE {{
             <{rule_uri}> guidance:hasType ?type .
         }}
         """
@@ -341,8 +348,7 @@ class GuidanceManager:
             # Get type-specific properties
             if rule_type == ValidationRuleType.SHACL.value:
                 shapes_query = f"""
-                SELECT ?file
-                WHERE {{
+                SELECT ?file WHERE {{
                     <{rule_uri}> guidance:hasShapesFile ?file .
                 }}
                 """
@@ -351,8 +357,7 @@ class GuidanceManager:
                     
             elif rule_type == ValidationRuleType.SEMANTIC.value:
                 query_query = f"""
-                SELECT ?query
-                WHERE {{
+                SELECT ?query WHERE {{
                     <{rule_uri}> guidance:hasSPARQLQuery ?query .
                 }}
                 """
@@ -361,8 +366,7 @@ class GuidanceManager:
                     
             elif rule_type == ValidationRuleType.SYNTAX.value:
                 pattern_query = f"""
-                SELECT ?pattern
-                WHERE {{
+                SELECT ?pattern WHERE {{
                     <{rule_uri}> guidance:hasPattern ?pattern .
                 }}
                 """
@@ -371,8 +375,7 @@ class GuidanceManager:
                     
             elif rule_type == ValidationRuleType.SENSITIVE_DATA.value:
                 patterns_query = f"""
-                SELECT ?pattern
-                WHERE {{
+                SELECT ?pattern WHERE {{
                     <{rule_uri}> guidance:hasPattern ?pattern .
                 }}
                 """
@@ -382,11 +385,12 @@ class GuidanceManager:
                 if patterns:
                     details["patterns"] = patterns
                     
-        return details 
+        return details
 
     def add_imports(self, import_iris: list, base_iri: Optional[str] = None) -> None:
         """
         Add owl:imports triples to the ontology for the given IRIs.
+        
         Args:
             import_iris: List of ontology IRIs to import.
             base_iri: The base ontology IRI to which imports are added. If None, uses the loaded ontology's base.
@@ -396,12 +400,15 @@ class GuidanceManager:
             for s in self.graph.subjects(RDF.type, OWL.Ontology):
                 base_iri = str(s)
                 break
+            
             if base_iri is None:
                 raise ValueError("Base ontology IRI could not be determined. Please specify base_iri explicitly.")
+        
         base_ref = URIRef(base_iri)
         for import_iri in import_iris:
             self.graph.add((base_ref, OWL.imports, URIRef(import_iri)))
-        self.logger.info(f"Added owl:imports for: {import_iris} to {base_iri}") 
+        
+        self.logger.info(f"Added owl:imports for: {import_iris} to {base_iri}")
 
     def add_validation_pattern(self, pattern_id: str, pattern: Dict[str, str]) -> URIRef:
         """Add a validation pattern to the guidance ontology.

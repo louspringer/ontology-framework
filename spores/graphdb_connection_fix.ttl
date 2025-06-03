@@ -1,0 +1,47 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spore: <http://example.org/spore#> .
+@prefix : <http://example.org/graphdb-fix#> .
+
+:GraphDBConnectionFix a spore:Resolution ;
+    rdfs:label "GraphDB Connection Resolution" ;
+    rdfs:comment "Documentation of how the GraphDB connection issues were resolved" ;
+    spore:timestamp "2024-05-25T13:57:00Z"^^xsd:dateTime ;
+    spore:status "Resolved" ;
+    spore:author "Claude" ;
+    spore:problemDescription """
+        Initial connection issues with GraphDB:
+        1. Connection refused errors
+        2. Authentication issues
+        3. Repository path confusion
+        4. 415 errors on SPARQL queries
+    """ ;
+    spore:resolution """
+        1. Verified GraphDB running on port 7200
+        2. Confirmed guidance ontology uploaded to 'guidance' repository
+        3. Updated configuration:
+           - Added repository configuration to bfg9k_config.ttl
+           - Updated .cursor/mcp.json with environment variables
+           - Fixed URL format to include repository path
+    """ ;
+    spore:validationSteps """
+        1. Successfully validated guidance.ttl
+        2. Successfully executed SPARQL queries
+        3. Retrieved class definitions and rules
+    """ ;
+    spore:recommendations """
+        1. Always include repository path in GraphDB URL
+        2. Verify repository exists before attempting connection
+        3. Use environment variables for sensitive configuration
+        4. Test both validation and query functionality
+        5. Consider adding more specific modeling rules to guidance ontology
+    """ ;
+    spore:requestForComment """
+        Questions for review:
+        1. Should we standardize the URL format in configuration?
+        2. Do we need additional validation rules?
+        3. Should we add more test coverage for GraphDB connections?
+        4. How can we improve error handling for connection issues?
+    """ . 

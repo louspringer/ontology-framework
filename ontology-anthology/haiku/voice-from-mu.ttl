@@ -1,0 +1,15 @@
+@prefix ex: <http://example.org/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:VoiceFromMu a ex:ArchitecturalPattern ;
+    rdfs:label "Voice From Mu" ;
+    rdfs:comment "A pattern where insight arises from deep observation of latent system structures, not authority or explicit role." .
+
+ex:VoiceFromMuHaiku a ex:PoeticPatternReflection ;
+    rdfs:label "Voice From Mu Haiku" ;
+    ex:oneLiner "you need to know what you don't know" ;
+    ex:haiku """Unclaimed, unspoken—  
+clarity without a name,  
+structure breathes through fog.""" ;
+    ex:embodies ex:VoiceFromMu ;
+    ex:isIncludedIn ex:ArchitectWisdomPoems .

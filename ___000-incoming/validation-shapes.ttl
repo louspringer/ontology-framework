@@ -1,0 +1,48 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix lifecycle: <./lifecycle#> .
+@prefix session: <./session#> .
+@prefix artifact: <./artifact#> .
+@prefix trace: <./trace#> .
+@prefix behavior: <./behavior#> .
+@prefix validation: <./validation#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Lifecycle Valid Transition
+lifecycle:ValidTransitionShape a sh:NodeShape ;
+    sh:targetClass session:Event ;
+    sh:property [
+        sh:path session:triggersTransition ;
+        sh:class lifecycle:LifecyclePhase ;
+        sh:message "Triggered transition must be allowed from current artifact phase." ;
+        sh:sparql [
+            sh:message "Invalid lifecycle transition: not permitted from current phase." ;
+            sh:select """SELECT $this
+WHERE {
+  $this session:triggersTransition ?toPhase ;
+        session:affectsArtifact ?artifact .
+  ?artifact lifecycle:hasLifecyclePhase ?fromPhase .
+  FILTER NOT EXISTS {
+    ?fromPhase lifecycle:allowsTransitionTo ?toPhase .
+  }
+}"""
+        ]
+    ] .
+
+# Twin Lifecycle Phase Alignment
+lifecycle:TwinPhaseAlignmentShape a sh:NodeShape ;
+    sh:targetClass artifact:PythonModule ;
+    sh:property [
+        sh:path artifact:hasTwin ;
+        sh:class artifact:ManifestDocument ;
+        sh:message "Twin must be in same lifecycle phase." ;
+        sh:sparql [
+            sh:message "Twin artifact is in a different lifecycle phase." ;
+            sh:select """SELECT $this
+WHERE {
+  $this lifecycle:hasLifecyclePhase ?phase1 .
+  $this artifact:hasTwin ?twin .
+  ?twin lifecycle:hasLifecyclePhase ?phase2 .
+  FILTER(?phase1 != ?phase2)
+}"""
+        ]
+    ] .

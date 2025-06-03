@@ -5,6 +5,7 @@ from pathlib import Path
 from rdflib import Graph, RDF, RDFS, OWL, SH, URIRef, Literal, BNode
 from rdflib.namespace import SH
 from ontology_framework.modules.ontology import Ontology
+from rdflib.term import Node
 
 class TestOntologyConsistency(unittest.TestCase):
     """Test consistency between Python-generated base ontology and Turtle file."""
@@ -18,8 +19,7 @@ class TestOntologyConsistency(unittest.TestCase):
     def check_class_definitions(g1: Graph, g2: Graph) -> bool:
         """Check if two graphs have the same class definitions."""
         q = """
-            SELECT ?class ?label ?comment
-            WHERE {
+            SELECT ?class ?label ?comment WHERE {
                 ?class a owl:Class ;
                        rdfs:label ?label ;
                        rdfs:comment ?comment .
@@ -47,8 +47,7 @@ class TestOntologyConsistency(unittest.TestCase):
     def check_properties(g1: Graph, g2: Graph) -> bool:
         """Check if two graphs have the same property definitions."""
         q = """
-            SELECT ?prop ?domain ?range
-            WHERE {
+            SELECT ?prop ?domain ?range WHERE {
                 ?prop a ?type .
                 FILTER(?type IN (owl:DatatypeProperty, owl:ObjectProperty))
                 OPTIONAL { ?prop rdfs:domain ?domain }
@@ -71,8 +70,7 @@ class TestOntologyConsistency(unittest.TestCase):
     def check_individuals(g1: Graph, g2: Graph) -> bool:
         """Check if two graphs have the same individuals."""
         q = """
-            SELECT ?ind ?type
-            WHERE {
+            SELECT ?ind ?type WHERE {
                 ?ind a ?type .
                 FILTER(?type != owl:Class && ?type != owl:DatatypeProperty && ?type != owl:ObjectProperty)
             }
@@ -93,8 +91,7 @@ class TestOntologyConsistency(unittest.TestCase):
     def check_shapes(g1: Graph, g2: Graph) -> bool:
         """Check if two graphs have the same SHACL shapes."""
         q = """
-            SELECT ?shape ?targetClass
-            WHERE {
+            SELECT ?shape ?targetClass WHERE {
                 ?shape a sh:NodeShape ;
                        sh:targetClass ?targetClass .
             }
@@ -180,12 +177,10 @@ class TestOntologyConsistency(unittest.TestCase):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             
-            SELECT ?s ?label ?comment
-            WHERE {
+            SELECT ?s ?label ?comment WHERE {
                 ?s rdfs:label ?label ;
                    rdfs:comment ?comment .
-                FILTER(str(?s) IN ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
-                                 "http://www.w3.org/2000/01/rdf-schema#subClassOf"))
+                FILTER(str(?s) IN ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", "http://www.w3.org/2000/01/rdf-schema#subClassOf"))
             }
             ORDER BY ?s
             """
@@ -197,7 +192,6 @@ class TestOntologyConsistency(unittest.TestCase):
         # Check specific properties from compliance.ttl
         found_type = False
         found_subclass = False
-        
         for row in results:
             s, label, comment = map(str, row)
             if "rdf-syntax-ns#type" in s:

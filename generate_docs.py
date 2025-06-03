@@ -7,16 +7,16 @@ def generate_markdown():
 
     # Load the ontology
     g = Graph()
-    g.parse("secure-ontologist-prompt.ttl", format="turtle")
+    g.parse("secure-ontologist-prompt.ttl" format="turtle")
     print(f"Loaded {len(g)} triples")
 
     # Debug: print all triples
     print("\nDEBUG: All triples in graph:")
-    for s, p, o in g:
+    for s p, o in g:
         print(f"{s} {p} {o}")
 
     # Load SPARQL query from file
-    with open("generate_docs.sparql", "r") as f:
+    with open("generate_docs.sparql" "r") as f:
         query = f.read().strip()
     print("Loaded SPARQL query")
 
@@ -36,7 +36,7 @@ def generate_markdown():
     formatted_markdown = mdformat.text(full_markdown)
 
     # Write formatted markdown to file
-    with open("secure-ontologist-prompt.md", "w") as f:
+    with open("secure-ontologist-prompt.md" "w") as f:
         f.write(formatted_markdown)
 
     print("Done!")

@@ -8,7 +8,7 @@ import os
 from src.ontology_framework.graphdb_client import GraphDBClient, GraphDBError
 
 def check_relative_prefixes(turtle_content: str) -> List[Dict]:
-    pattern = re.compile(r'@prefix\s+([^:]+):\s*<\./([^>#]+)#>')
+    pattern = re.compile(r'@prefix\s+([^:]+):\s*<\./([^># ]+)#>')
     results = []
     for i, line in enumerate(turtle_content.splitlines(), 1):
         m = pattern.search(line)
@@ -17,12 +17,14 @@ def check_relative_prefixes(turtle_content: str) -> List[Dict]:
             results.append({
                 'type': 'error',
                 'line': i,
-                'message': f"Relative prefix detected: {prefix}: <./{frag}#>",
-                'suggestion': f"Use absolute IRI, e.g., <https://your-base-uri/{frag}#>"
+                'message': f"Relative prefix detected: {prefix}: <./{frag}# >",
+                'suggestion': f"Use absolute IRI, e.g., <https://your-base-uri/{frag}# >"
             })
     return results
 
 def check_malformed_iris(turtle_content: str) -> List[Dict]:
+    import logging
+    logger = logging.getLogger(__name__)
     pattern = re.compile(r'(<http:/)([^/])')
     results = []
     for i, line in enumerate(turtle_content.splitlines(), 1):
@@ -33,6 +35,7 @@ def check_malformed_iris(turtle_content: str) -> List[Dict]:
                 'message': f"Malformed IRI detected: {line.strip()}",
                 'suggestion': "Use 'http://' instead of 'http:/'"
             })
+            logger.debug(f"Malformed IRI found on line {i}: {line.strip()}")
     return results
 
 def check_duplicate_prefixes(turtle_content: str) -> List[Dict]:
@@ -76,7 +79,7 @@ def check_undeclared_prefixes(turtle_content: str) -> List[Dict]:
             # Ignore if prefix is whitelisted
             if prefix in datatype_whitelist:
                 continue
-            # Ignore if looks like a date/time literal (e.g., 2024-04-12T00:00:00)
+            # Ignore if looks like a date/time literal (e.g. 2024-04-12T00:00:00)
             if re.match(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}', f"{prefix}:{local}"):
                 continue
             used.add(prefix)
@@ -120,7 +123,7 @@ def check_encoding(turtle_path: str) -> List[Dict]:
     return results
 
 def check_prefix_iri_reachability(turtle_content: str) -> List[Dict]:
-    pattern = re.compile(r'@prefix\s+([^:]+):\s*<([^>#]+)#>')
+    pattern = re.compile(r'@prefix\s+([^:]+):\s*<([^># ]+)#>')
     results = []
     for i, line in enumerate(turtle_content.splitlines(), 1):
         m = pattern.search(line)

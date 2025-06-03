@@ -27,7 +27,12 @@ from .patch_management import (
     PatchNotFoundError,
     PatchApplicationError
 )
-from .turtle_syntax import fix_turtle_syntax, validate_turtle, validate_shacl, load_and_fix_turtle
+from .turtle_syntax import (
+    fix_turtle_syntax,
+    validate_turtle,
+    validate_shacl,
+    load_and_fix_turtle
+)
 from .ontology_analyzer import OntologyAnalyzer
 from .test_setup_manager import TestSetupManager
 from .package_manager import PackageManager
@@ -65,7 +70,6 @@ Ontology Framework Modules
 """Module registry for the ontology framework."""
 
 from typing import Dict, Type
-
 from ontology_framework.modules.base import BaseModule
 from ontology_framework.modules.validation import ValidationModule
 from ontology_framework.modules.consistency import ConsistencyModule

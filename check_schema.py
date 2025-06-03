@@ -15,7 +15,8 @@ def check_schema():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -34,7 +35,7 @@ def check_schema():
             
         # Check for SEM_APIS package
         cursor.execute("""
-            SELECT owner, object_name, object_type
+            SELECT owner object_name object_type
             FROM all_objects
             WHERE object_name LIKE 'SEM_APIS'
             ORDER BY owner
@@ -45,7 +46,7 @@ def check_schema():
             print(f"{row[0]}.{row[1]} ({row[2]})")
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

@@ -1,0 +1,235 @@
+---
+description: TOML manifest validation and synchronization requirements
+globs: "**/*.manifest.toml"
+alwaysApply: true
+---
+
+# TOML Manifest Validation Requirements
+
+> **Critical Function**: This rule ensures TOML manifests remain synchronized with their Python twin artifacts and the underlying semantic model, preventing semantic drift and maintaining ontological integrity.
+
+## Core Validation Principles
+
+**FUNDAMENTAL**: Every `.manifest.toml` file is a **semantic artifact** that must remain consistent with:
+1. Its **twin Python file** (implementation synchronization)
+2. The **shared semantic model** in guidance.ttl (ontological compliance)
+3. The **generation event** recorded in session.ttl (traceability integrity)
+
+### Automatic Validation Triggers
+
+When ANY `.manifest.toml` file is accessed, modified, or referenced, Cursor MUST:
+
+1. **Validate twin artifact synchronization**
+2. **Verify ontological model references**
+3. **Check traceability chain integrity**
+4. **Ensure operational metadata accuracy**
+5. **Repair inconsistencies** or **halt with structured errors**
+
+## Twin Artifact Synchronization Validation
+
+### Python Twin Existence Check
+```toml
+# MUST validate these relationships exist and are current
+[artifact_relationships]
+co_generated_with = ["onto_triple_validator.py"]  # File must exist
+twin_artifact_path = "./onto_triple_validator.py"  # Path must be valid
+semantic_consistency_hash = "sha256:abc123..."  # Must match current model state
+```
+
+**Validation Requirements**:
+- **Twin Python file EXISTS** at specified path
+- **Python file implements** what manifest declares in `semantic_purpose`
+- **Function names in Python** match semantic prefixes declared in manifest
+- **Import statements** align with `dependencies.ontology_tools`
+- **Consistency hash** reflects current semantic model state
+
+### Implementation-Manifest Alignment
+Cursor MUST verify:
+- **Python docstrings** match `metadata.semantic_purpose`
+- **Actual imports** match `dependencies` section
+- **Function prefixes** align with `ontological_context.namespace_prefixes`
+- **Test files referenced** in manifest actually test the Python implementation
+- **SHACL shapes** validate the Python code's RDF operations
+
+## Ontological Model Reference Validation
+
+### Guidance.ttl Reference Integrity
+```toml
+[ontological_context]
+primary_ontology = "guidance.ttl"  # File must exist and be parseable
+shared_semantic_model = "guidance.ttl::TripleValidationModel"  # Model must be defined
+
+[requirements_traceability]
+implements_requirements = ["guidance.ttl::SomeRequirement"]  # Requirements must exist
+satisfies_constraints = ["guidance.ttl::SomeConstraint"]  # Constraints must be defined
+```
+
+**Validation Protocol**:
+- **Parse guidance.ttl** using RDFlib (never text parsing)
+- **Query for referenced models** using SPARQL
+- **Validate requirement URIs** exist in the ontology
+- **Check constraint definitions** are semantically valid
+- **Emit `spore:MissingPolicyNotice`** if any references are broken
+
+### Namespace Prefix Validation
+```toml
+namespace_prefixes = [
+    "onto: <http://ontology-framework.org/core#>",
+    "valid: <http://ontology-framework.org/validation#>"
+]
+```
+
+**Validation Requirements**:
+- **Prefix declarations** must be syntactically valid Turtle
+- **Namespace URIs** must be resolvable or defined in project ontologies
+- **Prefixes used in Python code** must match manifest declarations
+
+## Generation Event Traceability Validation
+
+### Session.ttl Event Verification
+```toml
+[artifact_relationships]
+generation_event_id = "session.ttl::TripleValidatorGeneration_20250526_150000"
+
+[code_generation_metadata]
+generation_timestamp = "2025-05-26T15:00:00Z"
+```
+
+**Validation Protocol**:
+- **Query session.ttl** for the generation event ID
+- **Verify event exists** and includes both twin artifacts
+- **Check timestamps** are consistent between manifest and session
+- **Validate generation rules** referenced were actually applied
+- **Confirm semantic model** used during generation is still current
+
+### Behavioral Rule Compliance Verification
+```toml
+[behavioral_constraints]
+enforced_rules = [
+    "NoCodeModificationWithoutTests",
+    "SemanticOnlyProcessing"
+]
+```
+
+**Validation Requirements**:
+- **Query guidance.ttl** for each behavioral rule definition
+- **Verify rule application** is documented in generation event
+- **Check compliance** between declared rules and actual Python implementation
+- **Validate PDCA phase** progression is logical and current
+
+## Operational Metadata Validation
+
+### Dependency and Resource Verification
+```toml
+[dependencies]
+bfg9k_components = ["artillery_system", "ontology_loader"]
+ontology_tools = ["rdflib>=7.0.0", "pyshacl>=0.25.0"]
+
+[validation_metadata]
+test_ontologies = ["tests/test_data/valid_triples.ttl"]
+shacl_shapes = ["shapes/triple_validation_shapes.ttl"]
+```
+
+**Validation Protocol**:
+- **Check file existence** for all referenced paths
+- **Validate version constraints** for ontology tools
+- **Verify BFG9K components** are available and functional
+- **Test SHACL shapes** against the Python implementation
+- **Confirm test ontologies** contain appropriate test data
+
+### Change Tracking Integrity
+```toml
+[change_tracking]
+session_reference = "session.ttl::ValidationModuleCreation"
+change_justification = "guidance.ttl::TripleValidationRequirement"
+```
+
+**Validation Requirements**:
+- **Session reference** must exist in session.ttl
+- **Change justification** must be valid ontological requirement
+- **Previous version** references (if any) must be traceable
+- **Next planned changes** must align with ontological roadmap
+
+## Error Handling and Repair Protocols
+
+### Inconsistency Detection
+When validation fails, Cursor MUST:
+
+1. **Categorize the inconsistency**:
+   - `TWIN_ARTIFACT_DRIFT`: Python and manifest out of sync
+   - `BROKEN_ONTOLOGY_REFERENCE`: guidance.ttl references invalid
+   - `MISSING_GENERATION_EVENT`: session.ttl traceability broken
+   - `DEPENDENCY_MISMATCH`: Operational metadata incorrect
+
+2. **Emit structured error**:
+   ```turtle
+   spore:ManifestValidationFailure a spore:ValidationError ;
+       spore:errorType "TWIN_ARTIFACT_DRIFT" ;
+       spore:affectedManifest "onto_triple_validator.py.manifest.toml" ;
+       spore:affectedTwin "onto_triple_validator.py" ;
+       spore:requiredAction "SYNCHRONIZE_ARTIFACTS" .
+   ```
+
+3. **Halt processing** until inconsistency resolved
+
+### Automatic Repair Capabilities
+For certain inconsistencies, Cursor MAY attempt repair:
+
+- **Update timestamps** to match actual file modification times
+- **Regenerate consistency hashes** from current semantic model state
+- **Refresh dependency versions** from current environment
+- **Update session references** if generation events are renamed
+
+### Manual Intervention Required
+For critical inconsistencies, require explicit user guidance:
+- **Broken ontology references** that require guidance.ttl updates
+- **Missing twin artifacts** that may indicate intentional deletion
+- **Semantic model changes** that affect multiple artifact pairs
+- **Behavioral rule conflicts** that require policy decisions
+
+## Integration with Existing Rules
+
+### ClaudeReflector Compliance
+All manifest validation MUST follow:
+- **PDCA Protocol**: Validate → Check → Document → Act on inconsistencies
+- **Semantic-First Principle**: Use RDFlib/SPARQL for all ontology operations
+- **No Assumptions Rule**: Halt on broken references rather than assume intent
+- **Halt on Missing Guidance**: Stop if validation rules are undefined
+
+### Artifact Traceability Enhancement
+Manifest validation strengthens the traceability chain:
+- **Bidirectional verification**: Both Python→Manifest and Manifest→Python
+- **Ontological grounding**: All metadata must trace to guidance.ttl
+- **Temporal consistency**: Generation events must form coherent history
+- **Operational validity**: Declared capabilities must match implementation
+
+## Validation Automation
+
+### Continuous Validation
+Integrate manifest validation into:
+- **Pre-commit hooks**: Validate before Git commits
+- **CI/CD pipeline**: Automated consistency checking
+- **IDE integration**: Real-time validation in Cursor
+- **BFG9K artillery**: Include in ontology management workflows
+
+### Validation Metrics
+Track and report:
+- **Manifest consistency rates** across the codebase
+- **Broken reference frequency** and resolution time
+- **Twin artifact synchronization** success rates
+- **Ontological model stability** over time
+
+## Example Validation Workflow
+
+For `onto_triple_validator.py.manifest.toml`:
+
+1. **Check twin existence**: Verify `onto_triple_validator.py` exists
+2. **Validate semantic model**: Query guidance.ttl for `TripleValidationModel`
+3. **Verify generation event**: Check session.ttl for generation record
+4. **Test operational metadata**: Confirm test files and dependencies exist
+5. **Calculate consistency hash**: Compare with declared hash
+6. **Report status**: Document validation results in session.ttl
+
+---
+
+**Remember**: TOML manifests are semantic artifacts that must remain synchronized with their Python twins and the underlying ontological model. Manifest drift breaks the co-artifact relationship and violates the fundamental principles of ontology-driven development. 🐿🔍🎭

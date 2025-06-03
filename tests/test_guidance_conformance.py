@@ -72,7 +72,6 @@ class TestGuidanceConformance(unittest.TestCase):
             
             # Set the guidance graph in the integrator
             self.integrator.guidance_graph = self.guidance_graph
-            
             self.test_spore = SPORE['test-spore']
             self.target_model = TEST['target-model']
             
@@ -96,21 +95,18 @@ class TestGuidanceConformance(unittest.TestCase):
 @prefix test: <http://example.org/test#> .
 @prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 
-test:TargetModel
-    a owl:Ontology ;
+test:TargetModel a owl:Ontology ;
     rdfs:label "Target Model" ;
     rdfs:comment "A target model for spore integration" ;
     owl:versionInfo "1.0.0" ;
     guidance:hasConformanceCheck test:ModelConformance .
 
-test:ModelConformance
-    a guidance:ModelConformance ;
+test:ModelConformance a guidance:ModelConformance ;
     guidance:conformanceLevel "STRICT" ;
     guidance:requiresPrefixValidation true ;
     guidance:requiresNamespaceValidation true .
 
-test:TargetClass
-    a owl:Class ;
+test:TargetClass a owl:Class ;
     rdfs:label "Target Class" ;
     rdfs:comment "A target class for spore integration" ;
     owl:versionInfo "1.0.0" .

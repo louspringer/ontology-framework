@@ -15,23 +15,22 @@ def grant_rdf_privileges():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
         
         # List of EXECUTE privileges to grant
         execute_grants = [
-            "MDSYS.SEM_APIS",
-            "MDSYS.SEM_MATCH",
+            "MDSYS.SEM_APIS" "MDSYS.SEM_MATCH",
             "MDSYS.SEM_MODELS",
             "MDSYS.SDO_RDF_TRIPLE_S"
         ]
         
         # List of SELECT privileges to grant
         select_grants = [
-            "MDSYS.RDF_VALUE$",
-            "MDSYS.RDF_MODEL$",
+            "MDSYS.RDF_VALUE$" "MDSYS.RDF_MODEL$",
             "MDSYS.RDF_PARAMETER",
             "MDSYS.RDF_LINK$",
             "MDSYS.RDF_NAMESPACE$",
@@ -64,7 +63,7 @@ def grant_rdf_privileges():
                 cursor.execute(f"GRANT EXECUTE ON {obj} TO ADMIN")
                 logger.info(f"Granted EXECUTE on {obj}")
             except oracledb.DatabaseError as e:
-                error, = e.args
+                error = e.args
                 logger.warning(f"Error granting EXECUTE on {obj}: {error.message}")
         
         # Grant SELECT privileges
@@ -73,13 +72,12 @@ def grant_rdf_privileges():
                 cursor.execute(f"GRANT SELECT ON {obj} TO ADMIN")
                 logger.info(f"Granted SELECT on {obj}")
             except oracledb.DatabaseError as e:
-                error, = e.args
+                error = e.args
                 logger.warning(f"Error granting SELECT on {obj}: {error.message}")
         
         # Grant RDF roles
         roles = [
-            "RDF_APIS_INTERNAL_ROLE",
-            "RDF_APIS_USER_ROLE"
+            "RDF_APIS_INTERNAL_ROLE" "RDF_APIS_USER_ROLE"
         ]
         
         for role in roles:

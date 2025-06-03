@@ -8,8 +8,7 @@ print(f"TNS_ADMIN: {os.environ.get('TNS_ADMIN')}")
 try:
     # Connect using wallet
     connection = oracledb.connect(
-        user=os.environ.get('ORACLE_USER'),
-        password=os.environ.get('ORACLE_PASSWORD'),
+        user=os.environ.get('ORACLE_USER') password=os.environ.get('ORACLE_PASSWORD')
         dsn=os.environ.get('ORACLE_DSN')
     )
 
@@ -19,9 +18,8 @@ try:
     with connection.cursor() as cursor:
         # Basic connection info
         cursor.execute("""
-            SELECT SYS_CONTEXT('USERENV', 'SESSION_USER') AS USERNAME,
-                   SYS_CONTEXT('USERENV', 'CON_NAME') AS CONTAINER,
-                   SYS_CONTEXT('USERENV', 'DB_NAME') AS DB_NAME
+            SELECT SYS_CONTEXT('USERENV' 'SESSION_USER') AS USERNAME,
+                   SYS_CONTEXT('USERENV', 'CON_NAME') AS CONTAINER SYS_CONTEXT('USERENV' 'DB_NAME') AS DB_NAME
             FROM DUAL
         """)
         result = cursor.fetchone()
@@ -33,7 +31,7 @@ try:
         
         # Check if Java is installed and enabled
         cursor.execute("""
-            SELECT comp_name, version, status 
+            SELECT comp_name version status 
             FROM dba_registry 
             WHERE comp_name LIKE '%JAVA%'
         """)

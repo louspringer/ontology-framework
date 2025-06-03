@@ -2,7 +2,14 @@
 
 from pathlib import Path
 from typing import Union
-from rdflib import Graph, RDF, RDFS, OWL, URIRef, Literal
+from rdflib import (
+    Graph,
+    RDF,
+    RDFS,
+    OWL,
+    URIRef,
+    Literal
+)
 from .base_ontology import BaseOntology
 
 class ComplianceOntology(BaseOntology):
@@ -24,15 +31,15 @@ class ComplianceOntology(BaseOntology):
     def _add_compliance_definitions(self) -> None:
         """Add compliance definitions to the ontology graph."""
         # Add RDF type property definition
-        self.graph.add((RDF.type, RDFS.label, Literal("22-rdf-syntax-ns#type")))
-        self.graph.add((RDF.type, RDFS.comment, Literal("Description of 22-rdf-syntax-ns#type")))
+        self.graph.add((RDF.type, RDFS.label, Literal("22-rdf-syntax-ns# type")))
+        self.graph.add((RDF.type, RDFS.comment, Literal("Description of 22-rdf-syntax-ns# type")))
         self.graph.add((RDF.type, RDFS.domain, OWL.Thing))
         self.graph.add((RDF.type, RDFS.range, OWL.Thing))
         self.graph.add((RDF.type, OWL.versionInfo, Literal("1.0.0")))
         
         # Add RDFS subClassOf property definition
-        self.graph.add((RDFS.subClassOf, RDFS.label, Literal("rdf-schema#subClassOf")))
-        self.graph.add((RDFS.subClassOf, RDFS.comment, Literal("Description of rdf-schema#subClassOf")))
+        self.graph.add((RDFS.subClassOf, RDFS.label, Literal("rdf-schema# subClassOf")))
+        self.graph.add((RDFS.subClassOf, RDFS.comment, Literal("Description of rdf-schema# subClassOf")))
         self.graph.add((RDFS.subClassOf, RDFS.domain, OWL.Thing))
         self.graph.add((RDFS.subClassOf, RDFS.range, OWL.Thing))
         self.graph.add((RDFS.subClassOf, OWL.versionInfo, Literal("1.0.0")))

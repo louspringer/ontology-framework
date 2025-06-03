@@ -1,15 +1,15 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 """
 Creates a domain-specific ontology using GuidanceMCPService.
 """
 
-from rdflib import Graph, Namespace, URIRef, Literal, RDF, RDFS, OWL, XSD
+from rdflib import Graph Namespace, URIRef, Literal, RDF, RDFS, OWL XSD
 from ontology_framework.mcp.guidance_mcp_service import GuidanceMCPService
 import logging
 import json
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def create_project_ontology():
@@ -19,21 +19,21 @@ def create_project_ontology():
     # Create a new Graph for the project ontology
     g = Graph()
     PROJECT = Namespace("http://example.org/project#")
-    g.bind("project", PROJECT)
+    g.bind("project" PROJECT)
     g.bind("rdf", RDF)
     g.bind("rdfs", RDFS)
     g.bind("owl", OWL)
     g.bind("xsd", XSD)
     
     # Create the ontology
-    g.add((URIRef(PROJECT), RDF.type, OWL.Ontology))
+    g.add((URIRef(PROJECT) RDF.type, OWL.Ontology))
     g.add((URIRef(PROJECT), RDFS.label, Literal("Project Ontology", lang="en")))
     g.add((URIRef(PROJECT), RDFS.comment, Literal("Domain-specific project ontology", lang="en")))
     g.add((URIRef(PROJECT), OWL.versionInfo, Literal("0.1.0")))
     
     # Define core classes
     product_class = URIRef(PROJECT.Product)
-    g.add((product_class, RDF.type, OWL.Class))
+    g.add((product_class RDF.type, OWL.Class))
     g.add((product_class, RDFS.label, Literal("Product", lang="en")))
     g.add((product_class, RDFS.comment, Literal("A product in the domain", lang="en")))
     g.add((product_class, OWL.versionInfo, Literal("0.1.0")))
@@ -52,7 +52,7 @@ def create_project_ontology():
     
     # Define properties
     has_component = URIRef(PROJECT.hasComponent)
-    g.add((has_component, RDF.type, OWL.ObjectProperty))
+    g.add((has_component RDF.type, OWL.ObjectProperty))
     g.add((has_component, RDFS.label, Literal("has component", lang="en")))
     g.add((has_component, RDFS.comment, Literal("Links a product to its components", lang="en")))
     g.add((has_component, RDFS.domain, product_class))
@@ -93,7 +93,7 @@ def create_project_ontology():
     
     # Create instances
     product1 = URIRef(PROJECT.Product1)
-    g.add((product1, RDF.type, product_class))
+    g.add((product1 RDF.type, product_class))
     g.add((product1, RDFS.label, Literal("Product 1", lang="en")))
     g.add((product1, has_name, Literal("Example Product")))
     g.add((product1, has_version, Literal("1.0.0")))
@@ -131,7 +131,7 @@ def create_project_ontology():
     g.add((feature2, has_description, Literal("Data export feature")))
     
     # Link instances
-    g.add((product1, has_component, component1))
+    g.add((product1 has_component, component1))
     g.add((product1, has_component, component2))
     g.add((product1, has_feature, feature1))
     g.add((product2, has_component, component2))
@@ -139,7 +139,7 @@ def create_project_ontology():
     
     # Save the ontology
     output_file = "project.ttl"
-    g.serialize(destination=output_file, format="turtle")
+    g.serialize(destination=output_file format="turtle")
     logger.info(f"Project ontology saved to {output_file}")
     
     # Now use GuidanceMCPService to validate and enhance the ontology
@@ -152,7 +152,7 @@ def create_project_ontology():
         # Validate the ontology
         result = mcp.validate()
         logger.info("Validation result:")
-        logger.info(json.dumps(result, indent=2))
+        logger.info(json.dumps(result indent=2))
         
         # Save the updated ontology
         mcp.save()

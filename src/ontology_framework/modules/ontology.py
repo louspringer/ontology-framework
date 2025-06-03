@@ -2,12 +2,13 @@
 
 from typing import Dict, List, Optional, Union, Any, TypeVar, Generic
 from pathlib import Path
+import glob
 from rdflib import Graph, URIRef, Literal, BNode, Namespace, RDF, RDFS, OWL, XSD, SH
 from rdflib.namespace import NamespaceManager
 from rdflib.query import Result, ResultRow
-import glob
 from .compliance import ComplianceOntology
 from .base_ontology import BaseOntology
+from rdflib.term import Node
 
 T = TypeVar('T')
 
@@ -15,7 +16,7 @@ class Ontology(BaseOntology):
     """Base class for ontology operations.
     
     This class provides common functionality for working with ontologies,
-    including type conversion, serialization, and basic SPARQL operations.
+    including type conversion, serialization and basic SPARQL operations.
     """
     
     def __init__(self, base_uri: str, load_guidance_modules: bool = True) -> None:
@@ -56,7 +57,7 @@ class Ontology(BaseOntology):
         # Load compliance ontology
         compliance = ComplianceOntology()
         self.graph += compliance.graph
-        
+
     def _add_framework_classes(self) -> None:
         """Add essential framework classes to the ontology graph."""
         # IntegrationRequirement class
@@ -145,8 +146,7 @@ class Ontology(BaseOntology):
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         
-        SELECT ?label ?comment ?version
-        WHERE {
+        SELECT ?label ?comment ?version WHERE {
             ?ontology rdf:type owl:Ontology ;
                      rdfs:label ?label ;
                      rdfs:comment ?comment ;

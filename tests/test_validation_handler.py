@@ -4,7 +4,6 @@ from unittest import TestCase
 from rdflib import Graph, Namespace, Literal, URIRef
 from rdflib.namespace import RDF, RDFS, OWL, SH
 from pyshacl import validate as pyshacl_validate
-
 from src.ontology_framework.validation.validation_handler import ValidationHandler
 from src.ontology_framework.validation.conformance_level import ConformanceLevel
 from src.ontology_framework.validation.validation_rule_type import ValidationRuleType
@@ -59,8 +58,7 @@ class TestValidationHandler(TestCase):
         
         # Query rules using SPARQL
         query = """
-        SELECT ?rule ?type ?pattern
-        WHERE {
+        SELECT ?rule ?type ?pattern WHERE {
             ?rule a ex:ValidationRule .
             ?rule ex:ruleType ?type .
             ?rule ex:pattern ?pattern .
@@ -125,4 +123,4 @@ class TestValidationHandler(TestCase):
         if os.path.exists(self.guidance_file):
             os.remove(self.guidance_file)
         if os.path.exists(self.temp_dir):
-            os.rmdir(self.temp_dir) 
+            os.rmdir(self.temp_dir)

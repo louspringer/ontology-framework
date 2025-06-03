@@ -1,0 +1,152 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix spore: <http://example.org/spore#> .
+@prefix ui: <http://example.org/ui#> .
+@prefix code: <http://example.org/code#> .
+@prefix automation: <http://example.org/automation#> .
+@prefix meta: <./meta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+
+spore:UIAutomationFindings2024
+    rdf:type spore:Investigation ;
+    rdfs:label "Browser UI Automation Investigation"@en ;
+    rdfs:comment "Documentation of UI automation attempts with Chrome and Safari, including one successful pattern"@en ;
+    spore:timestamp "2024-03-21"^^xsd:date ;
+    spore:investigator "Claude & Lou" ;
+    spore:hasContext [
+        spore:environment "MacOS" ;
+        spore:targetBrowsers "Chrome, Safari" ;
+        spore:primaryGoal "Automated interaction with Claude chat interface"
+    ] .
+
+# Successful Pattern Documentation
+spore:SuccessfulPattern
+    rdf:type automation:Pattern ;
+    rdfs:label "Successful UI Automation Pattern"@en ;
+    automation:method "AppleScript with System Events" ;
+    automation:timing "Initial attempt with fresh browser state" ;
+    automation:targetElement "Chat input area" ;
+    code:implementation """
+    def send_message_to_claude():
+        initial_message = \"\"\"Hello Claude! This is a message from another Claude (running in Python via AppleScript). 
+        I'm demonstrating UI automation capabilities by sending this message directly to your input box.
+        Let me know if you receive this, and then I'll share a spore about our interaction!\"\"\"
+        
+        script = f'''
+        tell application "Google Chrome"
+            activate
+            delay 1
+            tell application "System Events"
+                click at {800, 800}  # Attempt to click where the input box might be
+                delay 0.5
+                keystroke "{initial_message}"
+                delay 0.2
+                key code 36  # Return key
+            end tell
+        end tell
+        '''
+        return run_applescript(script)
+    \"\"\"" ;
+    automation:successFactors [
+        rdf:_1 "Precise timing with delays" ;
+        rdf:_2 "Fresh browser state" ;
+        rdf:_3 "Direct coordinate click" ;
+        rdf:_4 "System Events keystroke method"
+    ] .
+
+# Challenges Encountered
+spore:UIAutomationChallenges
+    rdf:type problem:ChallengeSet ;
+    rdfs:label "UI Automation Challenges"@en ;
+    problem:hasChallenges [
+        rdf:_1 [
+            rdfs:label "Modern Web Components" ;
+            rdfs:comment "Shadow DOM and iframes complicate element access" ;
+            problem:severity "High"
+        ] ;
+        rdf:_2 [
+            rdfs:label "Browser Security" ;
+            rdfs:comment "Restrictions on JavaScript injection and automation" ;
+            problem:severity "High"
+        ] ;
+        rdf:_3 [
+            rdfs:label "Dynamic UI" ;
+            rdfs:comment "Element positions and structure change between attempts" ;
+            problem:severity "Medium"
+        ] ;
+        rdf:_4 [
+            rdfs:label "State Management" ;
+            rdfs:comment "Chat interface state affects automation success" ;
+            problem:severity "Medium"
+        ]
+    ] .
+
+# Enhanced Tactical Recommendations 2025
+spore:RecommendedTactics2025
+    rdf:type spore:RecommendationSet ;
+    rdfs:label "Recommended Tactics for UI Automation Enhancement 2025"@en ;
+    spore:hasRecommendations (
+        spore:AutoCoordinateCalibration
+        spore:DevToolsBridgeScript
+        spore:ClaudeEchoBeacon
+        spore:RefreshLoop
+        spore:AXPathTargeting
+    ) .
+
+spore:AutoCoordinateCalibration 
+    a solution:Technique ;
+    rdfs:label "Auto-calibrate input box coordinates"@en ;
+    rdfs:comment "Locate UI anchors (caret, placeholder text) via pixel or screen analysis, then dynamically click relative to that."@en ;
+    solution:dependsOn automation:ScreenCapture, automation:PixelAnalysis ;
+    solution:priority "High" ;
+    solution:enhances spore:SuccessfulPattern .
+
+spore:DevToolsBridgeScript 
+    a solution:Integration ;
+    rdfs:label "Hybrid AppleScript + Chrome DevTools"@en ;
+    rdfs:comment "Use Chrome's remote debugging port and pychrome to inject commands via DevTools Protocol."@en ;
+    solution:uses "pychrome" ;
+    solution:precondition "Chrome must be launched with --remote-debugging-port=9222" ;
+    solution:priority "Medium" ;
+    problem:addresses spore:UIAutomationChallenges .
+
+spore:ClaudeEchoBeacon 
+    a spore:ExperimentalTool ;
+    rdfs:label "Echo Beacon via Claude Input"@en ;
+    rdfs:comment "Send special message markers to Claude and verify that echo occurs, indicating a successful input round trip."@en ;
+    solution:classifiesAs automation:FeedbackLoop ;
+    problem:addresses problem:StateManagement ;
+    solution:priority "Medium" ;
+    solution:verifies spore:SuccessfulPattern .
+
+spore:RefreshLoop 
+    a automation:MaintenancePattern ;
+    rdfs:label "Browser Auto-Restart on UI Drift"@en ;
+    rdfs:comment "Restart browser on repeated failures to reestablish baseline UI state and reduce drift-related errors."@en ;
+    problem:addresses problem:DynamicUI, problem:StateManagement ;
+    solution:priority "Medium" ;
+    solution:mitigates spore:UIAutomationChallenges .
+
+spore:AXPathTargeting 
+    a solution:LocatorPattern ;
+    rdfs:label "Accessibility Label Targeting"@en ;
+    rdfs:comment "Use macOS Accessibility APIs (AXUIElement) to locate controls by role and label, avoiding coordinates."@en ;
+    solution:implements automation:TargetingViaAX ;
+    problem:addresses problem:ModernWebComponents ;
+    solution:priority "High" ;
+    solution:improves spore:SuccessfulPattern .
+
+# Investigation Methods
+spore:InvestigationMethods
+    rdf:type spore:MethodSet ;
+    rdfs:label "Investigation Methods Used"@en ;
+    spore:hasMethods [
+        rdf:_1 "Standard UI inspection" ;
+        rdf:_2 "AXUIElement direct access" ;
+        rdf:_3 "Web element inspection" ;
+        rdf:_4 "DevTools Protocol" ;
+        rdf:_5 "Accessibility API"
+    ] . 

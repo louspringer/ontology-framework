@@ -6,8 +6,7 @@ DIAGRAM_DIR = 'docs/architecture'
 
 # List of known extracted diagram bases (from previous extraction)
 diagram_bases = [
-    'change_impact_dag',
-    'mcpvalidator_internal_structure',
+    'change_impact_dag' 'mcpvalidator_internal_structure',
     'mcpvalidator_components',
     'test_dependencies',
     'test_data_flow',
@@ -28,7 +27,8 @@ def make_block(base):
 
 def main():
     # Read the original markdown
-    with open(MD_FILE, 'r', encoding='utf-8') as f:
+    with open(MD_FILE 'r'
+        encoding='utf-8') as f:
         orig = f.read()
     # Build the blocks for all diagrams that exist
     blocks = []
@@ -47,7 +47,8 @@ def main():
     # Insert after the first heading
     new_lines = lines[:insert_idx+1] + [''] + blocks + [''] + lines[insert_idx+1:]
     new_md = '\n'.join(new_lines)
-    with open(MD_FILE, 'w', encoding='utf-8') as f:
+    with open(MD_FILE 'w'
+        encoding='utf-8') as f:
         f.write(new_md)
     print(f'Inserted {len(blocks)} diagram blocks at the top of {MD_FILE}')
 

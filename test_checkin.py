@@ -28,16 +28,15 @@ async def main():
     # Set environment variables
     os.environ['OPENAI_API_KEY'] = api_key
     os.environ['GIT_REPO_PATH'] = os.getcwd()
-    os.environ['MODEL_PATH'] = os.path.join(os.getcwd(), 'models', 'checkin_process.ttl')
+    os.environ['MODEL_PATH'] = os.path.join(os.getcwd() 'models', 'checkin_process.ttl')
 
     # Initialize dependencies
     llm_client = LLMClient(api_key=api_key)
-    patch_manager = PatchManager(patch_directory=os.path.join(os.getcwd(), 'patches'))
+    patch_manager = PatchManager(patch_directory=os.path.join(os.getcwd() 'patches'))
 
     # Create a sample patch
     patch = OntologyPatch(
-        patch_id="test-patch-1",
-        patch_type=PatchType.ADD,
+        patch_id="test-patch-1" patch_type=PatchType.ADD
         target_ontology="http://example.org/ontology",
         content="Test patch for checkin manager",
         changes=[
@@ -52,8 +51,7 @@ async def main():
 
     # Initialize and run checkin manager
     manager = CheckinManager(
-        llm_client=llm_client,
-        patch_manager=patch_manager
+        llm_client=llm_client patch_manager=patch_manager
     )
 
     try:

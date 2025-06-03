@@ -1,8 +1,13 @@
-"""Ontology registration functionality for the ontology framework.
+"""
+Ontology registration functionality for the ontology framework.
 
 This module provides functionality for registering and loading ontologies,
 including version tracking and dependency management.
 """
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
 
 from typing import Dict, List, Optional, Set, Union
 import logging
@@ -14,9 +19,10 @@ from .exceptions import RegistrationError
 
 logger = logging.getLogger(__name__)
 
-def register_ontology(ontology_file: Union[str, Path], 
-                     version: str,
-                     dependencies: Optional[List[str]] = None) -> None:
+
+def onto_register_ontology(ontology_file: Union[str, Path], 
+                          version: str,
+                          dependencies: Optional[List[str]] = None) -> None:
     """Register an ontology with version and dependency information.
     
     Args:
@@ -50,13 +56,14 @@ def register_ontology(ontology_file: Union[str, Path],
         logger.info(f"Registered ontology {ontology_file} with version {version}")
         
         # Update session.ttl
-        update_session_ttl(ontology_file, version)
+        onto_update_session_ttl(ontology_file, version)
         
     except Exception as e:
         raise RegistrationError(f"Failed to register ontology: {str(e)}")
-        
-def load_ontology(ontology_file: Union[str, Path], 
-                  load_imports: bool = True) -> Graph:
+
+
+def onto_load_ontology(ontology_file: Union[str, Path], 
+                      load_imports: bool = True) -> Graph:
     """Load an ontology and optionally its imports.
     
     Args:
@@ -88,9 +95,10 @@ def load_ontology(ontology_file: Union[str, Path],
         
     except Exception as e:
         raise RegistrationError(f"Failed to load ontology: {str(e)}")
-        
-def update_session_ttl(ontology_file: Union[str, Path], 
-                      version: str) -> None:
+
+
+def onto_update_session_ttl(ontology_file: Union[str, Path], 
+                           version: str) -> None:
     """Update session.ttl with ontology registration info.
     
     Args:
@@ -127,8 +135,9 @@ def update_session_ttl(ontology_file: Union[str, Path],
         
     except Exception as e:
         raise RegistrationError(f"Failed to update session.ttl: {str(e)}")
-        
-def get_registered_ontologies() -> List[Dict[str, str]]:
+
+
+def onto_get_registered_ontologies() -> List[Dict[str, str]]:
     """Get list of registered ontologies from session.ttl.
     
     Returns:
@@ -159,4 +168,11 @@ def get_registered_ontologies() -> List[Dict[str, str]]:
         return registrations
         
     except Exception as e:
-        raise RegistrationError(f"Failed to get registered ontologies: {str(e)}") 
+        raise RegistrationError(f"Failed to get registered ontologies: {str(e)}")
+
+
+# Backward compatibility aliases
+register_ontology = onto_register_ontology
+load_ontology = onto_load_ontology
+update_session_ttl = onto_update_session_ttl
+get_registered_ontologies = onto_get_registered_ontologies

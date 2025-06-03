@@ -1,4 +1,4 @@
-"""Test suite for dependency visualizer."""
+"""Test, suite for dependency visualizer."""
 
 import unittest
 import pytest
@@ -61,7 +61,7 @@ def test_generate_report(visualizer, sample_graph, tmp_path):
     assert report_path.exists()
     content = report_path.read_text()
     assert "# Dependency Analysis Report" in content
-    assert "## Graph1" in content
+    assert "# # Graph1" in content
     assert "## Graph2" in content
     assert "Nodes: 4" in content  # Graph1 has 4 nodes
     assert "Nodes: 2" in content  # Graph2 has 2 nodes

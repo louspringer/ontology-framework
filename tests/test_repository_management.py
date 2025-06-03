@@ -5,7 +5,7 @@ from rdflib import Graph, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL
 import json
 import time
-from typing import Dict, Any, List
+from typing import Dict, Any, List, AsyncGenerator
 import concurrent.futures
 import os
 import tempfile
@@ -49,7 +49,7 @@ class TestRepositoryManagement:
         }
 
     @pytest.fixture
-    async def client(self) -> AsyncClient:
+    async def client(self) -> AsyncGenerator[AsyncClient, None]:
         """Create an async HTTP client for testing."""
         async with AsyncClient(base_url="http://localhost:7200") as client:
             yield client
@@ -64,18 +64,18 @@ class TestRepositoryManagement:
         """Provide test data in different formats."""
         return {
             "turtle": """
-                @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-                @prefix owl: <http://www.w3.org/2002/07/owl#> .
-                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                @prefix rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#> .
+                @prefix owl: <http://www.w3.org/2002/7/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/1/rdf-schema#> .
 
                 <http://example.org/test#TestClass> a owl:Class ;
                     rdfs:label "Test Class"@en ;
                     rdfs:comment "A test class for repository management tests"@en .
             """,
             "rdfxml": """
-                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                         xmlns:owl="http://www.w3.org/2002/07/owl#"
-                         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/2/22-rdf-syntax-ns#"
+                         xmlns:owl="http://www.w3.org/2002/7/owl#"
+                         xmlns:rdfs="http://www.w3.org/2000/1/rdf-schema#">
                     <owl:Class rdf:about="http://example.org/test#TestClass">
                         <rdfs:label xml:lang="en">Test Class</rdfs:label>
                         <rdfs:comment xml:lang="en">A test class for repository management tests</rdfs:comment>
@@ -113,7 +113,7 @@ class TestRepositoryManagement:
 
         # Convert config to GraphDB's expected format
         config_ttl = f"""
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfs: <http://www.w3.org/2000/1/rdf-schema#> .
 @prefix rep: <http://www.openrdf.org/config/repository#> .
 @prefix sr: <http://www.openrdf.org/config/repository/sail#> .
 @prefix sail: <http://www.openrdf.org/config/sail#> .
@@ -193,7 +193,7 @@ class TestRepositoryManagement:
 
         # Test SELECT query
         select_query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
                 SELECT ?s ?p ?o WHERE { ?s ?p ?o }
         """
         response = await client.get(
@@ -208,7 +208,7 @@ class TestRepositoryManagement:
 
         # Test CONSTRUCT query
         construct_query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
                 CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }
         """
         response = await client.get(
@@ -222,7 +222,7 @@ class TestRepositoryManagement:
 
         # Test ASK query
         ask_query = """
-                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
                 ASK { <http://example.org/test#TestClass> a owl:Class }
         """
         response = await client.get(
@@ -244,9 +244,9 @@ class TestRepositoryManagement:
 
         # Test deleting specific data
         data = """
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/1/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/7/owl#> .
 
 <http://example.org/test#TestClass> a owl:Class ;
     rdfs:label "Test Class" .
@@ -321,8 +321,7 @@ class TestRepositoryManagement:
                 break
             time.sleep(1)
             retry_count += 1
-            
-        assert count == 0, f"Expected 0 statements but found {count}"
+        assert count == 0, f"Expected 0 statements, but found {count}"
 
     def test_repository_backup_restore(self, client):
         """Test repository backup and restore."""
@@ -348,8 +347,7 @@ class TestRepositoryManagement:
                 break
             time.sleep(1)
             retry_count += 1
-            
-        assert count == 0, f"Expected 0 statements but found {count}"
+        assert count == 0, f"Expected 0 statements, but found {count}"
         
         # Restore from backup
         client.restore_repository(backup_path)
@@ -456,10 +454,7 @@ class TestRepositoryManagement:
     def test_concurrent_operations(self, base_url: str, test_repository: str, repository_config: Dict[str, Any]):
         """Test concurrent operations on the repository."""
         def upload_data(i: int):
-            data = f"""
-@prefix ex: <http://example.org/test#> .
-ex:TestClass{i} a ex:Class .
-"""
+            data = f"""@prefix ex: <http://example.org/test#> . ex:TestClass{i} a ex:Class ."""
             headers = {"Content-Type": "text/turtle"}
             return requests.post(
                 f"{base_url}/repositories/{test_repository}/statements",
@@ -468,10 +463,7 @@ ex:TestClass{i} a ex:Class .
             )
 
         def query_data(i: int):
-            query = f"""
-PREFIX ex: <http://example.org/test#>
-ASK {{ ex:TestClass{i} a ex:Class }}
-"""
+            query = f"""PREFIX ex: <http://example.org/test#> ASK {{ ex:TestClass{i} a ex:Class }}"""
             headers = {"Accept": "application/sparql-results+json"}
             return requests.get(
                 f"{base_url}/repositories/{test_repository}",
@@ -505,7 +497,7 @@ ASK {{ ex:TestClass{i} a ex:Class }}
         chunk_size = 100
         for i in range(0, len(triples), chunk_size):
             chunk = triples[i:i + chunk_size]
-            data = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+            data = "@prefix rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#> .\n"
             data += "\n".join(chunk)
             headers = {"Content-Type": "text/turtle"}
             response = requests.post(
@@ -517,7 +509,7 @@ ASK {{ ex:TestClass{i} a ex:Class }}
 
         # Verify all data was uploaded
         query = """
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
 SELECT (COUNT(*) as ?count) WHERE { ?s a ?o }
 """
         headers = {"Accept": "application/sparql-results+json"}
@@ -566,9 +558,8 @@ SELECT (COUNT(*) as ?count) WHERE { ?s a ?o }
         )
         assert response.status_code == 200
         namespaces = response.json()
-        assert any(ns["prefix"]["value"] == test_prefix and 
-                  ns["namespace"]["value"] == test_namespace 
-                  for ns in namespaces["results"]["bindings"])
+        assert any(ns["prefix"]["value"] == test_prefix and
+                  ns["namespace"]["value"] == test_namespace for ns in namespaces["results"]["bindings"])
 
         # Delete the namespace
         response = requests.delete(
@@ -588,7 +579,7 @@ SELECT (COUNT(*) as ?count) WHERE { ?s a ?o }
 
         # Get statement count
         query = """
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf: <http://www.w3.org/1999/2/22-rdf-syntax-ns#>
 SELECT (COUNT(*) as ?count) WHERE { ?s ?p ?o }
 """
         headers = {"Accept": "application/sparql-results+json"}

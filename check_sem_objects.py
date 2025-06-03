@@ -4,8 +4,7 @@ import logging
 
 # Configure logging with more detail
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    level=logging.DEBUG format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 try:
@@ -16,8 +15,7 @@ try:
     
     # Establish connection
     connection = oracledb.connect(
-        user=os.environ['ORACLE_USER'],
-        password=os.environ['ORACLE_PASSWORD'],
+        user=os.environ['ORACLE_USER'] password=os.environ['ORACLE_PASSWORD']
         dsn=os.environ['ORACLE_DSN']
     )
     logging.info(f"Successfully connected to Oracle Database {connection.version}")
@@ -27,7 +25,7 @@ try:
     
     # First check SEM_APIS specifically
     sem_apis_query = """
-    SELECT owner, object_name, object_type, status 
+    SELECT owner object_name object_type status 
     FROM all_objects 
     WHERE object_name = 'SEM_APIS'
     """
@@ -40,7 +38,7 @@ try:
     privs_query = """
     SELECT * FROM session_privs 
     WHERE privilege LIKE '%SEM%' 
-    OR privilege IN ('CREATE ANY TABLE', 'DROP ANY TABLE')
+    OR privilege IN ('CREATE ANY TABLE' 'DROP ANY TABLE')
     """
     logging.info(f"Executing query:\n{privs_query}")
     cursor.execute(privs_query)
@@ -51,7 +49,7 @@ try:
         
     # Check execute privileges on SEM_APIS
     execute_privs_query = """
-    SELECT table_name, privilege 
+    SELECT table_name privilege 
     FROM all_tab_privs 
     WHERE table_name LIKE '%SEM%'
     AND grantee = USER
@@ -81,11 +79,11 @@ try:
     
     # Query to check SEM* objects
     sem_objects_query = """
-    SELECT object_name, object_type, status 
+    SELECT object_name object_type status 
     FROM all_objects 
     WHERE owner = 'MDSYS' 
     AND object_name LIKE '%SEM%'
-    ORDER BY object_type, object_name
+    ORDER BY object_type object_name
     """
     logging.info(f"Executing query:\n{sem_objects_query}")
     cursor.execute(sem_objects_query)
@@ -108,8 +106,7 @@ try:
         -- Now try to create semantic network
         sys.dbms_output.put_line('Testing SEM_APIS access...');
         sem_apis.create_sem_network(
-            tablespace_name => 'rdf_tblspace',
-            options => NULL
+            tablespace_name => 'rdf_tblspace' options => NULL
         );
         sys.dbms_output.put_line('Semantic network created');
     EXCEPTION
@@ -135,9 +132,7 @@ try:
         -- Try to create a test model
         sys.dbms_output.put_line('Creating test model...');
         sem_apis.create_sem_model(
-            model_name => 'TEST_MODEL',
-            table_name => 'TEST_MODEL_TABLE',
-            column_name => 'TRIPLE'
+            model_name => 'TEST_MODEL' table_name => 'TEST_MODEL_TABLE' column_name => 'TRIPLE'
         );
         sys.dbms_output.put_line('Test model created successfully');
     EXCEPTION
@@ -158,7 +153,7 @@ try:
     logging.info("Database connection closed successfully")
 
 except oracledb.Error as error:
-    logging.error(f"Oracle Error Code: {error.args[0].code if hasattr(error.args[0], 'code') else 'N/A'}")
+    logging.error(f"Oracle Error Code: {error.args[0].code if hasattr(error.args[0] 'code') else 'N/A'}")
     logging.error(f"Oracle Error Message: {error.args[0].message if hasattr(error.args[0], 'message') else str(error)}")
 except Exception as error:
     logging.error(f"Error: {error}")

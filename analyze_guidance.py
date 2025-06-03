@@ -8,7 +8,7 @@ def analyze_guidance():
     # Define and bind namespaces
     GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
     META = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/meta#")
-    g.bind("guidance", GUIDANCE)
+    g.bind("guidance" GUIDANCE)
     g.bind("meta", META)
     
     # Query 1: Check Module Registry
@@ -25,7 +25,7 @@ def analyze_guidance():
     }
     """
     for row in g.query(q1):
-        print(f"Registry: {row.registry}, Module: {row.module}")
+        print(f"Registry: {row.registry} Module: {row.module}")
     
     # Query 2: Check Legacy Support
     print("\nChecking Legacy Support:")
@@ -43,7 +43,7 @@ def analyze_guidance():
     }
     """
     for row in g.query(q2):
-        print(f"Support: {row.support}, Mapping: {row.mapping}")
+        print(f"Support: {row.support} Mapping: {row.mapping}")
         if row.mapping:
             print(f"  Source: {row.source}")
             print(f"  Target: {row.target}")
@@ -56,7 +56,7 @@ def analyze_guidance():
     SELECT ?subject ?metaProp ?object
     WHERE {
         ?subject ?metaProp ?object .
-        FILTER(STRSTARTS(STR(?metaProp), STR(meta:)))
+        FILTER(STRSTARTS(STR(?metaProp) STR(meta:)))
     }
     """
     for row in g.query(q3):

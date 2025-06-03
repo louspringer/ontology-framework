@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from rdflib import Graph, URIRef, Literal, Namespace
 from rdflib.namespace import RDF, RDFS, OWL
-
 from .ontology_types import PatchType, PatchStatus
 
 # Define namespaces
@@ -99,8 +98,7 @@ class MetaOntology:
         if comment:
             self.graph.add((class_uri, RDFS.comment, Literal(comment)))
             
-    def add_property(self, prop_uri: URIRef, label: str, domain: Optional[URIRef] = None, 
-                    range: Optional[URIRef] = None, comment: Optional[str] = None) -> None:
+    def add_property(self, prop_uri: URIRef, label: str, domain: Optional[URIRef] = None, range: Optional[URIRef] = None, comment: Optional[str] = None) -> None:
         """Add a property to the meta ontology."""
         self.graph.add((prop_uri, RDF.type, OWL.ObjectProperty))
         self.graph.add((prop_uri, RDFS.label, Literal(label)))
@@ -117,4 +115,4 @@ class MetaOntology:
         
     def get_patch_ontology(self) -> Graph:
         """Get the patch ontology graph."""
-        return self.graph 
+        return self.graph

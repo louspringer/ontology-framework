@@ -60,4 +60,4 @@ def test_build_dependency_graph(analyzer):
     assert len(graph.edges()) > 0
     # Check for expected edge types
     edge_types = {data['type'] for _, _, data in graph.edges(data=True)}
-    assert {'import', 'target', 'assertion'}.issubset(edge_types) 
+    assert {'import', 'target', 'assertion'}.issubset(edge_types)

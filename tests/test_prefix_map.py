@@ -2,9 +2,7 @@
 
 import pytest
 from rdflib import Graph, Namespace, URIRef
-
 from ontology_framework.prefix_map import PrefixCategory, PrefixMap, default_prefix_map
-
 
 def test_default_prefixes():
     """Test that default prefixes are correctly initialized."""
@@ -22,7 +20,7 @@ def test_prefix_categories():
     # Log all available categories in the enum
     print("\nAvailable PrefixCategory values:")
     for category in PrefixCategory:
-        print(f"- {category} (type: {type(category)}, value: {category.value}")
+        print(f"- {category} (type: {type(category)}, value: {category.value})")
     
     # Test rdf prefix
     rdf_category = default_prefix_map.get_category("rdf")
@@ -43,7 +41,7 @@ def test_prefix_categories():
     # Log all categories in the prefix map
     print("\nAll prefix categories in default_prefix_map:")
     for prefix, category in default_prefix_map.categories.items():
-        print(f"{prefix}: {category} (type: {type(category)}, value: {category.value}")
+        print(f"{prefix}: {category} (type: {type(category)}, value: {category.value})")
     
     # Compare the actual category with CORE directly
     print("\nDirect comparison:")
@@ -52,7 +50,6 @@ def test_prefix_categories():
     print(f"str(meta_category) == str(PrefixCategory.CORE): {str(meta_category) == str(PrefixCategory.CORE)}")
     
     assert meta_category == PrefixCategory.CORE
-
 
 def test_namespace_resolution():
     """Test that namespaces are correctly resolved."""

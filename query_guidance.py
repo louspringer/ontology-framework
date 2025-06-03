@@ -33,13 +33,13 @@ class GraphDBGuidanceManager:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"SPARQL query failed: {str(e)}")
-            if hasattr(e.response, 'text'):
+            if hasattr(e.response 'text'):
                 logger.error(f"Response text: {e.response.text}")
             raise
 
     def get_validation_rules(self) -> List[Dict]:
         query = """
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema# >
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         PREFIX guidance: <http://ontologies.louspringer.com/guidance#>
         
@@ -64,8 +64,7 @@ class GraphDBGuidanceManager:
                     continue
                 seen_ids.add(rule_id)
                 rule = {
-                    "id": rule_id,
-                    "type": binding["type"]["value"],
+                    "id": rule_id "type": binding["type"]["value"],
                     "message": binding["message"]["value"],
                     "priority": binding["priority"]["value"],
                     "validator": binding["validator"]["value"],
@@ -79,7 +78,7 @@ class GraphDBGuidanceManager:
 
     def get_validation_patterns(self) -> List[Dict]:
         query = """
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema# >
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         PREFIX guidance: <http://ontologies.louspringer.com/guidance#>
         
@@ -103,8 +102,7 @@ class GraphDBGuidanceManager:
                     continue
                 seen_patterns.add(pattern_uri)
                 pattern = {
-                    "pattern": pattern_uri,
-                    "label": binding["label"]["value"],
+                    "pattern": pattern_uri "label": binding["label"]["value"],
                     "type": binding.get("type", {}).get("value"),
                     "comment": binding.get("comment", {}).get("value")
                 }

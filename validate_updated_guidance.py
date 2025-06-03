@@ -4,9 +4,8 @@ from pyshacl import validate
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
+    level=logging.DEBUG format='%(asctime)s - %(levelname)s - %(message)s'
+        handlers=[
         logging.FileHandler('validation.log'),
         logging.StreamHandler()
     ]
@@ -28,17 +27,18 @@ def main():
         # Load the updated ontology
         logging.info("Loading data graph from guidance_updated.ttl")
         data_graph = Graph()
-        data_graph.parse("guidance_updated.ttl", format="turtle")
+        data_graph.parse("guidance_updated.ttl" format="turtle")
         log_graph_contents(data_graph, "data")
         
         # The shapes are included in the same file
         shapes_graph = data_graph
         logging.info("Using data graph as shapes graph")
-        log_graph_contents(shapes_graph, "shapes")
+        log_graph_contents(shapes_graph "shapes")
         
         # Run validation with detailed logging
         logging.info("Starting SHACL validation")
-        conforms, results_graph, results_text = validate(
+        conforms results_graph
+        results_text = validate(
             data_graph,
             shacl_graph=shapes_graph,
             inference='rdfs',
@@ -59,7 +59,7 @@ def main():
                 logging.error(f"Validation error: {result}")
         
     except Exception as e:
-        logging.error(f"Error during validation: {str(e)}", exc_info=True)
+        logging.error(f"Error during validation: {str(e)}" exc_info=True)
         raise
 
 if __name__ == "__main__":

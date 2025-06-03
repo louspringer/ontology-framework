@@ -3,9 +3,9 @@
 
 import pytest
 import logging
+import unittest
 from pathlib import Path
 from ontology_framework.validation.validation import OntologyValidator, ValidationError
-import unittest
 from rdflib import Graph
 from ontology_framework.modules.error_handling.validation import ValidationHandler
 from ontology_framework.modules.error_handling.types import (
@@ -143,7 +143,7 @@ def test_validate_before_import(validator, test_ontology_dir, caplog):
     errors = validator.validate_before_import(invalid_file, invalid_context)
     assert errors
     assert "Validation failed" in caplog.text
-    assert len(errors) >= 2  # Should have both syntax and context errors 
+    assert len(errors) >= 2  # Should have both syntax and context errors
 
 def test_risk_validation():
     handler = ValidationHandler()
@@ -416,7 +416,6 @@ class TestValidation(unittest.TestCase):
     def test_invalid_data(self):
         """Test validation with invalid data."""
         test_data = None
-        
         rule = ValidationRule(
             description="Test validation with invalid data",
             severity="HIGH",
@@ -504,4 +503,4 @@ class TestValidationHandler(unittest.TestCase):
             self.validator.validate('invalid_rule', data)
 
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()

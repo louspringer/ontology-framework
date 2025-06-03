@@ -1,225 +1,117 @@
-@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
-    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+rdf:type rdfs:label "22-rdf-syntax-ns# type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns# type" ;
     rdfs:domain owl:Thing ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
-rdfs:subClassOf rdfs:label "rdf-schema#subClassOf" ;
-    rdfs:comment "Description of rdf-schema#subClassOf" ;
+rdfs:subClassOf rdfs:label "rdf-schema# subClassOf" ;
+    rdfs:comment "Description of rdf-schema# subClassOf" ;
     rdfs:domain owl:Thing ;
     rdfs:range owl:Thing ;
     owl:versionInfo "1.0.0" .
 
-guidance: a owl:Ontology ;
+: a owl:Ontology ;
     rdfs:label "Guidance Ontology"@en ;
     rdfs:comment "Ontology for managing guidance and validation rules"@en ;
-    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> ;
     owl:versionInfo "1.0.0" .
 
-guidance:ClassHierarchyCheck a guidance:ConsistencyRule ;
-    guidance:hasMessage "Check for cycles in class hierarchy" ;
-    guidance:hasPriority "HIGH" ;
-    guidance:hasTarget "https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ClassHierarchyCheck"^^xsd:anyURI ;
-    guidance:hasValidator "validate_consistency" .
+:ClassHierarchyCheck a :ConsistencyRule ;
+    :hasMessage "Class hierarchy must be acyclic" ;
+    :hasValidator "ClassHierarchyValidator" .
 
-guidance:IntegrationRequirement a owl:Class ;
+:ConformanceLevel a owl:Class ;
+    rdfs:label "ConformanceLevel"@en ;
+    rdfs:comment "Level of conformance to ontology standards"@en .
+
+:IntegrationProcess a owl:Class ;
+    rdfs:label "IntegrationProcess"@en ;
+    rdfs:comment "Process for integrating ontology components"@en .
+
+:IntegrationRequirement a owl:Class ;
     rdfs:label "Integration Requirement"@en ;
     rdfs:comment "Requirements for integrating validation components"@en .
 
-guidance:LegacySupportInstance a guidance:LegacySupport ;
-    guidance:hasLegacyMapping <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+:IntegrationStep a owl:Class ;
+    rdfs:label "IntegrationStep"@en ;
+    rdfs:comment "Individual step in an integration process"@en .
 
-guidance:ModuleRegistryInstance a guidance:ModuleRegistry ;
-    guidance:registeredModule <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#>,
-        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+:ModelConformance a owl:Class ;
+    rdfs:label "ModelConformance"@en ;
+    rdfs:comment "Conformance level for a specific model"@en .
 
-guidance:SHACLValidation a owl:Class ;
+:SHACLValidation a owl:Class ;
     rdfs:label "SHACL Validation"@en ;
     rdfs:comment "Rules and patterns for SHACL validation"@en .
 
-guidance:SPORERule a owl:Class ;
-    rdfs:subClassOf guidance:ValidationRule .
+:SPORERule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
 
-guidance:SemanticRule a owl:Class ;
-    rdfs:subClassOf guidance:ValidationRule .
+:SemanticRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
 
-guidance:SyntaxRule a owl:Class ;
-    rdfs:subClassOf guidance:ValidationRule .
+:SyntaxRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
 
-guidance:TODO a owl:Class ;
+:TODO a owl:Class ;
     rdfs:label "Future Improvements" ;
     rdfs:comment "Items for future development and enhancement" .
 
-guidance:ValidationPattern a owl:Class ;
+:TestCoverage a owl:Class ;
+    rdfs:label "TestCoverage"@en ;
+    rdfs:comment "Coverage metrics for ontology testing"@en .
+
+:TestPhase a owl:Class ;
+    rdfs:label "TestPhase"@en ;
+    rdfs:comment "Phase of testing in the integration process"@en .
+
+:TestProtocol a owl:Class ;
+    rdfs:label "TestProtocol"@en ;
+    rdfs:comment "Protocol for testing ontology components"@en .
+
+:ValidationPattern a owl:Class ;
     rdfs:label "Validation Pattern"@en ;
     rdfs:comment "Pattern for implementing validation rules"@en .
 
-guidance:ValidationRuleShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:anyURI ;
+:ValidationRuleShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path guidance:hasTarget ],
+            sh:path :hasMessage ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasTarget ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path guidance:hasPriority ],
+            sh:path :hasPriority ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path guidance:hasValidator ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path guidance:hasMessage ] ;
-    sh:targetClass guidance:ValidationRule .
+            sh:path :hasValidator ] ;
+    sh:targetClass :ValidationRule .
 
-guidance:hasLegacyMapping a owl:ObjectProperty ;
-    rdfs:label "has legacy mapping"@en ;
-    rdfs:comment "Maps to legacy system concepts"@en ;
-    rdfs:domain guidance:LegacySupport ;
-    rdfs:range owl:Thing ;
-    owl:versionInfo "1.0.0" .
+:ConsistencyRule a owl:Class ;
+    rdfs:subClassOf :ValidationRule .
 
-guidance:registeredModule a owl:ObjectProperty ;
-    rdfs:label "registered module"@en ;
-    rdfs:comment "Links to a registered module"@en ;
-    rdfs:domain guidance:ModuleRegistry ;
-    rdfs:range owl:Ontology ;
-    owl:versionInfo "1.0.0" .
+:hasMessage a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
 
-guidance:ConsistencyRule a owl:Class ;
-    rdfs:subClassOf guidance:ValidationRule .
+:hasPriority a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
 
-guidance:hasMessage a owl:DatatypeProperty ;
-    rdfs:domain guidance:ValidationRule .
+:hasTarget a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
 
-guidance:hasPriority a owl:DatatypeProperty ;
-    rdfs:domain guidance:ValidationRule .
+:hasValidator a owl:DatatypeProperty ;
+    rdfs:domain :ValidationRule .
 
-guidance:hasTarget a owl:DatatypeProperty ;
-    rdfs:domain guidance:ValidationRule .
-
-guidance:hasValidator a owl:DatatypeProperty ;
-    rdfs:domain guidance:ValidationRule .
-
-guidance:LegacySupport a owl:Class ;
-    rdfs:label "Legacy Support"@en ;
-    rdfs:comment "Support for legacy system mappings"@en ;
-    owl:versionInfo "1.0.0" .
-
-guidance:ModuleRegistry a owl:Class ;
-    rdfs:label "Module Registry"@en ;
-    rdfs:comment "Registry of all ontology modules"@en ;
-    owl:versionInfo "1.0.0" .
-
-owl:DatatypeProperty rdfs:subClassOf rdf:Property .
-
-guidance:ValidationRule a owl:Class .
-
-owl:Class rdfs:subClassOf rdfs:Class .
-
-# BFG9K MCP Architecture Classes
-guidance:BFG9KArchitecture a owl:Class ;
-    rdfs:label "BFG9K Architecture"@en ;
-    rdfs:comment "Core architecture class for BFG9K MCP system"@en ;
-    owl:versionInfo "1.0.0" .
-
-guidance:ContainerInstance a owl:Class ;
-    rdfs:label "Container Instance"@en ;
-    rdfs:comment "Azure Container Instance configuration"@en ;
-    rdfs:subClassOf guidance:BFG9KArchitecture ;
-    owl:versionInfo "1.0.0" .
-
-guidance:NetworkConfiguration a owl:Class ;
-    rdfs:label "Network Configuration"@en ;
-    rdfs:comment "Network settings for container instances"@en ;
-    rdfs:subClassOf guidance:BFG9KArchitecture ;
-    owl:versionInfo "1.0.0" .
-
-guidance:EnvironmentVariable a owl:Class ;
-    rdfs:label "Environment Variable"@en ;
-    rdfs:comment "Environment variable configuration"@en ;
-    rdfs:subClassOf guidance:BFG9KArchitecture ;
-    owl:versionInfo "1.0.0" .
-
-# BFG9K MCP Properties
-guidance:hasContainerName a owl:DatatypeProperty ;
-    rdfs:label "has container name"@en ;
-    rdfs:comment "Specifies the container name"@en ;
-    rdfs:domain guidance:ContainerInstance ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-guidance:hasNetworkType a owl:DatatypeProperty ;
-    rdfs:label "has network type"@en ;
-    rdfs:comment "Specifies the network type (public/private)"@en ;
-    rdfs:domain guidance:NetworkConfiguration ;
-    rdfs:range xsd:string ;
-    owl:versionInfo "1.0.0" .
-
-guidance:hasEnvironmentVariable a owl:ObjectProperty ;
-    rdfs:label "has environment variable"@en ;
-    rdfs:comment "Links to environment variable configuration"@en ;
-    rdfs:domain guidance:ContainerInstance ;
-    rdfs:range guidance:EnvironmentVariable ;
-    owl:versionInfo "1.0.0" .
-
-# BFG9K MCP Individuals
-guidance:BFG9KMCPServer a guidance:ContainerInstance ;
-    guidance:hasContainerName "bfg9k-mcp-server" ;
-    guidance:hasEnvironmentVariable guidance:ServerConfig .
-
-guidance:ServerConfig a guidance:EnvironmentVariable ;
-    rdfs:label "Server Configuration"@en ;
-    rdfs:comment "Environment variables for server configuration"@en .
-
-guidance:PublicNetwork a guidance:NetworkConfiguration ;
-    guidance:hasNetworkType "public" ;
-    rdfs:label "Public Network"@en ;
-    rdfs:comment "Public network configuration"@en .
-
-# SHACL Validation Rules
-guidance:ContainerInstanceShape a sh:NodeShape ;
-    sh:targetClass guidance:ContainerInstance ;
-    sh:property [
-        sh:path guidance:hasContainerName ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string
-    ] .
-
-guidance:NetworkConfigurationShape a sh:NodeShape ;
-    sh:targetClass guidance:NetworkConfiguration ;
-    sh:property [
-        sh:path guidance:hasNetworkType ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:in ("public" "private")
-    ] .
-
-# TODO Section
-guidance:BFG9KEnhancements a guidance:TODO ;
-    rdfs:label "BFG9K Future Enhancements"@en ;
-    rdfs:comment "Future improvements for BFG9K MCP architecture"@en ;
-    guidance:hasPriority "MEDIUM" ;
-    guidance:hasTargetDate "2024-Q3" .
+:ValidationRule a owl:Class .
 

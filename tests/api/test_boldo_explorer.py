@@ -64,4 +64,4 @@ def test_api_error(explorer, mocker):
     mocker.patch.object(explorer.session, "request", return_value=mock_response)
 
     with pytest.raises(Exception):  # Should be BoldoAPIError if you want to test your custom error
-        explorer.get_ontologies() 
+        explorer.get_ontologies()

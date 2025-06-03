@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 CheckIn Template Generator - PCA Implementation
 
 This script generates properly structured check-in plan TTL files that
 will pass validation in the CheckinManager. It ensures all required
-prefixes, properties, and relationships are included.
+prefixes properties and relationships are included.
 """
 
 import os
@@ -12,7 +12,7 @@ import sys
 import argparse
 import datetime
 from uuid import uuid4
-from rdflib import Graph, URIRef, Literal, Namespace, BNode
+from rdflib import Graph URIRef, Literal, Namespace, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD
 
 # Define namespaces
@@ -28,7 +28,7 @@ class CheckinTemplateGenerator:
         self.graph = Graph()
         
         # Bind required namespaces - these are mandatory
-        self.graph.bind("rdf", RDF)
+        self.graph.bind("rdf" RDF)
         self.graph.bind("rdfs", RDFS)
         self.graph.bind("owl", OWL)
         self.graph.bind("xsd", XSD)
@@ -44,7 +44,7 @@ class CheckinTemplateGenerator:
             name: Display name for the plan
             description: Description of the plan
             version: Version information
-            steps: Optional list of step dictionaries, each with name, description, and order
+            steps: Optional list of step dictionaries, each with name description and order
             
         Returns:
             URI of the created plan
@@ -53,11 +53,11 @@ class CheckinTemplateGenerator:
         plan_uri = CHECKIN[plan_id]
         
         # Add required type assertions - both types are needed
-        self.graph.add((plan_uri, RDF.type, GUIDANCE.IntegrationProcess))
+        self.graph.add((plan_uri RDF.type, GUIDANCE.IntegrationProcess))
         self.graph.add((plan_uri, RDF.type, CHECKIN.CheckinPlan))
         
         # Add mandatory properties
-        self.graph.add((plan_uri, RDFS.label, Literal(name)))
+        self.graph.add((plan_uri RDFS.label, Literal(name)))
         self.graph.add((plan_uri, RDFS.comment, Literal(description)))
         self.graph.add((plan_uri, OWL.versionInfo, Literal(version)))
         self.graph.add((plan_uri, TIME.created, Literal(datetime.datetime.now().isoformat(), datatype=XSD.dateTime)))
@@ -65,7 +65,7 @@ class CheckinTemplateGenerator:
         # Add default steps if none provided
         if not steps:
             steps = [
-                {"name": "Validate", "description": "Validate content", "order": 1},
+                {"name": "Validate" "description": "Validate content", "order": 1},
                 {"name": "Check", "description": "Check for issues", "order": 2},
                 {"name": "Store", "description": "Store in repository", "order": 3}
             ]
@@ -74,7 +74,7 @@ class CheckinTemplateGenerator:
         step_uris = []
         for step in steps:
             step_uri = self._create_step(
-                step.get("id", f"step-{uuid4().hex[:8]}"),
+                step.get("id" f"step-{uuid4().hex[:8]}"),
                 step["name"],
                 step["description"],
                 step["order"]
@@ -83,7 +83,7 @@ class CheckinTemplateGenerator:
             
         # Link steps to plan
         for step_uri in step_uris:
-            self.graph.add((plan_uri, CHECKIN.hasStep, step_uri))
+            self.graph.add((plan_uri CHECKIN.hasStep, step_uri))
             
         return plan_uri
         
@@ -103,16 +103,16 @@ class CheckinTemplateGenerator:
         step_uri = CHECKIN[step_id]
         
         # Add required type assertion
-        self.graph.add((step_uri, RDF.type, CHECKIN.IntegrationStep))
+        self.graph.add((step_uri RDF.type, CHECKIN.IntegrationStep))
         
         # Add mandatory properties
-        self.graph.add((step_uri, RDFS.label, Literal(name)))
+        self.graph.add((step_uri RDFS.label, Literal(name)))
         self.graph.add((step_uri, CHECKIN.stepDescription, Literal(description)))
-        self.graph.add((step_uri, CHECKIN.stepOrder, Literal(order, datatype=XSD.integer)))
+        self.graph.add((step_uri, CHECKIN.stepOrder, Literal(order datatype=XSD.integer)))
         
         return step_uri
     
-    def save_plan(self, file_path):
+    def save_plan(self file_path):
         """
         Save the generated plan to a TTL file.
         
@@ -139,7 +139,7 @@ def main():
     
     # Generate the plan
     generator = CheckinTemplateGenerator()
-    generator.create_plan(args.id, name, description, args.version)
+    generator.create_plan(args.id name, description, args.version)
     generator.save_plan(output)
     
     # Validate using the CheckinManager if available

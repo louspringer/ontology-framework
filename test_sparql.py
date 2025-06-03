@@ -8,8 +8,7 @@ from ontology_framework.load_to_oracle import (
 
 # Set up logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.DEBUG format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
@@ -26,13 +25,13 @@ def check_rdf_prerequisites(conn):
         
         # Check Spatial component
         cursor.execute("""
-            SELECT comp_name, version, status
+            SELECT comp_name version status
             FROM dba_registry
             WHERE comp_name LIKE 'Spatial%'
         """)
         spatial = cursor.fetchone()
         if spatial:
-            logging.info(f"Spatial component: {spatial[0]}, version {spatial[1]}, status {spatial[2]}")
+            logging.info(f"Spatial component: {spatial[0]} version {spatial[1]}, status {spatial[2]}")
         else:
             logging.error("Spatial component not found")
             return False
@@ -54,7 +53,7 @@ def check_rdf_prerequisites(conn):
         cursor.execute("""
             SELECT granted_role
             FROM user_role_privs
-            WHERE granted_role IN ('CONNECT', 'RESOURCE', 'UNLIMITED TABLESPACE')
+            WHERE granted_role IN ('CONNECT' 'RESOURCE' 'UNLIMITED TABLESPACE')
         """)
         roles = [r[0] for r in cursor.fetchall()]
         logging.info(f"User has roles: {roles}")
@@ -67,7 +66,7 @@ def check_rdf_prerequisites(conn):
         cursor.execute("""
             SELECT privilege 
             FROM user_sys_privs 
-            WHERE privilege IN ('CREATE VIEW', 'UNLIMITED TABLESPACE')
+            WHERE privilege IN ('CREATE VIEW' 'UNLIMITED TABLESPACE')
         """)
         privileges = [p[0] for p in cursor.fetchall()]
         logging.info(f"User has privileges: {privileges}")
@@ -105,7 +104,7 @@ def check_rdf_prerequisites(conn):
                 logging.error("RDF network does not exist")
                 return False
         except oracledb.DatabaseError as e:
-            error, = e.args
+            error = e.args
             if error.code == 942:  # ORA-00942: table or view does not exist
                 logging.error("RDF tables do not exist")
                 return False
@@ -114,7 +113,7 @@ def check_rdf_prerequisites(conn):
         return True
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logging.error(f"Oracle error {error.code}: {error.message}")
         raise
     finally:
@@ -147,7 +146,7 @@ def enable_rdf_support(conn):
         
         return True
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         if error.code == 55321:  # Network already exists
             logging.info("RDF network already exists")
             return True
@@ -184,9 +183,8 @@ def test_sparql_crud():
                 cursor.execute("""
                     SELECT COUNT(1) 
                     FROM TABLE(SEM_MATCH(
-                        'SELECT ?s ?p ?o WHERE { ?s ?p ?o }',
-                        SEM_MODELS('META'),
-                        null, null, null))
+                        'SELECT ?s ?p ?o WHERE { ?s ?p ?o }' SEM_MODELS('META'),
+                        null null null))
                 """)
                 count = cursor.fetchone()[0]
                 print(f"Total triples in META model: {count}")
@@ -197,7 +195,7 @@ def test_sparql_crud():
             print("\n2. Listing all classes with labels:")
             try:
                 cursor.execute("""
-                    SELECT DISTINCT t.sub, t.label 
+                    SELECT DISTINCT t.sub t.label 
                     FROM TABLE(SEM_MATCH(
                         'SELECT ?class ?label 
                          WHERE { 
@@ -207,11 +205,8 @@ def test_sparql_crud():
                         SEM_MODELS('META'),
                         SEM_RULEBASES('RDFS'),
                         SEM_ALIASES(
-                            SEM_ALIAS('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
-                            SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema#'),
-                            SEM_ALIAS('owl', 'http://www.w3.org/2002/07/owl#')
-                        ),
-                        null)) t
+                            SEM_ALIAS('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns# ') SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema# ') SEM_ALIAS('owl' 'http://www.w3.org/2002/07/owl#')
+                        ) null)) t
                 """)
                 results = cursor.fetchall()
                 for row in results:
@@ -224,7 +219,7 @@ def test_sparql_crud():
             print("\n3. Properties of SecurityConcept:")
             try:
                 cursor.execute("""
-                    SELECT DISTINCT t.prop, t.label 
+                    SELECT DISTINCT t.prop t.label 
                     FROM TABLE(SEM_MATCH(
                         'SELECT ?prop ?label 
                          WHERE { 
@@ -234,10 +229,8 @@ def test_sparql_crud():
                         SEM_MODELS('META'),
                         SEM_RULEBASES('RDFS'),
                         SEM_ALIASES(
-                            SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema#'),
-                            SEM_ALIAS('meta', 'http://ontologies.louspringer.com/meta#')
-                        ),
-                        null)) t
+                            SEM_ALIAS('rdfs', 'http://www.w3.org/2000/01/rdf-schema# ') SEM_ALIAS('meta' 'http://ontologies.louspringer.com/meta#')
+                        ) null)) t
                 """)
                 results = cursor.fetchall()
                 for row in results:

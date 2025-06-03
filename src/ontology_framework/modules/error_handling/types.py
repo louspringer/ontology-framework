@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Dict, Any, List, Optional, Union
+from datetime import datetime
 
 class ValidationRuleType(Enum):
     """Validation rule types."""
@@ -117,14 +118,11 @@ class SecurityLevel(Enum):
 
 class ComplianceLevel(Enum):
     """Compliance levels."""
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
-    REGULATORY = "regulatory"
-    POLICY = "policy"
+    NOT_STARTED = "not_started"
+    PARTIAL = "partial"
     STANDARD = "standard"
-    OPTIONAL = "optional"
+    STRICT = "strict"
+    FULL = "full"
 
 class RiskLevel(Enum):
     """Risk levels."""
@@ -132,4 +130,31 @@ class RiskLevel(Enum):
     MEDIUM = "medium"
     HIGH = "high"
     CRITICAL = "critical"
-    NONE = "none" 
+    NONE = "none"
+
+class RuleSeverity(Enum):
+    """Rule severity levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+@dataclass
+class ComplianceRule:
+    """Compliance rule definition."""
+    id: str
+    description: str
+    severity: RuleSeverity
+    enabled: bool = True
+    
+    def validate(self, data: Dict[str, Any]) -> bool:
+        """Validate data against the rule."""
+        raise NotImplementedError("Subclasses must implement validate method")
+
+@dataclass
+class ComplianceResult:
+    """Result of a compliance check."""
+    timestamp: datetime
+    level: ComplianceLevel
+    is_compliant: bool
+    violations: List[Dict[str, Any]] 

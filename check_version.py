@@ -15,7 +15,8 @@ def check_version():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -32,7 +33,7 @@ def check_version():
         # Get database components
         logger.info("\nInstalled Components:")
         cursor.execute("""
-            SELECT comp_name, version, status
+            SELECT comp_name version status
             FROM dba_registry
             ORDER BY comp_name
         """)
@@ -43,7 +44,7 @@ def check_version():
         # Get instance information
         logger.info("\nInstance Information:")
         cursor.execute("""
-            SELECT instance_name, version, status, database_status
+            SELECT instance_name version status database_status
             FROM v$instance
         """)
         

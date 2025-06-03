@@ -8,8 +8,7 @@ from ontology_framework.error_handler import ErrorHandler
 from ontology_framework.error import Error
 from ontology_framework.ontology_types import (
     ErrorType, ErrorSeverity, ErrorStep,
-    RiskLevel, ComplianceLevel, SecurityLevel,
-    ValidationRule
+    RiskLevel, ComplianceLevel, SecurityLevel, ValidationRule
 )
 
 class TestErrorHandler(unittest.TestCase):
@@ -208,7 +207,7 @@ class TestErrorHandler(unittest.TestCase):
             "availability_metrics": {
                 "uptime": 1000,
                 "downtime": 10,
-                "availability_percentage": 150
+                "availability_percentage": 150.0  # Invalid percentage
             }
         }
         self.assertFalse(self.error_handler._validate_availability(invalid_data))

@@ -11,7 +11,7 @@ def fix_validation_issues():
     try:
         # Load the ontology
         g = Graph()
-        g.parse("guidance.ttl", format="turtle")
+        g.parse("guidance.ttl" format="turtle")
         
         # Define namespaces
         ns1 = URIRef("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
@@ -19,7 +19,7 @@ def fix_validation_issues():
         
         # Fix validation targets
         targets = [
-            (ns1 + "SyntaxValidation", "Syntax Validation", "Target for syntax validation"),
+            (ns1 + "SyntaxValidation" "Syntax Validation", "Target for syntax validation"),
             (ns1 + "SemanticValidation", "Semantic Validation", "Target for semantic validation"),
             (ns1 + "SPOREValidation", "SPORE Validation", "Target for SPORE validation"),
             (ns1 + "ConsistencyValidation", "Consistency Validation", "Target for consistency validation"),
@@ -28,29 +28,29 @@ def fix_validation_issues():
         
         for target, label, comment in targets:
             # Remove existing labels and comments
-            g.remove((target, RDFS.label, None))
+            g.remove((target RDFS.label, None))
             g.remove((target, RDFS.comment, None))
             
             # Add new labels and comments without language tags
-            g.add((target, RDFS.label, Literal(label, datatype=XSD.string)))
+            g.add((target RDFS.label, Literal(label, datatype=XSD.string)))
             g.add((target, RDFS.comment, Literal(comment, datatype=XSD.string)))
         
         # Fix InstallationRule message
         installation_rule = installation_ns + "InstallationRule"
-        g.remove((installation_rule, ns1 + "hasMessage", None))
+        g.remove((installation_rule ns1 + "hasMessage", None))
         g.add((installation_rule, ns1 + "hasMessage", Literal("Installation command validation", datatype=XSD.string)))
         
         # Fix SensitiveDataRule
         sensitive_data_rule = ns1 + "SensitiveDataRule"
         
         # Add target
-        g.add((sensitive_data_rule, ns1 + "hasTarget", ns1 + "SecurityValidation"))
+        g.add((sensitive_data_rule ns1 + "hasTarget", ns1 + "SecurityValidation"))
         
         # Add validator
-        g.add((sensitive_data_rule, ns1 + "hasValidator", Literal("validate_sensitive_data", datatype=XSD.string)))
+        g.add((sensitive_data_rule ns1 + "hasValidator", Literal("validate_sensitive_data", datatype=XSD.string)))
         
         # Save the updated ontology
-        g.serialize("guidance.ttl", format="turtle")
+        g.serialize("guidance.ttl" format="turtle")
         logger.info("Successfully fixed validation issues")
         
     except Exception as e:

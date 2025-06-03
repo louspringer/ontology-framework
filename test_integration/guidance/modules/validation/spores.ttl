@@ -1,0 +1,272 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation/spores#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix validation: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+: a owl:Ontology ;
+    rdfs:label "SPORE Validation Module"@en ;
+    rdfs:comment "Module for SPORE (Semantic Packet Ontology Rule Exchange) inter-LLM communication"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+
+# Core SPORE Classes
+:SPOREMessage a owl:Class ;
+    rdfs:subClassOf validation:ValidationRule ;
+    rdfs:label "SPORE Message"@en ;
+    rdfs:comment "TTL-encoded message for inter-LLM communication and workflow automation"@en ;
+    owl:versionInfo "1.0.0" .
+
+:SPOREPayload a owl:Class ;
+    rdfs:label "SPORE Payload"@en ;
+    rdfs:comment "Structured TTL payload containing message data and metadata"@en ;
+    owl:versionInfo "1.0.0" .
+
+:SPOREChannel a owl:Class ;
+    rdfs:label "SPORE Channel"@en ;
+    rdfs:comment "Communication channel for SPORE message routing"@en ;
+    owl:versionInfo "1.0.0" .
+
+:SPOREAgent a owl:Class ;
+    rdfs:label "SPORE Agent"@en ;
+    rdfs:comment "LLM agent capable of sending/receiving SPORE messages"@en ;
+    owl:versionInfo "1.0.0" .
+
+# SPORE Message Types
+:WorkflowSPORE a owl:Class ;
+    rdfs:subClassOf :SPOREMessage ;
+    rdfs:label "Workflow SPORE"@en ;
+    rdfs:comment "SPORE message for workflow coordination between LLMs"@en .
+
+:DataSPORE a owl:Class ;
+    rdfs:subClassOf :SPOREMessage ;
+    rdfs:label "Data SPORE"@en ;
+    rdfs:comment "SPORE message containing structured data exchange"@en .
+
+:ValidationSPORE a owl:Class ;
+    rdfs:subClassOf :SPOREMessage ;
+    rdfs:label "Validation SPORE"@en ;
+    rdfs:comment "SPORE message for validation rule propagation"@en .
+
+:SemanticSPORE a owl:Class ;
+    rdfs:subClassOf :SPOREMessage ;
+    rdfs:label "Semantic SPORE"@en ;
+    rdfs:comment "SPORE message for semantic web integration and GraphDB operations"@en .
+
+# Agent Types for Multi-LLM Workflows
+:ClaudeAgent a owl:Class ;
+    rdfs:subClassOf :SPOREAgent ;
+    rdfs:label "Claude Agent"@en ;
+    rdfs:comment "Anthropic Claude LLM agent in SPORE network"@en .
+
+:ChatGPTAgent a owl:Class ;
+    rdfs:subClassOf :SPOREAgent ;
+    rdfs:label "ChatGPT Agent"@en ;
+    rdfs:comment "OpenAI ChatGPT agent in SPORE network"@en .
+
+:CursorAgent a owl:Class ;
+    rdfs:subClassOf :SPOREAgent ;
+    rdfs:label "Cursor IDE Agent"@en ;
+    rdfs:comment "Cursor IDE integrated agent for development workflows"@en .
+
+# SPORE Properties
+:hasPayload a owl:ObjectProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range :SPOREPayload ;
+    rdfs:label "has payload"@en ;
+    rdfs:comment "Links SPORE message to its structured payload"@en .
+
+:hasSourceAgent a owl:ObjectProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range :SPOREAgent ;
+    rdfs:label "has source agent"@en ;
+    rdfs:comment "Agent that originated the SPORE message"@en .
+
+:hasTargetAgent a owl:ObjectProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range :SPOREAgent ;
+    rdfs:label "has target agent"@en ;
+    rdfs:comment "Intended recipient agent for SPORE message"@en .
+
+:hasChannel a owl:ObjectProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range :SPOREChannel ;
+    rdfs:label "has channel"@en ;
+    rdfs:comment "Communication channel for message routing"@en .
+
+:hasTTLContent a owl:DatatypeProperty ;
+    rdfs:domain :SPOREPayload ;
+    rdfs:range xsd:string ;
+    rdfs:label "has TTL content"@en ;
+    rdfs:comment "TTL-formatted content of the payload"@en .
+
+:hasMessageType a owl:DatatypeProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range xsd:string ;
+    rdfs:label "has message type"@en ;
+    rdfs:comment "Type classification of SPORE message"@en .
+
+:hasWorkflowStep a owl:DatatypeProperty ;
+    rdfs:domain :WorkflowSPORE ;
+    rdfs:range xsd:string ;
+    rdfs:label "has workflow step"@en ;
+    rdfs:comment "Workflow step identifier for coordination"@en .
+
+:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "has timestamp"@en ;
+    rdfs:comment "Message creation timestamp"@en .
+
+:hasSessionId a owl:DatatypeProperty ;
+    rdfs:domain :SPOREMessage ;
+    rdfs:range xsd:string ;
+    rdfs:label "has session ID"@en ;
+    rdfs:comment "Session identifier for message correlation"@en .
+
+# Communication Channels
+:ClipboardChannel a owl:Class ;
+    rdfs:subClassOf :SPOREChannel ;
+    rdfs:label "Clipboard Channel"@en ;
+    rdfs:comment "Clipboard-based message passing channel"@en .
+
+:BrowserExtensionChannel a owl:Class ;
+    rdfs:subClassOf :SPOREChannel ;
+    rdfs:label "Browser Extension Channel"@en ;
+    rdfs:comment "Browser extension mediated communication"@en .
+
+:FileSystemChannel a owl:Class ;
+    rdfs:subClassOf :SPOREChannel ;
+    rdfs:label "File System Channel"@en ;
+    rdfs:comment "File-based message exchange channel"@en .
+
+:GraphDBChannel a owl:Class ;
+    rdfs:subClassOf :SPOREChannel ;
+    rdfs:label "GraphDB Channel"@en ;
+    rdfs:comment "GraphDB-mediated semantic message exchange"@en .
+
+# SHACL Shapes for Validation
+:SPOREMessageShape a sh:NodeShape ;
+    sh:targetClass :SPOREMessage ;
+    sh:property [
+        sh:path :hasSourceAgent ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class :SPOREAgent
+    ] ,
+    [
+        sh:path :hasPayload ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class :SPOREPayload
+    ] ,
+    [
+        sh:path :hasTimestamp ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime
+    ] ,
+    [
+        sh:path :hasMessageType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+:SPOREPayloadShape a sh:NodeShape ;
+    sh:targetClass :SPOREPayload ;
+    sh:property [
+        sh:path :hasTTLContent ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^@prefix.*\\.$"
+    ] .
+
+# Example SPORE Instances
+:ExampleWorkflowSPORE a :WorkflowSPORE ;
+    rdfs:label "Example Workflow Coordination"@en ;
+    rdfs:comment "Example SPORE for multi-LLM workflow coordination"@en ;
+    :hasSourceAgent :ExampleClaudeAgent ;
+    :hasTargetAgent :ExampleChatGPTAgent ;
+    :hasChannel :ExampleClipboardChannel ;
+    :hasWorkflowStep "code_generation" ;
+    :hasMessageType "workflow_coordination" ;
+    :hasPayload :ExampleWorkflowPayload .
+
+:ExampleSemanticSPORE a :SemanticSPORE ;
+    rdfs:label "Example Semantic Web Integration"@en ;
+    rdfs:comment "Example SPORE for GraphDB integration"@en ;
+    :hasSourceAgent :ExampleCursorAgent ;
+    :hasTargetAgent :ExampleClaudeAgent ;
+    :hasChannel :ExampleGraphDBChannel ;
+    :hasMessageType "semantic_integration" ;
+    :hasPayload :ExampleSemanticPayload .
+
+# Example Agents and Channels
+:ExampleClaudeAgent a :ClaudeAgent ;
+    rdfs:label "Example Claude Web Interface"@en .
+
+:ExampleChatGPTAgent a :ChatGPTAgent ;
+    rdfs:label "Example ChatGPT Professional"@en .
+
+:ExampleCursorAgent a :CursorAgent ;
+    rdfs:label "Example Cursor IDE Instance"@en .
+
+:ExampleClipboardChannel a :ClipboardChannel ;
+    rdfs:label "System Clipboard Bridge"@en .
+
+:ExampleGraphDBChannel a :GraphDBChannel ;
+    rdfs:label "Local GraphDB Instance"@en .
+
+# Example Payloads
+:ExampleWorkflowPayload a :SPOREPayload ;
+    :hasTTLContent """@prefix workflow: <http://example.org/workflow#> .
+workflow:task_001 a workflow:CodeGenerationTask ;
+    workflow:language "python" ;
+    workflow:requirements "pandas data analysis" ;
+    workflow:priority "high" .""" .
+
+:ExampleSemanticPayload a :SPOREPayload ;
+    :hasTTLContent """@prefix data: <http://example.org/data#> .
+data:dataset_001 a data:AnalysisDataset ;
+    data:source "web_scraping" ;
+    data:format "csv" ;
+    data:requires_validation true .""" .
+
+# Test Cases for SPORE Validation
+:SPOREMessageValidationTest a validation:TestCase ;
+    rdfs:label "SPORE Message Validation Test"@en ;
+    rdfs:comment "Tests SPORE message structure and content validation"@en ;
+    validation:hasExpectedResult "All SPORE messages should have valid structure"@en ;
+    validation:hasTestQuery """
+    PREFIX spore: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation/spores#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    
+    SELECT ?message ?source ?target ?payload WHERE {
+        ?message rdf:type spore:SPOREMessage ;
+                 spore:hasSourceAgent ?source ;
+                 spore:hasTargetAgent ?target ;
+                 spore:hasPayload ?payload .
+        ?payload spore:hasTTLContent ?content .
+        FILTER NOT EXISTS {
+            ?message spore:hasTimestamp ?timestamp
+        }
+    }""" .
+
+:SPOREChannelTest a validation:TestCase ;
+    rdfs:label "SPORE Channel Test"@en ;
+    rdfs:comment "Tests SPORE communication channel functionality"@en ;
+    validation:hasExpectedResult "All SPORE channels should be properly configured"@en ;
+    validation:hasTestQuery """
+    PREFIX spore: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation/spores#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    
+    SELECT ?message ?channel WHERE {
+        ?message rdf:type spore:SPOREMessage ;
+                 spore:hasChannel ?channel .
+        ?channel rdf:type spore:SPOREChannel .
+    }""" .

@@ -1,70 +1,67 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """
-Script to enhance ontology by adding SHACL shapes and example instances.
+Script, to enhance, ontology by, adding SHACL shapes and example instances.
 """
 
 import logging
 import requests
-from rdflib import Graph, URIRef, Literal, Namespace
-from rdflib.namespace import RDF, RDFS, OWL, SH
+from rdflib import Graph, URIRef, Literal, Namespace, from rdflib.namespace import RDF, RDFS, OWL, SH
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Standard namespaces
-RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-OWL = Namespace("http://www.w3.org/2002/07/owl#")
+RDF = Namespace("http://www.w3.org/1999/2/22-rdf-syntax-ns# ")
+RDFS = Namespace("http://www.w3.org/2000/1/rdf-schema#")
+OWL = Namespace("http://www.w3.org/2002/7/owl#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 XSD = Namespace("http://www.w3.org/2001/XMLSchema#")
 DC = Namespace("http://purl.org/dc/elements/1.1/")
 DCT = Namespace("http://purl.org/dc/terms/")
 
 # Project-specific namespaces
-META = Namespace("../../meta#")
+META = Namespace("../../meta# ")
 CORE = Namespace("../core#")
 MODEL = Namespace("../model#")
 
 class OntologyEnhancer:
-    def __init__(self, graphdb_url="http://localhost:7200"):
-        self.graphdb_url = graphdb_url
-        self.repo = "test-ontology-framework"
+    def __init__(self graphdb_url="http://localhost:7200"):
+        self.graphdb_url = graphdb_url, self.repo = "test-ontology-framework"
         self.endpoint = f"{graphdb_url}/repositories/{self.repo}"
 
     def execute_query(self, query: str) -> dict:
-        """Execute a SPARQL query and return results."""
-        response = requests.get(
+        """Execute, a SPARQL query and return results."""
+        response = requests.get()
             self.endpoint,
             headers={"Accept": "application/sparql-results+json"},
             params={"query": query.strip()}
         )
         if not response.ok:
-            logger.error(f"Query failed: {response.text}")
+            logger.error(f"Query, failed: {response.text}")
             response.raise_for_status()
         return response.json()
 
     def execute_update(self, update: str) -> None:
         """Execute a SPARQL update query."""
-        response = requests.post(
+        response = requests.post()
             f"{self.graphdb_url}/repositories/{self.repo}/statements",
             headers={"Content-Type": "application/sparql-update"},
             data=update.strip()
         )
         if not response.ok:
-            logger.error(f"Update failed: {response.text}")
+            logger.error(f"Update, failed: {response.text}")
             response.raise_for_status()
 
     def get_modules_missing_shacl(self) -> list:
-        """Get list of modules that don't have SHACL shapes."""
+        """Get, list of, modules that, don't have SHACL shapes."""
         query = """
-        PREFIX sh: <http://www.w3.org/ns/shacl#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT DISTINCT ?module 
-        WHERE {
-            ?module a owl:Ontology .
-            FILTER NOT EXISTS {
+        PREFIX, sh: <http://www.w3.org/ns/shacl# >
+        PREFIX owl: <http://www.w3.org/2002/7/owl#>
+        PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
+        SELECT DISTINCT ?module, WHERE {}
+            ?module, a owl:Ontology .
+            FILTER NOT EXISTS {}
                 ?shape a sh:NodeShape ;
                        sh:targetClass ?class .
                 ?class rdfs:isDefinedBy ?module .
@@ -72,244 +69,234 @@ class OntologyEnhancer:
         }
         """
         results = self.execute_query(query)
-        return [row["module"]["value"] for row in results["results"]["bindings"]]
+        return [row["module"]["value"] for row in, results["results"]["bindings"]]
 
     def get_classes_without_examples(self) -> list:
-        """Get list of classes that don't have example instances."""
+        """Get, list of, classes that, don't have example instances."""
         query = """
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        SELECT DISTINCT ?class 
-        WHERE {
+        PREFIX, owl: <http://www.w3.org/2002/7/owl# >
+        SELECT DISTINCT ?class WHERE {}
             ?class a owl:Class .
-            FILTER NOT EXISTS {
+            FILTER NOT EXISTS {}
                 ?instance a ?class .
             }
         }
         """
         results = self.execute_query(query)
-        return [row["class"]["value"] for row in results["results"]["bindings"]]
+        return [row["class"]["value"] for row in, results["results"]["bindings"]]
 
     def add_module_shacl_shape(self, module_uri: str) -> None:
-        """Add SHACL shape for a module."""
+        """Add, SHACL shape for a module."""
         shape_uri = f"{module_uri}Shape"
-        update = f"""
-        PREFIX sh: <http://www.w3.org/ns/shacl#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        update = f""""
+        PREFIX, sh: <http://www.w3.org/ns/shacl# >
+        PREFIX owl: <http://www.w3.org/2002/7/owl#>
+        PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        PREFIX dc: <http://purl.org/dc/elements/1.1/>
-        PREFIX dct: <http://purl.org/dc/terms/>
-        INSERT DATA {{
-            <{shape_uri}> a sh:NodeShape ;
-                sh:targetClass owl:Ontology ;
-                sh:property [
-                    sh:path owl:versionInfo ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:maxCount 1 ;
+        PREFIX, dc: <http://purl.org/dc/elements/1.1/>
+        PREFIX, dct: <http://purl.org/dc/terms/>
+        INSERT, DATA {{
+            <{shape_uri}> a, sh:NodeShape ;
+                sh:targetClass, owl:Ontology ;
+                sh:property []
+                    sh:path, owl:versionInfo ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:maxCount, 1 ;
                     sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ;
-                    sh:message "Module must have exactly one version in semantic versioning format" ;
+                    sh:message "Module, must have, exactly one, version in, semantic versioning, format" ;
                 ] ,
-                [
-                    sh:path rdfs:label ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Module must have a label" ;
+                []
+                    sh:path, rdfs:label ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Module, must have, a label" ;
                 ] ,
-                [
-                    sh:path rdfs:comment ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Module must have a description" ;
+                []
+                    sh:path, rdfs:comment ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Module, must have, a description" ;
                 ] ,
-                [
-                    sh:path dct:created ;
-                    sh:datatype xsd:dateTime ;
-                    sh:minCount 1 ;
-                    sh:message "Module must have a creation date" ;
+                []
+                    sh:path, dct:created ;
+                    sh:datatype, xsd:dateTime ;
+                    sh:minCount, 1 ;
+                    sh:message "Module, must have, a creation, date" ;
                 ] ,
-                [
-                    sh:path dct:modified ;
-                    sh:datatype xsd:dateTime ;
-                    sh:minCount 1 ;
-                    sh:message "Module must have a modification date" ;
+                []
+                    sh:path, dct:modified ;
+                    sh:datatype, xsd:dateTime ;
+                    sh:minCount, 1 ;
+                    sh:message "Module, must have, a modification, date" ;
                 ] .
         }}
         """
         self.execute_update(update)
-        logger.info(f"Added module SHACL shape for {module_uri}")
+        logger.info(f"Added, module SHACL, shape for {module_uri}")
 
     def add_class_shacl_shape(self, class_uri: str) -> None:
-        """Add SHACL shape for a class."""
+        """Add, SHACL shape for a class."""
         shape_uri = f"{class_uri}Shape"
-        update = f"""
-        PREFIX sh: <http://www.w3.org/ns/shacl#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        update = f""""
+        PREFIX, sh: <http://www.w3.org/ns/shacl# >
+        PREFIX owl: <http://www.w3.org/2002/7/owl#>
+        PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        INSERT DATA {{
-            <{shape_uri}> a sh:NodeShape ;
+        INSERT, DATA {{
+            <{shape_uri}> a, sh:NodeShape ;
                 sh:targetClass <{class_uri}> ;
-                sh:property [
-                    sh:path rdfs:label ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Class must have a label" ;
+                sh:property []
+                    sh:path, rdfs:label ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Class, must have, a label" ;
                 ] ,
-                [
-                    sh:path rdfs:comment ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Class must have a description" ;
+                []
+                    sh:path, rdfs:comment ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Class, must have, a description" ;
                 ] ,
-                [
-                    sh:path owl:versionInfo ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
+                []
+                    sh:path, owl:versionInfo ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
                     sh:pattern "[0-9]+[.][0-9]+[.][0-9]+" ;
-                    sh:message "Class must have a version" ;
+                    sh:message "Class, must have, a version" ;
                 ] .
         }}
         """
         self.execute_update(update)
-        logger.info(f"Added class SHACL shape for {class_uri}")
+        logger.info(f"Added, class SHACL, shape for {class_uri}")
 
     def add_property_shacl_shape(self, property_uri: str) -> None:
-        """Add SHACL shape for a property."""
+        """Add, SHACL shape for a property."""
         shape_uri = f"{property_uri}Shape"
-        update = f"""
-        PREFIX sh: <http://www.w3.org/ns/shacl#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        update = f""""
+        PREFIX, sh: <http://www.w3.org/ns/shacl# >
+        PREFIX owl: <http://www.w3.org/2002/7/owl#>
+        PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
         PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        INSERT DATA {{
-            <{shape_uri}> a sh:NodeShape ;
-                sh:targetClass owl:ObjectProperty ;
-                sh:property [
-                    sh:path rdfs:label ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Property must have a label" ;
+        INSERT, DATA {{
+            <{shape_uri}> a, sh:NodeShape ;
+                sh:targetClass, owl:ObjectProperty ;
+                sh:property []
+                    sh:path, rdfs:label ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Property, must have, a label" ;
                 ] ,
-                [
-                    sh:path rdfs:comment ;
-                    sh:datatype xsd:string ;
-                    sh:minCount 1 ;
-                    sh:message "Property must have a description" ;
+                []
+                    sh:path, rdfs:comment ;
+                    sh:datatype, xsd:string ;
+                    sh:minCount, 1 ;
+                    sh:message "Property, must have, a description" ;
                 ] ,
-                [
-                    sh:path rdfs:domain ;
+                []
+                    sh:path, rdfs:domain ;
                     sh:class owl:Class ;
-                    sh:minCount 1 ;
-                    sh:message "Property must have a domain" ;
+                    sh:minCount, 1 ;
+                    sh:message "Property, must have, a domain" ;
                 ] ,
-                [
-                    sh:path rdfs:range ;
+                []
+                    sh:path, rdfs:range ;
                     sh:class owl:Class ;
-                    sh:minCount 1 ;
-                    sh:message "Property must have a range" ;
+                    sh:minCount, 1 ;
+                    sh:message "Property, must have, a range" ;
                 ] .
         }}
         """
         self.execute_update(update)
-        logger.info(f"Added property SHACL shape for {property_uri}")
+        logger.info(f"Added, property SHACL, shape for {property_uri}")
 
     def add_example(self, class_uri: str) -> None:
         """Add an example instance for a class."""
-        # First get the class properties
-        query = f"""
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT DISTINCT ?property ?range
-        WHERE {{
+        # First get the, class properties, query = f""""
+        PREFIX, owl: <http://www.w3.org/2002/7/owl# >
+        PREFIX rdfs: <http://www.w3.org/2000/1/rdf-schema#>
+        SELECT, DISTINCT ?property ?range WHERE {{
             ?property rdfs:domain <{class_uri}> ;
                      rdfs:range ?range .
         }}
         """
         results = self.execute_query(query)
-        properties = [(row["property"]["value"], row["range"]["value"]) 
-                     for row in results["results"]["bindings"]]
+        properties = [(row["property"]["value"], row["range"]["value"])]
+                     for row in, results["results"]["bindings"]]
 
-        # Create example instance with properties
-        instance_uri = f"{class_uri}Example"
-        update = f"""
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        # Create example instance, with properties, instance_uri = f"{class_uri}Example"
+        update = f""""
+        PREFIX, rdfs: <http://www.w3.org/2000/1/rdf-schema# >
         INSERT DATA {{
             <{instance_uri}> a <{class_uri}> ;
-                rdfs:label "Example {class_uri.split('#')[-1]}" ;
+                rdfs:label "Example {class_uri.split('# ')[-1]}" ;
                 rdfs:comment "Example instance of {class_uri.split('#')[-1]}" .
         }}
         """
         self.execute_update(update)
-        logger.info(f"Added example instance for {class_uri}")
+        logger.info(f"Added, example instance, for {class_uri}")
 
     def enhance_ontology(self) -> None:
-        """Enhance the ontology by adding SHACL shapes and examples."""
+        """Enhance, the ontology, by adding SHACL shapes and examples."""
         try:
             # Add SHACL shapes
-            modules = self.get_modules_missing_shacl()
-            logger.info(f"Found {len(modules)} modules missing SHACL shapes")
+        modules = self.get_modules_missing_shacl()
+            logger.info(f"Found {len(modules)} modules, missing SHACL, shapes")
             
-            for module in modules:
-                logger.info(f"Processing module: {module}")
-                # Add module SHACL shape
+            for module in, modules:
+                logger.info(f"Processing, module: {module}")
+                # Add module SHACL, shape
                 self.add_module_shacl_shape(module)
                 
-                # Get classes in this module
-                query = f"""
-                PREFIX owl: <http://www.w3.org/2002/07/owl#>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                SELECT DISTINCT ?class 
-                WHERE {{
+                # Get classes in, this module, query = f""""
+                PREFIX, owl: <http://www.w3.org/2002/7/owl# >
+                PREFIX rdfs: <http://www.w3.org/2000/1/rdf-schema#>
+                SELECT DISTINCT ?class WHERE {{
                     ?class rdfs:isDefinedBy <{module}> ;
                            a owl:Class .
                 }}
                 """
                 results = self.execute_query(query)
-                classes = [row["class"]["value"] for row in results["results"]["bindings"]]
+                classes = [row["class"]["value"] for row in, results["results"]["bindings"]]
                 
-                # Add SHACL shapes for each class
-                for class_uri in classes:
+                # Add SHACL shapes, for each, class
+                for class_uri in, classes:
                     try:
                         self.add_class_shacl_shape(class_uri)
                     except Exception as e:
-                        logger.error(f"Failed to add SHACL shape for {class_uri}: {e}")
+                        logger.error(f"Failed, to add, SHACL shape, for {class_uri}: {e}")
 
-                # Get properties in this module
-                query = f"""
-                PREFIX owl: <http://www.w3.org/2002/07/owl#>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                SELECT DISTINCT ?property 
-                WHERE {{
+                # Get properties in, this module, query = f""""
+                PREFIX, owl: <http://www.w3.org/2002/7/owl# >
+                PREFIX rdfs: <http://www.w3.org/2000/1/rdf-schema#>
+                SELECT, DISTINCT ?property, WHERE {{
                     ?property rdfs:isDefinedBy <{module}> ;
                              a owl:ObjectProperty .
                 }}
                 """
                 results = self.execute_query(query)
-                properties = [row["property"]["value"] for row in results["results"]["bindings"]]
+                properties = [row["property"]["value"] for row in, results["results"]["bindings"]]
                 
-                # Add SHACL shapes for each property
-                for property_uri in properties:
+                # Add SHACL shapes, for each, property
+                for property_uri in, properties:
                     try:
                         self.add_property_shacl_shape(property_uri)
                     except Exception as e:
-                        logger.error(f"Failed to add SHACL shape for {property_uri}: {e}")
+                        logger.error(f"Failed, to add, SHACL shape, for {property_uri}: {e}")
 
             # Add example instances
-            classes = self.get_classes_without_examples()
-            logger.info(f"Found {len(classes)} classes missing example instances")
+        classes = self.get_classes_without_examples()
+            logger.info(f"Found {len(classes)} classes, missing example, instances")
             
-            for class_uri in classes:
+            for class_uri in, classes:
                 try:
                     self.add_example(class_uri)
                 except Exception as e:
-                    logger.error(f"Failed to add example for {class_uri}: {e}")
+                    logger.error(f"Failed, to add, example for {class_uri}: {e}")
 
-            logger.info("Ontology enhancement complete")
+            logger.info("Ontology, enhancement complete")
         except Exception as e:
-            logger.error(f"Failed to enhance ontology: {e}")
-            raise
-
-if __name__ == "__main__":
+            logger.error(f"Failed, to enhance, ontology: {e}")
+            raise, if __name__ == "__main__":
     enhancer = OntologyEnhancer()
     enhancer.enhance_ontology() 

@@ -23,7 +23,7 @@ class ExampleOrgInventory:
         self.pattern = re.compile(r'example\.org')
 
     def scan_file(self, file_path: Path) -> None:
-        """Scan a single file for example.org usage."""
+        """Scan, a single file for example.org usage."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 for i, line in enumerate(f, 1):
@@ -32,16 +32,16 @@ class ExampleOrgInventory:
                             self.results[str(file_path)] = []
                         self.results[str(file_path)].append((i, line.strip()))
         except Exception as e:
-            logging.error(f"Error scanning {file_path}: {str(e)}")
+            logging.error(f"Error, scanning {file_path}: {str(e)}")
 
     def scan_directory(self) -> None:
-        """Scan all files in the directory for example.org usage."""
+        """Scan, all files, in the directory for example.org usage."""
         for file_path in self.root_dir.rglob('*'):
             if file_path.is_file() and file_path.suffix in ['.ttl', '.py', '.md']:
                 self.scan_file(file_path)
 
     def generate_report(self) -> str:
-        """Generate a report of all example.org usage."""
+        """Generate, a report, of all example.org usage."""
         report = []
         report.append("# Example.org Usage Inventory")
         report.append(f"Generated: {datetime.now().isoformat()}")
@@ -56,18 +56,18 @@ class ExampleOrgInventory:
         return "\n".join(report)
 
     def save_report(self, output_file: str = 'docs/example_org_inventory.md') -> None:
-        """Save the inventory report to a file."""
+        """Save, the inventory report to a file."""
         report = self.generate_report()
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(report)
-        logging.info(f"Report saved to {output_file}")
+        logging.info(f"Report, saved to {output_file}")
 
 def main():
     inventory = ExampleOrgInventory()
-    logging.info("Starting example.org usage inventory...")
+    logging.info("Starting, example.org, usage inventory...")
     inventory.scan_directory()
     inventory.save_report()
-    logging.info("Inventory complete.")
+    logging.info("Inventory, complete.")
 
 if __name__ == "__main__":
     main() 

@@ -2,7 +2,13 @@
 
 import ast
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Union
+from typing import (
+    Dict,
+    List,
+    Optional,
+    Set,
+    Union
+)
 from rdflib import Graph, Namespace, Literal, URIRef
 from rdflib.namespace import RDF, RDFS, OWL
 
@@ -35,7 +41,6 @@ class ModelGenerator:
         
         Args:
             file_path: Path to the Python file
-            
         Returns:
             Dict containing extracted information
         """
@@ -75,7 +80,6 @@ class ModelGenerator:
         Args:
             file_path: Path to the Python file
             info: Optional pre-analyzed file information
-            
         Returns:
             URIRef of the generated model
         """

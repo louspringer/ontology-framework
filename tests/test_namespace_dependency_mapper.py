@@ -1,12 +1,19 @@
 import os
 import tempfile
+import unittest
 from pathlib import Path
 from scripts.namespace_dependency_mapper import NamespaceDependencyMapper
 
-def test_parse_inventory() -> None:
-    """Test parsing of inventory file."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
-        f.write("""
+class TestNamespaceDependencyMapper(unittest.TestCase):
+    """Test cases for NamespaceDependencyMapper following ontology framework rules.
+    
+    Tests semantic validation of namespace dependencies and migration plan generation
+    in accordance with guidance.ttl requirements.
+    """
+    
+    def setUp(self):
+        """Set up test fixtures before each test method."""
+        self.test_inventory_content = """
 # Example.org Usage Inventory
 
 ## test.ttl
@@ -18,47 +25,58 @@ ex:Test a rdf:Class .
 ## test.py
 from rdflib import Namespace
 EX = Namespace("http://example.org/test#")
-        """)
-        f.flush()
-        
-        mapper = NamespaceDependencyMapper(f.name)
-        mapper.parse_inventory()
-        
-        assert len(mapper.dependencies) == 2
-        assert "test.ttl" in mapper.dependencies
-        assert "test.py" in mapper.dependencies
-        assert len(mapper.graph.nodes) > 0
-        
-        os.unlink(f.name)
+        """
+        self.temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False)
+        self.temp_file.write(self.test_inventory_content)
+        self.temp_file.flush()
+        self.mapper = NamespaceDependencyMapper(self.temp_file.name)
 
-def test_generate_migration_plan() -> None:
-    """Test generation of migration plan."""
-    mapper = NamespaceDependencyMapper()
-    mapper.dependencies = {
-        "test.ttl": {"ex:http://example.org/test#"},
-        "test.py": {"EX:http://example.org/test#"},
-        "test.md": {"ex:http://example.org/test#"}
-    }
-    
-    plan = mapper.generate_migration_plan()
-    assert "# Namespace Migration Plan" in plan
-    assert "### 1. Ontology Namespaces" in plan
-    assert "### 2. Python Namespaces" in plan
-    assert "### 3. Documentation References" in plan
-    assert "https://ontologies.louspringer.com/test/" in plan
+    def tearDown(self):
+        """Clean up test fixtures after each test method."""
+        if hasattr(self, 'temp_file'):
+            os.unlink(self.temp_file.name)
 
-def test_save_migration_plan() -> None:
-    """Test saving migration plan to file."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
-        mapper = NamespaceDependencyMapper()
-        mapper.dependencies = {
+    def test_parse_inventory(self):
+        """Test parsing of inventory file for semantic namespace dependencies."""
+        self.mapper.parse_inventory()
+        
+        self.assertEqual(len(self.mapper.dependencies), 2)
+        self.assertIn("test.ttl", self.mapper.dependencies)
+        self.assertIn("test.py", self.mapper.dependencies)
+        self.assertGreater(len(self.mapper.graph.nodes), 0)
+
+    def test_generate_migration_plan(self):
+        """Test generation of semantic migration plan for namespace updates."""
+        self.mapper.dependencies = {
+            "test.ttl": {"ex:http://example.org/test#"},
+            "test.py": {"EX:http://example.org/test#"},
+            "test.md": {"ex:http://example.org/test#"}
+        }
+        
+        plan = self.mapper.generate_migration_plan()
+        
+        self.assertIn("# Namespace Migration Plan", plan)
+        self.assertIn("## 1. Ontology Namespaces", plan)
+        self.assertIn("## 2. Python Namespaces", plan)
+        self.assertIn("## 3. Documentation References", plan)
+        self.assertIn("https://ontologies.louspringer.com/test/", plan)
+
+    def test_save_migration_plan(self):
+        """Test saving semantic migration plan to file."""
+        self.mapper.dependencies = {
             "test.ttl": {"ex:http://example.org/test#"}
         }
-        mapper.save_migration_plan(f.name)
         
-        with open(f.name, 'r') as plan:
+        output_file = tempfile.NamedTemporaryFile(mode='w', suffix='.md',
+                                                  delete=False)
+        self.mapper.save_migration_plan(output_file.name)
+        
+        with open(output_file.name, 'r') as plan:
             content = plan.read()
-            assert "# Namespace Migration Plan" in content
-            assert "https://ontologies.louspringer.com/test/" in content
+            self.assertIn("# Namespace Migration Plan", content)
+            self.assertIn("https://ontologies.louspringer.com/test/", content)
         
-        os.unlink(f.name) 
+        os.unlink(output_file.name)
+
+if __name__ == '__main__':
+    unittest.main() 

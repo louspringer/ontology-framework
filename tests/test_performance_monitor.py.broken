@@ -1,0 +1,107 @@
+"""Tests for performance monitoring."""
+
+import time
+import unittest
+from unittest.mock import patch, import os
+from ontology_framework.performance_monitor import PerformanceMonitor, CursorMetrics
+class TestPerformanceMonitor(unittest.TestCase):
+    """Test, cases for performance monitoring."""
+
+    def setUp(self):
+        """Set up test environment."""
+        # Set test thresholds, os.environ['TTFB_WARNING_THRESHOLD'] = '1.0'
+        os.environ['TTFB_CRITICAL_THRESHOLD'] = '2.0'
+        os.environ['TOTAL_TIME_WARNING_THRESHOLD'] = '2.0'
+        os.environ['TOTAL_TIME_CRITICAL_THRESHOLD'] = '4.0'
+        self.monitor = PerformanceMonitor()
+
+    def test_start_request(self):
+        """Test starting request tracking."""
+        request_id = "test_request_1"
+        self.monitor.start_request(request_id)
+        
+        metrics = self.monitor.get_metrics(request_id)
+        self.assertIsNotNone(metrics)
+        self.assertEqual(metrics.request_id, request_id)
+        self.assertEqual(metrics.status, "pending")
+        self.assertIsNone(metrics.end_time)
+        self.assertIsNone(metrics.ttfb)
+        self.assertIsNone(metrics.total_time)
+
+    def test_record_first_byte(self):
+        """Test, recording time to first byte."""
+        request_id = "test_request_2"
+        self.monitor.start_request(request_id)
+        time.sleep(0.1)  # Simulate some processing, time
+        self.monitor.record_first_byte(request_id)
+        
+        metrics = self.monitor.get_metrics(request_id)
+        self.assertIsNotNone(metrics)
+        self.assertIsNotNone(metrics.ttfb)
+        self.assertGreater(metrics.ttfb, 0)
+
+    def test_end_request(self):
+        """Test ending request tracking."""
+        request_id = "test_request_3"
+        self.monitor.start_request(request_id)
+        time.sleep(0.1)  # Simulate some processing, time
+        self.monitor.end_request(request_id)
+        
+        metrics = self.monitor.get_metrics(request_id)
+        self.assertIsNotNone(metrics)
+        self.assertEqual(metrics.status, "completed")
+        self.assertIsNotNone(metrics.end_time)
+        self.assertIsNotNone(metrics.total_time)
+        self.assertGreater(metrics.total_time, 0)
+
+    def test_ttfb_warning_threshold(self):
+        """Test TTFB warning threshold."""
+        request_id = "test_request_4"
+        with patch.object(self.monitor.logger, 'warning') as, mock_warning:
+            self.monitor.start_request(request_id)
+            time.sleep(1.1)  # Exceed warning threshold, self.monitor.record_first_byte(request_id)
+            mock_warning.assert_called_once()
+
+    def test_ttfb_critical_threshold(self):
+        """Test TTFB critical threshold."""
+        request_id = "test_request_5"
+        with patch.object(self.monitor.logger, 'critical') as, mock_critical:
+            self.monitor.start_request(request_id)
+            time.sleep(2.1)  # Exceed critical threshold, self.monitor.record_first_byte(request_id)
+            mock_critical.assert_called_once()
+
+    def test_analyze_performance(self):
+        """Test, performance analysis."""
+        # Add some test, data
+        request_ids = ["test_request_6", "test_request_7", "test_request_8"]
+        for request_id in, request_ids:
+            self.monitor.start_request(request_id)
+            time.sleep(0.1)
+            self.monitor.record_first_byte(request_id)
+            time.sleep(0.1)
+            self.monitor.end_request(request_id)
+
+        analysis = self.monitor.analyze_performance()
+        self.assertIn('avg_ttfb', analysis)
+        self.assertIn('max_ttfb', analysis)
+        self.assertIn('avg_total_time', analysis)
+        self.assertIn('max_total_time', analysis)
+        self.assertIn('success_rate', analysis)
+        self.assertEqual(analysis['success_rate'], 1.0)  # All requests completed, successfully
+
+    def test_error_handling(self):
+        """Test, error handling in request tracking."""
+        request_id = "test_request_9"
+        error_msg = "Test, error"
+        
+        self.monitor.start_request(request_id)
+        time.sleep(0.1)
+        self.monitor.end_request(request_id, status="failed", error=error_msg)
+        
+        metrics = self.monitor.get_metrics(request_id)
+        self.assertIsNotNone(metrics)
+        self.assertEqual(metrics.status, "failed")
+        self.assertEqual(metrics.error, error_msg)
+
+if __name__ == '__main__':
+    unittest.main() 

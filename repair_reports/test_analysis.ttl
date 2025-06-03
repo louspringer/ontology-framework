@@ -1,0 +1,145 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/spore-ontology/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix test: <https://raw.githubusercontent.com/louspringer/bfg9k/main/test#> .
+@prefix debug: <https://raw.githubusercontent.com/louspringer/bfg9k/main/debug#> .
+
+# Test Analysis Document
+test:BFG9KTestAnalysis_2024_03 a spore:TestAnalysis ;
+    dc:title "BFG9K MCP Test Analysis" ;
+    dc:date "2024-03-21"^^xsd:date ;
+    spore:affectedSystem bfg:BFG9KSystem ;
+    spore:status "InProgress" ;
+    spore:hasObservation 
+        test:MultipleClientCreation,
+        test:NoServerInfo,
+        test:ListOfferingsFailure ;
+    rdfs:comment "Analysis of test failures in BFG9K MCP system." .
+
+# Observed Issues
+test:MultipleClientCreation a test:Observation ;
+    rdfs:label "Multiple Client Creation" ;
+    spore:timestamp "2025-05-28T09:58:24.641" ;
+    spore:description """Multiple CreateClient actions triggered in rapid succession:
+    1. Three identical client creation attempts
+    2. Same command path used for all attempts
+    3. No synchronization or client tracking visible""" ;
+    spore:evidence """[info] fg9k: Handling CreateClient action
+[info] fg9k: Starting new stdio process...""" .
+
+test:NoServerInfo a test:Observation ;
+    rdfs:label "Missing Server Information" ;
+    spore:timestamp "2025-05-28T09:58:34.829" ;
+    spore:description """Server info missing for both fg9k and ilot:
+    1. Consistent error across multiple attempts
+    2. Affects ListOfferings action
+    3. Suggests initialization or state persistence issue""" ;
+    spore:evidence """[error] fg9k: No server info found
+[error] ilot: No server info found""" .
+
+test:ListOfferingsFailure a test:Observation ;
+    rdfs:label "List Offerings Failure" ;
+    spore:timestamp "2025-05-28T09:58:35.225" ;
+    spore:description """ListOfferings action fails consistently:
+    1. Multiple attempts show same failure
+    2. Occurs after client creation
+    3. Suggests server state not properly initialized""" ;
+    spore:evidence """[info] fg9k: Handling ListOfferings action
+[error] fg9k: No server info found""" .
+
+# Required Debug Instrumentation
+debug:RequiredInstrumentation a debug:Requirements ;
+    rdfs:label "Debug Instrumentation Requirements" ;
+    spore:hasRequirement [
+        a debug:Requirement ;
+        rdfs:label "Client State Tracking" ;
+        spore:description "Add instrumentation to track client lifecycle" ;
+        spore:implementation """
+        1. Add client ID generation
+        2. Track client creation/destruction
+        3. Monitor client state transitions"""
+    ], [
+        a debug:Requirement ;
+        rdfs:label "Server Info Validation" ;
+        spore:description "Add validation for server information" ;
+        spore:implementation """
+        1. Add server info checks
+        2. Track server initialization
+        3. Monitor server state changes"""
+    ], [
+        a debug:Requirement ;
+        rdfs:label "Action Flow Tracing" ;
+        spore:description "Add tracing for action handling" ;
+        spore:implementation """
+        1. Add action entry/exit tracing
+        2. Track action dependencies
+        3. Monitor action state changes"""
+    ] .
+
+# Test Plan
+test:TestPlan a test:Plan ;
+    rdfs:label "Test Plan" ;
+    spore:hasPriority "High" ;
+    spore:hasPhase [
+        a test:Phase ;
+        rdfs:label "Client Management Tests" ;
+        spore:description """Test client lifecycle management:
+        1. Single client creation
+        2. Multiple client handling
+        3. Client state persistence"""
+    ], [
+        a test:Phase ;
+        rdfs:label "Server Info Tests" ;
+        spore:description """Test server information handling:
+        1. Server initialization
+        2. Server info persistence
+        3. Server state recovery"""
+    ], [
+        a test:Phase ;
+        rdfs:label "Action Flow Tests" ;
+        spore:description """Test action handling flow:
+        1. Action sequencing
+        2. Action dependencies
+        3. Action state management"""
+    ] .
+
+# Debug Tools
+debug:DebugTools a debug:Toolset ;
+    rdfs:label "Debug Tools" ;
+    spore:hasTool [
+        a debug:Tool ;
+        rdfs:label "State Inspector" ;
+        spore:description "Tool for inspecting client and server state" ;
+        spore:implementation "StateInspector class with debug flag"
+    ], [
+        a debug:Tool ;
+        rdfs:label "Action Tracer" ;
+        spore:description "Tool for tracing action flow" ;
+        spore:implementation "ActionTracer class with debug flag"
+    ], [
+        a debug:Tool ;
+        rdfs:label "Debug Logger" ;
+        spore:description "Enhanced logging for debug mode" ;
+        spore:implementation "DebugLogger class with configurable levels"
+    ] .
+
+# Performance Considerations
+test:PerformanceConsiderations a test:Analysis ;
+    rdfs:label "Performance Analysis" ;
+    spore:hasConsideration [
+        a test:Consideration ;
+        rdfs:label "Debug Overhead" ;
+        spore:description """Impact of debug instrumentation:
+        1. Minimal impact due to LLM operation dominance
+        2. Debug flags allow selective enabling
+        3. Logging optimized for production"""
+    ], [
+        a test:Consideration ;
+        rdfs:label "State Tracking" ;
+        spore:description """Impact of state tracking:
+        1. Memory overhead for state storage
+        2. Minimal CPU impact
+        3. Can be disabled in production"""
+    ] . 

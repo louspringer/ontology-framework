@@ -1,0 +1,20 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <./meta#> .
+@prefix metameta: <./metameta#> .
+@prefix problem: <./problem#> .
+@prefix solution: <./solution#> .
+@prefix conversation: <./conversation#> .
+@prefix process: <./process#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+@prefix session: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/session#> .
+@prefix spore: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation/spores#> .
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/session#> .
+
+session:session20240610 a session:Session ;
+    rdfs:comment "Test entry for prefix validation" ;
+    session:date "2024-06-10" ;
+    session:relatedResource "test/test.ttl" . 

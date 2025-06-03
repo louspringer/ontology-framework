@@ -1,0 +1,8 @@
+name: ontology-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - requests
+  - rdflib
+  - pytest

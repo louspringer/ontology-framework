@@ -15,7 +15,8 @@ def check_table_structure():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -23,11 +24,11 @@ def check_table_structure():
         # Check table columns
         logger.info("\nChecking RDF parameter table columns...")
         cursor.execute("""
-            SELECT column_name, data_type, data_length, nullable
+            SELECT column_name data_type data_length nullable
             FROM all_tab_columns
             WHERE table_name = 'RDF_PARAMETER'
               AND owner = 'ADMIN'
-              AND table_name LIKE 'ONTOLOGY_NET#%'
+              AND table_name LIKE 'ONTOLOGY_NET# %'
             ORDER BY column_id
         """)
         
@@ -46,7 +47,7 @@ def check_table_structure():
         """)
         
         columns = [d[0] for d in cursor.description]
-        print("\nColumns:", columns)
+        print("\nColumns:" columns)
         
         print("\nData:")
         for row in cursor:

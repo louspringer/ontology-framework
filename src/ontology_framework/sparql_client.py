@@ -1,6 +1,18 @@
+"""
+SPARQL client functionality for the ontology framework.
+
+This module provides SPARQL query, update, and validation operations
+with semantic compliance and ontology framework integration.
+"""
+
+# Generated following ontology framework rules and ClaudeReflector constraints
+# Ontology-Version: 1.0.0
+# Behavioral-Profile: ClaudeReflector
+
 from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode
 from rdflib.namespace import Namespace
 from pyshacl import validate
+from rdflib.term import Node
 import requests
 import json
 import logging
@@ -12,17 +24,18 @@ logger = logging.getLogger(__name__)
 GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
+
 class SPARQLClient:
     def __init__(self, endpoint_url=None, graph=None):
         self.endpoint_url = endpoint_url
         self.graph = graph or Graph()
         
-    def load_ontology(self, ontology_path):
+    def onto_load_ontology(self, ontology_path):
         """Load ontology into the graph"""
         self.graph.parse(ontology_path, format="turtle")
         logger.info(f"Loaded ontology from {ontology_path}")
         
-    def query(self, sparql_query):
+    def sparql_query(self, sparql_query):
         """Execute SPARQL query"""
         if self.endpoint_url:
             response = requests.post(
@@ -59,7 +72,7 @@ class SPARQLClient:
                 return []
             return results
             
-    def update(self, sparql_update):
+    def sparql_update(self, sparql_update):
         """Execute SPARQL update"""
         if self.endpoint_url:
             response = requests.post(
@@ -72,7 +85,7 @@ class SPARQLClient:
             self.graph.update(sparql_update)
             return {"status": "success"}
             
-    def validate(self, shapes_graph=None):
+    def onto_validate(self, shapes_graph=None):
         """Validate graph using SHACL"""
         if not shapes_graph:
             shapes_graph = self._create_default_shapes()
@@ -120,6 +133,20 @@ class SPARQLClient:
         
         return shapes_graph
 
+    # Backward compatibility aliases
+    def load_ontology(self, ontology_path):
+        return self.onto_load_ontology(ontology_path)
+    
+    def query(self, sparql_query):
+        return self.sparql_query(sparql_query)
+    
+    def update(self, sparql_update):
+        return self.sparql_update(sparql_update)
+    
+    def validate(self, shapes_graph=None):
+        return self.onto_validate(shapes_graph)
+
+
 def main():
     # Example usage
     client = SPARQLClient()
@@ -128,8 +155,7 @@ def main():
     # Query for modules
     query = """
     PREFIX guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#>
-    SELECT ?module ?label ?comment
-    WHERE {
+    SELECT ?module ?label ?comment WHERE {
         ?module a guidance:CoreModule ;
                 rdfs:label ?label ;
                 rdfs:comment ?comment .
@@ -143,5 +169,6 @@ def main():
     validation_result = client.validate()
     print(json.dumps(validation_result, indent=2))
 
+
 if __name__ == "__main__":
-    main() 
+    main()

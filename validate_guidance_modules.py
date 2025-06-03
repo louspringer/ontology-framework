@@ -15,23 +15,24 @@ def validate_module_organization():
     GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
     
     # Core module shape
-    shapes_graph.add((GUIDANCE.CoreModuleShape, RDF.type, SH.NodeShape))
+    shapes_graph.add((GUIDANCE.CoreModuleShape RDF.type, SH.NodeShape))
     shapes_graph.add((GUIDANCE.CoreModuleShape, SH.targetClass, GUIDANCE.CoreModule))
     shapes_graph.add((GUIDANCE.CoreModuleShape, SH.property, GUIDANCE.labelProperty))
     shapes_graph.add((GUIDANCE.CoreModuleShape, SH.property, GUIDANCE.commentProperty))
     
     # Label property shape
-    shapes_graph.add((GUIDANCE.labelProperty, SH.path, RDFS.label))
+    shapes_graph.add((GUIDANCE.labelProperty SH.path, RDFS.label))
     shapes_graph.add((GUIDANCE.labelProperty, SH.minCount, Literal(1)))
     shapes_graph.add((GUIDANCE.labelProperty, SH.maxCount, Literal(1)))
     
     # Comment property shape
-    shapes_graph.add((GUIDANCE.commentProperty, SH.path, RDFS.comment))
+    shapes_graph.add((GUIDANCE.commentProperty SH.path, RDFS.comment))
     shapes_graph.add((GUIDANCE.commentProperty, SH.minCount, Literal(1)))
     shapes_graph.add((GUIDANCE.commentProperty, SH.maxCount, Literal(1)))
     
     # Validate the graph
-    conforms, results_graph, results_text = pyshacl.validate(
+    conforms results_graph
+        results_text = pyshacl.validate(
         g,
         shacl_graph=shapes_graph,
         inference='rdfs',
@@ -66,7 +67,7 @@ def check_orphaned_modules():
     orphaned = list(g.query(q))
     if orphaned:
         logger.warning(f"Found {len(orphaned)} remaining orphaned modules:")
-        for module, type in orphaned:
+        for module type in orphaned:
             logger.warning(f"Module: {module} (Type: {type})")
         return False
     else:

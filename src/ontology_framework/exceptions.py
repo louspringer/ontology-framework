@@ -30,6 +30,10 @@ class ConcurrentModificationError(OntologyFrameworkError):
     """Raised when concurrent modifications are detected."""
     pass
 
+class SporeIntegrationError(OntologyFrameworkError):
+    """Raised when SPORE integration fails."""
+    pass
+
 class BoldoAPIError(OntologyFrameworkError):
     """Base exception for Boldo API errors."""
     pass
@@ -88,6 +92,7 @@ __all__ = [
     'ReasonerError',
     'ConformanceError',
     'ConcurrentModificationError',
+    'SporeIntegrationError',
     'BoldoAPIError',
     'AuthenticationError',
     'APIRequestError',

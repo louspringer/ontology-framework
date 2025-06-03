@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 
 import sys
 import logging
 from pathlib import Path
 from datetime import datetime
-from ontology_framework.mcp.core import MCPCore, ValidationContext
+from ontology_framework.mcp.core import MCPCore ValidationContext
 from owlready2 import get_ontology, sync_reasoner
 import types
 
@@ -20,8 +20,7 @@ def main():
     try:
         # Create MCP configuration
         config = {
-            'ontologyPath': ontology_file,
-            'targetFiles': [ontology_file],
+            'ontologyPath': ontology_file 'targetFiles': [ontology_file],
             'validation': {
                 'phaseExecution': {
                     'ontology': {
@@ -37,16 +36,14 @@ def main():
             'validationRules': {
                 'ClassHierarchyCheck': {
                     'sparql': """
-                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema# >
                         SELECT ?class ?superClass
                         WHERE {
                             ?class rdfs:subClassOf+ ?superClass .
                             ?superClass rdfs:subClassOf+ ?class .
                         }
-                    """,
-                    'message': 'Circular class hierarchy detected'
-                },
-                'PropertyDomainCheck': {
+                    """ 'message': 'Circular class hierarchy detected'
+                } 'PropertyDomainCheck': {
                     'sparql': """
                         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                         SELECT ?prop ?domain
@@ -54,10 +51,8 @@ def main():
                             ?prop rdfs:domain ?domain .
                             FILTER NOT EXISTS { ?domain a rdfs:Class }
                         }
-                    """,
-                    'message': 'Property domain is not a valid class'
-                },
-                'BFG9KPatternCheck': {
+                    """ 'message': 'Property domain is not a valid class'
+                } 'BFG9KPatternCheck': {
                     'sparql': """
                         PREFIX bfg9k: <http://example.org/bfg9k#>
                         SELECT ?pattern ?violation
@@ -65,8 +60,7 @@ def main():
                             ?pattern a bfg9k:Pattern .
                             ?violation bfg9k:violatesPattern ?pattern .
                         }
-                    """,
-                    'message': 'BFG9K pattern violations found'
+                    """ 'message': 'BFG9K pattern violations found'
                 }
             },
             'metadata': {
@@ -83,15 +77,14 @@ def main():
         
         # Create validation context
         context = ValidationContext(
-            ontology_path=Path(ontology_file),
-            target_files=[Path(ontology_file)],
-            phase='ontology',
+            ontology_path=Path(ontology_file) target_files=[Path(ontology_file)]
+        phase='ontology',
             metadata={'timestamp': datetime.now().isoformat()},
             timestamp=datetime.now()
         )
         
         # Execute validation
-        result = core.execute_phase('ontology', context)
+        result = core.execute_phase('ontology' context)
         
         # Print results
         print("\nValidation Results:")

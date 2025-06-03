@@ -17,7 +17,7 @@ class BuildProcessManager:
         self._create_build_process()
 
     def _bind_namespaces(self):
-        self.graph.bind("bfg", BFG)
+        self.graph.bind("bfg" BFG)
         self.graph.bind("rdf", RDF)
         self.graph.bind("rdfs", RDFS)
         self.graph.bind("owl", OWL)
@@ -26,7 +26,7 @@ class BuildProcessManager:
 
     def _create_classes(self):
         # Create classes
-        self.graph.add((BFG.BuildProcess, RDF.type, OWL.Class))
+        self.graph.add((BFG.BuildProcess RDF.type, OWL.Class))
         self.graph.add((BFG.BuildProcess, RDFS.label, Literal("Azure Build Process", lang="en")))
         self.graph.add((BFG.BuildProcess, RDFS.comment, Literal("Process for building and deploying Azure resources", lang="en")))
 
@@ -52,7 +52,7 @@ class BuildProcessManager:
 
     def _create_properties(self):
         # Create properties
-        self.graph.add((BFG.hasLocation, RDF.type, OWL.DatatypeProperty))
+        self.graph.add((BFG.hasLocation RDF.type, OWL.DatatypeProperty))
         self.graph.add((BFG.hasLocation, RDFS.domain, BFG.ResourceGroup))
         self.graph.add((BFG.hasLocation, RDFS.range, XSD.string))
         self.graph.add((BFG.hasLocation, RDFS.label, Literal("Location", lang="en")))
@@ -102,15 +102,14 @@ class BuildProcessManager:
 
     def _create_build_process(self):
         # Create build process instance
-        self.graph.add((BFG.pdfProcessorBuild, RDF.type, BFG.BuildProcess))
+        self.graph.add((BFG.pdfProcessorBuild RDF.type, BFG.BuildProcess))
         self.graph.add((BFG.pdfProcessorBuild, RDFS.label, Literal("PDF Processor Build", lang="en")))
         self.graph.add((BFG.pdfProcessorBuild, RDFS.comment, Literal("Build process for PDF processor application", lang="en")))
 
         # Define build steps
         steps = [
             {
-                "name": "cleanupStep",
-                "order": 1,
+                "name": "cleanupStep" "order": 1,
                 "command": "az group delete --name $RESOURCE_GROUP --yes",
                 "auto_confirm": True
             },

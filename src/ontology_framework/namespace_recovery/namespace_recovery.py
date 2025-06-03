@@ -81,5 +81,5 @@ def get_project_status(project: Project) -> Dict[str, int]:
     
     for task in project.tasks:
         status_counts[task.status.value] += 1
-        
+    
     return status_counts 

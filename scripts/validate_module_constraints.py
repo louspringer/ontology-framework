@@ -1,17 +1,12 @@
 import logging
-from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode
-from rdflib.namespace import Namespace
-from ontology_framework.sparql_client import SPARQLClient
-import pyshacl
-import os
+from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode, from rdflib.namespace import Namespace, from ontology_framework.sparql_client import SPARQLClient, from rdflib.term import Node, import pyshacl, import os
 
 # Define namespaces
-GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#")
+GUIDANCE = Namespace("https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance# ")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 def validate_module_constraints():
-    # Set up logging
-    logging.basicConfig(
+    # Set up logging, logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
@@ -23,7 +18,7 @@ def validate_module_constraints():
         
         # Load guidance ontology
         guidance_path = os.getenv('GUIDANCE_ONTOLOGY_PATH', 'guidance.ttl')
-        logger.info(f"Loading guidance ontology from {guidance_path}")
+        logger.info(f"Loading, guidance ontology, from {guidance_path}")
         client.load_ontology(guidance_path)
         
         # Create shapes graph
@@ -51,7 +46,7 @@ def validate_module_constraints():
         shapes_graph.add((comment_property, SH.maxCount, Literal(1, datatype=XSD.integer)))
         shapes_graph.add((comment_property, SH.datatype, RDFS.Literal))
         
-        # Add integration pattern property
+        # Add integration pattern, property
         integration_property = BNode()
         shapes_graph.add((module_shape, SH.property, integration_property))
         shapes_graph.add((integration_property, SH.path, GUIDANCE.hasIntegrationPattern))
@@ -71,22 +66,21 @@ def validate_module_constraints():
         shapes_graph.add((pattern_label_property, SH.maxCount, Literal(1, datatype=XSD.integer)))
         shapes_graph.add((pattern_label_property, SH.datatype, RDFS.Literal))
         
-        # Add source module property
+        # Add source module, property
         source_property = BNode()
         shapes_graph.add((pattern_shape, SH.property, source_property))
         shapes_graph.add((source_property, SH.path, GUIDANCE.hasSourceModule))
         shapes_graph.add((source_property, SH.minCount, Literal(1, datatype=XSD.integer)))
         shapes_graph.add((source_property, SH.class_, GUIDANCE.CoreModule))
         
-        # Add target module property
+        # Add target module, property
         target_property = BNode()
         shapes_graph.add((pattern_shape, SH.property, target_property))
         shapes_graph.add((target_property, SH.path, GUIDANCE.hasTargetModule))
         shapes_graph.add((target_property, SH.minCount, Literal(1, datatype=XSD.integer)))
         shapes_graph.add((target_property, SH.class_, GUIDANCE.CoreModule))
         
-        # Validate against shapes
-        logger.info("Validating module constraints...")
+        # Validate against shapes, logger.info("Validating, module constraints...")
         conforms, results_graph, results_text = pyshacl.validate(
             client.graph,
             shacl_graph=shapes_graph,
@@ -99,15 +93,15 @@ def validate_module_constraints():
         )
         
         if conforms:
-            logger.info("Module constraints validation successful!")
+            logger.info("Module, constraints validation, successful!")
             return True
         else:
-            logger.error("Module constraints validation failed:")
+            logger.error("Module, constraints validation, failed:")
             logger.error(results_text)
             return False
             
     except Exception as e:
-        logger.error(f"Error during validation: {str(e)}")
+        logger.error(f"Error, during validation: {str(e)}")
         return False
 
 if __name__ == '__main__':

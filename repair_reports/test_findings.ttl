@@ -1,0 +1,180 @@
+@prefix spore: <https://raw.githubusercontent.com/louspringer/spore-ontology/main#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix bfg: <https://raw.githubusercontent.com/louspringer/bfg9k/main/bfg9k#> .
+@prefix test: <https://raw.githubusercontent.com/louspringer/bfg9k/main/test#> .
+@prefix debug: <https://raw.githubusercontent.com/louspringer/bfg9k/main/debug#> .
+
+# Test Findings Document
+test:BFG9KTestFindings_2024_03 a spore:TestFindings ;
+    dc:title "BFG9K MCP Test Findings" ;
+    dc:date "2024-03-21"^^xsd:date ;
+    spore:affectedSystem bfg:BFG9KSystem ;
+    spore:status "InProgress" ;
+    spore:hasFinding 
+        test:ClientCreationRace,
+        test:ServerInfoMissing,
+        test:ActionHandlingIssue ;
+    rdfs:comment "Findings from BFG9K MCP system tests." .
+
+# Test Findings
+test:ClientCreationRace a test:Finding ;
+    rdfs:label "Client Creation Race Condition" ;
+    spore:severity "High" ;
+    spore:description """Multiple client creation requests are being processed simultaneously without proper synchronization:
+    1. Multiple CreateClient actions triggered in rapid succession
+    2. No client ID tracking or validation
+    3. No client state persistence
+    4. Potential resource conflicts""" ;
+    spore:evidence """[info] fg9k: Handling CreateClient action
+[info] fg9k: Starting new stdio process...
+[info] fg9k: Handling CreateClient action
+[info] fg9k: Starting new stdio process...""" ;
+    spore:impact """1. Multiple redundant client processes
+2. Resource waste
+3. Potential system instability
+4. Inconsistent client state""" ;
+    spore:recommendation """1. Add client ID generation and tracking
+2. Implement client state persistence
+3. Add synchronization for client creation
+4. Add client lifecycle management""" .
+
+test:ServerInfoMissing a test:Finding ;
+    rdfs:label "Missing Server Information" ;
+    spore:severity "High" ;
+    spore:description """Server information is not being properly initialized or persisted:
+    1. No server info found for multiple components
+    2. Affects ListOfferings functionality
+    3. No server state initialization
+    4. No server info persistence""" ;
+    spore:evidence """[error] fg9k: No server info found
+[error] ilot: No server info found""" ;
+    spore:impact """1. Failed service discovery
+2. Broken functionality
+3. System initialization failures
+4. Poor error reporting""" ;
+    spore:recommendation """1. Add server info initialization
+2. Implement server state persistence
+3. Add server info validation
+4. Improve error handling""" .
+
+test:ActionHandlingIssue a test:Finding ;
+    rdfs:label "Action Handling Issues" ;
+    spore:severity "Medium" ;
+    spore:description """Action handling and sequencing issues:
+    1. No action dependency tracking
+    2. Missing action state validation
+    3. No action completion verification
+    4. Poor error handling""" ;
+    spore:evidence """[info] fg9k: Handling ListOfferings action
+[error] fg9k: No server info found""" ;
+    spore:impact """1. Failed operations
+2. Inconsistent state
+3. Unclear error messages
+4. Poor debugging support""" ;
+    spore:recommendation """1. Add action dependency tracking
+2. Implement action state validation
+3. Add action completion verification
+4. Improve error reporting""" .
+
+# Test Coverage
+test:TestCoverage a test:Coverage ;
+    rdfs:label "Test Coverage" ;
+    spore:hasTest [
+        a test:Test ;
+        rdfs:label "Server Initialization" ;
+        spore:description "Tests server initialization process" ;
+        spore:status "Implemented"
+    ], [
+        a test:Test ;
+        rdfs:label "Client Creation" ;
+        spore:description "Tests client creation and tracking" ;
+        spore:status "Implemented"
+    ], [
+        a test:Test ;
+        rdfs:label "Server Info" ;
+        spore:description "Tests server info persistence" ;
+        spore:status "Implemented"
+    ], [
+        a test:Test ;
+        rdfs:label "Action Handling" ;
+        spore:description "Tests action handling and dependencies" ;
+        spore:status "Implemented"
+    ] .
+
+# Debug Tools
+debug:DebugToolsUsed a debug:Toolset ;
+    rdfs:label "Debug Tools Used" ;
+    spore:hasTool [
+        a debug:Tool ;
+        rdfs:label "State Inspector" ;
+        spore:description "Tracks client and server state" ;
+        spore:effectiveness "High"
+    ], [
+        a debug:Tool ;
+        rdfs:label "Action Tracer" ;
+        spore:description "Traces action flow and dependencies" ;
+        spore:effectiveness "High"
+    ], [
+        a debug:Tool ;
+        rdfs:label "Debug Logger" ;
+        spore:description "Provides enhanced logging" ;
+        spore:effectiveness "High"
+    ] .
+
+# Repair Plan
+test:RepairPlan a test:Plan ;
+    rdfs:label "Repair Plan" ;
+    spore:hasPriority "High" ;
+    spore:hasPhase [
+        a test:Phase ;
+        rdfs:label "Client Management" ;
+        spore:description """Fix client creation and tracking:
+        1. Add client ID generation
+        2. Add client state persistence
+        3. Add synchronization
+        4. Add lifecycle management"""
+    ], [
+        a test:Phase ;
+        rdfs:label "Server Info" ;
+        spore:description """Fix server info handling:
+        1. Add initialization
+        2. Add persistence
+        3. Add validation
+        4. Improve error handling"""
+    ], [
+        a test:Phase ;
+        rdfs:label "Action Handling" ;
+        spore:description """Fix action handling:
+        1. Add dependency tracking
+        2. Add state validation
+        3. Add completion verification
+        4. Improve error reporting"""
+    ] .
+
+# Performance Impact
+test:PerformanceImpact a test:Analysis ;
+    rdfs:label "Performance Impact" ;
+    spore:hasConsideration [
+        a test:Consideration ;
+        rdfs:label "Debug Tools" ;
+        spore:description """Impact of debug instrumentation:
+        1. Minimal due to LLM dominance
+        2. Configurable via flags
+        3. Production optimization"""
+    ], [
+        a test:Consideration ;
+        rdfs:label "State Tracking" ;
+        spore:description """Impact of state management:
+        1. Memory overhead acceptable
+        2. CPU impact minimal
+        3. Configurable in production"""
+    ], [
+        a test:Consideration ;
+        rdfs:label "Action Tracing" ;
+        spore:description """Impact of action tracing:
+        1. Logging overhead acceptable
+        2. Storage impact manageable
+        3. Configurable verbosity"""
+    ] . 

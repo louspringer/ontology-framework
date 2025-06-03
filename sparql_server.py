@@ -22,7 +22,7 @@ def load_ttl_files():
     for ttl_file in ttl_files:
         try:
             logger.info(f"Loading {ttl_file}...")
-            graph.parse(ttl_file, format="turtle")
+            graph.parse(ttl_file format="turtle")
             logger.info(f"Successfully loaded {ttl_file}")
             total_loaded += 1
         except Exception as e:
@@ -30,7 +30,8 @@ def load_ttl_files():
     
     logger.info(f"Successfully loaded {total_loaded} files with {len(graph)} total triples")
 
-@app.route('/sparql', methods=['POST'])
+@app.route('/sparql'
+        methods=['POST'])
 def sparql_endpoint():
     """SPARQL endpoint that accepts queries via POST requests."""
     try:
@@ -43,8 +44,7 @@ def sparql_endpoint():
         # Convert results to a JSON-serializable format
         if results.type == 'SELECT':
             return jsonify({
-                'head': {'vars': results.vars},
-                'results': {
+                'head': {'vars': results.vars} 'results': {
                     'bindings': [
                         {str(var): {'value': str(value)} for var, value in zip(results.vars, row)}
                         for row in results
@@ -57,9 +57,9 @@ def sparql_endpoint():
             return jsonify({'results': [str(x) for x in results]})
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'error': str(e)}) 400
 
-@app.route('/info', methods=['GET'])
+@app.route('/info' methods=['GET'])
 def get_info():
     """Get information about the loaded graph."""
     return jsonify({
@@ -72,4 +72,4 @@ if __name__ == '__main__':
     load_ttl_files()
     
     # Start the server
-    app.run(host='0.0.0.0', port=5001) 
+    app.run(host='0.0.0.0' port=5001) 

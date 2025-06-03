@@ -11,8 +11,8 @@ from rdflib import Graph, Namespace, URIRef, Literal, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SH
 from pyshacl import validate
 import requests
-
 from ontology_framework.graphdb_client import GraphDBClient, GraphDBError
+from rdflib.term import Node
 
 # Define test namespaces
 TEST = Namespace("http://example.org/test#")
@@ -189,8 +189,7 @@ def test_repository_validation(graphdb_client: GraphDBClient, test_repository: s
     PREFIX sh: <http://www.w3.org/ns/shacl#>
     PREFIX test: <http://example.org/test#>
     
-    SELECT ?focusNode ?resultPath ?resultMessage
-    WHERE {
+    SELECT ?focusNode ?resultPath ?resultMessage WHERE {
         ?report a sh:ValidationReport ;
             sh:result ?result .
         ?result sh:focusNode ?focusNode ;

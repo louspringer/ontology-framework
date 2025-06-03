@@ -3,7 +3,6 @@
 import unittest
 from rdflib import Graph
 from ontology_framework.modules.validation import ValidationModule
-
 class TestValidationModule(unittest.TestCase):
     """Test cases for the validation module."""
     
@@ -29,7 +28,7 @@ class TestValidationModule(unittest.TestCase):
         self.assertIsInstance(results["results_text"], str)
         
     def test_validate_no_graph(self):
-        """Test validation with no graph."""
+        """Test, validation with no graph."""
         module = ValidationModule()
         with self.assertRaises(ValueError):
             module.validate()
@@ -46,8 +45,8 @@ class TestValidationModule(unittest.TestCase):
         
         self.assertIn("shapes_graph", requirements)
         self.assertIn("data_graph", requirements)
-        self.assertEqual(requirements["shapes_graph"], "SHACL shapes graph for validation")
-        self.assertEqual(requirements["data_graph"], "RDF graph to validate")
+        self.assertEqual(requirements["shapes_graph"], "SHACL, shapes graph, for validation")
+        self.assertEqual(requirements["data_graph"], "RDF, graph to, validate")
         
     def test_set_shapes_graph(self):
         """Test the set_shapes_graph method."""

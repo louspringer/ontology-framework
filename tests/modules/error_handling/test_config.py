@@ -136,4 +136,4 @@ def test_validation_error_handling():
         handler.validate(42, {})
     
     with pytest.raises(TypeError):
-        handler.validate("INVALID", {}) 
+        handler.validate("INVALID", {})

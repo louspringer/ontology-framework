@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple, Union
 from collections import defaultdict
 
+# Configure logging
 logger = logging.getLogger(__name__)
 
 class TestTargetInferrer(ast.NodeVisitor):
@@ -81,6 +82,7 @@ class TestTargetInferrer(ast.NodeVisitor):
         self.generic_visit(node)
         
     def visit_FunctionDef(self, node):
+        """Process function definitions to identify test functions."""
         if node.name.startswith("test_"):
             self.current_test = node.name
             self.test_functions.append(node.name)
@@ -108,6 +110,7 @@ class TestTargetInferrer(ast.NodeVisitor):
         self.generic_visit(node)
         
     def visit_Call(self, node):
+        """Process function/method calls to identify potential test targets."""
         if self.current_test:
             if isinstance(node.func, ast.Attribute):
                 # Handle method calls like obj.method()
@@ -119,10 +122,10 @@ class TestTargetInferrer(ast.NodeVisitor):
                         class_name = self.imports[obj_name].split('.')[-1]  # Get the class name from import
                         self._add_target_confidence(class_name, 0.6)  # Add class target
                         self._add_target_confidence(f"{class_name}.{method_name}", 0.8)  # Add method target
-
         self.generic_visit(node)
         
     def visit_Assert(self, node):
+        """Process assertions to identify potential test targets."""
         if self.current_test:
             # Handle assertions involving class methods
             if isinstance(node.test, ast.Call) and isinstance(node.test.func, ast.Attribute):
@@ -133,7 +136,6 @@ class TestTargetInferrer(ast.NodeVisitor):
                         class_name = self.imports[obj_name].split('.')[-1]  # Get the class name from import
                         self._add_target_confidence(class_name, 0.6)  # Add class target
                         self._add_target_confidence(f"{class_name}.{method_name}", 0.7)  # Add method target
-
         self.generic_visit(node)
         
     def visit_Assign(self, node):
@@ -162,12 +164,11 @@ class TestTargetInferrer(ast.NodeVisitor):
                                 methods = self._get_class_methods(class_name, module_path)
                                 for method in methods:
                                     self._add_target_confidence(f"{class_name}.{method}", 0.5)  # Lower confidence for method references
-    
+                                    
     def visit_Name(self, node):
         """Visit name nodes to track class usage."""
         if not self.current_test:  # Check for empty string
             return
-            
         if node.id in self.imports and node.id not in self.visited_names:
             impl_path = self.imports[node.id]
             if impl_path.startswith("src.ontology_framework"):
@@ -175,6 +176,7 @@ class TestTargetInferrer(ast.NodeVisitor):
                 self.visited_names.add(node.id)
                 
     def _add_target_confidence(self, target: str, confidence: float):
+        """Add a potential target with a confidence score."""
         if self.current_test:
             current_confidence = self.potential_targets[self.current_test].get(target, 0.0)
             self.potential_targets[self.current_test][target] = max(current_confidence, confidence)
@@ -194,4 +196,4 @@ def infer_test_targets(test_file: Union[str, Path], src_path: Union[str, Path]) 
         
     inferrer = TestTargetInferrer(Path(test_file), Path(src_path))
     inferrer.visit(tree)
-    return inferrer.potential_targets 
+    return inferrer.potential_targets

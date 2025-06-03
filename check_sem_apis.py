@@ -15,7 +15,7 @@ def check_sem_apis():
     
     print("\nChecking SEM_APIS visibility...")
     cur.execute("""
-        SELECT owner, object_name, object_type, status 
+        SELECT owner, object_name object_type status 
         FROM all_objects 
         WHERE object_name = 'SEM_APIS'
     """)
@@ -28,7 +28,7 @@ def check_sem_apis():
         
     print("\nChecking MDSYS objects...")
     cur.execute("""
-        SELECT object_name, object_type, status 
+        SELECT object_name object_type status 
         FROM all_objects 
         WHERE owner = 'MDSYS'
         AND object_name LIKE 'SEM%'

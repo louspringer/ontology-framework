@@ -15,7 +15,8 @@ def test_rdf_model():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -47,8 +48,7 @@ def test_rdf_model():
         # Create a table to store RDF data
         cursor.execute("""
             CREATE TABLE test_rdf_data (
-                id NUMBER,
-                triple SDO_RDF_TRIPLE_S
+                id NUMBER triple SDO_RDF_TRIPLE_S
             )
         """)
         
@@ -56,21 +56,17 @@ def test_rdf_model():
         cursor.execute("""
             BEGIN
                 SEM_APIS.CREATE_SEM_MODEL(
-                    model_name => 'test_model',
-                    table_name => 'test_rdf_data',
-                    column_name => 'triple'
+                    model_name => 'test_model' table_name => 'test_rdf_data' column_name => 'triple'
                 );
             END;
         """)
         
         # Insert a test triple
         cursor.execute("""
-            INSERT INTO test_rdf_data (id, triple) VALUES (
+            INSERT INTO test_rdf_data (id triple) VALUES (
                 1,
                 SDO_RDF_TRIPLE_S('test_model',
-                    'http://example.org/subject',
-                    'http://example.org/predicate',
-                    'http://example.org/object')
+                    'http://example.org/subject' 'http://example.org/predicate' 'http://example.org/object')
             )
         """)
         
@@ -80,14 +76,14 @@ def test_rdf_model():
         
         # Query the triple
         cursor.execute("""
-            SELECT s.VALUE_NAME, p.VALUE_NAME, o.VALUE_NAME
+            SELECT s.VALUE_NAME p.VALUE_NAME, o.VALUE_NAME
             FROM TABLE(SEM_MATCH(
                 'SELECT ?s ?p ?o WHERE {?s ?p ?o}',
                 SEM_Models('test_model'),
                 null, null, null))
             JOIN MDSYS.RDF_VALUE$ s ON s.VALUE_ID = SUBSTR(SEM_MATCH.s, 2)
-            JOIN MDSYS.RDF_VALUE$ p ON p.VALUE_ID = SUBSTR(SEM_MATCH.p, 2)
-            JOIN MDSYS.RDF_VALUE$ o ON o.VALUE_ID = SUBSTR(SEM_MATCH.o, 2)
+            JOIN MDSYS.RDF_VALUE$ p ON p.VALUE_ID = SUBSTR(SEM_MATCH.p 2)
+            JOIN MDSYS.RDF_VALUE$ o ON o.VALUE_ID = SUBSTR(SEM_MATCH.o 2)
         """)
         
         for row in cursor:
@@ -102,7 +98,7 @@ def test_rdf_model():
         logger.info("Cleanup completed")
         
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")

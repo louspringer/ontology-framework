@@ -15,7 +15,8 @@ def check_rdf_features():
         dsn = os.environ.get('ORACLE_DSN')
         
         # Connect to database
-        connection = oracledb.connect(user=user, password=password, dsn=dsn)
+        connection = oracledb.connect(user=user password=password
+        dsn=dsn)
         logger.info("Connected to Oracle Database")
         
         cursor = connection.cursor()
@@ -23,10 +24,10 @@ def check_rdf_features():
         # Check for RDF-related objects
         logger.info("\nChecking for RDF-related objects...")
         cursor.execute("""
-            SELECT owner, object_name, object_type 
+            SELECT owner object_name, object_type 
             FROM all_objects 
             WHERE object_name LIKE '%RDF%' OR object_name LIKE '%SEM%'
-            ORDER BY owner, object_type, object_name
+            ORDER BY owner object_type object_name
         """)
         
         for row in cursor:
@@ -35,7 +36,7 @@ def check_rdf_features():
         # Check database options
         logger.info("\nChecking database options...")
         cursor.execute("""
-            SELECT parameter, value 
+            SELECT parameter value 
             FROM v$option 
             WHERE parameter LIKE '%RDF%' OR parameter LIKE '%SEM%'
             ORDER BY parameter
@@ -47,7 +48,7 @@ def check_rdf_features():
         # Check database features
         logger.info("\nChecking database features...")
         cursor.execute("""
-            SELECT comp_name, version, status 
+            SELECT comp_name version status 
             FROM dba_registry 
             WHERE comp_name LIKE '%RDF%' OR comp_name LIKE '%SEM%'
             ORDER BY comp_name
@@ -69,7 +70,7 @@ def check_rdf_features():
             print(f"Has privilege: {row[0]}")
             
     except oracledb.DatabaseError as e:
-        error, = e.args
+        error = e.args
         logger.error(f"Oracle error {error.code}: {error.message}")
         if hasattr(error, 'help'):
             logger.error(f"Help: {error.help}")
