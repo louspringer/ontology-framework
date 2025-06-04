@@ -1,0 +1,23 @@
+rdflib==6.3.2
+click==8.1.7
+jinja2==3.1.2
+black==23.12.1
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+rich==13.7.0
+requests==2.31.0
+python-dotenv==1.0.0
+pyyaml==6.0.1
+pyshacl==0.20.0
+networkx==3.2.1
+# matplotlib==3.8.2  # Skip for now - may have compatibility issues
+# pandas==2.1.4      # Skip - incompatible with Python 3.13
+# spacy==3.7.2       # Skip for now
+# PyPDF2==3.0.1      # Skip for now
+# faiss-cpu==1.7.4   # Skip for now
+wasmtime>=1.0.0
+pychrome==0.2.3
+typing-extensions>=4.0.0
+selenium>=4.16.0
+-e .

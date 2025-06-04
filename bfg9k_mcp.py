@@ -27,8 +27,6 @@ import asyncio
 import tempfile
 import json
 import argparse
-import wasmer
-import wasmer_compiler_cranelift
 
 # Import debug tools
 from ontology_framework.debug.state_inspector import StateInspector
@@ -62,11 +60,18 @@ logger.addHandler(file_handler)
 # Load WASM module only if BFG9K_USE_WASM is set to 'true'
 USE_WASM = os.environ.get("BFG9K_USE_WASM", "false").lower() == "true"
 if USE_WASM:
-    wasm_path = project_root / "tools" / "pkg" / "bfg9k_rdf_engine_bg.wasm"
-    store = wasmer.Store()
-    module = wasmer.Module(store, open(wasm_path, 'rb').read())
-    instance = wasmer.Instance(module)
-    rdf_engine = instance.exports.RDFEngine.new()
+    try:
+        import wasmer
+        import wasmer_compiler_cranelift
+        wasm_path = project_root / "tools" / "pkg" / "bfg9k_rdf_engine_bg.wasm"
+        store = wasmer.Store()
+        module = wasmer.Module(store, open(wasm_path, 'rb').read())
+        instance = wasmer.Instance(module)
+        rdf_engine = instance.exports.RDFEngine.new()
+    except ImportError as e:
+        logger.warning(f"WASM imports failed on this system: {e}. Falling back to non-WASM mode.")
+        rdf_engine = None
+        USE_WASM = False
 else:
     rdf_engine = None  # Or set up a GraphDB client here if needed
 
