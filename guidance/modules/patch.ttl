@@ -188,16 +188,16 @@
 :examplePatchOperation1 a :PatchOperation  ;
     rdfs:label "Example PatchOperation 1" ;
     rdfs:comment "This is example instance 1 of class PatchOperation" ;
-    :hasObject :exampleThing1  ;
-    :hasPredicate :exampleThing1  ;
-    :hasSubject :exampleThing1 .
+    :hasObject "example_object1" ;
+    :hasPredicate "example_predicate1" ;
+    :hasSubject "example_subject1" .
 
 :examplePatchOperation2 a :PatchOperation  ;
     rdfs:label "Example PatchOperation 2" ;
     rdfs:comment "This is example instance 2 of class PatchOperation" ;
-    :hasObject :exampleThing2  ;
-    :hasPredicate :exampleThing2  ;
-    :hasSubject :exampleThing2 .
+    :hasObject "example_object2" ;
+    :hasPredicate "example_predicate2" ;
+    :hasSubject "example_subject2" .
 
 :createdAt a owl:DatatypeProperty  ;
     rdfs:label "Created At" ;
@@ -261,7 +261,6 @@
 :PatchOperation a owl:Class  ;
     rdfs:label "Patch Operation" ;
     rdfs:comment "An operation within a patch" ;
-    rdfs:subClassOf :PatchModel ;
     owl:versionInfo "1.0.0" .
 
 [] a sh:NodeShape ;
