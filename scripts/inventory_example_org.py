@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 import re
 from pathlib import Path
 from typing import List, Dict, Tuple
@@ -7,7 +6,6 @@ import logging
 from datetime import datetime
 
 # Configure logging
-os.makedirs('logs', exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
