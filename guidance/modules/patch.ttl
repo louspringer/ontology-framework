@@ -303,3 +303,23 @@ rdfs:comment rdfs:domain owl:Thing ; rdfs:range xsd:string .
 owl:versionInfo rdfs:domain owl:Thing ; rdfs:range xsd:string .
 :hasOperation rdfs:domain :PatchModel ; rdfs:range :PatchOperation .
 
+rdfs:domain rdfs:domain rdf:Property ; rdfs:range rdfs:Class .
+rdfs:range  rdfs:domain rdf:Property ; rdfs:range rdfs:Class .
+rdfs:subPropertyOf rdfs:domain rdf:Property ; rdfs:range rdf:Property .
+rdfs:subClassOf rdfs:domain rdfs:Class ; rdfs:range rdfs:Class .
+sh:path      rdfs:domain owl:Thing ; rdfs:range rdfs:Resource .
+sh:datatype  rdfs:domain owl:Thing ; rdfs:range rdfs:Datatype .
+sh:minCount  rdfs:domain owl:Thing ; rdfs:range xsd:integer .
+sh:message   rdfs:domain owl:Thing ; rdfs:range xsd:string .
+sh:targetClass rdfs:domain owl:Thing ; rdfs:range rdfs:Class .
+sh:property  rdfs:domain sh:NodeShape ; rdfs:range sh:PropertyShape .
+sh:pattern   rdfs:domain owl:Thing ; rdfs:range xsd:string .
+core:complexity rdfs:domain owl:Thing ; rdfs:range xsd:integer .
+core:sourceContext rdfs:domain owl:Thing ; rdfs:range xsd:string .
+core:targetContext rdfs:domain owl:Thing ; rdfs:range xsd:string .
+dc:title     rdfs:domain owl:Thing ; rdfs:range xsd:string .
+dc:version   rdfs:domain owl:Thing ; rdfs:range xsd:string .
+dct:created  rdfs:domain owl:Thing ; rdfs:range xsd:dateTime .
+dct:modified rdfs:domain owl:Thing ; rdfs:range xsd:dateTime .
+owl:imports  rdfs:domain owl:Ontology ; rdfs:range owl:Ontology .
+
