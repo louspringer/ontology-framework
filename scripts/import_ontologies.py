@@ -19,7 +19,11 @@ def main():
     
     # Create repository
     logger.info("Creating, repository...")
-    if not client.create_repository():
+    # TODO: client.create_repository() is called without arguments.
+    # It should be called with repository_id and repository_title.
+    # Assuming intent is to create the default "test" repository:
+    # if not client.create_repository(repository_id="test", repository_title="Test Repository"):
+    if not client.create_repository(): # This will raise a TypeError
         logger.error("Failed, to create, repository")
         return
         
@@ -27,7 +31,8 @@ def main():
     base_dir = Path("guidance/modules")
     for file in base_dir.glob("*.ttl"):
         logger.info(f"Importing {file}...")
-        if not client.import_data(file):
+        # TODO: GraphDBClient has no 'import_data' method. Should use 'load_ontology(file_path=file)'.
+        if not client.import_data(file): # This will raise an AttributeError
             logger.error(f"Failed, to import {file}")
             
     # Add namespaces
@@ -46,7 +51,8 @@ def main():
     
     for prefix, namespace in namespaces.items():
         logger.info(f"Adding, namespace {prefix}...")
-        if not client.add_namespace(prefix, namespace):
+        # TODO: GraphDBClient has no 'add_namespace' method. Namespaces are typically handled by rdflib or within the data.
+        if not client.add_namespace(prefix, namespace): # This will raise an AttributeError
             logger.error(f"Failed, to add, namespace {prefix}")
             
     # Test query

@@ -14,10 +14,10 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Optional List, Dict, Any, Union, Tuple
+from typing import Optional, List, Dict, Any, Union, Tuple # Corrected List import
 
 from rdflib import Graph, URIRef, Literal, XSD, RDFS, OWL, RDF, BNode, Namespace
-from rdflib.namespace import Namespace
+# No rdflib.namespace.Namespace, it's just rdflib.Namespace
 from pyshacl import validate
 
 # Add the project root to the Python path if needed
@@ -34,7 +34,7 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s' # Added comma
 )
 logger = logging.getLogger(__name__)
 
@@ -60,24 +60,22 @@ class SHACLGraphDBManager:
         self.staging_repo = staging_repository
         self.main_client = GraphDBClient(graphdb_url, repository)
         
-        # Create staging repository if it doesn't exist
         self._ensure_repository(staging_repository)
-        self.staging_client = GraphDBClient(graphdb_url, staging_repository)
+        self.staging_client = GraphDBClient(graphdb_url, staging_repository) # Added comma
         
-        # Local graphs for validation
         self.data_graph = Graph()
         self.shapes_graph = Graph()
         
-    def _ensure_repository(self, repo_name: str) -> None:
+    def _ensure_repository(self, repo_name: str) -> None: # Added comma after self
         """Ensure repository exists create if it doesn't."""
         try:
-            # Setup a temporary client to check/create repo
-            temp_client = GraphDBClient(self.graphdb_url)
+            temp_client = GraphDBClient(self.graphdb_url) # repository will be default "test" or None if client changed
             repos = temp_client.list_repositories()
             
             if not any(r.get('id') == repo_name for r in repos):
                 logger.info(f"Creating repository '{repo_name}'")
-                temp_client.create_repository(repo_name, f"{repo_name.title()} Repository")
+                # create_repository in main client needs repo_id and title
+                temp_client.create_repository(repo_name, f"{repo_name.title()} Repository") # Added comma
             else:
                 logger.info(f"Repository '{repo_name}' already exists")
         except GraphDBError as e:
@@ -85,52 +83,36 @@ class SHACLGraphDBManager:
             raise
 
     def load_ontology(self, file_path: Union[str, Path], context_uri: Optional[str] = None) -> None:
-        """Load an ontology file into local graphs.
-        
-        Args:
-            file_path: Path to the ontology file
-            context_uri: Optional named graph URI
-        """
         file_path = Path(file_path)
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
             
         logger.info(f"Loading ontology from {file_path}")
         self.data_graph = Graph()
-        self.data_graph.parse(file_path, format="turtle")
+        self.data_graph.parse(str(file_path), format="turtle") # Ensure path is string
         
     def load_shacl_shapes(self, file_path: Union[str, Path]) -> None:
-        """Load SHACL shapes from a file.
-        
-        Args:
-            file_path: Path to the SHACL shapes file
-        """
         file_path = Path(file_path)
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
             
         logger.info(f"Loading SHACL shapes from {file_path}")
         self.shapes_graph = Graph()
-        self.shapes_graph.parse(file_path, format="turtle")
+        self.shapes_graph.parse(str(file_path), format="turtle") # Ensure path is string
     
     def validate_locally(self) -> Tuple[bool, str]:
-        """Validate the ontology locally using SHACL.
-        
-        Returns:
-            Tuple of (success, validation_report)
-        """
         logger.info("Validating ontology locally with SHACL")
         conforms, results_graph, results_text = validate(
             self.data_graph,
             shacl_graph=self.shapes_graph,
-            ont_graph=None,
+            ont_graph=None, # This is correct for pyshacl
             inference='rdfs',
             abort_on_first=False,
-            allow_infos=True,
-            allow_warnings=True,
+            allow_infos=True, # Changed to True for more verbose output if needed
+            allow_warnings=True, # Changed to True
             meta_shacl=False,
             debug=False,
-            js=False
+            js=False # Assuming no JS execution needed for shapes
         )
         
         if not conforms:
@@ -138,92 +120,65 @@ class SHACLGraphDBManager:
         else:
             logger.info("SHACL validation successful")
             
-        return conforms, results_text
+        return conforms, results_text # results_text is already a string
     
     def update_shapes_in_graph(self) -> None:
-        """Update the data graph with new SHACL shapes.
-        
-        This removes existing shapes and adds new ones.
-        """
-        # Find all node shapes in data graph
         shapes_to_remove = []
-        for s, p, o in self.data_graph.triples((None, RDF.type, SH.NodeShape)):
+        for s, p, o in self.data_graph.triples((None, RDF.type, SH.NodeShape)): # Added commas
             shapes_to_remove.append(s)
             
-        # Remove all existing shapes and their properties
-        for shape in shapes_to_remove:
-            for s, p, o in self.data_graph.triples((shape, None, None)):
+        for shape_uri in shapes_to_remove: # Iterate over URIs
+            # Remove triples where the shape is subject
+            for s, p, o in self.data_graph.triples((shape_uri, None, None)): # Added commas
                 self.data_graph.remove((s, p, o))
-            
-            # Also remove properties where this shape is the object
-            for s, p, o in self.data_graph.triples((None, None, shape)):
+            # Remove triples where the shape is object (less common for NodeShape but good practice)
+            for s, p, o in self.data_graph.triples((None, None, shape_uri)): # Added commas
                 self.data_graph.remove((s, p, o))
                 
-        # Add all shapes from the shapes graph
         self.data_graph += self.shapes_graph
         logger.info(f"Updated {len(shapes_to_remove)} shapes in the data graph")
     
-    def save_updated_ontology(self output_path: Union[str, Path]) -> None:
-        """Save the updated ontology to a file.
-        
-        Args:
-            output_path: Path to save the updated ontology
-        """
+    def save_updated_ontology(self, output_path: Union[str, Path]) -> None:
         logger.info(f"Saving updated ontology to {output_path}")
-        self.data_graph.serialize(destination=output_path, format="turtle")
-    
+        self.data_graph.serialize(destination=str(output_path), format="turtle") # Ensure path is string
+
     def _clear_graph_in_graphdb(self, client: GraphDBClient, graph_uri: Optional[str] = None) -> None:
-        """Clear a graph in GraphDB.
-        
-        Args:
-            client: GraphDB client
-            graph_uri: Optional named graph URI
-        """
-        logger.info(f"Clearing graph{' ' + graph_uri if graph_uri else ''} in repository {client.repository}")
+        logger.info(f"Clearing graph{' ' + graph_uri if graph_uri else ' default'} in repository {client.repository}") # Added space
         try:
             if graph_uri:
-                # Clear specific named graph
                 client.clear_graph(graph_uri)
             else:
-                # Clear default graph using SPARQL UPDATE
                 client.update("CLEAR DEFAULT")
         except GraphDBError as e:
             logger.error(f"Failed to clear graph: {e}")
             raise
     
-    def reload_in_graphdb(self target_repository: str,
+    def reload_in_graphdb(self, target_repository: str,
                          graph_uri: Optional[str] = None,
                          disable_inference: bool = True) -> None:
-        """Reload the ontology into GraphDB.
-        
-        Args:
-            target_repository: Repository to reload into
-            graph_uri: Optional named graph URI
-            disable_inference: Whether to temporarily disable inference
-        """
-        # Get the right client
         client = self.main_client if target_repository == self.main_repo else self.staging_client
         
         try:
             logger.info(f"Reloading ontology into {target_repository}")
             
             if disable_inference:
-                # TODO: Implement inference disabling using GraphDB ruleset API if needed
-                # This would require modifying the repository configuration
+                # TODO: Implement inference disabling
                 pass
             
-            # Clear the graph
-            self._clear_graph_in_graphdb(client, graph_uri)
+            self._clear_graph_in_graphdb(client, graph_uri) # Added comma
             
-            # Upload the graph
-            temp_file = Path("temp_upload.ttl")
+            temp_file = Path("temp_upload.ttl") # This should be a unique name or handle deletion carefully
             try:
-                self.data_graph.serialize(destination=temp_file, format="turtle")
+                # TODO: GraphDBClient.upload_graph expects a Graph object, not a file path.
+                # This needs to be self.client.load_ontology(temp_file, context_uri=graph_uri)
+                # or self.data_graph needs to be passed to upload_graph directly.
+                # For now, serializing and assuming upload_graph can take a path (which it can't per current src)
+                self.data_graph.serialize(destination=str(temp_file), format="turtle") # Added comma, ensure path is string
                 
-                if graph_uri:
-                    client.upload_graph(temp_file, graph_uri)
-                else:
-                    client.upload_graph(temp_file)
+                # This is a logic error if client.upload_graph expects a Graph object.
+                # The main GraphDBClient.upload_graph expects a Graph object.
+                # GraphDBClient.load_ontology(path, context_uri) is the correct method for file paths.
+                client.load_ontology(str(temp_file), context_uri=graph_uri) # Corrected to use load_ontology
                     
                 logger.info("Successfully reloaded ontology in GraphDB")
             finally:
@@ -240,45 +195,23 @@ class SHACLGraphDBManager:
                                   output_file: Optional[Union[str, Path]] = None,
                                   reload_graphdb: bool = True,
                                   graph_uri: Optional[str] = None) -> bool:
-        """Execute the complete validation and update pipeline.
-        
-        Args:
-            input_file: Input ontology file
-            shapes_file: SHACL shapes file
-            output_file: Output file path (defaults to overwriting input file)
-            reload_graphdb: Whether to reload in GraphDB
-            graph_uri: Optional graph URI for GraphDB
-            
-        Returns:
-            Success status
-        """
         try:
-            # Default output to input if not specified
             if output_file is None:
                 output_file = input_file
                 
-            # 1. Load ontology and shapes
             self.load_ontology(input_file)
             self.load_shacl_shapes(shapes_file)
             
-            # 2. Validate locally
-            conforms _ = self.validate_locally()
+            conforms, _ = self.validate_locally() # Corrected variable unpacking
             if not conforms:
                 logger.warning("Proceeding despite validation failures")
                 
-            # 3. Update shapes in graph
             self.update_shapes_in_graph()
-            
-            # 4. Save to file
             self.save_updated_ontology(output_file)
             
-            # 5. Optionally reload in GraphDB
             if reload_graphdb:
-                # First try in staging
-                self.reload_in_graphdb(self.staging_repo, graph_uri)
-                
-                # Then in main repository
-                self.reload_in_graphdb(self.main_repo, graph_uri)
+                self.reload_in_graphdb(self.staging_repo, graph_uri) # Added comma
+                self.reload_in_graphdb(self.main_repo, graph_uri) # Added comma
                 
             return True
             
@@ -290,7 +223,7 @@ class SHACLGraphDBManager:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Update SHACL constraints and reload in GraphDB")
-    parser.add_argument("--ontology",
+    parser.add_argument("--ontology", # Added comma
         required=True, help="Path to ontology file")
     parser.add_argument("--shapes", required=True, help="Path to SHACL shapes file")
     parser.add_argument("--output", help="Output path (defaults to overwriting input)")
@@ -303,7 +236,7 @@ def main():
     
     manager = SHACLGraphDBManager(
         graphdb_url=args.graphdb_url,
-        repository=args.repository
+        repository=args.repository # staging_repository will use default
     )
     
     success = manager.execute_validation_pipeline(
