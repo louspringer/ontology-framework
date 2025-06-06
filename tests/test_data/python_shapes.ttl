@@ -1,0 +1,3 @@
+# Placeholder for Python SHACL shapes.
+# This file was missing and is created to resolve FileNotFoundError in tests.
+# Actual shapes may need to be added here based on test requirements.

@@ -16,6 +16,8 @@ from rdflib.term import Node
 import requests
 import json
 import logging
+import os # Added for environment variables
+from requests.auth import HTTPBasicAuth # Added for authentication
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -26,9 +28,25 @@ SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
 class SPARQLClient:
-    def __init__(self, endpoint_url=None, graph=None):
-        self.endpoint_url = endpoint_url
+    def __init__(self, base_url=None, repository=None, graph=None):
+        self.base_url = base_url
+        self.repository = repository
+        # If base_url is provided, endpoint_url might be derived or not used directly in old way
+        # For now, let's ensure endpoint_url is None if base_url is used, to avoid confusion
+        # in existing methods until they are updated.
+        self.endpoint_url = None # This client uses base_url and repository for remote operations
+        
         self.graph = graph or Graph()
+
+        # Setup authentication from environment variables
+        username = os.environ.get("GRAPHDB_USERNAME")
+        password = os.environ.get("GRAPHDB_PASSWORD")
+        if username and password:
+            self._auth = HTTPBasicAuth(username, password)
+            logger.debug(f"SPARQLClient initialized with user: {username} for remote operations.")
+        else:
+            self._auth = None
+            logger.debug("SPARQLClient initialized without authentication for remote operations (credentials not found in env).")
         
     def onto_load_ontology(self, ontology_path):
         """Load ontology into the graph"""
@@ -37,14 +55,72 @@ class SPARQLClient:
         
     def sparql_query(self, sparql_query):
         """Execute SPARQL query"""
-        if self.endpoint_url:
-            response = requests.post(
-                self.endpoint_url,
-                data={'query': sparql_query},
-                headers={'Accept': 'application/sparql-results+json'}
+        if self.base_url and self.repository: # Remote mode
+            query_endpoint = f"{self.base_url}/repositories/{self.repository}"
+            try:
+                response = requests.get(
+                    query_endpoint,
+                    params={'query': sparql_query},
+                    headers={'Accept': 'application/sparql-results+json'},
+                    auth=self._auth
+                )
+                response.raise_for_status()
+                raw_json_results = response.json()
+                
+                # Process raw JSON to match local query result structure
+                processed_results = []
+                if 'results' in raw_json_results and 'bindings' in raw_json_results['results']:
+                    for binding in raw_json_results['results']['bindings']:
+                        row_dict = {}
+                        for var_name, var_data in binding.items():
+                            if var_data['type'] == 'literal':
+                                row_dict[var_name] = var_data['value']
+                            elif var_data['type'] == 'uri':
+                                row_dict[var_name] = var_data['value'] # Keep as full URI string
+                            elif var_data['type'] == 'bnode':
+                                row_dict[var_name] = f"_:{var_data['value']}" # Standard BNode string rep
+                            else:
+                                row_dict[var_name] = var_data['value'] 
+                        processed_results.append(row_dict)
+                
+                # Reconstruct a similar structure to what rdflib's query might give,
+                # or simply return the list of processed bindings if that's what tests expect.
+                # For now, let's return the processed list directly if the original was a SELECT.
+                # If it was an ASK query, the structure is different.
+                if 'boolean' in raw_json_results: # ASK query
+                    return [{'ASK': raw_json_results['boolean']}]
+                
+                # For SELECT, wrap processed_results in the standard structure
+                # This part might need adjustment based on how tests use it.
+                # The local query returns a list of dicts directly.
+                # Let's make remote also return a list of dicts for SELECT.
+                # The test assertions expect a dict with "results" and "bindings" keys.
+                # So, we should reconstruct that.
+                final_results_obj = {
+                    "head": raw_json_results.get("head", {}), # Preserve head if it exists
+                    "results": {"bindings": processed_results}
+                }
+                return final_results_obj
+
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Remote SPARQL query failed: {e}")
+                raise # Or return an error structure
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to decode JSON response from remote query: {e}. Response text: {response.text[:200]}")
+                raise # Or return an error structure
+        elif self.endpoint_url: # Old direct endpoint_url logic (for current mock compatibility if needed temporarily)
+            # This branch will likely be removed once mock is updated.
+            # For now, ensure it also uses auth if self.endpoint_url was somehow set directly.
+            query_endpoint = f"{self.endpoint_url}/sparql" 
+            response = requests.get( 
+                query_endpoint,
+                params={'query': sparql_query}, 
+                headers={'Accept': 'application/sparql-results+json'},
+                auth=self._auth
             )
+            response.raise_for_status()
             return response.json()
-        else:
+        else: # Local mode
             results = []
             try:
                 qres = self.graph.query(sparql_query)
@@ -74,13 +150,47 @@ class SPARQLClient:
             
     def sparql_update(self, sparql_update):
         """Execute SPARQL update"""
-        if self.endpoint_url:
+        if self.base_url and self.repository: # Remote mode
+            update_endpoint = f"{self.base_url}/repositories/{self.repository}/statements"
+            try:
+                response = requests.post(
+                    update_endpoint,
+                    data=sparql_update,
+                    headers={'Content-Type': 'application/sparql-update'},
+                    auth=self._auth
+                )
+                response.raise_for_status()
+                if response.status_code == 204:
+                    return {"status": "success", "message": "Update successful, no content returned."}
+                return response.json() # If other success codes might return JSON
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Remote SPARQL update failed: {e}")
+                raise # Or return an error structure
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to decode JSON response from remote update: {e}. Response text: {response.text[:200]}")
+                # If it was a 200 but not JSON, still could be success
+                if response.ok:
+                    return {"status": "success", "message": f"Update returned status {response.status_code} with non-JSON body."}
+                raise
+        elif self.endpoint_url: # Old direct endpoint_url logic
+            update_endpoint = f"{self.endpoint_url}/update" 
             response = requests.post(
-                self.endpoint_url,
-                data={'update': sparql_update},
-                headers={'Content-Type': 'application/sparql-update'}
+                update_endpoint,
+                data=sparql_update, # Send raw update string
+                headers={'Content-Type': 'application/sparql-update'},
+                auth=self._auth
             )
-            return response.json()
+            response.raise_for_status() # Raise an exception for HTTP error codes (4xx or 5xx)
+            if response.status_code == 204: # No Content
+                return {"status": "success", "message": "Update successful, no content returned."}
+            # If other success codes might return JSON (e.g. 200), handle them here.
+            # For now, assume 204 is the primary success for SPARQL UPDATE.
+            # If a response body is expected for other success codes, parse it:
+            try:
+                return response.json()
+            except json.JSONDecodeError:
+                # Handle cases where a 2xx response might not have a JSON body
+                return {"status": "success", "message": f"Update returned status {response.status_code} with non-JSON body."}
         else:
             self.graph.update(sparql_update)
             return {"status": "success"}

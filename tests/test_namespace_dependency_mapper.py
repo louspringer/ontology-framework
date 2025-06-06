@@ -3,6 +3,14 @@ import tempfile
 import unittest
 from pathlib import Path
 from scripts.namespace_dependency_mapper import NamespaceDependencyMapper
+from ontology_framework.config.logging_config import setup_logging, get_logger
+
+# Set up logging for tests
+logger = get_logger(__name__)
+
+def setup_module():
+    """Set up logging before running tests."""
+    setup_logging('namespace_dependency_mapper.log')
 
 class TestNamespaceDependencyMapper(unittest.TestCase):
     """Test cases for NamespaceDependencyMapper following ontology framework rules.
@@ -11,8 +19,14 @@ class TestNamespaceDependencyMapper(unittest.TestCase):
     in accordance with guidance.ttl requirements.
     """
     
+    @classmethod
+    def setUpClass(cls):
+        """Set up logging for the test class."""
+        logger.info("Setting up NamespaceDependencyMapper tests")
+    
     def setUp(self):
         """Set up test fixtures before each test method."""
+        logger.info("Setting up test fixture")
         self.test_inventory_content = """
 # Example.org Usage Inventory
 

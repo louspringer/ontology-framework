@@ -2,6 +2,14 @@ import os
 import tempfile
 from pathlib import Path
 from scripts.inventory_example_org import ExampleOrgInventory
+from ontology_framework.config.logging_config import setup_logging, get_logger
+
+# Set up logging for tests
+logger = get_logger(__name__)
+
+def setup_module():
+    """Set up logging before running tests."""
+    setup_logging('example_org_inventory.log')
 
 def test_scan_file():
     """Test scanning a single file for example.org usage."""

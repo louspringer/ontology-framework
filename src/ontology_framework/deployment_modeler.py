@@ -90,20 +90,27 @@ class DeploymentModeler:
             logger.error(f"Failed to clear deployment: {e}")
             raise OntologyFrameworkError(f"Deployment clearing failed: {str(e)}")
 
-    def deploy_ontology(self, ontology_path: Union[str, Path], dataset_name: Optional[str] = None) -> bool:
-        """Deploy an ontology to GraphDB.
+    def deploy_ontology(self, ontology_path: Union[str, Path], repository_name: str, context_uri: Optional[str] = None) -> bool:
+        """Deploy an ontology to a specific repository in GraphDB.
         
         Args:
-            ontology_path: Path to ontology file
-            dataset_name: Optional dataset name
+            ontology_path: Path to ontology file.
+            repository_name: The name of the repository to deploy to.
+            context_uri: Optional named graph URI (context) for the upload.
+                         If None, uploads to the default graph of the repository.
         Returns:
-            True if successful
+            True if successful.
         """
+        original_repo = self.client.repository
         try:
-            return self.client.upload_graph(ontology_path, dataset_name)
+            self.client.repository = repository_name # Set context for the operation
+            # Call load_ontology which handles parsing the path and then calls upload_graph
+            return self.client.load_ontology(ontology_path, context_uri=context_uri)
         except Exception as e:
-            logger.error(f"Failed to deploy ontology: {e}")
+            logger.error(f"Failed to deploy ontology to repository '{repository_name}': {e}")
             raise OntologyFrameworkError(f"Deployment error: {str(e)}")
+        finally:
+            self.client.repository = original_repo # Restore original repository context
 
     def list_datasets(self) -> List[str]:
         """List all datasets in GraphDB.
@@ -203,4 +210,4 @@ class DeploymentModeler:
         return f"Deploy script for {config['name']}"
 
 class DeploymentError(Exception):
-    pass 
+    pass

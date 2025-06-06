@@ -1,0 +1,95 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix diag: <https://w3id.org/dev/diag#> .
+@prefix git: <https://w3id.org/dev/git#> .
+
+# --- Ontology Definitions ---
+
+diag:TroubleshootingSession a owl:Class ;
+    rdfs:label "Troubleshooting Session" ;
+    rdfs:comment "Represents a complete interaction to diagnose and resolve a technical problem." .
+
+diag:ProblemStatement a owl:Class ;
+    rdfs:label "Problem Statement" .
+
+diag:Investigation a owl:Class ;
+    rdfs:label "Investigation Activity" .
+
+diag:Resolution a owl:Class ;
+    rdfs:label "Resolution Activity" .
+
+diag:Finding a owl:Class ;
+    rdfs:label "Finding" ;
+    rdfs:comment "A key piece of information discovered during investigation." .
+
+git:GitOperation a owl:Class ;
+    rdfs:label "Git Operation" .
+
+diag:hasProblem a owl:ObjectProperty ;
+    rdfs:domain diag:TroubleshootingSession ;
+    rdfs:range diag:ProblemStatement .
+
+diag:hadFinding a owl:ObjectProperty ;
+    rdfs:domain diag:Investigation ;
+    rdfs:range diag:Finding .
+
+git:hasCommand a owl:DatatypeProperty ;
+    rdfs:label "has command" ;
+    rdfs:domain git:GitOperation .
+
+# --- Instance Data: Modeling the Interaction ---
+
+<#session-fastmcp-fix> a diag:TroubleshootingSession ;
+    rdfs:label "Session to fix fastmcp build failure" ;
+    prov:startedAtTime "2024-05-16T12:00:00Z" ; # Example timestamp
+    prov:endedAtTime "2024-05-16T12:15:00Z" ;   # Example timestamp
+    diag:hasProblem <#problem-build-failing> ;
+    prov:wasAssociatedWith <#agent-gemini-2.5> .
+
+<#agent-gemini-2.5> a prov:Agent ;
+    rdfs:label "Gemini 2.5 Pro" .
+
+<#problem-build-failing> a diag:ProblemStatement ;
+    rdfs:label "GitHub Actions build failing" ;
+    rdfs:comment "The build process for PR #2 was failing with a 'fastmcp not found' error." .
+
+# --- Investigation Phase ---
+
+<#investigation-phase> a diag:Investigation, prov:Activity ;
+    rdfs:label "Investigation of the Build Failure" ;
+    prov:wasInformedBy <#problem-build-failing> ;
+    prov:wasAssociatedWith <#agent-gemini-2.5> ;
+    diag:hadFinding <#finding-uncommitted-changes> .
+
+<#finding-uncommitted-changes> a diag:Finding ;
+    rdfs:label "Local workspace had uncommitted changes" ;
+    rdfs:comment "The necessary fixes to environment.yml and ci.yml existed locally but were not staged or committed to the feature branch, causing the PR's build to fail." .
+
+# --- Resolution Phase ---
+
+<#resolution-phase> a diag:Resolution, prov:Activity ;
+    rdfs:label "Resolution via Git Operations" ;
+    prov:wasInformedBy <#finding-uncommitted-changes> ;
+    prov:wasAssociatedWith <#agent-gemini-2.5> ;
+    prov:generated <#commit-4420288> .
+
+<#action-git-add> a git:GitOperation, prov:Activity ;
+    rdfs:label "Stage Changes" ;
+    prov:wasInformedBy <#resolution-phase> ;
+    git:hasCommand "git add .github/workflows/ci.yml environment.yml" .
+
+<#action-git-commit> a git:GitOperation, prov:Activity ;
+    rdfs:label "Commit Changes" ;
+    prov:wasInformedBy <#action-git-add> ;
+    git:hasCommand "git commit -m \"fix(ci): switch to conda and update fastmcp\"" ;
+    prov:generated <#commit-4420288> .
+
+<#commit-4420288> a git:Commit ;
+    rdfs:label "Git Commit 4420288" .
+
+<#action-git-push> a git:GitOperation, prov:Activity ;
+    rdfs:label "Push Changes to Remote Branch" ;
+    prov:wasInformedBy <#action-git-commit> ;
+    git:hasCommand "git push origin HEAD:test/add-coverage-tools" . 

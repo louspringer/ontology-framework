@@ -27,17 +27,11 @@ A framework for managing and validating ontologies with support for both local a
 
 ### Python Dependencies
 
-Install using conda (recommended):
+Install using conda:
 
 ```bash
 conda env create -f environment.yml
 conda activate ontology-framework
-```
-
-Or using pip:
-
-```bash
-pip install -r requirements.txt
 ```
 
 ### Oracle RDF Store Requirements
@@ -72,7 +66,7 @@ python -m scripts.verify_oracle_setup
 
 2. Install pre-commit hooks:
    ```bash
-   pip install pre-commit
+   conda install pre-commit
    pre-commit install
    ```
 
@@ -139,15 +133,10 @@ The validation framework implements the Spore Governance Discipline by checking 
 
 ## Installation
 
-1. Create a virtual environment:
+1. Create and activate the conda environment:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate ontology-framework
 ```
 
 ## Usage

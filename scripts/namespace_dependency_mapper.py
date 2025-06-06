@@ -3,20 +3,13 @@ import os
 import re
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
-import logging
 from datetime import datetime
 import networkx as nx
 import matplotlib.pyplot as plt
+from ontology_framework.config.logging_config import setup_logging, get_logger
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/namespace_dependency_mapper.log'),
-        logging.StreamHandler()
-    ]
-)
+# Set up logging
+logger = get_logger(__name__)
 
 class NamespaceDependencyMapper:
     def __init__(self, inventory_file: str = 'docs/example_org_inventory.md'):
@@ -31,7 +24,7 @@ class NamespaceDependencyMapper:
         """Parse the inventory file to extract namespace definitions and usage."""
         try:
             if not self.inventory_file.exists():
-                logging.warning(f"Inventory file {self.inventory_file} does not exist")
+                logger.warning(f"Inventory file {self.inventory_file} does not exist")
                 return
                 
             with open(self.inventory_file, 'r', encoding='utf-8') as f:
@@ -45,8 +38,9 @@ class NamespaceDependencyMapper:
                         for prefix, uri in self.namespace_pattern.findall(line):
                             if current_file not in self.dependencies:
                                 self.dependencies[current_file] = set()
-                            self.dependencies[current_file].add(f"{prefix}:{uri}")
-                            self.graph.add_node(f"{prefix}:{uri}")
+                            namespace = f"{prefix}:{uri}"
+                            self.dependencies[current_file].add(namespace)
+                            self.graph.add_node(namespace)
                         
                         # Extract Python namespace declarations
                         for uri in self.python_namespace_pattern.findall(line):
@@ -54,18 +48,22 @@ class NamespaceDependencyMapper:
                                 self.dependencies[current_file] = set()
                             # Extract prefix from URI
                             prefix = uri.split('/')[-1].split('#')[0]
-                            self.dependencies[current_file].add(f"{prefix}:{uri}")
-                            self.graph.add_node(f"{prefix}:{uri}")
+                            namespace = f"{prefix}:{uri}"
+                            self.dependencies[current_file].add(namespace)
+                            self.graph.add_node(namespace)
                         
                         # Extract namespace usage
                         for prefix in self.usage_pattern.findall(line):
                             if current_file in self.dependencies:
-                                for ns in self.dependencies[current_file]:
-                                    if ns.startswith(prefix + ':'):
-                                        self.graph.add_edge(ns, f"{prefix}:{uri}")
+                                # Find the namespace definition for this prefix
+                                for namespace in self.dependencies[current_file]:
+                                    if namespace.startswith(prefix + ':'):
+                                        # Add edge from the namespace to itself (self-reference)
+                                        self.graph.add_edge(namespace, namespace)
 
         except Exception as e:
-            logging.error(f"Error parsing inventory file: {str(e)}")
+            logger.error(f"Error parsing inventory file: {str(e)}")
+            raise  # Re-raise the exception to ensure proper error handling
 
     def generate_dependency_graph(self) -> None:
         """Generate a visualization of the namespace dependency graph."""
@@ -138,16 +136,19 @@ class NamespaceDependencyMapper:
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(plan)
-        logging.info(f"Migration plan saved to {output_file}")
+        logger.info(f"Migration plan saved to {output_file}")
 
 def main() -> None:
     """Main function to run the namespace dependency mapper."""
+    # Set up logging before starting
+    setup_logging('namespace_dependency_mapper.log')
+    
     mapper = NamespaceDependencyMapper()
-    logging.info("Starting namespace dependency mapping...")
+    logger.info("Starting namespace dependency mapping...")
     mapper.parse_inventory()
     mapper.generate_dependency_graph()
     mapper.save_migration_plan()
-    logging.info("Namespace dependency mapping complete.")
+    logger.info("Namespace dependency mapping complete.")
 
 if __name__ == "__main__":
     main() 

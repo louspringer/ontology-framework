@@ -83,19 +83,19 @@ rdfs:subClassOf rdfs:label "rdf-schema# subClassOf" ;
     sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasMessage ],
-        [ sh:datatype xsd:anyURI ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasTarget ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
             sh:path :hasPriority ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path :hasValidator ] ;
+            sh:path :hasValidator ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasTarget ] ;
     sh:targetClass :ValidationRule .
 
 :ConsistencyRule a owl:Class ;

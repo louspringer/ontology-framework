@@ -1,0 +1,114 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix meta: <http://example.org/meta#> .
+@prefix spore: <http://example.org/spores/llm-team#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+spore:LLMTeamDiversityPattern a meta:TransformationPattern ;
+    rdfs:label "LLM Team Diversity Pattern" ;
+    rdfs:comment """Pattern for leveraging diverse LLM capabilities in a team context.
+    Different LLMs have different strengths and specializations. Rather than forcing
+    one LLM to handle all tasks, compose a team where each member can focus on their
+    strengths while learning from others' successes.""" ;
+    meta:hasVersion "0.1.0" ;
+    meta:hasAuthor "Claude 3.5" ;
+    meta:hasContributor "Gemini 2.5" ;
+    meta:transformationType "cognitive" .
+
+# Core Concepts
+spore:LLMTeam a owl:Class ;
+    rdfs:label "LLM Team" ;
+    rdfs:comment "A collaborative group of LLMs working together on tasks" .
+
+spore:LLMCapability a owl:Class ;
+    rdfs:label "LLM Capability" ;
+    rdfs:comment "A specific strength or skill that an LLM possesses" .
+
+spore:TaskType a owl:Class ;
+    rdfs:label "Task Type" ;
+    rdfs:comment "A category of work that needs to be performed" .
+
+# Properties
+spore:hasCapability a owl:ObjectProperty ;
+    rdfs:domain prov:Agent ;
+    rdfs:range spore:LLMCapability .
+
+spore:bestSuitedFor a owl:ObjectProperty ;
+    rdfs:domain spore:LLMCapability ;
+    rdfs:range spore:TaskType .
+
+spore:hasLearningOpportunity a owl:ObjectProperty ;
+    rdfs:domain prov:Agent ;
+    rdfs:range spore:LLMCapability .
+
+# Example Capabilities
+spore:ToolUsage a spore:LLMCapability ;
+    rdfs:label "Tool Usage Proficiency" ;
+    rdfs:comment "Ability to effectively use external tools and commands" .
+
+spore:SemanticModeling a spore:LLMCapability ;
+    rdfs:label "Semantic Modeling" ;
+    rdfs:comment "Ability to create and work with semantic data models" .
+
+spore:SystematicAnalysis a spore:LLMCapability ;
+    rdfs:label "Systematic Analysis" ;
+    rdfs:comment "Ability to methodically analyze complex systems or code" .
+
+spore:DirectProblemSolving a spore:LLMCapability ;
+    rdfs:label "Direct Problem Solving" ;
+    rdfs:comment "Ability to quickly identify and resolve issues with minimal overhead" .
+
+# SHACL Shapes for Validation
+spore:LLMTeamShape a sh:NodeShape ;
+    sh:targetClass spore:LLMTeam ;
+    sh:property [
+        sh:path spore:hasCapability ;
+        sh:minCount 1 ;
+        sh:message "An LLM team must have at least one defined capability"
+    ] .
+
+# Example Instance
+spore:ExampleTeam a spore:LLMTeam ;
+    rdfs:label "Example LLM Team" ;
+    prov:hadMember [
+        a prov:Agent ;
+        rdfs:label "Gemini 2.5" ;
+        spore:hasCapability spore:ToolUsage, spore:DirectProblemSolving
+    ] , [
+        a prov:Agent ;
+        rdfs:label "Claude 3.5" ;
+        spore:hasCapability spore:SemanticModeling, spore:SystematicAnalysis ;
+        spore:hasLearningOpportunity spore:DirectProblemSolving
+    ] .
+
+# Transformation Rules
+spore:TeamCompositionRule a meta:TransformationRule ;
+    rdfs:label "Team Composition Rule" ;
+    rdfs:comment """When composing an LLM team:
+    1. Identify the required capabilities for the project
+    2. Match LLMs to tasks based on their strengths
+    3. Enable learning opportunities between LLMs
+    4. Document successes and failures for improvement""" .
+
+spore:TaskAllocationRule a meta:TransformationRule ;
+    rdfs:label "Task Allocation Rule" ;
+    rdfs:comment """When allocating tasks:
+    1. Assess task requirements
+    2. Match to LLM capabilities
+    3. Consider learning opportunities
+    4. Monitor and adjust based on outcomes""" .
+
+# Success Metrics
+spore:SuccessMetric a owl:Class ;
+    rdfs:label "Success Metric" .
+
+spore:TaskCompletionRate a spore:SuccessMetric ;
+    rdfs:label "Task Completion Rate" ;
+    rdfs:comment "Percentage of tasks successfully completed on first attempt" .
+
+spore:LearningProgress a spore:SuccessMetric ;
+    rdfs:label "Learning Progress" ;
+    rdfs:comment "Improvement in capabilities over time through team collaboration" . 

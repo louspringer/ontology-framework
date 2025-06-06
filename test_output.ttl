@@ -84,14 +84,14 @@ rdfs:subClassOf rdfs:label "rdf-schema# subClassOf" ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path :hasPriority ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path :hasMessage ],
         [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path :hasTarget ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path :hasMessage ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;

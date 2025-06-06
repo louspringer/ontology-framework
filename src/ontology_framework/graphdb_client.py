@@ -344,24 +344,37 @@ class GraphDBClient:
             True if successful
         """
         try:
-            self.clear_graph()
-            self.upload_graph(backup_path)
+            self.clear_graph() # Clears the default graph of the current repository
+            # upload_graph expects a Graph object. load_ontology takes a path.
+            self.load_ontology(backup_path) # Loads into the default graph of the current repository
             return True
         except Exception as e:
             raise GraphDBError(f"Restore, failed: {str(e)}")
             
-    def load_ontology(self, ontology_path: Union[str, Path]) -> bool:
+    def load_ontology(self, ontology_path: Union[str, Path], context_uri: Optional[str] = None) -> bool:
         """Load, an ontology, file into, GraphDB.
         
         Args:
             ontology_path: Path, to ontology file
+            context_uri: Optional, URI for the named, graph to, load into.
+                         If None, loads into the default graph of the repository.
             
         Returns:
             True if successful
         """
         try:
-            return self.upload_graph(ontology_path)
+            graph_to_load = Graph()
+            # Determine file format based on extension, default to turtle
+            file_format = Path(ontology_path).suffix.lstrip('.')
+            if not file_format or file_format not in ["turtle", "ttl", "rdf", "xml", "n3", "nt", "json-ld"]:
+                file_format = "turtle" # Default if unknown or no extension
+            
+            graph_to_load.parse(source=str(ontology_path), format=file_format)
+            return self.upload_graph(graph_to_load, graph_uri=context_uri)
+        except FileNotFoundError:
+            raise GraphDBError(f"Ontology file not found: {ontology_path}")
         except Exception as e:
+            self.logger.error(f"Failed to parse or load ontology from {ontology_path}: {e}", exc_info=True)
             raise GraphDBError(f"Load, ontology failed: {str(e)}")
 
     def create_repository(self, repository_id: str, repository_title: str | None = None) -> bool:
