@@ -1,0 +1,92 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix prev: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:exampleAutoRetry1 a prev:AutoRetry ;
+    rdfs:label "Example AutoRetry 1" ;
+    rdfs:comment "This is example instance 1 of class AutoRetry" .
+
+:exampleAutoRetry2 a prev:AutoRetry ;
+    rdfs:label "Example AutoRetry 2" ;
+    rdfs:comment "This is example instance 2 of class AutoRetry" .
+
+:exampleErrorBoundary1 a prev:ErrorBoundary ;
+    rdfs:label "Example ErrorBoundary 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorBoundary" .
+
+:exampleErrorBoundary2 a prev:ErrorBoundary ;
+    rdfs:label "Example ErrorBoundary 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorBoundary" .
+
+:exampleFallback1 a prev:Fallback ;
+    rdfs:label "Example Fallback 1" ;
+    rdfs:comment "This is example instance 1 of class Fallback" .
+
+:exampleFallback2 a prev:Fallback ;
+    rdfs:label "Example Fallback 2" ;
+    rdfs:comment "This is example instance 2 of class Fallback" .
+
+:exampleInputValidation1 a prev:InputValidation ;
+    rdfs:label "Example InputValidation 1" ;
+    rdfs:comment "This is example instance 1 of class InputValidation" .
+
+:exampleInputValidation2 a prev:InputValidation ;
+    rdfs:label "Example InputValidation 2" ;
+    rdfs:comment "This is example instance 2 of class InputValidation" .
+
+:examplePreventionMeasure1 a prev:PreventionMeasure ;
+    rdfs:label "Example PreventionMeasure 1" ;
+    rdfs:comment "This is example instance 1 of class PreventionMeasure" ;
+    prev:hasDescription "Example value 1" .
+
+:examplePreventionMeasure2 a prev:PreventionMeasure ;
+    rdfs:label "Example PreventionMeasure 2" ;
+    rdfs:comment "This is example instance 2 of class PreventionMeasure" ;
+    prev:hasDescription "Example value 2" .
+
+:exampleRecoveryStrategy1 a prev:RecoveryStrategy ;
+    rdfs:label "Example RecoveryStrategy 1" ;
+    rdfs:comment "This is example instance 1 of class RecoveryStrategy" ;
+    prev:hasStrategy "Example value 1" .
+
+:exampleRecoveryStrategy2 a prev:RecoveryStrategy ;
+    rdfs:label "Example RecoveryStrategy 2" ;
+    rdfs:comment "This is example instance 2 of class RecoveryStrategy" ;
+    prev:hasStrategy "Example value 2" .
+
+:exampleResourceMonitoring1 a prev:ResourceMonitoring ;
+    rdfs:label "Example ResourceMonitoring 1" ;
+    rdfs:comment "This is example instance 1 of class ResourceMonitoring" .
+
+:exampleResourceMonitoring2 a prev:ResourceMonitoring ;
+    rdfs:label "Example ResourceMonitoring 2" ;
+    rdfs:comment "This is example instance 2 of class ResourceMonitoring" .
+
+:exampleRollback1 a prev:Rollback ;
+    rdfs:label "Example Rollback 1" ;
+    rdfs:comment "This is example instance 1 of class Rollback" .
+
+:exampleRollback2 a prev:Rollback ;
+    rdfs:label "Example Rollback 2" ;
+    rdfs:comment "This is example instance 2 of class Rollback" .
+
+prev:AutoRetryInstance a prev:AutoRetry ;
+    prev:hasStrategy "Log retry attempts",
+        "Retry failed operation up to 3 times",
+        "Use exponential backoff between retries" .
+
+prev:ErrorBoundaryInstance a prev:ErrorBoundary ;
+    prev:hasDescription "Implement error boundaries in UI components",
+        "Isolate error-prone operations",
+        "Provide fallback UI for errors" .
+
+prev:FallbackInstance a prev:Fallback ;
+    prev:hasStrategy "Display maintenance message",
+        "Provide simplified functionality",
+        "Use cached data when live data unavailable" .
+
+prev:InputValidationInstance a prev:InputValidation ;
+    prev:hasDescription "Check for required fields",
+        "Validate all input data against schema",
+        "Validate data types and ranges" .
+

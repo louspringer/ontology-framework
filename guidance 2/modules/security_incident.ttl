@@ -1,0 +1,121 @@
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security_incident#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:comment rdfs:label "rdf-schema#comment" ;
+    rdfs:comment "Description of rdf-schema#comment" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:domain rdfs:label "rdf-schema#domain" ;
+    rdfs:comment "Description of rdf-schema#domain" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:label rdfs:label "rdf-schema#label" ;
+    rdfs:comment "Description of rdf-schema#label" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:range rdfs:label "rdf-schema#range" ;
+    rdfs:comment "Description of rdf-schema#range" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+owl:versionInfo rdfs:label "owl#versionInfo" ;
+    rdfs:comment "Description of owl#versionInfo" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security_incident> a owl:Ontology ;
+    rdfs:label "Security Incident Reporting Ontology" ;
+    rdfs:comment "Ontology for defining security incident reporting and handling procedures" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:CriticalSeverity a ns1:IncidentSeverity ;
+    rdfs:label "Critical" ;
+    rdfs:comment "Immediate response required, potential for significant impact" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:DocumentationLeakIncident a ns1:SecurityIncident ;
+    rdfs:label "Documentation Leak Incident" ;
+    rdfs:comment "Unauthorized disclosure of proprietary documentation" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasReport [ a ns1:IncidentReport ;
+            rdfs:label "Documentation Leak Report" ;
+            rdfs:comment "Report of proprietary documentation appearing in conversation context" ;
+            owl:versionInfo "1.0.0" ] ;
+    ns1:hasResponse [ a ns1:IncidentResponse ;
+            rdfs:label "Documentation Leak Response" ;
+            rdfs:comment "Immediate removal of leaked content and implementation of reporting mechanism" ;
+            owl:versionInfo "1.0.0" ] ;
+    ns1:hasSeverity ns1:HighSeverity .
+
+ns1:LowSeverity a ns1:IncidentSeverity ;
+    rdfs:label "Low" ;
+    rdfs:comment "Standard response, minimal impact" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:MediumSeverity a ns1:IncidentSeverity ;
+    rdfs:label "Medium" ;
+    rdfs:comment "Timely response required, moderate impact" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasReport a owl:ObjectProperty ;
+    rdfs:label "Has Report" ;
+    rdfs:comment "Links an incident to its report" ;
+    rdfs:domain ns1:SecurityIncident ;
+    rdfs:range ns1:IncidentReport ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasResponse a owl:ObjectProperty ;
+    rdfs:label "Has Response" ;
+    rdfs:comment "Links an incident to its response" ;
+    rdfs:domain ns1:SecurityIncident ;
+    rdfs:range ns1:IncidentResponse ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasSeverity a owl:ObjectProperty ;
+    rdfs:label "Has Severity" ;
+    rdfs:comment "Links an incident to its severity level" ;
+    rdfs:domain ns1:SecurityIncident ;
+    rdfs:range ns1:IncidentSeverity ;
+    owl:versionInfo "1.0.0" .
+
+ns1:HighSeverity a ns1:IncidentSeverity ;
+    rdfs:label "High" ;
+    rdfs:comment "Urgent response required, potential for serious impact" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:IncidentReport a owl:Class ;
+    rdfs:label "Incident Report" ;
+    rdfs:comment "Formal documentation of a security incident" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:IncidentResponse a owl:Class ;
+    rdfs:label "Incident Response" ;
+    rdfs:comment "Actions taken in response to a security incident" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:SecurityIncident a owl:Class ;
+    rdfs:label "Security Incident" ;
+    rdfs:comment "A security-related incident that requires reporting" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:IncidentSeverity a owl:Class ;
+    rdfs:label "Incident Severity" ;
+    rdfs:comment "Classification of incident severity" ;
+    owl:versionInfo "1.0.0" .
+

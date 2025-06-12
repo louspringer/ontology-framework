@@ -1,0 +1,51 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:exampleTestCase1 a ns1:TestCase ;
+    rdfs:label "Example TestCase 1" ;
+    rdfs:comment "This is example instance 1 of class TestCase" ;
+    ns1:hasExpectedResult "Example value 1" ;
+    ns1:hasTestQuery "Example value 1" .
+
+:exampleTestCase2 a ns1:TestCase ;
+    rdfs:label "Example TestCase 2" ;
+    rdfs:comment "This is example instance 2 of class TestCase" ;
+    ns1:hasExpectedResult "Example value 2" ;
+    ns1:hasTestQuery "Example value 2" .
+
+:exampleValidationPattern1 a ns1:ValidationPattern ;
+    rdfs:label "Example ValidationPattern 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationPattern" ;
+    ns1:hasLegacyValidationConcept :exampleLLMGuidanceOntology1 .
+
+:exampleValidationPattern2 a ns1:ValidationPattern ;
+    rdfs:label "Example ValidationPattern 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationPattern" ;
+    ns1:hasLegacyValidationConcept :exampleLLMGuidanceOntology2 .
+
+ns1:EnforcementMechanismsTest a owl:NamedIndividual,
+        ns1:TestCase ;
+    rdfs:label "Enforcement Mechanisms Test" ;
+    rdfs:comment "Tests that enforcement mechanisms are properly defined" ;
+    ns1:hasExpectedResult "Should find at least 3 enforcement mechanisms" ;
+    ns1:hasTestQuery """
+    SELECT ?mech ?impl ?pattern WHERE {
+        ?mech rdf:type pdi:EnforcementMechanism ;
+              pdi:implementedIn ?impl ;
+              pdi:usesPattern ?pattern .
+    }""" .
+
+ns1:PolicyStructureTest a owl:NamedIndividual,
+        ns1:TestCase ;
+    rdfs:label "Policy Structure Test" ;
+    rdfs:comment "Tests that policies drive requirements that influence decisions" ;
+    ns1:hasExpectedResult "Should find OntologyAccessibilityPolicy and its requirements" ;
+    ns1:hasTestQuery """
+    SELECT ?policy ?req ?decision WHERE {
+        ?policy rdf:type pdi:Policy ;
+                pdi:drivesRequirement ?req .
+        ?req pdi:influencesDecision ?decision .
+    }""" .
+

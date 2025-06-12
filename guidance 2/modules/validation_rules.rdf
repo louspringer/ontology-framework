@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:valid="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationRule1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#ValidationRule"/>
+    <rdfs:label>Example ValidationRule 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ValidationRule</rdfs:comment>
+    <valid:hasValidationType>Example value 1</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleBasicMatrixValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#BasicMatrixValidation"/>
+    <rdfs:label>Example BasicMatrixValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class BasicMatrixValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SensitiveDataValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SensitiveDataValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRiskValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#RiskValidation"/>
+    <rdfs:label>Example RiskValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class RiskValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationRule2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#ValidationRule"/>
+    <rdfs:label>Example ValidationRule 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ValidationRule</rdfs:comment>
+    <valid:hasValidationType>Example value 2</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSensitiveDataValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SensitiveDataValidation"/>
+    <rdfs:label>Example SensitiveDataValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SensitiveDataValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#RiskValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#RiskValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSensitiveDataValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SensitiveDataValidation"/>
+    <rdfs:label>Example SensitiveDataValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SensitiveDataValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSeverityValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SeverityValidation"/>
+    <rdfs:label>Example SeverityValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class SeverityValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#PerformanceValidation"/>
+    <rdfs:label>Example PerformanceValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PerformanceValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRiskValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#RiskValidation"/>
+    <rdfs:label>Example RiskValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class RiskValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleSeverityValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SeverityValidation"/>
+    <rdfs:label>Example SeverityValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class SeverityValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleBasicMatrixValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#BasicMatrixValidation"/>
+    <rdfs:label>Example BasicMatrixValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class BasicMatrixValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMatrixValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#MatrixValidation"/>
+    <rdfs:label>Example MatrixValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class MatrixValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleMatrixValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#MatrixValidation"/>
+    <rdfs:label>Example MatrixValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class MatrixValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePerformanceValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#PerformanceValidation"/>
+    <rdfs:label>Example PerformanceValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PerformanceValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#MatrixValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#MatrixValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#PerformanceValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#PerformanceValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SeverityValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#SeverityValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#BasicMatrixValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#BasicMatrixValidation"/>
+    <valid:hasValidationType>REQUIRED</valid:hasValidationType>
+  </rdf:Description>
+</rdf:RDF>

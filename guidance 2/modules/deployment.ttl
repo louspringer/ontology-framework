@@ -1,0 +1,293 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix ns1: <http://example.org/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:colimaRuntime a ns1:ColimaRuntime ;
+    rdfs:label "Colima Runtime" ;
+    ns1:hasRuntimeName "colima" ;
+    ns1:hasRuntimeStatus "running" ;
+    ns1:hasRuntimeVersion "0.5.6" ;
+    rdfs:comment "Colima container runtime configuration" .
+
+ns1:datasetCheckTest a ns1:JenaFusekiTest ;
+    rdfs:label "Dataset Check Test" ;
+    ns1:hasExpectedResponse "200" ;
+    ns1:hasTestEndpoint "http://localhost:3030/guidance" ;
+    ns1:hasTestName "dataset_check" ;
+    rdfs:comment "Test for dataset existence" .
+
+ns1:errorLogTest a ns1:LoggingTest ;
+    rdfs:label "Error Log Test" ;
+    ns1:hasLogLevel "ERROR" ;
+    ns1:hasLogPattern "" ;
+    ns1:hasTestName "error_log_check" ;
+    rdfs:comment "Test for error log patterns" .
+
+ns1:graphdbDeployment a ns1:GraphDBDeployment ;
+    rdfs:label "GraphDB Deployment" ;
+    ns1:hasDatasetName "guidance" ;
+    ns1:hasServiceEndpoint "http://localhost:7200" ;
+    ns1:hasServiceName "graphdb" ;
+    ns1:hasServicePort 7200 ;
+    ns1:hasServiceVersion "10.4.0" ;
+    rdfs:comment "Deployment configuration for GraphDB" .
+
+ns1:fusekiDeployment a ns1:JenaFusekiDeployment ;
+    rdfs:label "Fuseki Deployment" ;
+    ns1:hasDatasetName "guidance" ;
+    ns1:hasServiceEndpoint "http://localhost:3030" ;
+    ns1:hasServiceName "fuseki" ;
+    ns1:hasServicePort 3030 ;
+    ns1:hasServiceVersion "4.10.0" ;
+    owl:deprecated true ;
+    rdfs:comment "Deprecated: Use GraphDB instead" .
+
+ns1:hasDatasetName a owl:DatatypeProperty ;
+    rdfs:label "Dataset Name" ;
+    rdfs:comment "Name of the dataset" ;
+    rdfs:domain ns1:JenaFusekiDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasExpectedResponse a owl:DatatypeProperty ;
+    rdfs:label "Expected Response" ;
+    rdfs:comment "Expected response from the test" ;
+    rdfs:domain ns1:JenaFusekiTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasLogLevel a owl:DatatypeProperty ;
+    rdfs:label "Log Level" ;
+    rdfs:comment "Log level to check" ;
+    rdfs:domain ns1:LoggingTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasLogPattern a owl:DatatypeProperty ;
+    rdfs:label "Log Pattern" ;
+    rdfs:comment "Pattern to match in logs" ;
+    rdfs:domain ns1:LoggingTest ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeName a owl:DatatypeProperty ;
+    rdfs:label "Runtime Name" ;
+    rdfs:comment "Name of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeStatus a owl:DatatypeProperty ;
+    rdfs:label "Runtime Status" ;
+    rdfs:comment "Current status of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasRuntimeVersion a owl:DatatypeProperty ;
+    rdfs:label "Runtime Version" ;
+    rdfs:comment "Version of the container runtime" ;
+    rdfs:domain ns1:ContainerRuntime ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServiceEndpoint a owl:DatatypeProperty ;
+    rdfs:label "Service Endpoint" ;
+    rdfs:comment "Base URL for the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServiceName a owl:DatatypeProperty ;
+    rdfs:label "Service Name" ;
+    rdfs:comment "Name of the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServicePort a owl:DatatypeProperty ;
+    rdfs:label "Service Port" ;
+    rdfs:comment "Port number for the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasServiceVersion a owl:DatatypeProperty ;
+    rdfs:label "Service Version" ;
+    rdfs:comment "Version of the service" ;
+    rdfs:domain ns1:ServiceDeployment ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTestEndpoint a owl:DatatypeProperty ;
+    rdfs:label "Test Endpoint" ;
+    rdfs:comment "Endpoint to test" ;
+    rdfs:domain ns1:JenaFusekiTest ;
+    rdfs:range xsd:anyURI ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTestName a owl:DatatypeProperty ;
+    rdfs:label "Test Name" ;
+    rdfs:comment "Name of the test" ;
+    rdfs:domain ns1:TestConfiguration ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:healthCheckTest a ns1:JenaFusekiTest ;
+    rdfs:label "Health Check Test" ;
+    ns1:hasExpectedResponse "200" ;
+    ns1:hasTestEndpoint "http://localhost:3030/" ;
+    ns1:hasTestName "health_check" ;
+    rdfs:comment "Test for Fuseki health check endpoint" .
+
+ns1:serverLogTest a ns1:LoggingTest ;
+    rdfs:label "Server Log Test" ;
+    ns1:hasLogLevel "INFO" ;
+    ns1:hasLogPattern "Server started" ;
+    ns1:hasTestName "log_check" ;
+    rdfs:comment "Test for server log patterns" .
+
+:exampleColimaRuntime1 a ns1:ColimaRuntime ;
+    rdfs:label "Example ColimaRuntime 1" ;
+    rdfs:comment "This is example instance 1 of class ColimaRuntime" .
+
+:exampleColimaRuntime2 a ns1:ColimaRuntime ;
+    rdfs:label "Example ColimaRuntime 2" ;
+    rdfs:comment "This is example instance 2 of class ColimaRuntime" .
+
+:exampleContainerRuntime1 a ns1:ContainerRuntime ;
+    rdfs:label "Example ContainerRuntime 1" ;
+    ns1:hasRuntimeName "Example value 1" ;
+    ns1:hasRuntimeStatus "Example value 1" ;
+    ns1:hasRuntimeVersion "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class ContainerRuntime" .
+
+:exampleContainerRuntime2 a ns1:ContainerRuntime ;
+    rdfs:label "Example ContainerRuntime 2" ;
+    ns1:hasRuntimeName "Example value 2" ;
+    ns1:hasRuntimeStatus "Example value 2" ;
+    ns1:hasRuntimeVersion "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class ContainerRuntime" .
+
+:exampleDeployment1 a ns1:Deployment ;
+    rdfs:label "Example Deployment 1" ;
+    rdfs:comment "This is example instance 1 of class Deployment" .
+
+:exampleDeployment2 a ns1:Deployment ;
+    rdfs:label "Example Deployment 2" ;
+    rdfs:comment "This is example instance 2 of class Deployment" .
+
+:exampleJenaFusekiDeployment1 a ns1:JenaFusekiDeployment ;
+    rdfs:label "Example JenaFusekiDeployment 1" ;
+    ns1:hasDatasetName "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class JenaFusekiDeployment" .
+
+:exampleJenaFusekiDeployment2 a ns1:JenaFusekiDeployment ;
+    rdfs:label "Example JenaFusekiDeployment 2" ;
+    ns1:hasDatasetName "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class JenaFusekiDeployment" .
+
+:exampleJenaFusekiTest1 a ns1:JenaFusekiTest ;
+    rdfs:label "Example JenaFusekiTest 1" ;
+    ns1:hasExpectedResponse "Example value 1" ;
+    ns1:hasTestEndpoint :exampleanyURI1 ;
+    rdfs:comment "This is example instance 1 of class JenaFusekiTest" .
+
+:exampleJenaFusekiTest2 a ns1:JenaFusekiTest ;
+    rdfs:label "Example JenaFusekiTest 2" ;
+    ns1:hasExpectedResponse "Example value 2" ;
+    ns1:hasTestEndpoint :exampleanyURI2 ;
+    rdfs:comment "This is example instance 2 of class JenaFusekiTest" .
+
+:exampleLoggingTest1 a ns1:LoggingTest ;
+    rdfs:label "Example LoggingTest 1" ;
+    ns1:hasLogLevel "Example value 1" ;
+    ns1:hasLogPattern "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class LoggingTest" .
+
+:exampleLoggingTest2 a ns1:LoggingTest ;
+    rdfs:label "Example LoggingTest 2" ;
+    ns1:hasLogLevel "Example value 2" ;
+    ns1:hasLogPattern "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class LoggingTest" .
+
+:exampleServiceDeployment1 a ns1:ServiceDeployment ;
+    rdfs:label "Example ServiceDeployment 1" ;
+    ns1:hasServiceEndpoint :exampleanyURI1 ;
+    ns1:hasServiceName "Example value 1" ;
+    ns1:hasServicePort 1 ;
+    ns1:hasServiceVersion "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class ServiceDeployment" .
+
+:exampleServiceDeployment2 a ns1:ServiceDeployment ;
+    rdfs:label "Example ServiceDeployment 2" ;
+    ns1:hasServiceEndpoint :exampleanyURI2 ;
+    ns1:hasServiceName "Example value 2" ;
+    ns1:hasServicePort 2 ;
+    ns1:hasServiceVersion "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class ServiceDeployment" .
+
+:exampleTestConfiguration1 a ns1:TestConfiguration ;
+    rdfs:label "Example TestConfiguration 1" ;
+    ns1:hasTestName "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class TestConfiguration" .
+
+:exampleTestConfiguration2 a ns1:TestConfiguration ;
+    rdfs:label "Example TestConfiguration 2" ;
+    ns1:hasTestName "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class TestConfiguration" .
+
+ns1:ColimaRuntime a owl:Class ;
+    rdfs:label "Colima Runtime" ;
+    rdfs:comment "Configuration for Colima container runtime" ;
+    rdfs:subClassOf ns1:ContainerRuntime ;
+    owl:versionInfo "1.0.0" .
+
+ns1:Deployment a owl:Class ;
+    rdfs:label "Deployment" ;
+    rdfs:comment "Base class for deployment configurations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:JenaFusekiDeployment a owl:Class ;
+    rdfs:label "Jena Fuseki Deployment" ;
+    rdfs:comment "Configuration for Jena Fuseki deployment" ;
+    rdfs:subClassOf ns1:ServiceDeployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TestConfiguration a owl:Class ;
+    rdfs:label "Test Configuration" ;
+    rdfs:comment "Base class for test configurations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ContainerRuntime a owl:Class ;
+    rdfs:label "Container Runtime" ;
+    rdfs:comment "Configuration for container runtime environment" ;
+    rdfs:subClassOf ns1:Deployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:JenaFusekiTest a owl:Class ;
+    rdfs:label "Jena Fuseki Test" ;
+    rdfs:comment "Configuration for Jena Fuseki tests" ;
+    rdfs:subClassOf ns1:TestConfiguration ;
+    owl:versionInfo "1.0.0" .
+
+ns1:LoggingTest a owl:Class ;
+    rdfs:label "Logging Test" ;
+    rdfs:comment "Configuration for logging tests" ;
+    rdfs:subClassOf ns1:TestConfiguration ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ServiceDeployment a owl:Class ;
+    rdfs:label "Service Deployment" ;
+    rdfs:comment "Configuration for service deployment" ;
+    rdfs:subClassOf ns1:Deployment ;
+    owl:versionInfo "1.0.0" .
+
+ns1:GraphDBDeployment a owl:Class ;
+    rdfs:label "GraphDB Deployment" ;
+    rdfs:comment "Configuration for GraphDB deployment" ;
+    rdfs:subClassOf ns1:ServiceDeployment ;
+    owl:versionInfo "1.0.0" .
+

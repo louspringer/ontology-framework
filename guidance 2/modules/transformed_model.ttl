@@ -1,0 +1,18 @@
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dcterms1: <http://purl.org/dc/terms/#> .
+@prefix ns2: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns2:ModelGuidanceModule a owl:Ontology ;
+    rdfs:label "Model Guidance Module" ;
+    dc1:title "Model Guidance Module" ;
+    dc1:version "1.0.0" ;
+    dcterms1:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms1:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Model-specific guidance concepts and principles" ;
+    owl:imports <http://ontologies.louspringer.com/guidance/modules/core.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/validation.ttl> ;
+    owl:versionInfo "1.0.0" .
+

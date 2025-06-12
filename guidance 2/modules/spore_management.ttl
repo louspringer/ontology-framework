@@ -1,0 +1,31 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:exampleSporeIntegration1 a :SporeIntegration ;
+    rdfs:label "Example SporeIntegration 1" ;
+    rdfs:comment "This is example instance 1 of class SporeIntegration" ;
+    :integratesSpore :exampleOntology1 .
+
+:exampleSporeIntegration2 a :SporeIntegration ;
+    rdfs:label "Example SporeIntegration 2" ;
+    rdfs:comment "This is example instance 2 of class SporeIntegration" ;
+    :integratesSpore :exampleOntology2 .
+
+:exampleSporeManager1 a :SporeManager ;
+    rdfs:label "Example SporeManager 1" ;
+    rdfs:comment "This is example instance 1 of class SporeManager" .
+
+:exampleSporeManager2 a :SporeManager ;
+    rdfs:label "Example SporeManager 2" ;
+    rdfs:comment "This is example instance 2 of class SporeManager" .
+
+:exampleSporeValidator1 a :SporeValidator ;
+    rdfs:label "Example SporeValidator 1" ;
+    rdfs:comment "This is example instance 1 of class SporeValidator" ;
+    :validatesSpore :exampleTransformationPattern1 .
+
+:exampleSporeValidator2 a :SporeValidator ;
+    rdfs:label "Example SporeValidator 2" ;
+    rdfs:comment "This is example instance 2 of class SporeValidator" ;
+    :validatesSpore :exampleTransformationPattern2 .
+

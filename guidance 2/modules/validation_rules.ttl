@@ -1,0 +1,80 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix valid: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation_rules#> .
+
+:exampleBasicMatrixValidation1 a valid:BasicMatrixValidation ;
+    rdfs:label "Example BasicMatrixValidation 1" ;
+    rdfs:comment "This is example instance 1 of class BasicMatrixValidation" .
+
+:exampleBasicMatrixValidation2 a valid:BasicMatrixValidation ;
+    rdfs:label "Example BasicMatrixValidation 2" ;
+    rdfs:comment "This is example instance 2 of class BasicMatrixValidation" .
+
+:exampleMatrixValidation1 a valid:MatrixValidation ;
+    rdfs:label "Example MatrixValidation 1" ;
+    rdfs:comment "This is example instance 1 of class MatrixValidation" .
+
+:exampleMatrixValidation2 a valid:MatrixValidation ;
+    rdfs:label "Example MatrixValidation 2" ;
+    rdfs:comment "This is example instance 2 of class MatrixValidation" .
+
+:examplePerformanceValidation1 a valid:PerformanceValidation ;
+    rdfs:label "Example PerformanceValidation 1" ;
+    rdfs:comment "This is example instance 1 of class PerformanceValidation" .
+
+:examplePerformanceValidation2 a valid:PerformanceValidation ;
+    rdfs:label "Example PerformanceValidation 2" ;
+    rdfs:comment "This is example instance 2 of class PerformanceValidation" .
+
+:exampleRiskValidation1 a valid:RiskValidation ;
+    rdfs:label "Example RiskValidation 1" ;
+    rdfs:comment "This is example instance 1 of class RiskValidation" .
+
+:exampleRiskValidation2 a valid:RiskValidation ;
+    rdfs:label "Example RiskValidation 2" ;
+    rdfs:comment "This is example instance 2 of class RiskValidation" .
+
+:exampleSensitiveDataValidation1 a valid:SensitiveDataValidation ;
+    rdfs:label "Example SensitiveDataValidation 1" ;
+    rdfs:comment "This is example instance 1 of class SensitiveDataValidation" .
+
+:exampleSensitiveDataValidation2 a valid:SensitiveDataValidation ;
+    rdfs:label "Example SensitiveDataValidation 2" ;
+    rdfs:comment "This is example instance 2 of class SensitiveDataValidation" .
+
+:exampleSeverityValidation1 a valid:SeverityValidation ;
+    rdfs:label "Example SeverityValidation 1" ;
+    rdfs:comment "This is example instance 1 of class SeverityValidation" .
+
+:exampleSeverityValidation2 a valid:SeverityValidation ;
+    rdfs:label "Example SeverityValidation 2" ;
+    rdfs:comment "This is example instance 2 of class SeverityValidation" .
+
+:exampleValidationRule1 a valid:ValidationRule ;
+    rdfs:label "Example ValidationRule 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationRule" ;
+    valid:hasValidationType "Example value 1" .
+
+:exampleValidationRule2 a valid:ValidationRule ;
+    rdfs:label "Example ValidationRule 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationRule" ;
+    valid:hasValidationType "Example value 2" .
+
+valid:BasicMatrixValidationInstance a valid:BasicMatrixValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:MatrixValidationInstance a valid:MatrixValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:PerformanceValidationInstance a valid:PerformanceValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:RiskValidationInstance a valid:RiskValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:SensitiveDataValidationInstance a valid:SensitiveDataValidation ;
+    valid:hasValidationType "REQUIRED" .
+
+valid:SeverityValidationInstance a valid:SeverityValidation ;
+    valid:hasValidationType "REQUIRED" .
+

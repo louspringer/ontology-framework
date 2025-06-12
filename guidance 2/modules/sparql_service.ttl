@@ -1,0 +1,38 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix env: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/environment#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:exampleServiceRequirement1 a :ServiceRequirement ;
+    rdfs:label "Example ServiceRequirement 1" ;
+    rdfs:comment "This is example instance 1 of class ServiceRequirement" ;
+    :hasRequirementType "Example value 1" ;
+    :hasRequirementValue "Example value 1" .
+
+:exampleServiceRequirement2 a :ServiceRequirement ;
+    rdfs:label "Example ServiceRequirement 2" ;
+    rdfs:comment "This is example instance 2 of class ServiceRequirement" ;
+    :hasRequirementType "Example value 2" ;
+    :hasRequirementValue "Example value 2" .
+
+:exampleSparqlService1 a :SparqlService ;
+    rdfs:label "Example SparqlService 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlService" ;
+    :hasAuthentication :exampleboolean1 ;
+    :hasDefaultDataset "Example value 1" ;
+    :hasServiceType "Example value 1" ;
+    :hasServiceUrl :exampleanyURI1 .
+
+:exampleSparqlService2 a :SparqlService ;
+    rdfs:label "Example SparqlService 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlService" ;
+    :hasAuthentication :exampleboolean2 ;
+    :hasDefaultDataset "Example value 2" ;
+    :hasServiceType "Example value 2" ;
+    :hasServiceUrl :exampleanyURI2 .
+
+env:developmentEnvironment :hasEnvironmentService :developmentSparqlService .
+
+env:productionEnvironment :hasEnvironmentService :productionSparqlService .
+
+env:testingEnvironment :hasEnvironmentService :testingSparqlService .
+

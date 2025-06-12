@@ -1,0 +1,90 @@
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
+@prefix plan: <https://louspringer.com/plan#> .
+@prefix spore: <https://louspringer.com/spore#> .
+@prefix action: <https://louspringer.com/action#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+# Schema: Tie Plan Structure
+#################################################################
+
+spore:addressesInput rdfs:domain spore:Spore ; rdfs:range owl:Thing .
+spore:producesOutcome rdfs:domain spore:Spore ; rdfs:range owl:Thing .
+spore:encapsulatesPlan rdfs:domain spore:Spore ; rdfs:range plan:Plan .
+
+plan:acceptsInput rdfs:domain plan:Plan ; rdfs:range owl:Thing .
+plan:deliversOutput rdfs:domain plan:Plan ; rdfs:range owl:Thing .
+
+action:generatesArtifact rdfs:domain plan:Action ; rdfs:range file:OntologyArtifact .
+
+#################################################################
+# Instance: RefactorGovernanceSpore with Bow-Tie Model
+#################################################################
+
+spore:RefactorGovernanceSpore a spore:Spore, meta:TransformationPattern ;
+    rdfs:label "Spore for Refactor Governance and Conformance" ;
+    rdfs:comment "Encapsulates traceable changes introduced by the refactor plan using spores." ;
+    spore:payload file:refactor_plan_ttl ;
+    spore:status meta:ProposedStatus ;
+    rdfs:isDefinedBy file:refactor_plan_ttl ;
+    meta:confirmedViolation file:legacy_doc_structure ;
+    meta:remediatedBy plan:OntologyFrameworkRefactorPlan ;
+    meta:validatedBy file:spore_validationModule ;
+    spore:addressesInput file:legacy_doc_structure ;
+    spore:encapsulatesPlan plan:OntologyFrameworkRefactorPlan ;
+    spore:producesOutcome file:validated_ontology_state .
+
+#################################################################
+# Plan and Actions
+#################################################################
+
+plan:OntologyFrameworkRefactorPlan a plan:Plan ;
+    rdfs:label "Ontology Framework Refactor Plan" ;
+    rdfs:comment "Plan to modularize the repository and integrate validation." ;
+    plan:hasAction plan:Action_ModularizeDocs, plan:Action_IntegrateSporeValidation ;
+    plan:planStatus meta:ProposedStatus ;
+    owl:versionInfo "1.0.0" ;
+    plan:acceptsInput file:legacy_doc_structure ;
+    plan:deliversOutput file:validated_ontology_state .
+
+plan:Action_ModularizeDocs a plan:Action ;
+    rdfs:label "Modularize Legacy Documentation Structure" ;
+    plan:actionOrder 1 ;
+    plan:actionStatus meta:PendingStatus ;
+    plan:remediates file:legacy_doc_structure .
+
+plan:Action_IntegrateSporeValidation a plan:Action ;
+    rdfs:label "Integrate Spore Validation Module" ;
+    plan:actionOrder 2 ;
+    plan:actionStatus meta:PendingStatus ;
+    plan:usesTool file:spore_validationModule ;
+    action:generatesArtifact file:spore_validationModule .
+
+#################################################################
+# Supporting Resources
+#################################################################
+
+file:spore_validationModule a meta:CodeModule ;
+    rdfs:label "spore_validation" ;
+    rdfs:comment "Module for validating spore compliance and quality" ;
+    meta:version "1.0.0" ;
+    meta:testCoverage "90%" ;
+    meta:moduleLanguage "Python" ;
+    meta:moduleEntryPoint "scripts.validate_spore:main" .
+
+file:legacy_doc_structure a meta:ViolationInstance ;
+    rdfs:label "Outdated or overlapping documentation patterns" ;
+    meta:severityLevel "Medium" ;
+    meta:detectionDate "2025-06-11"^^xsd:date .
+
+file:refactor_plan_ttl a meta:OntologyArtifact ;
+    rdfs:label "refactor_plan.ttl" ;
+    meta:version "1.0.0" .
+
+file:validated_ontology_state a meta:OntologyArtifact ;
+    rdfs:label "Validated Ontology State" ;
+    rdfs:comment "The resulting ontology state after refactor plan validation and remediation." ;
+    meta:version "1.0.0" .

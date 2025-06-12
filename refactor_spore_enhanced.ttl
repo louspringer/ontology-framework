@@ -1,0 +1,82 @@
+
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
+@prefix plan: <https://louspringer.com/plan#> .
+@prefix spore: <https://louspringer.com/spore#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+#################################################################
+# Core Classes
+#################################################################
+
+spore:Spore a rdfs:Class ;
+    rdfs:label "Spore" ;
+    rdfs:comment "A self-contained unit encapsulating a change, its rationale, its payload, and its effects." .
+
+plan:Plan a rdfs:Class ;
+    rdfs:label "Plan" ;
+    rdfs:comment "An organized sequence of actions intended to achieve a defined objective." .
+
+plan:Action a rdfs:Class ;
+    rdfs:label "Action" ;
+    rdfs:comment "A concrete step within a plan, with a target, status, and optional input/output artifacts." .
+
+meta:Status a rdfs:Class ;
+    rdfs:label "Status" ;
+    rdfs:comment "Indicates the lifecycle state of an action or plan." .
+
+#################################################################
+# Instances
+#################################################################
+
+plan:OntologyFrameworkRefactorPlan a plan:Plan ;
+    rdfs:label "Ontology Framework Refactor Plan" ;
+    rdfs:comment "Plan to modularize the repository and integrate validation." ;
+    plan:hasAction plan:Action_ModularizeDocs, plan:Action_IntegrateSporeValidation ;
+    plan:planStatus meta:ProposedStatus ;
+    owl:versionInfo "1.0.0" .
+
+plan:Action_ModularizeDocs a plan:Action ;
+    rdfs:label "Modularize Legacy Documentation Structure" ;
+    plan:actionOrder 1 ;
+    plan:actionStatus meta:PendingStatus ;
+    plan:remediates file:legacy_doc_structure .
+
+plan:Action_IntegrateSporeValidation a plan:Action ;
+    rdfs:label "Integrate Spore Validation Module" ;
+    plan:actionOrder 2 ;
+    plan:actionStatus meta:PendingStatus ;
+    plan:usesTool file:spore_validationModule .
+
+#################################################################
+# Metadata for Artifacts
+#################################################################
+
+file:spore_validationModule a meta:CodeModule ;
+    rdfs:label "spore_validation" ;
+    rdfs:comment "Module for validating spore compliance and quality" ;
+    meta:version "1.0.0" ;
+    meta:testCoverage "90%" ;
+    meta:moduleLanguage "Python" ;
+    meta:moduleEntryPoint "scripts.validate_spore:main" .
+
+file:legacy_doc_structure a meta:ViolationInstance ;
+    rdfs:label "Outdated or overlapping documentation patterns" ;
+    meta:severityLevel "Medium" ;
+    meta:detectionDate "2025-06-11"^^xsd:date .
+
+#################################################################
+# Enrich Spore Definition
+#################################################################
+
+spore:RefactorGovernanceSpore a spore:Spore, meta:TransformationPattern ;
+    rdfs:label "Spore for Refactor Governance and Conformance" ;
+    rdfs:comment "Encapsulates traceable changes introduced by the refactor plan using spores." ;
+    spore:payload file:refactor_plan_ttl ;
+    spore:status meta:ProposedStatus ;
+    rdfs:isDefinedBy file:refactor_plan_ttl ;
+    meta:confirmedViolation file:legacy_doc_structure ;
+    meta:remediatedBy plan:OntologyFrameworkRefactorPlan ;
+    meta:validatedBy file:spore_validationModule .

@@ -1,0 +1,186 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/security#> .
+@prefix core: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/core#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+:IncidentResponse a owl:NamedIndividual,
+        :IncidentResponsePattern ;
+    rdfs:label "Incident Response Procedures" ;
+    rdfs:comment """Incident response requirements:
+    1. Emergency auth MUST work when everything else is down
+    2. Break-glass procedures MUST be fully local
+    3. Recovery procedures MUST be cached offline
+    4. Backup credentials MUST be securely accessible
+    5. Auth failures MUST NOT escalate incidents
+    6. MUST have degraded operation modes
+    7. MUST support disconnected operation
+    8. MUST track and audit emergency access
+    9. MUST provide secure ways to cache credentials
+    10. MUST NOT force admins to create shadow systems""" ;
+    owl:versionInfo "1.0.0" ;
+    :requires :EmergencyAccess,
+        :SecureKeyStorage .
+
+:RSAKeyPairAuth a owl:NamedIndividual,
+        :AuthenticationPattern ;
+    rdfs:label "RSA Key Pair Authentication" ;
+    rdfs:comment "Authentication using RSA key pairs" ;
+    owl:versionInfo "1.0.0" ;
+    :recommends :KeyRotation ;
+    :requires :SecureKeyStorage .
+
+:SecureKeyDeletion a owl:NamedIndividual,
+        :KeyDeletionPattern ;
+    rdfs:label "Secure Key Deletion" ;
+    rdfs:comment """Critical rules for key deletion:
+    1. NEVER delete any .env files without verified backup
+    2. ALWAYS confirm backup location before deletion
+    3. ALWAYS get explicit user confirmation before deletion
+    4. Treat .gitignore'd files with extra caution - they likely contain untracked sensitive data
+    5. Maintain backup verification logs
+    6. AVAILABILITY FIRST - Never delete unique copies of credentials
+    7. Security procedures must not impair authorized access""" ;
+    owl:versionInfo "1.0.0" ;
+    :recommends :KeyBackupVerification ;
+    :requires :CIATriadEnforcement,
+        :SecureKeyStorage .
+
+:SecurityBestPractices a owl:NamedIndividual,
+        core:BestPractice ;
+    rdfs:label "Security Best Practices" ;
+    rdfs:comment """Collection of security best practices:
+    1. Store private keys with 600 permissions
+    2. Never commit secrets to VCS
+    3. Use PKCS#8 format for private keys
+    4. Use environment variables for sensitive data
+    5. Implement regular key rotation
+    6. NEVER delete .env or configuration files without verified backup
+    7. ALWAYS get explicit confirmation before key deletion
+    8. AVAILABILITY IS CRITICAL - Security must not break functionality
+    9. Maintain working access to all essential credentials
+    10. Balance security measures against operational needs
+    11. TRACK ALL SLA VIOLATIONS AS SECURITY INCIDENTS
+    12. Test security measures against SLA requirements
+    13. Regular SLA compliance auditing required
+    14. Emergency access MUST work offline
+    15. Provide secure ways to cache credentials
+    16. Test auth systems during simulated outages
+    17. Never force shadow security systems
+    18. Plan for degraded/disconnected operation
+    19. Maintain local authentication capability""" ;
+    owl:versionInfo "1.0.0" .
+
+:SecurityGuidanceModule a owl:Ontology ;
+    rdfs:label "Security Guidance Module" ;
+    dc1:title "Security Guidance Module" ;
+    dc1:version "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Security patterns and best practices for guidance ontology" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/collaboration.ttl>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core.ttl>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/model.ttl>,
+        <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/validation.ttl> ;
+    owl:versionInfo "1.0.0" .
+
+:exampleAuthenticationPattern1 a :AuthenticationPattern ;
+    rdfs:label "Example AuthenticationPattern 1" ;
+    rdfs:comment "This is example instance 1 of class AuthenticationPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleAuthenticationPattern2 a :AuthenticationPattern ;
+    rdfs:label "Example AuthenticationPattern 2" ;
+    rdfs:comment "This is example instance 2 of class AuthenticationPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleCIAPattern1 a :CIAPattern ;
+    rdfs:label "Example CIAPattern 1" ;
+    rdfs:comment "This is example instance 1 of class CIAPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleCIAPattern2 a :CIAPattern ;
+    rdfs:label "Example CIAPattern 2" ;
+    rdfs:comment "This is example instance 2 of class CIAPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleEmergencyAccessPattern1 a :EmergencyAccessPattern ;
+    rdfs:label "Example EmergencyAccessPattern 1" ;
+    rdfs:comment "This is example instance 1 of class EmergencyAccessPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleEmergencyAccessPattern2 a :EmergencyAccessPattern ;
+    rdfs:label "Example EmergencyAccessPattern 2" ;
+    rdfs:comment "This is example instance 2 of class EmergencyAccessPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleIncidentResponsePattern1 a :IncidentResponsePattern ;
+    rdfs:label "Example IncidentResponsePattern 1" ;
+    rdfs:comment "This is example instance 1 of class IncidentResponsePattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleIncidentResponsePattern2 a :IncidentResponsePattern ;
+    rdfs:label "Example IncidentResponsePattern 2" ;
+    rdfs:comment "This is example instance 2 of class IncidentResponsePattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleKeyDeletionPattern1 a :KeyDeletionPattern ;
+    rdfs:label "Example KeyDeletionPattern 1" ;
+    rdfs:comment "This is example instance 1 of class KeyDeletionPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleKeyDeletionPattern2 a :KeyDeletionPattern ;
+    rdfs:label "Example KeyDeletionPattern 2" ;
+    rdfs:comment "This is example instance 2 of class KeyDeletionPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleKeyManagementPattern1 a :KeyManagementPattern ;
+    rdfs:label "Example KeyManagementPattern 1" ;
+    rdfs:comment "This is example instance 1 of class KeyManagementPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleKeyManagementPattern2 a :KeyManagementPattern ;
+    rdfs:label "Example KeyManagementPattern 2" ;
+    rdfs:comment "This is example instance 2 of class KeyManagementPattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleSLACompliancePattern1 a :SLACompliancePattern ;
+    rdfs:label "Example SLACompliancePattern 1" ;
+    rdfs:comment "This is example instance 1 of class SLACompliancePattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleSLACompliancePattern2 a :SLACompliancePattern ;
+    rdfs:label "Example SLACompliancePattern 2" ;
+    rdfs:comment "This is example instance 2 of class SLACompliancePattern" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleSLAViolation1 a :SLAViolation ;
+    rdfs:label "Example SLAViolation 1" ;
+    rdfs:comment "This is example instance 1 of class SLAViolation" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleSLAViolation2 a :SLAViolation ;
+    rdfs:label "Example SLAViolation 2" ;
+    rdfs:comment "This is example instance 2 of class SLAViolation" ;
+    owl:versionInfo "1.0.0" .
+
+: a owl:Ontology ;
+    rdfs:label "Security Module"@en ;
+    rdfs:comment "Module for security rules and patterns"@en ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+:SecurityPattern a owl:Class ;
+    rdfs:label "Security Pattern"@en ;
+    rdfs:comment "Pattern for security rules"@en ;
+    owl:versionInfo "1.0.0" .
+
+:SecurityRule a owl:Class ;
+    rdfs:label "Security Rule"@en ;
+    rdfs:comment "Rule for security"@en ;
+    owl:versionInfo "1.0.0" .
+

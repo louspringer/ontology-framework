@@ -1,0 +1,147 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/checkin/> .
+@prefix ns2: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/testing/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ns1: a owl:Ontology ;
+    rdfs:label "Checkin Process" ;
+    dc:title "Checkin Process" ;
+    dcterms:created "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dcterms:description "Process for checking in code changes with error handling and validation" ;
+    dcterms:hasVersion "1.0.0" ;
+    dcterms:modified "2024-04-15T00:00:00"^^xsd:dateTime ;
+    dcterms:publisher "Ontology Framework Project" ;
+    rdfs:comment "Defines the process for checking in code changes" ;
+    owl:versionInfo "1.0.0" .
+ns1:CheckinErrorHandlingShape a sh:NodeShape ;
+    sh:property [ sh:datatype ns2:FixCycle ;
+            sh:maxCount 1 ;
+            sh:message "Checkin error handling must specify a fix cycle" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasFixCycle ] ;
+    sh:targetClass ns1:CheckinErrorHandling .
+ns1:CheckinStepShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have exactly one order" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasStepOrder ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have exactly one action" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasStepAction ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:message "Checkin step must have a valid status" ;
+            sh:minCount 1 ;
+            sh:path ns1:hasStepStatus ] ;
+    sh:targetClass ns1:CheckinStep .
+ns1:CommitStep a ns1:CheckinStep ;
+    rdfs:label "Commit Changes" ;
+    rdfs:comment "Commit changes with the created message" ;
+    ns1:hasErrorTrap [ a ns2:ErrorTrap ;
+            ns2:hasTrapMessage "Error in Commit Changes" ;
+            ns2:hasTrapType "commitstep_error" ] ;
+    ns1:hasStepAction "git commit with message" ;
+    ns1:hasStepOrder 5 ;
+    ns1:hasStepStatus "PENDING" .
+ns1:CreateCommitMessageStep a ns1:CheckinStep ;
+    rdfs:label "Create Commit Message" ;
+    rdfs:comment "Create a friendly commit message with emoji" ;
+    ns1:hasErrorTrap [ a ns2:ErrorTrap ;
+            ns2:hasTrapMessage "Error in Create Commit Message" ;
+            ns2:hasTrapType "createcommitmessagestep_error" ] ;
+    ns1:hasStepAction "Create markdown commit message" ;
+    ns1:hasStepOrder 4 ;
+    ns1:hasStepStatus "PENDING" .
+ns1:FixErrorsStep a ns1:CheckinStep ;
+    rdfs:label "Fix Errors" ;
+    rdfs:comment "Fix any test failures or errors" ;
+    ns1:hasErrorTrap [ a ns2:ErrorTrap ;
+            ns2:hasTrapMessage "Error in Fix Errors" ;
+            ns2:hasTrapType "fixerrorsstep_error" ] ;
+    ns1:hasStepAction "Modify model and code to handle errors" ;
+    ns1:hasStepOrder 2 ;
+    ns1:hasStepStatus "PENDING" .
+ns1:GitAddStep a ns1:CheckinStep ;
+    rdfs:label "Git Add" ;
+    rdfs:comment "Add changes to git staging area" ;
+    ns1:hasErrorTrap [ a ns2:ErrorTrap ;
+            ns2:hasTrapMessage "Error in Git Add" ;
+            ns2:hasTrapType "gitaddstep_error" ] ;
+    ns1:hasStepAction "git add modified files" ;
+    ns1:hasStepOrder 3 ;
+    ns1:hasStepStatus "PENDING" .
+ns1:RunTestsStep a ns1:CheckinStep ;
+    rdfs:label "Run Tests" ;
+    rdfs:comment "Run all tests in the test suite" ;
+    ns1:hasErrorTrap [ a ns2:ErrorTrap ;
+            ns2:hasTrapMessage "Error in Run Tests" ;
+            ns2:hasTrapType "runtestsstep_error" ] ;
+    ns1:hasStepAction "Run pytest with coverage and type checking" ;
+    ns1:hasStepOrder 1 ;
+    ns1:hasStepStatus "PENDING" .
+ns1:exampleCheckinErrorHandling1 a ns1:CheckinErrorHandling ;
+    rdfs:label "Example CheckinErrorHandling 1" ;
+    rdfs:comment "This is example instance 1 of class CheckinErrorHandling" ;
+    ns1:hasFixCycle ns2:exampleFixCycle1 .
+ns1:exampleCheckinErrorHandling2 a ns1:CheckinErrorHandling ;
+    rdfs:label "Example CheckinErrorHandling 2" ;
+    rdfs:comment "This is example instance 2 of class CheckinErrorHandling" ;
+    ns1:hasFixCycle ns2:exampleFixCycle2 .
+ns1:exampleCheckinStep1 a ns1:CheckinStep ;
+    rdfs:label "Example CheckinStep 1" ;
+    rdfs:comment "This is example instance 1 of class CheckinStep" ;
+    ns1:hasErrorTrap ns2:exampleErrorTrap1 ;
+    ns1:hasStepAction "Example value 1" ;
+    ns1:hasStepOrder 1 ;
+    ns1:hasStepStatus "Example value 1" .
+ns1:exampleCheckinStep2 a ns1:CheckinStep ;
+    rdfs:label "Example CheckinStep 2" ;
+    rdfs:comment "This is example instance 2 of class CheckinStep" ;
+    ns1:hasErrorTrap ns2:exampleErrorTrap2 ;
+    ns1:hasStepAction "Example value 2" ;
+    ns1:hasStepOrder 2 ;
+    ns1:hasStepStatus "Example value 2" .
+ns1:hasErrorTrap a owl:ObjectProperty ;
+    rdfs:label "has error trap" ;
+    rdfs:comment "Specifies the error trapping mechanism" ;
+    rdfs:domain ns1:CheckinStep ;
+    rdfs:range ns2:ErrorTrap ;
+    owl:versionInfo "1.0.0" .
+ns1:hasFixCycle a owl:ObjectProperty ;
+    rdfs:label "has fix cycle" ;
+    rdfs:comment "Specifies the steps in the error fix cycle" ;
+    rdfs:domain ns1:CheckinErrorHandling ;
+    rdfs:range ns2:FixCycle ;
+    owl:versionInfo "1.0.0" .
+ns1:hasStepAction a owl:DatatypeProperty ;
+    rdfs:label "has step action" ;
+    rdfs:comment "Specifies the action to take in this step" ;
+    rdfs:domain ns1:CheckinStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+ns1:hasStepOrder a owl:DatatypeProperty ;
+    rdfs:label "has step order" ;
+    rdfs:comment "Specifies the order of the checkin step" ;
+    rdfs:domain ns1:CheckinStep ;
+    rdfs:range xsd:integer ;
+    owl:versionInfo "1.0.0" .
+ns1:hasStepStatus a owl:DatatypeProperty ;
+    rdfs:label "has step status" ;
+    rdfs:comment "Specifies the status of the step" ;
+    rdfs:domain ns1:CheckinStep ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+ns1:CheckinErrorHandling a owl:Class ;
+    rdfs:label "CheckinErrorHandling" ;
+    rdfs:comment "Class for CheckinErrorHandling" ;
+    owl:versionInfo "1.0.0" .
+ns1:CheckinStep a owl:Class ;
+    rdfs:label "CheckinStep" ;
+    rdfs:comment "Class for CheckinStep" ;
+    owl:versionInfo "1.0.0" .

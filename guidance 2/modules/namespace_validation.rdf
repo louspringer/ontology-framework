@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:ns1="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceContext">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Namespace Context</rdfs:label>
+    <rdfs:comment>Context in which a namespace is used</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#comment">
+    <rdfs:label>rdf-schema#comment</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#comment</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#TestRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule"/>
+    <rdfs:label>Test Namespace Rule</rdfs:label>
+    <rdfs:comment>Test data MAY use example.org URLs</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <ns1:hasContext rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#TestContext"/>
+    <ns1:hasPattern rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleOrgPattern"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#hasContext">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Context</rdfs:label>
+    <rdfs:comment>Links a namespace rule to its usage context</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceContext"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule"/>
+    <rdfs:label>Example Namespace Rule</rdfs:label>
+    <rdfs:comment>Documentation examples MAY use example.org URLs</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <ns1:hasContext rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleContext"/>
+    <ns1:hasPattern rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleOrgPattern"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleOrgPattern">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespacePattern"/>
+    <rdfs:label>Example.org Pattern</rdfs:label>
+    <rdfs:comment>http://example.org/[path]</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#GitHubRawPattern">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespacePattern"/>
+    <rdfs:label>GitHub Raw Pattern</rdfs:label>
+    <rdfs:comment>https://raw.githubusercontent.com/[owner]/[repo]/[branch]/[path]</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ProductionRule">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule"/>
+    <rdfs:label>Production Namespace Rule</rdfs:label>
+    <rdfs:comment>Production modules MUST use GitHub raw URLs</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+    <ns1:hasContext rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ProductionContext"/>
+    <ns1:hasPattern rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#GitHubRawPattern"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
+    <rdfs:label>22-rdf-syntax-ns#type</rdfs:label>
+    <rdfs:comment>Description of 22-rdf-syntax-ns#type</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#label">
+    <rdfs:label>rdf-schema#label</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#label</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#hasPattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label>Has Pattern</rdfs:label>
+    <rdfs:comment>Links a namespace rule to its URI pattern</rdfs:comment>
+    <rdfs:domain rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule"/>
+    <rdfs:range rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespacePattern"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ProductionContext">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceContext"/>
+    <rdfs:label>Production Context</rdfs:label>
+    <rdfs:comment>Namespace usage in production modules</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#domain">
+    <rdfs:label>rdf-schema#domain</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#domain</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#ExampleContext">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceContext"/>
+    <rdfs:label>Example Context</rdfs:label>
+    <rdfs:comment>Namespace usage in documentation examples</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#versionInfo">
+    <rdfs:label>owl#versionInfo</rdfs:label>
+    <rdfs:comment>Description of owl#versionInfo</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>Namespace Validation Rules</rdfs:label>
+    <rdfs:comment>Rules for namespace usage in ontology modules</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#TestContext">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceContext"/>
+    <rdfs:label>Test Context</rdfs:label>
+    <rdfs:comment>Namespace usage in test data</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespacePattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Namespace Pattern</rdfs:label>
+    <rdfs:comment>Pattern for namespace URIs</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.w3.org/2000/01/rdf-schema#range">
+    <rdfs:label>rdf-schema#range</rdfs:label>
+    <rdfs:comment>Description of rdf-schema#range</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#NamespaceRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label>Namespace Rule</rdfs:label>
+    <rdfs:comment>A rule governing namespace usage</rdfs:comment>
+    <owl:versionInfo>1.0.0</owl:versionInfo>
+  </rdf:Description>
+</rdf:RDF>

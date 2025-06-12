@@ -1,0 +1,32 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:DeploymentValidationModule a owl:Ontology ;
+    rdfs:label "Deployment Validation Module" ;
+    dc1:title "Deployment Validation Module" ;
+    dc1:version "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:description "Defines validation tasks for deployment and CRUD operation testing" ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    rdfs:comment "Module defining deployment validation tasks and CRUD operation testing" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleValidationTask1 a :ValidationTask ;
+    rdfs:label "Example ValidationTask 1" ;
+    rdfs:comment "This is example instance 1 of class ValidationTask" ;
+    :hasEnvironment :exampleEnvironment1 ;
+    :hasTaskType "Example value 1" ;
+    :hasValidationStep :exampleValidationStep1 .
+
+:exampleValidationTask2 a :ValidationTask ;
+    rdfs:label "Example ValidationTask 2" ;
+    rdfs:comment "This is example instance 2 of class ValidationTask" ;
+    :hasEnvironment :exampleEnvironment2 ;
+    :hasTaskType "Example value 2" ;
+    :hasValidationStep :exampleValidationStep2 .
+

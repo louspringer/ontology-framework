@@ -1,0 +1,93 @@
+@prefix ns1: <http://example.org/deployment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1: a owl:Ontology ;
+    rdfs:label "Deployment Configuration Ontology" ;
+    rdfs:comment "Ontology for managing deployment configurations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:cpuLimit a owl:DatatypeProperty ;
+    rdfs:label "CPU limit" ;
+    rdfs:domain ns1:ResourceRequirements ;
+    rdfs:range xsd:string .
+
+ns1:cpuRequest a owl:DatatypeProperty ;
+    rdfs:label "CPU request" ;
+    rdfs:domain ns1:ResourceRequirements ;
+    rdfs:range xsd:string .
+
+ns1:devConfig a ns1:DeploymentConfig ;
+    rdfs:label "Development Configuration" ;
+    ns1:hasEnvironment ns1:development ;
+    ns1:hasResourceRequirements [ a ns1:ResourceRequirements ;
+            ns1:cpuLimit "1000m" ;
+            ns1:cpuRequest "500m" ;
+            ns1:memoryLimit "256Mi" ;
+            ns1:memoryRequest "128Mi" ] ;
+    ns1:port 8080 ;
+    ns1:replicas 1 .
+
+ns1:hasEnvironment a owl:ObjectProperty ;
+    rdfs:label "has environment" ;
+    rdfs:domain ns1:DeploymentConfig ;
+    rdfs:range ns1:Environment .
+
+ns1:hasResourceRequirements a owl:ObjectProperty ;
+    rdfs:label "has resource requirements" ;
+    rdfs:domain ns1:DeploymentConfig ;
+    rdfs:range ns1:ResourceRequirements .
+
+ns1:memoryLimit a owl:DatatypeProperty ;
+    rdfs:label "memory limit" ;
+    rdfs:domain ns1:ResourceRequirements ;
+    rdfs:range xsd:string .
+
+ns1:memoryRequest a owl:DatatypeProperty ;
+    rdfs:label "memory request" ;
+    rdfs:domain ns1:ResourceRequirements ;
+    rdfs:range xsd:string .
+
+ns1:port a owl:DatatypeProperty ;
+    rdfs:label "port" ;
+    rdfs:domain ns1:DeploymentConfig ;
+    rdfs:range xsd:integer .
+
+ns1:prodConfig a ns1:DeploymentConfig ;
+    rdfs:label "Production Configuration" ;
+    ns1:hasEnvironment ns1:production ;
+    ns1:hasResourceRequirements [ a ns1:ResourceRequirements ;
+            ns1:cpuLimit "2000m" ;
+            ns1:cpuRequest "1000m" ;
+            ns1:memoryLimit "1Gi" ;
+            ns1:memoryRequest "512Mi" ] ;
+    ns1:port 80 ;
+    ns1:replicas 3 .
+
+ns1:replicas a owl:DatatypeProperty ;
+    rdfs:label "replicas" ;
+    rdfs:domain ns1:DeploymentConfig ;
+    rdfs:range xsd:integer .
+
+ns1:staging a ns1:Environment ;
+    rdfs:label "Staging" .
+
+ns1:development a ns1:Environment ;
+    rdfs:label "Development" .
+
+ns1:production a ns1:Environment ;
+    rdfs:label "Production" .
+
+ns1:Environment a owl:Class ;
+    rdfs:label "Environment" ;
+    rdfs:comment "Deployment environment (dev, staging, prod)" .
+
+ns1:DeploymentConfig a owl:Class ;
+    rdfs:label "Deployment Configuration" ;
+    rdfs:comment "Configuration for application deployment" .
+
+ns1:ResourceRequirements a owl:Class ;
+    rdfs:label "Resource Requirements" ;
+    rdfs:comment "CPU and memory requirements for deployment" .
+

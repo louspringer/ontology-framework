@@ -1,0 +1,59 @@
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
+@prefix plan: <https://louspringer.com/plan#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spore: <https://louspringer.com/spore#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spore:RefactorGovernanceSpore a meta:TransformationPattern ;
+    rdfs:label "Spore for Refactor Governance and Conformance" ;
+    rdfs:comment "Encapsulates traceable changes introduced by the refactor plan using spores. This spore ensures proper governance and validation of ontology refactoring processes." ;
+    meta:confirmedViolation file:legacy_doc_structure ;
+    meta:confirmsPurpose "Repository modularization and validation integration" ;
+    meta:distributesPatch file:refactor_plan_ttl ;
+    meta:history "2025-06-12 created via coordination LLM" ;
+    meta:remediatedBy plan:OntologyFrameworkRefactorPlan ;
+    meta:requires file:guidanceTTL,
+        file:spore_managementTTL ;
+    meta:validatedBy file:spore_validationModule ;
+    meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:modifiedAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:version "1.0.0" ;
+    meta:reviewBy "2025-12-12"^^xsd:date ;
+    meta:dependsOn file:guidanceTTL,
+        file:spore_managementTTL ;
+    meta:validationRule "Must pass all spore validation tests" ;
+    meta:qualityThreshold "90%" ;
+    meta:testCoverage "85%" ;
+    meta:accessLevel "admin" ;
+    meta:auditTrail "true" .
+
+file:guidanceTTL a meta:OntologyArtifact ;
+    rdfs:label "guidance composite TTLs" ;
+    rdfs:comment "Composite TTL files containing guidance and best practices for ontology development" ;
+    meta:version "1.0.0" ;
+    meta:dependsOn file:spore_managementTTL .
+
+file:legacy_doc_structure a meta:ViolationInstance ;
+    rdfs:label "Outdated or overlapping documentation patterns" ;
+    rdfs:comment "Identifies instances of documentation that need to be updated or consolidated" ;
+    meta:severity "high" ;
+    meta:priority "1" .
+
+file:refactor_plan_ttl a meta:OntologyArtifact ;
+    rdfs:label "refactor_plan.ttl" ;
+    rdfs:comment "Detailed plan for ontology refactoring" ;
+    meta:version "1.0.0" ;
+    meta:dependsOn file:guidanceTTL .
+
+file:spore_managementTTL a meta:OntologyArtifact ;
+    rdfs:label "spore_management.ttl" ;
+    rdfs:comment "Management and tracking of spore lifecycle" ;
+    meta:version "1.0.0" .
+
+file:spore_validationModule a meta:CodeModule ;
+    rdfs:label "spore_validation" ;
+    rdfs:comment "Module for validating spore compliance and quality" ;
+    meta:version "1.0.0" ;
+    meta:testCoverage "90%" .
+

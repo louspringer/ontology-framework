@@ -1,0 +1,54 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/runtime_error_handling#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:exampleErrorDocumentation1 a ns1:ErrorDocumentation ;
+    rdfs:label "Example ErrorDocumentation 1" ;
+    rdfs:comment "This is example instance 1 of class ErrorDocumentation" .
+
+:exampleErrorDocumentation2 a ns1:ErrorDocumentation ;
+    rdfs:label "Example ErrorDocumentation 2" ;
+    rdfs:comment "This is example instance 2 of class ErrorDocumentation" .
+
+:exampleMonitoringComponent1 a ns1:MonitoringComponent ;
+    rdfs:label "Example MonitoringComponent 1" ;
+    rdfs:comment "This is example instance 1 of class MonitoringComponent" .
+
+:exampleMonitoringComponent2 a ns1:MonitoringComponent ;
+    rdfs:label "Example MonitoringComponent 2" ;
+    rdfs:comment "This is example instance 2 of class MonitoringComponent" .
+
+:examplePerformanceMetric1 a ns1:PerformanceMetric ;
+    rdfs:label "Example PerformanceMetric 1" ;
+    rdfs:comment "This is example instance 1 of class PerformanceMetric" .
+
+:examplePerformanceMetric2 a ns1:PerformanceMetric ;
+    rdfs:label "Example PerformanceMetric 2" ;
+    rdfs:comment "This is example instance 2 of class PerformanceMetric" .
+
+ns1:ErrorCount a ns1:PerformanceMetric ;
+    rdfs:label "Error Count" ;
+    rdfs:comment "Number of errors occurred" ;
+    ns1:metricUnit "count" .
+
+ns1:ErrorLogger a ns1:MonitoringComponent ;
+    rdfs:label "Error Logger" ;
+    rdfs:comment "Component for logging errors" .
+
+ns1:ErrorReport a ns1:ErrorDocumentation ;
+    rdfs:label "Error Report" ;
+    rdfs:comment "Detailed report of error occurrence and resolution" .
+
+ns1:LoggingLatency a ns1:PerformanceMetric ;
+    rdfs:label "Logging Latency" ;
+    rdfs:comment "Time taken to log error information" ;
+    ns1:metricUnit "milliseconds" .
+
+ns1:MetricsCollector a ns1:MonitoringComponent ;
+    rdfs:label "Metrics Collector" ;
+    rdfs:comment "Component for collecting error metrics" .
+
+ns1:MetricsReport a ns1:ErrorDocumentation ;
+    rdfs:label "Metrics Report" ;
+    rdfs:comment "Report of error handling metrics" .
+

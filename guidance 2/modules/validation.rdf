@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RequirementComplianceTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Requirement Compliance Test</rdfs:label>
+    <rdfs:comment>Tests compliance with requirement testing directive</rdfs:comment>
+    <hasExpectedResult>All requirements should meet the specified testing level</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    
+    SELECT ?req ?directive ?level
+    WHERE {
+        ?req rdf:type guidance:Requirement .
+        ?directive rdf:type guidance:RequirementTestingDirective  ;
+                  guidance:requirementTestingLevel ?level .
+        FILTER NOT EXISTS {
+            ?test rdf:type guidance:TestCase ;
+                  guidance:tests ?req ;
+                  guidance:meetsTestingLevel ?level .
+        }
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PatternValidationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Pattern Validation Test</rdfs:label>
+    <rdfs:comment>Tests consistency and completeness of validation patterns</rdfs:comment>
+    <hasExpectedResult>All validation patterns should have complete metadata and target classes</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+    PREFIX validation: &lt;./validation#&gt;
+    
+    SELECT ?pattern ?label ?comment ?version ?target
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        OPTIONAL { ?pattern rdfs:label ?label }
+        OPTIONAL { ?pattern rdfs:comment ?comment }
+        OPTIONAL { ?pattern owl:versionInfo ?version }
+        OPTIONAL { ?pattern validation:hasTargetClass ?target }
+        FILTER (!bound(?label) || !bound(?comment) || !bound(?version) || !bound(?target))
+    }
+    </hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestCase1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Example TestCase 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class TestCase</rdfs:comment>
+    <hasExpectedResult>Example value 1</hasExpectedResult>
+    <hasTestQuery>Example value 1</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#EnforcementMechanismsTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Enforcement Mechanisms Test</rdfs:label>
+    <rdfs:comment>Tests that enforcement mechanisms are properly defined</rdfs:comment>
+    <hasExpectedResult>Should find at least 3 enforcement mechanisms</hasExpectedResult>
+    <hasTestQuery>
+    SELECT ?mech ?impl ?pattern WHERE {
+        ?mech rdf:type pdi:EnforcementMechanism  ;
+              pdi:implementedIn ?impl ;
+              pdi:usesPattern ?pattern .
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#LegacySupportValidationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Legacy Support Validation Test</rdfs:label>
+    <rdfs:comment>Tests legacy support mappings and compatibility</rdfs:comment>
+    <hasExpectedResult>All legacy support mappings should have valid module versions</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    
+    SELECT ?support ?mapping ?module
+    WHERE {
+        ?support rdf:type guidance:LegacySupport .
+        ?support guidance:hasLegacyMapping ?mapping .
+        ?module rdf:type owl:Ontology .
+        FILTER NOT EXISTS {
+            ?mapping guidance:moduleVersion ?version .
+            FILTER regex(?version, "^\d+\.\d+\.\d+$")
+        }
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ModelStructureTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Model Structure Test</rdfs:label>
+    <rdfs:comment>Tests ontology model structure and constraints</rdfs:comment>
+    <hasExpectedResult>All classes should have labels, comments, and version info</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+    PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    
+    SELECT ?class ?label ?comment ?version
+    WHERE {
+        ?class rdf:type owl:Class  ;
+               rdfs:label ?label .
+        OPTIONAL { ?class rdfs:comment ?comment }
+        OPTIONAL { ?class owl:versionInfo ?version }
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#CollaborationValidationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Collaboration Validation Test</rdfs:label>
+    <rdfs:comment>Tests collaboration-related validation patterns</rdfs:comment>
+    <hasExpectedResult>All collaboration-related validation patterns should have collaboration constraints</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX collaboration: &lt;../collaboration#&gt;
+    PREFIX validation: &lt;./validation#&gt;
+    
+    SELECT ?pattern ?collaborationConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?collaborationConcept .
+        ?collaborationConcept rdf:type collaboration:CollaborationConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasCollaborationConstraint ?constraint
+        }
+    }
+    </hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ModelConformanceTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Model Conformance Test</rdfs:label>
+    <rdfs:comment>Tests model conformance validation patterns</rdfs:comment>
+    <hasExpectedResult>All model-related validation patterns should have model constraints</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX model: &lt;../model#&gt;
+    PREFIX validation: &lt;./validation#&gt;
+    
+    SELECT ?pattern ?modelConcept
+    WHERE {
+        ?pattern rdf:type validation:ValidationPattern .
+        ?pattern validation:hasTargetClass ?modelConcept .
+        ?modelConcept rdf:type model:ModelConcept .
+        FILTER NOT EXISTS {
+            ?pattern validation:hasModelConstraint ?constraint
+        }
+    }
+    </hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RequirementCoverageTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Comprehensive Coverage Test</rdfs:label>
+    <rdfs:comment>Tests coverage of requirements, aspects, and components</rdfs:comment>
+    <hasExpectedResult>No requirements, aspects, or components should be without test coverage</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    PREFIX validation: &lt;./validation#&gt;
+    
+    SELECT ?entity ?type ?testCount
+    WHERE {
+        {
+            ?entity rdf:type guidance:Requirement
+        } UNION {
+            ?entity rdf:type guidance:FrameworkAspect
+        } UNION {
+            ?entity rdf:type guidance:Component
+        }
+        BIND(IF(?entity rdf:type guidance:Requirement, "Requirement",
+               IF(?entity rdf:type guidance:FrameworkAspect, "Aspect",
+               "Component")) AS ?type)
+        OPTIONAL {
+            ?test rdf:type validation:TestCase  ;
+                  validation:validates ?entity
+        }
+        BIND(COUNT(?test) AS ?testCount)
+    }
+    GROUP BY ?entity ?type
+    HAVING (?testCount = 0)
+    </hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#IntegrationProcessValidationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Integration Process Validation Test</rdfs:label>
+    <rdfs:comment>Tests integration process steps and validation</rdfs:comment>
+    <hasExpectedResult>Integration processes should have properly ordered steps with descriptions</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    
+    SELECT ?process ?step ?order ?description
+    WHERE {
+        ?process rdf:type guidance:IntegrationProcess .
+        ?process guidance:hasIntegrationStep ?step .
+        ?step guidance:stepOrder ?order  ;
+              guidance:stepDescription ?description .
+        FILTER NOT EXISTS {
+            ?step guidance:stepOrder ?otherOrder .
+            FILTER (?otherOrder != ?order)
+        }
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationPattern1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationPattern"/>
+    <rdfs:label>Example ValidationPattern 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ValidationPattern</rdfs:comment>
+    <hasLegacyValidationConcept rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLLMGuidanceOntology1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleTestCase2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Example TestCase 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class TestCase</rdfs:comment>
+    <hasExpectedResult>Example value 2</hasExpectedResult>
+    <hasTestQuery>Example value 2</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ComponentIntegrationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Component Integration Test</rdfs:label>
+    <rdfs:comment>Tests integration between ontology components</rdfs:comment>
+    <hasExpectedResult>All component relationships should be properly defined</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    
+    SELECT ?comp1 ?comp2 ?relation
+    WHERE {
+        ?comp1 rdf:type guidance:Component .
+        ?comp2 rdf:type guidance:Component .
+        ?relation rdf:type owl:ObjectProperty  ;
+                 rdfs:domain ?comp1 ;
+                 rdfs:range ?comp2 .
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ProtocolValidationTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Protocol Validation Test</rdfs:label>
+    <rdfs:comment>Tests test protocol structure and compliance</rdfs:comment>
+    <hasExpectedResult>All test protocols should have proper phases, coverage, and test cases</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    PREFIX validation: &lt;./validation#&gt;
+    
+    SELECT ?protocol ?phase ?coverage ?testCase
+    WHERE {
+        ?protocol rdf:type guidance:TestProtocol .
+        ?protocol guidance:hasTestPhase ?phase .
+        ?protocol guidance:hasTestCoverage ?coverage .
+        ?coverage guidance:coverageThreshold ?threshold .
+        ?phase validation:hasTestCase ?testCase .
+        FILTER (
+            ?threshold &lt; "0.95"^^xsd:decimal ||
+            NOT EXISTS { ?testCase validation:hasTestQuery ?query } ||
+            NOT EXISTS { ?testCase validation:hasExpectedResult ?result }
+        )
+    }
+    </hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#PolicyStructureTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Policy Structure Test</rdfs:label>
+    <rdfs:comment>Tests that policies drive requirements that influence decisions</rdfs:comment>
+    <hasExpectedResult>Should find OntologyAccessibilityPolicy and its requirements</hasExpectedResult>
+    <hasTestQuery>
+    SELECT ?policy ?req ?decision WHERE {
+        ?policy rdf:type pdi:Policy  ;
+                pdi:drivesRequirement ?req .
+        ?req pdi:influencesDecision ?decision .
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#RequirementTestingLevelTest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#TestCase"/>
+    <rdfs:label>Requirement Testing Level Test</rdfs:label>
+    <rdfs:comment>Tests requirement testing level compliance</rdfs:comment>
+    <hasExpectedResult>All test cases should meet the required testing level</hasExpectedResult>
+    <hasTestQuery>
+    PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+    PREFIX guidance: &lt;../../guidance#&gt;
+    
+    SELECT ?directive ?level ?test
+    WHERE {
+        ?directive rdf:type guidance:RequirementTestingDirective .
+        ?directive guidance:requirementTestingLevel ?level .
+        ?test rdf:type guidance:TestCase .
+        FILTER NOT EXISTS {
+            ?test guidance:meetsTestingLevel ?level
+        }
+    }</hasTestQuery>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleValidationPattern2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#ValidationPattern"/>
+    <rdfs:label>Example ValidationPattern 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ValidationPattern</rdfs:comment>
+    <hasLegacyValidationConcept rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleLLMGuidanceOntology2"/>
+  </rdf:Description>
+</rdf:RDF>

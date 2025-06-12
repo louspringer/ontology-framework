@@ -1,0 +1,77 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix metric: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/metrics#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:exampleCPUUsage1 a metric:CPUUsage ;
+    rdfs:label "Example CPUUsage 1" ;
+    rdfs:comment "This is example instance 1 of class CPUUsage" .
+
+:exampleCPUUsage2 a metric:CPUUsage ;
+    rdfs:label "Example CPUUsage 2" ;
+    rdfs:comment "This is example instance 2 of class CPUUsage" .
+
+:exampleLoggingLatency1 a metric:LoggingLatency ;
+    rdfs:label "Example LoggingLatency 1" ;
+    rdfs:comment "This is example instance 1 of class LoggingLatency" .
+
+:exampleLoggingLatency2 a metric:LoggingLatency ;
+    rdfs:label "Example LoggingLatency 2" ;
+    rdfs:comment "This is example instance 2 of class LoggingLatency" .
+
+:exampleMemoryUsage1 a metric:MemoryUsage ;
+    rdfs:label "Example MemoryUsage 1" ;
+    rdfs:comment "This is example instance 1 of class MemoryUsage" .
+
+:exampleMemoryUsage2 a metric:MemoryUsage ;
+    rdfs:label "Example MemoryUsage 2" ;
+    rdfs:comment "This is example instance 2 of class MemoryUsage" .
+
+:examplePerformanceMetric1 a metric:PerformanceMetric ;
+    rdfs:label "Example PerformanceMetric 1" ;
+    rdfs:comment "This is example instance 1 of class PerformanceMetric" ;
+    metric:hasThreshold 1 ;
+    metric:hasUnit "Example value 1" .
+
+:examplePerformanceMetric2 a metric:PerformanceMetric ;
+    rdfs:label "Example PerformanceMetric 2" ;
+    rdfs:comment "This is example instance 2 of class PerformanceMetric" ;
+    metric:hasThreshold 2 ;
+    metric:hasUnit "Example value 2" .
+
+:exampleResolutionTime1 a metric:ResolutionTime ;
+    rdfs:label "Example ResolutionTime 1" ;
+    rdfs:comment "This is example instance 1 of class ResolutionTime" .
+
+:exampleResolutionTime2 a metric:ResolutionTime ;
+    rdfs:label "Example ResolutionTime 2" ;
+    rdfs:comment "This is example instance 2 of class ResolutionTime" .
+
+:exampleResourceMetric1 a metric:ResourceMetric ;
+    rdfs:label "Example ResourceMetric 1" ;
+    rdfs:comment "This is example instance 1 of class ResourceMetric" .
+
+:exampleResourceMetric2 a metric:ResourceMetric ;
+    rdfs:label "Example ResourceMetric 2" ;
+    rdfs:comment "This is example instance 2 of class ResourceMetric" .
+
+:exampleResponseTime1 a metric:ResponseTime ;
+    rdfs:label "Example ResponseTime 1" ;
+    rdfs:comment "This is example instance 1 of class ResponseTime" .
+
+:exampleResponseTime2 a metric:ResponseTime ;
+    rdfs:label "Example ResponseTime 2" ;
+    rdfs:comment "This is example instance 2 of class ResponseTime" .
+
+metric:CPUUsageInstance a metric:CPUUsage ;
+    metric:hasThreshold "70" ;
+    metric:hasUnit "percent" .
+
+metric:LoggingLatencyInstance a metric:LoggingLatency ;
+    metric:hasThreshold "100" ;
+    metric:hasUnit "milliseconds" .
+
+metric:MemoryUsageInstance a metric:MemoryUsage ;
+    metric:hasThreshold "80" ;
+    metric:hasUnit "percent" .
+

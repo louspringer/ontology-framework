@@ -1,0 +1,121 @@
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+rdf:type rdfs:label "22-rdf-syntax-ns#type" ;
+    rdfs:comment "Description of 22-rdf-syntax-ns#type" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:comment rdfs:label "rdf-schema#comment" ;
+    rdfs:comment "Description of rdf-schema#comment" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:domain rdfs:label "rdf-schema#domain" ;
+    rdfs:comment "Description of rdf-schema#domain" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:label rdfs:label "rdf-schema#label" ;
+    rdfs:comment "Description of rdf-schema#label" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+rdfs:range rdfs:label "rdf-schema#range" ;
+    rdfs:comment "Description of rdf-schema#range" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    owl:versionInfo "1.0.0" .
+
+owl:versionInfo rdfs:label "owl#versionInfo" ;
+    rdfs:comment "Description of owl#versionInfo" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range rdfs:Literal ;
+    owl:versionInfo "1.0.0" .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/namespace_validation> a owl:Ontology ;
+    rdfs:label "Namespace Validation Rules" ;
+    rdfs:comment "Rules for namespace usage in ontology modules" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ExampleRule a ns1:NamespaceRule ;
+    rdfs:label "Example Namespace Rule" ;
+    rdfs:comment "Documentation examples MAY use example.org URLs" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasContext ns1:ExampleContext ;
+    ns1:hasPattern ns1:ExampleOrgPattern .
+
+ns1:ProductionRule a ns1:NamespaceRule ;
+    rdfs:label "Production Namespace Rule" ;
+    rdfs:comment "Production modules MUST use GitHub raw URLs" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasContext ns1:ProductionContext ;
+    ns1:hasPattern ns1:GitHubRawPattern .
+
+ns1:TestRule a ns1:NamespaceRule ;
+    rdfs:label "Test Namespace Rule" ;
+    rdfs:comment "Test data MAY use example.org URLs" ;
+    owl:versionInfo "1.0.0" ;
+    ns1:hasContext ns1:TestContext ;
+    ns1:hasPattern ns1:ExampleOrgPattern .
+
+ns1:hasContext a owl:ObjectProperty ;
+    rdfs:label "Has Context" ;
+    rdfs:comment "Links a namespace rule to its usage context" ;
+    rdfs:domain ns1:NamespaceRule ;
+    rdfs:range ns1:NamespaceContext ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasPattern a owl:ObjectProperty ;
+    rdfs:label "Has Pattern" ;
+    rdfs:comment "Links a namespace rule to its URI pattern" ;
+    rdfs:domain ns1:NamespaceRule ;
+    rdfs:range ns1:NamespacePattern ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ExampleContext a ns1:NamespaceContext ;
+    rdfs:label "Example Context" ;
+    rdfs:comment "Namespace usage in documentation examples" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:GitHubRawPattern a ns1:NamespacePattern ;
+    rdfs:label "GitHub Raw Pattern" ;
+    rdfs:comment "https://raw.githubusercontent.com/[owner]/[repo]/[branch]/[path]" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ProductionContext a ns1:NamespaceContext ;
+    rdfs:label "Production Context" ;
+    rdfs:comment "Namespace usage in production modules" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TestContext a ns1:NamespaceContext ;
+    rdfs:label "Test Context" ;
+    rdfs:comment "Namespace usage in test data" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:ExampleOrgPattern a ns1:NamespacePattern ;
+    rdfs:label "Example.org Pattern" ;
+    rdfs:comment "http://example.org/[path]" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:NamespacePattern a owl:Class ;
+    rdfs:label "Namespace Pattern" ;
+    rdfs:comment "Pattern for namespace URIs" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:NamespaceContext a owl:Class ;
+    rdfs:label "Namespace Context" ;
+    rdfs:comment "Context in which a namespace is used" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:NamespaceRule a owl:Class ;
+    rdfs:label "Namespace Rule" ;
+    rdfs:comment "A rule governing namespace usage" ;
+    owl:versionInfo "1.0.0" .
+

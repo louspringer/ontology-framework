@@ -1,0 +1,18 @@
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dcterms1: <http://purl.org/dc/terms/#> .
+@prefix ns1: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:CoreGuidanceModule a owl:Ontology ;
+    rdfs:label "Core Guidance Module" ;
+    dc1:title "Core Guidance Module" ;
+    dc1:version "1.0.0" ;
+    dcterms1:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dcterms1:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Core concepts and relationships for the guidance ontology" ;
+    owl:imports <http://ontologies.louspringer.com/guidance/modules/model.ttl>,
+        <http://ontologies.louspringer.com/guidance/modules/security.ttl> ;
+    owl:versionInfo "1.0.0" .
+

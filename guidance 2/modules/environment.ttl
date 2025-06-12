@@ -1,0 +1,32 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix dc1: <http://purl.org/dc/elements/1.1/#> .
+@prefix dct: <http://purl.org/dc/terms/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:EnvironmentModule a owl:Ontology ;
+    rdfs:label "Environment Module" ;
+    dc1:title "Environment Module" ;
+    dc1:version "1.0.0" ;
+    dct:created "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:description "Defines environment types and their configurations" ;
+    dct:modified "2024-03-21T00:00:00"^^xsd:dateTime ;
+    dct:publisher "Ontology Framework Project" ;
+    rdfs:comment "Module defining environment types and configurations" ;
+    owl:versionInfo "1.0.0" .
+
+:exampleEnvironment1 a :Environment ;
+    rdfs:label "Example Environment 1" ;
+    rdfs:comment "This is example instance 1 of class Environment" ;
+    :hasEnvironmentName "Example value 1" ;
+    :hasEnvironmentType "Example value 1" ;
+    :hasEnvironmentUrl :exampleanyURI1 .
+
+:exampleEnvironment2 a :Environment ;
+    rdfs:label "Example Environment 2" ;
+    rdfs:comment "This is example instance 2 of class Environment" ;
+    :hasEnvironmentName "Example value 2" ;
+    :hasEnvironmentType "Example value 2" ;
+    :hasEnvironmentUrl :exampleanyURI2 .
+

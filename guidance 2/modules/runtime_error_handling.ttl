@@ -1,0 +1,574 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation> a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Validation rules for consistency across the ontology"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#FallbackStrategy> a owl:Class ;
+    rdfs:label "Fallback Strategy"@en ;
+    rdfs:comment "Strategy to handle errors by falling back to a safe state or alternative solution"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation> a owl:Class ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Validation rules for installation requirements"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#MatrixValidation> a owl:Class ;
+    rdfs:label "Matrix Validation"@en ;
+    rdfs:comment "Validation rules using matrix-based analysis"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation> a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Validation rules for SPORE compliance"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation> a owl:Class ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validation rules for security measures"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation> a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validation rules for semantic correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation> a owl:Class ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Validation rules for handling sensitive data"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation> a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Validation rules for syntax correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#ConsistencyValidation> a owl:Class ;
+    rdfs:label "Consistency Validation"@en ;
+    rdfs:comment "Validation rules for consistency across the ontology"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#InstallationValidation> a owl:Class ;
+    rdfs:label "Installation Validation"@en ;
+    rdfs:comment "Validation rules for installation requirements"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SPOREValidation> a owl:Class ;
+    rdfs:label "SPORE Validation"@en ;
+    rdfs:comment "Validation rules for SPORE compliance"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SecurityValidation> a owl:Class ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validation rules for security measures"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SemanticValidation> a owl:Class ;
+    rdfs:label "Semantic Validation"@en ;
+    rdfs:comment "Validation rules for semantic correctness"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SensitiveDataValidation> a owl:Class ;
+    rdfs:label "Sensitive Data Validation"@en ;
+    rdfs:comment "Validation rules for handling sensitive data"@en .
+
+<https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#SyntaxValidation> a owl:Class ;
+    rdfs:label "Syntax Validation"@en ;
+    rdfs:comment "Validation rules for syntax correctness"@en .
+
+:APIError a owl:Class,
+        :ErrorType ;
+    rdfs:label "APIError",
+        "API Error"@en ;
+    rdfs:comment "Errors in API operations"@en ;
+    rdfs:subClassOf :RuntimeError .
+
+:CompensationStrategyInstance a :CompensationStrategy ;
+    rdfs:label "Compensation Strategy Instance" ;
+    :hasRecoveryTime "PT1H" .
+
+:ComplianceValidationRule a :ComplianceValidation ;
+    rdfs:label "Compliance Validation Rule" ;
+    :hasValidationSeverity "HIGH" ;
+    :hasValidationType "Compliance" .
+
+:ComplianceViolationRisk a :ErrorRisk ;
+    rdfs:label "Compliance Violation Risk"@en ;
+    rdfs:comment "Risk of compliance violation during error handling"@en ;
+    :hasRiskLevel "MEDIUM" .
+
+:DataLossRisk a :ErrorRisk ;
+    rdfs:label "Data Loss Risk"@en ;
+    rdfs:comment "Risk of data loss during error handling"@en ;
+    :hasRiskLevel "CRITICAL" .
+
+:ErrorCount a :ErrorMetric ;
+    rdfs:label "Error Count"@en ;
+    :hasMetricValue 0.0 .
+
+:ErrorHandlingProcessShape a sh:NodeShape ;
+    rdfs:label "Error Handling Process Shape"@en ;
+    sh:property [ sh:message "Error handling process must have at least 4 steps"@en ;
+            sh:minCount 4 ;
+            sh:path :hasProcessStep ] ;
+    sh:targetClass :ErrorHandlingProcess .
+
+:ErrorLoggingMeasure a :ErrorLogging ;
+    rdfs:label "Error Logging Measure" ;
+    :hasPreventionEffectiveness 0.85 .
+
+:ErrorReport a :ErrorDocumentation ;
+    rdfs:label "Error Report"@en ;
+    :hasDocumentationType "Detailed error report" .
+
+:ErrorResolution a owl:Class ;
+    rdfs:label "Error Resolution"@en ;
+    rdfs:comment "Step to resolve identified errors"@en ;
+    rdfs:subClassOf :ErrorHandlingStep ;
+    :hasStepOrder 3 .
+
+:ErrorTypeExclusivity a :ErrorAssumption ;
+    rdfs:label "Error Type Exclusivity"@en ;
+    rdfs:comment "Assumption about mutually exclusive error types"@en ;
+    :hasAssumptionType "Type classification" .
+
+:ErrorTypeTestCase a :ErrorTraceability ;
+    rdfs:label "Error Type Test Case"@en ;
+    :hasTraceabilityLevel "HIGH" .
+
+:FallbackStrategyInstance a :FallbackStrategy ;
+    rdfs:label "Fallback Strategy Instance" ;
+    :hasRecoveryTime "PT15M" .
+
+:IOError a owl:Class,
+        :ErrorType ;
+    rdfs:label "IOError",
+        "I/O Error"@en ;
+    rdfs:comment "Errors in input/output operations"@en ;
+    rdfs:subClassOf :ErrorType,
+        :RuntimeError .
+
+:ISO27001 a :ErrorComplianceStandard ;
+    rdfs:label "ISO 27001"@en ;
+    rdfs:comment "ISO/IEC 27001 Information Security Standard"@en ;
+    :hasComplianceLevel "HIGH" .
+
+:InputValidationMeasure a :InputValidation ;
+    rdfs:label "Input Validation Measure" ;
+    :hasPreventionEffectiveness 0.95 .
+
+:LoggingLatency a :ErrorPerformanceMetric ;
+    rdfs:label "Logging Latency"@en ;
+    rdfs:comment "Latency in error logging operations"@en ;
+    :hasPerformanceTarget 0.1 .
+
+:MatrixValidationRule a :MatrixValidation ;
+    rdfs:label "Matrix Validation Rule" ;
+    :hasValidationSeverity "MEDIUM" ;
+    :hasValidationType "Matrix analysis" .
+
+:ResolutionGuide a :ErrorDocumentation ;
+    rdfs:label "Resolution Guide"@en ;
+    rdfs:comment "Guide for resolving different types of errors"@en ;
+    :hasDocumentationType "Resolution documentation" .
+
+:ResolutionTime a :ErrorMetric ;
+    rdfs:label "Resolution Time"@en ;
+    rdfs:comment "Time taken to resolve errors"@en ;
+    :hasMetricValue 0.0 .
+
+:ResourceConstraint a :ErrorConstraint ;
+    rdfs:label "Resource Constraint"@en ;
+    :hasConstraintType "System resources" .
+
+:ResourceMonitoringMeasure a :ResourceMonitoring ;
+    rdfs:label "Resource Monitoring Measure" ;
+    :hasPreventionEffectiveness 0.90 .
+
+:RetryStrategyInstance a :RetryStrategy ;
+    rdfs:label "Retry Strategy Instance" ;
+    :hasRecoveryTime "PT5M" .
+
+:RiskValidationRule a :RiskValidation ;
+    rdfs:label "Risk Validation Rule" ;
+    :hasValidationSeverity "HIGH" ;
+    :hasValidationType "Risk assessment" .
+
+:RollbackStrategyInstance a :RollbackStrategy ;
+    rdfs:label "Rollback Strategy Instance" ;
+    :hasRecoveryTime "PT30M" .
+
+:SecurityBreachRisk a :ErrorRisk ;
+    rdfs:label "Security Breach Risk"@en ;
+    rdfs:comment "Risk of security breach during error handling"@en ;
+    :hasRiskLevel "HIGH" .
+
+:SecurityValidation a :ErrorValidationRule ;
+    rdfs:label "Security Validation"@en ;
+    rdfs:comment "Validation rule for security measures"@en ;
+    :hasValidationType "Security" .
+
+:SensitiveDataHandling a :ErrorSecurityMeasure ;
+    rdfs:label "Sensitive Data Handling"@en ;
+    :hasSecurityLevel "HIGH" .
+
+:SensitiveDataValidationRule a :SensitiveDataValidation ;
+    rdfs:label "Sensitive Data Validation Rule" ;
+    :hasValidationSeverity "HIGH" ;
+    :hasValidationType "Data protection" .
+
+:ServiceDisruptionRisk a :ErrorRisk ;
+    rdfs:label "Service Disruption Risk"@en ;
+    rdfs:comment "Risk of service disruption during error handling"@en ;
+    :hasRiskLevel "HIGH" .
+
+:StandardConfusionMatrix a :ErrorConfusionMatrix ;
+    rdfs:label "Standard Confusion Matrix"@en ;
+    :hasMatrixAccuracy 0.95 .
+
+:StandardRecovery a :ErrorRecoveryStrategy ;
+    rdfs:label "Standard Recovery"@en ;
+    :hasRecoveryTime "PT1H" .
+
+:StateCheckpointingMeasure a :StateCheckpointing ;
+    rdfs:label "State Checkpointing Measure" ;
+    :hasPreventionEffectiveness 0.80 .
+
+:TestErrorHandlingProcessShape a sh:NodeShape ;
+    rdfs:label "Test Error Handling Process Shape"@en ;
+    sh:property [ sh:maxCount 4 ;
+            sh:message "Test error handling process must have exactly 4 steps" ;
+            sh:minCount 4 ;
+            sh:path :hasProcessStep ] ;
+    sh:targetClass :TestErrorHandlingProcess .
+
+:TestErrorHandlingStep a owl:Class ;
+    rdfs:label "Test Error Handling Step"@en ;
+    rdfs:comment "Step in test error handling process"@en ;
+    :hasStepOrder 1 .
+
+:TestFailure a owl:Class,
+        :ErrorType ;
+    rdfs:label "TestFailure",
+        "Test Failure"@en ;
+    rdfs:comment "Errors in test execution"@en ;
+    rdfs:subClassOf :RuntimeError,
+        :ValidationError .
+
+:hasAssumptionType a owl:DatatypeProperty ;
+    rdfs:label "Has Assumption Type"@en ;
+    rdfs:comment "The type of assumption"@en ;
+    rdfs:domain :ErrorAssumption ;
+    rdfs:range xsd:string .
+
+:hasComplianceLevel a owl:DatatypeProperty ;
+    rdfs:label "Has Compliance Level"@en ;
+    rdfs:comment "The level of compliance"@en ;
+    rdfs:domain :ErrorComplianceStandard ;
+    rdfs:range xsd:string .
+
+:hasConstraintType a owl:DatatypeProperty ;
+    rdfs:label "Has Constraint Type"@en ;
+    rdfs:comment "The type of constraint"@en ;
+    rdfs:domain :ErrorConstraint ;
+    rdfs:range xsd:string .
+
+:hasDocumentationType a owl:DatatypeProperty ;
+    rdfs:label "Has Documentation Type"@en ;
+    rdfs:comment "The type of documentation"@en ;
+    rdfs:domain :ErrorDocumentation ;
+    rdfs:range xsd:string .
+
+:hasMatrixAccuracy a owl:DatatypeProperty ;
+    rdfs:label "Has Matrix Accuracy"@en ;
+    rdfs:comment "The accuracy of the confusion matrix"@en ;
+    rdfs:domain :ErrorConfusionMatrix ;
+    rdfs:range xsd:float .
+
+:hasMetricValue a owl:DatatypeProperty ;
+    rdfs:label "Has Metric Value"@en ;
+    rdfs:comment "The value of a metric"@en ;
+    rdfs:domain :ErrorMetric ;
+    rdfs:range xsd:float .
+
+:hasPerformanceTarget a owl:DatatypeProperty ;
+    rdfs:label "Has Performance Target"@en ;
+    rdfs:comment "The target performance value"@en ;
+    rdfs:domain :ErrorPerformanceMetric ;
+    rdfs:range xsd:float .
+
+:hasPreventionEffectiveness a owl:DatatypeProperty ;
+    rdfs:label "Has Prevention Effectiveness"@en ;
+    rdfs:comment "The effectiveness of prevention"@en ;
+    rdfs:domain :ErrorPreventionMeasure ;
+    rdfs:range xsd:float .
+
+:hasRecoveryTime a owl:DatatypeProperty ;
+    rdfs:label "Has Recovery Time"@en ;
+    rdfs:comment "The time taken for recovery"@en ;
+    rdfs:domain :ErrorRecoveryStrategy ;
+    rdfs:range xsd:duration .
+
+:hasRiskLevel a owl:DatatypeProperty ;
+    rdfs:label "Has Risk Level"@en ;
+    rdfs:comment "The level of risk"@en ;
+    rdfs:domain :ErrorRisk ;
+    rdfs:range xsd:string .
+
+:hasSecurityLevel a owl:DatatypeProperty ;
+    rdfs:label "Has Security Level"@en ;
+    rdfs:comment "The level of security"@en ;
+    rdfs:domain :ErrorSecurityMeasure ;
+    rdfs:range xsd:string .
+
+:hasStepAction a owl:DatatypeProperty ;
+    rdfs:label "Has Step Action"@en ;
+    rdfs:comment "The action performed in a step"@en ;
+    rdfs:domain :ErrorHandlingStep ;
+    rdfs:range xsd:string .
+
+:hasStepOrder a owl:DatatypeProperty ;
+    rdfs:label "Has Step Order"@en ;
+    rdfs:comment "The order of a step in a process"@en ;
+    rdfs:domain :ErrorHandlingStep ;
+    rdfs:range xsd:integer .
+
+:hasTraceabilityLevel a owl:DatatypeProperty ;
+    rdfs:label "Has Traceability Level"@en ;
+    rdfs:comment "The level of traceability"@en ;
+    rdfs:domain :ErrorTraceability ;
+    rdfs:range xsd:string .
+
+:hasValidationType a owl:DatatypeProperty ;
+    rdfs:label "Has Validation Type"@en ;
+    rdfs:comment "The type of validation"@en ;
+    rdfs:domain :ErrorValidationRule ;
+    rdfs:range xsd:string .
+
+:standardErrorHandling a :ErrorHandlingProcess ;
+    rdfs:label "Standard Error Handling"@en ;
+    rdfs:comment "Standard process for handling errors"@en ;
+    :hasProcessStep :ErrorAnalysis,
+        :ErrorIdentification,
+        :ErrorPrevention,
+        :ErrorRecovery .
+
+:standardTestErrorHandling a :TestErrorHandlingProcess ;
+    rdfs:label "Standard Test Error Handling"@en ;
+    :hasProcessStep :TestErrorAnalysis,
+        :TestErrorIdentification,
+        :TestErrorPrevention,
+        :TestErrorRecovery .
+
+:CompensationStrategy a owl:Class ;
+    rdfs:label "Compensation Strategy"@en ;
+    rdfs:comment "Strategy to compensate for errors by taking alternative actions"@en ;
+    rdfs:subClassOf :ErrorRecoveryStrategy .
+
+:ComplianceValidation a owl:Class,
+        :ErrorValidationRule ;
+    rdfs:label "ComplianceValidation",
+        "Compliance Validation"@en ;
+    rdfs:comment "Validation rule for compliance checking"@en ;
+    rdfs:subClassOf :ErrorValidationRule ;
+    :hasValidationType "Compliance" .
+
+:ErrorAnalysis a owl:Class,
+        :ErrorHandlingStep ;
+    rdfs:label "Error Analysis",
+        "Error Analysis"@en ;
+    rdfs:comment "Step to analyze errors"@en ;
+    rdfs:subClassOf :ErrorHandlingStep ;
+    :hasStepAction "Analyze error details and impact" ;
+    :hasStepOrder 2 .
+
+:ErrorIdentification a owl:Class,
+        :ErrorHandlingStep ;
+    rdfs:label "Error Identification",
+        "Error Identification"@en ;
+    rdfs:comment "Step to identify errors"@en ;
+    rdfs:subClassOf :ErrorHandlingStep ;
+    :hasStepAction "Identify and classify error" ;
+    :hasStepOrder 1 .
+
+:ErrorLogging a owl:Class,
+        :ErrorPreventionMeasure ;
+    rdfs:label "ErrorLogging",
+        "Error Logging"@en ;
+    rdfs:comment "Measure to log errors"@en ;
+    rdfs:subClassOf :ErrorPreventionMeasure ;
+    :hasPreventionEffectiveness 0.90 .
+
+:ErrorPrevention a owl:Class,
+        :ErrorHandlingStep ;
+    rdfs:label "Error Prevention",
+        "Error Prevention"@en ;
+    rdfs:comment "Step to prevent future errors"@en ;
+    rdfs:subClassOf :ErrorHandlingStep ;
+    :hasStepAction "Implement preventive measures" ;
+    :hasStepOrder 4 .
+
+:ErrorRecovery a :ErrorHandlingStep ;
+    rdfs:label "Error Recovery"@en ;
+    rdfs:comment "Step to recover from errors"@en ;
+    :hasStepAction "Execute recovery procedures" ;
+    :hasStepOrder 3 .
+
+:FallbackStrategy a owl:Class ;
+    rdfs:label "Fallback Strategy"@en ;
+    rdfs:comment "Strategy to handle errors by falling back to a safe state or alternative solution"@en ;
+    rdfs:subClassOf :ErrorRecoveryStrategy .
+
+:InputValidation a owl:Class,
+        :ErrorPreventionMeasure ;
+    rdfs:label "InputValidation",
+        "Input Validation"@en ;
+    rdfs:comment "Measure to validate input data"@en ;
+    rdfs:subClassOf :ErrorPreventionMeasure ;
+    :hasPreventionEffectiveness 0.95 .
+
+:MatrixValidation a owl:Class,
+        :ErrorValidationRule ;
+    rdfs:label "MatrixValidation",
+        "Matrix Validation"@en ;
+    rdfs:comment "Validation rules using matrix-based analysis"@en ;
+    rdfs:subClassOf :ErrorValidationRule ;
+    :hasValidationType "Matrix" .
+
+:ResourceMonitoring a owl:Class ;
+    rdfs:label "ResourceMonitoring" ;
+    rdfs:subClassOf :ErrorPreventionMeasure .
+
+:RetryStrategy a owl:Class ;
+    rdfs:label "RetryStrategy" ;
+    rdfs:subClassOf :ErrorRecoveryStrategy .
+
+:RiskValidation a owl:Class,
+        :ErrorValidationRule ;
+    rdfs:label "RiskValidation",
+        "Risk Validation"@en ;
+    rdfs:comment "Validation rules for risk assessment"@en ;
+    rdfs:subClassOf :ErrorValidationRule ;
+    :hasValidationType "Risk" .
+
+:RollbackStrategy a owl:Class ;
+    rdfs:label "RollbackStrategy" ;
+    rdfs:subClassOf :ErrorRecoveryStrategy .
+
+:SensitiveDataValidation a owl:Class,
+        :ErrorValidationRule ;
+    rdfs:label "SensitiveDataValidation",
+        "Sensitive Data Validation"@en ;
+    rdfs:comment "Validation rules for handling sensitive data"@en ;
+    rdfs:subClassOf :ErrorValidationRule ;
+    :hasValidationType "Security" .
+
+:StateCheckpointing a owl:Class ;
+    rdfs:label "StateCheckpointing" ;
+    rdfs:subClassOf :ErrorPreventionMeasure .
+
+:TestErrorAnalysis a :ErrorHandlingStep ;
+    rdfs:label "Test Error Analysis"@en ;
+    rdfs:comment "Test step to analyze errors"@en ;
+    :hasStepAction "Test error analysis process" ;
+    :hasStepOrder 2 .
+
+:TestErrorIdentification a :ErrorHandlingStep ;
+    rdfs:label "Test Error Identification"@en ;
+    rdfs:comment "Test step to identify errors"@en ;
+    :hasStepAction "Test error identification process" ;
+    :hasStepOrder 1 .
+
+:TestErrorPrevention a :ErrorHandlingStep ;
+    rdfs:label "Test Error Prevention"@en ;
+    rdfs:comment "Test step to prevent future errors"@en ;
+    :hasStepAction "Test error prevention process" ;
+    :hasStepOrder 4 .
+
+:TestErrorRecovery a :ErrorHandlingStep ;
+    rdfs:label "Test Error Recovery"@en ;
+    rdfs:comment "Test step to recover from errors"@en ;
+    :hasStepAction "Test error recovery process" ;
+    :hasStepOrder 3 .
+
+:ValidationError a owl:Class,
+        :ErrorType ;
+    rdfs:label "ValidationError",
+        "Validation Error"@en ;
+    rdfs:comment "Errors in data validation"@en ;
+    rdfs:subClassOf :ErrorType .
+
+:ErrorAssumption a owl:Class ;
+    rdfs:label "Error Assumption"@en ;
+    rdfs:comment "Assumptions for error handling"@en .
+
+:ErrorComplianceStandard a owl:Class ;
+    rdfs:label "Error Compliance Standard"@en ;
+    rdfs:comment "Compliance standards for error handling"@en .
+
+:ErrorConfusionMatrix a owl:Class ;
+    rdfs:label "Error Confusion Matrix"@en ;
+    rdfs:comment "Confusion matrix for error classification"@en .
+
+:ErrorConstraint a owl:Class ;
+    rdfs:label "Error Constraint"@en ;
+    rdfs:comment "Constraints for error handling"@en .
+
+:ErrorPerformanceMetric a owl:Class ;
+    rdfs:label "Error Performance Metric"@en ;
+    rdfs:comment "Performance metrics for error handling"@en .
+
+:ErrorSecurityMeasure a owl:Class ;
+    rdfs:label "Error Security Measure"@en ;
+    rdfs:comment "Security measures for error handling"@en .
+
+:ErrorTraceability a owl:Class ;
+    rdfs:label "Error Traceability"@en ;
+    rdfs:comment "Traceability for error handling"@en .
+
+:TestErrorHandlingProcess a owl:Class ;
+    rdfs:label "Test Error Handling Process"@en ;
+    rdfs:comment "A process for handling test errors"@en .
+
+:hasProcessStep a owl:ObjectProperty ;
+    rdfs:label "Has Process Step"@en ;
+    rdfs:comment "Links a process to its steps"@en ;
+    rdfs:domain :ErrorHandlingProcess ;
+    rdfs:range :ErrorHandlingStep .
+
+:ErrorDocumentation a owl:Class ;
+    rdfs:label "Error Documentation"@en ;
+    rdfs:comment "Documentation for error handling"@en .
+
+:ErrorHandlingProcess a owl:Class ;
+    rdfs:label "Error Handling Process"@en ;
+    rdfs:comment "Process for handling errors"@en .
+
+:ErrorMetric a owl:Class ;
+    rdfs:label "Error Metric"@en ;
+    rdfs:comment "A metric for measuring error handling"@en .
+
+:RuntimeError a owl:Class,
+        :ErrorType ;
+    rdfs:label "RuntimeError",
+        "Runtime Error"@en ;
+    rdfs:comment "General runtime errors"@en ;
+    rdfs:subClassOf :ErrorType .
+
+:ErrorRisk a owl:Class ;
+    rdfs:label "Error Risk"@en ;
+    rdfs:comment "Risks associated with error handling"@en .
+
+:ErrorRecoveryStrategy a owl:Class ;
+    rdfs:label "Error Recovery Strategy"@en ;
+    rdfs:comment "Strategy for recovering from errors"@en .
+
+:ErrorPreventionMeasure a owl:Class ;
+    rdfs:label "Error Prevention Measure"@en ;
+    rdfs:comment "Measures to prevent errors"@en .
+
+:ErrorType a owl:Class ;
+    rdfs:label "ErrorType",
+        "Error Type"@en ;
+    rdfs:comment "Classification of different error types"@en .
+
+:ErrorValidationRule a owl:Class ;
+    rdfs:label "Error Validation Rule"@en ;
+    rdfs:comment "Validation rules for error handling"@en .
+
+:ErrorHandlingStep a owl:Class ;
+    rdfs:label "Error Handling Step"@en ;
+    rdfs:comment "Steps in the error handling process"@en .
+

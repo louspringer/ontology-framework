@@ -1,0 +1,112 @@
+@prefix : <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#> .
+@prefix ns1: <http://example.org/guidance#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:hasOperationType a owl:DatatypeProperty ;
+    rdfs:label "Operation Type" ;
+    rdfs:comment "Type of SPARQL operation (SELECT, INSERT, DELETE, etc.)" ;
+    rdfs:domain ns1:SparqlOperation ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasQueryString a owl:DatatypeProperty ;
+    rdfs:label "Query String" ;
+    rdfs:comment "The SPARQL query string" ;
+    rdfs:domain ns1:SparqlQuery ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasTemporaryDataset a owl:DatatypeProperty ;
+    rdfs:label "Temporary Dataset" ;
+    rdfs:comment "Name of the temporary dataset" ;
+    rdfs:domain ns1:TemporaryOntology ;
+    rdfs:range xsd:string ;
+    owl:versionInfo "1.0.0" .
+
+ns1:hasValidationQuery a owl:ObjectProperty ;
+    rdfs:label "Validation Query" ;
+    rdfs:comment "SPARQL query for validation" ;
+    rdfs:domain ns1:TemporaryOntology ;
+    rdfs:range ns1:SparqlQuery ;
+    owl:versionInfo "1.0.0" .
+
+ns1:selectAllTriples a ns1:SparqlQuery ;
+    rdfs:label "Select All Triples" ;
+    ns1:hasOperationType "SELECT" ;
+    ns1:hasQueryString """
+        SELECT ?s ?p ?o
+        WHERE {
+            ?s ?p ?o
+        }
+    """ ;
+    rdfs:comment "Query to select all triples in the dataset" .
+
+ns1:tempOntology a ns1:TemporaryOntology ;
+    rdfs:label "Temporary Ontology" ;
+    ns1:hasTemporaryDataset "temp_ontology" ;
+    ns1:hasValidationQuery ns1:validateOntology ;
+    rdfs:comment "Temporary ontology for CRUD operations" .
+
+:exampleSparqlOperation1 a ns1:SparqlOperation ;
+    rdfs:label "Example SparqlOperation 1" ;
+    ns1:hasOperationType "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlOperation" .
+
+:exampleSparqlOperation2 a ns1:SparqlOperation ;
+    rdfs:label "Example SparqlOperation 2" ;
+    ns1:hasOperationType "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlOperation" .
+
+:exampleTemporaryOntology1 a ns1:TemporaryOntology ;
+    rdfs:label "Example TemporaryOntology 1" ;
+    ns1:hasTemporaryDataset "Example value 1" ;
+    ns1:hasValidationQuery :exampleSparqlQuery1 ;
+    rdfs:comment "This is example instance 1 of class TemporaryOntology" .
+
+:exampleTemporaryOntology2 a ns1:TemporaryOntology ;
+    rdfs:label "Example TemporaryOntology 2" ;
+    ns1:hasTemporaryDataset "Example value 2" ;
+    ns1:hasValidationQuery :exampleSparqlQuery2 ;
+    rdfs:comment "This is example instance 2 of class TemporaryOntology" .
+
+ns1:validateOntology a ns1:SparqlQuery ;
+    rdfs:label "Validate Ontology" ;
+    ns1:hasOperationType "SELECT" ;
+    ns1:hasQueryString """
+        SELECT ?class ?property
+        WHERE {
+            ?class a owl:Class .
+            ?property a owl:ObjectProperty .
+        }
+    """ ;
+    rdfs:comment "Query to validate ontology structure" .
+
+:exampleSparqlQuery1 a ns1:SparqlQuery ;
+    rdfs:label "Example SparqlQuery 1" ;
+    ns1:hasQueryString "Example value 1" ;
+    rdfs:comment "This is example instance 1 of class SparqlQuery" .
+
+:exampleSparqlQuery2 a ns1:SparqlQuery ;
+    rdfs:label "Example SparqlQuery 2" ;
+    ns1:hasQueryString "Example value 2" ;
+    rdfs:comment "This is example instance 2 of class SparqlQuery" .
+
+ns1:SparqlOperation a owl:Class ;
+    rdfs:label "SPARQL Operation" ;
+    rdfs:comment "Base class for SPARQL operations" ;
+    owl:versionInfo "1.0.0" .
+
+ns1:TemporaryOntology a owl:Class ;
+    rdfs:label "Temporary Ontology" ;
+    rdfs:comment "Temporary ontology for CRUD operations" ;
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+
+ns1:SparqlQuery a owl:Class ;
+    rdfs:label "SPARQL Query" ;
+    rdfs:comment "SPARQL query for operations" ;
+    rdfs:subClassOf ns1:SparqlOperation ;
+    owl:versionInfo "1.0.0" .
+

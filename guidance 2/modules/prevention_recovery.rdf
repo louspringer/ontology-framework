@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:prev="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRollback1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#Rollback"/>
+    <rdfs:label>Example Rollback 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class Rollback</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRecoveryStrategy1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#RecoveryStrategy"/>
+    <rdfs:label>Example RecoveryStrategy 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class RecoveryStrategy</rdfs:comment>
+    <prev:hasStrategy>Example value 1</prev:hasStrategy>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePreventionMeasure1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#PreventionMeasure"/>
+    <rdfs:label>Example PreventionMeasure 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class PreventionMeasure</rdfs:comment>
+    <prev:hasDescription>Example value 1</prev:hasDescription>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#FallbackInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#Fallback"/>
+    <prev:hasStrategy>Display maintenance message</prev:hasStrategy>
+    <prev:hasStrategy>Provide simplified functionality</prev:hasStrategy>
+    <prev:hasStrategy>Use cached data when live data unavailable</prev:hasStrategy>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#AutoRetryInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#AutoRetry"/>
+    <prev:hasStrategy>Log retry attempts</prev:hasStrategy>
+    <prev:hasStrategy>Retry failed operation up to 3 times</prev:hasStrategy>
+    <prev:hasStrategy>Use exponential backoff between retries</prev:hasStrategy>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRecoveryStrategy2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#RecoveryStrategy"/>
+    <rdfs:label>Example RecoveryStrategy 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class RecoveryStrategy</rdfs:comment>
+    <prev:hasStrategy>Example value 2</prev:hasStrategy>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleInputValidation1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#InputValidation"/>
+    <rdfs:label>Example InputValidation 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class InputValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceMonitoring2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ResourceMonitoring"/>
+    <rdfs:label>Example ResourceMonitoring 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ResourceMonitoring</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorBoundary2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ErrorBoundary"/>
+    <rdfs:label>Example ErrorBoundary 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class ErrorBoundary</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleResourceMonitoring1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ResourceMonitoring"/>
+    <rdfs:label>Example ResourceMonitoring 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ResourceMonitoring</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleInputValidation2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#InputValidation"/>
+    <rdfs:label>Example InputValidation 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class InputValidation</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ErrorBoundaryInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ErrorBoundary"/>
+    <prev:hasDescription>Implement error boundaries in UI components</prev:hasDescription>
+    <prev:hasDescription>Isolate error-prone operations</prev:hasDescription>
+    <prev:hasDescription>Provide fallback UI for errors</prev:hasDescription>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleFallback1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#Fallback"/>
+    <rdfs:label>Example Fallback 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class Fallback</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAutoRetry1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#AutoRetry"/>
+    <rdfs:label>Example AutoRetry 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class AutoRetry</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#examplePreventionMeasure2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#PreventionMeasure"/>
+    <rdfs:label>Example PreventionMeasure 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class PreventionMeasure</rdfs:comment>
+    <prev:hasDescription>Example value 2</prev:hasDescription>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleFallback2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#Fallback"/>
+    <rdfs:label>Example Fallback 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class Fallback</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#InputValidationInstance">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#InputValidation"/>
+    <prev:hasDescription>Check for required fields</prev:hasDescription>
+    <prev:hasDescription>Validate all input data against schema</prev:hasDescription>
+    <prev:hasDescription>Validate data types and ranges</prev:hasDescription>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleErrorBoundary1">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#ErrorBoundary"/>
+    <rdfs:label>Example ErrorBoundary 1</rdfs:label>
+    <rdfs:comment>This is example instance 1 of class ErrorBoundary</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleAutoRetry2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#AutoRetry"/>
+    <rdfs:label>Example AutoRetry 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class AutoRetry</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/#exampleRollback2">
+    <rdf:type rdf:resource="https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance/modules/prevention#Rollback"/>
+    <rdfs:label>Example Rollback 2</rdfs:label>
+    <rdfs:comment>This is example instance 2 of class Rollback</rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>
