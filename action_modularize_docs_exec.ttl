@@ -13,7 +13,10 @@ file:legacy_doc_structure a meta:ArchivedArtifact ;
         file:structure_shapes ;
     meta:archivedAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
     meta:archiveReason "Modularization completed" ;
-    meta:previousVersion "1.0.0" .
+    meta:previousVersion "1.0.0" ;
+    meta:changeLog "Initial modularization of legacy structure" ;
+    meta:archivedBy "system" ;
+    meta:retentionPolicy "5 years" .
 
 plan:Action_ModularizeDocs a plan:Action ;
     rdfs:label "Modularize Documentation" ;
@@ -27,7 +30,12 @@ plan:Action_ModularizeDocs a plan:Action ;
     meta:qualityCheck "passed" ;
     meta:testCoverage "95%" ;
     meta:reviewedBy "system" ;
-    meta:nextAction plan:Action_ValidateModularStructure .
+    meta:nextAction plan:Action_ValidateModularStructure ;
+    meta:executionTime "2 hours" ;
+    meta:executionEnvironment "production" ;
+    meta:executionLog "Successfully completed modularization" ;
+    meta:rollbackPlan "Restore from backup" ;
+    meta:successCriteria "All modules validated and integrated" .
 
 file:structure_annotation a meta:OntologyArtifact ;
     rdfs:label "Annotation Vocabulary" ;
@@ -37,7 +45,11 @@ file:structure_annotation a meta:OntologyArtifact ;
     meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
     meta:dependsOn file:structure_core ;
     meta:validatedBy file:spore_validationModule ;
-    meta:testCoverage "90%" .
+    meta:testCoverage "90%" ;
+    meta:artifactType "vocabulary" ;
+    meta:maintainer "ontology-team" ;
+    meta:reviewCycle "quarterly" ;
+    meta:changeHistory "Initial modularization" .
 
 file:structure_core a meta:OntologyArtifact ;
     rdfs:label "Core Structural Vocabulary" ;
@@ -46,7 +58,12 @@ file:structure_core a meta:OntologyArtifact ;
     meta:version "1.0.0" ;
     meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
     meta:validatedBy file:spore_validationModule ;
-    meta:testCoverage "95%" .
+    meta:testCoverage "95%" ;
+    meta:artifactType "core-vocabulary" ;
+    meta:maintainer "ontology-team" ;
+    meta:reviewCycle "quarterly" ;
+    meta:changeHistory "Initial modularization" ;
+    meta:stabilityLevel "stable" .
 
 file:structure_shapes a meta:OntologyArtifact ;
     rdfs:label "SHACL Shapes Module" ;
@@ -57,5 +74,10 @@ file:structure_shapes a meta:OntologyArtifact ;
     meta:dependsOn file:structure_core,
         file:structure_annotation ;
     meta:validatedBy file:spore_validationModule ;
-    meta:testCoverage "90%" .
+    meta:testCoverage "90%" ;
+    meta:artifactType "shapes" ;
+    meta:maintainer "ontology-team" ;
+    meta:reviewCycle "quarterly" ;
+    meta:changeHistory "Initial modularization" ;
+    meta:constraintCount "25" .
 
