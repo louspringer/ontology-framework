@@ -1,0 +1,61 @@
+@prefix action: <https://louspringer.com/action#> .
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
+@prefix plan: <https://louspringer.com/plan#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+file:legacy_doc_structure a meta:ArchivedArtifact ;
+    rdfs:label "Legacy Ontology Structure (Archived)" ;
+    rdfs:comment "Replaced by modular structure_core, structure_annotation, and structure_shapes" ;
+    meta:replacedBy file:structure_annotation,
+        file:structure_core,
+        file:structure_shapes ;
+    meta:archivedAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:archiveReason "Modularization completed" ;
+    meta:previousVersion "1.0.0" .
+
+plan:Action_ModularizeDocs a plan:Action ;
+    rdfs:label "Modularize Documentation" ;
+    rdfs:comment "Legacy documentation modularized into three ontological components." ;
+    action:generatesArtifact file:structure_annotation,
+        file:structure_core,
+        file:structure_shapes ;
+    plan:actionStatus meta:CompletedStatus ;
+    meta:completedAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:validatedBy file:spore_validationModule ;
+    meta:qualityCheck "passed" ;
+    meta:testCoverage "95%" ;
+    meta:reviewedBy "system" ;
+    meta:nextAction plan:Action_ValidateModularStructure .
+
+file:structure_annotation a meta:OntologyArtifact ;
+    rdfs:label "Annotation Vocabulary" ;
+    rdfs:comment "Modularized annotation terms from legacy documentation" ;
+    rdfs:isDefinedBy file:structure_annotation ;
+    meta:version "1.0.0" ;
+    meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:dependsOn file:structure_core ;
+    meta:validatedBy file:spore_validationModule ;
+    meta:testCoverage "90%" .
+
+file:structure_core a meta:OntologyArtifact ;
+    rdfs:label "Core Structural Vocabulary" ;
+    rdfs:comment "Modularized core vocabulary from legacy documentation" ;
+    rdfs:isDefinedBy file:structure_core ;
+    meta:version "1.0.0" ;
+    meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:validatedBy file:spore_validationModule ;
+    meta:testCoverage "95%" .
+
+file:structure_shapes a meta:OntologyArtifact ;
+    rdfs:label "SHACL Shapes Module" ;
+    rdfs:comment "Modularized shapes and constraints from legacy documentation" ;
+    rdfs:isDefinedBy file:structure_shapes ;
+    meta:version "1.0.0" ;
+    meta:createdAt "2025-06-12T00:00:00Z"^^xsd:dateTime ;
+    meta:dependsOn file:structure_core,
+        file:structure_annotation ;
+    meta:validatedBy file:spore_validationModule ;
+    meta:testCoverage "90%" .
+

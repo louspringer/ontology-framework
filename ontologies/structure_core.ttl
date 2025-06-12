@@ -1,0 +1,12 @@
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+file:structure_core a meta:OntologyArtifact ;
+    rdfs:label "Core Structural Vocabulary" ;
+    rdfs:comment "Modularized core vocabulary from legacy documentation. CONTENT COULD NOT BE RETRIEVED." ;
+    meta:version "1.0.0" ;
+    rdfs:isDefinedBy file:structure_core .
+
+# Original content for structure_core.ttl could not be retrieved by the assistant.
+# This file serves as a placeholder for the modularized core structural vocabulary.

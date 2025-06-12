@@ -1,8 +1,22 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix : <https://louspringer.com/spore_index#> .
+@prefix file: <https://louspringer.com/file#> .
+@prefix meta: <https://louspringer.com/meta#> .
 
 :SporeIndexOntology a owl:Ontology ;
     rdfs:label "Spore Index Ontology" ;
     rdfs:comment "An index ontology that imports various spore-related modules." ;
     owl:imports <refactor_spore_tie.ttl> .
+
+file:structure_core a meta:OntologyArtifact ;
+    rdfs:label "Core Structural Vocabulary" ;
+    rdfs:isDefinedBy file:structure_core .
+
+file:structure_annotation a meta:OntologyArtifact ;
+    rdfs:label "Annotation Vocabulary" ;
+    rdfs:isDefinedBy file:structure_annotation .
+
+file:structure_shapes a meta:OntologyArtifact ;
+    rdfs:label "SHACL Shapes Module" ;
+    rdfs:isDefinedBy file:structure_shapes .
