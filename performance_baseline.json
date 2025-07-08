@@ -1,0 +1,6414 @@
+{
+  "system_info": {
+    "python_version": "3.13.2 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:02) [GCC 11.2.0]",
+    "platform": "linux",
+    "cpu_count": 4,
+    "memory_total_gb": 31.244029998779297,
+    "memory_available_gb": 13.774604797363281,
+    "disk_usage_percent": 10.1
+  },
+  "metrics": [
+    {
+      "operation": "basic_query_0",
+      "duration_ms": 50.76861381530762,
+      "memory_mb": 2.5,
+      "cpu_percent": 78.5,
+      "triple_count": 46,
+      "result_count": 46,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.001541"
+    },
+    {
+      "operation": "class_query_0",
+      "duration_ms": 3.5293102264404297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.054526"
+    },
+    {
+      "operation": "property_query_0",
+      "duration_ms": 16.19744300842285,
+      "memory_mb": 0.125,
+      "cpu_percent": 61.2,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.132608"
+    },
+    {
+      "operation": "basic_query_1",
+      "duration_ms": 4.797458648681641,
+      "memory_mb": 0.0,
+      "cpu_percent": 200.9,
+      "triple_count": 52,
+      "result_count": 52,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.194897"
+    },
+    {
+      "operation": "class_query_1",
+      "duration_ms": 2.1209716796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 52,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.233384"
+    },
+    {
+      "operation": "property_query_1",
+      "duration_ms": 6.960630416870117,
+      "memory_mb": 0.0,
+      "cpu_percent": 140.2,
+      "triple_count": 52,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.279760"
+    },
+    {
+      "operation": "basic_query_2",
+      "duration_ms": 8.204460144042969,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 149,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.328471"
+    },
+    {
+      "operation": "class_query_2",
+      "duration_ms": 4.42957878112793,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.370430"
+    },
+    {
+      "operation": "property_query_2",
+      "duration_ms": 9.899377822875977,
+      "memory_mb": 0.0,
+      "cpu_percent": 99.3,
+      "triple_count": 149,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.417927"
+    },
+    {
+      "operation": "basic_query_3",
+      "duration_ms": 3.699064254760742,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 57,
+      "result_count": 57,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.460580"
+    },
+    {
+      "operation": "class_query_3",
+      "duration_ms": 2.9549598693847656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 57,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.503519"
+    },
+    {
+      "operation": "property_query_3",
+      "duration_ms": 7.747888565063477,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 57,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.550563"
+    },
+    {
+      "operation": "basic_query_4",
+      "duration_ms": 11.455059051513672,
+      "memory_mb": 0.125,
+      "cpu_percent": 85.6,
+      "triple_count": 257,
+      "result_count": 257,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.599928"
+    },
+    {
+      "operation": "class_query_4",
+      "duration_ms": 8.512020111083984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 257,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.652395"
+    },
+    {
+      "operation": "property_query_4",
+      "duration_ms": 7.312774658203125,
+      "memory_mb": 0.0,
+      "cpu_percent": 133.5,
+      "triple_count": 257,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.699467"
+    },
+    {
+      "operation": "basic_query_5",
+      "duration_ms": 13.262271881103516,
+      "memory_mb": 0.125,
+      "cpu_percent": 74.3,
+      "triple_count": 408,
+      "result_count": 408,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.754650"
+    },
+    {
+      "operation": "class_query_5",
+      "duration_ms": 2.6938915252685547,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 408,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.803086"
+    },
+    {
+      "operation": "property_query_5",
+      "duration_ms": 9.635448455810547,
+      "memory_mb": 0.0,
+      "cpu_percent": 101.6,
+      "triple_count": 408,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.854271"
+    },
+    {
+      "operation": "basic_query_6",
+      "duration_ms": 8.050680160522461,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.3,
+      "triple_count": 211,
+      "result_count": 211,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.900512"
+    },
+    {
+      "operation": "class_query_6",
+      "duration_ms": 2.777576446533203,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 211,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:38.963795"
+    },
+    {
+      "operation": "property_query_6",
+      "duration_ms": 11.551380157470703,
+      "memory_mb": 0.0,
+      "cpu_percent": 84.3,
+      "triple_count": 211,
+      "result_count": 39,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.040499"
+    },
+    {
+      "operation": "basic_query_7",
+      "duration_ms": 7.598876953125,
+      "memory_mb": 0.0,
+      "cpu_percent": 128.6,
+      "triple_count": 119,
+      "result_count": 119,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.106333"
+    },
+    {
+      "operation": "class_query_7",
+      "duration_ms": 2.7213096618652344,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 119,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.148187"
+    },
+    {
+      "operation": "property_query_7",
+      "duration_ms": 21.685361862182617,
+      "memory_mb": 0.0,
+      "cpu_percent": 45.8,
+      "triple_count": 119,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.209798"
+    },
+    {
+      "operation": "basic_query_8",
+      "duration_ms": 6.136894226074219,
+      "memory_mb": 0.0,
+      "cpu_percent": 142.8,
+      "triple_count": 83,
+      "result_count": 83,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.271192"
+    },
+    {
+      "operation": "class_query_8",
+      "duration_ms": 2.451181411743164,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 83,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.317970"
+    },
+    {
+      "operation": "property_query_8",
+      "duration_ms": 11.878728866577148,
+      "memory_mb": 0.0,
+      "cpu_percent": 82.8,
+      "triple_count": 83,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.382775"
+    },
+    {
+      "operation": "basic_query_9",
+      "duration_ms": 2.6128292083740234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 6,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.436353"
+    },
+    {
+      "operation": "class_query_9",
+      "duration_ms": 2.4318695068359375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 6,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.489142"
+    },
+    {
+      "operation": "property_query_9",
+      "duration_ms": 8.371829986572266,
+      "memory_mb": 0.0,
+      "cpu_percent": 116.9,
+      "triple_count": 6,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.552361"
+    },
+    {
+      "operation": "basic_query_10",
+      "duration_ms": 11.484146118164062,
+      "memory_mb": 0.0,
+      "cpu_percent": 85.4,
+      "triple_count": 180,
+      "result_count": 180,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.606548"
+    },
+    {
+      "operation": "class_query_10",
+      "duration_ms": 3.2927989959716797,
+      "memory_mb": 0.0,
+      "cpu_percent": 267.4,
+      "triple_count": 180,
+      "result_count": 15,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.650808"
+    },
+    {
+      "operation": "property_query_10",
+      "duration_ms": 11.550426483154297,
+      "memory_mb": 0.0,
+      "cpu_percent": 170.5,
+      "triple_count": 180,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.710622"
+    },
+    {
+      "operation": "basic_query_11",
+      "duration_ms": 2.9866695404052734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 66,
+      "result_count": 66,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.753675"
+    },
+    {
+      "operation": "class_query_11",
+      "duration_ms": 4.296302795410156,
+      "memory_mb": 0.0,
+      "cpu_percent": 223.2,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.800796"
+    },
+    {
+      "operation": "property_query_11",
+      "duration_ms": 9.99307632446289,
+      "memory_mb": 0.0,
+      "cpu_percent": 98.3,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.869075"
+    },
+    {
+      "operation": "basic_query_12",
+      "duration_ms": 2.3856163024902344,
+      "memory_mb": 0.0,
+      "cpu_percent": 390.1,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.908637"
+    },
+    {
+      "operation": "class_query_12",
+      "duration_ms": 2.5446414947509766,
+      "memory_mb": 0.0,
+      "cpu_percent": 371.7,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.950301"
+    },
+    {
+      "operation": "property_query_12",
+      "duration_ms": 9.403705596923828,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:39.996874"
+    },
+    {
+      "operation": "basic_query_13",
+      "duration_ms": 3.1538009643554688,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 40,
+      "result_count": 40,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.043842"
+    },
+    {
+      "operation": "class_query_13",
+      "duration_ms": 2.589702606201172,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.081977"
+    },
+    {
+      "operation": "property_query_13",
+      "duration_ms": 8.641242980957031,
+      "memory_mb": 0.0,
+      "cpu_percent": 113.3,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.125461"
+    },
+    {
+      "operation": "basic_query_14",
+      "duration_ms": 4.759073257446289,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 27,
+      "result_count": 27,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.176630"
+    },
+    {
+      "operation": "class_query_14",
+      "duration_ms": 2.626657485961914,
+      "memory_mb": 0.0,
+      "cpu_percent": 361.4,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.217992"
+    },
+    {
+      "operation": "property_query_14",
+      "duration_ms": 9.736061096191406,
+      "memory_mb": 0.0,
+      "cpu_percent": 100.9,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.266576"
+    },
+    {
+      "operation": "basic_query_15",
+      "duration_ms": 6.834983825683594,
+      "memory_mb": 0.0,
+      "cpu_percent": 140.9,
+      "triple_count": 133,
+      "result_count": 133,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.318985"
+    },
+    {
+      "operation": "class_query_15",
+      "duration_ms": 2.6509761810302734,
+      "memory_mb": 0.0,
+      "cpu_percent": 355.0,
+      "triple_count": 133,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.357701"
+    },
+    {
+      "operation": "property_query_15",
+      "duration_ms": 9.130239486694336,
+      "memory_mb": 0.0,
+      "cpu_percent": 106.0,
+      "triple_count": 133,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.403207"
+    },
+    {
+      "operation": "basic_query_16",
+      "duration_ms": 7.643222808837891,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 210,
+      "result_count": 210,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.448540"
+    },
+    {
+      "operation": "class_query_16",
+      "duration_ms": 8.035659790039062,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 210,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.494817"
+    },
+    {
+      "operation": "property_query_16",
+      "duration_ms": 11.504650115966797,
+      "memory_mb": 0.0,
+      "cpu_percent": 85.5,
+      "triple_count": 210,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.572500"
+    },
+    {
+      "operation": "basic_query_17",
+      "duration_ms": 4.8065185546875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 107,
+      "result_count": 107,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.617023"
+    },
+    {
+      "operation": "class_query_17",
+      "duration_ms": 2.5517940521240234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 107,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.655517"
+    },
+    {
+      "operation": "property_query_17",
+      "duration_ms": 9.480714797973633,
+      "memory_mb": 0.0,
+      "cpu_percent": 103.1,
+      "triple_count": 107,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.700809"
+    },
+    {
+      "operation": "basic_query_18",
+      "duration_ms": 2.252340316772461,
+      "memory_mb": 0.0,
+      "cpu_percent": 400.2,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.737464"
+    },
+    {
+      "operation": "class_query_18",
+      "duration_ms": 2.8214454650878906,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.782843"
+    },
+    {
+      "operation": "property_query_18",
+      "duration_ms": 10.936498641967773,
+      "memory_mb": 0.0,
+      "cpu_percent": 89.4,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.846744"
+    },
+    {
+      "operation": "basic_query_19",
+      "duration_ms": 3.5495758056640625,
+      "memory_mb": 0.0,
+      "cpu_percent": 264.6,
+      "triple_count": 63,
+      "result_count": 63,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.891090"
+    },
+    {
+      "operation": "class_query_19",
+      "duration_ms": 2.6133060455322266,
+      "memory_mb": 0.0,
+      "cpu_percent": 360.9,
+      "triple_count": 63,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.933303"
+    },
+    {
+      "operation": "property_query_19",
+      "duration_ms": 12.457847595214844,
+      "memory_mb": 0.0,
+      "cpu_percent": 79.2,
+      "triple_count": 63,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:40.998046"
+    },
+    {
+      "operation": "basic_query_20",
+      "duration_ms": 4.566431045532227,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 112,
+      "result_count": 112,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.066965"
+    },
+    {
+      "operation": "class_query_20",
+      "duration_ms": 5.510091781616211,
+      "memory_mb": 0.0,
+      "cpu_percent": 175.6,
+      "triple_count": 112,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.127968"
+    },
+    {
+      "operation": "property_query_20",
+      "duration_ms": 12.980937957763672,
+      "memory_mb": 0.0,
+      "cpu_percent": 75.9,
+      "triple_count": 112,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.183130"
+    },
+    {
+      "operation": "basic_query_21",
+      "duration_ms": 5.196809768676758,
+      "memory_mb": 0.0,
+      "cpu_percent": 182.3,
+      "triple_count": 63,
+      "result_count": 63,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.229470"
+    },
+    {
+      "operation": "class_query_21",
+      "duration_ms": 2.6972293853759766,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 63,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.271585"
+    },
+    {
+      "operation": "property_query_21",
+      "duration_ms": 7.603645324707031,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 63,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.314995"
+    },
+    {
+      "operation": "basic_query_22",
+      "duration_ms": 6.5593719482421875,
+      "memory_mb": 0.0,
+      "cpu_percent": 148.2,
+      "triple_count": 169,
+      "result_count": 169,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.358620"
+    },
+    {
+      "operation": "class_query_22",
+      "duration_ms": 2.7959346771240234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 169,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.396886"
+    },
+    {
+      "operation": "property_query_22",
+      "duration_ms": 8.169174194335938,
+      "memory_mb": 0.0,
+      "cpu_percent": 119.4,
+      "triple_count": 169,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.440494"
+    },
+    {
+      "operation": "basic_query_23",
+      "duration_ms": 7.1468353271484375,
+      "memory_mb": 0.0,
+      "cpu_percent": 136.2,
+      "triple_count": 154,
+      "result_count": 154,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.482489"
+    },
+    {
+      "operation": "class_query_23",
+      "duration_ms": 2.6824474334716797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 154,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.521236"
+    },
+    {
+      "operation": "property_query_23",
+      "duration_ms": 7.909059524536133,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 154,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.566385"
+    },
+    {
+      "operation": "basic_query_24",
+      "duration_ms": 7.234334945678711,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 192,
+      "result_count": 192,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.609681"
+    },
+    {
+      "operation": "class_query_24",
+      "duration_ms": 3.9272308349609375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 192,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.659249"
+    },
+    {
+      "operation": "property_query_24",
+      "duration_ms": 8.074760437011719,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 192,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.706724"
+    },
+    {
+      "operation": "basic_query_25",
+      "duration_ms": 9.503602981567383,
+      "memory_mb": 0.0,
+      "cpu_percent": 103.4,
+      "triple_count": 123,
+      "result_count": 123,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.764646"
+    },
+    {
+      "operation": "class_query_25",
+      "duration_ms": 3.0782222747802734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 123,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.820946"
+    },
+    {
+      "operation": "property_query_25",
+      "duration_ms": 9.413003921508789,
+      "memory_mb": 0.0,
+      "cpu_percent": 104.2,
+      "triple_count": 123,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.876107"
+    },
+    {
+      "operation": "basic_query_26",
+      "duration_ms": 8.28695297241211,
+      "memory_mb": 0.0,
+      "cpu_percent": 117.6,
+      "triple_count": 166,
+      "result_count": 166,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.936423"
+    },
+    {
+      "operation": "class_query_26",
+      "duration_ms": 4.813194274902344,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 166,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:41.981434"
+    },
+    {
+      "operation": "property_query_26",
+      "duration_ms": 9.66787338256836,
+      "memory_mb": 0.0,
+      "cpu_percent": 101.0,
+      "triple_count": 166,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.033003"
+    },
+    {
+      "operation": "basic_query_27",
+      "duration_ms": 8.281946182250977,
+      "memory_mb": 0.0,
+      "cpu_percent": 118.0,
+      "triple_count": 149,
+      "result_count": 149,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.083627"
+    },
+    {
+      "operation": "class_query_27",
+      "duration_ms": 4.964351654052734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.126487"
+    },
+    {
+      "operation": "property_query_27",
+      "duration_ms": 9.016275405883789,
+      "memory_mb": 0.0,
+      "cpu_percent": 108.3,
+      "triple_count": 149,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.178474"
+    },
+    {
+      "operation": "basic_query_28",
+      "duration_ms": 6.333112716674805,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 149,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.225831"
+    },
+    {
+      "operation": "class_query_28",
+      "duration_ms": 2.9218196868896484,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.268180"
+    },
+    {
+      "operation": "property_query_28",
+      "duration_ms": 8.354902267456055,
+      "memory_mb": 0.0,
+      "cpu_percent": 117.5,
+      "triple_count": 149,
+      "result_count": 11,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.315246"
+    },
+    {
+      "operation": "basic_query_29",
+      "duration_ms": 2.0639896392822266,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 16,
+      "result_count": 16,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.350436"
+    },
+    {
+      "operation": "class_query_29",
+      "duration_ms": 2.232074737548828,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 16,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.390965"
+    },
+    {
+      "operation": "property_query_29",
+      "duration_ms": 10.266780853271484,
+      "memory_mb": 0.0,
+      "cpu_percent": 94.3,
+      "triple_count": 16,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.449757"
+    },
+    {
+      "operation": "basic_query_30",
+      "duration_ms": 3.0088424682617188,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 9,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.492907"
+    },
+    {
+      "operation": "class_query_30",
+      "duration_ms": 2.6695728302001953,
+      "memory_mb": 0.0,
+      "cpu_percent": 354.6,
+      "triple_count": 9,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.535649"
+    },
+    {
+      "operation": "property_query_30",
+      "duration_ms": 7.549524307250977,
+      "memory_mb": 0.0,
+      "cpu_percent": 128.8,
+      "triple_count": 9,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.588432"
+    },
+    {
+      "operation": "basic_query_31",
+      "duration_ms": 3.6499500274658203,
+      "memory_mb": 0.0,
+      "cpu_percent": 262.1,
+      "triple_count": 46,
+      "result_count": 46,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.635324"
+    },
+    {
+      "operation": "class_query_31",
+      "duration_ms": 2.8853416442871094,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.678403"
+    },
+    {
+      "operation": "property_query_31",
+      "duration_ms": 8.110761642456055,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.7,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.723796"
+    },
+    {
+      "operation": "basic_query_32",
+      "duration_ms": 5.136966705322266,
+      "memory_mb": 0.0,
+      "cpu_percent": 188.1,
+      "triple_count": 122,
+      "result_count": 122,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.763993"
+    },
+    {
+      "operation": "class_query_32",
+      "duration_ms": 3.8399696350097656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 122,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.813671"
+    },
+    {
+      "operation": "property_query_32",
+      "duration_ms": 9.75489616394043,
+      "memory_mb": 0.0,
+      "cpu_percent": 100.1,
+      "triple_count": 122,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.862902"
+    },
+    {
+      "operation": "basic_query_33",
+      "duration_ms": 4.572868347167969,
+      "memory_mb": 0.0,
+      "cpu_percent": 207.0,
+      "triple_count": 83,
+      "result_count": 83,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.905719"
+    },
+    {
+      "operation": "class_query_33",
+      "duration_ms": 2.7151107788085938,
+      "memory_mb": 0.0,
+      "cpu_percent": 346.1,
+      "triple_count": 83,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.946488"
+    },
+    {
+      "operation": "property_query_33",
+      "duration_ms": 8.887052536010742,
+      "memory_mb": 0.0,
+      "cpu_percent": 110.3,
+      "triple_count": 83,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:42.991827"
+    },
+    {
+      "operation": "basic_query_34",
+      "duration_ms": 8.094549179077148,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.5,
+      "triple_count": 243,
+      "result_count": 243,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.037625"
+    },
+    {
+      "operation": "class_query_34",
+      "duration_ms": 2.7904510498046875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 243,
+      "result_count": 7,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.077435"
+    },
+    {
+      "operation": "property_query_34",
+      "duration_ms": 15.848398208618164,
+      "memory_mb": 0.0,
+      "cpu_percent": 124.6,
+      "triple_count": 243,
+      "result_count": 11,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.128524"
+    },
+    {
+      "operation": "basic_query_35",
+      "duration_ms": 3.3524036407470703,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 29,
+      "result_count": 29,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.169922"
+    },
+    {
+      "operation": "class_query_35",
+      "duration_ms": 8.13603401184082,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 29,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.221487"
+    },
+    {
+      "operation": "property_query_35",
+      "duration_ms": 10.274887084960938,
+      "memory_mb": 0.0,
+      "cpu_percent": 95.7,
+      "triple_count": 29,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.282561"
+    },
+    {
+      "operation": "basic_query_36",
+      "duration_ms": 3.668069839477539,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 50,
+      "result_count": 50,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.349849"
+    },
+    {
+      "operation": "class_query_36",
+      "duration_ms": 3.654956817626953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 50,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.408114"
+    },
+    {
+      "operation": "property_query_36",
+      "duration_ms": 8.304357528686523,
+      "memory_mb": 0.0,
+      "cpu_percent": 118.0,
+      "triple_count": 50,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.456044"
+    },
+    {
+      "operation": "basic_query_37",
+      "duration_ms": 5.800962448120117,
+      "memory_mb": 0.0,
+      "cpu_percent": 158.9,
+      "triple_count": 103,
+      "result_count": 103,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.503722"
+    },
+    {
+      "operation": "class_query_37",
+      "duration_ms": 2.6416778564453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 103,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.556050"
+    },
+    {
+      "operation": "property_query_37",
+      "duration_ms": 17.377138137817383,
+      "memory_mb": 0.0,
+      "cpu_percent": 57.0,
+      "triple_count": 103,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.638092"
+    },
+    {
+      "operation": "basic_query_38",
+      "duration_ms": 66.72215461730957,
+      "memory_mb": 0.75,
+      "cpu_percent": 44.2,
+      "triple_count": 920,
+      "result_count": 920,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.812952"
+    },
+    {
+      "operation": "class_query_38",
+      "duration_ms": 3.7546157836914062,
+      "memory_mb": 0.0,
+      "cpu_percent": 253.3,
+      "triple_count": 920,
+      "result_count": 40,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.878689"
+    },
+    {
+      "operation": "property_query_38",
+      "duration_ms": 21.705150604248047,
+      "memory_mb": 0.0,
+      "cpu_percent": 91.4,
+      "triple_count": 920,
+      "result_count": 41,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:43.954002"
+    },
+    {
+      "operation": "basic_query_39",
+      "duration_ms": 4.16874885559082,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 106,
+      "result_count": 106,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.007255"
+    },
+    {
+      "operation": "class_query_39",
+      "duration_ms": 2.487659454345703,
+      "memory_mb": 0.0,
+      "cpu_percent": 379.0,
+      "triple_count": 106,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.048875"
+    },
+    {
+      "operation": "property_query_39",
+      "duration_ms": 9.334087371826172,
+      "memory_mb": 0.0,
+      "cpu_percent": 104.9,
+      "triple_count": 106,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.097825"
+    },
+    {
+      "operation": "basic_query_40",
+      "duration_ms": 4.738330841064453,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 56,
+      "result_count": 56,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.145154"
+    },
+    {
+      "operation": "class_query_40",
+      "duration_ms": 2.5768280029296875,
+      "memory_mb": 0.0,
+      "cpu_percent": 368.0,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.187248"
+    },
+    {
+      "operation": "property_query_40",
+      "duration_ms": 8.580446243286133,
+      "memory_mb": 0.0,
+      "cpu_percent": 114.1,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.236772"
+    },
+    {
+      "operation": "basic_query_41",
+      "duration_ms": 2.1140575408935547,
+      "memory_mb": 0.0,
+      "cpu_percent": 443.7,
+      "triple_count": 3,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.287083"
+    },
+    {
+      "operation": "class_query_41",
+      "duration_ms": 7.163286209106445,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.347450"
+    },
+    {
+      "operation": "property_query_41",
+      "duration_ms": 6.977558135986328,
+      "memory_mb": 0.0,
+      "cpu_percent": 267.4,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.404688"
+    },
+    {
+      "operation": "basic_query_42",
+      "duration_ms": 8.010625839233398,
+      "memory_mb": 0.0,
+      "cpu_percent": 114.3,
+      "triple_count": 162,
+      "result_count": 162,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.490572"
+    },
+    {
+      "operation": "class_query_42",
+      "duration_ms": 2.407550811767578,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 162,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.548214"
+    },
+    {
+      "operation": "property_query_42",
+      "duration_ms": 7.124423980712891,
+      "memory_mb": 0.0,
+      "cpu_percent": 137.2,
+      "triple_count": 162,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.627263"
+    },
+    {
+      "operation": "basic_query_43",
+      "duration_ms": 6.283044815063477,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 49,
+      "result_count": 49,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.695380"
+    },
+    {
+      "operation": "class_query_43",
+      "duration_ms": 4.316806793212891,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 49,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.746158"
+    },
+    {
+      "operation": "property_query_43",
+      "duration_ms": 7.596731185913086,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 49,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.804650"
+    },
+    {
+      "operation": "basic_query_44",
+      "duration_ms": 3.8573741912841797,
+      "memory_mb": 0.0,
+      "cpu_percent": 245.6,
+      "triple_count": 67,
+      "result_count": 67,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.852066"
+    },
+    {
+      "operation": "class_query_44",
+      "duration_ms": 2.6116371154785156,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.905899"
+    },
+    {
+      "operation": "property_query_44",
+      "duration_ms": 9.955644607543945,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.954394"
+    },
+    {
+      "operation": "basic_query_45",
+      "duration_ms": 2.2733211517333984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 3,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:44.999188"
+    },
+    {
+      "operation": "class_query_45",
+      "duration_ms": 3.879070281982422,
+      "memory_mb": 0.0,
+      "cpu_percent": 245.8,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.042811"
+    },
+    {
+      "operation": "property_query_45",
+      "duration_ms": 8.554458618164062,
+      "memory_mb": 0.0,
+      "cpu_percent": 114.5,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.094957"
+    },
+    {
+      "operation": "basic_query_46",
+      "duration_ms": 9.247541427612305,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 279,
+      "result_count": 279,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.143471"
+    },
+    {
+      "operation": "class_query_46",
+      "duration_ms": 2.9985904693603516,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 279,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.185701"
+    },
+    {
+      "operation": "property_query_46",
+      "duration_ms": 9.489059448242188,
+      "memory_mb": 0.0,
+      "cpu_percent": 103.3,
+      "triple_count": 279,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.231292"
+    },
+    {
+      "operation": "basic_query_47",
+      "duration_ms": 6.529808044433594,
+      "memory_mb": 0.0,
+      "cpu_percent": 148.9,
+      "triple_count": 147,
+      "result_count": 147,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.294902"
+    },
+    {
+      "operation": "class_query_47",
+      "duration_ms": 2.5475025177001953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 147,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.334247"
+    },
+    {
+      "operation": "property_query_47",
+      "duration_ms": 16.98923110961914,
+      "memory_mb": 0.0,
+      "cpu_percent": 58.2,
+      "triple_count": 147,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.388106"
+    },
+    {
+      "operation": "basic_query_48",
+      "duration_ms": 14.245748519897461,
+      "memory_mb": 0.0,
+      "cpu_percent": 138.6,
+      "triple_count": 409,
+      "result_count": 409,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.442646"
+    },
+    {
+      "operation": "class_query_48",
+      "duration_ms": 2.655029296875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 409,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.484257"
+    },
+    {
+      "operation": "property_query_48",
+      "duration_ms": 12.829780578613281,
+      "memory_mb": 0.0,
+      "cpu_percent": 76.8,
+      "triple_count": 409,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.534006"
+    },
+    {
+      "operation": "basic_query_49",
+      "duration_ms": 5.478620529174805,
+      "memory_mb": 0.0,
+      "cpu_percent": 176.5,
+      "triple_count": 133,
+      "result_count": 133,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.575202"
+    },
+    {
+      "operation": "class_query_49",
+      "duration_ms": 3.7255287170410156,
+      "memory_mb": 0.0,
+      "cpu_percent": 250.4,
+      "triple_count": 133,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.618781"
+    },
+    {
+      "operation": "property_query_49",
+      "duration_ms": 8.980512619018555,
+      "memory_mb": 0.0,
+      "cpu_percent": 109.0,
+      "triple_count": 133,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.667449"
+    },
+    {
+      "operation": "basic_query_50",
+      "duration_ms": 2.3369789123535156,
+      "memory_mb": 0.0,
+      "cpu_percent": 400.2,
+      "triple_count": 12,
+      "result_count": 12,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.705271"
+    },
+    {
+      "operation": "class_query_50",
+      "duration_ms": 2.6094913482666016,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 12,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.743254"
+    },
+    {
+      "operation": "property_query_50",
+      "duration_ms": 6.621837615966797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 12,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.785681"
+    },
+    {
+      "operation": "basic_query_51",
+      "duration_ms": 4.456281661987305,
+      "memory_mb": 0.0,
+      "cpu_percent": 216.4,
+      "triple_count": 103,
+      "result_count": 103,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.851008"
+    },
+    {
+      "operation": "class_query_51",
+      "duration_ms": 2.6552677154541016,
+      "memory_mb": 0.0,
+      "cpu_percent": 354.3,
+      "triple_count": 103,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.890632"
+    },
+    {
+      "operation": "property_query_51",
+      "duration_ms": 9.634256362915039,
+      "memory_mb": 0.0,
+      "cpu_percent": 101.7,
+      "triple_count": 103,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.934786"
+    },
+    {
+      "operation": "basic_query_52",
+      "duration_ms": 2.166271209716797,
+      "memory_mb": 0.0,
+      "cpu_percent": 430.8,
+      "triple_count": 4,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:45.973301"
+    },
+    {
+      "operation": "class_query_52",
+      "duration_ms": 2.7511119842529297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.012611"
+    },
+    {
+      "operation": "property_query_52",
+      "duration_ms": 7.072687149047852,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.053197"
+    },
+    {
+      "operation": "basic_query_53",
+      "duration_ms": 7.6313018798828125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 203,
+      "result_count": 203,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.093581"
+    },
+    {
+      "operation": "class_query_53",
+      "duration_ms": 2.8007030487060547,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 203,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.129037"
+    },
+    {
+      "operation": "property_query_53",
+      "duration_ms": 9.952306747436523,
+      "memory_mb": 0.0,
+      "cpu_percent": 98.6,
+      "triple_count": 203,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.177618"
+    },
+    {
+      "operation": "basic_query_54",
+      "duration_ms": 3.8802623748779297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 66,
+      "result_count": 66,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.214841"
+    },
+    {
+      "operation": "class_query_54",
+      "duration_ms": 2.8429031372070312,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.252557"
+    },
+    {
+      "operation": "property_query_54",
+      "duration_ms": 7.915735244750977,
+      "memory_mb": 0.0,
+      "cpu_percent": 123.2,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.296593"
+    },
+    {
+      "operation": "basic_query_55",
+      "duration_ms": 2.407073974609375,
+      "memory_mb": 0.0,
+      "cpu_percent": 372.7,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.333686"
+    },
+    {
+      "operation": "class_query_55",
+      "duration_ms": 2.6330947875976562,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.369750"
+    },
+    {
+      "operation": "property_query_55",
+      "duration_ms": 6.394624710083008,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.411816"
+    },
+    {
+      "operation": "basic_query_56",
+      "duration_ms": 4.316091537475586,
+      "memory_mb": 0.0,
+      "cpu_percent": 222.1,
+      "triple_count": 53,
+      "result_count": 53,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.488581"
+    },
+    {
+      "operation": "class_query_56",
+      "duration_ms": 2.759695053100586,
+      "memory_mb": 0.0,
+      "cpu_percent": 341.1,
+      "triple_count": 53,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.547756"
+    },
+    {
+      "operation": "property_query_56",
+      "duration_ms": 8.153676986694336,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.0,
+      "triple_count": 53,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.593492"
+    },
+    {
+      "operation": "basic_query_57",
+      "duration_ms": 8.111953735351562,
+      "memory_mb": 0.0,
+      "cpu_percent": 99.6,
+      "triple_count": 99,
+      "result_count": 99,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.651369"
+    },
+    {
+      "operation": "class_query_57",
+      "duration_ms": 15.550613403320312,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 99,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.759692"
+    },
+    {
+      "operation": "property_query_57",
+      "duration_ms": 34.44790840148926,
+      "memory_mb": 0.0,
+      "cpu_percent": 28.9,
+      "triple_count": 99,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.863247"
+    },
+    {
+      "operation": "basic_query_58",
+      "duration_ms": 3.7353038787841797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 9,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.935026"
+    },
+    {
+      "operation": "class_query_58",
+      "duration_ms": 2.8312206268310547,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 9,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:46.983153"
+    },
+    {
+      "operation": "property_query_58",
+      "duration_ms": 8.943557739257812,
+      "memory_mb": 0.0,
+      "cpu_percent": 109.7,
+      "triple_count": 9,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.036592"
+    },
+    {
+      "operation": "basic_query_59",
+      "duration_ms": 4.092216491699219,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.082229"
+    },
+    {
+      "operation": "class_query_59",
+      "duration_ms": 4.436731338500977,
+      "memory_mb": 0.0,
+      "cpu_percent": 216.9,
+      "triple_count": 55,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.126720"
+    },
+    {
+      "operation": "property_query_59",
+      "duration_ms": 7.91621208190918,
+      "memory_mb": 0.0,
+      "cpu_percent": 122.9,
+      "triple_count": 55,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.175472"
+    },
+    {
+      "operation": "basic_query_60",
+      "duration_ms": 2.2573471069335938,
+      "memory_mb": 0.0,
+      "cpu_percent": 409.5,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.218863"
+    },
+    {
+      "operation": "class_query_60",
+      "duration_ms": 3.955841064453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.260235"
+    },
+    {
+      "operation": "property_query_60",
+      "duration_ms": 11.607646942138672,
+      "memory_mb": 0.0,
+      "cpu_percent": 84.8,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.308933"
+    },
+    {
+      "operation": "basic_query_61",
+      "duration_ms": 7.9784393310546875,
+      "memory_mb": 0.0,
+      "cpu_percent": 122.2,
+      "triple_count": 152,
+      "result_count": 152,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.361363"
+    },
+    {
+      "operation": "class_query_61",
+      "duration_ms": 2.7742385864257812,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 152,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.408548"
+    },
+    {
+      "operation": "property_query_61",
+      "duration_ms": 12.989282608032227,
+      "memory_mb": 0.0,
+      "cpu_percent": 75.9,
+      "triple_count": 152,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.466672"
+    },
+    {
+      "operation": "basic_query_62",
+      "duration_ms": 4.184246063232422,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.509727"
+    },
+    {
+      "operation": "class_query_62",
+      "duration_ms": 2.5298595428466797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.548682"
+    },
+    {
+      "operation": "property_query_62",
+      "duration_ms": 7.810831069946289,
+      "memory_mb": 0.0,
+      "cpu_percent": 125.2,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.604136"
+    },
+    {
+      "operation": "basic_query_63",
+      "duration_ms": 4.019021987915039,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 3,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.644656"
+    },
+    {
+      "operation": "class_query_63",
+      "duration_ms": 2.7284622192382812,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.717746"
+    },
+    {
+      "operation": "property_query_63",
+      "duration_ms": 7.38525390625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 3,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.770543"
+    },
+    {
+      "operation": "basic_query_64",
+      "duration_ms": 12.214899063110352,
+      "memory_mb": 0.0,
+      "cpu_percent": 80.5,
+      "triple_count": 290,
+      "result_count": 290,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.823419"
+    },
+    {
+      "operation": "class_query_64",
+      "duration_ms": 4.800319671630859,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 290,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.907679"
+    },
+    {
+      "operation": "property_query_64",
+      "duration_ms": 10.80012321472168,
+      "memory_mb": 0.0,
+      "cpu_percent": 90.3,
+      "triple_count": 290,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:47.973250"
+    },
+    {
+      "operation": "basic_query_65",
+      "duration_ms": 5.939722061157227,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 131,
+      "result_count": 131,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.028728"
+    },
+    {
+      "operation": "class_query_65",
+      "duration_ms": 2.6857852935791016,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 131,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.084826"
+    },
+    {
+      "operation": "property_query_65",
+      "duration_ms": 20.242929458618164,
+      "memory_mb": 0.0,
+      "cpu_percent": 49.0,
+      "triple_count": 131,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.151810"
+    },
+    {
+      "operation": "basic_query_66",
+      "duration_ms": 5.462169647216797,
+      "memory_mb": 0.0,
+      "cpu_percent": 176.9,
+      "triple_count": 71,
+      "result_count": 71,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.206412"
+    },
+    {
+      "operation": "class_query_66",
+      "duration_ms": 2.608060836791992,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 71,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.251036"
+    },
+    {
+      "operation": "property_query_66",
+      "duration_ms": 21.41547203063965,
+      "memory_mb": 0.0,
+      "cpu_percent": 46.3,
+      "triple_count": 71,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.322670"
+    },
+    {
+      "operation": "basic_query_67",
+      "duration_ms": 4.133701324462891,
+      "memory_mb": 0.0,
+      "cpu_percent": 232.0,
+      "triple_count": 66,
+      "result_count": 66,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.382334"
+    },
+    {
+      "operation": "class_query_67",
+      "duration_ms": 3.0603408813476562,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.432963"
+    },
+    {
+      "operation": "property_query_67",
+      "duration_ms": 9.120464324951172,
+      "memory_mb": 0.0,
+      "cpu_percent": 107.4,
+      "triple_count": 66,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.485802"
+    },
+    {
+      "operation": "basic_query_68",
+      "duration_ms": 4.460811614990234,
+      "memory_mb": 0.0,
+      "cpu_percent": 215.0,
+      "triple_count": 71,
+      "result_count": 71,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.532238"
+    },
+    {
+      "operation": "class_query_68",
+      "duration_ms": 4.161357879638672,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 71,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.575750"
+    },
+    {
+      "operation": "property_query_68",
+      "duration_ms": 8.42738151550293,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 71,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.628623"
+    },
+    {
+      "operation": "basic_query_69",
+      "duration_ms": 4.387617111206055,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 92,
+      "result_count": 92,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.684100"
+    },
+    {
+      "operation": "class_query_69",
+      "duration_ms": 2.6102066040039062,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 92,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.737883"
+    },
+    {
+      "operation": "property_query_69",
+      "duration_ms": 12.110233306884766,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 92,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.785221"
+    },
+    {
+      "operation": "basic_query_70",
+      "duration_ms": 3.442525863647461,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.836274"
+    },
+    {
+      "operation": "class_query_70",
+      "duration_ms": 2.412080764770508,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.900457"
+    },
+    {
+      "operation": "property_query_70",
+      "duration_ms": 8.078813552856445,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.9,
+      "triple_count": 55,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.953445"
+    },
+    {
+      "operation": "basic_query_71",
+      "duration_ms": 2.8600692749023438,
+      "memory_mb": 0.0,
+      "cpu_percent": 327.9,
+      "triple_count": 26,
+      "result_count": 26,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:48.988738"
+    },
+    {
+      "operation": "class_query_71",
+      "duration_ms": 2.5589466094970703,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 26,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.027237"
+    },
+    {
+      "operation": "property_query_71",
+      "duration_ms": 11.01064682006836,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 26,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.075089"
+    },
+    {
+      "operation": "basic_query_72",
+      "duration_ms": 4.008054733276367,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.122770"
+    },
+    {
+      "operation": "class_query_72",
+      "duration_ms": 2.568483352661133,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.165960"
+    },
+    {
+      "operation": "property_query_72",
+      "duration_ms": 8.438348770141602,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.210575"
+    },
+    {
+      "operation": "basic_query_73",
+      "duration_ms": 6.545066833496094,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 149,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.252572"
+    },
+    {
+      "operation": "class_query_73",
+      "duration_ms": 3.5724639892578125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.293586"
+    },
+    {
+      "operation": "property_query_73",
+      "duration_ms": 9.151697158813477,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 149,
+      "result_count": 11,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.348245"
+    },
+    {
+      "operation": "basic_query_74",
+      "duration_ms": 6.911039352416992,
+      "memory_mb": 0.0,
+      "cpu_percent": 141.0,
+      "triple_count": 189,
+      "result_count": 189,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.401246"
+    },
+    {
+      "operation": "class_query_74",
+      "duration_ms": 3.5009384155273438,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 189,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.441763"
+    },
+    {
+      "operation": "property_query_74",
+      "duration_ms": 11.031150817871094,
+      "memory_mb": 0.0,
+      "cpu_percent": 88.8,
+      "triple_count": 189,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.493516"
+    },
+    {
+      "operation": "basic_query_75",
+      "duration_ms": 9.387969970703125,
+      "memory_mb": 0.0,
+      "cpu_percent": 104.5,
+      "triple_count": 294,
+      "result_count": 294,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.541131"
+    },
+    {
+      "operation": "class_query_75",
+      "duration_ms": 2.627134323120117,
+      "memory_mb": 0.0,
+      "cpu_percent": 358.2,
+      "triple_count": 294,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.582545"
+    },
+    {
+      "operation": "property_query_75",
+      "duration_ms": 8.745193481445312,
+      "memory_mb": 0.0,
+      "cpu_percent": 112.0,
+      "triple_count": 294,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.631121"
+    },
+    {
+      "operation": "basic_query_76",
+      "duration_ms": 2.6650428771972656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 13,
+      "result_count": 13,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.672796"
+    },
+    {
+      "operation": "class_query_76",
+      "duration_ms": 2.941608428955078,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 13,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.714320"
+    },
+    {
+      "operation": "property_query_76",
+      "duration_ms": 9.964227676391602,
+      "memory_mb": 0.0,
+      "cpu_percent": 92.3,
+      "triple_count": 13,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.764355"
+    },
+    {
+      "operation": "basic_query_77",
+      "duration_ms": 6.93821907043457,
+      "memory_mb": 0.0,
+      "cpu_percent": 140.1,
+      "triple_count": 171,
+      "result_count": 171,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.809406"
+    },
+    {
+      "operation": "class_query_77",
+      "duration_ms": 3.0090808868408203,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 171,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.853245"
+    },
+    {
+      "operation": "property_query_77",
+      "duration_ms": 11.501312255859375,
+      "memory_mb": 0.0,
+      "cpu_percent": 85.6,
+      "triple_count": 171,
+      "result_count": 7,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.913290"
+    },
+    {
+      "operation": "basic_query_78",
+      "duration_ms": 4.617929458618164,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 4,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:49.967654"
+    },
+    {
+      "operation": "class_query_78",
+      "duration_ms": 2.535104751586914,
+      "memory_mb": 0.0,
+      "cpu_percent": 369.1,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.010229"
+    },
+    {
+      "operation": "property_query_78",
+      "duration_ms": 13.16523551940918,
+      "memory_mb": 0.0,
+      "cpu_percent": 149.9,
+      "triple_count": 4,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.067329"
+    },
+    {
+      "operation": "basic_query_79",
+      "duration_ms": 18.662214279174805,
+      "memory_mb": 0.0,
+      "cpu_percent": 53.1,
+      "triple_count": 178,
+      "result_count": 178,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.169630"
+    },
+    {
+      "operation": "class_query_79",
+      "duration_ms": 3.107309341430664,
+      "memory_mb": 0.0,
+      "cpu_percent": 302.3,
+      "triple_count": 178,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.221305"
+    },
+    {
+      "operation": "property_query_79",
+      "duration_ms": 11.787652969360352,
+      "memory_mb": 0.0,
+      "cpu_percent": 79.3,
+      "triple_count": 178,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.316626"
+    },
+    {
+      "operation": "basic_query_80",
+      "duration_ms": 6.408214569091797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 32,
+      "result_count": 32,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.360442"
+    },
+    {
+      "operation": "class_query_80",
+      "duration_ms": 2.7730464935302734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 32,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.403819"
+    },
+    {
+      "operation": "property_query_80",
+      "duration_ms": 8.11147689819336,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 32,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.454378"
+    },
+    {
+      "operation": "basic_query_81",
+      "duration_ms": 4.810571670532227,
+      "memory_mb": 0.0,
+      "cpu_percent": 199.1,
+      "triple_count": 103,
+      "result_count": 103,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.497850"
+    },
+    {
+      "operation": "class_query_81",
+      "duration_ms": 2.5489330291748047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 103,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.537987"
+    },
+    {
+      "operation": "property_query_81",
+      "duration_ms": 8.332252502441406,
+      "memory_mb": 0.0,
+      "cpu_percent": 117.6,
+      "triple_count": 103,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.583606"
+    },
+    {
+      "operation": "basic_query_82",
+      "duration_ms": 3.971099853515625,
+      "memory_mb": 0.0,
+      "cpu_percent": 241.2,
+      "triple_count": 69,
+      "result_count": 69,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.627155"
+    },
+    {
+      "operation": "class_query_82",
+      "duration_ms": 2.8057098388671875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 69,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.666900"
+    },
+    {
+      "operation": "property_query_82",
+      "duration_ms": 16.376972198486328,
+      "memory_mb": 0.0,
+      "cpu_percent": 60.5,
+      "triple_count": 69,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.735121"
+    },
+    {
+      "operation": "basic_query_83",
+      "duration_ms": 11.172771453857422,
+      "memory_mb": 0.0,
+      "cpu_percent": 81.0,
+      "triple_count": 252,
+      "result_count": 252,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.785596"
+    },
+    {
+      "operation": "class_query_83",
+      "duration_ms": 2.794504165649414,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 252,
+      "result_count": 14,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.830513"
+    },
+    {
+      "operation": "property_query_83",
+      "duration_ms": 11.098861694335938,
+      "memory_mb": 0.0,
+      "cpu_percent": 88.7,
+      "triple_count": 252,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.890482"
+    },
+    {
+      "operation": "basic_query_84",
+      "duration_ms": 9.636163711547852,
+      "memory_mb": 0.0,
+      "cpu_percent": 101.0,
+      "triple_count": 180,
+      "result_count": 180,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:50.951715"
+    },
+    {
+      "operation": "class_query_84",
+      "duration_ms": 2.933025360107422,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 180,
+      "result_count": 7,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.000258"
+    },
+    {
+      "operation": "property_query_84",
+      "duration_ms": 10.654687881469727,
+      "memory_mb": 0.0,
+      "cpu_percent": 92.4,
+      "triple_count": 180,
+      "result_count": 13,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.048751"
+    },
+    {
+      "operation": "basic_query_85",
+      "duration_ms": 4.886388778686523,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 68,
+      "result_count": 68,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.096713"
+    },
+    {
+      "operation": "class_query_85",
+      "duration_ms": 4.582405090332031,
+      "memory_mb": 0.0,
+      "cpu_percent": 210.1,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.143895"
+    },
+    {
+      "operation": "property_query_85",
+      "duration_ms": 9.566068649291992,
+      "memory_mb": 0.0,
+      "cpu_percent": 102.4,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.195449"
+    },
+    {
+      "operation": "basic_query_86",
+      "duration_ms": 2.709627151489258,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14,
+      "result_count": 14,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.241429"
+    },
+    {
+      "operation": "class_query_86",
+      "duration_ms": 2.5026798248291016,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.285254"
+    },
+    {
+      "operation": "property_query_86",
+      "duration_ms": 9.41777229309082,
+      "memory_mb": 0.0,
+      "cpu_percent": 103.9,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.341974"
+    },
+    {
+      "operation": "basic_query_87",
+      "duration_ms": 4.117488861083984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 61,
+      "result_count": 61,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.387172"
+    },
+    {
+      "operation": "class_query_87",
+      "duration_ms": 2.644777297973633,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 61,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.435286"
+    },
+    {
+      "operation": "property_query_87",
+      "duration_ms": 13.813257217407227,
+      "memory_mb": 0.0,
+      "cpu_percent": 71.4,
+      "triple_count": 61,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.495297"
+    },
+    {
+      "operation": "basic_query_88",
+      "duration_ms": 2.102375030517578,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.534713"
+    },
+    {
+      "operation": "class_query_88",
+      "duration_ms": 2.585887908935547,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.583630"
+    },
+    {
+      "operation": "property_query_88",
+      "duration_ms": 7.132053375244141,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.633196"
+    },
+    {
+      "operation": "basic_query_89",
+      "duration_ms": 2.074003219604492,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.683047"
+    },
+    {
+      "operation": "class_query_89",
+      "duration_ms": 2.8069019317626953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.730409"
+    },
+    {
+      "operation": "property_query_89",
+      "duration_ms": 10.616302490234375,
+      "memory_mb": 0.0,
+      "cpu_percent": 185.4,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.812338"
+    },
+    {
+      "operation": "basic_query_90",
+      "duration_ms": 3.7522315979003906,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 61,
+      "result_count": 61,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.873615"
+    },
+    {
+      "operation": "class_query_90",
+      "duration_ms": 3.0617713928222656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 61,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.921126"
+    },
+    {
+      "operation": "property_query_90",
+      "duration_ms": 9.251594543457031,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 61,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:51.971675"
+    },
+    {
+      "operation": "basic_query_91",
+      "duration_ms": 8.206367492675781,
+      "memory_mb": 0.0,
+      "cpu_percent": 119.2,
+      "triple_count": 121,
+      "result_count": 121,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.028486"
+    },
+    {
+      "operation": "class_query_91",
+      "duration_ms": 2.817392349243164,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 121,
+      "result_count": 12,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.070870"
+    },
+    {
+      "operation": "property_query_91",
+      "duration_ms": 9.681463241577148,
+      "memory_mb": 0.0,
+      "cpu_percent": 97.1,
+      "triple_count": 121,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.117450"
+    },
+    {
+      "operation": "basic_query_92",
+      "duration_ms": 2.3956298828125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.160967"
+    },
+    {
+      "operation": "class_query_92",
+      "duration_ms": 2.5582313537597656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.201298"
+    },
+    {
+      "operation": "property_query_92",
+      "duration_ms": 12.324333190917969,
+      "memory_mb": 0.0,
+      "cpu_percent": 73.8,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.252309"
+    },
+    {
+      "operation": "basic_query_93",
+      "duration_ms": 2.6831626892089844,
+      "memory_mb": 0.0,
+      "cpu_percent": 348.9,
+      "triple_count": 17,
+      "result_count": 17,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.313717"
+    },
+    {
+      "operation": "class_query_93",
+      "duration_ms": 8.661270141601562,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 17,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.362079"
+    },
+    {
+      "operation": "property_query_93",
+      "duration_ms": 7.364511489868164,
+      "memory_mb": 0.0,
+      "cpu_percent": 132.5,
+      "triple_count": 17,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.409402"
+    },
+    {
+      "operation": "basic_query_94",
+      "duration_ms": 2.2020339965820312,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.445617"
+    },
+    {
+      "operation": "class_query_94",
+      "duration_ms": 2.6350021362304688,
+      "memory_mb": 0.0,
+      "cpu_percent": 352.1,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.500815"
+    },
+    {
+      "operation": "property_query_94",
+      "duration_ms": 7.408618927001953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.569748"
+    },
+    {
+      "operation": "basic_query_95",
+      "duration_ms": 5.522251129150391,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 139,
+      "result_count": 139,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.621673"
+    },
+    {
+      "operation": "class_query_95",
+      "duration_ms": 5.970954895019531,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 139,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.665722"
+    },
+    {
+      "operation": "property_query_95",
+      "duration_ms": 9.585380554199219,
+      "memory_mb": 0.0,
+      "cpu_percent": 102.5,
+      "triple_count": 139,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.720837"
+    },
+    {
+      "operation": "basic_query_96",
+      "duration_ms": 5.751132965087891,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 139,
+      "result_count": 139,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.766355"
+    },
+    {
+      "operation": "class_query_96",
+      "duration_ms": 5.240440368652344,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 139,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.811818"
+    },
+    {
+      "operation": "property_query_96",
+      "duration_ms": 11.300802230834961,
+      "memory_mb": 0.0,
+      "cpu_percent": 87.0,
+      "triple_count": 139,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.862848"
+    },
+    {
+      "operation": "basic_query_97",
+      "duration_ms": 6.857872009277344,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 176,
+      "result_count": 176,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.928302"
+    },
+    {
+      "operation": "class_query_97",
+      "duration_ms": 2.8810501098632812,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 176,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:52.971750"
+    },
+    {
+      "operation": "property_query_97",
+      "duration_ms": 6.209850311279297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 176,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.022009"
+    },
+    {
+      "operation": "basic_query_98",
+      "duration_ms": 9.088754653930664,
+      "memory_mb": 0.0,
+      "cpu_percent": 107.5,
+      "triple_count": 176,
+      "result_count": 176,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.071918"
+    },
+    {
+      "operation": "class_query_98",
+      "duration_ms": 2.6547908782958984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 176,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.119421"
+    },
+    {
+      "operation": "property_query_98",
+      "duration_ms": 15.900850296020508,
+      "memory_mb": 0.0,
+      "cpu_percent": 62.1,
+      "triple_count": 176,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.177449"
+    },
+    {
+      "operation": "basic_query_99",
+      "duration_ms": 3.271341323852539,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 49,
+      "result_count": 49,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.221910"
+    },
+    {
+      "operation": "class_query_99",
+      "duration_ms": 2.6602745056152344,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 49,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.265444"
+    },
+    {
+      "operation": "property_query_99",
+      "duration_ms": 8.16035270690918,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.0,
+      "triple_count": 49,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.313857"
+    },
+    {
+      "operation": "basic_query_100",
+      "duration_ms": 3.0035972595214844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 39,
+      "result_count": 39,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.352350"
+    },
+    {
+      "operation": "class_query_100",
+      "duration_ms": 3.260374069213867,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 39,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.414224"
+    },
+    {
+      "operation": "property_query_100",
+      "duration_ms": 7.606267929077148,
+      "memory_mb": 0.0,
+      "cpu_percent": 126.5,
+      "triple_count": 39,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.463248"
+    },
+    {
+      "operation": "basic_query_101",
+      "duration_ms": 2.743959426879883,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 19,
+      "result_count": 19,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.507612"
+    },
+    {
+      "operation": "class_query_101",
+      "duration_ms": 2.5174617767333984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 19,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.550463"
+    },
+    {
+      "operation": "property_query_101",
+      "duration_ms": 6.202936172485352,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 19,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.596706"
+    },
+    {
+      "operation": "basic_query_102",
+      "duration_ms": 2.9268264770507812,
+      "memory_mb": 0.0,
+      "cpu_percent": 324.9,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.639575"
+    },
+    {
+      "operation": "class_query_102",
+      "duration_ms": 2.3491382598876953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.676563"
+    },
+    {
+      "operation": "property_query_102",
+      "duration_ms": 11.214017868041992,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.749673"
+    },
+    {
+      "operation": "basic_query_103",
+      "duration_ms": 2.9404163360595703,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.821772"
+    },
+    {
+      "operation": "class_query_103",
+      "duration_ms": 2.8448104858398438,
+      "memory_mb": 0.0,
+      "cpu_percent": 659.7,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:53.890934"
+    },
+    {
+      "operation": "property_query_103",
+      "duration_ms": 16.113996505737305,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.003180"
+    },
+    {
+      "operation": "basic_query_104",
+      "duration_ms": 4.377603530883789,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 11,
+      "result_count": 11,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.060943"
+    },
+    {
+      "operation": "class_query_104",
+      "duration_ms": 7.286310195922852,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 11,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.151067"
+    },
+    {
+      "operation": "property_query_104",
+      "duration_ms": 15.461206436157227,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 11,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.254333"
+    },
+    {
+      "operation": "basic_query_105",
+      "duration_ms": 8.079290390014648,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.360392"
+    },
+    {
+      "operation": "class_query_105",
+      "duration_ms": 3.1859874725341797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.406891"
+    },
+    {
+      "operation": "property_query_105",
+      "duration_ms": 6.899833679199219,
+      "memory_mb": 0.0,
+      "cpu_percent": 141.2,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.452232"
+    },
+    {
+      "operation": "basic_query_106",
+      "duration_ms": 3.917694091796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 73,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.494366"
+    },
+    {
+      "operation": "class_query_106",
+      "duration_ms": 2.4852752685546875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.547936"
+    },
+    {
+      "operation": "property_query_106",
+      "duration_ms": 8.076906204223633,
+      "memory_mb": 0.0,
+      "cpu_percent": 121.4,
+      "triple_count": 73,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.594874"
+    },
+    {
+      "operation": "basic_query_107",
+      "duration_ms": 3.9205551147460938,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 76,
+      "result_count": 76,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.638379"
+    },
+    {
+      "operation": "class_query_107",
+      "duration_ms": 2.7599334716796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 76,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.683316"
+    },
+    {
+      "operation": "property_query_107",
+      "duration_ms": 15.731096267700195,
+      "memory_mb": 0.0,
+      "cpu_percent": 62.9,
+      "triple_count": 76,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.745488"
+    },
+    {
+      "operation": "basic_query_108",
+      "duration_ms": 4.07099723815918,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 36,
+      "result_count": 36,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.796444"
+    },
+    {
+      "operation": "class_query_108",
+      "duration_ms": 4.131317138671875,
+      "memory_mb": 0.0,
+      "cpu_percent": 231.9,
+      "triple_count": 36,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.840067"
+    },
+    {
+      "operation": "property_query_108",
+      "duration_ms": 8.68535041809082,
+      "memory_mb": 0.0,
+      "cpu_percent": 112.9,
+      "triple_count": 36,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.887510"
+    },
+    {
+      "operation": "basic_query_109",
+      "duration_ms": 4.637956619262695,
+      "memory_mb": 0.0,
+      "cpu_percent": 207.6,
+      "triple_count": 94,
+      "result_count": 94,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.929453"
+    },
+    {
+      "operation": "class_query_109",
+      "duration_ms": 2.6352405548095703,
+      "memory_mb": 0.0,
+      "cpu_percent": 354.6,
+      "triple_count": 94,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:54.977306"
+    },
+    {
+      "operation": "property_query_109",
+      "duration_ms": 8.10861587524414,
+      "memory_mb": 0.0,
+      "cpu_percent": 118.9,
+      "triple_count": 94,
+      "result_count": 7,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.027123"
+    },
+    {
+      "operation": "basic_query_110",
+      "duration_ms": 12.369871139526367,
+      "memory_mb": 0.0,
+      "cpu_percent": 79.6,
+      "triple_count": 351,
+      "result_count": 351,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.078754"
+    },
+    {
+      "operation": "class_query_110",
+      "duration_ms": 2.870798110961914,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 351,
+      "result_count": 13,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.121235"
+    },
+    {
+      "operation": "property_query_110",
+      "duration_ms": 11.778116226196289,
+      "memory_mb": 0.0,
+      "cpu_percent": 167.3,
+      "triple_count": 351,
+      "result_count": 31,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.174146"
+    },
+    {
+      "operation": "basic_query_111",
+      "duration_ms": 7.428407669067383,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 98,
+      "result_count": 98,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.257560"
+    },
+    {
+      "operation": "class_query_111",
+      "duration_ms": 6.985187530517578,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 98,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.339556"
+    },
+    {
+      "operation": "property_query_111",
+      "duration_ms": 19.385337829589844,
+      "memory_mb": 0.0,
+      "cpu_percent": 51.1,
+      "triple_count": 98,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.424970"
+    },
+    {
+      "operation": "basic_query_112",
+      "duration_ms": 3.8709640502929688,
+      "memory_mb": 0.0,
+      "cpu_percent": 243.2,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.495522"
+    },
+    {
+      "operation": "class_query_112",
+      "duration_ms": 2.637147903442383,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.554880"
+    },
+    {
+      "operation": "property_query_112",
+      "duration_ms": 7.521152496337891,
+      "memory_mb": 0.0,
+      "cpu_percent": 130.2,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.638541"
+    },
+    {
+      "operation": "basic_query_113",
+      "duration_ms": 22.605180740356445,
+      "memory_mb": 0.0,
+      "cpu_percent": 43.9,
+      "triple_count": 214,
+      "result_count": 214,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.735112"
+    },
+    {
+      "operation": "class_query_113",
+      "duration_ms": 2.929210662841797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 214,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.796427"
+    },
+    {
+      "operation": "property_query_113",
+      "duration_ms": 16.2808895111084,
+      "memory_mb": 0.0,
+      "cpu_percent": 60.8,
+      "triple_count": 214,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.868151"
+    },
+    {
+      "operation": "basic_query_114",
+      "duration_ms": 3.7810802459716797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 56,
+      "result_count": 56,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:55.962568"
+    },
+    {
+      "operation": "class_query_114",
+      "duration_ms": 3.307342529296875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 56,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.042471"
+    },
+    {
+      "operation": "property_query_114",
+      "duration_ms": 9.228229522705078,
+      "memory_mb": 0.0,
+      "cpu_percent": 106.3,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.091653"
+    },
+    {
+      "operation": "basic_query_115",
+      "duration_ms": 6.310701370239258,
+      "memory_mb": 0.0,
+      "cpu_percent": 153.6,
+      "triple_count": 114,
+      "result_count": 114,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.139093"
+    },
+    {
+      "operation": "class_query_115",
+      "duration_ms": 8.309364318847656,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 114,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.188086"
+    },
+    {
+      "operation": "property_query_115",
+      "duration_ms": 8.051872253417969,
+      "memory_mb": 0.0,
+      "cpu_percent": 95.0,
+      "triple_count": 114,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.261588"
+    },
+    {
+      "operation": "basic_query_116",
+      "duration_ms": 4.91023063659668,
+      "memory_mb": 0.0,
+      "cpu_percent": 196.5,
+      "triple_count": 102,
+      "result_count": 102,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.328767"
+    },
+    {
+      "operation": "class_query_116",
+      "duration_ms": 5.82575798034668,
+      "memory_mb": 0.0,
+      "cpu_percent": 166.6,
+      "triple_count": 102,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.400859"
+    },
+    {
+      "operation": "property_query_116",
+      "duration_ms": 13.600349426269531,
+      "memory_mb": 0.0,
+      "cpu_percent": 145.1,
+      "triple_count": 102,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.479365"
+    },
+    {
+      "operation": "basic_query_117",
+      "duration_ms": 3.71551513671875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 38,
+      "result_count": 38,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.531006"
+    },
+    {
+      "operation": "class_query_117",
+      "duration_ms": 5.065679550170898,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 38,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.584761"
+    },
+    {
+      "operation": "property_query_117",
+      "duration_ms": 18.41878890991211,
+      "memory_mb": 0.0,
+      "cpu_percent": 53.8,
+      "triple_count": 38,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.660344"
+    },
+    {
+      "operation": "basic_query_118",
+      "duration_ms": 13.712882995605469,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 48,
+      "result_count": 48,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.731485"
+    },
+    {
+      "operation": "class_query_118",
+      "duration_ms": 4.515647888183594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 48,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.776825"
+    },
+    {
+      "operation": "property_query_118",
+      "duration_ms": 9.223222732543945,
+      "memory_mb": 0.0,
+      "cpu_percent": 106.3,
+      "triple_count": 48,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.837134"
+    },
+    {
+      "operation": "basic_query_119",
+      "duration_ms": 3.178834915161133,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 46,
+      "result_count": 46,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.897154"
+    },
+    {
+      "operation": "class_query_119",
+      "duration_ms": 5.767345428466797,
+      "memory_mb": 0.0,
+      "cpu_percent": 168.0,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.953084"
+    },
+    {
+      "operation": "property_query_119",
+      "duration_ms": 9.589672088623047,
+      "memory_mb": 0.0,
+      "cpu_percent": 102.4,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:56.999902"
+    },
+    {
+      "operation": "basic_query_120",
+      "duration_ms": 3.570079803466797,
+      "memory_mb": 0.0,
+      "cpu_percent": 263.4,
+      "triple_count": 14,
+      "result_count": 14,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.041769"
+    },
+    {
+      "operation": "class_query_120",
+      "duration_ms": 3.315448760986328,
+      "memory_mb": 0.0,
+      "cpu_percent": 280.2,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.084818"
+    },
+    {
+      "operation": "property_query_120",
+      "duration_ms": 9.811878204345703,
+      "memory_mb": 0.0,
+      "cpu_percent": 99.7,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.134218"
+    },
+    {
+      "operation": "basic_query_121",
+      "duration_ms": 2.1491050720214844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.177544"
+    },
+    {
+      "operation": "class_query_121",
+      "duration_ms": 2.5119781494140625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.219485"
+    },
+    {
+      "operation": "property_query_121",
+      "duration_ms": 6.888628005981445,
+      "memory_mb": 0.0,
+      "cpu_percent": 141.3,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.265085"
+    },
+    {
+      "operation": "basic_query_122",
+      "duration_ms": 3.016233444213867,
+      "memory_mb": 0.0,
+      "cpu_percent": 310.1,
+      "triple_count": 40,
+      "result_count": 40,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.305183"
+    },
+    {
+      "operation": "class_query_122",
+      "duration_ms": 2.5420188903808594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.347200"
+    },
+    {
+      "operation": "property_query_122",
+      "duration_ms": 18.445491790771484,
+      "memory_mb": 0.0,
+      "cpu_percent": 53.5,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.416619"
+    },
+    {
+      "operation": "basic_query_123",
+      "duration_ms": 7.001638412475586,
+      "memory_mb": 0.0,
+      "cpu_percent": 139.3,
+      "triple_count": 73,
+      "result_count": 73,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.470058"
+    },
+    {
+      "operation": "class_query_123",
+      "duration_ms": 3.419637680053711,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.518721"
+    },
+    {
+      "operation": "property_query_123",
+      "duration_ms": 8.418083190917969,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.570801"
+    },
+    {
+      "operation": "basic_query_124",
+      "duration_ms": 4.601955413818359,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 56,
+      "result_count": 56,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.619207"
+    },
+    {
+      "operation": "class_query_124",
+      "duration_ms": 2.638578414916992,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.664248"
+    },
+    {
+      "operation": "property_query_124",
+      "duration_ms": 7.508516311645508,
+      "memory_mb": 0.0,
+      "cpu_percent": 129.9,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.708355"
+    },
+    {
+      "operation": "basic_query_125",
+      "duration_ms": 17.31562614440918,
+      "memory_mb": 0.0,
+      "cpu_percent": 57.2,
+      "triple_count": 461,
+      "result_count": 461,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.767400"
+    },
+    {
+      "operation": "class_query_125",
+      "duration_ms": 3.5309791564941406,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 461,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.819952"
+    },
+    {
+      "operation": "property_query_125",
+      "duration_ms": 21.112442016601562,
+      "memory_mb": 0.0,
+      "cpu_percent": 93.9,
+      "triple_count": 461,
+      "result_count": 16,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.886433"
+    },
+    {
+      "operation": "basic_query_126",
+      "duration_ms": 5.4569244384765625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 25,
+      "result_count": 25,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.931956"
+    },
+    {
+      "operation": "class_query_126",
+      "duration_ms": 2.605438232421875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 25,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:57.980028"
+    },
+    {
+      "operation": "property_query_126",
+      "duration_ms": 6.41942024230957,
+      "memory_mb": 0.0,
+      "cpu_percent": 149.3,
+      "triple_count": 25,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.026401"
+    },
+    {
+      "operation": "basic_query_127",
+      "duration_ms": 2.925872802734375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.069162"
+    },
+    {
+      "operation": "class_query_127",
+      "duration_ms": 3.0739307403564453,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.111706"
+    },
+    {
+      "operation": "property_query_127",
+      "duration_ms": 8.898496627807617,
+      "memory_mb": 0.0,
+      "cpu_percent": 109.9,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.163669"
+    },
+    {
+      "operation": "basic_query_128",
+      "duration_ms": 3.955841064453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 240.9,
+      "triple_count": 67,
+      "result_count": 67,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.203420"
+    },
+    {
+      "operation": "class_query_128",
+      "duration_ms": 6.513118743896484,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.286295"
+    },
+    {
+      "operation": "property_query_128",
+      "duration_ms": 17.85874366760254,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.381469"
+    },
+    {
+      "operation": "basic_query_129",
+      "duration_ms": 9.377241134643555,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 96,
+      "result_count": 96,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.468355"
+    },
+    {
+      "operation": "class_query_129",
+      "duration_ms": 6.331443786621094,
+      "memory_mb": 0.0,
+      "cpu_percent": 153.8,
+      "triple_count": 96,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.553439"
+    },
+    {
+      "operation": "property_query_129",
+      "duration_ms": 24.65200424194336,
+      "memory_mb": 0.0,
+      "cpu_percent": 40.2,
+      "triple_count": 96,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.715473"
+    },
+    {
+      "operation": "basic_query_130",
+      "duration_ms": 14.592647552490234,
+      "memory_mb": 0.0,
+      "cpu_percent": 67.7,
+      "triple_count": 80,
+      "result_count": 80,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.822173"
+    },
+    {
+      "operation": "class_query_130",
+      "duration_ms": 2.7027130126953125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 80,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.883533"
+    },
+    {
+      "operation": "property_query_130",
+      "duration_ms": 27.123689651489258,
+      "memory_mb": 0.0,
+      "cpu_percent": 36.6,
+      "triple_count": 80,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:58.955658"
+    },
+    {
+      "operation": "basic_query_131",
+      "duration_ms": 8.018255233764648,
+      "memory_mb": 0.0,
+      "cpu_percent": 122.0,
+      "triple_count": 239,
+      "result_count": 239,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.032658"
+    },
+    {
+      "operation": "class_query_131",
+      "duration_ms": 2.833843231201172,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 239,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.079583"
+    },
+    {
+      "operation": "property_query_131",
+      "duration_ms": 10.529041290283203,
+      "memory_mb": 0.0,
+      "cpu_percent": 92.5,
+      "triple_count": 239,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.153432"
+    },
+    {
+      "operation": "basic_query_132",
+      "duration_ms": 3.1697750091552734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.198464"
+    },
+    {
+      "operation": "class_query_132",
+      "duration_ms": 2.629995346069336,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.239464"
+    },
+    {
+      "operation": "property_query_132",
+      "duration_ms": 12.82954216003418,
+      "memory_mb": 0.0,
+      "cpu_percent": 75.8,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.307384"
+    },
+    {
+      "operation": "basic_query_133",
+      "duration_ms": 18.216848373413086,
+      "memory_mb": 0.0,
+      "cpu_percent": 54.3,
+      "triple_count": 242,
+      "result_count": 242,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.384344"
+    },
+    {
+      "operation": "class_query_133",
+      "duration_ms": 3.1163692474365234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 242,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.429403"
+    },
+    {
+      "operation": "property_query_133",
+      "duration_ms": 10.609865188598633,
+      "memory_mb": 0.0,
+      "cpu_percent": 92.3,
+      "triple_count": 242,
+      "result_count": 13,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.478343"
+    },
+    {
+      "operation": "basic_query_134",
+      "duration_ms": 3.7147998809814453,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.522184"
+    },
+    {
+      "operation": "class_query_134",
+      "duration_ms": 2.676725387573242,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.564041"
+    },
+    {
+      "operation": "property_query_134",
+      "duration_ms": 8.102178573608398,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.625958"
+    },
+    {
+      "operation": "basic_query_135",
+      "duration_ms": 3.674745559692383,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 65,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.667716"
+    },
+    {
+      "operation": "class_query_135",
+      "duration_ms": 2.7713775634765625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.710292"
+    },
+    {
+      "operation": "property_query_135",
+      "duration_ms": 9.038925170898438,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 8,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.759068"
+    },
+    {
+      "operation": "basic_query_136",
+      "duration_ms": 2.032756805419922,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.797328"
+    },
+    {
+      "operation": "class_query_136",
+      "duration_ms": 4.148721694946289,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.909602"
+    },
+    {
+      "operation": "property_query_136",
+      "duration_ms": 7.403850555419922,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:31:59.963613"
+    },
+    {
+      "operation": "basic_query_137",
+      "duration_ms": 7.31658935546875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 102,
+      "result_count": 102,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.014129"
+    },
+    {
+      "operation": "class_query_137",
+      "duration_ms": 5.38945198059082,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 102,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.083161"
+    },
+    {
+      "operation": "property_query_137",
+      "duration_ms": 15.415191650390625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 102,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.189150"
+    },
+    {
+      "operation": "basic_query_138",
+      "duration_ms": 3.7238597869873047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 99,
+      "result_count": 99,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.243213"
+    },
+    {
+      "operation": "class_query_138",
+      "duration_ms": 2.276897430419922,
+      "memory_mb": 0.0,
+      "cpu_percent": 408.8,
+      "triple_count": 99,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.276845"
+    },
+    {
+      "operation": "property_query_138",
+      "duration_ms": 6.483554840087891,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 99,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.318498"
+    },
+    {
+      "operation": "basic_query_139",
+      "duration_ms": 3.202676773071289,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 79,
+      "result_count": 79,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.358157"
+    },
+    {
+      "operation": "class_query_139",
+      "duration_ms": 2.6862621307373047,
+      "memory_mb": 0.0,
+      "cpu_percent": 350.3,
+      "triple_count": 79,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.395214"
+    },
+    {
+      "operation": "property_query_139",
+      "duration_ms": 13.463258743286133,
+      "memory_mb": 0.0,
+      "cpu_percent": 73.3,
+      "triple_count": 79,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.463557"
+    },
+    {
+      "operation": "basic_query_140",
+      "duration_ms": 2.5348663330078125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.518607"
+    },
+    {
+      "operation": "class_query_140",
+      "duration_ms": 6.906747817993164,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.579015"
+    },
+    {
+      "operation": "property_query_140",
+      "duration_ms": 7.040500640869141,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.658188"
+    },
+    {
+      "operation": "basic_query_141",
+      "duration_ms": 7.069587707519531,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 15,
+      "result_count": 15,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.725195"
+    },
+    {
+      "operation": "class_query_141",
+      "duration_ms": 2.949237823486328,
+      "memory_mb": 0.0,
+      "cpu_percent": 321.5,
+      "triple_count": 15,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.812150"
+    },
+    {
+      "operation": "property_query_141",
+      "duration_ms": 9.624481201171875,
+      "memory_mb": 0.0,
+      "cpu_percent": 102.1,
+      "triple_count": 15,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.903304"
+    },
+    {
+      "operation": "basic_query_142",
+      "duration_ms": 1.9161701202392578,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:00.958310"
+    },
+    {
+      "operation": "class_query_142",
+      "duration_ms": 3.5390853881835938,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.003343"
+    },
+    {
+      "operation": "property_query_142",
+      "duration_ms": 6.678342819213867,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.065456"
+    },
+    {
+      "operation": "basic_query_143",
+      "duration_ms": 4.23741340637207,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 85,
+      "result_count": 85,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.105654"
+    },
+    {
+      "operation": "class_query_143",
+      "duration_ms": 2.681732177734375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 85,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.167928"
+    },
+    {
+      "operation": "property_query_143",
+      "duration_ms": 8.212566375732422,
+      "memory_mb": 0.0,
+      "cpu_percent": 118.6,
+      "triple_count": 85,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.226341"
+    },
+    {
+      "operation": "basic_query_144",
+      "duration_ms": 2.4809837341308594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.268500"
+    },
+    {
+      "operation": "class_query_144",
+      "duration_ms": 3.1745433807373047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.313868"
+    },
+    {
+      "operation": "property_query_144",
+      "duration_ms": 7.746696472167969,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.363210"
+    },
+    {
+      "operation": "basic_query_145",
+      "duration_ms": 5.682945251464844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 148,
+      "result_count": 148,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.416964"
+    },
+    {
+      "operation": "class_query_145",
+      "duration_ms": 2.79998779296875,
+      "memory_mb": 0.0,
+      "cpu_percent": 336.9,
+      "triple_count": 148,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.461804"
+    },
+    {
+      "operation": "property_query_145",
+      "duration_ms": 8.114814758300781,
+      "memory_mb": 0.0,
+      "cpu_percent": 119.9,
+      "triple_count": 148,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.507416"
+    },
+    {
+      "operation": "basic_query_146",
+      "duration_ms": 3.247976303100586,
+      "memory_mb": 0.0,
+      "cpu_percent": 278.8,
+      "triple_count": 35,
+      "result_count": 35,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.551573"
+    },
+    {
+      "operation": "class_query_146",
+      "duration_ms": 3.242015838623047,
+      "memory_mb": 0.0,
+      "cpu_percent": 585.2,
+      "triple_count": 35,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.598307"
+    },
+    {
+      "operation": "property_query_146",
+      "duration_ms": 10.246515274047852,
+      "memory_mb": 0.0,
+      "cpu_percent": 95.7,
+      "triple_count": 35,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.647903"
+    },
+    {
+      "operation": "basic_query_147",
+      "duration_ms": 2.2516250610351562,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.703400"
+    },
+    {
+      "operation": "class_query_147",
+      "duration_ms": 4.407167434692383,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.762285"
+    },
+    {
+      "operation": "property_query_147",
+      "duration_ms": 5.670070648193359,
+      "memory_mb": 0.0,
+      "cpu_percent": 171.5,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.802996"
+    },
+    {
+      "operation": "basic_query_148",
+      "duration_ms": 3.6733150482177734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.852462"
+    },
+    {
+      "operation": "class_query_148",
+      "duration_ms": 2.9726028442382812,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.893236"
+    },
+    {
+      "operation": "property_query_148",
+      "duration_ms": 8.136272430419922,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.4,
+      "triple_count": 55,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.939900"
+    },
+    {
+      "operation": "basic_query_149",
+      "duration_ms": 2.688884735107422,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 18,
+      "result_count": 18,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:01.988707"
+    },
+    {
+      "operation": "class_query_149",
+      "duration_ms": 2.8133392333984375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 18,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.028972"
+    },
+    {
+      "operation": "property_query_149",
+      "duration_ms": 7.910251617431641,
+      "memory_mb": 0.0,
+      "cpu_percent": 247.3,
+      "triple_count": 18,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.072787"
+    },
+    {
+      "operation": "basic_query_150",
+      "duration_ms": 3.9572715759277344,
+      "memory_mb": 0.0,
+      "cpu_percent": 241.0,
+      "triple_count": 68,
+      "result_count": 68,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.111528"
+    },
+    {
+      "operation": "class_query_150",
+      "duration_ms": 2.6178359985351562,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.149875"
+    },
+    {
+      "operation": "property_query_150",
+      "duration_ms": 9.746074676513672,
+      "memory_mb": 0.0,
+      "cpu_percent": 100.6,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.196935"
+    },
+    {
+      "operation": "basic_query_151",
+      "duration_ms": 4.069089889526367,
+      "memory_mb": 0.0,
+      "cpu_percent": 235.0,
+      "triple_count": 73,
+      "result_count": 73,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.240850"
+    },
+    {
+      "operation": "class_query_151",
+      "duration_ms": 3.4780502319335938,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.292539"
+    },
+    {
+      "operation": "property_query_151",
+      "duration_ms": 9.89842414855957,
+      "memory_mb": 0.0,
+      "cpu_percent": 98.7,
+      "triple_count": 73,
+      "result_count": 8,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.355578"
+    },
+    {
+      "operation": "basic_query_152",
+      "duration_ms": 7.409572601318359,
+      "memory_mb": 0.0,
+      "cpu_percent": 131.7,
+      "triple_count": 116,
+      "result_count": 116,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.429590"
+    },
+    {
+      "operation": "class_query_152",
+      "duration_ms": 2.7685165405273438,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 116,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.483141"
+    },
+    {
+      "operation": "property_query_152",
+      "duration_ms": 11.122941970825195,
+      "memory_mb": 0.0,
+      "cpu_percent": 87.9,
+      "triple_count": 116,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.539449"
+    },
+    {
+      "operation": "basic_query_153",
+      "duration_ms": 2.866983413696289,
+      "memory_mb": 0.0,
+      "cpu_percent": 328.8,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.580811"
+    },
+    {
+      "operation": "class_query_153",
+      "duration_ms": 2.4847984313964844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.620241"
+    },
+    {
+      "operation": "property_query_153",
+      "duration_ms": 7.255792617797852,
+      "memory_mb": 0.0,
+      "cpu_percent": 134.6,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.664932"
+    },
+    {
+      "operation": "basic_query_154",
+      "duration_ms": 2.652883529663086,
+      "memory_mb": 0.0,
+      "cpu_percent": 355.8,
+      "triple_count": 27,
+      "result_count": 27,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.705378"
+    },
+    {
+      "operation": "class_query_154",
+      "duration_ms": 2.941131591796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 320.4,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.745743"
+    },
+    {
+      "operation": "property_query_154",
+      "duration_ms": 7.2422027587890625,
+      "memory_mb": 0.0,
+      "cpu_percent": 134.9,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.790681"
+    },
+    {
+      "operation": "basic_query_155",
+      "duration_ms": 4.650115966796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 109,
+      "result_count": 109,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.833921"
+    },
+    {
+      "operation": "class_query_155",
+      "duration_ms": 3.565073013305664,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 109,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.877304"
+    },
+    {
+      "operation": "property_query_155",
+      "duration_ms": 14.827489852905273,
+      "memory_mb": 0.0,
+      "cpu_percent": 66.6,
+      "triple_count": 109,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.930057"
+    },
+    {
+      "operation": "basic_query_156",
+      "duration_ms": 4.767656326293945,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 94,
+      "result_count": 94,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:02.982445"
+    },
+    {
+      "operation": "class_query_156",
+      "duration_ms": 5.631923675537109,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 94,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.032059"
+    },
+    {
+      "operation": "property_query_156",
+      "duration_ms": 11.327981948852539,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 94,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.098689"
+    },
+    {
+      "operation": "basic_query_157",
+      "duration_ms": 3.875732421875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.146453"
+    },
+    {
+      "operation": "class_query_157",
+      "duration_ms": 3.268718719482422,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.208477"
+    },
+    {
+      "operation": "property_query_157",
+      "duration_ms": 17.906904220581055,
+      "memory_mb": 0.0,
+      "cpu_percent": 54.9,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.288077"
+    },
+    {
+      "operation": "basic_query_158",
+      "duration_ms": 4.737138748168945,
+      "memory_mb": 0.0,
+      "cpu_percent": 199.8,
+      "triple_count": 21,
+      "result_count": 21,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.348279"
+    },
+    {
+      "operation": "class_query_158",
+      "duration_ms": 9.366273880004883,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 21,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.398160"
+    },
+    {
+      "operation": "property_query_158",
+      "duration_ms": 10.198831558227539,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 21,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.463518"
+    },
+    {
+      "operation": "basic_query_159",
+      "duration_ms": 2.0411014556884766,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.502599"
+    },
+    {
+      "operation": "class_query_159",
+      "duration_ms": 3.3104419708251953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.543045"
+    },
+    {
+      "operation": "property_query_159",
+      "duration_ms": 7.193088531494141,
+      "memory_mb": 0.0,
+      "cpu_percent": 135.8,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.586916"
+    },
+    {
+      "operation": "basic_query_160",
+      "duration_ms": 2.8486251831054688,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 30,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.625920"
+    },
+    {
+      "operation": "class_query_160",
+      "duration_ms": 2.689361572265625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.664992"
+    },
+    {
+      "operation": "property_query_160",
+      "duration_ms": 7.787466049194336,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.709485"
+    },
+    {
+      "operation": "basic_query_161",
+      "duration_ms": 2.502918243408203,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.748647"
+    },
+    {
+      "operation": "class_query_161",
+      "duration_ms": 2.4995803833007812,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.787367"
+    },
+    {
+      "operation": "property_query_161",
+      "duration_ms": 7.478475570678711,
+      "memory_mb": 0.0,
+      "cpu_percent": 130.7,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.830039"
+    },
+    {
+      "operation": "basic_query_162",
+      "duration_ms": 3.1828880310058594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 38,
+      "result_count": 38,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.872373"
+    },
+    {
+      "operation": "class_query_162",
+      "duration_ms": 2.620697021484375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 38,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.911228"
+    },
+    {
+      "operation": "property_query_162",
+      "duration_ms": 8.173465728759766,
+      "memory_mb": 0.0,
+      "cpu_percent": 119.9,
+      "triple_count": 38,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.956940"
+    },
+    {
+      "operation": "basic_query_163",
+      "duration_ms": 3.3490657806396484,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 48,
+      "result_count": 48,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:03.995484"
+    },
+    {
+      "operation": "class_query_163",
+      "duration_ms": 2.6421546936035156,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 48,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.034275"
+    },
+    {
+      "operation": "property_query_163",
+      "duration_ms": 7.608175277709961,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 48,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.077352"
+    },
+    {
+      "operation": "basic_query_164",
+      "duration_ms": 3.6780834197998047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 46,
+      "result_count": 46,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.116206"
+    },
+    {
+      "operation": "class_query_164",
+      "duration_ms": 2.5835037231445312,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.155236"
+    },
+    {
+      "operation": "property_query_164",
+      "duration_ms": 8.564949035644531,
+      "memory_mb": 0.0,
+      "cpu_percent": 114.5,
+      "triple_count": 46,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.215261"
+    },
+    {
+      "operation": "basic_query_165",
+      "duration_ms": 2.8235912322998047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14,
+      "result_count": 14,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.262318"
+    },
+    {
+      "operation": "class_query_165",
+      "duration_ms": 4.614591598510742,
+      "memory_mb": 0.0,
+      "cpu_percent": 208.6,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.310516"
+    },
+    {
+      "operation": "property_query_165",
+      "duration_ms": 8.733749389648438,
+      "memory_mb": 0.0,
+      "cpu_percent": 110.8,
+      "triple_count": 14,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.366450"
+    },
+    {
+      "operation": "basic_query_166",
+      "duration_ms": 5.268096923828125,
+      "memory_mb": 0.0,
+      "cpu_percent": 181.9,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.421536"
+    },
+    {
+      "operation": "class_query_166",
+      "duration_ms": 2.591371536254883,
+      "memory_mb": 0.0,
+      "cpu_percent": 363.9,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.468511"
+    },
+    {
+      "operation": "property_query_166",
+      "duration_ms": 9.650945663452148,
+      "memory_mb": 0.0,
+      "cpu_percent": 101.6,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.519968"
+    },
+    {
+      "operation": "basic_query_167",
+      "duration_ms": 3.2608509063720703,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 40,
+      "result_count": 40,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.571779"
+    },
+    {
+      "operation": "class_query_167",
+      "duration_ms": 3.010272979736328,
+      "memory_mb": 0.0,
+      "cpu_percent": 313.9,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.619084"
+    },
+    {
+      "operation": "property_query_167",
+      "duration_ms": 6.558418273925781,
+      "memory_mb": 0.0,
+      "cpu_percent": 145.2,
+      "triple_count": 40,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.674707"
+    },
+    {
+      "operation": "basic_query_168",
+      "duration_ms": 4.770517349243164,
+      "memory_mb": 0.0,
+      "cpu_percent": 201.7,
+      "triple_count": 73,
+      "result_count": 73,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.726123"
+    },
+    {
+      "operation": "class_query_168",
+      "duration_ms": 2.966642379760742,
+      "memory_mb": 0.0,
+      "cpu_percent": 313.3,
+      "triple_count": 73,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.777255"
+    },
+    {
+      "operation": "property_query_168",
+      "duration_ms": 13.814210891723633,
+      "memory_mb": 0.0,
+      "cpu_percent": 71.4,
+      "triple_count": 73,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.833261"
+    },
+    {
+      "operation": "basic_query_169",
+      "duration_ms": 3.397703170776367,
+      "memory_mb": 0.0,
+      "cpu_percent": 279.6,
+      "triple_count": 56,
+      "result_count": 56,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.876617"
+    },
+    {
+      "operation": "class_query_169",
+      "duration_ms": 2.526998519897461,
+      "memory_mb": 0.0,
+      "cpu_percent": 370.7,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.926074"
+    },
+    {
+      "operation": "property_query_169",
+      "duration_ms": 8.61668586730957,
+      "memory_mb": 0.0,
+      "cpu_percent": 113.7,
+      "triple_count": 56,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:04.973498"
+    },
+    {
+      "operation": "basic_query_170",
+      "duration_ms": 18.514394760131836,
+      "memory_mb": 0.0,
+      "cpu_percent": 53.5,
+      "triple_count": 461,
+      "result_count": 461,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.024825"
+    },
+    {
+      "operation": "class_query_170",
+      "duration_ms": 6.093025207519531,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 461,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.072548"
+    },
+    {
+      "operation": "property_query_170",
+      "duration_ms": 16.747236251831055,
+      "memory_mb": 0.0,
+      "cpu_percent": 118.1,
+      "triple_count": 461,
+      "result_count": 16,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.153402"
+    },
+    {
+      "operation": "basic_query_171",
+      "duration_ms": 2.604961395263672,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 25,
+      "result_count": 25,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.205361"
+    },
+    {
+      "operation": "class_query_171",
+      "duration_ms": 2.385854721069336,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 25,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.287290"
+    },
+    {
+      "operation": "property_query_171",
+      "duration_ms": 17.188310623168945,
+      "memory_mb": 0.0,
+      "cpu_percent": 57.6,
+      "triple_count": 25,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.396638"
+    },
+    {
+      "operation": "basic_query_172",
+      "duration_ms": 2.12860107421875,
+      "memory_mb": 0.0,
+      "cpu_percent": 433.4,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.518098"
+    },
+    {
+      "operation": "class_query_172",
+      "duration_ms": 2.4878978729248047,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.562356"
+    },
+    {
+      "operation": "property_query_172",
+      "duration_ms": 15.297651290893555,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.621840"
+    },
+    {
+      "operation": "basic_query_173",
+      "duration_ms": 5.192041397094727,
+      "memory_mb": 0.0,
+      "cpu_percent": 186.6,
+      "triple_count": 67,
+      "result_count": 67,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.697546"
+    },
+    {
+      "operation": "class_query_173",
+      "duration_ms": 6.316661834716797,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.788589"
+    },
+    {
+      "operation": "property_query_173",
+      "duration_ms": 8.869647979736328,
+      "memory_mb": 0.0,
+      "cpu_percent": 110.9,
+      "triple_count": 67,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.869044"
+    },
+    {
+      "operation": "basic_query_174",
+      "duration_ms": 5.401849746704102,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 96,
+      "result_count": 96,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.911818"
+    },
+    {
+      "operation": "class_query_174",
+      "duration_ms": 3.8192272186279297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 96,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:05.954747"
+    },
+    {
+      "operation": "property_query_174",
+      "duration_ms": 7.302761077880859,
+      "memory_mb": 0.0,
+      "cpu_percent": 266.2,
+      "triple_count": 96,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.007275"
+    },
+    {
+      "operation": "basic_query_175",
+      "duration_ms": 3.198862075805664,
+      "memory_mb": 0.0,
+      "cpu_percent": 299.2,
+      "triple_count": 80,
+      "result_count": 80,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.055442"
+    },
+    {
+      "operation": "class_query_175",
+      "duration_ms": 2.148866653442383,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 80,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.099796"
+    },
+    {
+      "operation": "property_query_175",
+      "duration_ms": 8.613824844360352,
+      "memory_mb": 0.0,
+      "cpu_percent": 113.7,
+      "triple_count": 80,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.150572"
+    },
+    {
+      "operation": "basic_query_176",
+      "duration_ms": 6.885528564453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 140.7,
+      "triple_count": 239,
+      "result_count": 239,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.203596"
+    },
+    {
+      "operation": "class_query_176",
+      "duration_ms": 2.9790401458740234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 239,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.248117"
+    },
+    {
+      "operation": "property_query_176",
+      "duration_ms": 9.176969528198242,
+      "memory_mb": 0.0,
+      "cpu_percent": 213.6,
+      "triple_count": 239,
+      "result_count": 6,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.312079"
+    },
+    {
+      "operation": "basic_query_177",
+      "duration_ms": 4.911661148071289,
+      "memory_mb": 0.0,
+      "cpu_percent": 196.2,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.354965"
+    },
+    {
+      "operation": "class_query_177",
+      "duration_ms": 2.9900074005126953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.395658"
+    },
+    {
+      "operation": "property_query_177",
+      "duration_ms": 8.370399475097656,
+      "memory_mb": 0.0,
+      "cpu_percent": 117.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.442758"
+    },
+    {
+      "operation": "basic_query_178",
+      "duration_ms": 8.079767227172852,
+      "memory_mb": 0.0,
+      "cpu_percent": 120.1,
+      "triple_count": 242,
+      "result_count": 242,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.493491"
+    },
+    {
+      "operation": "class_query_178",
+      "duration_ms": 2.7599334716796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 242,
+      "result_count": 9,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.542377"
+    },
+    {
+      "operation": "property_query_178",
+      "duration_ms": 13.304471969604492,
+      "memory_mb": 0.0,
+      "cpu_percent": 74.2,
+      "triple_count": 242,
+      "result_count": 13,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.599709"
+    },
+    {
+      "operation": "basic_query_179",
+      "duration_ms": 2.9668807983398438,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 22,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.649052"
+    },
+    {
+      "operation": "class_query_179",
+      "duration_ms": 3.160715103149414,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.694429"
+    },
+    {
+      "operation": "property_query_179",
+      "duration_ms": 11.072874069213867,
+      "memory_mb": 0.0,
+      "cpu_percent": 88.9,
+      "triple_count": 22,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.746894"
+    },
+    {
+      "operation": "basic_query_180",
+      "duration_ms": 3.671407699584961,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 65,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.799372"
+    },
+    {
+      "operation": "class_query_180",
+      "duration_ms": 4.537105560302734,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.851551"
+    },
+    {
+      "operation": "property_query_180",
+      "duration_ms": 14.139890670776367,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 65,
+      "result_count": 8,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.910134"
+    },
+    {
+      "operation": "basic_query_181",
+      "duration_ms": 2.9087066650390625,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:06.956273"
+    },
+    {
+      "operation": "class_query_181",
+      "duration_ms": 2.992391586303711,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.002203"
+    },
+    {
+      "operation": "property_query_181",
+      "duration_ms": 7.328271865844727,
+      "memory_mb": 0.0,
+      "cpu_percent": 133.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.046548"
+    },
+    {
+      "operation": "basic_query_182",
+      "duration_ms": 4.565000534057617,
+      "memory_mb": 0.0,
+      "cpu_percent": 180.3,
+      "triple_count": 102,
+      "result_count": 102,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.090230"
+    },
+    {
+      "operation": "class_query_182",
+      "duration_ms": 4.374980926513672,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 102,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.131852"
+    },
+    {
+      "operation": "property_query_182",
+      "duration_ms": 8.173227310180664,
+      "memory_mb": 0.0,
+      "cpu_percent": 119.7,
+      "triple_count": 102,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.177960"
+    },
+    {
+      "operation": "basic_query_183",
+      "duration_ms": 5.324840545654297,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 99,
+      "result_count": 99,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.219354"
+    },
+    {
+      "operation": "class_query_183",
+      "duration_ms": 2.735614776611328,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 99,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.261062"
+    },
+    {
+      "operation": "property_query_183",
+      "duration_ms": 8.994102478027344,
+      "memory_mb": 0.0,
+      "cpu_percent": 108.3,
+      "triple_count": 99,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.307089"
+    },
+    {
+      "operation": "basic_query_184",
+      "duration_ms": 4.058361053466797,
+      "memory_mb": 0.0,
+      "cpu_percent": 235.3,
+      "triple_count": 79,
+      "result_count": 79,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.350670"
+    },
+    {
+      "operation": "class_query_184",
+      "duration_ms": 2.9370784759521484,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 79,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.391043"
+    },
+    {
+      "operation": "property_query_184",
+      "duration_ms": 9.114265441894531,
+      "memory_mb": 0.0,
+      "cpu_percent": 107.6,
+      "triple_count": 79,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.439278"
+    },
+    {
+      "operation": "basic_query_185",
+      "duration_ms": 2.6416778564453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 353.7,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.483092"
+    },
+    {
+      "operation": "class_query_185",
+      "duration_ms": 2.4695396423339844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.523669"
+    },
+    {
+      "operation": "property_query_185",
+      "duration_ms": 6.909370422363281,
+      "memory_mb": 0.0,
+      "cpu_percent": 141.2,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.567031"
+    },
+    {
+      "operation": "basic_query_186",
+      "duration_ms": 2.6140213012695312,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 15,
+      "result_count": 15,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.607342"
+    },
+    {
+      "operation": "class_query_186",
+      "duration_ms": 2.7403831481933594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 15,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.646289"
+    },
+    {
+      "operation": "property_query_186",
+      "duration_ms": 7.876157760620117,
+      "memory_mb": 0.0,
+      "cpu_percent": 124.0,
+      "triple_count": 15,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.689574"
+    },
+    {
+      "operation": "basic_query_187",
+      "duration_ms": 2.1729469299316406,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.728011"
+    },
+    {
+      "operation": "class_query_187",
+      "duration_ms": 2.5157928466796875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.766243"
+    },
+    {
+      "operation": "property_query_187",
+      "duration_ms": 7.414340972900391,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.809778"
+    },
+    {
+      "operation": "basic_query_188",
+      "duration_ms": 4.277229309082031,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 85,
+      "result_count": 85,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.851050"
+    },
+    {
+      "operation": "class_query_188",
+      "duration_ms": 2.7701854705810547,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 85,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.891411"
+    },
+    {
+      "operation": "property_query_188",
+      "duration_ms": 8.40306282043457,
+      "memory_mb": 0.0,
+      "cpu_percent": 116.7,
+      "triple_count": 85,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.939808"
+    },
+    {
+      "operation": "basic_query_189",
+      "duration_ms": 5.774974822998047,
+      "memory_mb": 0.0,
+      "cpu_percent": 166.9,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:07.984847"
+    },
+    {
+      "operation": "class_query_189",
+      "duration_ms": 3.518819808959961,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.029557"
+    },
+    {
+      "operation": "property_query_189",
+      "duration_ms": 8.399248123168945,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.079470"
+    },
+    {
+      "operation": "basic_query_190",
+      "duration_ms": 7.065773010253906,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 148,
+      "result_count": 148,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.126888"
+    },
+    {
+      "operation": "class_query_190",
+      "duration_ms": 3.0655860900878906,
+      "memory_mb": 0.0,
+      "cpu_percent": 307.7,
+      "triple_count": 148,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.171752"
+    },
+    {
+      "operation": "property_query_190",
+      "duration_ms": 9.95326042175293,
+      "memory_mb": 0.0,
+      "cpu_percent": 98.7,
+      "triple_count": 148,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.219391"
+    },
+    {
+      "operation": "basic_query_191",
+      "duration_ms": 3.316640853881836,
+      "memory_mb": 0.0,
+      "cpu_percent": 286.0,
+      "triple_count": 35,
+      "result_count": 35,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.259301"
+    },
+    {
+      "operation": "class_query_191",
+      "duration_ms": 4.147768020629883,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 35,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.312179"
+    },
+    {
+      "operation": "property_query_191",
+      "duration_ms": 9.067773818969727,
+      "memory_mb": 0.0,
+      "cpu_percent": 108.0,
+      "triple_count": 35,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.363431"
+    },
+    {
+      "operation": "basic_query_192",
+      "duration_ms": 2.2580623626708984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.419432"
+    },
+    {
+      "operation": "class_query_192",
+      "duration_ms": 2.6350021362304688,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.462449"
+    },
+    {
+      "operation": "property_query_192",
+      "duration_ms": 10.470867156982422,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 5,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.517964"
+    },
+    {
+      "operation": "basic_query_193",
+      "duration_ms": 3.633260726928711,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 55,
+      "result_count": 55,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.558364"
+    },
+    {
+      "operation": "class_query_193",
+      "duration_ms": 2.7892589569091797,
+      "memory_mb": 0.0,
+      "cpu_percent": 340.7,
+      "triple_count": 55,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.607072"
+    },
+    {
+      "operation": "property_query_193",
+      "duration_ms": 7.75146484375,
+      "memory_mb": 0.0,
+      "cpu_percent": 124.7,
+      "triple_count": 55,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.656176"
+    },
+    {
+      "operation": "basic_query_194",
+      "duration_ms": 2.756834030151367,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 18,
+      "result_count": 18,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.694975"
+    },
+    {
+      "operation": "class_query_194",
+      "duration_ms": 2.8858184814453125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 18,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.741386"
+    },
+    {
+      "operation": "property_query_194",
+      "duration_ms": 8.939743041992188,
+      "memory_mb": 0.0,
+      "cpu_percent": 109.6,
+      "triple_count": 18,
+      "result_count": 1,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.793014"
+    },
+    {
+      "operation": "basic_query_195",
+      "duration_ms": 4.5070648193359375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 68,
+      "result_count": 68,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.843068"
+    },
+    {
+      "operation": "class_query_195",
+      "duration_ms": 2.665996551513672,
+      "memory_mb": 0.0,
+      "cpu_percent": 352.4,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.884845"
+    },
+    {
+      "operation": "property_query_195",
+      "duration_ms": 11.495828628540039,
+      "memory_mb": 0.0,
+      "cpu_percent": 85.6,
+      "triple_count": 68,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.942248"
+    },
+    {
+      "operation": "basic_query_196",
+      "duration_ms": 4.127979278564453,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 73,
+      "result_count": 73,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:08.991658"
+    },
+    {
+      "operation": "class_query_196",
+      "duration_ms": 2.5441646575927734,
+      "memory_mb": 0.0,
+      "cpu_percent": 373.0,
+      "triple_count": 73,
+      "result_count": 3,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.034417"
+    },
+    {
+      "operation": "property_query_196",
+      "duration_ms": 9.16433334350586,
+      "memory_mb": 0.0,
+      "cpu_percent": 107.2,
+      "triple_count": 73,
+      "result_count": 8,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.092879"
+    },
+    {
+      "operation": "basic_query_197",
+      "duration_ms": 4.456043243408203,
+      "memory_mb": 0.0,
+      "cpu_percent": 215.0,
+      "triple_count": 116,
+      "result_count": 116,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.146354"
+    },
+    {
+      "operation": "class_query_197",
+      "duration_ms": 2.1054744720458984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 116,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.190623"
+    },
+    {
+      "operation": "property_query_197",
+      "duration_ms": 12.712955474853516,
+      "memory_mb": 0.0,
+      "cpu_percent": 68.8,
+      "triple_count": 116,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.254342"
+    },
+    {
+      "operation": "basic_query_198",
+      "duration_ms": 4.0760040283203125,
+      "memory_mb": 0.0,
+      "cpu_percent": 181.1,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.302211"
+    },
+    {
+      "operation": "class_query_198",
+      "duration_ms": 2.4552345275878906,
+      "memory_mb": 0.0,
+      "cpu_percent": 382.7,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.342577"
+    },
+    {
+      "operation": "property_query_198",
+      "duration_ms": 8.301734924316406,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.391458"
+    },
+    {
+      "operation": "basic_query_199",
+      "duration_ms": 2.9480457305908203,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 27,
+      "result_count": 27,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.435646"
+    },
+    {
+      "operation": "class_query_199",
+      "duration_ms": 2.7294158935546875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.475761"
+    },
+    {
+      "operation": "property_query_199",
+      "duration_ms": 9.673595428466797,
+      "memory_mb": 0.0,
+      "cpu_percent": 92.0,
+      "triple_count": 27,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.527932"
+    },
+    {
+      "operation": "basic_query_200",
+      "duration_ms": 4.578351974487305,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 109,
+      "result_count": 109,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.571813"
+    },
+    {
+      "operation": "class_query_200",
+      "duration_ms": 3.2956600189208984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 109,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.615367"
+    },
+    {
+      "operation": "property_query_200",
+      "duration_ms": 10.93149185180664,
+      "memory_mb": 0.0,
+      "cpu_percent": 89.9,
+      "triple_count": 109,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.666632"
+    },
+    {
+      "operation": "basic_query_201",
+      "duration_ms": 6.747007369995117,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 94,
+      "result_count": 94,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.713285"
+    },
+    {
+      "operation": "class_query_201",
+      "duration_ms": 2.6535987854003906,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 94,
+      "result_count": 2,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.753080"
+    },
+    {
+      "operation": "property_query_201",
+      "duration_ms": 9.84811782836914,
+      "memory_mb": 0.0,
+      "cpu_percent": 98.4,
+      "triple_count": 94,
+      "result_count": 5,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.799239"
+    },
+    {
+      "operation": "basic_query_202",
+      "duration_ms": 2.69317626953125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.856720"
+    },
+    {
+      "operation": "class_query_202",
+      "duration_ms": 7.683277130126953,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:09.953474"
+    },
+    {
+      "operation": "property_query_202",
+      "duration_ms": 14.628171920776367,
+      "memory_mb": 0.0,
+      "cpu_percent": 67.4,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.042947"
+    },
+    {
+      "operation": "basic_query_203",
+      "duration_ms": 2.5997161865234375,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 21,
+      "result_count": 21,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.106839"
+    },
+    {
+      "operation": "class_query_203",
+      "duration_ms": 3.0972957611083984,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 21,
+      "result_count": 4,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.160649"
+    },
+    {
+      "operation": "property_query_203",
+      "duration_ms": 8.408069610595703,
+      "memory_mb": 0.0,
+      "cpu_percent": 116.4,
+      "triple_count": 21,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.210240"
+    },
+    {
+      "operation": "basic_query_204",
+      "duration_ms": 2.6531219482421875,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.250596"
+    },
+    {
+      "operation": "class_query_204",
+      "duration_ms": 2.7146339416503906,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.294208"
+    },
+    {
+      "operation": "property_query_204",
+      "duration_ms": 7.371425628662109,
+      "memory_mb": 0.0,
+      "cpu_percent": 132.5,
+      "triple_count": 0,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.342060"
+    },
+    {
+      "operation": "basic_query_205",
+      "duration_ms": 2.9692649841308594,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 30,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.384935"
+    },
+    {
+      "operation": "class_query_205",
+      "duration_ms": 2.975940704345703,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.426604"
+    },
+    {
+      "operation": "property_query_205",
+      "duration_ms": 5.995988845825195,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 30,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.472416"
+    },
+    {
+      "operation": "basic_query_206",
+      "duration_ms": 2.6068687438964844,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 10,
+      "result_count": 10,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.512178"
+    },
+    {
+      "operation": "class_query_206",
+      "duration_ms": 2.5794506072998047,
+      "memory_mb": 0.0,
+      "cpu_percent": 365.0,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.551298"
+    },
+    {
+      "operation": "property_query_206",
+      "duration_ms": 8.717536926269531,
+      "memory_mb": 0.0,
+      "cpu_percent": 111.1,
+      "triple_count": 10,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.607333"
+    },
+    {
+      "operation": "dependency_depends_on",
+      "duration_ms": 3.4046173095703125,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14243,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.891134"
+    },
+    {
+      "operation": "dependency_imports",
+      "duration_ms": 3.8900375366210938,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14243,
+      "result_count": 33,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:10.948617"
+    },
+    {
+      "operation": "dependency_subclass",
+      "duration_ms": 4.754543304443359,
+      "memory_mb": 0.125,
+      "cpu_percent": 0.0,
+      "triple_count": 14243,
+      "result_count": 99,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:11.004432"
+    },
+    {
+      "operation": "dependency_subproperty",
+      "duration_ms": 2.4907588958740234,
+      "memory_mb": 0.0,
+      "cpu_percent": 0.0,
+      "triple_count": 14243,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:11.057616"
+    },
+    {
+      "operation": "pattern_validation_rule",
+      "duration_ms": 4.796266555786133,
+      "memory_mb": 0.0,
+      "cpu_percent": 201.2,
+      "triple_count": 14243,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:11.383173"
+    },
+    {
+      "operation": "pattern_namespace_conflict",
+      "duration_ms": 6.088972091674805,
+      "memory_mb": 0.0,
+      "cpu_percent": 159.7,
+      "triple_count": 14243,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:11.446753"
+    },
+    {
+      "operation": "pattern_circular_dependency",
+      "duration_ms": 2.4805068969726562,
+      "memory_mb": 0.0,
+      "cpu_percent": 370.4,
+      "triple_count": 14243,
+      "result_count": 0,
+      "error": null,
+      "timestamp": "2025-07-08T01:32:11.496734"
+    }
+  ],
+  "summary": {
+    "total_operations": 628,
+    "successful_operations": 628,
+    "failed_operations": 0,
+    "duration_stats": {
+      "mean_ms": 6.5433052694721585,
+      "median_ms": 4.800319671630859,
+      "min_ms": 1.9161701202392578,
+      "max_ms": 66.72215461730957,
+      "p95_ms": 15.550613403320312
+    },
+    "memory_stats": {
+      "mean_mb": 0.005971337579617835,
+      "max_mb": 2.5,
+      "total_mb": 3.75
+    },
+    "slowest_operations": [
+      {
+        "operation": "basic_query_38",
+        "duration_ms": 66.72215461730957,
+        "memory_mb": 0.75,
+        "cpu_percent": 44.2,
+        "triple_count": 920,
+        "result_count": 920,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:43.812952"
+      },
+      {
+        "operation": "basic_query_0",
+        "duration_ms": 50.76861381530762,
+        "memory_mb": 2.5,
+        "cpu_percent": 78.5,
+        "triple_count": 46,
+        "result_count": 46,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:38.001541"
+      },
+      {
+        "operation": "property_query_57",
+        "duration_ms": 34.44790840148926,
+        "memory_mb": 0.0,
+        "cpu_percent": 28.9,
+        "triple_count": 99,
+        "result_count": 0,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:46.863247"
+      },
+      {
+        "operation": "property_query_130",
+        "duration_ms": 27.123689651489258,
+        "memory_mb": 0.0,
+        "cpu_percent": 36.6,
+        "triple_count": 80,
+        "result_count": 4,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:58.955658"
+      },
+      {
+        "operation": "property_query_129",
+        "duration_ms": 24.65200424194336,
+        "memory_mb": 0.0,
+        "cpu_percent": 40.2,
+        "triple_count": 96,
+        "result_count": 2,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:58.715473"
+      }
+    ],
+    "largest_memory_operations": [
+      {
+        "operation": "basic_query_0",
+        "duration_ms": 50.76861381530762,
+        "memory_mb": 2.5,
+        "cpu_percent": 78.5,
+        "triple_count": 46,
+        "result_count": 46,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:38.001541"
+      },
+      {
+        "operation": "basic_query_38",
+        "duration_ms": 66.72215461730957,
+        "memory_mb": 0.75,
+        "cpu_percent": 44.2,
+        "triple_count": 920,
+        "result_count": 920,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:43.812952"
+      },
+      {
+        "operation": "property_query_0",
+        "duration_ms": 16.19744300842285,
+        "memory_mb": 0.125,
+        "cpu_percent": 61.2,
+        "triple_count": 46,
+        "result_count": 0,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:38.132608"
+      },
+      {
+        "operation": "basic_query_4",
+        "duration_ms": 11.455059051513672,
+        "memory_mb": 0.125,
+        "cpu_percent": 85.6,
+        "triple_count": 257,
+        "result_count": 257,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:38.599928"
+      },
+      {
+        "operation": "basic_query_5",
+        "duration_ms": 13.262271881103516,
+        "memory_mb": 0.125,
+        "cpu_percent": 74.3,
+        "triple_count": 408,
+        "result_count": 408,
+        "error": null,
+        "timestamp": "2025-07-08T01:31:38.754650"
+      }
+    ]
+  },
+  "timestamp": "2025-07-08T01:32:11.497778"
+}
