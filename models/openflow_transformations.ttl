@@ -1,0 +1,177 @@
+@prefix op: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/openflow_playground#> .
+@prefix transform: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/openflow_transformations#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+# OpenFlow-Playground Transformation Rules Ontology
+transform: a owl:Ontology ;
+    rdfs:label "OpenFlow-Playground Transformation Rules"@en ;
+    rdfs:comment "Transformation rules for vocabulary alignment between reverse engineering and code generation"@en ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/openflow_playground#> ;
+    owl:versionInfo "1.0.0" .
+
+# Transformation Rule Classes
+transform:TransformationRule a owl:Class ;
+    rdfs:label "Transformation Rule"@en ;
+    rdfs:comment "A rule that defines how to transform between domains"@en ;
+    rdfs:subClassOf guidance:ValidationRule .
+
+transform:ListToDictTransformationRule a transform:TransformationRule ;
+    rdfs:label "List to Dictionary Transformation Rule"@en ;
+    rdfs:comment "Transforms list-based component representations to dictionary-based ones"@en ;
+    guidance:hasMessage "Transform list components to dictionary format for code generation" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasTarget op:ListToDictTransformation ;
+    guidance:hasValidator "validate_list_to_dict_transformation" .
+
+transform:DictToListTransformationRule a transform:TransformationRule ;
+    rdfs:label "Dictionary to List Transformation Rule"@en ;
+    rdfs:comment "Transforms dictionary-based component representations to list-based ones"@en ;
+    guidance:hasMessage "Transform dictionary components to list format for reverse engineering" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasTarget op:VocabularyAlignment ;
+    guidance:hasValidator "validate_dict_to_list_transformation" .
+
+# Specific Transformation Patterns
+transform:ComponentListToDict a owl:Class ;
+    rdfs:label "Component List to Dictionary"@en ;
+    rdfs:comment "Pattern for transforming component lists to dictionaries"@en ;
+    rdfs:subClassOf transform:TransformationRule .
+
+transform:MethodListToDict a owl:Class ;
+    rdfs:label "Method List to Dictionary"@en ;
+    rdfs:comment "Pattern for transforming method lists to dictionaries"@en ;
+    rdfs:subClassOf transform:TransformationRule .
+
+# Transformation Contexts
+transform:ReverseEngineeringContext a owl:Class ;
+    rdfs:label "Reverse Engineering Context"@en ;
+    rdfs:comment "Context for reverse engineering operations"@en ;
+    rdfs:subClassOf op:Context .
+
+transform:CodeGenerationContext a owl:Class ;
+    rdfs:label "Code Generation Context"@en ;
+    rdfs:comment "Context for code generation operations"@en ;
+    rdfs:subClassOf op:Context .
+
+# Transformation Formats
+transform:ListFormat a owl:Class ;
+    rdfs:label "List Format"@en ;
+    rdfs:comment "Format for list-based representations"@en ;
+    rdfs:subClassOf op:Format .
+
+transform:DictFormat a owl:Class ;
+    rdfs:label "Dictionary Format"@en ;
+    rdfs:comment "Format for dictionary-based representations"@en ;
+    rdfs:subClassOf op:Format .
+
+# Object Properties for Transformations
+transform:transformsFrom a owl:ObjectProperty ;
+    rdfs:label "transforms from"@en ;
+    rdfs:comment "The source format of a transformation"@en ;
+    rdfs:domain transform:TransformationRule ;
+    rdfs:range op:Format .
+
+transform:transformsTo a owl:ObjectProperty ;
+    rdfs:label "transforms to"@en ;
+    rdfs:comment "The target format of a transformation"@en ;
+    rdfs:domain transform:TransformationRule ;
+    rdfs:range op:Format .
+
+transform:hasTransformationLogic a owl:ObjectProperty ;
+    rdfs:label "has transformation logic"@en ;
+    rdfs:comment "The logic for performing the transformation"@en ;
+    rdfs:domain transform:TransformationRule ;
+    rdfs:range transform:TransformationLogic .
+
+# Transformation Logic
+transform:TransformationLogic a owl:Class ;
+    rdfs:label "Transformation Logic"@en ;
+    rdfs:comment "The logic for performing transformations"@en .
+
+transform:ListToDictLogic a transform:TransformationLogic ;
+    rdfs:label "List to Dictionary Logic"@en ;
+    rdfs:comment "Logic for converting list to dictionary"@en ;
+    transform:hasTransformationCode """
+def transform_list_to_dict(component_list):
+    \"\"\"Transform list of components to dictionary keyed by name\"\"\"
+    if not isinstance(component_list, list):
+        raise ValueError("Input must be a list")
+    
+    result = {}
+    for component in component_list:
+        if isinstance(component, dict) and 'name' in component:
+            result[component['name']] = component
+        else:
+            raise ValueError("Each component must be a dict with 'name' field")
+    
+    return result
+""" .
+
+transform:DictToListLogic a transform:TransformationLogic ;
+    rdfs:label "Dictionary to List Logic"@en ;
+    rdfs:comment "Logic for converting dictionary to list"@en ;
+    transform:hasTransformationCode """
+def transform_dict_to_list(component_dict):
+    \"\"\"Transform dictionary of components to list\"\"\"
+    if not isinstance(component_dict, dict):
+        raise ValueError("Input must be a dictionary")
+    
+    return list(component_dict.values())
+""" .
+
+# Data Properties for Transformation Rules
+transform:hasTransformationCode a owl:DatatypeProperty ;
+    rdfs:label "has transformation code"@en ;
+    rdfs:comment "The actual Python code for the transformation"@en ;
+    rdfs:domain transform:TransformationLogic ;
+    rdfs:range xsd:string .
+
+transform:hasValidationCriteria a owl:DatatypeProperty ;
+    rdfs:label "has validation criteria"@en ;
+    rdfs:comment "Criteria for validating the transformation"@en ;
+    rdfs:domain transform:TransformationRule ;
+    rdfs:range xsd:string .
+
+# SHACL Shapes for Transformation Validation
+transform:TransformationRuleShape a sh:NodeShape ;
+    sh:targetClass transform:TransformationRule ;
+    sh:property [
+        sh:path transform:transformsFrom ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class op:Format
+    ] ;
+    sh:property [
+        sh:path transform:transformsTo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class op:Format
+    ] ;
+    sh:property [
+        sh:path transform:hasTransformationLogic ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class transform:TransformationLogic
+    ] .
+
+# Instances for OpenFlow-Playground
+transform:OpenFlowComponentTransformation a transform:ComponentListToDict ;
+    rdfs:label "OpenFlow Component Transformation"@en ;
+    rdfs:comment "Transforms OpenFlow-Playground component lists to dictionaries"@en ;
+    transform:transformsFrom transform:ListFormat ;
+    transform:transformsTo transform:DictFormat ;
+    transform:hasTransformationLogic transform:ListToDictLogic ;
+    transform:hasValidationCriteria "Input must be list of dicts with 'name' field, output must be dict keyed by name" .
+
+transform:OpenFlowMethodTransformation a transform:MethodListToDict ;
+    rdfs:label "OpenFlow Method Transformation"@en ;
+    rdfs:comment "Transforms OpenFlow-Playground method lists to dictionaries"@en ;
+    transform:transformsFrom transform:ListFormat ;
+    transform:transformsTo transform:DictFormat ;
+    transform:hasTransformationLogic transform:ListToDictLogic ;
+    transform:hasValidationCriteria "Input must be list of dicts with 'name' field, output must be dict keyed by name" .

@@ -1,0 +1,206 @@
+@prefix op: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/models/openflow_playground#> .
+@prefix mcp: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/mcp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix guidance: <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> .
+
+# OpenFlow-Playground Ontology
+op: a owl:Ontology ;
+    rdfs:label "OpenFlow-Playground Ontology"@en ;
+    rdfs:comment "Ontology for OpenFlow-Playground project vocabulary alignment and code generation"@en ;
+    owl:imports <https://raw.githubusercontent.com/louspringer/ontology-framework/main/guidance#> ;
+    owl:versionInfo "1.0.0" .
+
+# Core Domain Classes
+op:ReverseEngineeringDomain a owl:Class ;
+    rdfs:label "Reverse Engineering Domain"@en ;
+    rdfs:comment "Domain for analyzing and extracting models from existing code"@en ;
+    rdfs:subClassOf guidance:ValidationPattern .
+
+op:CodeGenerationDomain a owl:Class ;
+    rdfs:label "Code Generation Domain"@en ;
+    rdfs:comment "Domain for generating code from extracted models"@en ;
+    rdfs:subClassOf guidance:ValidationPattern .
+
+op:VocabularyAlignment a owl:Class ;
+    rdfs:label "Vocabulary Alignment"@en ;
+    rdfs:comment "Mapping between different domain vocabularies"@en ;
+    rdfs:subClassOf guidance:ValidationPattern .
+
+# Component Representation Classes
+op:Component a owl:Class ;
+    rdfs:label "Component"@en ;
+    rdfs:comment "A software component that can be represented in different domains"@en ;
+    rdfs:subClassOf mcp:Artifact .
+
+op:ReverseEngineeringComponent a owl:Class ;
+    rdfs:label "Reverse Engineering Component"@en ;
+    rdfs:comment "Component as represented in reverse engineering domain"@en ;
+    rdfs:subClassOf op:Component .
+
+op:CodeGenerationComponent a owl:Class ;
+    rdfs:label "Code Generation Component"@en ;
+    rdfs:comment "Component as represented in code generation domain"@en ;
+    rdfs:subClassOf op:Component .
+
+# Method Representation Classes
+op:Method a owl:Class ;
+    rdfs:label "Method"@en ;
+    rdfs:comment "A method within a component"@en ;
+    rdfs:subClassOf mcp:Artifact .
+
+op:ReverseEngineeringMethod a owl:Class ;
+    rdfs:label "Reverse Engineering Method"@en ;
+    rdfs:comment "Method as represented in reverse engineering domain"@en ;
+    rdfs:subClassOf op:Method .
+
+op:CodeGenerationMethod a owl:Class ;
+    rdfs:label "Code Generation Method"@en ;
+    rdfs:comment "Method as represented in code generation domain"@en ;
+    rdfs:subClassOf op:Method .
+
+# Context and Format Classes
+op:Context a owl:Class ;
+    rdfs:label "Context"@en ;
+    rdfs:comment "The context in which a component or method exists"@en ;
+    rdfs:subClassOf guidance:ValidationPattern .
+
+op:Format a owl:Class ;
+    rdfs:label "Format"@en ;
+    rdfs:comment "The format of representation (list, dict, etc.)"@en ;
+    rdfs:subClassOf guidance:ValidationPattern .
+
+# Object Properties for Relationships
+op:transformsTo a owl:ObjectProperty ;
+    rdfs:label "transforms to"@en ;
+    rdfs:comment "Maps a reverse engineering concept to a code generation concept"@en ;
+    rdfs:domain op:ReverseEngineeringComponent ;
+    rdfs:range op:CodeGenerationComponent .
+
+op:hasMethod a owl:ObjectProperty ;
+    rdfs:label "has method"@en ;
+    rdfs:comment "Relates a component to its methods"@en ;
+    rdfs:domain op:Component ;
+    rdfs:range op:Method .
+
+op:hasContext a owl:ObjectProperty ;
+    rdfs:label "has context"@en ;
+    rdfs:comment "Relates a concept to its context"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range op:Context .
+
+op:hasFormat a owl:ObjectProperty ;
+    rdfs:label "has format"@en ;
+    rdfs:comment "Relates a concept to its format"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range op:Format .
+
+op:belongsToDomain a owl:ObjectProperty ;
+    rdfs:label "belongs to domain"@en ;
+    rdfs:comment "Relates a concept to its domain"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Class .
+
+# Data Properties
+op:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:comment "The name of a concept"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+op:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:comment "The description of a concept"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+op:hasType a owl:DatatypeProperty ;
+    rdfs:label "has type"@en ;
+    rdfs:comment "The type of a concept"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+op:hasReturnType a owl:DatatypeProperty ;
+    rdfs:label "has return type"@en ;
+    rdfs:comment "The return type of a method"@en ;
+    rdfs:domain op:Method ;
+    rdfs:range xsd:string .
+
+# Specific Instances for OpenFlow-Playground
+op:OpenFlowPlaygroundProject a op:Component ;
+    rdfs:label "OpenFlow-Playground Project"@en ;
+    op:belongsToDomain op:ReverseEngineeringDomain ;
+    op:hasContext op:ProjectContext ;
+    op:hasFormat op:ProjectFormat .
+
+op:ProjectContext a op:Context ;
+    rdfs:label "Project Context"@en ;
+    rdfs:comment "Context for project-level concepts"@en .
+
+op:ProjectFormat a op:Format ;
+    rdfs:label "Project Format"@en ;
+    rdfs:comment "Format for project representation"@en .
+
+# Vocabulary Alignment Rules
+op:ListToDictTransformation a op:VocabularyAlignment ;
+    rdfs:label "List to Dictionary Transformation"@en ;
+    rdfs:comment "Transforms list-based component representations to dictionary-based ones"@en ;
+    op:hasContext op:TransformationContext ;
+    op:hasFormat op:TransformationFormat .
+
+op:TransformationContext a op:Context ;
+    rdfs:label "Transformation Context"@en ;
+    rdfs:comment "Context for vocabulary transformations"@en .
+
+op:TransformationFormat a op:Format ;
+    rdfs:label "Transformation Format"@en ;
+    rdfs:comment "Format for transformation rules"@en .
+
+# Validation Rules
+op:VocabularyAlignmentRule a guidance:ValidationRule ;
+    rdfs:label "Vocabulary Alignment Rule"@en ;
+    rdfs:comment "Ensures vocabulary consistency between domains"@en ;
+    guidance:hasMessage "Vocabulary must be aligned between reverse engineering and code generation domains" ;
+    guidance:hasPriority "HIGH" ;
+    guidance:hasTarget op:VocabularyAlignment ;
+    guidance:hasValidator "validate_vocabulary_alignment" .
+
+# SHACL Shapes for Validation
+op:VocabularyAlignmentShape a sh:NodeShape ;
+    sh:targetClass op:VocabularyAlignment ;
+    sh:property [
+        sh:path op:hasContext ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class op:Context
+    ] ;
+    sh:property [
+        sh:path op:hasFormat ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class op:Format
+    ] .
+
+op:ComponentShape a sh:NodeShape ;
+    sh:targetClass op:Component ;
+    sh:property [
+        sh:path op:hasName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] ;
+    sh:property [
+        sh:path op:hasDescription ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] ;
+    sh:property [
+        sh:path op:belongsToDomain ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class owl:Class
+    ] .
