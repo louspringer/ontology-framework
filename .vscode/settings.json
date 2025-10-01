@@ -21,5 +21,6 @@
     "peacock.color": "#545052",
     "peacock.remoteColor": "#97f048",
     "dbt.dbtIntegration": "cloud",
-    "svg.preview.background": "dark-transparent"
+    "svg.preview.background": "dark-transparent",
+    "kiroAgent.configureMCP": "Enabled"
 }

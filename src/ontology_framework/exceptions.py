@@ -2,6 +2,8 @@
 Custom exceptions for the ontology framework.
 """
 
+from typing import Optional
+
 class OntologyFrameworkError(Exception):
     """Base exception for all ontology framework errors."""
     pass
@@ -40,7 +42,7 @@ class AuthenticationError(BoldoAPIError):
 
 class APIRequestError(BoldoAPIError):
     """Exception raised when an API request fails."""
-    def __init__(self, message: str, status_code: int | None = None):
+    def __init__(self, message: str, status_code: Optional[int] = None):
         self.status_code = status_code
         super().__init__(message)
 
